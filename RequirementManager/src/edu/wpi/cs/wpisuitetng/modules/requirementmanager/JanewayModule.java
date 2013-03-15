@@ -11,7 +11,7 @@
  *    Andrew Hurle
  ******************************************************************************/
 
-package edu.cs.wpisuitetng.modules.requirementmanager;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -24,7 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
+//import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 
@@ -41,7 +41,7 @@ public class JanewayModule implements IJanewayModule {
 	/**
 	 * Construct a new DummyModule for demonstration purposes
 	 */
-	public void DummyModule() {
+	public JanewayModule() {
 		
 		// Setup button panel
 		JPanel buttonPanel = new JPanel();
@@ -52,12 +52,12 @@ public class JanewayModule implements IJanewayModule {
 		// Setup the main panel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(new JLabel("Dummy Module"), BorderLayout.PAGE_START);
+		mainPanel.add(new JLabel("Requirement Manager"), BorderLayout.PAGE_START);
 		mainPanel.add(new JTextField(), BorderLayout.CENTER);
 		mainPanel.add(new JTextField(), BorderLayout.CENTER);
 		
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Dummy Module", new ImageIcon(), buttonPanel, mainPanel);
+		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), buttonPanel, mainPanel);
 		tabs.add(tab);
 	}
 
@@ -66,7 +66,7 @@ public class JanewayModule implements IJanewayModule {
 	 */
 	@Override
 	public String getName() {
-		return "Dummy Module";
+		return "Requirement Manager";
 	}
 
 	/**
