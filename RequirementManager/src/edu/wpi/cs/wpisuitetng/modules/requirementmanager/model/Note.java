@@ -2,8 +2,18 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.model;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
+import java.util.Date;
+
 public class Note extends AbstractModel {
 
+	private Date date;
+	private String message;
+	
+	public Note(Date date, String message) {
+		this.date = date;
+		this.message = message;
+	}
+	
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
@@ -26,6 +36,22 @@ public class Note extends AbstractModel {
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }
