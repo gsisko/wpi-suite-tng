@@ -24,6 +24,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
+import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
+import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+
 
 /**
  * A dummy module to demonstrate the Janeway client
@@ -37,7 +41,7 @@ public class JanewayModule implements IJanewayModule {
 	/**
 	 * Construct a new DummyModule for demonstration purposes
 	 */
-	public DummyModule() {
+	public void DummyModule() {
 		
 		// Setup button panel
 		JPanel buttonPanel = new JPanel();
