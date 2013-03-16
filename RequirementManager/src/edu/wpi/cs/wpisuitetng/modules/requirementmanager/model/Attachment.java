@@ -36,18 +36,33 @@ public class Attachment extends AbstractModel {
 		return null;
 	}
 
+	
+	/**
+	 * @return the name of this attachment
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 *  	
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * 
+	 * @return the bytes of data
+	 */
 	public byte[] getBytes() {
 		return bytes;
 	}
 
+	/**
+	 * @param bytes of a file to be stored
+	 */
 	public void setBytes(byte[] bytes) {
 		this.bytes = bytes;
 	}
