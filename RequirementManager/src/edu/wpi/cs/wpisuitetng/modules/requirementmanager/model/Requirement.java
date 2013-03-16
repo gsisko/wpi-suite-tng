@@ -34,6 +34,11 @@ public abstract class Requirement extends AbstractModel {
 		this.tasks = new HashSet<Task>();	         // Initializes an empty HashSet of tasks
 	}
 	
+	
+	
+	// The following are getters and setters
+	
+	
 	public int getReleaseNumber() {
 		return releaseNumber;
 	}

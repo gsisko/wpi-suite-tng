@@ -7,5 +7,6 @@ public enum RequirementStatus {
 	NEW,
 	IN_PROGRESS,
 	OPEN,
-	COMPLETE
+	COMPLETE,
+	DELETED // Need to ask Marty about this, but some of the project descriptions hint at this
 }
