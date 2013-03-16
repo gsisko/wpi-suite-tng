@@ -1,9 +1,9 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.model;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 import java.util.HashSet;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.model.RequirementStatus.*;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.model.RequirementPriority.*;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority.*;
 
 
 public abstract class Requirement extends AbstractModel {

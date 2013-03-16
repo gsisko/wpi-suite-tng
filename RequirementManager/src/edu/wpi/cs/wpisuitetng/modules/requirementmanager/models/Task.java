@@ -1,6 +1,8 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.model;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 import java.util.Date;
+
+import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
@@ -8,42 +10,64 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 // Additional functionality will need to be added for this class before it is release worthy
 public class Task extends AbstractModel {
 
+	private int id;
 	private Date date;
 	private String message;
-	
+
 	public Task(Date date, String message) {
+		this.id = -1;
 		this.date = date;
 		this.message = message;
 	}
-	
+
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	@Override
+	/**
+	 * Converts this Task to a JSON string
+	 * @return a string in JSON representing this Task
+	 */
 	public String toJSON() {
-		// TODO Auto-generated method stub
-		return null;
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(this, Task.class);
+		return json;
 	}
 
-	@Override
 	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+		Boolean returnValue = false;
+		if(o instanceof Task && id == ((Task) o).getId()) {
+			returnValue = true;
+		}
+		if(o instanceof String && Integer.toString(id).equals(o)) {
+			returnValue = true;
+		}
+		return returnValue;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
 	/**
 	 * 
 	 * @return The date when this task was made
 	 */
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Date getDate() {
 		return date;
 	}

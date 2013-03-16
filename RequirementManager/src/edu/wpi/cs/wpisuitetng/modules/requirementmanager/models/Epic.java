@@ -1,50 +1,69 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.model;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+
+import com.google.gson.Gson;
 
 
 public class Epic extends Requirement {
-	
+
+	private int id; // We need to discuss how to implement this.. possibly migrate to requirement... probably controlled on server end
 	private String name;
 	private String description;
-	private int uniqueID; // We need to discuss how to implement this.. possibly migrate to requirement... probably controlled on server end
-	
 	
 	public Epic(RequirementPriority priority, String name, String description) {
 		super(priority);
-		this.setUniqueID(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
 		this.setName(name);
 		this.setDescription(description);
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Epic(RequirementPriority priority, int releaseNumber, String name, String description) {
-		super(priority);this.setName(name);
+		super(priority);
+		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
+		this.setName(name);
 		this.setDescription(description);
-		this.setUniqueID(-1);    // (-1) will be a flag to the server/database that this value needs to be set
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	@Override
+	/**
+	 * Converts this Epic to a JSON string
+	 * @return a string in JSON representing this Epic
+	 */
 	public String toJSON() {
-		// TODO Auto-generated method stub
-		return null;
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(this, Epic.class);
+		return json;
 	}
 
-	@Override
 	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+		Boolean returnValue = false;
+		if(o instanceof Epic && id == ((Epic) o).getId()) {
+			returnValue = true;
+		}
+		if(o instanceof String && Integer.toString(id).equals(o)) {
+			returnValue = true;
+		}
+		return returnValue;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	/**
@@ -78,21 +97,4 @@ public class Epic extends Requirement {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	/**
-	 * 
-	 * @return The unique identifier for this Epic
-	 */
-	public int getUniqueID() {
-		return uniqueID;
-	}
-
-	/**
-	 * 
-	 * @param uniqueID The unique identifier for this Epic
-	 */
-	public void setUniqueID(int uniqueID) {
-		this.uniqueID = uniqueID;
-	}
-
 }

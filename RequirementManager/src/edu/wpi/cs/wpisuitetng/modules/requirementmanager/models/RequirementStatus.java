@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.model;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /**
  * Possible values for the status of a requirement.
