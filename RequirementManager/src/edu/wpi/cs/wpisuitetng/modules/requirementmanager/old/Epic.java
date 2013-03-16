@@ -1,36 +1,37 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.old;
 
 import com.google.gson.Gson;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 
-public class Epic extends Requirement {
+
+public class Epic {
 
 	private int id; // We need to discuss how to implement this.. possibly migrate to requirement... probably controlled on server end
 	private String name;
 	private String description;
 	
 	public Epic(RequirementPriority priority, String name, String description) {
-		super(priority);
+	//	super(priority);
 		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
 		this.setName(name);
 		this.setDescription(description);
 	}
 
 	public Epic(RequirementPriority priority, int releaseNumber, String name, String description) {
-		super(priority);
+	//	super(priority);
 		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
 		this.setName(name);
 		this.setDescription(description);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 

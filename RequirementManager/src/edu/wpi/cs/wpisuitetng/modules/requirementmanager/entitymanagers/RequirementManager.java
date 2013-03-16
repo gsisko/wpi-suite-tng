@@ -7,43 +7,43 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Epic;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-public class EpicManager implements EntityManager<Epic> {
+public class RequirementManager implements EntityManager<Requirement> {
 
 	Data db;
 
-	public EpicManager(Data data) {
+	public RequirementManager(Data data) {
 		db = data;
 	}
 
 	@Override
-	public Epic makeEntity(Session s, String content)
+	public Requirement makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Epic[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
+	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Epic[] getAll(Session s) throws WPISuiteException {
+	public Requirement[] getAll(Session s) throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Epic update(Session s, String content) throws WPISuiteException {
+	public Requirement update(Session s, String content) throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void save(Session s, Epic model) throws WPISuiteException {
+	public void save(Session s, Requirement model) throws WPISuiteException {
 		// TODO Auto-generated method stub
 
 	}
@@ -86,5 +86,6 @@ public class EpicManager implements EntityManager<Epic> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
