@@ -10,16 +10,16 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.RequirementMessage;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-/**This is the entity manager for the RequirementMessage in the 
+/**This is the entity manager for the Requirement in the 
  * RequirementManager module
  * 
  * @author Calder
  * @author Dabrowski
  *
  */
-public class RequirementManager implements EntityManager<RequirementMessage> {
+public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	Data db;
 
@@ -40,19 +40,19 @@ public class RequirementManager implements EntityManager<RequirementMessage> {
 	 *  
 	 *	@param s The current user session
 	 *	@param content The message that comes in the form of a string to be recreated
-	 *	@return the RequirementMessage that originally came as a string
+	 *	@return the Requirement that originally came as a string
 	 */
-	public RequirementMessage makeEntity(Session s, String content)
+	public Requirement makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 
 		// Parse the message from JSON
-		final RequirementMessage newRequirementMessage = RequirementMessage.fromJson(content);
+		final Requirement newRequirement = Requirement.fromJson(content);
 
 		// Saves the message in the database if possible
-		this.save(s,newRequirementMessage); 
+		this.save(s,newRequirement); 
 
 		// Return the newly created message (this gets passed back to the client)
-		return newRequirementMessage;
+		return newRequirement;
 	}
 		
 	/** Takes a session and returns an array of all the Requirements contained
@@ -60,24 +60,24 @@ public class RequirementManager implements EntityManager<RequirementMessage> {
 	 * @param s The current user session
 	 * @return An array of all requirements in the Database	 * 
 	 */
-	public RequirementMessage[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type RequirementMessage.
-		// Passing a dummy RequirementMessage lets the db know what type of object to retrieve
+	public Requirement[] getAll(Session s) throws WPISuiteException {
+		// Ask the database to retrieve all objects of the type Requirement.
+		// Passing a dummy Requirement lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		List<Model> messages = db.retrieveAll(new RequirementMessage(), s.getProject());
+		List<Model> messages = db.retrieveAll(new Requirement("",""), s.getProject());
 
 		// Return the list of messages as an array
-		return messages.toArray(new RequirementMessage[0]);
+		return messages.toArray(new Requirement[0]);
 	}
 	
 	
-	/** Saves the given RequirementMessage into the database if possible.
+	/** Saves the given Requirement into the database if possible.
 	 * 
 	 *  @param s The current user session
-	 *  @param model The RequirementMessage to be saved to the database
+	 *  @param model The Requirement to be saved to the database
 	 * 
 	 */
-	public void save(Session s, RequirementMessage model) throws WPISuiteException {
+	public void save(Session s, Requirement model) throws WPISuiteException {
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(model, s.getProject())) {
@@ -86,14 +86,14 @@ public class RequirementManager implements EntityManager<RequirementMessage> {
 	}
 
 
-	/** Returns the number of RequirementMessages currently in the database. Disregards
+	/** Returns the number of Requirements currently in the database. Disregards
 	 *  the current user session
 	 * 
-	 *  @return The number of RequirementMessages currently in the databse
+	 *  @return The number of Requirements currently in the databse
 	 */
 	public int Count() throws WPISuiteException {
-		// Passing a dummy RequirementMessage lets the db know what type of object to retrieve
-		return db.retrieveAll(new RequirementMessage()).size();
+		// Passing a dummy Requirement lets the db know what type of object to retrieve
+		return db.retrieveAll(new Requirement("","")).size();
 	}
 
 
@@ -107,7 +107,7 @@ public class RequirementManager implements EntityManager<RequirementMessage> {
 	 *  @param id Points to a specific requirement
 	 *  @return An array of Requirements 
  	 */
-	public RequirementMessage[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
+	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
 		// TODO Auto-generated method stub
 		
 		// Throw an exception if an ID was specified but not found
@@ -123,18 +123,18 @@ public class RequirementManager implements EntityManager<RequirementMessage> {
 	 *   
 	 *  @param s The current user session
 	 *  @param content The requirement to be update + the updates
-	 * 	@return the changed requirement message
+	 * 	@return the changed requirement 
 	 */
-	public RequirementMessage update(Session s, String content) throws WPISuiteException {
+	public Requirement update(Session s, String content) throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	
-	/** Deletes a RequirementMessage from the database (not advised)
-	 * 
+	/** Deletes a Requirement from the database (not advised)
+	 *  
 	 *  @param s The current user session
-	 *  @param id The unique of the message to delete
+	 *  @param id The unique of the requirement to delete
 	 *  @return TRUE if successful or FALSE if it fails
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
@@ -145,7 +145,7 @@ public class RequirementManager implements EntityManager<RequirementMessage> {
 	}
 	
 
-	/** Deletes ALL RequirementMessage from the database (not advised)
+	/** Deletes ALL Requirement from the database (not advised)
 	 * 
 	 *  @param s The current user session
 	 */
