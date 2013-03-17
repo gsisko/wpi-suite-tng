@@ -21,12 +21,13 @@ public class Requirement extends AbstractModel {
 	private String description;
 	private int estimate;
 	private int actualEffort;
-
+	/*
 	private HashSet<Note> notes;
 	private HashSet<Attachment> attachments;
 	private HashSet<Task> tasks;
+	*/
 	private List<RequirementEvent> events;
-
+	
 	// Bare minimum constructor of required fields - Made for very basic functionality for iteration 1
 	public Requirement(String name, String description) {
 		this.setName(name);
@@ -38,9 +39,11 @@ public class Requirement extends AbstractModel {
 		this.setReleaseNumber(-1); // Initialized to zero if not specified
 		this.setStatus(NEW);       // Status is always defaulted to NEW
 		this.setPriority(LOW);     // Default status is LOW, priority should be overridden 
+		/*
 		this.setAttachments(new HashSet<Attachment>()); // Initializes an empty HashSet of attachments
 		this.setNotes(new HashSet<Note>());             // Initializes an empty HashSet of notes
 		this.setTasks(new HashSet<Task>());	         // Initializes an empty HashSet of tasks
+		*/
 		this.setEvents(new ArrayList<RequirementEvent>());
 		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
 	}	
@@ -57,9 +60,11 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(0);							// Initial actual effort set to zero
 		this.setEstimate(0);								// Initial effort set to zero
 		this.setStatus(NEW);								// Initial status set to NEW
+		/*
 		this.setAttachments(new HashSet<Attachment>());		// Initializes an empty HashSet of attachments
 		this.setNotes(new HashSet<Note>());					// Initializes an empty HashSet of notes
-		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of tasks
+		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of task
+		*/
 		this.setEvents(new ArrayList<RequirementEvent>());	// Initializes an empty List of events
 	}
 	
@@ -319,49 +324,51 @@ public class Requirement extends AbstractModel {
 	public void setPriority(RequirementPriority priority) {
 		this.priority = priority;
 	}
-
-	/**
-	 * @return the attachments
-	 */
-	public HashSet<Attachment> getAttachments() {
-		return attachments;
-	}
-
-	/**
-	 * @param attachments the attachments to set
-	 */
-	public void setAttachments(HashSet<Attachment> attachments) {
-		this.attachments = attachments;
-	}
-
-	/**
-	 * @return the notes
-	 */
-	public HashSet<Note> getNotes() {
-		return notes;
-	}
-
-	/**
-	 * @param notes the notes to set
-	 */
-	public void setNotes(HashSet<Note> notes) {
-		this.notes = notes;
-	}
-
-	/**
-	 * @return the tasks
-	 */
-	public HashSet<Task> getTasks() {
-		return tasks;
-	}
-
-	/**
-	 * @param tasks the tasks to set
-	 */
-	public void setTasks(HashSet<Task> tasks) {
-		this.tasks = tasks;
-	}
-
+	
+	
+//	/**
+//	 * @return the attachments
+//	 */
+//	public HashSet<Attachment> getAttachments() {
+//		return attachments;
+//	}
+//
+//	/**
+//	 * @param attachments the attachments to set
+//	 */
+//	public void setAttachments(HashSet<Attachment> attachments) {
+//		this.attachments = attachments;
+//	}
+//
+//	/**
+//	 * @return the notes
+//	 */
+//	public HashSet<Note> getNotes() {
+//		return notes;
+//	}
+//
+//	/**
+//	 * @param notes the notes to set
+//	 */
+//	public void setNotes(HashSet<Note> notes) {
+//		this.notes = notes;
+//	}
+//
+//	/**
+//	 * @return the tasks
+//	 */
+//	public HashSet<Task> getTasks() {
+//		return tasks;
+//	}
+//
+//	/**
+//	 * @param tasks the tasks to set
+//	 */
+//	public void setTasks(HashSet<Task> tasks) {
+//		this.tasks = tasks;
+//	}
+	
+	
 	/**
 	 * @return the events
 	 */
