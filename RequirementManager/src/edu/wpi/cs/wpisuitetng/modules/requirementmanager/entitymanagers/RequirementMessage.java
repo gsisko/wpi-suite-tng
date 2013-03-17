@@ -62,7 +62,7 @@ public class RequirementMessage extends AbstractModel{
 
 
 
-	public static Requirement fromJson(String content) {
+	public static RequirementMessage fromJson(String content) {
 		// TODO Auto-generated method stub
 		return null;
 	}
