@@ -46,7 +46,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 			throws BadRequestException, ConflictException, WPISuiteException {
 
 		// Parse the message from JSON
-		final Requirement newRequirement = Requirement.fromJson(content);
+		final Requirement newRequirement = Requirement.fromJSON(content);
 
 		// Saves the message in the database if possible
 		this.save(s,newRequirement); 

@@ -1,14 +1,19 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.old.Epic;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Requirement extends AbstractModel {
 
+	private int id;
 	private int releaseNumber;
 	private RequirementStatus status;
 	private RequirementPriority priority;
@@ -16,18 +21,18 @@ public class Requirement extends AbstractModel {
 	private String description;
 	private int estimate;
 	private int actualEffort;
-// The id is not explicitly required.. but here is what it would be	
-	private int id; // We need to discuss how to implement this.. possibly migrate to requirement... probably controlled on server end	
-	
-	private HashSet<Attachment> attachments;
-	private HashSet<Note> notes;
-	private HashSet<Task> tasks;
 
-// Bare minimum constructor of required fields - Made for very basic functionality for iteration 1
+	private HashSet<Note> notes;
+	private HashSet<Attachment> attachments;
+	private HashSet<Task> tasks;
+	private List<RequirementEvent> events;
+
+	// Bare minimum constructor of required fields - Made for very basic functionality for iteration 1
 	public Requirement(String name, String description) {
 		this.setName(name);
-		this.setDescription(description);		  
-	// The rest are default values
+		this.setDescription(description);	
+		
+		// The rest are default values
 		this.setActualEffort(0);    //Initial actual effort set to zero
 		this.setEstimate(0);		//Initial effort set to zero
 		this.setReleaseNumber(-1); // Initialized to zero if not specified
@@ -36,12 +41,31 @@ public class Requirement extends AbstractModel {
 		this.setAttachments(new HashSet<Attachment>()); // Initializes an empty HashSet of attachments
 		this.setNotes(new HashSet<Note>());             // Initializes an empty HashSet of notes
 		this.setTasks(new HashSet<Task>());	         // Initializes an empty HashSet of tasks
+		this.setEvents(new ArrayList<RequirementEvent>());
 		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
 	}	
 	
+	// Probable constructor to be called from the user interface
+	public Requirement(int releaseNumber, String name, String description, RequirementPriority priority) {
+		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		this.setReleaseNumber(releaseNumber);
+		this.setPriority(priority);
+		this.setName(name);
+		this.setDescription(description);
+		
+		// The rest are default values
+		this.setActualEffort(0);							// Initial actual effort set to zero
+		this.setEstimate(0);								// Initial effort set to zero
+		this.setStatus(NEW);								// Initial status set to NEW
+		this.setAttachments(new HashSet<Attachment>());		// Initializes an empty HashSet of attachments
+		this.setNotes(new HashSet<Note>());					// Initializes an empty HashSet of notes
+		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of tasks
+		this.setEvents(new ArrayList<RequirementEvent>());	// Initializes an empty List of events
+	}
 	
-// TODO: more constructors that allow for more fields to be filled in	
-/*
+	
+	// TODO: more constructors that allow for more fields to be filled in	
+	/*
 	public Requirement(String name, String description, RequirementPriority priority) {
 		this.setReleaseNumber(-1);  // Optional number  !!! requires attention later 
 		this.setStatus(NEW);       // Status is always defaulted to NEW
@@ -69,48 +93,11 @@ public class Requirement extends AbstractModel {
 		this.setTasks(new HashSet<Task>());	         // Initializes an empty HashSet of tasks
 		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
 	}
-*/	
+	*/	
 
-	
 
+	// The following functions come from the Model interface
 	
-// These were put into the epic class, Rob is not sure what they do.. but here they are
-	/**
-	 * Converts this Epic to a JSON string
-	 * @return a string in JSON representing this Epic
-	 */
-	public String toJSON1() {
-		String json;
-		Gson gson = new Gson();
-		json = gson.toJson(this, Epic.class);
-		return json;
-	}
-
-	public Boolean identify1(Object o) {
-		Boolean returnValue = false;
-		if(o instanceof Epic && id == ((Epic) o).getId()) {
-			returnValue = true;
-		}
-		if(o instanceof String && Integer.toString(id).equals(o)) {
-			returnValue = true;
-		}
-		return returnValue;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}	
-	
-	
-	
-	
-	
-
-// The following Functions come from the Model interface
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
@@ -122,22 +109,121 @@ public class Requirement extends AbstractModel {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public String toJSON() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-// The following are getters and setters
+	
 	/**
-	 * @return the actual
+	 * Converts this Epic to a JSON string
+	 * @return a string in JSON representing this Epic
+	 */
+	public String toJSON() {
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(this, Attachment.class);
+		return json;
+	}
+
+	public Boolean identify(Object o) {
+		Boolean returnValue = false;
+		if(o instanceof Attachment && id == ((Attachment) o).getId()) {
+			returnValue = true;
+		}
+		if(o instanceof String && Integer.toString(id).equals(o)) {
+			returnValue = true;
+		}
+		return returnValue;
+	}
+	
+	// End of Model interface functions
+	
+	
+	/**
+	 * Converts the given list of Requirements to a JSON string
+	 * @param rlist a list of Requirements
+	 * @return a string in JSON representing the list of Requirements
+	 */
+	public static String toJSON(Requirement[] rlist) {
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(rlist, Requirement.class);
+		return json;
+	}
+	
+	@Override
+	public String toString() {
+		return toJSON();
+	}
+	
+	/**
+	 * @param json Json string to parse containing Defect
+	 * @return The Defect given by json
+	 */
+	public static Requirement fromJSON(String json) {
+		GsonBuilder builder = new GsonBuilder();
+		addGsonDependencies(builder);
+		return builder.create().fromJson(json, Requirement.class);
+	}
+	
+	/**
+	 * @param json Json string to parse containing Requirement array
+	 * @return The Requirement array given by json
+	 */
+	public static Requirement[] fromJSONArray(String json) {
+		GsonBuilder builder = new GsonBuilder();
+		addGsonDependencies(builder);
+		return builder.create().fromJson(json, Requirement[].class);
+	}
+	
+	/**
+	 * Add dependencies necessary for Gson to interact with this class
+	 * @param builder Builder to modify
+	 */
+	public static void addGsonDependencies(GsonBuilder builder) {
+		RequirementEvent.addGsonDependencies(builder);
+	}
+	
+	@Override
+	public void setProject(Project project) {
+		super.setProject(project);
+		// we need to make sure nested models get the correct project
+		if(!notes.isEmpty()) {
+			for(Note n : notes) {
+				n.setProject(project);
+			}
+		}
+		if(!tasks.isEmpty()) {
+			for(Task t : tasks) {
+				t.setProject(project);
+			}
+		}
+		if(!attachments.isEmpty()) {
+			for(Attachment a : attachments) {
+				a.setProject(project);
+			}
+		}
+		if(events != null) {
+			for(RequirementEvent e : events) {
+				e.setProject(project);
+			}
+		}
+	}
+
+	// The following are getters and setters
+	
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}	
+	
+	/**
+	 * @return the actualEffort
 	 */
 	public int getActualEffort() {
 		return actualEffort;
@@ -146,8 +232,8 @@ public class Requirement extends AbstractModel {
 	/**
 	 * @param actual the actual to set
 	 */
-	public void setActualEffort(int actual) {
-		this.actualEffort = actual;
+	public void setActualEffort(int actualEffort) {
+		this.actualEffort = actualEffort;
 	}
 
 	/**
@@ -274,6 +360,20 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setTasks(HashSet<Task> tasks) {
 		this.tasks = tasks;
+	}
+
+	/**
+	 * @return the events
+	 */
+	public List<RequirementEvent> getEvents() {
+		return events;
+	}
+
+	/**
+	 * @param events the events to set
+	 */
+	public void setEvents(List<RequirementEvent> events) {
+		this.events = events;
 	}
 
 }
