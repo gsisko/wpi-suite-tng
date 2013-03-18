@@ -150,18 +150,18 @@ public class RequirementPanel extends JPanel {
 	}
 	
 	/**
-	 * This returns the JTextArea "txtDescription"
+	 * This returns the contents of the JTextArea "txtDescription"
 	 * @return the txtDescription JTextArea
 	 */
-	public JTextArea getRequirementDescription() {
+	public JTextArea getTxtNewMessage() {
 		return txtDescription;
 	}
 	
 	/**
-	 * This returns the JTextField "txtName"
+	 * This returns the contents of the JTextField "txtName"
 	 * @return the txtName JTextField
 	 */
-	public JTextField getRequirementName() {
+	public JTextField getNameTxtNewMessage() {
 		return txtName;
 	}
 }

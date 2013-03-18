@@ -14,6 +14,9 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 
+//new
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.MainView;
+//end new
 
 /**
  * A dummy module to demonstrate the Janeway client
@@ -29,6 +32,9 @@ public class JanewayModule implements IJanewayModule {
 	 */
 	public JanewayModule() {
 		
+		//new
+		
+		/**
 		// Setup button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
@@ -41,9 +47,20 @@ public class JanewayModule implements IJanewayModule {
 		mainPanel.add(new JLabel("Requirement Manager"), BorderLayout.PAGE_START);
 		mainPanel.add(new JTextField(), BorderLayout.CENTER);
 		mainPanel.add(new JTextField(), BorderLayout.CENTER);
+		*/
+		
+		//end new (commented out)
 		
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), buttonPanel, mainPanel);
+		
+		// Constructs and adds the MainPanel (new)
+		MainView mainView = new MainView();
+		
+		//old
+		//JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), buttonPanel, mainPanel);
+		
+		
+		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), mainView, mainView);//new
 		tabs.add(tab);
 	}
 
