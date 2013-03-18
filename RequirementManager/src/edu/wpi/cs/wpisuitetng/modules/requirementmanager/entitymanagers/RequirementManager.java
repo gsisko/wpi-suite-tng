@@ -64,7 +64,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// Ask the database to retrieve all objects of the type Requirement.
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
 		// Passing the project makes it only get requirements from that project
-		List<Model> requirements = db.retrieveAll(new Requirement("",""), s.getProject());
+		List<Model> requirements = db.retrieveAll(new Requirement(), s.getProject());
 
 		// Return the list of requirements as an array
 		return requirements.toArray(new Requirement[0]);
@@ -105,7 +105,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 */
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
-		return db.retrieveAll(new Requirement("","")).size();
+		return db.retrieveAll(new Requirement()).size();
 	}
 
 // TODO    THIS NEEDS TESTING!!!!	
@@ -120,7 +120,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// Ask the database to retrieve all objects of the type Requirement.
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
 		// Passing the project makes it only get requirements from that project
-		List<Model> requirements = db.retrieveAll(new Requirement("",""), s.getProject());
+		List<Model> requirements = db.retrieveAll(new Requirement(), s.getProject());
 		
 		// Iterate through the list to find the Requirement with the correct ID
 		// Casting is used because the retrieveAll function returns a list of "Models"

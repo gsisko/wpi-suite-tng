@@ -32,6 +32,11 @@ public class Requirement extends AbstractModel {
 	
 	private List<RequirementEvent> events;  // A log of updates, changes etc to this Requirement
 		
+	public Requirement(){
+		new Requirement("","",-1,0,NEW,none,0,0);
+	}
+	
+	
 	// Probable constructor to be called from the user interface
 	public Requirement(String name, String description, int id, int releaseNumber, RequirementStatus status, RequirementPriority priority, int estimate, int actualEffort) {
 		this.setName(name);
