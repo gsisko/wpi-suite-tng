@@ -145,8 +145,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 	
 	
-	// TODO    figure out how we might update a Requirement..
-	// Hint: The "content" argument will hold a unique ID for the requirement to change
+// TODO    THIS NEEDS TESTING!!!!	
 	/**  Updates a Requirement already in the database
 	 *   
 	 *  @param s The current user session
@@ -154,7 +153,12 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * 	@return the changed requirement 
 	 */
 	public Requirement update(Session s, String content) throws WPISuiteException {
-		// TODO Auto-generated method stub
+		final Requirement reqUpdate = Requirement.fromJSON(content);
+		Requirement oldReq = getEntity(s, Integer.toString(  reqUpdate.getId()  )  )[0];
+		
+		oldReq.updateReq(reqUpdate);
+		save(s,oldReq);
+				
 		return null;
 	}
 	

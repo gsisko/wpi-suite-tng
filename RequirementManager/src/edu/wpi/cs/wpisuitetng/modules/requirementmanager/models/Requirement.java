@@ -383,4 +383,25 @@ public class Requirement extends AbstractModel {
 		this.events = events;
 	}
 
+	/** Changes all fields in the current Requirement to equal the fields of the reqUpdate
+	 * 
+	 * @param reqUpdate Requirement holding the updates
+	 */
+	public void updateReq(Requirement reqUpdate) {
+		setId(reqUpdate.getId());
+		setReleaseNumber(reqUpdate.getReleaseNumber());
+		setStatus(reqUpdate.getStatus());
+		setPriority(reqUpdate.getPriority());
+		setName(reqUpdate.getName());
+		setDescription(reqUpdate.getDescription());
+		setEstimate(reqUpdate.getEstimate());
+		setActualEffort(reqUpdate.getActualEffort());
+		setEvents(reqUpdate.getEvents());
+		/*
+		setNotes(reqUpdate.getNotes());
+		setAttachments(reqUpdate.getAttachments());
+		setTasks(reqUpdate.getTasks());
+		*/
+	}
+
 }
