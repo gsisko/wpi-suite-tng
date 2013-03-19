@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.future;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;

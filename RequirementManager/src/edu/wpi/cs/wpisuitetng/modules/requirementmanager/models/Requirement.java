@@ -13,91 +13,57 @@ import com.google.gson.GsonBuilder;
 
 public class Requirement extends AbstractModel {
 
-	private int id;
-	private int releaseNumber;
-	private RequirementStatus status;
-	private RequirementPriority priority;
-	private String name;
-	private String description;
-	private int estimate;
-	private int actualEffort;
-
+	private String name;          // The name of the Requirement (100 chars)
+	private String description;   // A description of the Requirement
+	
+	private int id;               // Unique ID of the record- assigned by entity manager
+	private int releaseNumber;    // Must be a release number of the current project ***
+	
+	private RequirementStatus status;      // The status in the work flow- Default to NEW 
+	private RequirementPriority priority;  // The priority set to the Requirement
+	private int estimate;                  // An estimate of what this Requirement will take
+	private int actualEffort;              // The actual effort it took for this Requirement
+	
+	/*
 	private HashSet<Note> notes;
 	private HashSet<Attachment> attachments;
 	private HashSet<Task> tasks;
-	private List<RequirementEvent> events;
-
-	// Bare minimum constructor of required fields - Made for very basic functionality for iteration 1
-	public Requirement(String name, String description) {
-		this.setName(name);
-		this.setDescription(description);	
+	*/
+	
+	private List<RequirementEvent> events;  // A log of updates, changes etc to this Requirement
 		
-		// The rest are default values
-		this.setActualEffort(0);    //Initial actual effort set to zero
-		this.setEstimate(0);		//Initial effort set to zero
-		this.setReleaseNumber(-1); // Initialized to zero if not specified
-		this.setStatus(NEW);       // Status is always defaulted to NEW
-		this.setPriority(LOW);     // Default status is LOW, priority should be overridden 
-		this.setAttachments(new HashSet<Attachment>()); // Initializes an empty HashSet of attachments
-		this.setNotes(new HashSet<Note>());             // Initializes an empty HashSet of notes
-		this.setTasks(new HashSet<Task>());	         // Initializes an empty HashSet of tasks
-		this.setEvents(new ArrayList<RequirementEvent>());
-		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
-	}	
+	public Requirement(){
+		new Requirement("","",-1,0,NEW,none,0,0);
+	}
+	
 	
 	// Probable constructor to be called from the user interface
-	public Requirement(int releaseNumber, String name, String description, RequirementPriority priority) {
-		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
-		this.setReleaseNumber(releaseNumber);
-		this.setPriority(priority);
+	public Requirement(String name, String description, int id, int releaseNumber, RequirementStatus status, RequirementPriority priority, int estimate, int actualEffort) {
 		this.setName(name);
-		this.setDescription(description);
+		this.setDescription(description); 
+		this.setReleaseNumber(releaseNumber); // release number of current project
+		this.setPriority(priority); // Default priority is LOW
+		this.setStatus(status);		// Initial status should be set to NEW
 		
 		// The rest are default values
-		this.setActualEffort(0);							// Initial actual effort set to zero
-		this.setEstimate(0);								// Initial effort set to zero
-		this.setStatus(NEW);								// Initial status set to NEW
+		this.setActualEffort(actualEffort);			// Initial actual effort set to zero
+		this.setEstimate(estimate);					// Initial effort set to zero								
+		
+		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		/*
 		this.setAttachments(new HashSet<Attachment>());		// Initializes an empty HashSet of attachments
 		this.setNotes(new HashSet<Note>());					// Initializes an empty HashSet of notes
-		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of tasks
+		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of task
+		*/
 		this.setEvents(new ArrayList<RequirementEvent>());	// Initializes an empty List of events
 	}
 	
 	
-	// TODO: more constructors that allow for more fields to be filled in	
-	/*
-	public Requirement(String name, String description, RequirementPriority priority) {
-		this.setReleaseNumber(-1);  // Optional number  !!! requires attention later 
-		this.setStatus(NEW);       // Status is always defaulted to NEW
-		this.setPriority(priority);     // Default status is LOW, priority should be overridden 
-		this.setName(name);
-		this.setDescription(description);
-		
-		this.setAttachments(new HashSet<Attachment>()); // Initializes an empty HashSet of attachments
-		this.setNotes(new HashSet<Note>());             // Initializes an empty HashSet of notes
-		this.setTasks(new HashSet<Task>());	         // Initializes an empty HashSet of tasks
-		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
-	}
 	
-	public Requirement(String name, String description, RequirementPriority priority, int releaseNumber) {
-		this.setReleaseNumber(releaseNumber);  // Optional number  !!! requires attention later 
-		this.setStatus(NEW);       // Status is always defaulted to NEW
-		this.setPriority(priority);     // Default status is LOW, priority should be overridden 
-		this.setName(name);
-		this.setDescription(description);
-		this.setActualEffort(releaseNumber);
-		
-		
-		this.setAttachments(new HashSet<Attachment>()); // Initializes an empty HashSet of attachments
-		this.setNotes(new HashSet<Note>());             // Initializes an empty HashSet of notes
-		this.setTasks(new HashSet<Task>());	         // Initializes an empty HashSet of tasks
-		this.id = -1; // (-1) will be a flag to the server/database that this value needs to be set
-	}
-	*/	
 
 
+	
 	// The following functions come from the Model interface
-	
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
@@ -117,15 +83,15 @@ public class Requirement extends AbstractModel {
 	public String toJSON() {
 		String json;
 		Gson gson = new Gson();
-		json = gson.toJson(this, Attachment.class);
+		json = gson.toJson(this, Requirement.class);
 		return json;
 	}
 
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
-		if(o instanceof Attachment && id == ((Attachment) o).getId()) {
+		if(o instanceof Requirement && id == ((Requirement) o).getId()) {
 			returnValue = true;
-		}
+		}	
 		if(o instanceof String && Integer.toString(id).equals(o)) {
 			returnValue = true;
 		}
@@ -184,7 +150,7 @@ public class Requirement extends AbstractModel {
 	public void setProject(Project project) {
 		super.setProject(project);
 		// we need to make sure nested models get the correct project
-		if(!notes.isEmpty()) {
+/*		if(!notes.isEmpty()) {
 			for(Note n : notes) {
 				n.setProject(project);
 			}
@@ -197,8 +163,9 @@ public class Requirement extends AbstractModel {
 		if(!attachments.isEmpty()) {
 			for(Attachment a : attachments) {
 				a.setProject(project);
-			}
+			}			
 		}
+*/		
 		if(events != null) {
 			for(RequirementEvent e : events) {
 				e.setProject(project);
@@ -319,49 +286,51 @@ public class Requirement extends AbstractModel {
 	public void setPriority(RequirementPriority priority) {
 		this.priority = priority;
 	}
-
-	/**
-	 * @return the attachments
-	 */
-	public HashSet<Attachment> getAttachments() {
-		return attachments;
-	}
-
-	/**
-	 * @param attachments the attachments to set
-	 */
-	public void setAttachments(HashSet<Attachment> attachments) {
-		this.attachments = attachments;
-	}
-
-	/**
-	 * @return the notes
-	 */
-	public HashSet<Note> getNotes() {
-		return notes;
-	}
-
-	/**
-	 * @param notes the notes to set
-	 */
-	public void setNotes(HashSet<Note> notes) {
-		this.notes = notes;
-	}
-
-	/**
-	 * @return the tasks
-	 */
-	public HashSet<Task> getTasks() {
-		return tasks;
-	}
-
-	/**
-	 * @param tasks the tasks to set
-	 */
-	public void setTasks(HashSet<Task> tasks) {
-		this.tasks = tasks;
-	}
-
+	
+	
+//	/**
+//	 * @return the attachments
+//	 */
+//	public HashSet<Attachment> getAttachments() {
+//		return attachments;
+//	}
+//
+//	/**
+//	 * @param attachments the attachments to set
+//	 */
+//	public void setAttachments(HashSet<Attachment> attachments) {
+//		this.attachments = attachments;
+//	}
+//
+//	/**
+//	 * @return the notes
+//	 */
+//	public HashSet<Note> getNotes() {
+//		return notes;
+//	}
+//
+//	/**
+//	 * @param notes the notes to set
+//	 */
+//	public void setNotes(HashSet<Note> notes) {
+//		this.notes = notes;
+//	}
+//
+//	/**
+//	 * @return the tasks
+//	 */
+//	public HashSet<Task> getTasks() {
+//		return tasks;
+//	}
+//
+//	/**
+//	 * @param tasks the tasks to set
+//	 */
+//	public void setTasks(HashSet<Task> tasks) {
+//		this.tasks = tasks;
+//	}
+	
+	
 	/**
 	 * @return the events
 	 */
@@ -374,6 +343,27 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setEvents(List<RequirementEvent> events) {
 		this.events = events;
+	}
+
+	/** Changes all fields in the current Requirement to equal the fields of the reqUpdate
+	 * 
+	 * @param reqUpdate Requirement holding the updates
+	 */
+	public void updateReq(Requirement reqUpdate) {
+		setId(reqUpdate.getId());
+		setReleaseNumber(reqUpdate.getReleaseNumber());
+		setStatus(reqUpdate.getStatus());
+		setPriority(reqUpdate.getPriority());
+		setName(reqUpdate.getName());
+		setDescription(reqUpdate.getDescription());
+		setEstimate(reqUpdate.getEstimate());
+		setActualEffort(reqUpdate.getActualEffort());
+		setEvents(reqUpdate.getEvents());
+		/*
+		setNotes(reqUpdate.getNotes());
+		setAttachments(reqUpdate.getAttachments());
+		setTasks(reqUpdate.getTasks());
+		*/
 	}
 
 }

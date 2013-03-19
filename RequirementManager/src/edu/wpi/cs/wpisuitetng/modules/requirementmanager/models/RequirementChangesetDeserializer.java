@@ -79,6 +79,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				RequirementStatus newStatus = context.deserialize(statusObj.get("newValue"), RequirementStatus.class);
 				changesMap.put("status", new FieldChange<RequirementStatus>(oldStatus, newStatus));
 			}
+			/*
 			if (changes.has("attachments")) {
 				JsonObject attachmentsObj = changes.get("attachments").getAsJsonObject();
 				Attachment[] oldAttachments = context.deserialize(attachmentsObj.get("oldValue"), Attachment[].class);
@@ -97,6 +98,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				Task[] newTasks = context.deserialize(tasksObj.get("newValue"), Task[].class);
 				changesMap.put("tasks", new FieldChange<Set<Task>>(new HashSet<Task>(new ArrayList<Task>(Arrays.asList(oldTasks))), new HashSet<Task>(new ArrayList<Task>(Arrays.asList(newTasks)))));
 			}
+			*/
 			if (changes.has("events")) {
 				JsonObject eventsObj = changes.get("events").getAsJsonObject();
 				RequirementEvent[] oldRequirementEvents = context.deserialize(eventsObj.get("oldValue"), RequirementEvent[].class);

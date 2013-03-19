@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.future;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -7,43 +7,43 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Task;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 
-public class TaskManager implements EntityManager<Task> {
+public class NoteManager implements EntityManager<Note> {
 
 	Data db;
 
-	public TaskManager(Data data) {
+	public NoteManager(Data data) {
 		db = data;
 	}
 
 	@Override
-	public Task makeEntity(Session s, String content)
+	public Note makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Task[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
+	public Note[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Task[] getAll(Session s) throws WPISuiteException {
+	public Note[] getAll(Session s) throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Task update(Session s, String content) throws WPISuiteException {
+	public Note update(Session s, String content) throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void save(Session s, Task model) throws WPISuiteException {
+	public void save(Session s, Note model) throws WPISuiteException {
 		// TODO Auto-generated method stub
 
 	}
