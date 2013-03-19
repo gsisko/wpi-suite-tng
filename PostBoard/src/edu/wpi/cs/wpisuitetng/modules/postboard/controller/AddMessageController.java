@@ -74,5 +74,5 @@ public class AddMessageController implements ActionListener {
 	 */
 	public void addMessageToModel(PostBoardMessage message) {
 		model.addMessage(message);
-	}
+	}      
 }
