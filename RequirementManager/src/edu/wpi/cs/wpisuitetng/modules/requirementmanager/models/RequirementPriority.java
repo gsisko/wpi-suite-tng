@@ -20,7 +20,7 @@ public enum RequirementPriority {
 	 * @param toConvert The string you want to convert	
 	 * @return  The proper RequirementPriority 
 	 */
-    public RequirementPriority toPriority(String toConvert){     
+    public static RequirementPriority toPriority(String toConvert){     
        return valueOf(toConvert);
  
     }
