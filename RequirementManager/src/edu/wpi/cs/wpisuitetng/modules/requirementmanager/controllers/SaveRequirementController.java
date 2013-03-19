@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.SaveRequirementObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.MainView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -26,6 +26,12 @@ public class SaveRequirementController implements ActionListener
     {
 	String name = view.getRequirementName().getText();
 	String description = view.getRequirementDescription().getText();
+	int releaseNumber = view.getRequirementReleaseNumber().getText().toInt();
+	RequirementStatus status = RequirementStatus.toStatus(view.getRequirementStatus().getText());
+	RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getText());
+	int estimate = view.getRequirementEstimate().getText().toInt();
+	int actualEffort = view.getRequirementActualEffort().getText().toInt();
+	
 	int id = count;
 	
 	if((name.length() > 0 && name.length() <= 100) && (description.length() > 0))
