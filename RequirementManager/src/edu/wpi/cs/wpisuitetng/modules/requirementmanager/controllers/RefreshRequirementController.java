@@ -39,7 +39,7 @@ public class RefreshRequirementController implements ActionListener {
 	 */
 	
 	/*
-	 * view... actaully set the values in the view here.
+	 * view... actually set the values in the view here.
 	 */
     }
 
