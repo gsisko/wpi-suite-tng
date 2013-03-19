@@ -5,35 +5,94 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * JUnit 4 tests for Requirement.java in edu.wpi.cs.wpisuitetng.modules.requirementmanager.models
  * @author Robert Smieja
  *
  */
-public class RequirementCreationTest {
+public class RequirementTest {
+
+	//Misc variables to be used in testing
+	private static int numOfTestObjects = 2;
+	
+	//Create an array of Requirement objects that we will use and abuse
+	private static Requirement[] tester;
+	
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		//This runs before the testing methods are called
+		tester = new Requirement[numOfTestObjects];
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		//This runs before the testing methods are called
+		
+		//Garbage collection we don't need to free...
+	}
 
 	/**
 	 * Test method for {@link edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement#setProject(edu.wpi.cs.wpisuitetng.modules.core.models.Project)}.
 	 */
 	@Test
 	public final void testSetProject() {
+		
+		for (int objectCount = 0; objectCount < numOfTestObjects; objectCount++){
+			tester[objectCount].setProject(null);
+		}
+		
 		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement#Requirement(java.lang.String, java.lang.String)}.
+	 * Test method for {@link edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement#Requirement(java.lang.String, java.lang.String, int, int, edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus, edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority, int, int)}.
 	 */
 	@Test
-	public final void testRequirementStringString() {
-		fail("Not yet implemented"); // TODO
-	}
+	public final void testRequirement() {
+		Requirement test;
+		
+		//Test normal input
+		test = new Requirement("Test", "JUnit test requirement", 0, 0, null, null, 0, 0);
+		test = null;
+		
+		//Test garbage and illegal input
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
+		//Test at max, below and above
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
+		//Test at min, below and above
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
+		test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		test = null;
+		
 
-	/**
-	 * Test method for {@link edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement#Requirement(int, java.lang.String, java.lang.String, edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority)}.
-	 */
-	@Test
-	public final void testRequirementIntStringStringRequirementPriority() {
+		
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -42,6 +101,10 @@ public class RequirementCreationTest {
 	 */
 	@Test
 	public final void testSave() {
+//		Requirement tester = new Requirement("Test", "Test requirement for JUnit", 0, 0, null, null, 0, 0);
+		Requirement tester = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		tester.save();
+		
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -170,6 +233,15 @@ public class RequirementCreationTest {
 	 */
 	@Test
 	public final void testSetDescription() {
+		Requirement test = new Requirement(null, null, 0, 0, null, null, 0, 0);
+		
+		//Test normal input
+		test.setDescription("Test");
+		
+		//Assert will make sure the results match, else it will fail the test
+		assertEquals("Description", "Test", test.getDescription());
+		
+		
 		fail("Not yet implemented"); // TODO
 	}
 
