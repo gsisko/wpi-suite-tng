@@ -344,7 +344,7 @@ public class Requirement extends AbstractModel {
 //	 * @return the attachments
 //	 * @return List<RequirementEvent>
 //   * @return List<RequirementEvent>
-	 */
+//	 */
 //	public HashSet<Attachment> getAttachments() {
 //		return attachments;
 //	}

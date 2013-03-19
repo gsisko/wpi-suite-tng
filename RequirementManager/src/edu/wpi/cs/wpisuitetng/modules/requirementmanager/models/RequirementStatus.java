@@ -16,7 +16,7 @@ public enum RequirementStatus {
 
 	/** Converts a string to the proper RequirementStatus 
 	 * 
-	 * !NOTE: This method is designed to only take strings retrieved from a UI.dropdownlist that containts
+	 * !NOTE: This method is designed to only take strings retrieved from a UI.dropdownlist that contains
 	 * only the enums listed as RequirementStatus's
 	 * 
 	 * @param toConvert The string you want to convert

@@ -62,21 +62,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 		return newRequirement;
 	}
 		
-	/** Takes a session and returns an array of all the Requirements contained
-	 * 
-	 * @param s The current user session
-	 * @return An array of all requirements in the Database	 
-	 */
-	public Requirement[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type Requirement.
-		// Passing a dummy Requirement lets the db know what type of object to retrieve
-		// Passing the project makes it only get requirements from that project
-		List<Model> requirements = this.db.retrieveAll(new Requirement(), s.getProject());
-
-		// Return the list of requirements as an array
-		return requirements.toArray(new Requirement[0]);
-	}
-	
 	
 	/** Saves the given Requirement into the database if possible.
 	 * 
@@ -119,6 +104,19 @@ public class RequirementManager implements EntityManager<Requirement> {
 		return this.db.retrieveAll(new Requirement()).size();
 	}
 
+	/** Takes a session and returns an array of all the Requirements contained
+	 * 
+	 * @param s The current user session
+	 * @return An array of all requirements in the Database	 
+	 */
+	public Requirement[] getAll(Session s) throws WPISuiteException {
+		// Ask the database to retrieve all objects of the type Requirement.
+		// Passing a dummy Requirement lets the db know what type of object to retrieve
+		// Passing the project makes it only get requirements from that project
+		// Return the list of requirements as an array
+		return this.db.retrieveAll(new Requirement(), s.getProject()).toArray(new Requirement[0]);
+	}	
+	
 // TODO    THIS NEEDS TESTING!!!!	
 	/**  For the current user session, Takes a specific id for a Requirement and returns it 
 	 *   in an array.	
@@ -132,30 +130,23 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
-		// Ask the database to retrieve all objects of the type Requirement.
-		// Passing a dummy Requirement lets the db know what type of object to retrieve
-		// Passing the project makes it only get requirements from that project
-		List<Model> requirements = this.db.retrieveAll(new Requirement(), s.getProject());
+		if(Integer.parseInt(id) < 1) {  // This would be an invalid id
+			throw new NotFoundException();
+		}
+		Requirement[] requirements = null;
+		requirements = db.retrieve(Requirement.class, "id", id, s.getProject()).toArray(new Requirement[0]);
+
+		if(requirements.length < 1 || requirements[0] == null) { // Makes sure we actually got something
+			throw new NotFoundException(); 
+		}		
 		
-		// Iterate through the list to find the Requirement with the correct ID
-		// Casting is used because the retrieveAll function returns a list of "Models"
-		// even though we know it is returning a list of Requirements here
-	    for ( Model r : requirements ) {
-	    	if ((   (Requirement) r).getId() == Integer.parseInt( id) ){
-	    		// Since the requirement has to be returned as an element in an array,
-	    		// we make an array of size one and add the Requirement to the array.
-	    		Requirement[] desiredReq = new Requirement[1];
-	    		desiredReq[0] = (Requirement) r; 
-	    		return desiredReq; 
-	    	}
-	    }		
 		// Throw an exception if an ID was specified but not found
 		throw new NotFoundException();
 	}
 
 	
 
-// Unimplemented Manager methods	
+
 	
 	
 // TODO    THIS NEEDS TESTING!!!!	
@@ -181,7 +172,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 	
 	
 	
-// Unimplemented Manager methods	
 	
 	
 	/** Deletes a Requirement from the database (not advised)
@@ -208,7 +198,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	    		this.save( s ,(Requirement) r);
 	    		return true; // end now
 	    	}
-	    }		
+	    }	    
 		return false;
 	}
 	
@@ -228,7 +218,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// Iterate through the list to find the Requirement with the correct ID
 		// Casting is used because the retrieveAll function returns a list of "Models"
 		// even though we know it is returning a list of Requirements here
-	    for ( Model r : requirements ) {
+	   for ( Model r : requirements ) {
 	    	((Requirement) r).setStatus(DELETED); // Set the status to deleted
 	    	this.save( s ,(Requirement) r);
 	    }		
@@ -237,6 +227,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	
 
 	
+// Unimplemented Manager methods	
 // Advanced Manager methods
 	/** 
 	 * 
