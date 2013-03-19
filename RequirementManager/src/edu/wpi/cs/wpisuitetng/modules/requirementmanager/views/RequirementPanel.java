@@ -93,6 +93,7 @@ public class RequirementPanel extends JPanel {
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
 	 */
+	@SuppressWarnings("unchecked")
 	public RequirementPanel() {
 		
 		JPanel leftPanel = new JPanel();
@@ -110,12 +111,14 @@ public class RequirementPanel extends JPanel {
 		actualEffortLabel = new JLabel("Actual Effort:");
 		
 		//Construct the misc components
-		txtName = new JTextField("Enter a name here.");
-		txtDescription = new JTextArea("Enter a description here.", 6, 6);
+		txtName = new JTextField(/*"Enter a name here."*/"");
+		txtDescription = new JTextArea(/*"Enter a description here."*/"", 2, 2);
 		btnSave = new JButton("Save");
-		txtReleaseNum = new JTextField("Enter a release number here.");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
-		txtEstimate = new JTextField("Enter an estimate here.");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
-		txtActualEffort = new JTextField("Enter an actual effort here.");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtReleaseNum = new JTextField(/*"Enter a release number here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtEstimate = new JTextField(/*"Enter an estimate here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtActualEffort = new JTextField(/*"Enter an actual effort here."*/"0");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		
+		txtActualEffort.setEnabled(false);
 		
 		//Create the strings for the boxes
 		String[] statusStrings = { "NEW", "IN_PROGRESS", "OPEN", "COMPLETE", "DELETED" };
@@ -127,9 +130,10 @@ public class RequirementPanel extends JPanel {
 		
 		//Set the initial selections for the boxes
 		statusBox.setSelectedIndex(0);
+		statusBox.setEnabled(false);
 		priorityBox.setSelectedIndex(0);
 		
-		
+		/*
 		//Construct an action listener and add it to the status box		
 		statusBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
@@ -152,6 +156,7 @@ public class RequirementPanel extends JPanel {
             }
         });
 		
+		
 		// Construct an action listener and add it to the save button
 		btnSave.addActionListener(new ActionListener() {
  
@@ -160,7 +165,8 @@ public class RequirementPanel extends JPanel {
                 //Execute when button is pressed
                 System.out.println("You clicked the save button");//TODO: replace this with a real action
             }
-        });      
+        });
+        */    
 		
 		// Set the layout manager that controls the positions of the components
 		leftPanel.setLayout(new GridBagLayout()); //set the layout
@@ -168,8 +174,9 @@ public class RequirementPanel extends JPanel {
 		
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
-		scrollPane.setPreferredSize(new Dimension(500,400)); //Set the initial size of the txtDescription scroll pane
+		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll pane
 
+		/*
 		// Clear the contents of the name text field when the user clicks on it
 		txtName.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -204,6 +211,7 @@ public class RequirementPanel extends JPanel {
 				txtActualEffort.setText("");
 				}
 		});
+		*/
 		
 		
 		// Adjust the size and alignments of all the components (of the left panel) and add them to the left panel:
@@ -424,9 +432,14 @@ public class RequirementPanel extends JPanel {
 		//Add the two panels to the view
 		mainConstraints.anchor = GridBagConstraints.WEST;
 		add(leftPanel);
+
+		JLabel blankLabel = new JLabel("                 ");
+		mainConstraints.anchor = GridBagConstraints.CENTER;
+		add(blankLabel);
 		
 		mainConstraints.anchor = GridBagConstraints.EAST;
 		add(rightPanel);
+		
 		
 		//end MAIN PANEL
 		

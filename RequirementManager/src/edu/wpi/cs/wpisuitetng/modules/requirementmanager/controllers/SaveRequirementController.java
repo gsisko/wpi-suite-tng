@@ -36,7 +36,7 @@ public class SaveRequirementController implements ActionListener
 	
 	if((name.length() > 0 && name.length() <= 100) && (description.length() > 0))
 	{
-	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement/" + id, HttpMethod.PUT); // PUT == create
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement"/* + id*/, HttpMethod.PUT); // PUT == create
 	    //final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
 	    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate).toJSON()); // put the new message in the body of the request

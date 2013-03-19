@@ -38,6 +38,9 @@ import edu.wpi.cs.wpisuitetng.modules.defecttracker.entitymanagers.CommentManage
 import edu.wpi.cs.wpisuitetng.modules.defecttracker.entitymanagers.DefectManager;
 import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardEntityManager;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.RequirementManager;
+
+
 /**
  * This singleton class responds to API requests directed at 
  * models by contacting their respective entity managers
@@ -75,9 +78,10 @@ public class ManagerLayer {
 		map.put("defecttrackerdefect", new DefectManager(data));
 		map.put("defecttrackercomment", new CommentManager(data));
 		map.put("postboardpostboardmessage", new PostBoardEntityManager(data));
+		map.put("requirementmanagerrequirement", new RequirementManager(data));
 
 		//add just your module to this list
-		String[] fullModuleList = {"core","defecttracker","postboard"};
+		String[] fullModuleList = {"core","defecttracker","postboard", "requirementmanager"};
 		((ProjectManager)map.get("coreproject")).setAllModules(fullModuleList);
 		String ssid = null;
 		

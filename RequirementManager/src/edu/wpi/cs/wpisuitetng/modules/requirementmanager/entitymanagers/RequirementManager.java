@@ -51,13 +51,13 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 */
 	public Requirement makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
+		
 		// Parse the requirement from JSON
 		final Requirement newRequirement = Requirement.fromJSON(content);
-
+		
 		// Saves the requirement in the database if possible
 		this.save(s,newRequirement); 
-
+		
 		// Return the newly created requirement (this gets passed back to the client)
 		return newRequirement;
 	}
