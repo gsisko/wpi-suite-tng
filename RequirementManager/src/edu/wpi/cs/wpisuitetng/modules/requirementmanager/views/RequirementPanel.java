@@ -90,7 +90,7 @@ public class RequirementPanel extends JPanel {
         });      
 		
 		// Set the layout manager of this panel that controls the positions of the components
-		setLayout(new GridBagLayout()); //set the layout
+		leftPanel.setLayout(new GridBagLayout()); //set the layout
 		GridBagConstraints constraints = new GridBagConstraints();//create the constraints variable
 		
 		
@@ -164,7 +164,6 @@ public class RequirementPanel extends JPanel {
 		
 		
 		
-		
 		// Set the layout
 		rightPanel.setLayout(new BorderLayout());
 		
@@ -190,7 +189,7 @@ public class RequirementPanel extends JPanel {
 		
 		constraints.anchor = GridBagConstraints.EAST;
 		add(rightPanel);
-			
+		
 	}
 	
 //	/**
