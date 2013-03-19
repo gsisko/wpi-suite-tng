@@ -64,13 +64,12 @@ public class Requirement extends AbstractModel {
 		this.setName(name);
 		this.setDescription(description); 
 		this.setReleaseNumber(releaseNumber); // release number of current project
-		this.setPriority(priority); // Default priority is LOW
-		this.setStatus(NEW);		// Initial status should be set to NEW
+		this.setPriority(priority); // Initialize priority
+		this.setEstimate(estimate);	// Initialize estimate
 		
 		// The rest are default values
-		this.setActualEffort(actualEffort);			// Initial actual effort set to zero
-		this.setEstimate(estimate);					// Initial effort set to zero								
-		
+		this.setActualEffort(0);			// Initial actual effort set to zero
+		this.setStatus(NEW);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
 		/*
 		this.setAttachments(new HashSet<Attachment>());		// Initializes an empty HashSet of attachments
