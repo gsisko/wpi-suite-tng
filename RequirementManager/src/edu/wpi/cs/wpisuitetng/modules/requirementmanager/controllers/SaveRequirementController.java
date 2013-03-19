@@ -26,11 +26,11 @@ public class SaveRequirementController implements ActionListener
     {
 	String name = view.getRequirementName().getText();
 	String description = view.getRequirementDescription().getText();
-	int releaseNumber = Integer.parseInt(view.getRequirementReleaseNumber().getSelectedText());
-	//RequirementStatus status = RequirementStatus.toStatus(view.getRequirementStatus().getText());
+	int releaseNumber = Integer.parseInt(view.getRequirementReleaseNumber().getText());
+	//RequirementStatus status = RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString());
 	RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
 	int estimate = Integer.parseInt(view.getRequirementEstimate().getText());
-	//int actualEffort = view.getRequirementActualEffort().getText().toInt();
+	//int actualEffort = Integer.parseInt(view.getRequirementActualEffort().getText());
 	
 	int id = count;
 	

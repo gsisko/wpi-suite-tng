@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.SaveRequirementObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.MainView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -13,10 +14,10 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class RefreshRequirementController implements ActionListener {
 
-    private final MainView view;
+    private final RequirementPanel view;
     protected Requirement[] data = null;
     
-    public RefreshRequirementController(MainView view) {
+    public RefreshRequirementController(RequirementPanel view) {
 	this.view = view;
     }
 

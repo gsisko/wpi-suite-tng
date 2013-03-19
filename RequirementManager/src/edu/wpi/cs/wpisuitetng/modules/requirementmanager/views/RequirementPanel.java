@@ -32,6 +32,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.RefreshRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
@@ -116,8 +118,8 @@ public class RequirementPanel extends JPanel {
 		txtActualEffort = new JTextField("Enter an actual effort here.");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
 		
 		//Create the strings for the boxes
-		String[] statusStrings = { "New", "In Progress", "Open", "Complete", "Deleted" };
-		String[] priorityStrings = { "(none)", "High", "Medium", "Low"};
+		String[] statusStrings = { "NEW", "IN_PROGRESS", "OPEN", "COMPLETE", "DELETED" };
+		String[] priorityStrings = { "none", "High", "Medium", "Low"};
 		
         //Construct the boxes 
 		statusBox = new JComboBox(statusStrings);
@@ -378,7 +380,7 @@ public class RequirementPanel extends JPanel {
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-		
+		/*
 		// Construct an action listener and add it to the create button
 		btnCreate.addActionListener(new ActionListener() {
  
@@ -387,8 +389,10 @@ public class RequirementPanel extends JPanel {
                 //Execute when button is pressed
                 System.out.println("You clicked the create button");//TODO: replace this with a real action
             }
-        }); 
-		
+        });
+		*/
+		btnCreate.addActionListener(new SaveRequirementController(this));
+		/*
 		// Construct an action listener and add it to the refresh button
 		btnRefresh.addActionListener(new ActionListener() {
  
@@ -398,6 +402,8 @@ public class RequirementPanel extends JPanel {
                 System.out.println("You clicked the refresh button");//TODO: replace this with a real action
             }
         });
+        */
+		btnRefresh.addActionListener(new RefreshRequirementController(this));
 		
 		//Actually add the scroll pane to the right panel
 		rightPanel.add(resultsScrollPane, BorderLayout.PAGE_START);

@@ -46,6 +46,8 @@ public class ListPanel extends JPanel {
 		// Set the layout manager of this panel
 		this.layout = new SpringLayout();
 		this.setLayout(layout);
+		
+		this.resultsPanel = new ResultsPanel();
 	/*
 		// Construct the panels that compose the search view
 		this.builderPanel = new FilterBuilderPanel();

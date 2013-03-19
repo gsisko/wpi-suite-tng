@@ -22,7 +22,7 @@ public enum RequirementStatus {
 	 * @param toConvert The string you want to convert
 	
 	 * @return  The proper RequirementStatus */
-    public RequirementStatus toStatus(String toConvert){     
+    public static RequirementStatus toStatus(String toConvert){     
        return valueOf(toConvert);
  
     }

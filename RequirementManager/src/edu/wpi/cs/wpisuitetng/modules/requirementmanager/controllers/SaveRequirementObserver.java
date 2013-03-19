@@ -30,10 +30,10 @@ public class SaveRequirementObserver implements RequestObserver {
 		final ResponseModel response = iReq.getResponse();
 		
 		// Parse the message out of the response body
-		final Requirement message = Requirement.fromJson(response.getBody());
+		final Requirement message = Requirement.fromJSON(response.getBody());
 		
 		// Pass the messages back to the controller
-		rmcontroller.addRMMessageToModel(message);
+		//rmcontroller.addRMMessageToModel(message);
 	}
 
 	@Override

@@ -6,9 +6,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
  * @version $Revision: 1.0 $
  */
 public enum RequirementPriority {
-	HIGH,
-	MEDIUM,
-	LOW,
+	High,
+	Medium,
+	Low,
 	none;
 
 
