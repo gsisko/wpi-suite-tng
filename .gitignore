@@ -37,3 +37,8 @@ Janeway/janeway.conf
 /Core/WPISuite/WebContent/WEB-INF/lib/PostBoard.jar
 /Core/WPISuite/WebContent/WEB-INF/lib/RequirementManager.jar
 
+#Mac Garbage Files
+*.DS_Store
+
+#JavaDoc
+*/doc/*
