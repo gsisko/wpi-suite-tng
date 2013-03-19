@@ -48,18 +48,6 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				int newName = context.deserialize(idObj.get("newValue"), int.class);
 				changesMap.put("id", new FieldChange<Integer>(oldName, newName));
 			}
-			if (changes.has("releaseNumber")) {
-				JsonObject releaseNumberObj = changes.get("releaseNumber").getAsJsonObject();
-				int oldName = context.deserialize(releaseNumberObj.get("oldValue"), int.class);
-				int newName = context.deserialize(releaseNumberObj.get("newValue"), int.class);
-				changesMap.put("releaseNumber", new FieldChange<Integer>(oldName, newName));
-			}
-			if (changes.has("priority")) {
-				JsonObject priorityObj = changes.get("priority").getAsJsonObject();
-				RequirementPriority oldName = context.deserialize(priorityObj.get("oldValue"), RequirementPriority.class);
-				RequirementPriority newName = context.deserialize(priorityObj.get("newValue"), RequirementPriority.class);
-				changesMap.put("priority", new FieldChange<RequirementPriority>(oldName, newName));
-			}
 			if (changes.has("name")) {
 				JsonObject nameObj = changes.get("name").getAsJsonObject();
 				String oldName = context.deserialize(nameObj.get("oldValue"), String.class);
@@ -72,11 +60,23 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				String newDesc = context.deserialize(descriptionObj.get("newValue"), String.class);
 				changesMap.put("description", new FieldChange<String>(oldDesc, newDesc));
 			}
-			if (changes.has("actualEffort")) {
-				JsonObject actualEffortObj = changes.get("actualEffort").getAsJsonObject();
-				int oldName = context.deserialize(actualEffortObj.get("oldValue"), int.class);
-				int newName = context.deserialize(actualEffortObj.get("newValue"), int.class);
-				changesMap.put("actualEffort", new FieldChange<Integer>(oldName, newName));
+			if (changes.has("status")) {
+				JsonObject statusObj = changes.get("status").getAsJsonObject();
+				RequirementStatus oldStatus = context.deserialize(statusObj.get("oldValue"), RequirementStatus.class);
+				RequirementStatus newStatus = context.deserialize(statusObj.get("newValue"), RequirementStatus.class);
+				changesMap.put("status", new FieldChange<RequirementStatus>(oldStatus, newStatus));
+			}
+			if (changes.has("priority")) {
+				JsonObject priorityObj = changes.get("priority").getAsJsonObject();
+				RequirementPriority oldName = context.deserialize(priorityObj.get("oldValue"), RequirementPriority.class);
+				RequirementPriority newName = context.deserialize(priorityObj.get("newValue"), RequirementPriority.class);
+				changesMap.put("priority", new FieldChange<RequirementPriority>(oldName, newName));
+			}
+			if (changes.has("releaseNumber")) {
+				JsonObject releaseNumberObj = changes.get("releaseNumber").getAsJsonObject();
+				int oldName = context.deserialize(releaseNumberObj.get("oldValue"), int.class);
+				int newName = context.deserialize(releaseNumberObj.get("newValue"), int.class);
+				changesMap.put("releaseNumber", new FieldChange<Integer>(oldName, newName));
 			}
 			if (changes.has("estimate")) {
 				JsonObject estimateObj = changes.get("estimate").getAsJsonObject();
@@ -84,11 +84,11 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				int newName = context.deserialize(estimateObj.get("newValue"), int.class);
 				changesMap.put("estimate", new FieldChange<Integer>(oldName, newName));
 			}
-			if (changes.has("status")) {
-				JsonObject statusObj = changes.get("status").getAsJsonObject();
-				RequirementStatus oldStatus = context.deserialize(statusObj.get("oldValue"), RequirementStatus.class);
-				RequirementStatus newStatus = context.deserialize(statusObj.get("newValue"), RequirementStatus.class);
-				changesMap.put("status", new FieldChange<RequirementStatus>(oldStatus, newStatus));
+			if (changes.has("actualEffort")) {
+				JsonObject actualEffortObj = changes.get("actualEffort").getAsJsonObject();
+				int oldName = context.deserialize(actualEffortObj.get("oldValue"), int.class);
+				int newName = context.deserialize(actualEffortObj.get("newValue"), int.class);
+				changesMap.put("actualEffort", new FieldChange<Integer>(oldName, newName));
 			}
 			/*
 			if (changes.has("attachments")) {

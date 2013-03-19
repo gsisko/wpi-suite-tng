@@ -1,18 +1,15 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.ToolbarPanel;
 
 
 /**
@@ -29,21 +26,14 @@ public class JanewayModule implements IJanewayModule {
 	 */
 	public JanewayModule() {
 		
-		// Setup button panel
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.add(new JButton("Func A"));
-		buttonPanel.add(new JButton("Func B"));
+		// Setup toolbar panel
+		JPanel toolbarPanel = new ToolbarPanel();
 		
 		// Setup the main panel
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(new JLabel("Requirement Manager"), BorderLayout.PAGE_START);
-		mainPanel.add(new JTextField(), BorderLayout.CENTER);
-		mainPanel.add(new JTextField(), BorderLayout.CENTER);
+		JPanel mainPanel = new RequirementPanel();
 		
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), buttonPanel, mainPanel);
+		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarPanel, mainPanel);
 		tabs.add(tab);
 	}
 

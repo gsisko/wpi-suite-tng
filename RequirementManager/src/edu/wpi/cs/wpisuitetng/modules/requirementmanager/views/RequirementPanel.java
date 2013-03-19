@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -20,13 +21,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
 
 /**
  * This class is a JPanel. It contains a text field
@@ -44,11 +52,14 @@ public class RequirementPanel extends JPanel {
 	private final JLabel descriptionLabel;//The label for the description text area ("txtDescription")
 	
 	//The text field/areas
-	private final JTextArea txtDescription;//The description text area
 	private final JTextField txtName;//The name text field 
+	private final JTextArea txtDescription;//The description text area
 
-	//The button
+	//The buttons
 	private final JButton btnSave; //The "save" button
+	
+	private ResultsTableModel resultsTableModel;
+	private JTable resultsTable;
 	
 	/**
 	 * The constructor for RequirementPanel;
@@ -57,9 +68,12 @@ public class RequirementPanel extends JPanel {
 	 */
 	public RequirementPanel() {
 		
+		JPanel leftPanel = new JPanel();
+		ResultsPanel rightPanel = new ResultsPanel();
+		
 		// Construct the components to be displayed
-		txtDescription = new JTextArea("Enter a description here.", 6, 20);
 		txtName = new JTextField("Enter a name here.");
+		txtDescription = new JTextArea("Enter a description here.", 6, 6);
 		btnSave = new JButton("Save");
 		
 		nameLabel = new JLabel("Name:");
@@ -107,7 +121,7 @@ public class RequirementPanel extends JPanel {
 		constraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units of blank space
 		constraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		constraints.gridy = 0;//set the y coord of the cell of the layout we are describing
-		add(nameLabel, constraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		leftPanel.add(nameLabel, constraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		
 		//Set the constraints for "txtName" and add it to the view
 		constraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -116,17 +130,17 @@ public class RequirementPanel extends JPanel {
 		constraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		constraints.gridwidth = 2; //Tell the layout that this field will fill 2 columns
 		constraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
-		add(txtName, constraints);//Actually add the "txtName" to the layout given the previous constraints
+		leftPanel.add(txtName, constraints);//Actually add the "txtName" to the layout given the previous constraints
 		
 		//Set the constraints for the "descriptionLabel" and add it to the view
 		constraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		constraints.ipady = 70;//This tells the layout to stretch this field vertically by 70 units
+		constraints.ipady = 20;//This tells the layout to stretch this field vertically by 70 units
 		constraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		constraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		constraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		constraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		constraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(descriptionLabel, constraints);//Actually add the "txtName" to the layout given the previous constraints
+		leftPanel.add(descriptionLabel, constraints);//Actually add the "txtName" to the layout given the previous constraints
 		
 		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the view
 		constraints.fill = GridBagConstraints.BOTH;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
@@ -135,7 +149,7 @@ public class RequirementPanel extends JPanel {
 		constraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		constraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
 		constraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(scrollPane, constraints);//Actually add the "scrollPane" to the layout given the previous constraints
+		leftPanel.add(scrollPane, constraints);//Actually add the "scrollPane" to the layout given the previous constraints
 		
 		//Set the constraints for the "btnSave" and add it to the view
 		constraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch to fill it's area
@@ -145,23 +159,54 @@ public class RequirementPanel extends JPanel {
 		constraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
 		constraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		constraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
-		add(btnSave, constraints);//Actually add the "btnSave" to the layout given the previous constraints
+		leftPanel.add(btnSave, constraints);//Actually add the "btnSave" to the layout given the previous constraints
 		
+		
+		
+		
+		
+		// Set the layout
+		rightPanel.setLayout(new BorderLayout());
+		
+		// Construct the table model
+		resultsTableModel = new ResultsTableModel();
+		
+		// Construct the table and configure it
+		resultsTable = new JTable(resultsTableModel);
+		resultsTable.setAutoCreateRowSorter(true);
+		resultsTable.setFillsViewportHeight(true);
+		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
+		
+		// Add a listener for row clicks
+		resultsTable.addMouseListener(new RetrieveRequirementController(rightPanel));
+		
+		// Put the table in a scroll pane
+		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
+		
+		rightPanel.add(resultsScrollPane);
+		
+		constraints.anchor = GridBagConstraints.WEST;
+		add(leftPanel);
+		
+		constraints.anchor = GridBagConstraints.EAST;
+		add(rightPanel);
+			
 	}
 	
-	/**
-	 * This returns the contents of the JTextArea "txtDescription"
-	 * @return the txtDescription JTextArea
-	 */
-	public JTextArea getTxtNewMessage() {
-		return txtDescription;
+//	/**
+//	 * This returns the contents of the JTextField "txtName"
+//	 * @return the txtName JTextField
+//	 */
+	public String getName() {
+		return txtName.getText();
 	}
 	
-	/**
-	 * This returns the contents of the JTextField "txtName"
-	 * @return the txtName JTextField
-	 */
-	public JTextField getNameTxtNewMessage() {
-		return txtName;
+//	/**
+//	 * This returns the contents of the JTextArea "txtDescription"
+//	 * @return the txtDescription JTextArea
+//	 */
+	public String getDescription() {
+		return txtDescription.getText();
 	}
+	
 }
