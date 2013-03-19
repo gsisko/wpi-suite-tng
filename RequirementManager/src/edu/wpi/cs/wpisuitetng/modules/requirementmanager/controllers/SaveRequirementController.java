@@ -27,10 +27,10 @@ public class SaveRequirementController implements ActionListener
 	String name = view.getName();
 	String description = view.getDescription();
 	int releaseNumber = view.getRequirementReleaseNumber().getText().toInt();
-	RequirementStatus status = RequirementStatus.toStatus(view.getRequirementStatus().getText());
+	//RequirementStatus status = RequirementStatus.toStatus(view.getRequirementStatus().getText());
 	RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getText());
 	int estimate = view.getRequirementEstimate().getText().toInt();
-	int actualEffort = view.getRequirementActualEffort().getText().toInt();
+	//int actualEffort = view.getRequirementActualEffort().getText().toInt();
 	
 	int id = count;
 	
@@ -39,7 +39,7 @@ public class SaveRequirementController implements ActionListener
 	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement/" + id, HttpMethod.PUT); // PUT == create
 	    //final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
-	    request.setBody(new Requirement(name, description, id, releaseNumber, status, priority, estimate, actualEffort).toJSON()); // put the new message in the body of the request
+	    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate).toJSON()); // put the new message in the body of the request
 	   
 	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
 	   
