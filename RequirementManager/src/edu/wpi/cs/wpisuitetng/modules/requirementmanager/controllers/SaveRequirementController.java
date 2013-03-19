@@ -49,6 +49,20 @@ public class SaveRequirementController implements ActionListener
 	//else throw error for incorrect inputs
 	
     }
-
+    
+    
+    /**
+     * Simple success message for saving a new requirement.  If we want the boxes to clear automatically,
+     * this is probably where we would want to implement it.
+     * @param newReq Requirement that was saved.
+     */
+	public void saveSuccess(Requirement newReq) {
+		if (newReq != null) {
+			System.out.print("Requirement " + newReq.getId() + " saved successfully\n");
+		}
+		else {
+			System.err.print("Undected error saving requirement\n");
+		}
+	}
 }
 

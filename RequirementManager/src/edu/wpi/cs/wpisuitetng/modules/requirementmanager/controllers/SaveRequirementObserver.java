@@ -33,17 +33,17 @@ public class SaveRequirementObserver implements RequestObserver {
 		final Requirement message = Requirement.fromJSON(response.getBody());
 		
 		// Pass the messages back to the controller
-		//rmcontroller.addRMMessageToModel(message);
+		rmcontroller.saveSuccess(message);
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("Cannot add a message");
+		System.err.println("Cannot add a requirement");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("Cannot add a message.");
+		System.err.println("Cannot add a requirement.");
 	}
 
 }
