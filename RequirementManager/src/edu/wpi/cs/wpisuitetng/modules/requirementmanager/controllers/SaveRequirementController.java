@@ -26,22 +26,19 @@ public class SaveRequirementController implements ActionListener
     {
 	String name = view.getRequirementName().getText();
 	String description = view.getRequirementDescription().getText();
-
 	int id = count;
 	
 	if((name.length() > 0 && name.length() <= 100) && (description.length() > 0))
 	{
-	    //final Request request = Network.getInstance().makeRequest("requirementmanager/requirement/" + id, HttpMethod.PUT); // PUT == create
-	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement/" + id, HttpMethod.PUT); // PUT == create
+	    //final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
-	    request.setBody(new Requirement(name, description, id, releaseNumber, status, priority, estimate, actualEffort ).toJSON()); // put the new message in the body of the request
-	   
-	    //request.setBody(new Requirement(name, description, id).toJSON()); // put the new message in the body of the request
+	    request.setBody(new Requirement(name, description, id, releaseNumber, status, priority, estimate, actualEffort).toJSON()); // put the new message in the body of the request
 	   
 	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
 	   
 	    request.send(); // send the request
-	    //count++;
+	    count++;
 	}
 	//else throw error for incorrect inputs
 	
