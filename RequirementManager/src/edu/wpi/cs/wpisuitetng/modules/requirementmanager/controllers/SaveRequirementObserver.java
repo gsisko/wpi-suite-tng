@@ -12,9 +12,9 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class SaveRequirementObserver implements RequestObserver {
 	
-	private final SaveRequirementObserver rmcontroller;
+	private final SaveRequirementController rmcontroller;
 	
-	public SaveRequirementObserver(SaveRequirementObserver rmcontroller) {
+	public SaveRequirementObserver(SaveRequirementController rmcontroller) {
 		this.rmcontroller = rmcontroller;
 	}
 	
