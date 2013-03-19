@@ -33,7 +33,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param data Database in the core
 	 */	
 	public RequirementManager(Data data) {
-		this.db = data;
+		this.db = data;		
 	}
 
 		
