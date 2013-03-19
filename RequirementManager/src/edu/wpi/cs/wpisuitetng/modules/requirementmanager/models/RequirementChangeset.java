@@ -11,6 +11,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * Persistent Model that holds information about a set of changes to a Requirement.
  * Every time a Requirement is changed by a user, a RequirementChangeset should be created
  * containing the changes and the user responsible for making them.
+ * @author Dabrowski
+ * @version $Revision: 1.0 $
  */
 public class RequirementChangeset extends RequirementEvent {
 
@@ -36,8 +38,8 @@ public class RequirementChangeset extends RequirementEvent {
 	}
 
 	/**
-	 * @return the map of field names to changes (Assignee -> (Bob, Joe))
-	 */
+	
+	 * @return the map of field names to changes (Assignee -> (Bob, Joe)) */
 	public Map<String, FieldChange<?>> getChanges() {
 		return changes;
 	}
@@ -49,6 +51,11 @@ public class RequirementChangeset extends RequirementEvent {
 		this.changes = changes;
 	}
 
+	/**
+	 * Method toJSON.
+	 * @return String
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
+	 */
 	@Override
 	public String toJSON() {
 		String json;

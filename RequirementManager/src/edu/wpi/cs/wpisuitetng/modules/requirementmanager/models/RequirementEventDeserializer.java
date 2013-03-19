@@ -12,8 +12,19 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEvent
 
 /**
  * Responsible for deserializing a RequirementEvent.
+ * @author Dabrowski
+ * @version $Revision: 1.0 $
  */
 class RequirementEventDeserializer implements JsonDeserializer<RequirementEvent> {
+	/**
+	 * Method deserialize.
+	 * @param element JsonElement
+	 * @param type Type
+	 * @param context JsonDeserializationContext
+	 * @return RequirementEvent
+	 * @throws JsonParseException
+	 * @see com.google.gson.JsonDeserializer#deserialize(JsonElement, Type, JsonDeserializationContext)
+	 */
 	@Override
 	public RequirementEvent deserialize(JsonElement element, Type type,
 			JsonDeserializationContext context) throws JsonParseException {

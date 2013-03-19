@@ -4,7 +4,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
  * Model that holds and old and new value for some field.
  * Doesn't implement Model since it will see no use outside of AttachmentChangesets.
  *
- * @param <T> the type of the field that was changed
+
+ * @author Dabrowski
+ * @version $Revision: 1.0 $
  */
 public class FieldChange<T> {
 	private final T oldValue;
@@ -20,15 +22,15 @@ public class FieldChange<T> {
 	}
 
 	/**
-	 * @return the oldValue
-	 */
+	
+	 * @return the oldValue */
 	public T getOldValue() {
 		return oldValue;
 	}
 
 	/**
-	 * @return the newValue
-	 */
+	
+	 * @return the newValue */
 	public T getNewValue() {
 		return newValue;
 	}

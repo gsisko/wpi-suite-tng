@@ -11,18 +11,31 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requireme
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/** Requirement: Holds data that makes up a Requirement
+ * 
+ * @author Dabrowski
+ * @author Calder
+ * @version $Revision: 1.0 $
+ */
 public class Requirement extends AbstractModel {
-
-	private String name;          // The name of the Requirement (100 chars)
-	private String description;   // A description of the Requirement
+	/** The name of the Requirement (100 chars)    	  */
+	private String name;         
+	/** A description of the Requirement     */
+	private String description; 
 	
-	private int id;               // Unique ID of the record- assigned by entity manager
-	private int releaseNumber;    // Must be a release number of the current project ***
+	/** Unique ID of the record- assigned by entity manager  */
+	private int id;              
+	/** Must be a release number of the current project ***/
+	private int releaseNumber;    
 	
-	private RequirementStatus status;      // The status in the work flow- Default to NEW 
-	private RequirementPriority priority;  // The priority set to the Requirement
-	private int estimate;                  // An estimate of what this Requirement will take
-	private int actualEffort;              // The actual effort it took for this Requirement
+	/** The status in the work flow- Default to NEW   */
+	private RequirementStatus status;     
+	/** The priority set to the Requirement  */
+	private RequirementPriority priority;  
+	/** An estimate of what this Requirement will take  */
+	private int estimate;         
+	/** The actual effort it took for this Requirement  */
+	private int actualEffort;             
 	
 	/*
 	private HashSet<Note> notes;
@@ -30,7 +43,8 @@ public class Requirement extends AbstractModel {
 	private HashSet<Task> tasks;
 	*/
 	
-	private List<RequirementEvent> events;  // A log of updates, changes etc to this Requirement
+	/** A log of updates, changes etc to this Requirement  */
+	private List<RequirementEvent> events;  
 		
 	public Requirement(){
 		new Requirement("","",-1,0,NEW,none,0,0);
@@ -38,6 +52,17 @@ public class Requirement extends AbstractModel {
 	
 	
 	// Probable constructor to be called from the user interface
+	/**
+	 * Constructor for Requirement.
+	 * @param name String 
+	 * @param description String
+	 * @param id int
+	 * @param releaseNumber int
+	 * @param status RequirementStatus
+	 * @param priority RequirementPriority
+	 * @param estimate int
+	 * @param actualEffort int
+	 */
 	public Requirement(String name, String description, int id, int releaseNumber, RequirementStatus status, RequirementPriority priority, int estimate, int actualEffort) {
 		this.setName(name);
 		this.setDescription(description); 
@@ -64,12 +89,20 @@ public class Requirement extends AbstractModel {
 
 	
 	// The following functions come from the Model interface
+	/**
+	 * Method save.
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
+	 */
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Method delete.
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
+	 */
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
@@ -78,7 +111,9 @@ public class Requirement extends AbstractModel {
 	
 	/**
 	 * Converts this Epic to a JSON string
-	 * @return a string in JSON representing this Epic
+	
+	
+	 * @return a string in JSON representing this Epic * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */
 	public String toJSON() {
 		String json;
@@ -87,6 +122,12 @@ public class Requirement extends AbstractModel {
 		return json;
 	}
 
+	/**
+	 * Method identify.
+	 * @param o Object
+	
+	
+	 * @return Boolean * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(Object) */
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
 		if(o instanceof Requirement && id == ((Requirement) o).getId()) {
@@ -104,8 +145,8 @@ public class Requirement extends AbstractModel {
 	/**
 	 * Converts the given list of Requirements to a JSON string
 	 * @param rlist a list of Requirements
-	 * @return a string in JSON representing the list of Requirements
-	 */
+	
+	 * @return a string in JSON representing the list of Requirements */
 	public static String toJSON(Requirement[] rlist) {
 		String json;
 		Gson gson = new Gson();
@@ -113,6 +154,11 @@ public class Requirement extends AbstractModel {
 		return json;
 	}
 	
+	/**
+	 * Method toString.
+	
+	
+	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() */
 	@Override
 	public String toString() {
 		return toJSON();
@@ -120,8 +166,8 @@ public class Requirement extends AbstractModel {
 	
 	/**
 	 * @param json Json string to parse containing Defect
-	 * @return The Defect given by json
-	 */
+	
+	 * @return The Defect given by json */
 	public static Requirement fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
 		addGsonDependencies(builder);
@@ -130,8 +176,8 @@ public class Requirement extends AbstractModel {
 	
 	/**
 	 * @param json Json string to parse containing Requirement array
-	 * @return The Requirement array given by json
-	 */
+	
+	 * @return The Requirement array given by json */
 	public static Requirement[] fromJSONArray(String json) {
 		GsonBuilder builder = new GsonBuilder();
 		addGsonDependencies(builder);
@@ -146,6 +192,11 @@ public class Requirement extends AbstractModel {
 		RequirementEvent.addGsonDependencies(builder);
 	}
 	
+	/**
+	 * Method setProject.
+	 * @param project Project
+	
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setProject(Project) */
 	@Override
 	public void setProject(Project project) {
 		super.setProject(project);
@@ -176,8 +227,8 @@ public class Requirement extends AbstractModel {
 	// The following are getters and setters
 	
 	/**
-	 * @return the id
-	 */
+	
+	 * @return the id */
 	public int getId() {
 		return id;
 	}
@@ -190,22 +241,23 @@ public class Requirement extends AbstractModel {
 	}	
 	
 	/**
-	 * @return the actualEffort
-	 */
+	
+	 * @return the actualEffort */
 	public int getActualEffort() {
 		return actualEffort;
 	}
 
 	/**
-	 * @param actual the actual to set
+	
+	 * @param actualEffort int
 	 */
 	public void setActualEffort(int actualEffort) {
 		this.actualEffort = actualEffort;
 	}
 
 	/**
-	 * @return the estimate
-	 */
+	
+	 * @return the estimate */
 	public int getEstimate() {
 		return estimate;
 	}
@@ -218,8 +270,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the description
-	 */
+	
+	 * @return the description */
 	public String getDescription() {
 		return description;
 	}
@@ -232,8 +284,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the name
-	 */
+	
+	 * @return the name */
 	public String getName() {
 		return name;
 	}
@@ -246,8 +298,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the releaseNumber
-	 */
+	
+	 * @return the releaseNumber */
 	public int getReleaseNumber() {
 		return releaseNumber;
 	}
@@ -260,8 +312,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the status
-	 */
+	
+	 * @return the status */
 	public RequirementStatus getStatus() {
 		return status;
 	}
@@ -274,8 +326,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the priority
-	 */
+	
+	 * @return the priority */
 	public RequirementPriority getPriority() {
 		return priority;
 	}
@@ -290,7 +342,9 @@ public class Requirement extends AbstractModel {
 	
 //	/**
 //	 * @return the attachments
-//	 */
+//	 * @return List<RequirementEvent>
+//   * @return List<RequirementEvent>
+	 */
 //	public HashSet<Attachment> getAttachments() {
 //		return attachments;
 //	}

@@ -13,6 +13,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
 /**
  * Responsible for filling in a changeset after being passed to
  * {@link ModelMapper#map(Model, Model, MapCallback)} 
+ * @author Dabrowski
+ * @version $Revision: 1.0 $
  */
 class ChangesetCallback implements MapCallback {
 	
@@ -31,6 +33,16 @@ class ChangesetCallback implements MapCallback {
 		this.changeset = changeset;
 	}
 	
+	/**
+	 * Method call.
+	 * @param source Model
+	 * @param destination Model
+	 * @param fieldName String
+	 * @param sourceValue Object
+	 * @param destinationValue Object
+	 * @return Object
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.ModelMapper$MapCallback#call(Model, Model, String, Object, Object)
+	 */
 	@Override
 	public Object call(Model source, Model destination, String fieldName,
 			Object sourceValue, Object destinationValue) {
@@ -51,6 +63,12 @@ class ChangesetCallback implements MapCallback {
 		return sourceValue;
 	}
 	
+	/**
+	 * Method objectsEqual.
+	 * @param a Object
+	 * @param b Object
+	 * @return boolean
+	 */
 	private boolean objectsEqual(Object a, Object b) {
 		// Java 7 has Objects.equals... we're on Java 6
 		if(a == b) {

@@ -2,6 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /**
  * Possible values for the status of a requirement.
+ * @author Dabrowski
+ * @version $Revision: 1.0 $
  */
 public enum RequirementStatus {
 	NEW,   // The initial status value of a requirement
@@ -18,8 +20,8 @@ public enum RequirementStatus {
 	 * only the enums listed as RequirementStatus's
 	 * 
 	 * @param toConvert The string you want to convert
-	 * @return  The proper RequirementStatus
-	 */
+	
+	 * @return  The proper RequirementStatus */
     public RequirementStatus toStatus(String toConvert){     
        return valueOf(toConvert);
  
@@ -27,9 +29,9 @@ public enum RequirementStatus {
     
     /** Converts a RequirementStatus to a string
      * 
-     * @param toConvert The RequirementStatus to convert to a string
-     * @return the resulting string
-     */
+    
+    
+     * @return the resulting string */
     public String toString(){
          return this.toString();
      }    

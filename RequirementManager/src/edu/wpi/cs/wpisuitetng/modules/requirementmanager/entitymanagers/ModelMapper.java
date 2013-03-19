@@ -11,6 +11,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /**
  * Responsible for copying properties from one Model to another.
+ * @author Dabrowski
+ * @version $Revision: 1.0 $
  */
 public class ModelMapper {
 
@@ -36,14 +38,16 @@ public class ModelMapper {
 	 * Blacklist should contain field names.
 	 * e.g. getSomeField() -> getBlacklist().add("someField")
 	 * 
-	 * @return A set of field names to ignore, which can be modified
-	 */
+	
+	 * @return A set of field names to ignore, which can be modified */
 	public Set<String> getBlacklist() {
 		return blacklist;
 	}
 	
 	/**
 	 * Callback to pass to {@link ModelMapper#map(Model, Model, MapCallback)}
+	 * @author Dabrowski
+	 * @version $Revision: 1.0 $
 	 */
 	public interface MapCallback {
 		/**
@@ -55,15 +59,16 @@ public class ModelMapper {
 		 *                  getSomeField() -> "someField"
 		 * @param sourceValue The return value of source.get[fieldName]()
 		 * @param destinationValue The return value of destination.get[fieldName]()
-		 * @return The value to pass to destination.setMethod()
-		 */
+		
+		 * @return The value to pass to destination.setMethod() */
 		Object call(Model source, Model destination, String fieldName, Object sourceValue,
 				Object destinationValue);
 	}
 	
 	/**
-	 * @return field name from given accessor name ("getBlahField" -> "blahField")
-	 */
+	
+	 * @param methodName String
+	 * @return field name from given accessor name ("getBlahField" -> "blahField") */
 	private static String accessorNameToFieldName(String methodName) {
 		methodName = methodName.substring(3); // cut out "get" or "set"
 		return methodName.substring(0, 1).toLowerCase() + methodName.substring(1); // BlahField -> blahField
@@ -76,8 +81,8 @@ public class ModelMapper {
 	 * @param source The Model to copy from
 	 * @param destination The Model to copy to
 	 * @param callback The callback whose return value is set on the destination
-	 * @throws RuntimeException If something goes wrong during copying
-	 */
+	
+	 * @throws RuntimeException If something goes wrong during copying */
 	public void map(final Model source, final Model destination, MapCallback callback)
 			throws RuntimeException {
 		final Method[] sourceMethods = source.getClass().getMethods();
@@ -131,8 +136,8 @@ public class ModelMapper {
 	 * 
 	 * @param source The Model to copy from
 	 * @param destination The Model to copy to
-	 * @throws RuntimeException If something goes wrong during copying
-	 */
+	
+	 * @throws RuntimeException If something goes wrong during copying */
 	public void map(final Model source, final Model destination) throws RuntimeException {
 		this.map(source, destination, defaultMapCallback );
 	}
