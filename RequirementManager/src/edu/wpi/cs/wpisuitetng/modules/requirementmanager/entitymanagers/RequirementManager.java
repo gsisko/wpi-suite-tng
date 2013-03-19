@@ -11,6 +11,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
  * 
@@ -178,6 +179,11 @@ public class RequirementManager implements EntityManager<Requirement> {
 	}
 	
 	
+	
+	
+// Unimplemented Manager methods	
+	
+	
 	/** Deletes a Requirement from the database (not advised)
 	 *  
 	 *  @param s The current user session
@@ -188,10 +194,22 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		// TODO Auto-generated method stub
-
-		// Not implemented- Throw exception
-		throw new WPISuiteException();
+		// Ask the database to retrieve all objects of the type Requirement.
+		// Passing a dummy Requirement lets the db know what type of object to retrieve
+		// Passing the project makes it only get requirements from that project
+		List<Model> requirements = this.db.retrieveAll(new Requirement(), s.getProject());
+		
+		// Iterate through the list to find the Requirement with the correct ID
+		// Casting is used because the retrieveAll function returns a list of "Models"
+		// even though we know it is returning a list of Requirements here
+	    for ( Model r : requirements ) {
+	    	if ((   (Requirement) r).getId() == Integer.parseInt( id) ){
+	    		((Requirement) r).setStatus(DELETED); // Set the status to deleted
+	    		this.save( s ,(Requirement) r);
+	    		return true; // end now
+	    	}
+	    }		
+		return false;
 	}
 	
 
@@ -202,10 +220,19 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s) throws WPISuiteException {
-		// TODO Auto-generated method stub
+		// Ask the database to retrieve all objects of the type Requirement.
+		// Passing a dummy Requirement lets the db know what type of object to retrieve
+		// Passing the project makes it only get requirements from that project
+		List<Model> requirements = this.db.retrieveAll(new Requirement(), s.getProject());
 		
-		// Not implemented- Throw exception
-		throw new WPISuiteException();
+		// Iterate through the list to find the Requirement with the correct ID
+		// Casting is used because the retrieveAll function returns a list of "Models"
+		// even though we know it is returning a list of Requirements here
+	    for ( Model r : requirements ) {
+	    	((Requirement) r).setStatus(DELETED); // Set the status to deleted
+	    	this.save( s ,(Requirement) r);
+	    }		
+	    throw new WPISuiteException();
 	}
 	
 
