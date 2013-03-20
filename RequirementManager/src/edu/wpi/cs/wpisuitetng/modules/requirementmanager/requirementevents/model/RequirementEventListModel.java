@@ -28,9 +28,10 @@ public class RequirementEventListModel extends DefaultListModel {
 	@SuppressWarnings("unchecked")
 	public void update(Requirement model) {
 		this.clear();
-		
+		/*
 		for (RequirementEvent event : model.getEvents()) {
 			addElement(event);
 		}
+		*/
 	}
 }
