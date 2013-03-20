@@ -29,12 +29,11 @@ public class SaveRequirementController implements ActionListener
 		String description = view.getRequirementDescription().getText();
 		int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : (view.getRequirementReleaseNumber().getText()));
 		RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
-		int estimate = Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText());
 		RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
 	
 	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
-	    request.setBody(new Requirement(name, description, type, priority,  releaseNumber, estimate).toJSON()); // put the new message in the body of the request
+	    request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
 	   
 	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
 	   

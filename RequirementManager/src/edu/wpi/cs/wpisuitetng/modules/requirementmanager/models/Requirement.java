@@ -49,7 +49,7 @@ public class Requirement extends AbstractModel {
 	private List<RequirementEvent> events;  
 		
 	public Requirement(){
-		new Requirement("","",NoType,NoPriority,0,0);
+		new Requirement("","",NoType,NoPriority,0);
 	}
 	
 	
@@ -62,15 +62,15 @@ public class Requirement extends AbstractModel {
 	 * @param priority RequirementPriority
 	 * @param estimate int
 	 */
-	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber, int estimate) {
+	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber) {
 		this.setName(name);
 		this.setDescription(description);
 		this.setType(type);
 		this.setPriority(priority); // Initialize priority
 		this.setReleaseNumber(releaseNumber); // release number of current project
-		this.setEstimate(estimate);	// Initialize estimate
 		
 		// The rest are default values
+		this.setEstimate(0);
 		this.setActualEffort(0);			// Initial actual effort set to zero
 		this.setStatus(New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set

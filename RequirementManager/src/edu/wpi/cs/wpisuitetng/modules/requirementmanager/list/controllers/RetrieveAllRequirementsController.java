@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -58,19 +59,26 @@ public class RetrieveAllRequirementsController {
 			// set the column names
 			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
 			view.getModel().setColumnNames(columnNames);
+			
+			int numOfDeleted = 0;
+			for (int i = 0; i < requirements.length; i++) {
+				if (requirements[i].getStatus() == Deleted)  numOfDeleted++;
+			}
 
 			// put the data in the table
-			Object[][] entries = new Object[requirements.length][columnNames.length];
-			for (int i = 0; i < requirements.length; i++) {
-				entries[i][0] = String.valueOf(requirements[i].getId());
-				entries[i][1] = requirements[i].getName();
-				entries[i][2] = requirements[i].getDescription();
-				entries[i][3] = requirements[i].getType().toString();
-				entries[i][4] = requirements[i].getStatus().toString();
-				entries[i][5] = requirements[i].getPriority().toString();
-				entries[i][6] = String.valueOf(requirements[i].getReleaseNumber());
-				entries[i][7] = String.valueOf(requirements[i].getEstimate());
-				entries[i][8] = String.valueOf(requirements[i].getActualEffort());
+			Object[][] entries = new Object[requirements.length - numOfDeleted][columnNames.length];
+			for (int i = 0; i < (requirements.length - numOfDeleted); i++) {
+				if (requirements[i].getStatus() != Deleted) {
+					entries[i][0] = String.valueOf(requirements[i].getId());
+					entries[i][1] = requirements[i].getName();
+					entries[i][2] = requirements[i].getDescription();
+					entries[i][3] = requirements[i].getType().toString();
+					entries[i][4] = requirements[i].getStatus().toString();
+					entries[i][5] = requirements[i].getPriority().toString();
+					entries[i][6] = String.valueOf(requirements[i].getReleaseNumber());
+					entries[i][7] = String.valueOf(requirements[i].getEstimate());
+					entries[i][8] = String.valueOf(requirements[i].getActualEffort());
+				}
 			}
 			view.getModel().setData(entries);
 			view.getModel().fireTableStructureChanged();
