@@ -35,7 +35,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		if (me.getClickCount() == 1) { /* respond to single clicks */
+		if (me.getClickCount() == 2) { /* respond to single clicks */
 
 			// Get a reference to the results JTable from the mouse event
 			JTable resultsTable = (JTable) me.getSource();

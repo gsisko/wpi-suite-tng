@@ -64,6 +64,9 @@ public class SaveRequirementController implements ActionListener
 			view.getRequirementReleaseNumber().setText("");
 			view.getRequirementEstimate().setText("");
 			view.getRequirementActualEffort().setText("");
+			
+			view.getSaveButton().setText("Update");
+			view.getSaveButton().setEnabled(false);
 
 			view.getRequirementName().setEnabled(false);
 			view.getRequirementDescription().setEnabled(false);
