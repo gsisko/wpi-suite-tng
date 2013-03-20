@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
-import java.util.Date;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -12,9 +11,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
@@ -27,8 +24,6 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requireme
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
-	
-	private ModelMapper updateMapper;
 
 	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. 
@@ -39,10 +34,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param data Database in the core
 	 */	
 	public RequirementManager(Data data) {
-		this.db = data;
-		
-		this.updateMapper = new ModelMapper();
-		this.updateMapper.getBlacklist().add("project"); // never allow project changing
+		this.db = data;		
 	}
 
 	
@@ -100,7 +92,8 @@ public class RequirementManager implements EntityManager<Requirement> {
      * @throws WPISuiteException If there are no Requirements in the database */
     public void assignUniqueID(Requirement req, Project p) throws WPISuiteException{
         if (req.getId() == -1){// -1 is a flag that says a unique id is needed            
-            req.setId(Count() + 1); // Makes first Requirement have id = 1
+            req.setId(p.getNextRequirementId()); // Makes first Requirement have id = 1
+            p.setNextRequirementId(p.getNextRequirementId() + 1);
         }        
     }
 
@@ -149,7 +142,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
-		/*if(Integer.parseInt(id) < 1) {  // This would be an invalid id
+		if(Integer.parseInt(id) < 1) {  // This would be an invalid id
 			throw new NotFoundException();
 		}
 		Requirement[] requirements = null;
@@ -160,24 +153,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		}		
 		
 		// Throw an exception if an ID was specified but not found
-		throw new NotFoundException();*/
-		
-		
-		final int intId = Integer.parseInt(id);
-		if(intId < 1) {
-			throw new NotFoundException();
-		}
-		Requirement[] requirements = null;
-		try {
-			requirements = db.retrieve(Requirement.class, "id", intId, s.getProject()).toArray(new Requirement[0]);
-		} catch (WPISuiteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(requirements.length < 1 || requirements[0] == null) {
-			throw new NotFoundException();
-		}
-		return requirements;
+		throw new NotFoundException();
 	}
 
 	
@@ -213,8 +189,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	    
 	    	*/
 	    	 
-	    /*
-		final Requirement reqUpdate = Requirement.fromJSON(content);
+	    	final Requirement reqUpdate = Requirement.fromJSON(content);
 	    	
 		Requirement oldReq = getEntity(s, Integer.toString(  reqUpdate.getId()  )  )[0];
 		
@@ -222,34 +197,10 @@ public class RequirementManager implements EntityManager<Requirement> {
 		save(s,oldReq);
 				
 		return null;
-		*/
 		
 		
-		Requirement updatedRequirement = Requirement.fromJSON(content);
 		
-		Requirement existingRequirement = (Requirement) (db.retrieve(Requirement.class, "Id", updatedRequirement.getId())).get(0);
 		
-		RequirementChangeset changeset = new RequirementChangeset();
-		// core should make sure the session user exists
-		// if this can't find the user, something's horribly wrong
-		changeset.setUser((User) db.retrieve(User.class, "username", s.getUsername()).get(0));
-		ChangesetCallback callback = new ChangesetCallback(changeset);
-		
-		// copy values to old requirement and fill in our changeset appropriately
-		updateMapper.map(updatedRequirement, existingRequirement, callback);
-		
-		if(changeset.getChanges().size() == 0) {
-			// stupid user didn't even change anything!
-
-		} else {
-			// add changeset to Requirement events, save to database
-			// TODO: events field doesn't persist without explicit save - is this a bug?
-			if(!db.save(existingRequirement, s.getProject())) {
-				throw new WPISuiteException();
-			}
-		}
-		
-		return existingRequirement;
 		
 		
 	}

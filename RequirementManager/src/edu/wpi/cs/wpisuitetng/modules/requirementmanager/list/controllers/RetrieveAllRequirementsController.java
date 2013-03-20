@@ -67,19 +67,17 @@ public class RetrieveAllRequirementsController {
 
 			// put the data in the table
 			Object[][] entries = new Object[requirements.length - numOfDeleted][columnNames.length];
-			int j = 0;
-			for (int i = 0; i < requirements.length; i++) {
+			for (int i = 0; i < (requirements.length - numOfDeleted); i++) {
 				if (requirements[i].getStatus() != Deleted) {
-					entries[j][0] = String.valueOf(requirements[i].getId());
-					entries[j][1] = requirements[i].getName();
-					entries[j][2] = requirements[i].getDescription();
-					entries[j][3] = requirements[i].getType().toString();
-					entries[j][4] = requirements[i].getStatus().toString();
-					entries[j][5] = requirements[i].getPriority().toString();
-					entries[j][6] = String.valueOf(requirements[i].getReleaseNumber());
-					entries[j][7] = String.valueOf(requirements[i].getEstimate());
-					entries[j][8] = String.valueOf(requirements[i].getActualEffort());
-					j++;
+					entries[i][0] = String.valueOf(requirements[i].getId());
+					entries[i][1] = requirements[i].getName();
+					entries[i][2] = requirements[i].getDescription();
+					entries[i][3] = requirements[i].getType().toString();
+					entries[i][4] = requirements[i].getStatus().toString();
+					entries[i][5] = requirements[i].getPriority().toString();
+					entries[i][6] = String.valueOf(requirements[i].getReleaseNumber());
+					entries[i][7] = String.valueOf(requirements[i].getEstimate());
+					entries[i][8] = String.valueOf(requirements[i].getActualEffort());
 				}
 			}
 			view.getModel().setData(entries);
