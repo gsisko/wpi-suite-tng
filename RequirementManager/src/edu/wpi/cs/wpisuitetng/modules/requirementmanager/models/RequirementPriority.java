@@ -24,17 +24,5 @@ public enum RequirementPriority {
        return valueOf(toConvert);
  
     }
-    
-    /** Converts a RequirementPriority to a string
-     * 
-     * @return the resulting string 
-     */
-    public String toString(){
-         return this.toString();
-     }  
-
-
-
-
 
 }

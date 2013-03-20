@@ -27,12 +27,4 @@ public enum RequirementStatus {
  
     }
     
-    /** Converts a RequirementStatus to a string
-     * 
-    
-    
-     * @return the resulting string */
-    public String toString(){
-         return this.toString();
-     }    
 }    

@@ -7,8 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -19,14 +19,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
-	protected ResultsPanel view;
+	protected RequirementPanel view;
 
 	/**
 	 * Construct the controller
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveRequirementController(ResultsPanel view) {
+	public RetrieveRequirementController(RequirementPanel view) {
 		this.view = view;
 	}
 
@@ -35,7 +35,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		if (me.getClickCount() == 2) { /* only respond to double clicks */
+		if (me.getClickCount() == 1) { /* respond to single clicks */
 
 			// Get a reference to the results JTable from the mouse event
 			JTable resultsTable = (JTable) me.getSource();
@@ -49,8 +49,8 @@ public class RetrieveRequirementController extends MouseAdapter {
 
 				// Create and send a request for the requirement with the given ID
 				Request request;
-				request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
-				request.addObserver(new RetrieveRequirementRequestObserver(this));
+				request = Network.getInstance().makeRequest("requirementmanager/requirement/"/* + requirementId*/, HttpMethod.GET);
+				request.addObserver(new RetrieveRequirementRequestObserver(this, Integer.parseInt(requirementId)));
 				request.send();
 			}
 		}
@@ -62,6 +62,26 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 * @param requirement the requirement that was retrieved
 	 */
 	public void showRequirement(Requirement requirement) {
+		view.setCreateNew(false);
+
+		view.getRequirementName().setText(requirement.getName());
+		view.getRequirementDescription().setText(requirement.getDescription());
+		view.getRequirementStatus().setSelectedItem(requirement.getStatus().toString());
+		view.getRequirementPriority().setSelectedItem(requirement.getPriority().toString());
+		view.getRequirementReleaseNumber().setText(Integer.toString(requirement.getReleaseNumber()));
+		view.getRequirementEstimate().setText(Integer.toString(requirement.getEstimate()));
+		view.getRequirementActualEffort().setText(Integer.toString(requirement.getActualEffort()));
+		
+		view.getSaveButton().setText("Save");
+		view.getSaveButton().setEnabled(true);
+
+		view.getRequirementName().setEnabled(true);
+		view.getRequirementDescription().setEnabled(true);
+		view.getRequirementStatus().setEnabled(true);
+		view.getRequirementPriority().setEnabled(true);
+		view.getRequirementReleaseNumber().setEnabled(true);
+		view.getRequirementEstimate().setEnabled(true);
+		view.getRequirementActualEffort().setEnabled(true);
 	}
 
 	/**

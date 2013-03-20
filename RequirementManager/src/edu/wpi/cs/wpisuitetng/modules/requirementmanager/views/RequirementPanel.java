@@ -32,12 +32,12 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.RefreshRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.SaveRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
 
 /**
  * This class is a JPanel. 
@@ -62,6 +62,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel
 @SuppressWarnings("serial")
 public class RequirementPanel extends JPanel {
 	
+	//The panels
+	private JPanel leftPanel;
+	private JPanel rightPanel;
+	
 	//The labels
 	private final JLabel nameLabel; //The label for the name text field ("txtName")
 	private final JLabel descriptionLabel;//The label for the description text area ("txtDescription")
@@ -82,11 +86,14 @@ public class RequirementPanel extends JPanel {
 
 	//The buttons
 	private final JButton btnSave; //The "save" button
-	private final JButton btnCreate;//The "create" button
+	private final JButton btnNew;//The "create" button
 	private final JButton btnRefresh;//The "refresh" button
 	
 	private ResultsTableModel resultsTableModel;
 	private JTable resultsTable;
+	private RetrieveAllRequirementsController controller;
+	
+	private boolean createNew = false;
 	
 	/**
 	 * The constructor for RequirementPanel;
@@ -96,8 +103,7 @@ public class RequirementPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public RequirementPanel() {
 		
-		JPanel leftPanel = new JPanel();
-		ResultsPanel rightPanel = new ResultsPanel();
+		leftPanel = new JPanel();
 		
 		//LEFT PANEL:
 		
@@ -118,6 +124,10 @@ public class RequirementPanel extends JPanel {
 		txtEstimate = new JTextField(/*"Enter an estimate here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
 		txtActualEffort = new JTextField(/*"Enter an actual effort here."*/"0");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
 		
+		txtName.setEnabled(false);
+		txtDescription.setEnabled(false);
+		txtReleaseNum.setEnabled(false);
+		txtEstimate.setEnabled(false);
 		txtActualEffort.setEnabled(false);
 		
 		//Create the strings for the boxes
@@ -132,41 +142,10 @@ public class RequirementPanel extends JPanel {
 		statusBox.setSelectedIndex(0);
 		statusBox.setEnabled(false);
 		priorityBox.setSelectedIndex(0);
+		priorityBox.setEnabled(false);
 		
-		/*
-		//Construct an action listener and add it to the status box		
-		statusBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                //Execute when button is pressed
-                JComboBox cb = (JComboBox)e.getSource();
-                String selectedStatus = (String)cb.getSelectedItem();
-                System.out.println("You selected a status");//TODO: replace this with a real action
-            }
-        });
-		
-		//Construct an action listener and add it to the priority box		
-		priorityBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                //Execute when button is pressed
-                JComboBox cb = (JComboBox)e.getSource();
-                String selectedPriority = (String)cb.getSelectedItem();
-                System.out.println("You selected a priority");//TODO: replace this with a real action
-            }
-        });
-		
-		
-		// Construct an action listener and add it to the save button
-		btnSave.addActionListener(new ActionListener() {
- 
-            public void actionPerformed(ActionEvent e)
-            {
-                //Execute when button is pressed
-                System.out.println("You clicked the save button");//TODO: replace this with a real action
-            }
-        });
-        */    
+		btnSave.addActionListener(new SaveRequirementController(this));
+		btnSave.setEnabled(false);
 		
 		// Set the layout manager that controls the positions of the components
 		leftPanel.setLayout(new GridBagLayout()); //set the layout
@@ -174,44 +153,7 @@ public class RequirementPanel extends JPanel {
 		
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
-		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll pane
-
-		/*
-		// Clear the contents of the name text field when the user clicks on it
-		txtName.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				txtName.setText("");
-				}
-		});
-		
-		// Clear the contents of the description text area when the user clicks on it
-		txtDescription.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				txtDescription.setText("");
-			}
-		});
-		
-		// Clear the contents of the release number text field when the user clicks on it
-		txtReleaseNum.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				txtReleaseNum.setText("");
-				}
-		});
-		
-		// Clear the contents of the estimate text field when the user clicks on it
-		txtEstimate.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				txtEstimate.setText("");
-				}
-		});
-		
-		// Clear the contents of the actual effort text field when the user clicks on it
-		txtActualEffort.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				txtActualEffort.setText("");
-				}
-		});
-		*/
+		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll panel
 		
 		
 		// Adjust the size and alignments of all the components (of the left panel) and add them to the left panel:
@@ -369,13 +311,13 @@ public class RequirementPanel extends JPanel {
 		
 		//RIGHT PANEL:
 		
-		//Set the layout manager for the right panel
+		rightPanel = new JPanel();
+		
+		// Set the layout
 		rightPanel.setLayout(new BorderLayout());
 		
 		// Construct the table model
 		resultsTableModel = new ResultsTableModel();
-		btnCreate = new JButton("Create");
-		btnRefresh = new JButton("Refresh");
 		
 		// Construct the table and configure it
 		resultsTable = new JTable(resultsTableModel);
@@ -383,24 +325,49 @@ public class RequirementPanel extends JPanel {
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 		
-		// Add a listener for row clicks to the results table
-		resultsTable.addMouseListener(new RetrieveRequirementController(rightPanel));
+		// Add a listener for row clicks
+		resultsTable.addMouseListener(new RetrieveRequirementController(this));
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-		/*
+		
+		btnNew = new JButton("New Requirement");
+		btnRefresh = new JButton("Refresh");
+		
+		controller = new RetrieveAllRequirementsController(this);
+		btnRefresh.setAction(new RefreshRequirementsAction(controller));
+		
 		// Construct an action listener and add it to the create button
-		btnCreate.addActionListener(new ActionListener() {
+		btnNew.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e)
             {
+            	createNew = true;
+            	
+            	txtName.setText("");
+            	txtDescription.setText("");
+            	statusBox.setSelectedIndex(0);
+            	priorityBox.setSelectedIndex(0);
+            	txtReleaseNum.setText("");
+            	txtEstimate.setText("");
+            	txtActualEffort.setText("0");
+            	
+            	btnSave.setText("Create");
+            	btnSave.setEnabled(true);
+            	
+            	txtName.setEnabled(true);
+            	txtDescription.setEnabled(true);
+            	statusBox.setEnabled(false);
+            	priorityBox.setEnabled(true);
+            	txtReleaseNum.setEnabled(true);
+            	txtEstimate.setEnabled(true);
+            	txtActualEffort.setEnabled(false);
+            	
                 //Execute when button is pressed
                 System.out.println("You clicked the create button");//TODO: replace this with a real action
             }
         });
-		*/
-		btnCreate.addActionListener(new SaveRequirementController(this));
-		/*
+		
 		// Construct an action listener and add it to the refresh button
 		btnRefresh.addActionListener(new ActionListener() {
  
@@ -410,14 +377,12 @@ public class RequirementPanel extends JPanel {
                 System.out.println("You clicked the refresh button");//TODO: replace this with a real action
             }
         });
-        */
-		btnRefresh.addActionListener(new RefreshRequirementController(this));
 		
-		//Actually add the scroll pane to the right panel
+		//Actually add the list to the right panel
 		rightPanel.add(resultsScrollPane, BorderLayout.PAGE_START);
 		
 		//Actually add the create button to the right panel
-		rightPanel.add(btnCreate, BorderLayout.LINE_START);
+		rightPanel.add(btnNew, BorderLayout.LINE_START);
 		
 		//Actually add the refresh button to the right panel
 		rightPanel.add(btnRefresh, BorderLayout.LINE_END);
@@ -499,6 +464,22 @@ public class RequirementPanel extends JPanel {
 //	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
+	}
+	
+	public JButton getSaveButton() {
+		return btnSave;
+	}
+	
+	public ResultsTableModel getModel() {
+		return resultsTableModel;
+	}
+	
+	public boolean getCreateNew() {
+		return createNew;
+	}
+
+	public void setCreateNew(boolean b) {
+		createNew = b;
 	}
 	
 }
