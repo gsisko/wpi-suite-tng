@@ -82,6 +82,8 @@ public class RetrieveRequirementController extends MouseAdapter {
 		view.getRequirementReleaseNumber().setEnabled(true);
 		view.getRequirementEstimate().setEnabled(true);
 		view.getRequirementActualEffort().setEnabled(true);
+		
+		view.setCurrentRequirement(requirement);
 	}
 
 	/**

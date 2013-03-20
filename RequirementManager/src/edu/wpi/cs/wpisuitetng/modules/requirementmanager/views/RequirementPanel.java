@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This class is a JPanel. 
@@ -94,6 +95,8 @@ public class RequirementPanel extends JPanel {
 	private RetrieveAllRequirementsController controller;
 	
 	private boolean createNew = false;
+	
+	private Requirement currentRequirement;
 	
 	/**
 	 * The constructor for RequirementPanel;
@@ -480,6 +483,14 @@ public class RequirementPanel extends JPanel {
 
 	public void setCreateNew(boolean b) {
 		createNew = b;
+	}
+	
+	public Requirement getCurrentRequirement() {
+		return currentRequirement;
+	}
+	
+	public void setCurrentRequirement(Requirement r) {
+		currentRequirement = r;
 	}
 	
 }

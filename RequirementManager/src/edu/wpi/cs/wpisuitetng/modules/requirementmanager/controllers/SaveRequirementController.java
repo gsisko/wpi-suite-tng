@@ -22,26 +22,43 @@ public class SaveRequirementController implements ActionListener
     @Override
     public void actionPerformed(ActionEvent event) 
     {
-	String name = view.getRequirementName().getText();
-	String description = view.getRequirementDescription().getText();
-	int releaseNumber = Integer.parseInt(view.getRequirementReleaseNumber().getText());
-	RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
-	int estimate = Integer.parseInt(view.getRequirementEstimate().getText());
-	if((name.length() > 0 && name.length() <= 100) && (description.length() > 0))
-	{
-		if (view.getCreateNew()) {
-		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
-		   
-		    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate).toJSON()); // put the new message in the body of the request
-		   
-		    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
-		   
-		    request.send();
-		}
-		else {
-			
-			// update existing requirement
-		}
+
+    if (view.getCreateNew()) {
+	
+    	String name = view.getRequirementName().getText();
+		String description = view.getRequirementDescription().getText();
+		int releaseNumber = Integer.parseInt(view.getRequirementReleaseNumber().getText());
+		RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
+		int estimate = Integer.parseInt(view.getRequirementEstimate().getText());
+	
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
+	   
+	    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate).toJSON()); // put the new message in the body of the request
+	   
+	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
+	   
+	    request.send();
+	}
+	else {
+		
+		Requirement updatedRequirement = view.getCurrentRequirement();
+		
+		updatedRequirement.setName(view.getRequirementName().getText());
+		updatedRequirement.setDescription(view.getRequirementDescription().getText());
+		updatedRequirement.setReleaseNumber(Integer.parseInt(view.getRequirementReleaseNumber().getText()));
+		updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
+		updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
+		updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
+		updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
+	
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // PUT == create
+	   
+	    request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
+	   
+	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
+	   
+	    request.send();
+		
 	}
 	//else throw error for incorrect inputs
 	
