@@ -36,6 +36,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		this.db = data;		
 	}
 
+	
 		
 	/** Takes an encoded Requirement(as a string) and converts it back to a 
 	 *  Requirement and saves it in the database
@@ -63,6 +64,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	}
 		
 	
+	
 	/** Saves the given Requirement into the database if possible.
 	 * 
 	 *  @param s The current user session
@@ -80,6 +82,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 		}
 	}
 
+	
+	
     /** Takes a Requirement and assigns a unique id if necessary
      * 
      * @param req The requirement that possibly needs a unique id
@@ -91,6 +95,8 @@ public class RequirementManager implements EntityManager<Requirement> {
         }        
     }
 
+    
+    
 	/** Returns the number of Requirements currently in the database. Disregards
 	 *  the current user session
 	 * 
@@ -104,6 +110,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 		return this.db.retrieveAll(new Requirement()).size();
 	}
 
+	
+	
 	/** Takes a session and returns an array of all the Requirements contained
 	 * 
 	 * @param s The current user session
@@ -117,7 +125,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 		return this.db.retrieveAll(new Requirement(), s.getProject()).toArray(new Requirement[0]);
 	}	
 	
-// TODO    THIS NEEDS TESTING!!!!	
+	
+	
+	
 	/**  For the current user session, Takes a specific id for a Requirement and returns it 
 	 *   in an array.	
 	 *  
@@ -148,8 +158,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 
 	
-	
-// TODO    THIS NEEDS TESTING!!!!	
+
 	/**  Updates a Requirement already in the database
 	 *   
 	 *  @param s The current user session
@@ -203,6 +212,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	}
 	
 
+	
 	/** Deletes ALL Requirement from the database (not advised)
 	 * 
 	 *  @param s The current user session
@@ -226,6 +236,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 	}
 	
 
+	
+	
 	
 // Unimplemented Manager methods	
 // Advanced Manager methods
