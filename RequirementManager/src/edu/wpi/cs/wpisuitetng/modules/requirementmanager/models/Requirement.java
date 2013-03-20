@@ -19,27 +19,26 @@ import com.google.gson.GsonBuilder;
  * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {
+	/** Unique ID of the record- assigned by entity manager  */
+	private int id;           
 	/** The name of the Requirement (100 chars)    	  */
 	private String name;         
 	/** A description of the Requirement     */
-	private String description; 
-	
-	/** Unique ID of the record- assigned by entity manager  */
-	private int id;              
-	/** Must be a release number of the current project ***/
-	private int releaseNumber;    
-	
+	private String description;    
+	/** the type of the requirement **/
+	private RequirementType type;
 	/** The status in the work flow- Default to NEW   */
 	private RequirementStatus status;     
 	/** The priority set to the Requirement  */
 	private RequirementPriority priority;  
+	/** Must be a release number of the current project ***/
+	private int releaseNumber;    
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
 	private int actualEffort;             
 	
-	private RequirementType type;
-	
+
 	/*
 	private HashSet<Note> notes;
 	private HashSet<Attachment> attachments;
@@ -50,7 +49,7 @@ public class Requirement extends AbstractModel {
 	private List<RequirementEvent> events;  
 		
 	public Requirement(){
-		new Requirement("","",0,NoPriority,0, NoType);
+		new Requirement("","",NoType,NoPriority,0);
 	}
 	
 	
@@ -63,15 +62,15 @@ public class Requirement extends AbstractModel {
 	 * @param priority RequirementPriority
 	 * @param estimate int
 	 */
-	public Requirement(String name, String description,  int releaseNumber, RequirementPriority priority, int estimate, RequirementType type) {
+	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber) {
 		this.setName(name);
-		this.setDescription(description); 
-		this.setReleaseNumber(releaseNumber); // release number of current project
-		this.setPriority(priority); // Initialize priority
-		this.setEstimate(estimate);	// Initialize estimate
+		this.setDescription(description);
 		this.setType(type);
+		this.setPriority(priority); // Initialize priority
+		this.setReleaseNumber(releaseNumber); // release number of current project
 		
 		// The rest are default values
+		this.setEstimate(0);
 		this.setActualEffort(0);			// Initial actual effort set to zero
 		this.setStatus(New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
@@ -110,7 +109,7 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * Converts this Epic to a JSON string
+	 * Converts this Epic to a JSON string for sending accross the network
 	
 	
 	 * @return a string in JSON representing this Epic * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
@@ -155,13 +154,13 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * Method toString.
+	 * Method toString. Current outputs a JSON string
 	
 	
 	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() */
 	@Override
 	public String toString() {
-		return toJSON();
+		return this.toJSON();
 	}
 	
 	/**

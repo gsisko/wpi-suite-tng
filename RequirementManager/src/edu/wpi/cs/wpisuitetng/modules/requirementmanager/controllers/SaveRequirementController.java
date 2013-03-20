@@ -27,14 +27,13 @@ public class SaveRequirementController implements ActionListener
 	
     	String name = view.getRequirementName().getText();
 		String description = view.getRequirementDescription().getText();
-		int releaseNumber = Integer.parseInt(view.getRequirementReleaseNumber().getText());
+		int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : (view.getRequirementReleaseNumber().getText()));
 		RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
-		int estimate = Integer.parseInt(view.getRequirementEstimate().getText());
 		RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
 	
 	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
-	    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate, type).toJSON()); // put the new message in the body of the request
+	    request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
 	   
 	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
 	   
@@ -49,11 +48,11 @@ public class SaveRequirementController implements ActionListener
 		updatedRequirement.setName(view.getRequirementName().getText());
 		updatedRequirement.setDescription(view.getRequirementDescription().getText());
 		updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
-		updatedRequirement.setReleaseNumber(Integer.parseInt(view.getRequirementReleaseNumber().getText()));
+		updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : view.getRequirementReleaseNumber().getText()));
 		updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 		updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
-		updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
-		updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
+		updatedRequirement.setEstimate(Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText()));
+		updatedRequirement.setActualEffort(Integer.parseInt((view.getRequirementActualEffort().getText().equals(""))? "0" : view.getRequirementActualEffort().getText()));
 	
 	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // PUT == create
 	   

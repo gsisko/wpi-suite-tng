@@ -83,9 +83,9 @@ public class RequirementPanel extends JPanel {
 	private final JComboBox typeBox;//The type combo box
 	private final JComboBox statusBox;//The status combo box
 	private final JComboBox priorityBox;//The priority combo box
-	private final JTextField txtReleaseNum;//The release number text field
-	private final JTextField txtEstimate;//The estimate text field
-	private final JTextField txtActualEffort;//The actual effort text field
+	private final JNumberTextField txtReleaseNum;//The release number text field
+	private final JNumberTextField txtEstimate;//The estimate text field
+	private final JNumberTextField txtActualEffort;//The actual effort text field
 
 	//The buttons
 	private final JButton btnSave; //The "save" button
@@ -126,9 +126,14 @@ public class RequirementPanel extends JPanel {
 		txtName = new JTextField(/*"Enter a name here."*/"");
 		txtDescription = new JTextArea(/*"Enter a description here."*/"", 2, 2);
 		btnSave = new JButton("Update");
-		txtReleaseNum = new JTextField(/*"Enter a release number here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
-		txtEstimate = new JTextField(/*"Enter an estimate here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
-		txtActualEffort = new JTextField(/*"Enter an actual effort here."*/"0");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtReleaseNum = new JNumberTextField();//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtEstimate = new JNumberTextField();//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtActualEffort = new JNumberTextField();//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtEstimate.setText("0");
+		txtActualEffort.setText("0");
+		txtReleaseNum.setAllowNegative(false);
+		txtEstimate.setAllowNegative(false);
+		txtActualEffort.setAllowNegative(false);
 		
 		txtName.setEnabled(false);
 		txtDescription.setEnabled(false);
@@ -379,7 +384,7 @@ public class RequirementPanel extends JPanel {
             	statusBox.setSelectedIndex(0);
             	priorityBox.setSelectedIndex(0);
             	txtReleaseNum.setText("");
-            	txtEstimate.setText("");
+            	txtEstimate.setText("0");
             	txtActualEffort.setText("0");
             	
             	btnSave.setText("Create");
@@ -391,7 +396,7 @@ public class RequirementPanel extends JPanel {
             	statusBox.setEnabled(false);
             	priorityBox.setEnabled(true);
             	txtReleaseNum.setEnabled(true);
-            	txtEstimate.setEnabled(true);
+            	txtEstimate.setEnabled(false);
             	txtActualEffort.setEnabled(false);
             	
                 //Execute when button is pressed
