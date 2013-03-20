@@ -137,9 +137,9 @@ public class RequirementPanel extends JPanel {
 		txtActualEffort.setEnabled(false);
 		
 		//Create the strings for the boxes
-		String[] typeStrings = { "none", "Epic", "Theme", "User", "Story", "Non-Functional", "Scenario" };
-		String[] statusStrings = { "NEW", "IN_PROGRESS", "OPEN", "COMPLETE", "DELETED" };
-		String[] priorityStrings = { "none", "High", "Medium", "Low"};
+		String[] typeStrings = { "NoType", "Epic", "Theme", "UserStory", "Non-Functional", "Scenario" };
+		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
+		String[] priorityStrings = { "NoPriority", "High", "Medium", "Low"};
 		
         //Construct the boxes 
 		typeBox = new JComboBox(typeStrings);
@@ -375,6 +375,7 @@ public class RequirementPanel extends JPanel {
             	
             	txtName.setText("");
             	txtDescription.setText("");
+            	typeBox.setSelectedIndex(0);
             	statusBox.setSelectedIndex(0);
             	priorityBox.setSelectedIndex(0);
             	txtReleaseNum.setText("");
@@ -386,7 +387,7 @@ public class RequirementPanel extends JPanel {
             	
             	txtName.setEnabled(true);
             	txtDescription.setEnabled(true);
-            	typeBox.setEnabled(true); //Is this right?
+            	typeBox.setEnabled(true);
             	statusBox.setEnabled(false);
             	priorityBox.setEnabled(true);
             	txtReleaseNum.setEnabled(true);

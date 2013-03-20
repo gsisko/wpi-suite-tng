@@ -9,7 +9,7 @@ public enum RequirementPriority {
 	High,
 	Medium,
 	Low,
-	none;
+	NoPriority;
 
 
 	/** Converts a string to the proper RequirementPriority

@@ -203,7 +203,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// even though we know it is returning a list of Requirements here
 	    for ( Model r : requirements ) {
 	    	if ((   (Requirement) r).getId() == Integer.parseInt( id) ){
-	    		((Requirement) r).setStatus(DELETED); // Set the status to deleted
+	    		((Requirement) r).setStatus(Deleted); // Set the status to deleted
 	    		this.save( s ,(Requirement) r);
 	    		return true; // end now
 	    	}
@@ -229,7 +229,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// Casting is used because the retrieveAll function returns a list of "Models"
 		// even though we know it is returning a list of Requirements here
 	   for ( Model r : requirements ) {
-	    	((Requirement) r).setStatus(DELETED); // Set the status to deleted
+	    	((Requirement) r).setStatus(Deleted); // Set the status to deleted
 	    	this.save( s ,(Requirement) r);
 	    }		
 	    throw new WPISuiteException();

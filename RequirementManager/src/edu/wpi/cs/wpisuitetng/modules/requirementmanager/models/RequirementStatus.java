@@ -6,11 +6,11 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
  * @version $Revision: 1.0 $
  */
 public enum RequirementStatus {
-	NEW,   // The initial status value of a requirement
-	IN_PROGRESS,  // The first value after being new. Also the value when a requirement is part of an iteration
-	OPEN,     // The status of a requirement that is in the backlog
-	COMPLETE,  // A complete Requirement
-	DELETED;	// Any of these status's may lead to DELETED, but DELETED may move to any but NEW
+	New,   // The initial status value of a requirement
+	InProgress,  // The first value after being new. Also the value when a requirement is part of an iteration
+	Open,     // The status of a requirement that is in the backlog
+	Complete,  // A complete Requirement
+	Deleted;	// Any of these status's may lead to DELETED, but DELETED may move to any but NEW
 	 // Need to ask Marty about this, but some of the project descriptions hint at this
 	
 

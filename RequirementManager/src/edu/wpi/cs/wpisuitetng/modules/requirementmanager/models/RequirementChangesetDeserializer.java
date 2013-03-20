@@ -90,6 +90,12 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				int newName = context.deserialize(actualEffortObj.get("newValue"), int.class);
 				changesMap.put("actualEffort", new FieldChange<Integer>(oldName, newName));
 			}
+			if (changes.has("type")) {
+				JsonObject typeObj = changes.get("type").getAsJsonObject();
+				RequirementType oldName = context.deserialize(typeObj.get("oldValue"), RequirementType.class);
+				RequirementType newName = context.deserialize(typeObj.get("newValue"), RequirementType.class);
+				changesMap.put("type", new FieldChange<RequirementType>(oldName, newName));
+			}
 			/*
 			if (changes.has("attachments")) {
 				JsonObject attachmentsObj = changes.get("attachments").getAsJsonObject();

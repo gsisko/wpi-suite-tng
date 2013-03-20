@@ -8,6 +8,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority.*;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,6 +38,8 @@ public class Requirement extends AbstractModel {
 	/** The actual effort it took for this Requirement  */
 	private int actualEffort;             
 	
+	private RequirementType type;
+	
 	/*
 	private HashSet<Note> notes;
 	private HashSet<Attachment> attachments;
@@ -47,7 +50,7 @@ public class Requirement extends AbstractModel {
 	private List<RequirementEvent> events;  
 		
 	public Requirement(){
-		new Requirement("","",0,none,0);
+		new Requirement("","",0,NoPriority,0, NoType);
 	}
 	
 	
@@ -60,16 +63,17 @@ public class Requirement extends AbstractModel {
 	 * @param priority RequirementPriority
 	 * @param estimate int
 	 */
-	public Requirement(String name, String description,  int releaseNumber, RequirementPriority priority, int estimate) {
+	public Requirement(String name, String description,  int releaseNumber, RequirementPriority priority, int estimate, RequirementType type) {
 		this.setName(name);
 		this.setDescription(description); 
 		this.setReleaseNumber(releaseNumber); // release number of current project
 		this.setPriority(priority); // Initialize priority
 		this.setEstimate(estimate);	// Initialize estimate
+		this.setType(type);
 		
 		// The rest are default values
 		this.setActualEffort(0);			// Initial actual effort set to zero
-		this.setStatus(NEW);		// Initial status should be set to NEW
+		this.setStatus(New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
 		/*
 		this.setAttachments(new HashSet<Attachment>());		// Initializes an empty HashSet of attachments
@@ -414,6 +418,22 @@ public class Requirement extends AbstractModel {
 		setAttachments(reqUpdate.getAttachments());
 		setTasks(reqUpdate.getTasks());
 		*/
+	}
+
+
+	/**
+	 * @return the type
+	 */
+	public RequirementType getType() {
+		return type;
+	}
+
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(RequirementType type) {
+		this.type = type;
 	}
 
 }

@@ -56,7 +56,7 @@ public class RetrieveAllRequirementsController {
 			this.data = requirements;
 
 			// set the column names
-			String[] columnNames = {"ID", "Name", "Description", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
+			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
 			view.getModel().setColumnNames(columnNames);
 
 			// put the data in the table
@@ -65,11 +65,12 @@ public class RetrieveAllRequirementsController {
 				entries[i][0] = String.valueOf(requirements[i].getId());
 				entries[i][1] = requirements[i].getName();
 				entries[i][2] = requirements[i].getDescription();
-				entries[i][3] = requirements[i].getStatus().toString();
-				entries[i][4] = requirements[i].getPriority().toString();
-				entries[i][5] = String.valueOf(requirements[i].getReleaseNumber());
-				entries[i][6] = String.valueOf(requirements[i].getEstimate());
-				entries[i][7] = String.valueOf(requirements[i].getActualEffort());
+				entries[i][3] = requirements[i].getType().toString();
+				entries[i][4] = requirements[i].getStatus().toString();
+				entries[i][5] = requirements[i].getPriority().toString();
+				entries[i][6] = String.valueOf(requirements[i].getReleaseNumber());
+				entries[i][7] = String.valueOf(requirements[i].getEstimate());
+				entries[i][8] = String.valueOf(requirements[i].getActualEffort());
 			}
 			view.getModel().setData(entries);
 			view.getModel().fireTableStructureChanged();

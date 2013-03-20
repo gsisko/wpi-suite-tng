@@ -30,10 +30,11 @@ public class SaveRequirementController implements ActionListener
 		int releaseNumber = Integer.parseInt(view.getRequirementReleaseNumber().getText());
 		RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
 		int estimate = Integer.parseInt(view.getRequirementEstimate().getText());
+		RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
 	
 	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
-	    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate).toJSON()); // put the new message in the body of the request
+	    request.setBody(new Requirement(name, description, releaseNumber, priority, estimate, type).toJSON()); // put the new message in the body of the request
 	   
 	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
 	   
@@ -47,6 +48,7 @@ public class SaveRequirementController implements ActionListener
 		updatedRequirement.setId(oldr.getId());
 		updatedRequirement.setName(view.getRequirementName().getText());
 		updatedRequirement.setDescription(view.getRequirementDescription().getText());
+		updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
 		updatedRequirement.setReleaseNumber(Integer.parseInt(view.getRequirementReleaseNumber().getText()));
 		updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 		updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
@@ -78,6 +80,7 @@ public class SaveRequirementController implements ActionListener
 			
 			view.getRequirementName().setText("");
 			view.getRequirementDescription().setText("");
+			view.getRequirementType().setSelectedIndex(0);
 			view.getRequirementStatus().setSelectedIndex(0);
 			view.getRequirementPriority().setSelectedIndex(0);
 			view.getRequirementReleaseNumber().setText("");
@@ -89,6 +92,7 @@ public class SaveRequirementController implements ActionListener
 
 			view.getRequirementName().setEnabled(false);
 			view.getRequirementDescription().setEnabled(false);
+			view.getRequirementType().setEnabled(false);
 			view.getRequirementStatus().setEnabled(false);
 			view.getRequirementPriority().setEnabled(false);
 			view.getRequirementReleaseNumber().setEnabled(false);
