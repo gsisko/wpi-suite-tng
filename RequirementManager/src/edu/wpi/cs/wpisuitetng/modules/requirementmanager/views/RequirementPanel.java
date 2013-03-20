@@ -70,6 +70,7 @@ public class RequirementPanel extends JPanel {
 	//The labels
 	private final JLabel nameLabel; //The label for the name text field ("txtName")
 	private final JLabel descriptionLabel;//The label for the description text area ("txtDescription")
+	private final JLabel typeLabel; //The label for the type combo box ("typeBox")
 	private final JLabel statusLabel; //The label for the status combo box ("statusBox")
 	private final JLabel priorityLabel; //The label for the priority combo box ("priorityBox")
 	private final JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
@@ -79,6 +80,7 @@ public class RequirementPanel extends JPanel {
 	//The fillable components
 	private final JTextField txtName;//The name text field 
 	private final JTextArea txtDescription;//The description text area
+	private final JComboBox typeBox;//The type combo box
 	private final JComboBox statusBox;//The status combo box
 	private final JComboBox priorityBox;//The priority combo box
 	private final JTextField txtReleaseNum;//The release number text field
@@ -113,6 +115,7 @@ public class RequirementPanel extends JPanel {
 		//Construct the labels
 		nameLabel = new JLabel("Name:");
 		descriptionLabel = new JLabel("Description:");
+		typeLabel = new JLabel("Type:");
 		statusLabel = new JLabel("Status:");
 		priorityLabel = new JLabel("Priority:");
 		releaseNumLabel = new JLabel("Release Number:");
@@ -134,14 +137,18 @@ public class RequirementPanel extends JPanel {
 		txtActualEffort.setEnabled(false);
 		
 		//Create the strings for the boxes
+		String[] typeStrings = { "none", "Epic", "Theme", "User", "Story", "Non-Functional", "Scenario" };
 		String[] statusStrings = { "NEW", "IN_PROGRESS", "OPEN", "COMPLETE", "DELETED" };
 		String[] priorityStrings = { "none", "High", "Medium", "Low"};
 		
         //Construct the boxes 
+		typeBox = new JComboBox(typeStrings);
 		statusBox = new JComboBox(statusStrings);
 		priorityBox = new JComboBox(priorityStrings);
 		
 		//Set the initial selections for the boxes
+		typeBox.setSelectedIndex(0);
+		typeBox.setEnabled(false);
 		statusBox.setSelectedIndex(0);
 		statusBox.setEnabled(false);
 		priorityBox.setSelectedIndex(0);
@@ -202,8 +209,8 @@ public class RequirementPanel extends JPanel {
 		leftPanel.add(scrollPane, leftConstraints);//Actually add the "scrollPane" to the layout given the previous constraints
 		//end Description
 		
-		//Status:		
-		//Set the constraints for the "statusLabel" and add it to the view
+		//Type:
+		//Set the constraints for the "typeLabel" and add it to the view
 		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
 		leftConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
@@ -211,6 +218,25 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		leftConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		leftPanel.add(typeLabel, leftConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
+		//Set the constraints for the "typeBox"  and add it to the view
+		leftConstraints.fill = GridBagConstraints.BOTH;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
+		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
+		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
+		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
+		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
+		leftConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		leftPanel.add(typeBox, leftConstraints);//Actually add the "typeBox" to the layout given the previous constraints
+		//end Type
+		
+		//Status:		
+		//Set the constraints for the "statusLabel" and add it to the view
+		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
+		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
+		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
+		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
+		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
+		leftConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(statusLabel, leftConstraints);//Actually add the "statusLabel" to the layout given the previous constraints
 		//Set the constraints for the "statusBox" and add it to the view
 		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -218,7 +244,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(statusBox, leftConstraints);//Actually add the "statusBox" to the layout given the previous constraints
 		//end Status
 		
@@ -229,7 +255,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(priorityLabel, leftConstraints);//Actually add the "priorityLabel" to the layout given the previous constraints
 		//Set the constraints for the "priorityBox" and add it to the view
 		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -237,7 +263,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(priorityBox, leftConstraints);//Actually add the "priorityBox" to the layout given the previous constraints
 		//end Priority
 		
@@ -248,7 +274,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 5;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(releaseNumLabel, leftConstraints);//Actually add the "releaseNumLabel" to the layout given the previous constraints
 		//Set the constraints for the "txtReleaseNum" and add it to the view
 		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -256,7 +282,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 5;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(txtReleaseNum, leftConstraints);//Actually add the "txtReleaseNum" to the layout given the previous constraints
 		//end Release number
 		
@@ -267,7 +293,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 5;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 6;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(estimateLabel, leftConstraints);//Actually add the "estimateLabel" to the layout given the previous constraints
 		//Set the constraints for the "txtEstimate" and add it to the view
 		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -275,7 +301,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 5;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 6;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(txtEstimate, leftConstraints);//Actually add the "txtEstimate" to the layout given the previous constraints
 		//end Estimate
 
@@ -286,7 +312,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 6;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 7;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(actualEffortLabel, leftConstraints);//Actually add the "actualEffortLabel" to the layout given the previous constraints
 		//Set the constraints for the "txtActualEffort" and add it to the view
 		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -294,7 +320,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 6;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 7;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(txtActualEffort, leftConstraints);//Actually add the "txtActualEffort" to the layout given the previous constraints
 		//end Actual effort
 		
@@ -305,7 +331,7 @@ public class RequirementPanel extends JPanel {
 		leftConstraints.anchor = GridBagConstraints.PAGE_END; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
 		leftConstraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
 		leftConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 7;//Set the y coord of the cell of the layout we are describing
+		leftConstraints.gridy = 8;//Set the y coord of the cell of the layout we are describing
 		leftPanel.add(btnSave, leftConstraints);//Actually add the "btnSave" to the layout given the previous constraints
 		//end Save button
 		
@@ -360,6 +386,7 @@ public class RequirementPanel extends JPanel {
             	
             	txtName.setEnabled(true);
             	txtDescription.setEnabled(true);
+            	typeBox.setEnabled(true); //Is this right?
             	statusBox.setEnabled(false);
             	priorityBox.setEnabled(true);
             	txtReleaseNum.setEnabled(true);
@@ -427,6 +454,14 @@ public class RequirementPanel extends JPanel {
 //	 */
 	public JTextArea getRequirementDescription() {
 		return txtDescription;
+	}
+	
+//	/**
+//	 * This returns the JComboBox "typeBox"
+//	 * @return the typeBox JComboBox
+//	 */
+	public JComboBox getRequirementType() {
+		return typeBox;
 	}
 
 //	/**
