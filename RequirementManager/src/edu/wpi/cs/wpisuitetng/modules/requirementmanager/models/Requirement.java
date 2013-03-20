@@ -19,24 +19,20 @@ import com.google.gson.GsonBuilder;
  * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {
+	/** Unique ID of the record- assigned by entity manager  */
+	private int id;           
 	/** The name of the Requirement (100 chars)    	  */
 	private String name;         
 	/** A description of the Requirement     */
-	private String description; 
-	
-	/** Unique ID of the record- assigned by entity manager  */
-	private int id;              
-	/** Must be a release number of the current project ***/
-	private int releaseNumber;    
-	
+	private String description;    
+	/** the type of the requirement **/
+	private RequirementType type;
 	/** The status in the work flow- Default to NEW   */
 	private RequirementStatus status;     
 	/** The priority set to the Requirement  */
 	private RequirementPriority priority;  
-	/** the type of the requirement **/
-	private RequirementType type;
-	
-	
+	/** Must be a release number of the current project ***/
+	private int releaseNumber;    
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */

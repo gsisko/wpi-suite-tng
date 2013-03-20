@@ -32,7 +32,7 @@ public class SaveRequirementController implements ActionListener
 		int estimate = Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText());
 		RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
 	
-	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement/", HttpMethod.PUT); // PUT == create
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 	   
 	    request.setBody(new Requirement(name, description, type, priority,  releaseNumber, estimate).toJSON()); // put the new message in the body of the request
 	   
@@ -55,7 +55,7 @@ public class SaveRequirementController implements ActionListener
 		updatedRequirement.setEstimate(Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText()));
 		updatedRequirement.setActualEffort(Integer.parseInt((view.getRequirementActualEffort().getText().equals(""))? "0" : view.getRequirementActualEffort().getText()));
 	
-	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement/" + updatedRequirement.getId(), HttpMethod.POST); // PUT == create
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // PUT == create
 	   
 	    request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
 	   

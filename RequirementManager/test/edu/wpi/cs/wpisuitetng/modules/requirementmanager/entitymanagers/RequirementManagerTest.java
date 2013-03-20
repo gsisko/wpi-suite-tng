@@ -137,7 +137,7 @@ public class RequirementManagerTest {
 		Requirement req = new Requirement();
 		req.setId(-1);
 
-		fixture.assignUniqueID(req);
+		//fixture.assignUniqueID(req);
 
 		// add additional test code here
 		// An unexpected exception was thrown in user code while executing this test:
@@ -160,7 +160,7 @@ public class RequirementManagerTest {
 		Requirement req = new Requirement();
 		req.setId(-1);
 
-		fixture.assignUniqueID(req);
+		//fixture.assignUniqueID(req);
 
 		// add additional test code here
 		// An unexpected exception was thrown in user code while executing this test:
@@ -183,7 +183,7 @@ public class RequirementManagerTest {
 		Requirement req = new Requirement();
 		req.setId(1);
 
-		fixture.assignUniqueID(req);
+		//fixture.assignUniqueID(req);
 
 		// add additional test code here
 	}

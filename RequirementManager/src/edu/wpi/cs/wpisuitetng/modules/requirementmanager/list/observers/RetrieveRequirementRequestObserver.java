@@ -14,15 +14,15 @@ public class RetrieveRequirementRequestObserver implements RequestObserver {
 
 	/** The retrieve requirement controller using this observer */
 	protected RetrieveRequirementController controller;
-	protected int row;
+	protected int id;
 
 	/**
 	 * Construct a new observer
 	 * @param controller the controller managing the request
 	 */
-	public RetrieveRequirementRequestObserver(RetrieveRequirementController controller, int row) {
+	public RetrieveRequirementRequestObserver(RetrieveRequirementController controller, int id) {
 		this.controller = controller;
-		this.row = row;
+		this.id = id;
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class RetrieveRequirementRequestObserver implements RequestObserver {
 
 		// parse the requirement received from the core
 		Requirement[] requirements = Requirement.fromJSONArray(response.getBody());
-		if (requirements.length > 0 && requirements[row] != null) {
-			controller.showRequirement(requirements[row]);
+		if (requirements.length > 0 && requirements[id] != null) {
+			controller.showRequirement(requirements[id]);
 		}
 		else {
 			controller.errorRetrievingRequirement("No requirements received.");

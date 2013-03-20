@@ -39,6 +39,8 @@ public class Project extends AbstractModel
 	private User owner;
 	private ArrayList<User> team;
 	
+	private int nextRequirementId;
+	
 	/**
 	 * Primary constructor for a Project
 	 * @param name - the project name
@@ -62,6 +64,8 @@ public class Project extends AbstractModel
 		{
 			this.team = new ArrayList<User>();
 		}
+		
+		this.setNextRequirementId(0);
 	}
 	
 	/**
@@ -327,6 +331,20 @@ public class Project extends AbstractModel
 	@Override
 	public void setProject(Project aProject) {
 		//Can't set a project's project
+	}
+
+	/**
+	 * @return the nextRequirementId
+	 */
+	public int getNextRequirementId() {
+		return nextRequirementId;
+	}
+
+	/**
+	 * @param nextRequirementId the nextRequirementId to set
+	 */
+	public void setNextRequirementId(int nextRequirementId) {
+		this.nextRequirementId = nextRequirementId;
 	}
 
 }
