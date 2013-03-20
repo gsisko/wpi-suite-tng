@@ -23,7 +23,6 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requireme
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
-	private static int numOfObjects;
 
 	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. 
@@ -93,7 +92,6 @@ public class RequirementManager implements EntityManager<Requirement> {
     public void assignUniqueID(Requirement req) throws WPISuiteException{
         if (req.getId() == -1){// -1 is a flag that says a unique id is needed            
             req.setId(this.Count() + 1); // Makes first Requirement have id = 1
-            numOfObjects = this.Count() + 1;
         }        
     }
 
@@ -110,10 +108,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
 		return this.db.retrieveAll(new Requirement()).size();
-	}
-	
-	public static int getNumOfObjetcts() {
-		return numOfObjects;
 	}
 
 	
