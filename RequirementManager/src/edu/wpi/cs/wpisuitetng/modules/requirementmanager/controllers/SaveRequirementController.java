@@ -41,8 +41,10 @@ public class SaveRequirementController implements ActionListener
 	}
 	else {
 		
-		Requirement updatedRequirement = view.getCurrentRequirement();
+		Requirement updatedRequirement = new Requirement(); 
+		Requirement oldr = view.getCurrentRequirement();
 		
+		updatedRequirement.setId(oldr.getId());
 		updatedRequirement.setName(view.getRequirementName().getText());
 		updatedRequirement.setDescription(view.getRequirementDescription().getText());
 		updatedRequirement.setReleaseNumber(Integer.parseInt(view.getRequirementReleaseNumber().getText()));
