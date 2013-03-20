@@ -33,13 +33,16 @@ public class Requirement extends AbstractModel {
 	private RequirementStatus status;     
 	/** The priority set to the Requirement  */
 	private RequirementPriority priority;  
+	/** the type of the requirement **/
+	private RequirementType type;
+	
+	
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
 	private int actualEffort;             
 	
-	private RequirementType type;
-	
+
 	/*
 	private HashSet<Note> notes;
 	private HashSet<Attachment> attachments;
@@ -110,7 +113,7 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * Converts this Epic to a JSON string
+	 * Converts this Epic to a JSON string for sending accross the network
 	
 	
 	 * @return a string in JSON representing this Epic * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
@@ -155,13 +158,13 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * Method toString.
+	 * Method toString. Current outputs a JSON string
 	
 	
 	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() */
 	@Override
 	public String toString() {
-		return toJSON();
+		return this.toJSON();
 	}
 	
 	/**
