@@ -67,31 +67,31 @@ public class RequirementTest {
 		Requirement test;
 		
 		//Test normal input
-		test = new Requirement("Test", "JUnit test requirement", 0, NoPriority, 0, NoType);
+		test = new Requirement("Test", "JUnit test requirement", NoType, NoPriority, 0, 0);
 		test = null;
 		
 		//Test garbage and illegal input
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
 		//Test at max, below and above
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
 		//Test at min, below and above
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
-		test = new Requirement(null, null, 0, null, 0, null);
+		test = new Requirement(null, null, null, null, 0, 0);
 		test = null;
 		
 
@@ -105,7 +105,7 @@ public class RequirementTest {
 	@Test
 	public final void testSave() {
 //		Requirement tester = new Requirement("Test", "Test requirement for JUnit", 0, 0, null, null, 0, 0);
-		Requirement tester = new Requirement(null, null, 0, null, 0, null);
+		Requirement tester = new Requirement(null, null, null, null, 0, 0);
 		tester.save();
 		
 		fail("Not yet implemented"); // TODO
@@ -236,7 +236,7 @@ public class RequirementTest {
 	 */
 	@Test
 	public final void testSetDescription() {
-		Requirement test = new Requirement(null, null, 0, null, 0, null);
+		Requirement test = new Requirement(null, null, null, null, 0, 0);
 		
 		//Test normal input
 		test.setDescription("Test");

@@ -60,6 +60,12 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				String newDesc = context.deserialize(descriptionObj.get("newValue"), String.class);
 				changesMap.put("description", new FieldChange<String>(oldDesc, newDesc));
 			}
+			if (changes.has("type")) {
+				JsonObject typeObj = changes.get("type").getAsJsonObject();
+				RequirementType oldName = context.deserialize(typeObj.get("oldValue"), RequirementType.class);
+				RequirementType newName = context.deserialize(typeObj.get("newValue"), RequirementType.class);
+				changesMap.put("type", new FieldChange<RequirementType>(oldName, newName));
+			}
 			if (changes.has("status")) {
 				JsonObject statusObj = changes.get("status").getAsJsonObject();
 				RequirementStatus oldStatus = context.deserialize(statusObj.get("oldValue"), RequirementStatus.class);
@@ -89,12 +95,6 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				int oldName = context.deserialize(actualEffortObj.get("oldValue"), int.class);
 				int newName = context.deserialize(actualEffortObj.get("newValue"), int.class);
 				changesMap.put("actualEffort", new FieldChange<Integer>(oldName, newName));
-			}
-			if (changes.has("type")) {
-				JsonObject typeObj = changes.get("type").getAsJsonObject();
-				RequirementType oldName = context.deserialize(typeObj.get("oldValue"), RequirementType.class);
-				RequirementType newName = context.deserialize(typeObj.get("newValue"), RequirementType.class);
-				changesMap.put("type", new FieldChange<RequirementType>(oldName, newName));
 			}
 			/*
 			if (changes.has("attachments")) {
