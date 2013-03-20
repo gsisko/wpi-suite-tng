@@ -43,7 +43,7 @@ public class SaveRequirementObserver implements RequestObserver {
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("Cannot add a requirement.");
+		System.err.println("Fail: Cannot add a requirement.");
 	}
 
 }
