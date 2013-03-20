@@ -137,7 +137,7 @@ public class RequirementPanel extends JPanel {
 		txtActualEffort.setEnabled(false);
 		
 		//Create the strings for the boxes
-		String[] typeStrings = { "NoType", "Epic", "Theme", "UserStory", "Non-Functional", "Scenario" };
+		String[] typeStrings = { "NoType", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
 		String[] priorityStrings = { "NoPriority", "High", "Medium", "Low"};
 		
