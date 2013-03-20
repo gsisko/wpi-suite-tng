@@ -119,7 +119,7 @@ public class RequirementPanel extends JPanel {
 		//Construct the misc components
 		txtName = new JTextField(/*"Enter a name here."*/"");
 		txtDescription = new JTextArea(/*"Enter a description here."*/"", 2, 2);
-		btnSave = new JButton("Save");
+		btnSave = new JButton("Update");
 		txtReleaseNum = new JTextField(/*"Enter a release number here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
 		txtEstimate = new JTextField(/*"Enter an estimate here."*/"");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
 		txtActualEffort = new JTextField(/*"Enter an actual effort here."*/"0");//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)

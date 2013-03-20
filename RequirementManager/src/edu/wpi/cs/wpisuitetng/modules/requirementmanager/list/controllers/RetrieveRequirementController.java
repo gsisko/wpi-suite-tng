@@ -72,7 +72,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 		view.getRequirementEstimate().setText(Integer.toString(requirement.getEstimate()));
 		view.getRequirementActualEffort().setText(Integer.toString(requirement.getActualEffort()));
 		
-		view.getSaveButton().setText("Save");
+		view.getSaveButton().setText("Update");
 		view.getSaveButton().setEnabled(true);
 
 		view.getRequirementName().setEnabled(true);
