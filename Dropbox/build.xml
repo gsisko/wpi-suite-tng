@@ -11,6 +11,7 @@
 		<pathelement path="../Core/WPISuite-Interfaces/build"/>
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
+			<include name="commons-*.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 	</path>

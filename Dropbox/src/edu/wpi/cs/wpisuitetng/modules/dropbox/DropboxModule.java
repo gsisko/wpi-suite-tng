@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.dropbox.model.FileListModel;
 import edu.wpi.cs.wpisuitetng.modules.dropbox.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.dropbox.view.ToolbarView;
 
@@ -26,10 +27,23 @@ public class DropboxModule implements IJanewayModule {
 	 * Constructs the GUI for the Dropbox module
 	 */
 	public DropboxModule() {
+		
+		// Initialize the model
+		FileListModel model = new FileListModel();
+		
+		// Initialize the list of tabs (although there is only one for this module)
 		tabs = new ArrayList<JanewayTabModel>();
-		ToolbarView toolbarView = new ToolbarView();
-		MainView mainView = new MainView();
+		
+		// Construct the toolbar view
+		ToolbarView toolbarView = new ToolbarView(model);
+		
+		// Construct the main view
+		MainView mainView = new MainView(model);
+		
+		// Create a tab model containing the toolbar and main view
 		JanewayTabModel tab1 = new JanewayTabModel(getName(), new ImageIcon(), toolbarView, mainView);
+		
+		// Add the tab to the list of tabs for this module
 		tabs.add(tab1);
 	}
 	

@@ -13,16 +13,22 @@ import javax.swing.AbstractListModel;
 public class FileListModel extends AbstractListModel {
 	
 	/** A list of filenames */
-	private List<String> fileNames;
+	private FileIndex model;
 	
 	/**
 	 * Constructs a new model that is empty
 	 */
 	public FileListModel() {
-		fileNames = new ArrayList<String>();
-		fileNames.add("File 1");
-		fileNames.add("File 2");
-		fileNames.add("File 3");
+		model = new FileIndex();
+	}
+	
+	public void setModel(FileIndex model) {
+		this.model = model;
+		this.fireContentsChanged(this, 0, getSize());
+	}
+	
+	public FileIndex getModel() {
+		return model;
 	}
 
 	/*
@@ -30,7 +36,7 @@ public class FileListModel extends AbstractListModel {
 	 */
 	@Override
 	public int getSize() {
-		return fileNames.size();
+		return model.getFileNames().size();
 	}
 
 	/*
@@ -38,7 +44,7 @@ public class FileListModel extends AbstractListModel {
 	 */
 	@Override
 	public Object getElementAt(int index) {
-		return fileNames.get(index);
+		return model.getFileNames().get(index);
 	}
 
 }

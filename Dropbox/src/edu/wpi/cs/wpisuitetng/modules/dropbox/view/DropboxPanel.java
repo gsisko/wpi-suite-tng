@@ -4,6 +4,8 @@ import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,29 +23,34 @@ public class DropboxPanel extends JPanel {
 	private final JList lstFiles;
 	
 	/** The model for the filenames list */
-	private final FileListModel lstFilesModel;
-
+	private final FileListModel model;
+	
 	/**
 	 * Constructs the panel and adds components
+	 * @param model containing the list of file names in the dropbox
 	 */
-	public DropboxPanel() {
+	public DropboxPanel(FileListModel model) {
 		
-		// Construct the list model
-		lstFilesModel = new FileListModel();
+		this.model = model;
 		
 		// Construct the list and adjust the font
-		lstFiles = new JList(lstFilesModel);
+		lstFiles = new JList(model);
 		lstFiles.setFont(lstFiles.getFont().deriveFont(11));
 		
 		// Use the BoxLayout manager for this panel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		this.setAlignmentX(CENTER_ALIGNMENT);
 		
 		// Place the filenames list in a scroll pane
 		JScrollPane lstScrollPane = new JScrollPane(lstFiles);
-		lstScrollPane.setPreferredSize(new Dimension(500,400));
+		lstScrollPane.setPreferredSize(new Dimension(400,250));
 		
 		// Add the components to the panel
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(lstScrollPane);
+	}
+	
+	public JList getFilesList() {
+		return lstFiles;
 	}
 }
