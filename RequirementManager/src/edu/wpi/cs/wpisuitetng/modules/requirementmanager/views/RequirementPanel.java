@@ -404,16 +404,6 @@ public class RequirementPanel extends JPanel {
             }
         });
 		
-		// Construct an action listener and add it to the refresh button
-		btnRefresh.addActionListener(new ActionListener() {
- 
-            public void actionPerformed(ActionEvent e)
-            {
-                //Execute when button is pressed
-                System.out.println("You clicked the refresh button");
-            }
-        });
-		
 		//Actually add the list to the right panel
 		rightPanel.add(resultsScrollPane, BorderLayout.PAGE_START);
 		
@@ -508,6 +498,10 @@ public class RequirementPanel extends JPanel {
 //	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
+	}
+	
+	public RetrieveAllRequirementsController getRefreshController() {
+		return controller;
 	}
 	
 	public JButton getSaveButton() {

@@ -62,8 +62,11 @@ public class RetrieveAllRequirementsController {
 			
 			int numOfDeleted = 0;
 			for (int i = 0; i < requirements.length; i++) {
-				if (requirements[i].getStatus() == Deleted)  numOfDeleted++;
+				if (requirements[i].getStatus() == Deleted) numOfDeleted++;
 			}
+			System.out.print("numOfDeleted: " + numOfDeleted);
+			System.out.print("Requirements.length: " + requirements.length);
+			
 			if (requirements.length - numOfDeleted > 0){
 				// put the data in the table
 				Object[][] entries = new Object[requirements.length - numOfDeleted][columnNames.length];

@@ -34,6 +34,9 @@ public class SaveRequirementObserver implements RequestObserver {
 		
 		// Pass the messages back to the controller
 		rmcontroller.saveSuccess(message);
+		
+		// auto-update
+		rmcontroller.getView().getRefreshController().refreshData();
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers.SaveRequirementObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
@@ -22,48 +24,59 @@ public class SaveRequirementController implements ActionListener
     @Override
     public void actionPerformed(ActionEvent event) 
     {
+    	if (view.getRequirementName().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	if (view.getRequirementName().getText().length() > 100) {
+    		JOptionPane.showMessageDialog(null, "Name cannot be greater than 100 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	if (view.getRequirementDescription().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Description cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
 
-    if (view.getCreateNew()) {
-	
-    	String name = view.getRequirementName().getText();
-		String description = view.getRequirementDescription().getText();
-		int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : (view.getRequirementReleaseNumber().getText()));
-		RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
-		RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
-	
-	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
-	   
-	    request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
-	   
-	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
-	   
-	    request.send();
-	}
-	else {
+	    if (view.getCreateNew()) {
 		
-		Requirement updatedRequirement = new Requirement(); 
-		Requirement oldr = view.getCurrentRequirement();
+	    	String name = view.getRequirementName().getText();
+			String description = view.getRequirementDescription().getText();
+			int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : (view.getRequirementReleaseNumber().getText()));
+			RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
+			RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
 		
-		updatedRequirement.setId(oldr.getId());
-		updatedRequirement.setName(view.getRequirementName().getText());
-		updatedRequirement.setDescription(view.getRequirementDescription().getText());
-		updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
-		updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : view.getRequirementReleaseNumber().getText()));
-		updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
-		updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
-		updatedRequirement.setEstimate(Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText()));
-		updatedRequirement.setActualEffort(Integer.parseInt((view.getRequirementActualEffort().getText().equals(""))? "0" : view.getRequirementActualEffort().getText()));
-	
-	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // PUT == create
-	   
-	    request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
-	   
-	    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
-	   
-	    request.send();
+		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
+		   
+		    request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
+		   
+		    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
+		   
+		    request.send();
+		}
+		else {
+			
+			Requirement updatedRequirement = new Requirement(); 
+			Requirement oldr = view.getCurrentRequirement();
+			
+			updatedRequirement.setId(oldr.getId());
+			updatedRequirement.setName(view.getRequirementName().getText());
+			updatedRequirement.setDescription(view.getRequirementDescription().getText());
+			updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
+			updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : view.getRequirementReleaseNumber().getText()));
+			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
+			updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
+			updatedRequirement.setEstimate(Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText()));
+			updatedRequirement.setActualEffort(Integer.parseInt((view.getRequirementActualEffort().getText().equals(""))? "0" : view.getRequirementActualEffort().getText()));
 		
-	}
-	//else throw error for incorrect inputs
+		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // PUT == create
+		   
+		    request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
+		   
+		    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
+		   
+		    request.send();
+			
+		}
 	
     }
     
@@ -101,6 +114,10 @@ public class SaveRequirementController implements ActionListener
 		else {
 			System.err.print("Undected error saving requirement\n");
 		}
+	}
+	
+	public RequirementPanel getView() {
+		return view;
 	}
 }
 

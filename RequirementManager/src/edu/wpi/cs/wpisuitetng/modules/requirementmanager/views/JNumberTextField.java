@@ -27,7 +27,7 @@ public class JNumberTextField extends JTextField
 
     public JNumberTextField()
     {
-        this( 10, NUMERIC );
+        this( 9, NUMERIC );
     }
 
     public JNumberTextField( int maxLen )
