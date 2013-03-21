@@ -92,8 +92,8 @@ public class RequirementManager implements EntityManager<Requirement> {
      * @throws WPISuiteException If there are no Requirements in the database */
     public void assignUniqueID(Requirement req, Project p) throws WPISuiteException{
         if (req.getId() == -1){// -1 is a flag that says a unique id is needed            
-            req.setId(this.Count()+1); // Makes first Requirement have id = 1
-            //p.setNextRequirementId(p.getNextRequirementId() + 1);
+            req.setId(p.getNextRequirementId()); // Makes first Requirement have id = 1
+            p.setNextRequirementId(p.getNextRequirementId() + 1);
         }        
     }
 
