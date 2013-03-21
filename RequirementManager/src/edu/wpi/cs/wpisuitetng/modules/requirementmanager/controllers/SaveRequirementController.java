@@ -56,9 +56,9 @@ public class SaveRequirementController implements ActionListener
 		else {
 			
 			Requirement updatedRequirement = new Requirement(); 
-			Requirement oldr = view.getCurrentRequirement();
+			Requirement oldRequirement = view.getCurrentRequirement();
 			
-			updatedRequirement.setId(oldr.getId());
+			updatedRequirement.setId(oldRequirement.getId());
 			updatedRequirement.setName(view.getRequirementName().getText());
 			updatedRequirement.setDescription(view.getRequirementDescription().getText());
 			updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
@@ -68,7 +68,7 @@ public class SaveRequirementController implements ActionListener
 			updatedRequirement.setEstimate(Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText()));
 			updatedRequirement.setActualEffort(Integer.parseInt((view.getRequirementActualEffort().getText().equals(""))? "0" : view.getRequirementActualEffort().getText()));
 		
-		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // PUT == create
+		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		   
 		    request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
 		   

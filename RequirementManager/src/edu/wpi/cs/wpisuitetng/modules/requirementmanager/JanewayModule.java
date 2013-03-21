@@ -30,7 +30,7 @@ public class JanewayModule implements IJanewayModule {
 		JPanel toolbarPanel = new ToolbarPanel();
 		
 		// Setup the main panel
-		JPanel mainPanel = new RequirementPanel();
+		RequirementPanel mainPanel = new RequirementPanel();
 		
 		tabs = new ArrayList<JanewayTabModel>();
 		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarPanel, mainPanel);

@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -51,23 +52,29 @@ public class RetrieveAllRequirementsController {
 	 * 
 	 * @param requirements an array of requirements returned by the server
 	 */
-	public void receivedData(Requirement[] requirements) {	
+	public void receivedData(Requirement[] requirements) {
+		
+		// empty the table
+		String[] emptyColumns = {};
+		Object[][] emptyData = {};
+		view.getModel().setColumnNames(emptyColumns);
+		view.getModel().setData(emptyData);
+		view.getModel().fireTableStructureChanged();
+		
 		if (requirements.length > 0) {
 			// save the data
 			this.data = requirements;
-
-			// set the column names
-			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
-			view.getModel().setColumnNames(columnNames);
 			
 			int numOfDeleted = 0;
 			for (int i = 0; i < requirements.length; i++) {
 				if (requirements[i].getStatus() == Deleted) numOfDeleted++;
 			}
-			System.out.print("numOfDeleted: " + numOfDeleted);
-			System.out.print("Requirements.length: " + requirements.length);
 			
-			if (requirements.length - numOfDeleted > 0){
+			if (requirements.length > numOfDeleted){
+
+				// set the column names
+				String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
+				
 				// put the data in the table
 				Object[][] entries = new Object[requirements.length - numOfDeleted][columnNames.length];
 				int j = 0;
@@ -82,21 +89,15 @@ public class RetrieveAllRequirementsController {
 						entries[j][6] = String.valueOf(requirements[i].getReleaseNumber());
 						entries[j][7] = String.valueOf(requirements[i].getEstimate());
 						entries[j][8] = String.valueOf(requirements[i].getActualEffort());
-						j++;
+						j++; 
 					}
 				}
-		
-			
+				
+				// fill the table
+				view.getModel().setColumnNames(columnNames);
 				view.getModel().setData(entries);
+				view.getModel().fireTableStructureChanged();
 				
-				view.getModel().fireTableStructureChanged(); //THROWS EXCEPTION PLS FIX KTNXBAI
-			} else {
-				
-				String[] emptyColumns = {};
-				Object[][] emptyData = {};
-				view.getModel().setColumnNames(emptyColumns);
-				view.getModel().setData(emptyData);
-				view.getModel().fireTableStructureChanged();				
 			}
 		}
 		else {
