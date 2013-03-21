@@ -29,13 +29,12 @@ public class RequirementManagerTest {
 	public void testRequirementManager_1()
 		throws Exception {
 		Data data = EasyMock.createMock(Data.class);
-		// add mock object expectations here
+		//mock object doesn't need expectations
 
 		EasyMock.replay(data);
 
 		RequirementManager result = new RequirementManager(data);
 
-		// add additional test code here
 		EasyMock.verify(data);
 		assertNotNull(result);
 	}
@@ -51,7 +50,10 @@ public class RequirementManagerTest {
 	public void testCount_1()
 		throws Exception {
 		RequirementManager fixture = new RequirementManager(EasyMock.createNiceMock(Data.class));
-
+		
+		//run code to add things, and insure it counts correctly
+		
+		
 		int result = fixture.Count();
 
 		// add additional test code here
@@ -595,40 +597,53 @@ public class RequirementManagerTest {
 
 	/**
 	 * Run the void save(Session,Requirement) method test.
-	 *
+	 * This variation tests a basic save with a Session created using Session(User.fromJSON(), "")
+	 * 
 	 * @throws Exception
 	 *
 	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @author Robert Smieja
 	 */
 	@Test(expected = edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException.class)
 	public void testSave_1()
 		throws Exception {
 		RequirementManager fixture = new RequirementManager(EasyMock.createNiceMock(Data.class));
-		Session s = new Session(User.fromJSON(""), "");
+		Session s = new Session(User.fromJSON("Test"), "1");
 		Requirement model = new Requirement();
+		
+		//Extra prep code
+		Integer id = model.getId();
 
-		fixture.save(s, model);
-
+		 fixture.save(s, model);
+		 Requirement[] result =fixture.getEntity(s, id.toString())
 		// add additional test code here
+		assertEquals(result[0] , model); //We should be able to retrieve the model we just saved.
 	}
 
 	/**
 	 * Run the void save(Session,Requirement) method test.
+	 * This variation tests a basic save with a Session created using Session(User.fromJSON(), Project.fromJSON(), "")
 	 *
 	 * @throws Exception
 	 *
 	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @author Robert Smieja
 	 */
 	@Test(expected = edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException.class)
 	public void testSave_2()
 		throws Exception {
 		RequirementManager fixture = new RequirementManager(EasyMock.createNiceMock(Data.class));
-		Session s = new Session(User.fromJSON(""), Project.fromJSON(""), "");
+		Session s = new Session(User.fromJSON("Test"), Project.fromJSON("Test"), "1");
 		Requirement model = new Requirement();
 
+		//Extra prep code
+		Integer id = model.getId();
+		
 		fixture.save(s, model);
 
 		// add additional test code here
+		fixture.getEntity(s, id.toString());
+		fixture.
 	}
 
 	/**
