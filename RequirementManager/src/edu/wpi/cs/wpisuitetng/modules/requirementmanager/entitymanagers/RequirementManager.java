@@ -195,25 +195,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Requirement update(Session s, String content) throws WPISuiteException {
-	    	/*
-	    	Project currentProject = s.getProject();
-	    
-	    	
-	    	final Requirement upReq = Requirement.fromJSON(content);
-	    	db.update( Requirement.class, "id", (Object) upReq.getId(),"name",	  upReq.getName(),   currentProject);
-	    	db.update(upReq, "id", upReq.getId(),"description", upReq.getDescription(),  currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"type",        upReq.getType(),  currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"status",  	  upReq.getStatus(),  currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"priority",	  upReq.getPriority(),   currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"releaseNumber", upReq.getReleaseNumber(),  currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"estimate",	upReq.getEstimate(),  currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"actualEffort", upReq.getActualEffort(),  currentProject);
-	    	db.update(new Requirement(), "id", upReq.getId(),"event",	upReq.getEvents(),  currentProject);
-	    
-	    
-	    	*/
-	    	 
-	    /*
+	 	 
 		final Requirement reqUpdate = Requirement.fromJSON(content);
 	    	
 		Requirement oldReq = getEntity(s, Integer.toString(  reqUpdate.getId()  )  )[0];
@@ -221,9 +203,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 		oldReq.updateReq(reqUpdate);
 		save(s,oldReq);
 				
-		return null;
-		*/
+		return oldReq;
 		
+		/*
 		
 		Requirement updatedRequirement = Requirement.fromJSON(content);
 		
@@ -250,7 +232,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		}
 		
 		return existingRequirement;
-		
+		*/
 		
 	}
 	
