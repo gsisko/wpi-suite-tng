@@ -19,24 +19,17 @@ public class GetFileIndexObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		FileIndex[] response = FileIndex.fromJSONArray(iReq.getResponse().getBody());
-		if (response.length == 1) {
-			controller.responseSuccess(response[0]);
-		}
-		else {
-			System.out.println("Too many FileIndices");
-		}
+		controller.responseSuccess(response[0]);
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.out.println("resp error: " + iReq.getResponse().getStatusCode() + " " + iReq.getResponse().getStatusMessage());
-		
+		// TODO deal with error
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.out.println("resp fail: " + iReq.getResponse().getStatusCode() + " " + iReq.getResponse().getStatusMessage());
-		
+		// TODO deal with failure
 	}
 
 }

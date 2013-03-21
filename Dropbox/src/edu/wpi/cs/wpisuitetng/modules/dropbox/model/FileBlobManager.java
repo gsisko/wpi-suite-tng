@@ -44,8 +44,7 @@ public class FileBlobManager implements EntityManager<FileBlob> {
 		
 		fileIndex.addFile(newFileBlob);
 		db.save(fileIndex, s.getProject());
-		db.save(fileIndex.getFileNames());
-		db.save(fileIndex.getFileIds());
+		db.save(fileIndex.getFileIndex());
 		
 		// Save the FileBlob in the database
 		if (!db.save(newFileBlob, s.getProject())) {

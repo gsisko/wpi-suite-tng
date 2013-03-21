@@ -12,7 +12,9 @@
 package edu.wpi.cs.wpisuitetng.modules.dropbox.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -20,45 +22,35 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public class FileIndex extends AbstractModel {
 
-	//private final Map<String, Integer> fileIndex;
-	private final List<String> fileNames;
-	
-	private final List<Integer> fileIds;
-	
+	private final Map<String, Integer> fileIndex;
 	private int nextFree;
 	
 	@SuppressWarnings("unused")
 	private final int id = 0;
 	
 	public FileIndex() {
-		//this.fileIndex = new HashMap<String, Integer>();
-		fileNames = new ArrayList<String>();
-		fileIds = new ArrayList<Integer>();
+		this.fileIndex = new HashMap<String, Integer>();
 		this.nextFree = 0;
 	}
 
 	public void addFile(FileBlob file) {
-		//fileIndex.put(file.getFileName(), nextFree);
-		fileNames.add(file.getFileName());
-		fileIds.add(nextFree);
+		fileIndex.put(file.getFileName(), nextFree);
 		file.setId(nextFree);
 		nextFree++;
 	}
 	
 	public int getFileId(String fileName) {
-		//return fileIndex.get(fileName);
-		return fileIds.get(fileNames.indexOf(fileName));
+		return fileIndex.get(fileName);
 	}
 	
 	public List<String> getFileNames() {
-		//return fileIndex.keySet();
-		return fileNames;
-	}
-	
-	public List<Integer> getFileIds() {
-		return fileIds;
+		return new ArrayList<String>(fileIndex.keySet());
 	}
 
+	public Map<String, Integer> getFileIndex() {
+		return fileIndex;
+	}
+	
 	/*
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */

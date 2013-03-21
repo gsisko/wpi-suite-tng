@@ -40,7 +40,6 @@ public class GetFileIndexController implements ActionListener {
 		Request request;
 		request = Network.getInstance().makeRequest("dropbox/fileindex", HttpMethod.GET);
 		request.addObserver(new GetFileIndexObserver(this));
-		System.out.println("Sending request");
 		request.send();
 	}
 
