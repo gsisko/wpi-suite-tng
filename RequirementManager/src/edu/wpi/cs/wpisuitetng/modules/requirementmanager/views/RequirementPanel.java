@@ -48,9 +48,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * 		-a text area for entering a description,
  * 		-a combo box for entering a status,
  * 		-a combo box for entering a priority,
- * 		-a JNumber text field for entering a release number,
- * 		-a JNumber text field for entering an estimate,
- * 		-a JNumber text field for entering an actual effort,
+ * 		-a text field for entering a release number,
+ * 		-a text field for entering an estimate,
+ * 		-a text field for entering an actual effort,
  *	...and a save button for submitting.
  * A right panel containing:
  * 		-a table containing a selectable list of requirements
@@ -126,9 +126,9 @@ public class RequirementPanel extends JPanel {
 		txtName = new JTextField(/*"Enter a name here."*/"");
 		txtDescription = new JTextArea(/*"Enter a description here."*/"", 2, 2);
 		btnSave = new JButton("Update");
-		txtReleaseNum = new JNumberTextField();
-		txtEstimate = new JNumberTextField();
-		txtActualEffort = new JNumberTextField();
+		txtReleaseNum = new JNumberTextField();//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtEstimate = new JNumberTextField();//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
+		txtActualEffort = new JNumberTextField();//TODO: Add an input verifier (see: http://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html#inputVerification)
 		txtEstimate.setText("0");
 		txtActualEffort.setText("0");
 		txtReleaseNum.setAllowNegative(false);
@@ -400,7 +400,7 @@ public class RequirementPanel extends JPanel {
             	txtActualEffort.setEnabled(false);
             	
                 //Execute when button is pressed
-                System.out.println("You clicked the create button");
+                System.out.println("You clicked the create button");//TODO: replace this with a real action
             }
         });
 		
@@ -410,7 +410,7 @@ public class RequirementPanel extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                 //Execute when button is pressed
-                System.out.println("You clicked the refresh button");
+                System.out.println("You clicked the refresh button");//TODO: replace this with a real action
             }
         });
 		
