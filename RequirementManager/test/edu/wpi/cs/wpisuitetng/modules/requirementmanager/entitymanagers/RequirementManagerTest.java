@@ -142,6 +142,7 @@ public class RequirementManagerTest {
 	public void testSave() throws WPISuiteException {
 		Requirement newRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
 //		Requirement newDefect = new Requirement(3, "A title", "", existingUser);
+		newRequirement.setProject(testProject);
 		manager.save(defaultSession, newRequirement);
 		assertSame(newRequirement, db.retrieve(Requirement.class, "id", 3).get(0));
 		assertSame(testProject, newRequirement.getProject());
