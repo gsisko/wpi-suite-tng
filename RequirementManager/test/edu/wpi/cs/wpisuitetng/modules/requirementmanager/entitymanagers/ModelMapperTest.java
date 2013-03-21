@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
 /**
  * The class <code>ModelMapperTest</code> contains tests for the class <code>{@link ModelMapper}</code>.
  *
- * @generatedBy CodePro at 3/20/13 2:22 PM
- * @author Robert Smieja
+ * @generatedBy CodePro at 3/20/13 10:06 PM
+ * @author Gabe
  * @version $Revision: 1.0 $
  */
 public class ModelMapperTest {
@@ -20,7 +20,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testModelMapper_1()
@@ -37,7 +37,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testGetBlacklist_1()
@@ -57,7 +57,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_1()
@@ -76,7 +76,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_2()
@@ -95,7 +95,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_3()
@@ -115,7 +115,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_4()
@@ -135,7 +135,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_5()
@@ -155,7 +155,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_6()
@@ -175,7 +175,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_7()
@@ -195,7 +195,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_8()
@@ -215,7 +215,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_9()
@@ -235,7 +235,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_10()
@@ -255,7 +255,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_11()
@@ -275,7 +275,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_12()
@@ -295,7 +295,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_13()
@@ -315,7 +315,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_14()
@@ -335,7 +335,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_15()
@@ -355,7 +355,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_16()
@@ -375,7 +375,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_17()
@@ -395,7 +395,7 @@ public class ModelMapperTest {
 	 *
 	 * @throws Exception
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Test
 	public void testMap_18()
@@ -416,7 +416,7 @@ public class ModelMapperTest {
 	 * @throws Exception
 	 *         if the initialization fails for some reason
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@Before
 	public void setUp()
@@ -430,7 +430,7 @@ public class ModelMapperTest {
 	 * @throws Exception
 	 *         if the clean-up fails for some reason
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	@After
 	public void tearDown()
@@ -443,7 +443,7 @@ public class ModelMapperTest {
 	 *
 	 * @param args the command line arguments
 	 *
-	 * @generatedBy CodePro at 3/20/13 2:22 PM
+	 * @generatedBy CodePro at 3/20/13 10:06 PM
 	 */
 	public static void main(String[] args) {
 		new org.junit.runner.JUnitCore().run(ModelMapperTest.class);
