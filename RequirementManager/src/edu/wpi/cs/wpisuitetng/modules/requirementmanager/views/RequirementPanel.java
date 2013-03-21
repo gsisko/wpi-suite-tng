@@ -26,6 +26,7 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -367,6 +368,7 @@ public class RequirementPanel extends JPanel {
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
+		resultsScrollPane.setPreferredSize(new Dimension(700,400));
 		
 		btnNew = new JButton("New Requirement");
 		btnRefresh = new JButton("Refresh");
