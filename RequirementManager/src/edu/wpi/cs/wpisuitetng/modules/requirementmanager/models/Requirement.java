@@ -405,7 +405,7 @@ public class Requirement extends AbstractModel {
 	 * @param reqUpdate Requirement holding the updates
 	 */
 	public void updateReq(Requirement reqUpdate) {
-		setId(reqUpdate.getId());
+	
 		setReleaseNumber(reqUpdate.getReleaseNumber());
 		setStatus(reqUpdate.getStatus());
 		setPriority(reqUpdate.getPriority());
@@ -413,6 +413,7 @@ public class Requirement extends AbstractModel {
 		setDescription(reqUpdate.getDescription());
 		setEstimate(reqUpdate.getEstimate());
 		setActualEffort(reqUpdate.getActualEffort());
+		setType(reqUpdate.getType());
 		/*
 		setEvents(reqUpdate.getEvents());
 		setNotes(reqUpdate.getNotes());

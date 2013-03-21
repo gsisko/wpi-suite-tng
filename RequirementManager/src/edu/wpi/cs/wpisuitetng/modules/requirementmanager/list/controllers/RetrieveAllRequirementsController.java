@@ -88,7 +88,8 @@ public class RetrieveAllRequirementsController {
 		
 			
 				view.getModel().setData(entries);
-				view.getModel().fireTableStructureChanged();
+				
+				view.getModel().fireTableStructureChanged(); //THROWS EXCEPTION PLS FIX KTNXBAI
 			} else {
 				
 				String[] emptyColumns = {};
