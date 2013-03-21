@@ -25,10 +25,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTabl
 public class TestResultsTableModel {
 
 	ResultsTableModel rtm1;
+	ResultsTableModel rtm2;
 
 	@Before
 	public void setUp() throws Exception {
 		rtm1 = new ResultsTableModel();
+		rtm2 = new ResultsTableModel();
 	}
 
 	@Test
@@ -37,15 +39,26 @@ public class TestResultsTableModel {
 		assertTrue(rtm1.getData() != null);
 		assertEquals(0, rtm1.getColumnNames().length);
 		assertEquals(0, rtm1.getData().length);
+		
+		assertTrue(rtm2.getColumnNames() !=null);
+		assertTrue(rtm2.getData() != null);
+		assertEquals(0, rtm2.getColumnNames().length);
+		assertEquals(0, rtm2.getData().length);
 	}
 
 	@Test
 	public void columnNamesCanBeSet() {
 		String[] columnNames = {"Col A", "Col B", "Col C"};
+		String[] columnNames2 = {"Test A", "Test B", "Test C"};
 		rtm1.setColumnNames(columnNames);
+		rtm2.setColumnNames(columnNames2);
 
 		assertEquals(3, rtm1.getColumnCount());
 		assertEquals("Col B", rtm1.getColumnName(1));
+		
+		assertEquals(3, rtm2.getColumnCount());
+		assertEquals("Test B", rtm2.getColumnName(1));
+		assertEquals("Test A", rtm2.getColumnName(0));
 	}
 
 	@Test
@@ -56,6 +69,11 @@ public class TestResultsTableModel {
 		assertEquals("0,0", rtm1.getValueAt(0, 0));
 		assertEquals("1,1", rtm1.getValueAt(1, 1));
 		assertEquals(3, rtm1.getValueAt(2, 2));
+		
+		assertEquals(3, rtm2.getRowCount());
+		assertEquals("0,0", rtm2.getValueAt(0,0));
+		assertEquals("1,1", rtm2.getValueAt(1,1));
+		assertEquals(3, rtm2.getValueAt(2,2));
 	}
 
 	@Test
@@ -80,14 +98,24 @@ public class TestResultsTableModel {
 	
 	private void insertTestData() {
 		String[] columnNames = {"Col A", "Col B", "Col C"};
+		String[] columnNames2 = {"Test A", "Test B", "Test C"};
 
 		Object[][] newData = {
 				{"0,0", "0,1", new Integer(1)},
 				{"1,0", "1,1", new Integer(2)},
 				{"2,0", "2,1", new Integer(3)}
 		};
-
+		
+		Object[][] newData2 = {
+				{"0,0", "0,1", new Integer(1)},
+				{"1,0", "1,1", new Integer(2)},
+				{"2,0", "2,1", new Integer(3)}
+		};
+		
 		rtm1.setColumnNames(columnNames);
 		rtm1.setData(newData);
+		
+		rtm2.setColumnNames(columnNames2);
+		rtm2.setData(newData2);
 	}
 }
