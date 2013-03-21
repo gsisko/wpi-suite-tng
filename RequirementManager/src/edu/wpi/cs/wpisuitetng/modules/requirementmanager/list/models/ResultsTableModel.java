@@ -9,10 +9,10 @@ import javax.swing.table.AbstractTableModel;
 public class ResultsTableModel extends AbstractTableModel {
 
 	/** The names to be displayed in the column headers */
-	protected String[] columnNames = {};
+	private String[] columnNames = {};
 	
 	/** The data to be displayed in the table */
-	protected Object[][] data = {};
+	private Object[][] data = {};
 	
 	/**
 	 * Constructor.
@@ -39,22 +39,22 @@ public class ResultsTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return columnNames.length;
+		return getColumnNames().length;
 	}
 
 	@Override
 	public int getRowCount() {
-		return data.length;
+		return getData().length;
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		return data[row][col];
+		return getData()[row][col];
 	}
 	
 	@Override
 	public String getColumnName(int col) {
-		return columnNames[col];
+		return getColumnNames()[col];
 	}
 
 	@Override
@@ -65,5 +65,13 @@ public class ResultsTableModel extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return false;
+	}
+
+	public String[] getColumnNames() {
+		return columnNames;
+	}
+
+	public Object[][] getData() {
+		return data;
 	}
 }
