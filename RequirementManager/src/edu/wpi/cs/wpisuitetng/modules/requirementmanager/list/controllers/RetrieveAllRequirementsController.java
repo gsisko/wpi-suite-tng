@@ -62,6 +62,7 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 			
+			// get the number of requirements whose status is Deleted
 			int numOfDeleted = 0;
 			for (int i = 0; i < requirements.length; i++) {
 				if (requirements[i].getStatus() == Deleted) numOfDeleted++;
@@ -102,7 +103,7 @@ public class RetrieveAllRequirementsController {
 			}
 		}
 		else {
-			// do nothing, there are no requirements
+			// do nothing, there are no non-Deleted requirements
 		}
 	}
 

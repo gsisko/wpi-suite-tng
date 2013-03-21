@@ -13,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
 /**
  * Responsible for filling in a changeset after being passed to
  * {@link ModelMapper#map(Model, Model, MapCallback)} 
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 class ChangesetCallback implements MapCallback {
@@ -46,10 +46,6 @@ class ChangesetCallback implements MapCallback {
 	@Override
 	public Object call(Model source, Model destination, String fieldName,
 			Object sourceValue, Object destinationValue) {
-		/*if(!wasCalled) {
-			changeset.setDate(((Requirement) source).getLastModifiedDate());
-			wasCalled = true;
-		}*/
 		if(!dontRecord.contains(fieldName)) {
 			if(!objectsEqual(sourceValue, destinationValue)) {
 				/*

@@ -10,8 +10,7 @@ import com.google.gson.GsonBuilder;
 
 /** Requirement: Holds data that makes up a Requirement
  * 
- * @author Dabrowski
- * @author Calder
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {
@@ -33,13 +32,13 @@ public class Requirement extends AbstractModel {
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
 	private int actualEffort;    
-		
+	
+	// blank constructor
 	public Requirement(){
 		new Requirement("","",NoType,NoPriority,0);
 	}
 	
 	
-	// Probable constructor to be called from the user interface
 	/**
 	 * Constructor for Requirement.
 	 * @param name String 

@@ -1,27 +1,20 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.validators;
 
 import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.HashSet;
 import java.util.List;
-//import java.util.Set;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEvent;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
 /**
  * Validates Requirements so that they fit in with the given Data implementation.
  * 
- * Note that Data could be something used client-side (e.g. a wrapper around a local cache of
- * Users so you can check assignee usernames as-you-type).
+ * Note that Data could be something used client-side.
  */
 public class RequirementValidator {
 	
@@ -112,7 +105,7 @@ public class RequirementValidator {
 		// make sure title and description size are within constraints
 		if(requirement.getName() == null || requirement.getName().length() > 100
 				|| requirement.getName().length() < 1) {
-			issues.add(new ValidationIssue("Required, must be 1-100 characters", "title"));
+			issues.add(new ValidationIssue("Required, must be 1-100 characters", "name"));
 		}
 		if(requirement.getDescription() == null) {
 			issues.add(new ValidationIssue("Cannot be empty", "description"));

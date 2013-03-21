@@ -11,7 +11,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /**
  * Responsible for copying properties from one Model to another.
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public class ModelMapper {
@@ -46,7 +46,7 @@ public class ModelMapper {
 	
 	/**
 	 * Callback to pass to {@link ModelMapper#map(Model, Model, MapCallback)}
-	 * @author Dabrowski
+	 * @author Team 5
 	 * @version $Revision: 1.0 $
 	 */
 	public interface MapCallback {

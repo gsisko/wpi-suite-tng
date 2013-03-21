@@ -90,10 +90,12 @@ public class RequirementPanel extends JPanel {
 	private final JButton btnNew;//The "create" button
 	private final JButton btnRefresh;//The "refresh" button
 	
+	// necessary for the table of requirements to be correctly displayed and refreshed
 	private ResultsTableModel resultsTableModel;
 	private JTable resultsTable;
 	private RetrieveAllRequirementsController controller;
 	
+	// boolean to keep track of whether the "save" button is creating a new requirement or updating an existing one
 	private boolean createNew = false;
 	
 	private Requirement currentRequirement;
@@ -377,6 +379,7 @@ public class RequirementPanel extends JPanel {
  
             public void actionPerformed(ActionEvent e)
             {
+            	// set all of the UI fields appropriately when the "create requirement" button is clicked
             	createNew = true;
             	
             	txtName.setText("");
@@ -399,9 +402,6 @@ public class RequirementPanel extends JPanel {
             	txtReleaseNum.setEnabled(true);
             	txtEstimate.setEnabled(false);
             	txtActualEffort.setEnabled(false);
-            	
-                //Execute when button is pressed
-                System.out.println("You clicked the create button");
             }
         });
 		
@@ -502,6 +502,10 @@ public class RequirementPanel extends JPanel {
 		return txtActualEffort;
 	}
 	
+	/**
+	 * This returns the RetrieveAllRequirementsController "controller"
+	 * @return the controller RetrieveAllRequirementsController
+	 */
 	public RetrieveAllRequirementsController getRefreshController() {
 		return controller;
 	}
@@ -513,25 +517,42 @@ public class RequirementPanel extends JPanel {
 	public JButton getSaveButton() {
 		return btnSave;
 	}
-	
+	/**
+	 * This returns the ResultsTableModel "resultsTableModel"
+	 * @return the resultsTableModel ResultsTableModel
+	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 	
+	/**
+	 * This returns the boolean "createNew"
+	 * @return the createNew boolean
+	 */
 	public boolean getCreateNew() {
 		return createNew;
 	}
 
+	/**
+	 * This sets the boolean "createNew"
+	 * @param b boolean to set createNew to
+	 */
 	public void setCreateNew(boolean b) {
 		createNew = b;
 	}
-	
+
+	/**
+	 * @return the currentRequirement
+	 */
 	public Requirement getCurrentRequirement() {
 		return currentRequirement;
 	}
-	
-	public void setCurrentRequirement(Requirement r) {
-		currentRequirement = r;
+
+	/**
+	 * @param currentRequirement the currentRequirement to set
+	 */
+	public void setCurrentRequirement(Requirement currentRequirement) {
+		this.currentRequirement = currentRequirement;
 	}
 	
 }

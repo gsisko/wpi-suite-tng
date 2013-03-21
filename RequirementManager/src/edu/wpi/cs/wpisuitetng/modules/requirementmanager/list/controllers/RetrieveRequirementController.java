@@ -35,7 +35,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		if (me.getClickCount() == 2) { /* respond to single clicks */
+		if (me.getClickCount() == 2) { /* respond to double clicks */
 
 			// Get a reference to the results JTable from the mouse event
 			JTable resultsTable = (JTable) me.getSource();
@@ -62,6 +62,8 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 * @param requirement the requirement that was retrieved
 	 */
 	public void showRequirement(Requirement requirement) {
+		// if a user has double-clicked on a requirement, set UI fields appropriately
+		
 		view.setCreateNew(false);
 
 		view.getRequirementName().setText(requirement.getName());

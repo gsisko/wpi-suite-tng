@@ -5,7 +5,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
  * Doesn't implement Model since it will see no use outside of AttachmentChangesets.
  *
 
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public class FieldChange<T> {

@@ -16,8 +16,7 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requireme
 
 /**This is the entity manager for the Requirement in the RequirementManager module
  * 
- * @author Calder
- * @author Dabrowski
+ * @author Team 5
  *
  * @version $Revision: 1.0 $
  */

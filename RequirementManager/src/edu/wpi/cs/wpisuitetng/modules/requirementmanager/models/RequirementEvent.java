@@ -10,7 +10,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 /**
  * Implementations of this interface represent some kind of event in a Requirement.
  * For example, the addition of a comment or the modification of fields.
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public abstract class RequirementEvent extends AbstractModel {

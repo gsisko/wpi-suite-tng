@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Paula Rudy
+ *    Team 5
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
 
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  * This panel fills the main content area of the tab for this module. It
  * contains one inner JPanel, the RequirementPanel.
  * 
- * @author Paula Rudy
+ * @author Team 5
  *
  */
 @SuppressWarnings("serial")

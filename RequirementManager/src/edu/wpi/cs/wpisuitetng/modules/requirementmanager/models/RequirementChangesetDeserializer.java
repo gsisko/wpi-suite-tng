@@ -14,7 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /**
  * Custom JSON deserializer for the RequirementChangeset class
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public class RequirementChangesetDeserializer implements JsonDeserializer<RequirementChangeset> {

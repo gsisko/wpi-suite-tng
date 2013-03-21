@@ -11,7 +11,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * Persistent Model that holds information about a set of changes to a Requirement.
  * Every time a Requirement is changed by a user, a RequirementChangeset should be created
  * containing the changes and the user responsible for making them.
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public class RequirementChangeset extends RequirementEvent {

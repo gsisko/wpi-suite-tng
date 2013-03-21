@@ -2,7 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /**
  * Possible values for the status of a requirement.
- * @author Dabrowski
+ * @author Team 5
  * @version $Revision: 1.0 $
  */
 public enum RequirementStatus {
