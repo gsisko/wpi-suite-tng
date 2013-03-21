@@ -63,7 +63,6 @@ public class RequirementManagerTest {
 		
 		existingUser = new User("joe", "joe", "1234", 2);
 		existingRequirement = new Requirement("An existing requirement", "An existing requirement description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
-//		existingRequirement = new Requirement(1, "An existing defect", "", existingUser);
 		existingRequirement.setActualEffort(0);
 		existingRequirement.setEstimate(100);
 		existingRequirement.setType(RequirementType.Scenario);
@@ -72,24 +71,13 @@ public class RequirementManagerTest {
 		existingRequirement.setId(124);
 		existingRequirement.setReleaseNumber(1);
 		
-//		existingRequirement.setCreationDate(new Date(0));
-//		existingRequirement.setLastModifiedDate(new Date(0));
-//		existingRequirement.setEvents(new ArrayList<RequirementEvent>());
-		
 		otherRequirement = new Requirement("A requirement in a different project", "", RequirementType.NoType, RequirementPriority.NoPriority, 0);
-//		otherRequirement = new Requirement(2, "A defect in a different project", "", existingUser);
 		
-//		tag = new Tag("tag");
-		otherRequirement = new Requirement("A changed title", "A changed description", RequirementType.UserStory, RequirementPriority.High, 0);
-//		goodUpdatedRequirement = new Requirement(1, "A changed title", "A changed description", bob);
-//		goodUpdatedRequirement.setAssignee(existingUser);
-//		goodUpdatedRequirement.setEvents(new ArrayList<RequirementEvent>());
-//		goodUpdatedRequirement.getTags().add(tag);
+		goodUpdatedRequirement = new Requirement("A changed title", "A changed description", RequirementType.UserStory, RequirementPriority.High, 0);
 		goodUpdatedRequirement.setStatus(RequirementStatus.Complete);
 		
 		defaultSession = new Session(existingUser, testProject, mockSsid);
-		otherRequirement = new Requirement("A new requirement", "A description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
-//		newRequirement = new Requirement(-1, "A new defect", "A description", existingUser);
+		newRequirement = new Requirement("A new requirement", "A description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
 		
 		db = new MockData(new HashSet<Object>());
 		db.save(existingRequirement, testProject);
