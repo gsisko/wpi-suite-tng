@@ -49,8 +49,8 @@ public class RetrieveRequirementController extends MouseAdapter {
 
 				// Create and send a request for the requirement with the given ID
 				Request request;
-				request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET);
-				request.addObserver(new RetrieveRequirementRequestObserver(this, Integer.parseInt(requirementId)));
+				request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
+				request.addObserver(new RetrieveRequirementRequestObserver(this));
 				request.send();
 			}
 		}

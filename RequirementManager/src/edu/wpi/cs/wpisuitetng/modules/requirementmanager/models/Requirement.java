@@ -46,7 +46,7 @@ public class Requirement extends AbstractModel {
 	*/
 	
 	/** A log of updates, changes etc to this Requirement  */
-	private List<RequirementEvent> events;  
+	//private List<RequirementEvent> events;  
 		
 	public Requirement(){
 		new Requirement("","",NoType,NoPriority,0);
@@ -79,7 +79,7 @@ public class Requirement extends AbstractModel {
 		this.setNotes(new HashSet<Note>());					// Initializes an empty HashSet of notes
 		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of task
 		*/
-		this.setEvents(new ArrayList<RequirementEvent>());	// Initializes an empty List of events
+		//this.setEvents(new ArrayList<RequirementEvent>());	// Initializes an empty List of events
 	}
 	
 	
@@ -216,11 +216,13 @@ public class Requirement extends AbstractModel {
 			}			
 		}
 */		
+		/*
 		if(events != null) {
 			for(RequirementEvent e : events) {
 				e.setProject(project);
 			}
 		}
+		*/
 	}
 
 	// The following are getters and setters
@@ -384,19 +386,19 @@ public class Requirement extends AbstractModel {
 //	}
 	
 	
-	/**
-	 * @return the events
-	 */
-	public List<RequirementEvent> getEvents() {
-		return events;
-	}
-
-	/**
-	 * @param events the events to set
-	 */
-	public void setEvents(List<RequirementEvent> events) {
-		this.events = events;
-	}
+//	/**
+//	 * @return the events
+//	 */
+//	public List<RequirementEvent> getEvents() {
+//		return events;
+//	}
+//
+//	/**
+//	 * @param events the events to set
+//	 */
+//	public void setEvents(List<RequirementEvent> events) {
+//		this.events = events;
+//	}
 
 	/** Changes all fields in the current Requirement to equal the fields of the reqUpdate
 	 * 
@@ -411,8 +413,8 @@ public class Requirement extends AbstractModel {
 		setDescription(reqUpdate.getDescription());
 		setEstimate(reqUpdate.getEstimate());
 		setActualEffort(reqUpdate.getActualEffort());
-		setEvents(reqUpdate.getEvents());
 		/*
+		setEvents(reqUpdate.getEvents());
 		setNotes(reqUpdate.getNotes());
 		setAttachments(reqUpdate.getAttachments());
 		setTasks(reqUpdate.getTasks());
