@@ -141,6 +141,9 @@ public class RequirementPanel extends JPanel {
 		txtEstimate.setEnabled(false);
 		txtActualEffort.setEnabled(false);
 		
+		txtDescription.setLineWrap(true);
+		txtDescription.setWrapStyleWord(true);
+		
 		//Create the strings for the boxes
 		String[] typeStrings = { "NoType", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
