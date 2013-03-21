@@ -615,7 +615,7 @@ public class RequirementManagerTest {
 		Integer id = model.getId();
 
 		 fixture.save(s, model);
-		 Requirement[] result =fixture.getEntity(s, id.toString())
+		 Requirement[] result =fixture.getEntity(s, id.toString());
 		// add additional test code here
 		assertEquals(result[0] , model); //We should be able to retrieve the model we just saved.
 	}
@@ -643,7 +643,6 @@ public class RequirementManagerTest {
 
 		// add additional test code here
 		fixture.getEntity(s, id.toString());
-		fixture.
 	}
 
 	/**
