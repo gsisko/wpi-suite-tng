@@ -25,7 +25,7 @@ public class SaveRequirementController implements ActionListener
     public void actionPerformed(ActionEvent event) 
     {
     	if (view.getRequirementName().getText().length() == 0) {
-    		JOptionPane.showMessageDialog(null, "Name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "Name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
     		return;
     	}
     	if (view.getRequirementName().getText().length() > 100) {
@@ -33,7 +33,15 @@ public class SaveRequirementController implements ActionListener
     		return;
     	}
     	if (view.getRequirementDescription().getText().length() == 0) {
-    		JOptionPane.showMessageDialog(null, "Description cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "Description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	if (view.getRequirementEstimate().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Estimate must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	if (view.getRequirementActualEffort().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "ActualEffort must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
     		return;
     	}
 
@@ -41,7 +49,7 @@ public class SaveRequirementController implements ActionListener
 		
 	    	String name = view.getRequirementName().getText();
 			String description = view.getRequirementDescription().getText();
-			int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : (view.getRequirementReleaseNumber().getText()));
+			int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (view.getRequirementReleaseNumber().getText()));
 			RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
 			RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
 		
@@ -62,11 +70,11 @@ public class SaveRequirementController implements ActionListener
 			updatedRequirement.setName(view.getRequirementName().getText());
 			updatedRequirement.setDescription(view.getRequirementDescription().getText());
 			updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
-			updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "0" : view.getRequirementReleaseNumber().getText()));
+			updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "-1" : view.getRequirementReleaseNumber().getText()));
 			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 			updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
-			updatedRequirement.setEstimate(Integer.parseInt((view.getRequirementEstimate().getText().equals("")) ? "0" : view.getRequirementEstimate().getText()));
-			updatedRequirement.setActualEffort(Integer.parseInt((view.getRequirementActualEffort().getText().equals(""))? "0" : view.getRequirementActualEffort().getText()));
+			updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
+			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 		
 		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		   

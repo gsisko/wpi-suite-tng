@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
-import java.util.Date;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -12,9 +11,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
@@ -149,19 +146,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
-		/*if(Integer.parseInt(id) < 1) {  // This would be an invalid id
-			throw new NotFoundException();
-		}
-		Requirement[] requirements = null;
-		requirements = db.retrieve(Requirement.class, "id", id, s.getProject()).toArray(new Requirement[0]);
-
-		if(requirements.length < 1 || requirements[0] == null) { // Makes sure we actually got something
-			throw new NotFoundException(); 
-		}		
-		
-		// Throw an exception if an ID was specified but not found
-		throw new NotFoundException();*/
-		
 		
 		final int intId = Integer.parseInt(id);
 		if(intId < 1) {
@@ -204,35 +188,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 		save(s,oldReq);
 				
 		return oldReq;
-		
-		/*
-		
-		Requirement updatedRequirement = Requirement.fromJSON(content);
-		
-		Requirement existingRequirement = (Requirement) (db.retrieve(Requirement.class, "Id", updatedRequirement.getId())).get(0);
-		
-		RequirementChangeset changeset = new RequirementChangeset();
-		// core should make sure the session user exists
-		// if this can't find the user, something's horribly wrong
-		changeset.setUser((User) db.retrieve(User.class, "username", s.getUsername()).get(0));
-		ChangesetCallback callback = new ChangesetCallback(changeset);
-		
-		// copy values to old requirement and fill in our changeset appropriately
-		updateMapper.map(updatedRequirement, existingRequirement, callback);
-		
-		if(changeset.getChanges().size() == 0) {
-			// stupid user didn't even change anything!
-
-		} else {
-			// add changeset to Requirement events, save to database
-			// TODO: events field doesn't persist without explicit save - is this a bug?
-			if(!db.save(existingRequirement, s.getProject())) {
-				throw new WPISuiteException();
-			}
-		}
-		
-		return existingRequirement;
-		*/
 		
 	}
 	

@@ -3,7 +3,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirementevents.mode
 import javax.swing.DefaultListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEvent;
 
 /**
  * A data model for a list of RequirementEvents.
@@ -25,13 +24,7 @@ public class RequirementEventListModel extends DefaultListModel {
 	 * Replaces the contents of this model with the events in the given Requirement
 	 * @param model the Requirement containing the events to populate this model
 	 */
-	@SuppressWarnings("unchecked")
 	public void update(Requirement model) {
 		this.clear();
-		/*
-		for (RequirementEvent event : model.getEvents()) {
-			addElement(event);
-		}
-		*/
 	}
 }

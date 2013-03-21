@@ -69,7 +69,11 @@ public class RetrieveRequirementController extends MouseAdapter {
 		view.getRequirementType().setSelectedItem(requirement.getType().toString());
 		view.getRequirementStatus().setSelectedItem(requirement.getStatus().toString());
 		view.getRequirementPriority().setSelectedItem(requirement.getPriority().toString());
-		view.getRequirementReleaseNumber().setText(Integer.toString(requirement.getReleaseNumber()));
+		if (requirement.getReleaseNumber() == -1) {
+			view.getRequirementReleaseNumber().setText("");
+		} else {
+			view.getRequirementReleaseNumber().setText(Integer.toString(requirement.getReleaseNumber()));
+		}
 		view.getRequirementEstimate().setText(Integer.toString(requirement.getEstimate()));
 		view.getRequirementActualEffort().setText(Integer.toString(requirement.getActualEffort()));
 		

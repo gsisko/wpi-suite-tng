@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
 import javax.swing.*;
 import javax.swing.text.*;
 
+@SuppressWarnings("serial")
 public class JNumberTextField extends JTextField
 {
     private static final char DOT = '.';
@@ -164,7 +165,7 @@ public class JNumberTextField extends JTextField
     {
     }
 
-    class JNumberFieldFilter extends PlainDocument
+	class JNumberFieldFilter extends PlainDocument
     {
         public JNumberFieldFilter()
         {
