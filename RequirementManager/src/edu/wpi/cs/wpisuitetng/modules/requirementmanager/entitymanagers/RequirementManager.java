@@ -31,7 +31,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * To make sure this happens, be sure to place add this entity 
 	 * manager to the map in the ManagerLayer file.
 	 * 
-	
+	 * Expects that the data passed is valid and does no error checking!
+	 *
 	 * @param data Database in the core
 	 */	
 	public RequirementManager(Data data) {

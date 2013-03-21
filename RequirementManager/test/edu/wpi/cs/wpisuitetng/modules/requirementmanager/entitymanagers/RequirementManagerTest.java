@@ -7,19 +7,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Andrew Hurle
- *    Tyler Wack
+ *    Robert Smieja
+ *    
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import static org.junit.Assert.*;
 
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.Date;
 import java.util.HashSet;
-//import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +41,6 @@ public class RequirementManagerTest {
 	String mockSsid;
 	RequirementManager manager;
 	Requirement newRequirement;
-	User bob;
 	Requirement goodUpdatedRequirement;
 	Session adminSession;
 	Project testProject;
@@ -84,7 +79,23 @@ public class RequirementManagerTest {
 		db.save(existingUser);
 		db.save(otherRequirement, otherProject);
 		db.save(admin);
+		
 		manager = new RequirementManager(db);
+		
+		//Check to make sure no set up failed
+		assertNotNull(admin);
+		assertNotNull(testProject);
+		assertNotNull(otherProject);
+		assertNotNull(mockSsid);
+		assertNotNull(adminSession);
+		assertNotNull(db);
+		assertNotNull(existingUser);
+		assertNotNull(existingRequirement);
+		assertNotNull(otherRequirement);
+		assertNotNull(goodUpdatedRequirement);
+		assertNotNull(newRequirement);
+		assertNotNull(defaultSession);
+		assertNotNull(manager);
 	}
 
 	@Test
@@ -92,7 +103,6 @@ public class RequirementManagerTest {
 		Requirement created = manager.makeEntity(defaultSession, newRequirement.toJSON());
 		assertEquals(3, created.getId()); // IDs are unique across projects
 		assertEquals("A new requirement", created.getName());
-//		assertEquals("A new defect", created.getTitle());
 		assertSame(db.retrieve(Requirement.class, "id", 3).get(0), created);
 	}
 	
@@ -129,7 +139,6 @@ public class RequirementManagerTest {
 	@Test
 	public void testSave() throws WPISuiteException {
 		Requirement newRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
-//		Requirement newDefect = new Requirement(3, "A title", "", existingUser);
 		newRequirement.setProject(testProject);
 		manager.save(defaultSession, newRequirement);
 		assertSame(newRequirement, db.retrieve(Requirement.class, "id", 3).get(0));
@@ -204,7 +213,6 @@ public class RequirementManagerTest {
 	
 	@Test
 	public void testNoUpdate() throws WPISuiteException {
-//		Date origLastModified = existingRequirement.getLastModifiedDate();
 		Requirement updated = manager.update(defaultSession, existingRequirement.toJSON());
 		assertSame(existingRequirement, updated);
 		
@@ -223,11 +231,9 @@ public class RequirementManagerTest {
 	
 	@Test
 	public void testProjectChangeIgnored() throws WPISuiteException {
-		Requirement existingDefectCopy = new Requirement("ExistingRequirement", "ExistingDescription", RequirementType.NoType, RequirementPriority.NoPriority, 0);
-//		Requirement existingDefectCopy = new Requirement(1, "An existing defect", "", existingUser);
-		existingDefectCopy.setProject(otherProject);
-		Requirement updated = manager.update(defaultSession, existingDefectCopy.toJSON());
-//		assertEquals(0, updated.getEvents().size());
+		Requirement existingRequirementCopy = new Requirement("ExistingRequirement", "ExistingDescription", RequirementType.NoType, RequirementPriority.NoPriority, 0);
+		existingRequirementCopy.setProject(otherProject);
+		Requirement updated = manager.update(defaultSession, existingRequirementCopy.toJSON());
 		assertSame(testProject, updated.getProject());
 	}
 	
