@@ -58,7 +58,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * 		-a button to refresh that table
  * 	...and a create button to enable the left panel fields for creation of a new requirement
  * 
- * @author Paula Rudy
+ * @author Team 5
  *
  */
 @SuppressWarnings("serial")
@@ -429,7 +429,7 @@ public class RequirementPanel extends JPanel {
 		mainConstraints.anchor = GridBagConstraints.WEST;
 		add(leftPanel);
 
-		JLabel blankLabel = new JLabel("                 ");
+		JLabel blankLabel = new JLabel("                 "); //add a blank label to create space between the panels
 		mainConstraints.anchor = GridBagConstraints.CENTER;
 		add(blankLabel);
 		
@@ -441,66 +441,66 @@ public class RequirementPanel extends JPanel {
 		
 	}
 	
-//	/**
-//	 * This returns the JTextField "txtName"
-//	 * @return the txtName JTextField
-//	 */
+	/**
+	 * This returns the JTextField "txtName"
+	 * @return the txtName JTextField
+	 */
 	public JTextField getRequirementName() {
 		return txtName;
 	}
 	
-//	/**
-//	 * This returns the JTextArea "txtDescription"
-//	 * @return the txtDescription JTextArea
-//	 */
+	/**
+	 * This returns the JTextArea "txtDescription"
+	 * @return the txtDescription JTextArea
+	 */
 	public JTextArea getRequirementDescription() {
 		return txtDescription;
 	}
 	
-//	/**
-//	 * This returns the JComboBox "typeBox"
-//	 * @return the typeBox JComboBox
-//	 */
+	/**
+	 * This returns the JComboBox "typeBox"
+	 * @return the typeBox JComboBox
+	 */
 	public JComboBox getRequirementType() {
 		return typeBox;
 	}
 
-//	/**
-//	 * This returns the JComboBox "statusBox"
-//	 * @return the statusBox JComboBox
-//	 */
+	/**
+	 * This returns the JComboBox "statusBox"
+	 * @return the statusBox JComboBox
+	 */
 	public JComboBox getRequirementStatus() {
 		return statusBox;
 	}
 
-//	/**
-//	 * This returns the JComboBox "priorityBox"
-//	 * @return the priorityBox JComboBox
-//	 */
+	/**
+	 * This returns the JComboBox "priorityBox"
+	 * @return the priorityBox JComboBox
+	 */
 	public JComboBox getRequirementPriority() {
 		return priorityBox;
 	}
 
-//	/**
-//	 * This returns the JTextField "txtReleaseNum"
-//	 * @return the txtReleaseNum JTextField
-//	 */
+	/**
+	 * This returns the JTextField "txtReleaseNum"
+	 * @return the txtReleaseNum JTextField
+	 */
 	public JTextField getRequirementReleaseNumber() {
 		return txtReleaseNum;
 	}
 
-//	/**
-//	 * This returns the JTextField "txtEstimate"
-//	 * @return the txtEstimate JTextField
-//	 */
+	/**
+	 * This returns the JTextField "txtEstimate"
+	 * @return the txtEstimate JTextField
+	 */
 	public JTextField getRequirementEstimate() {
 		return txtEstimate;
 	}
 
-//	/**
-//	 * This returns the JTextField "txtActualEffort"
-//	 * @return the txtActualEffort JTextField
-//	 */
+	/**
+	 * This returns the JTextField "txtActualEffort"
+	 * @return the txtActualEffort JTextField
+	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
 	}
@@ -509,6 +509,10 @@ public class RequirementPanel extends JPanel {
 		return controller;
 	}
 	
+	/**
+	 * This returns the JButton "btnSave"
+	 * @return the btnSave JButton
+	 */
 	public JButton getSaveButton() {
 		return btnSave;
 	}
