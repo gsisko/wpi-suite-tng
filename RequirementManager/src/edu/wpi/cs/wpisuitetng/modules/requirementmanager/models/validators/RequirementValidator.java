@@ -109,21 +109,6 @@ public class RequirementValidator {
 			return issues;
 		}
 		
-		/*
-		Requirement oldRequirement = null;
-		if(mode == Mode.EDIT) {
-			oldRequirement = getExistingRequirement(requirement.getId(), session.getProject(), issues, "id");
-		}
-		lastExistingRequirement = oldRequirement;
-		
-		if(mode == Mode.CREATE) {
-			// new requirements should always have new status
-			requirement.setStatus(RequirementStatus.NEW);
-		} else if(requirement.getStatus() == null) {
-			issues.add(new ValidationIssue("Cannot be null", "status"));
-		}
-		*/
-		
 		// make sure title and description size are within constraints
 		if(requirement.getName() == null || requirement.getName().length() > 100
 				|| requirement.getName().length() < 1) {
@@ -132,42 +117,6 @@ public class RequirementValidator {
 		if(requirement.getDescription() == null) {
 			issues.add(new ValidationIssue("Cannot be empty", "description"));
 		}
-		
-		/*
-		// make sure the creator and assignee exist and aren't duplicated
-		if(mode == Mode.EDIT) {
-			if(oldRequirement != null) {
-				requirement.setCreator(oldRequirement.getCreator());
-			}
-		} else if(requirement.getCreator() == null) {
-			issues.add(new ValidationIssue("Required", "creator"));
-		} else {
-			User creator = getExistingUser(requirement.getCreator().getUsername(), issues, "creator");
-			if(creator != null) {
-				if(!creator.getUsername().equals(session.getUsername())) {
-					issues.add(new ValidationIssue("Must match currently logged in user", "creator"));
-				} else {
-					requirement.setCreator(creator);
-				}
-			}
-		}
-		
-		// make sure we're not being spoofed with some weird date
-		final Date now = new Date();
-		if(oldRequirement != null) {
-			requirement.setCreationDate(oldRequirement.getCreationDate());
-		} else {
-			requirement.setCreationDate(now);
-		}
-		requirement.setLastModifiedDate((Date)now.clone());
-		
-		if(oldRequirement != null) {
-			requirement.setEvents(oldRequirement.getEvents());
-		} else {
-			// new requirements should never have any events
-			requirement.setEvents(new ArrayList<RequirementEvent>());
-		}
-		*/
 		
 		return issues;
 	}

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Paula Rudy
+ *    Team 5
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
 
@@ -17,8 +17,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -26,7 +24,6 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -81,9 +78,9 @@ public class RequirementPanel extends JPanel {
 	//The fillable components
 	private final JTextField txtName;//The name text field 
 	private final JTextArea txtDescription;//The description text area
-	private final JComboBox typeBox;//The type combo box
-	private final JComboBox statusBox;//The status combo box
-	private final JComboBox priorityBox;//The priority combo box
+	private final JComboBox<String> typeBox;//The type combo box
+	private final JComboBox<String> statusBox;//The status combo box
+	private final JComboBox<String> priorityBox;//The priority combo box
 	private final JNumberTextField txtReleaseNum;//The release number text field
 	private final JNumberTextField txtEstimate;//The estimate text field
 	private final JNumberTextField txtActualEffort;//The actual effort text field
@@ -106,7 +103,6 @@ public class RequirementPanel extends JPanel {
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
 	 */
-	@SuppressWarnings("unchecked")
 	public RequirementPanel() {
 		
 		leftPanel = new JPanel();
@@ -119,9 +115,9 @@ public class RequirementPanel extends JPanel {
 		typeLabel = new JLabel("Type:");
 		statusLabel = new JLabel("Status:");
 		priorityLabel = new JLabel("Priority:");
-		releaseNumLabel = new JLabel("Release Number:");
+		releaseNumLabel = new JLabel("ReleaseNum:");
 		estimateLabel = new JLabel("Estimate:");
-		actualEffortLabel = new JLabel("Actual Effort:");
+		actualEffortLabel = new JLabel("ActualEffort:");
 		
 		//Construct the misc components
 		txtName = new JTextField(/*"Enter a name here."*/"");
@@ -151,9 +147,9 @@ public class RequirementPanel extends JPanel {
 		String[] priorityStrings = { "NoPriority", "High", "Medium", "Low"};
 		
         //Construct the boxes 
-		typeBox = new JComboBox(typeStrings);
-		statusBox = new JComboBox(statusStrings);
-		priorityBox = new JComboBox(priorityStrings);
+		typeBox = new JComboBox<String>(typeStrings);
+		statusBox = new JComboBox<String>(statusStrings);
+		priorityBox = new JComboBox<String>(priorityStrings);
 		
 		//Set the initial selections for the boxes
 		typeBox.setSelectedIndex(0);
@@ -457,11 +453,12 @@ public class RequirementPanel extends JPanel {
 		return txtDescription;
 	}
 	
+
 	/**
 	 * This returns the JComboBox "typeBox"
 	 * @return the typeBox JComboBox
 	 */
-	public JComboBox getRequirementType() {
+	public JComboBox<String> getRequirementType() {
 		return typeBox;
 	}
 
@@ -469,7 +466,7 @@ public class RequirementPanel extends JPanel {
 	 * This returns the JComboBox "statusBox"
 	 * @return the statusBox JComboBox
 	 */
-	public JComboBox getRequirementStatus() {
+	public JComboBox<String> getRequirementStatus() {
 		return statusBox;
 	}
 
@@ -477,7 +474,7 @@ public class RequirementPanel extends JPanel {
 	 * This returns the JComboBox "priorityBox"
 	 * @return the priorityBox JComboBox
 	 */
-	public JComboBox getRequirementPriority() {
+	public JComboBox<String> getRequirementPriority() {
 		return priorityBox;
 	}
 

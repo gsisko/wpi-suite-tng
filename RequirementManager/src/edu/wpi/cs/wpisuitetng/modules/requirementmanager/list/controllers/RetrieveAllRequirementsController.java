@@ -1,12 +1,9 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
-import java.util.Date;
-
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -73,7 +70,7 @@ public class RetrieveAllRequirementsController {
 			if (requirements.length > numOfDeleted){
 
 				// set the column names
-				String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
+				String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNum", "Estimate", "ActualEffort"};
 				
 				// put the data in the table
 				Object[][] entries = new Object[requirements.length - numOfDeleted][columnNames.length];
@@ -86,7 +83,11 @@ public class RetrieveAllRequirementsController {
 						entries[j][3] = requirements[i].getType().toString();
 						entries[j][4] = requirements[i].getStatus().toString();
 						entries[j][5] = requirements[i].getPriority().toString();
-						entries[j][6] = String.valueOf(requirements[i].getReleaseNumber());
+						if (requirements[i].getReleaseNumber() == -1) {
+							entries[j][6] = "none";
+						} else {
+							entries[j][6] = String.valueOf(requirements[i].getReleaseNumber());
+						}
 						entries[j][7] = String.valueOf(requirements[i].getEstimate());
 						entries[j][8] = String.valueOf(requirements[i].getActualEffort());
 						j++; 

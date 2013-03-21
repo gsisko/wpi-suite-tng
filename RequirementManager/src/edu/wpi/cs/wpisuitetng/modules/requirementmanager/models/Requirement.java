@@ -1,9 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
@@ -36,17 +32,7 @@ public class Requirement extends AbstractModel {
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
-	private int actualEffort;             
-	
-
-	/*
-	private HashSet<Note> notes;
-	private HashSet<Attachment> attachments;
-	private HashSet<Task> tasks;
-	*/
-	
-	/** A log of updates, changes etc to this Requirement  */
-	//private List<RequirementEvent> events;  
+	private int actualEffort;    
 		
 	public Requirement(){
 		new Requirement("","",NoType,NoPriority,0);
@@ -74,12 +60,6 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(0);			// Initial actual effort set to zero
 		this.setStatus(New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
-		/*
-		this.setAttachments(new HashSet<Attachment>());		// Initializes an empty HashSet of attachments
-		this.setNotes(new HashSet<Note>());					// Initializes an empty HashSet of notes
-		this.setTasks(new HashSet<Task>());					// Initializes an empty HashSet of task
-		*/
-		//this.setEvents(new ArrayList<RequirementEvent>());	// Initializes an empty List of events
 	}
 	
 	
@@ -199,30 +179,6 @@ public class Requirement extends AbstractModel {
 	@Override
 	public void setProject(Project project) {
 		super.setProject(project);
-		// we need to make sure nested models get the correct project
-/*		if(!notes.isEmpty()) {
-			for(Note n : notes) {
-				n.setProject(project);
-			}
-		}
-		if(!tasks.isEmpty()) {
-			for(Task t : tasks) {
-				t.setProject(project);
-			}
-		}
-		if(!attachments.isEmpty()) {
-			for(Attachment a : attachments) {
-				a.setProject(project);
-			}			
-		}
-*/		
-		/*
-		if(events != null) {
-			for(RequirementEvent e : events) {
-				e.setProject(project);
-			}
-		}
-		*/
 	}
 
 	// The following are getters and setters
@@ -340,72 +296,11 @@ public class Requirement extends AbstractModel {
 		this.priority = priority;
 	}
 	
-	
-//	/**
-//	 * @return the attachments
-//	 * @return List<RequirementEvent>
-//   * @return List<RequirementEvent>
-//	 */
-//	public HashSet<Attachment> getAttachments() {
-//		return attachments;
-//	}
-//
-//	/**
-//	 * @param attachments the attachments to set
-//	 */
-//	public void setAttachments(HashSet<Attachment> attachments) {
-//		this.attachments = attachments;
-//	}
-//
-//	/**
-//	 * @return the notes
-//	 */
-//	public HashSet<Note> getNotes() {
-//		return notes;
-//	}
-//
-//	/**
-//	 * @param notes the notes to set
-//	 */
-//	public void setNotes(HashSet<Note> notes) {
-//		this.notes = notes;
-//	}
-//
-//	/**
-//	 * @return the tasks
-//	 */
-//	public HashSet<Task> getTasks() {
-//		return tasks;
-//	}
-//
-//	/**
-//	 * @param tasks the tasks to set
-//	 */
-//	public void setTasks(HashSet<Task> tasks) {
-//		this.tasks = tasks;
-//	}
-	
-	
-//	/**
-//	 * @return the events
-//	 */
-//	public List<RequirementEvent> getEvents() {
-//		return events;
-//	}
-//
-//	/**
-//	 * @param events the events to set
-//	 */
-//	public void setEvents(List<RequirementEvent> events) {
-//		this.events = events;
-//	}
-
 	/** Changes all fields in the current Requirement to equal the fields of the reqUpdate
 	 * 
 	 * @param reqUpdate Requirement holding the updates
 	 */
 	public void updateReq(Requirement reqUpdate) {
-	
 		setReleaseNumber(reqUpdate.getReleaseNumber());
 		setStatus(reqUpdate.getStatus());
 		setPriority(reqUpdate.getPriority());
@@ -414,12 +309,6 @@ public class Requirement extends AbstractModel {
 		setEstimate(reqUpdate.getEstimate());
 		setActualEffort(reqUpdate.getActualEffort());
 		setType(reqUpdate.getType());
-		/*
-		setEvents(reqUpdate.getEvents());
-		setNotes(reqUpdate.getNotes());
-		setAttachments(reqUpdate.getAttachments());
-		setTasks(reqUpdate.getTasks());
-		*/
 	}
 
 
