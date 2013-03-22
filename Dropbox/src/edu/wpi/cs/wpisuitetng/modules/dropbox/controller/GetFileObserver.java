@@ -21,13 +21,19 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class GetFileObserver implements RequestObserver {
 
+	private final GetFileController controller;
+	
+	public GetFileObserver(GetFileController controller) {
+		this.controller = controller;
+	}
+	
 	/*
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		FileBlob[] files = FileBlob.fromJSONArray(iReq.getResponse().getBody());
-		System.out.println(files[0].getContentsAsString());
+		controller.receivedFile(files[0]);
 	}
 
 	/*

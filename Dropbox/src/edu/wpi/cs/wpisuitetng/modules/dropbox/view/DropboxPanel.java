@@ -25,6 +25,9 @@ public class DropboxPanel extends JPanel {
 	/** The model for the filenames list */
 	private final FileListModel model;
 	
+	/** Saves the selected file to the user's computer */
+	private final JButton btnSaveLocally;
+	
 	/**
 	 * Constructs the panel and adds components
 	 * @param model containing the list of file names in the dropbox
@@ -32,6 +35,9 @@ public class DropboxPanel extends JPanel {
 	public DropboxPanel(FileListModel model) {
 		
 		this.model = model;
+		this.btnSaveLocally = new JButton("Save Locally...");
+		btnSaveLocally.setEnabled(false);
+		btnSaveLocally.setAlignmentX(CENTER_ALIGNMENT);
 		
 		// Construct the list and adjust the font
 		lstFiles = new JList(model);
@@ -48,9 +54,15 @@ public class DropboxPanel extends JPanel {
 		// Add the components to the panel
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(lstScrollPane);
+		add(Box.createVerticalStrut(10));
+		add(btnSaveLocally);
 	}
 	
 	public JList getFilesList() {
 		return lstFiles;
+	}
+	
+	public JButton getSaveLocallyButton() {
+		return btnSaveLocally;
 	}
 }
