@@ -59,7 +59,7 @@ public class FileBlobManager implements EntityManager<FileBlob> {
 	public FileBlob[] getEntity(Session s, String id) throws NotFoundException,
 	WPISuiteException {
 		final int intId = Integer.parseInt(id);
-		if(intId < 1) {
+		if(intId < 0) {
 			throw new NotFoundException();
 		}
 		FileBlob[] fileBlobs = null;

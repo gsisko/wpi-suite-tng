@@ -66,6 +66,7 @@ public class AddFileController implements ActionListener {
 
 	public byte[] readFile(File file) throws IOException {
 		final InputStream inStream = new FileInputStream(file);
+		
 		int offset = 0;
 		int numRead = 0;
 		int length = (int)file.length();
