@@ -12,6 +12,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.Retrieve
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 
 /**
  * Controller to handle retrieving one requirement from the server
@@ -88,7 +89,11 @@ public class RetrieveRequirementController extends MouseAdapter {
 		view.getRequirementStatus().setEnabled(true);
 		view.getRequirementPriority().setEnabled(true);
 		view.getRequirementReleaseNumber().setEnabled(true);
-		view.getRequirementEstimate().setEnabled(true);
+		if (requirement.getStatus() == InProgress || requirement.getStatus() == Complete) {
+			view.getRequirementEstimate().setEnabled(false);
+		} else {
+			view.getRequirementEstimate().setEnabled(true);
+		}
 		view.getRequirementActualEffort().setEnabled(true);
 		
 		view.setCurrentRequirement(requirement);
