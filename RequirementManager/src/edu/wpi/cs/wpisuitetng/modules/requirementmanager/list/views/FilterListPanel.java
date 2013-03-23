@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Chris Casola
+ *    Edison Jimenez
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
@@ -25,7 +25,7 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class FilterListPanel extends JPanel {
-	
+		
 	/**
 	 * Constructs the panel
 	 */
