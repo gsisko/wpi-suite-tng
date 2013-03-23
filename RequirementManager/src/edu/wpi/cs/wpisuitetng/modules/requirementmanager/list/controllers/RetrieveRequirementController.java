@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;

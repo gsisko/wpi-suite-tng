@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
 
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
+
 /**
  * This panel fills the main content area of the tab for this module. It
  * contains one inner JPanel, the RequirementPanel.
@@ -34,3 +36,5 @@ public class MainView extends JPanel {
 		add(reqPanel);// Add the panel to this view
 	}
 }
+
+// THIS FILE WILL BE DELETED IN ITERATION 2!!!!

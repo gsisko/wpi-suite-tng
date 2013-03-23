@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.ToolbarPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarPanel;
 
 
 /**

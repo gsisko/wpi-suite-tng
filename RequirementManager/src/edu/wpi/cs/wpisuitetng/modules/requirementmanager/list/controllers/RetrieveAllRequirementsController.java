@@ -3,7 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
