@@ -48,6 +48,11 @@ public class AddFileController implements ActionListener {
 			final File file = fileChooser.getSelectedFile();
 			byte[] fileContents = null;
 			
+			if (file.length() > Integer.MAX_VALUE) {
+				System.out.println("The file is too large.");
+				return;
+			}
+			
 			try {
 				fileContents = readFile(file);
 			}
@@ -66,18 +71,18 @@ public class AddFileController implements ActionListener {
 
 	public byte[] readFile(File file) throws IOException {
 		final InputStream inStream = new FileInputStream(file);
-		
 		int offset = 0;
 		int numRead = 0;
 		int length = (int)file.length();
 		byte[] retVal = new byte[length];
-		
+
 		while ((numRead = inStream.read(retVal, offset, length)) > 0) {
 			System.out.println("NumRead: " + numRead);
 			offset += numRead;
 			length -= numRead;
 		}
 		inStream.close();
+		
 		return retVal;
 	}
 }

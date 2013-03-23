@@ -80,22 +80,6 @@ public class GetFileController extends MouseAdapter implements ActionListener {
 				// TODO notify user
 				System.out.println("Error writing file!");
 			}
-			/*
-			byte[] fileContents = null;
-			
-			try {
-				fileContents = readFile(file);
-			}
-			catch (IOException e) {
-				System.out.println("Error occurred reading file!");
-			}
-			
-			if (fileContents != null) {
-				Request request = null;
-				request = Network.getInstance().makeRequest("dropbox/fileblob", HttpMethod.PUT);
-				request.setBody(new FileBlob(fileContents, file.getName()).toJSON());
-				request.send();
-			}*/
 		}
 		
 		System.out.println(file.getContentsAsString());
