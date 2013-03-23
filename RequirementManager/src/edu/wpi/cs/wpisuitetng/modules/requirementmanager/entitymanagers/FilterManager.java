@@ -79,18 +79,19 @@ public class FilterManager implements EntityManager<Filter> {
 		return null;
 	}
 
-	@Override
-	public Filter[] getAll(Session s) throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Filter update(Session s, String content) throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
+	
+	
+	
+// Rob will do from here down	
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// TODO Auto-generated method stub
@@ -99,7 +100,18 @@ public class FilterManager implements EntityManager<Filter> {
 
 
 
+	// Leave getAll to rob
+	@Override
+	public Filter[] getAll(Session s) throws WPISuiteException {
 
+
+		
+		
+		
+		
+		
+		return null;
+	}
 
 
 
