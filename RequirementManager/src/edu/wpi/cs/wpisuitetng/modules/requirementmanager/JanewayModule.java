@@ -9,7 +9,8 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarController;
 
 
 /**
@@ -21,19 +22,23 @@ public class JanewayModule implements IJanewayModule {
 	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
 	
+	
+	public ToolbarController toolbarController;
+	
 	/**
 	 * Construct a new DummyModule for demonstration purposes
 	 */
 	public JanewayModule() {
 		
-		// Setup toolbar panel
-		JPanel toolbarPanel = new ToolbarPanel();
+		// Setup toolbar view and controller
+		ToolbarView toolbarView = new ToolbarView(mainTabController);
+		toolbarController = new ToolbarController(toolbarView, mainTabController);
 		
 		// Setup the main panel
 		RequirementPanel mainPanel = new RequirementPanel();
 		
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarPanel, mainPanel);
+		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainPanel);
 		tabs.add(tab);
 	}
 
