@@ -24,7 +24,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
 	
-	private ModelMapper updateMapper;
 
 	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. 
@@ -37,9 +36,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 */	
 	public RequirementManager(Data data) {
 		this.db = data;
-		
-		this.updateMapper = new ModelMapper();
-		this.updateMapper.getBlacklist().add("project"); // never allow project changing
 	}
 
 	
