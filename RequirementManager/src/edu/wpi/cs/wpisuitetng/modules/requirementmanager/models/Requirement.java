@@ -1,12 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
-import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority.*;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 
 /** Requirement: Holds data that makes up a Requirement
  * 
@@ -35,7 +33,7 @@ public class Requirement extends AbstractModel {
 	
 	// blank constructor
 	public Requirement(){
-		new Requirement("","",NoType,NoPriority,0);
+		new Requirement("","",RequirementType.NoType, RequirementPriority.NoPriority,0);
 	}
 	
 	
@@ -57,7 +55,7 @@ public class Requirement extends AbstractModel {
 		// The rest are default values
 		this.setEstimate(0);
 		this.setActualEffort(0);			// Initial actual effort set to zero
-		this.setStatus(New);		// Initial status should be set to NEW
+		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
 	}
 	
