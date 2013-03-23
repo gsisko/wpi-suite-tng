@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -16,9 +17,9 @@ public class SaveRequirementController implements ActionListener
 {
     private final RequirementPanel view;
 
-    public SaveRequirementController(RequirementPanel view) 
+    public SaveRequirementController(RequirementView view) 
     {
-    	this.view = view;
+    	this.view = view.getRequirementPanel();
     }
 
     @Override
@@ -47,7 +48,7 @@ public class SaveRequirementController implements ActionListener
     	}
 
     	
-	    if (view.getCreateNew()) { // if we are creating a new requirement
+	    if (view.getMode() == CREATE) { // if we are creating a new requirement
 		
 	    	// get the fields from the UI
 	    	String name = view.getRequirementName().getText();

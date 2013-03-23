@@ -62,6 +62,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 @SuppressWarnings("serial")
 public class RequirementPanel extends JPanel {
 	
+	// enum to say whether or not you are creating
+	public enum Mode {
+		CREATE,
+		EDIT
+	}
+	
 	//The panels
 	private JPanel leftPanel;
 	private JPanel rightPanel;
@@ -96,17 +102,20 @@ public class RequirementPanel extends JPanel {
 	private JTable resultsTable;
 	private RetrieveAllRequirementsController controller;
 	
-	// boolean to keep track of whether the "save" button is creating a new requirement or updating an existing one
-	private boolean createNew = false;
-	
 	private Requirement currentRequirement;
+	private RequirementView parent;
+	private Mode mode;
 	
 	/**
 	 * The constructor for RequirementPanel;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
 	 */
-	public RequirementPanel() {
+	public RequirementPanel(RequirementView view, Requirement requirement, Mode editMode) {
+		
+		parent = view;
+		mode = editMode;
+		currentRequirement = requirement;
 		
 		leftPanel = new JPanel();
 		
@@ -162,7 +171,7 @@ public class RequirementPanel extends JPanel {
 		priorityBox.setSelectedIndex(0);
 		priorityBox.setEnabled(false);
 		
-		btnSave.addActionListener(new SaveRequirementController(this));
+		btnSave.addActionListener(new SaveRequirementController(parent));
 		btnSave.setEnabled(false);
 		
 		// Set the layout manager that controls the positions of the components
@@ -381,7 +390,7 @@ public class RequirementPanel extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
             	// set all of the UI fields appropriately when the "create requirement" button is clicked
-            	createNew = true;
+            	mode = Mode.CREATE;
             	
             	txtName.setText("");
             	txtDescription.setText("");
@@ -527,19 +536,19 @@ public class RequirementPanel extends JPanel {
 	}
 	
 	/**
-	 * This returns the boolean "createNew"
-	 * @return the createNew boolean
+	 * This returns the "mode"
+	 * @return the mode
 	 */
-	public boolean getCreateNew() {
-		return createNew;
+	public Mode getMode() {
+		return mode;
 	}
 
 	/**
-	 * This sets the boolean "createNew"
-	 * @param b boolean to set createNew to
+	 * This sets the Mode 
+	 * @param Mode m to set mode to
 	 */
-	public void setCreateNew(boolean b) {
-		createNew = b;
+	public void setMode(Mode m) {
+		mode = m;
 	}
 
 	/**

@@ -32,7 +32,7 @@ public class MainView extends JPanel {
 	 * Construct the requirement panel and add it to the current view.
 	 */
 	public MainView() {
-		reqPanel = new RequirementPanel();//Actually create the panel
+		reqPanel = new RequirementPanel(null, null, null);//Actually create the panel
 		add(reqPanel);// Add the panel to this view
 	}
 }

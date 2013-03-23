@@ -8,6 +8,7 @@ import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -65,7 +66,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	public void showRequirement(Requirement requirement) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
 		
-		view.setCreateNew(false);
+		view.setMode(EDIT);
 
 		view.getRequirementName().setText(requirement.getName());
 		view.getRequirementDescription().setText(requirement.getDescription());
