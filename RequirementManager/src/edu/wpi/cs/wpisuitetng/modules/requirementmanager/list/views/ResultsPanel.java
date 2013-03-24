@@ -59,8 +59,9 @@ public class ResultsPanel extends JPanel {
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 		
+		// TODO delete this is it works in ListPanel
 		// Add a listener for row clicks
-		resultsTable.addMouseListener(new RetrieveRequirementController(this));
+	//	resultsTable.addMouseListener(new RetrieveRequirementController(this));
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);

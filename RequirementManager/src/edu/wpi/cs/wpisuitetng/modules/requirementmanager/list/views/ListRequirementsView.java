@@ -11,6 +11,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvide
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
@@ -26,7 +27,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
 	
-	/** The panel containing buttons for the toolbar */
+	/** The panel containing buttons for the tool bar */
 	protected ToolbarGroupView buttonGroup;
 	
 	/** The refresh button that reloads the results of the list/filter */
@@ -76,6 +77,9 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
 		buttonGroup.setPreferredWidth(150);
+		
+		// Add a listener for row clicks in the actual table
+		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this));
 		
 		// Load initial data
 		controller.refreshData();
