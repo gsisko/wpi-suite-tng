@@ -372,7 +372,7 @@ public class RequirementPanel extends JPanel {
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 		
 		// Add a listener for row clicks
-		resultsTable.addMouseListener(new RetrieveRequirementController(this));
+		//resultsTable.addMouseListener(new RetrieveRequirementController(this));
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -381,7 +381,7 @@ public class RequirementPanel extends JPanel {
 		btnNew = new JButton("New Requirement");
 		btnRefresh = new JButton("Refresh");
 		
-		controller = new RetrieveAllRequirementsController(this);
+		//controller = new RetrieveAllRequirementsController(this);
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		
 		// Construct an action listener and add it to the create button

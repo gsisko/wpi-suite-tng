@@ -12,6 +12,7 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requ
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -23,15 +24,15 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requireme
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
-	protected ListPanel view;
+	protected ResultsPanel view;
 
 	/**
 	 * Construct the controller
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveRequirementController(ListRequirementsView view) {
-		this.view = view.getListPanel();
+	public RetrieveRequirementController(ResultsPanel view) {
+		this.view = view;
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	public void showRequirement(Requirement requirement) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
 		view.getTabController().addEditRequirementTab(requirement);
-			}
+		}
 
 	/**
 	 * Called by {@link RetrieveRequirementRequestObserver} when an error
