@@ -173,7 +173,6 @@ public class Requirement extends AbstractModel {
 	 * @param project Project
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setProject(Project) */
-	@Override
 	public void setProject(Project project) {
 		super.setProject(project);
 	}

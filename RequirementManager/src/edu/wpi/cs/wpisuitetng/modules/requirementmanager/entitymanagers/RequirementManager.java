@@ -2,6 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import java.util.List;
 
+import com.google.gson.JsonSyntaxException;
+
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -47,7 +49,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *	@param content The requirement that comes in the form of a string to be recreated
 	 *	
 	@return the Requirement that originally came as a string
-	 * @throws BadRequestException
+	 * @throws BadRequestException "The Requirement creation string had invalid formatting. Entity String: " + content
 	 * @throws ConflictException
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
@@ -56,9 +58,14 @@ public class RequirementManager implements EntityManager<Requirement> {
 			throws BadRequestException, ConflictException, WPISuiteException {
 		
 		// Parse the requirement from JSON
-		final Requirement newRequirement = Requirement.fromJSON(content);
+		final Requirement newRequirement;
+		try {
+			newRequirement = Requirement.fromJSON(content);
+		} catch(JsonSyntaxException e){ // the JSON conversion failed
+			throw new BadRequestException("The Requirement creation string had invalid formatting. Entity String: " + content);			
+		}
 		
-		// Saves the requirement in the database if possible
+		// Saves the requirement in the database
 		this.save(s,newRequirement); 
 		
 		// Return the newly created requirement (this gets passed back to the client)
