@@ -14,17 +14,19 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class SaveFilterController implements ActionListener 
 {
-    private final FilterListPanel view;
-
-    public SaveFilterController(FilterListView view) 
+    private final FilterListPanel panel;
+    private final FilterBuilderPanel builder;
+    
+    public SaveFilterController(ListRequirementsView view) 
     {
-    	this.view = view.getFilterPanel();
+    	this.panel = view.getListPanel().getFilterPanel();
+    	this.builder = view.getListPanel().getBuilderPanel();
     }
 
     @Override
     public void actionPerformed(ActionEvent event) 
     {
-    	// check if any inputs are invalid, print an error message if one is
+    	/*/ check if any inputs are invalid, print an error message if one is
     	if (view.getFilterName().getText().length() == 0) {
     		JOptionPane.showMessageDialog(null, "Name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
     		return;
@@ -44,7 +46,7 @@ public class SaveFilterController implements ActionListener
     	if (view.getFilterActualEffort().getText().length() == 0) {
     		JOptionPane.showMessageDialog(null, "ActualEffort must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
     		return;
-    	}
+    	}*/
 
     	
 	    if (view.getMode() == CREATE) { // if we are creating a new filter
