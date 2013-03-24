@@ -28,8 +28,8 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveRequirementController(RequirementPanel view) {
-		this.view = view;
+	public RetrieveRequirementController(RequirementView view) {
+		this.view = view.getRequirementPanel();
 	}
 
 	/**

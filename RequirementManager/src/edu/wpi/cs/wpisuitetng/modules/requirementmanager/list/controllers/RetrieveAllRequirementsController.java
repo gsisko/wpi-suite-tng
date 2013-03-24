@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -28,8 +29,8 @@ public class RetrieveAllRequirementsController {
 	 * 
 	 * @param view the search requirements view
 	 */
-	public RetrieveAllRequirementsController(RequirementPanel view) {
-		this.view = view;
+	public RetrieveAllRequirementsController(RequirementView view) {
+		this.view = view.getRequirementPanel();
 	}
 
 	/**
