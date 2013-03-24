@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** A filter is one set of constraints that a user can use to filter a list of requirements.
  * @author Team 5
@@ -24,30 +25,33 @@ public class Filter extends AbstractModel {
 	/**	Use filter? */
 	private boolean useFilter;
 	
+	/** The owner of the filter */
+	private User user;
+	
 	
 	/**	Basic constructor
 	 * 
 	 */
 	public Filter () {
-		new Filter(-1, FilterType.OTHER, OperatorType.OTHER, null, true);
+		new Filter(FilterType.OTHER, OperatorType.OTHER, null, true);
 	}
 	
 	
 	/**	Full constructor for Filter.
 	 * 
-	 * @param uniqueID2
 	 * @param type2
 	 * @param comparator2
 	 * @param value2
 	 * @param useFilter2
 	 */
-	public Filter(int uniqueID2, FilterType type2, OperatorType comparator2,
+	public Filter( FilterType type2, OperatorType comparator2,
 			Object value2, boolean useFilter2) {
-		this.setUniqueID(uniqueID2);
+		this.setUniqueID(-1); // default as a flag to entity manager
 		this.setType(type2);
 		this.setComparator(comparator2);
 		this.setValue(value2);
 		this.setUseFilter(useFilter2);
+		this.setUser(null);          // User is defaulted to null and handled at the manager layer
 	}
 	
 	
@@ -116,12 +120,13 @@ public class Filter extends AbstractModel {
 	 * 
 	 * @param reqUpdate Filter holding the updates
 	 */
-	public void updateFilter(Filter filterUpdate){
-		this.setUniqueID(filterUpdate.getUniqueID());
+	public void updateFilter(Filter filterUpdate){	
 		this.setType(filterUpdate.getType());
 		this.setComparator(filterUpdate.getComparator());
 		this.setValue(filterUpdate.getValue());
-		this.setUseFilter(filterUpdate.isUseFilter());		
+		this.setUseFilter(filterUpdate.isUseFilter());
+		// User does not need to be set, as it cannot be changed anyways
+		// Unique ID does not need to be set, as it cannot be changed anyways
 	}
 	
 	
@@ -213,6 +218,22 @@ public class Filter extends AbstractModel {
 	 */
 	public void setUseFilter(boolean useFilter) {
 		this.useFilter = useFilter;
+	}
+
+
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

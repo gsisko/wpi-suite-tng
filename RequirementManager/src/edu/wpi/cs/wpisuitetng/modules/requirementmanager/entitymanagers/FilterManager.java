@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
+import java.util.List;
+
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -7,9 +9,9 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /** This is the entity manager for filters in the RequirementManager module
  * @author Team 5
@@ -17,8 +19,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */
-	@SuppressWarnings("unused")
 	private Data db;
+	/** Current implementation of unique ID's for filters  */
+	private int nextFilterId;
 	
 	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. 
@@ -30,17 +33,18 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @param data Database in the core
 	 */		
 	public FilterManager(Data data){
-		this.db = data;
+		this.setDb(data);
+		this.setNextFilterId(1);
 	}
 	
     /** Takes a filter and assigns a unique id if necessary
      * 
      * @param req The requirement that possibly needs a unique id
-    
-     * @throws WPISuiteException If there are no Requirements in the database */
-    public void assignUniqueID(Requirement req, Project p) throws WPISuiteException{
-        if (req.getId() == -1){// -1 is a flag that says a unique id is needed            
-            req.setId(Count() + 1); // Makes first Requirement have id = 1
+     */
+    public void assignUniqueID(Filter filter, Project p){
+        if (filter.getUniqueID() == -1){// -1 is a flag that says a unique id is needed            
+            filter.setUniqueID(this.getNextFilterId()); // Makes first Filter have id = 1
+            this.setNextFilterId(this.getNextFilterId() + 1);
         }        
     }
 	
@@ -103,14 +107,9 @@ public class FilterManager implements EntityManager<Filter> {
 	// Leave getAll to rob
 	@Override
 	public Filter[] getAll(Session s) throws WPISuiteException {
-
-
-		
-		
-		
-		
-		
-		return null;
+		 List<Model> filterList =  this.db.retrieve(Filter.class, "user", s.getUser());
+		 filterList.size();
+		 return filterList.toArray(new Filter[filterList.size()]);
 	}
 
 
@@ -145,5 +144,36 @@ public class FilterManager implements EntityManager<Filter> {
 			throws WPISuiteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	
+	/**
+	 * @return the db
+	 */
+	public Data getDb() {
+		return db;
+	}
+
+	/**
+	 * @param db the db to set
+	 */
+	public void setDb(Data db) {
+		this.db = db;
+	}
+
+
+
+	/**
+	 * @return the nextFilterId
+	 */
+	public int getNextFilterId() {
+		return nextFilterId;
+	}
+
+	/**
+	 * @param nextFilterId the nextFilterId to set
+	 */
+	public void setNextFilterId(int nextFilterId) {
+		this.nextFilterId = nextFilterId;
 	}
 }
