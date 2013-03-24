@@ -39,18 +39,18 @@ public class Filter extends AbstractModel {
 	
 	/**	Full constructor for Filter.
 	 * 
-	 * @param type2
-	 * @param comparator2
-	 * @param value2
-	 * @param useFilter2
+	 * @param type
+	 * @param comparator
+	 * @param value
+	 * @param useFilter
 	 */
-	public Filter( FilterType type2, OperatorType comparator2,
-			Object value2, boolean useFilter2) {
+	public Filter( FilterType type, OperatorType comparator,
+			Object value, boolean useFilter) {
 		this.setUniqueID(-1); // default as a flag to entity manager
-		this.setType(type2);
-		this.setComparator(comparator2);
-		this.setValue(value2);
-		this.setUseFilter(useFilter2);
+		this.setType(type);
+		this.setComparator(comparator);
+		this.setValue(value);
+		this.setUseFilter(useFilter);
 		this.setUser(null);          // User is defaulted to null and handled at the manager layer
 	}
 	
@@ -129,6 +129,16 @@ public class Filter extends AbstractModel {
 		// Unique ID does not need to be set, as it cannot be changed anyways
 	}
 	
+	/** Compares two filters. Intended use in the makeEntity method
+	 * @param toCompareTo The Filter to compare to
+	 * @return Whether the two Filters are equal or not
+	 */
+	public boolean equals(Filter toCompareTo){
+		if (this.getType() != toCompareTo.getType()) return false;
+		if (this.getComparator() != toCompareTo.getComparator()) return false;
+		if (this.getValue() != toCompareTo.getValue()) return false;		
+		return true;
+	}	
 	
 	
 	/* (non-Javadoc)
