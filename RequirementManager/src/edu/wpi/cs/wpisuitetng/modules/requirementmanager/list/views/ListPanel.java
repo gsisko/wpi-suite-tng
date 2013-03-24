@@ -77,4 +77,11 @@ public class ListPanel extends JPanel {
 	public ResultsPanel getResultsPanel() {
 		return resultsPanel;
 	}
+	
+	public FilterBuilderPanel getBuilderPanel(){
+	    return builderPanel;
+	}
+	public FilterListPanel getFilterPanel(){
+	    return filtersPanel;
+	}
 }
