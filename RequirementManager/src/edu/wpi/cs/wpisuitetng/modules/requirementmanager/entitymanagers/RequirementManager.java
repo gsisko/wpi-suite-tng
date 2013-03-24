@@ -83,6 +83,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		this.save(s,newRequirement); // An exception may be thrown here if we can't save it
 		
 		// Return the newly created requirement (this gets passed back to the client)
+		logger.log(Level.FINER, "Requirement creation success!");
 		return newRequirement;
 	}
 		
@@ -103,6 +104,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		if (!this.db.save(model, s.getProject())) {
 			throw new WPISuiteException("Unable to save Requirement.");
 		}
+		logger.log(Level.FINE, "Requirement Saved :" + model);
 	}
 
 	
@@ -159,33 +161,33 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  @param id Points to a specific requirement
 	 *  
  	@return An array of Requirements  
- 	 * @throws NotFoundException  Thrown if the requested Requirement is not in the Database
-	 * @throws WPISuiteException
+ 	 * @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
+	 * @throws WPISuiteException  "There was a problem retrieving from the database." 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
 		
 		final int intId = Integer.parseInt(id);
 		if(intId < 1) {
-			throw new NotFoundException();
+			throw new NotFoundException("The Requirement with the specified id was not found:" + intId);
 		}
 		Requirement[] requirements = null;
+		
+		// Try to retrieve the specific Requirement
 		try {
 			requirements = db.retrieve(Requirement.class, "id", intId, s.getProject()).toArray(new Requirement[0]);
-		} catch (WPISuiteException e) {
-			// TODO Auto-generated catch block
+		} catch (WPISuiteException e) { // caught and re-thrown with a new message
 			e.printStackTrace();
+			throw new WPISuiteException("There was a problem retrieving from the database." );
 		}
+		
+		// If a requirement was pulled, but has no content
 		if(requirements.length < 1 || requirements[0] == null) {
-			throw new NotFoundException();
+			throw new NotFoundException("The Requirement with the specified id was not found:" + intId);
 		}
 		return requirements;
 	}
 
-	
-
-
-	
 
 	/**  Updates a Requirement already in the database
 	 *   
@@ -193,17 +195,35 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  @param content The requirement to be update + the updates
 	 * 	
 	@return the changed requirement 
-	 * @throws WPISuiteException
+	 * @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
+	 * @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Requirement update(Session s, String content) throws WPISuiteException {
-	 	 
-		final Requirement reqUpdate = Requirement.fromJSON(content);
-	    	
+		// If there is no session
+		if(s == null){
+			throw new WPISuiteException("Null session.");
+		} 
+		
+		// Try to parse the message
+		final Requirement reqUpdate;
+		logger.log(Level.FINER, "Attempting to update a Requirement...");
+		try {
+			reqUpdate = Requirement.fromJSON(content);
+		} catch(JsonSyntaxException e){ // the JSON conversion failed
+			logger.log(Level.WARNING, "Invalid Requirement entity update string.");
+			throw new BadRequestException("The Requirement update string had invalid formatting. Entity String: " + content);			
+		}
+		
+		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Requirement oldReq = getEntity(s, Integer.toString(  reqUpdate.getId()  )  )[0];
 		
+		// Copy new field values into old Requirement. This is because the "same" model must
+		// be saved back into the database
 		oldReq.updateReq(reqUpdate);
-		save(s,oldReq);
+		
+		// Attempt to save. WPISuiteException may be thrown
+		this.save(s,oldReq);
 				
 		return oldReq;
 		
@@ -220,26 +240,18 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  @param id The unique of the requirement to delete
 	 *  
 	@return TRUE if successful or FALSE if it fails
-	 * @throws WPISuiteException
+	 * @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
+	 * @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type Requirement.
-		// Passing a dummy Requirement lets the db know what type of object to retrieve
-		// Passing the project makes it only get requirements from that project
-		List<Model> requirements = this.db.retrieveAll(new Requirement(), s.getProject());
+		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
+		Requirement oldReq = getEntity(s,   id    )[0];
 		
-		// Iterate through the list to find the Requirement with the correct ID
-		// Casting is used because the retrieveAll function returns a list of "Models"
-		// even though we know it is returning a list of Requirements here
-	    for ( Model r : requirements ) {
-	    	if ((   (Requirement) r).getId() == Integer.parseInt( id) ){
-	    		((Requirement) r).setStatus(Deleted); // Set the status to deleted
-	    		this.save( s ,(Requirement) r);
-	    		return true; // end now
-	    	}
+	    if (this.db.delete(oldReq) == oldReq){
+	    	return true; // the deletion was successful
 	    }	    
-		return false;
+		return false; // The deletion was unsuccessful
 	}
 	
 
@@ -247,23 +259,10 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** Deletes ALL Requirement from the database (not advised)
 	 * 
 	 *  @param s The current user session
-	 * @throws WPISuiteException 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
-	public void deleteAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type Requirement.
-		// Passing a dummy Requirement lets the db know what type of object to retrieve
-		// Passing the project makes it only get requirements from that project
-		List<Model> requirements = this.db.retrieveAll(new Requirement(), s.getProject());
-		
-		// Iterate through the list to find the Requirement with the correct ID
-		// Casting is used because the retrieveAll function returns a list of "Models"
-		// even though we know it is returning a list of Requirements here
-	   for ( Model r : requirements ) {
-	    	((Requirement) r).setStatus(Deleted); // Set the status to deleted
-	    	this.save( s ,(Requirement) r);
-	    }		
-	    throw new WPISuiteException();
+	public void deleteAll(Session s)  {
+		this.db.deleteAll(new Requirement());
 	}
 	
 
