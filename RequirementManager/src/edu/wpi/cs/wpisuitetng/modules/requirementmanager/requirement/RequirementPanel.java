@@ -43,10 +43,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 @SuppressWarnings("serial")
 public class RequirementPanel extends JPanel {
 	
-	//An enum to say whether or not you are creating at the time
+	//An enum to store the mode of the current instance of this panel
 	public enum Mode {
-		CREATE,
-		EDIT
+		CREATE,//When Mode is this value, we are creating a new requirement
+		EDIT//When Mode is this value, we are editing an existing requirement
 	}
 	
 	
@@ -70,10 +70,9 @@ public class RequirementPanel extends JPanel {
 	private final JNumberTextField txtEstimate;//The estimate text field
 	private final JNumberTextField txtActualEffort;//The actual effort text field
 
-	
-	//TODO: Need some comments here. What are these? What do they do?
-	private Requirement currentRequirement;
-	private RequirementView parent; //Is this needed?
+	//The variables to hold information about the current instance of the panel
+	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
+	private RequirementView parent; //Stores the RequirementView that contains the panel
 	
 	
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
@@ -82,14 +81,14 @@ public class RequirementPanel extends JPanel {
 	 * The constructor for RequirementPanel;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
-	 * TODO: add parameter descriptions
+	 * @param view	The parent RequirementView that contains this panel
+	 * @param requirement	The requirement that is currently open for editing or creation.
+	 * @param editMode	The mode of the current panel. This is "CREATE" when we are creating a new requirement, and "EDIT" when we are editing an existing requirement.
 	 */
 	public RequirementPanel(RequirementView view, Requirement requirement, Mode editMode) {
 		
-		//TODO: Need some comments here. What are these? What do they do?
-		parent = view;
-		currentRequirement = requirement;
-		
+		parent = view;//Set the RequirementView that contains this instance of this panel
+		currentRequirement = requirement; //Set the requirement that is currently open for editing or creation
 		mode = editMode;//Set the indicated mode
 	
 		//Construct the labels
@@ -126,9 +125,9 @@ public class RequirementPanel extends JPanel {
 		txtDescription.setWrapStyleWord(true);
 		
 		//Create the strings for the boxes
-		String[] typeStrings = { "NoType", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
+		String[] typeStrings = { " ", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
-		String[] priorityStrings = { "NoPriority", "High", "Medium", "Low"};
+		String[] priorityStrings = { " ", "High", "Medium", "Low"};
 		
         //Construct the boxes 
 		typeBox = new JComboBox<String>(typeStrings);
@@ -168,7 +167,6 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);  //Here, there will be 10 units of blank space padding on the top and 5 on the left side
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2; //Tell the layout that this field will fill 2 columns
 		reqPanelConstraints.gridy = 0;
 		add(txtName, reqPanelConstraints);
 		//end Name
@@ -188,7 +186,6 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0); 
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 1;
 		add(scrollPane, reqPanelConstraints);
 		//end Description
@@ -204,11 +201,10 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 2;
 		add(typeLabel, reqPanelConstraints);
 		//Set the constraints for the "typeBox"  and add it to the view
-		reqPanelConstraints.fill = GridBagConstraints.BOTH;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch horizontally or vertically7 to fill it's area
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0); 
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 2;
 		add(typeBox, reqPanelConstraints);
 		//end Type
@@ -223,11 +219,10 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 3;
 		add(statusLabel, reqPanelConstraints);
 		//Set the constraints for the "statusBox" and add it to the view
-		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 3;
 		add(statusBox, reqPanelConstraints);
 		//end Status
@@ -242,11 +237,10 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 4;
 		add(priorityLabel, reqPanelConstraints);
 		//Set the constraints for the "priorityBox" and add it to the view
-		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 4;
 		add(priorityBox, reqPanelConstraints);
 		//end Priority
@@ -261,11 +255,10 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 5;
 		add(releaseNumLabel, reqPanelConstraints);
 		//Set the constraints for the "txtReleaseNum" and add it to the view
-		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 5;
 		add(txtReleaseNum, reqPanelConstraints);
 		//end Release number
@@ -280,11 +273,10 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 6;
 		add(estimateLabel, reqPanelConstraints);
 		//Set the constraints for the "txtEstimate" and add it to the view
-		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 6;
 		add(txtEstimate, reqPanelConstraints);
 		//end Estimate
@@ -299,11 +291,10 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 7;
 		add(actualEffortLabel, reqPanelConstraints);
 		//Set the constraints for the "txtActualEffort" and add it to the view
-		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridwidth = 2;
 		reqPanelConstraints.gridy = 7;
 		add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
