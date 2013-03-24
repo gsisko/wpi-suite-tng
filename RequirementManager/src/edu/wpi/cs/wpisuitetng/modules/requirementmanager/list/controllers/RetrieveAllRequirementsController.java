@@ -6,6 +6,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -19,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveAllRequirementsController {
 
 	/** The search requirements view */
-	protected RequirementPanel view;
+	protected ListPanel view;
 
 	/** The requirements data retrieved from the server */
 	protected Requirement[] data = null;
@@ -29,8 +31,8 @@ public class RetrieveAllRequirementsController {
 	 * 
 	 * @param view the search requirements view
 	 */
-	public RetrieveAllRequirementsController(RequirementView view) {
-		this.view = view.getRequirementPanel();
+	public RetrieveAllRequirementsController(ListRequirementsView view) {
+		this.view = view.getListPanel();
 	}
 
 	/**

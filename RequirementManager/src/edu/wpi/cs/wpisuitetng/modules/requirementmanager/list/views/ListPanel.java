@@ -77,4 +77,9 @@ public class ListPanel extends JPanel {
 	public ResultsPanel getResultsPanel() {
 		return resultsPanel;
 	}
+
+	public MainTabController getTabController() {
+		
+		return this.tabController;
+	}
 }

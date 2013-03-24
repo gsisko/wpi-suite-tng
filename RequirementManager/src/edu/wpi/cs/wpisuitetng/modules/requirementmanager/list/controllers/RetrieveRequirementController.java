@@ -10,6 +10,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -21,15 +23,15 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requireme
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
-	protected RequirementPanel view;
+	protected ListPanel view;
 
 	/**
 	 * Construct the controller
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveRequirementController(RequirementView view) {
-		this.view = view.getRequirementPanel();
+	public RetrieveRequirementController(ListRequirementsView view) {
+		this.view = view.getListPanel();
 	}
 
 	/**
@@ -65,40 +67,8 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 */
 	public void showRequirement(Requirement requirement) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
-		
-		view.setMode(EDIT);
-
-		view.getRequirementName().setText(requirement.getName());
-		view.getRequirementDescription().setText(requirement.getDescription());
-		view.getRequirementType().setSelectedItem(requirement.getType().toString());
-		view.getRequirementStatus().setSelectedItem(requirement.getStatus().toString());
-		view.getRequirementPriority().setSelectedItem(requirement.getPriority().toString());
-		if (requirement.getReleaseNumber() == -1) {
-			view.getRequirementReleaseNumber().setText("");
-		} else {
-			view.getRequirementReleaseNumber().setText(Integer.toString(requirement.getReleaseNumber()));
-		}
-		view.getRequirementEstimate().setText(Integer.toString(requirement.getEstimate()));
-		view.getRequirementActualEffort().setText(Integer.toString(requirement.getActualEffort()));
-		
-		view.getSaveButton().setText("Update");
-		view.getSaveButton().setEnabled(true);
-
-		view.getRequirementName().setEnabled(true);
-		view.getRequirementDescription().setEnabled(true);
-		view.getRequirementType().setEnabled(true);
-		view.getRequirementStatus().setEnabled(true);
-		view.getRequirementPriority().setEnabled(true);
-		view.getRequirementReleaseNumber().setEnabled(true);
-		if (requirement.getStatus() == InProgress || requirement.getStatus() == Complete) {
-			view.getRequirementEstimate().setEnabled(false);
-		} else {
-			view.getRequirementEstimate().setEnabled(true);
-		}
-		view.getRequirementActualEffort().setEnabled(true);
-		
-		view.setCurrentRequirement(requirement);
-	}
+		view.getTabController().addEditRequirementTab(requirement);
+			}
 
 	/**
 	 * Called by {@link RetrieveRequirementRequestObserver} when an error
