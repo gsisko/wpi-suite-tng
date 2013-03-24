@@ -165,6 +165,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for "txtName" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
 		reqPanelConstraints.insets = new Insets(10,5,0,0);  //Here, there will be 10 units of blank space padding on the top and 5 on the left side
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 0;
@@ -184,6 +185,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.BOTH;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0); 
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 1;
@@ -203,6 +205,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "typeBox"  and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch horizontally or vertically7 to fill it's area
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0); 
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 2;
@@ -221,6 +224,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "statusBox" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 3;
@@ -239,6 +243,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "priorityBox" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 4;
@@ -248,6 +253,7 @@ public class RequirementPanel extends JPanel {
 		//Release number:
 		//Set the constraints for the "releaseNumLabel" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.ipadx = 9;//This tells the layout to stretch this field horizontally by 9 units
 		reqPanelConstraints.weightx = 0.25;
 		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
 		reqPanelConstraints.insets = new Insets(10,0,0,0);
@@ -257,6 +263,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "txtReleaseNum" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 5;
@@ -275,6 +282,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "txtEstimate" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 6;
@@ -293,6 +301,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "txtActualEffort" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.insets = new Insets(10,5,0,0);
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 7;
