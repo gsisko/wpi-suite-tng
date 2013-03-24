@@ -1,8 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
-public class SaveAllFiltersObserver {
+public class RetrieveAllFiltersObserver {
 
-    public SaveAllFiltersObserver() {
+    public RetrieveAllFiltersObserver() {
 	// TODO Auto-generated constructor stub
     }
 
