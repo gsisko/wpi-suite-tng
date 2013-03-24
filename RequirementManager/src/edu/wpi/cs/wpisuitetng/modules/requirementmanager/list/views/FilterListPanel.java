@@ -24,10 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 
 /**
