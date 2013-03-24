@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,11 +12,8 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.Model;
-
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
  * 
@@ -29,7 +25,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
 	
-	
+	/** This is for advanced logging and debugging of the server interactions */
 	private static final Logger logger = Logger.getLogger(RequirementManager.class.getName());
 	
 	/** Constructs the entity manager. This constructor is called by
@@ -56,7 +52,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *	
 	@return the Requirement that originally came as a string
 	 * @throws BadRequestException "The Requirement creation string had invalid formatting. Entity String: " + content
-	 * @throws ConflictException "A project with the given ID already exists. Entity String: " + content
+	 * @throws ConflictException "A Requirement with the given ID already exists. Entity String: " + content
 	 * @throws WPISuiteException "Unable to save Requirement."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
 	 */
@@ -65,7 +61,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		
 		// Parse the requirement from JSON
 		final Requirement newRequirement;
-		logger.log(Level.FINER, "Attempting new Project creation...");
+		logger.log(Level.FINER, "Attempting new Requirement creation...");
 		try {
 			newRequirement = Requirement.fromJSON(content);
 		} catch(JsonSyntaxException e){ // the JSON conversion failed
@@ -74,9 +70,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 		}
 		
 		// Check to see if the requirement exists in the database already - check by ID only
-		if(getEntity(s,s.getProject().getIdNum())[0] != null){ //indicates it exists already
+		if(getEntity(s,((Integer) newRequirement.getId()).toString())[0] != null){ //indicates it exists already
 			logger.log(Level.WARNING, "ID Conflict Exception during Requirement creation.");
-			throw new ConflictException("A project with the given ID already exists. Entity String: " + content); 
+			throw new ConflictException("A Requirement with the given ID already exists. Entity String: " + content); 
 		}
 		
 		// Saves the requirement in the database
@@ -97,7 +93,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @throws WPISuiteException  "Unable to save Requirement."
 	 */
 	public void save(Session s, Requirement model) throws WPISuiteException {
-		assignUniqueID(model, s.getProject()); // Assigns a unique ID to the Req if necessary
+		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 		
 		// Save the requirement in the database if possible, otherwise throw an exception
 		// We want the requirement to be associated with the project the user logged in to
@@ -115,7 +111,7 @@ public class RequirementManager implements EntityManager<Requirement> {
     
      * @throws WPISuiteException "Count failed"
      */
-    public void assignUniqueID(Requirement req, Project p) throws WPISuiteException{
+    public void assignUniqueID(Requirement req) throws WPISuiteException{
         if (req.getId() == -1){// -1 is a flag that says a unique id is needed            
             req.setId(Count() + 1); // Makes first Requirement have id = 1
         }        
@@ -127,7 +123,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  the current user session
 	 * 
 	 *  
-	@return The number of Requirements currently in the databse 
+	@return The number of Requirements currently in the database 
 	 * @throws WPISuiteException "Retrieve all failed"
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
