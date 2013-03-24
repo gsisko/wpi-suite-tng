@@ -19,6 +19,8 @@ public enum OperatorType {
 	LessThanOrEqualTo,
 	EqualTo,
 	NotEqualTo,
+	Contains,
+	DoesNotContain,
 	OTHER;
 	
 	
