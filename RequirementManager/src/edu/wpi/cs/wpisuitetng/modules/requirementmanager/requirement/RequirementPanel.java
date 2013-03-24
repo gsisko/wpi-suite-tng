@@ -253,7 +253,7 @@ public class RequirementPanel extends JPanel {
 		//Release number:
 		//Set the constraints for the "releaseNumLabel" and add it to the view
 		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
-		reqPanelConstraints.ipadx = 9;//This tells the layout to stretch this field horizontally by 9 units
+		reqPanelConstraints.ipadx = 90;//This tells the layout to stretch this field horizontally by 9 units
 		reqPanelConstraints.weightx = 0.25;
 		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
 		reqPanelConstraints.insets = new Insets(10,0,0,0);
