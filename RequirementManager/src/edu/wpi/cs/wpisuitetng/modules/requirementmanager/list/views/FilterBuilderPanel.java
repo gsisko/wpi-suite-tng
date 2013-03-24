@@ -20,6 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
@@ -94,7 +95,7 @@ public class FilterBuilderPanel extends JPanel {
 		userFilterBox.setSelectedIndex(0);
 		userFilterBox.setEnabled(false);
 
-		//Save.addActionListener(new SaveFilterController(parent));
+		Save.addActionListener(new SaveFilterController(parent));
 		Save.setEnabled(false);
 
 		//set the layout
