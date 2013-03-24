@@ -11,38 +11,25 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Date;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.JTextArea;
-import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /**
  * This class is a JPanel. 
- * It contains 2 sub panels:
- * A left panel containing:
+ * It contains:
+ * 		-an enum to indicate a "create" or "edit" mode
  * 		-a text field for entering a new name,
  * 		-a text area for entering a description,
  * 		-a combo box for entering a status,
@@ -50,27 +37,18 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * 		-a JNumber text field for entering a release number,
  * 		-a JNumber text field for entering an estimate,
  * 		-a JNumber text field for entering an actual effort,
- *	...and a save button for submitting.
- * A right panel containing:
- * 		-a table containing a selectable list of requirements
- * 		-a button to refresh that table
- * 	...and a create button to enable the left panel fields for creation of a new requirement
- * 
  * @author Team 5
  *
  */
 @SuppressWarnings("serial")
 public class RequirementPanel extends JPanel {
 	
-	// enum to say whether or not you are creating
+	//An enum to say whether or not you are creating at the time
 	public enum Mode {
 		CREATE,
 		EDIT
 	}
 	
-	//The panels
-	private JPanel leftPanel;
-	private JPanel rightPanel;
 	
 	//The labels
 	private final JLabel nameLabel; //The label for the name text field ("txtName")
@@ -92,35 +70,28 @@ public class RequirementPanel extends JPanel {
 	private final JNumberTextField txtEstimate;//The estimate text field
 	private final JNumberTextField txtActualEffort;//The actual effort text field
 
-	//The buttons
-	private final JButton btnSave; //The "save" button
-	private final JButton btnNew;//The "create" button
-	private final JButton btnRefresh;//The "refresh" button
 	
-	// necessary for the table of requirements to be correctly displayed and refreshed
-	private ResultsTableModel resultsTableModel;
-	private JTable resultsTable;
-	private RetrieveAllRequirementsController controller;
-	
+	//TODO: Need some comments here. What are these? What do they do?
 	private Requirement currentRequirement;
-	private RequirementView parent;
-	private Mode mode;
+	private RequirementView parent; //Is this needed?
+	
+	
+	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
 	
 	/**
 	 * The constructor for RequirementPanel;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
+	 * TODO: add parameter descriptions
 	 */
 	public RequirementPanel(RequirementView view, Requirement requirement, Mode editMode) {
 		
+		//TODO: Need some comments here. What are these? What do they do?
 		parent = view;
-		mode = editMode;
 		currentRequirement = requirement;
 		
-		leftPanel = new JPanel();
-		
-		//LEFT PANEL:
-		
+		mode = editMode;//Set the indicated mode
+	
 		//Construct the labels
 		nameLabel = new JLabel("Name:");
 		descriptionLabel = new JLabel("Description:");
@@ -134,7 +105,6 @@ public class RequirementPanel extends JPanel {
 		//Construct the misc components
 		txtName = new JTextField(/*"Enter a name here."*/"");
 		txtDescription = new JTextArea(/*"Enter a description here."*/"", 2, 2);
-		btnSave = new JButton("Update");
 		txtReleaseNum = new JNumberTextField();
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
@@ -144,12 +114,14 @@ public class RequirementPanel extends JPanel {
 		txtEstimate.setAllowNegative(false);
 		txtActualEffort.setAllowNegative(false);
 		
+		//Set the following fields to be initially greyed out
 		txtName.setEnabled(false);
 		txtDescription.setEnabled(false);
 		txtReleaseNum.setEnabled(false);
 		txtEstimate.setEnabled(false);
 		txtActualEffort.setEnabled(false);
 		
+		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
 		txtDescription.setWrapStyleWord(true);
 		
@@ -171,280 +143,171 @@ public class RequirementPanel extends JPanel {
 		priorityBox.setSelectedIndex(0);
 		priorityBox.setEnabled(false);
 		
-		btnSave.addActionListener(new SaveRequirementController(parent));
-		btnSave.setEnabled(false);
-		
 		// Set the layout manager that controls the positions of the components
-		leftPanel.setLayout(new GridBagLayout()); //set the layout
-		GridBagConstraints leftConstraints = new GridBagConstraints();//create the constraints variable
+		setLayout(new GridBagLayout()); //set the layout
+		GridBagConstraints reqPanelConstraints = new GridBagConstraints();//create the constraints variable
 		
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
 		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll panel
 		
-		
-		// Adjust the size and alignments of all the components (of the left panel) and add them to the left panel:
-
-		btnSave.setAlignmentX(Component.CENTER_ALIGNMENT); //set the alignment of the "save" button to center in it's section
+		//In this last section we adjust the size and alignments of all the components and add them to the panel
+		// Please read all the comments in this section if you are having trouble understanding what is going on.
 
 		//Name:
 		//Set the constraints for "nameLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL; //This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.25; //This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units of blank space
-		leftConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
-		leftPanel.add(nameLabel, leftConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL; //This sets the constraints of this field so that the item will stretch horizontally to fill it's area
+		reqPanelConstraints.weightx = 0.25; //This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
+		reqPanelConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units of blank space
+		reqPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
+		reqPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
+		add(nameLabel, reqPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for "txtName" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0);  //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2; //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(txtName, leftConstraints);//Actually add the "txtName" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0);  //Here, there will be 10 units of blank space padding on the top and 5 on the left side
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2; //Tell the layout that this field will fill 2 columns
+		reqPanelConstraints.gridy = 0;
+		add(txtName, reqPanelConstraints);
 		//end Name
 		
 		//Description:		
 		//Set the constraints for the "descriptionLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.ipady = 20;//This tells the layout to stretch this field vertically by 20 units
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(descriptionLabel, leftConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.ipady = 20;//This tells the layout to stretch this field vertically by 20 units
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START; 
+		reqPanelConstraints.insets = new Insets(10,0,0,0); 
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 1;
+		add(descriptionLabel, reqPanelConstraints);
 		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the view
-		leftConstraints.fill = GridBagConstraints.BOTH;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(scrollPane, leftConstraints);//Actually add the "scrollPane" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.BOTH;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0); 
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 1;
+		add(scrollPane, reqPanelConstraints);
 		//end Description
 		
 		//Type:
 		//Set the constraints for the "typeLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(typeLabel, leftConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
+		reqPanelConstraints.insets = new Insets(10,0,0,0); 
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 2;
+		add(typeLabel, reqPanelConstraints);
 		//Set the constraints for the "typeBox"  and add it to the view
-		leftConstraints.fill = GridBagConstraints.BOTH;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(typeBox, leftConstraints);//Actually add the "typeBox" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.BOTH;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0); 
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 2;
+		add(typeBox, reqPanelConstraints);
 		//end Type
 		
 		//Status:		
 		//Set the constraints for the "statusLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(statusLabel, leftConstraints);//Actually add the "statusLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START; 
+		reqPanelConstraints.insets = new Insets(10,0,0,0);
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 3;
+		add(statusLabel, reqPanelConstraints);
 		//Set the constraints for the "statusBox" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(statusBox, leftConstraints);//Actually add the "statusBox" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0);
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 3;
+		add(statusBox, reqPanelConstraints);
 		//end Status
 		
 		//Priority:
 		//Set the constraints for the "priorityLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(priorityLabel, leftConstraints);//Actually add the "priorityLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
+		reqPanelConstraints.insets = new Insets(10,0,0,0); 
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 4;
+		add(priorityLabel, reqPanelConstraints);
 		//Set the constraints for the "priorityBox" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(priorityBox, leftConstraints);//Actually add the "priorityBox" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0);
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 4;
+		add(priorityBox, reqPanelConstraints);
 		//end Priority
 		
 		//Release number:
 		//Set the constraints for the "releaseNumLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 5;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(releaseNumLabel, leftConstraints);//Actually add the "releaseNumLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
+		reqPanelConstraints.insets = new Insets(10,0,0,0);
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 5;
+		add(releaseNumLabel, reqPanelConstraints);
 		//Set the constraints for the "txtReleaseNum" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 5;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(txtReleaseNum, leftConstraints);//Actually add the "txtReleaseNum" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0);
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 5;
+		add(txtReleaseNum, reqPanelConstraints);
 		//end Release number
 		
 		//Estimate:		
 		//Set the constraints for the "estimateLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 6;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(estimateLabel, leftConstraints);//Actually add the "estimateLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
+		reqPanelConstraints.insets = new Insets(10,0,0,0);
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 6;
+		add(estimateLabel, reqPanelConstraints);
 		//Set the constraints for the "txtEstimate" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 6;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(txtEstimate, leftConstraints);//Actually add the "txtEstimate" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0);
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 6;
+		add(txtEstimate, reqPanelConstraints);
 		//end Estimate
 
 		//Actual effort:
 		//Set the constraints for the "actualEffortLabel" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
-		leftConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 7;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(actualEffortLabel, leftConstraints);//Actually add the "actualEffortLabel" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.25;
+		reqPanelConstraints.anchor = GridBagConstraints.PAGE_START;
+		reqPanelConstraints.insets = new Insets(10,0,0,0);
+		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridy = 7;
+		add(actualEffortLabel, reqPanelConstraints);
 		//Set the constraints for the "txtActualEffort" and add it to the view
-		leftConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		leftConstraints.weightx = 0.75;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
-		leftConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		leftConstraints.gridy = 7;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(txtActualEffort, leftConstraints);//Actually add the "txtActualEffort" to the layout given the previous constraints
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+		reqPanelConstraints.weightx = 0.75;
+		reqPanelConstraints.insets = new Insets(10,5,0,0);
+		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 2;
+		reqPanelConstraints.gridy = 7;
+		add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
-		
-		//Save button:
-		//Set the constraints for the "btnSave" and add it to the view
-		leftConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch to fill it's area
-		leftConstraints.weighty = 1;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
-		leftConstraints.anchor = GridBagConstraints.PAGE_END; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
-		leftConstraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
-		leftConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
-		leftConstraints.gridy = 8;//Set the y coord of the cell of the layout we are describing
-		leftPanel.add(btnSave, leftConstraints);//Actually add the "btnSave" to the layout given the previous constraints
-		//end Save button
-		
-		//end LEFT PANEL
-		
-		
-		//RIGHT PANEL:
-		
-		rightPanel = new JPanel();
-		
-		// Set the layout
-		rightPanel.setLayout(new BorderLayout());
-		
-		// Construct the table model
-		resultsTableModel = new ResultsTableModel();
-		
-		// Construct the table and configure it
-		resultsTable = new JTable(resultsTableModel);
-		resultsTable.setAutoCreateRowSorter(true);
-		resultsTable.setFillsViewportHeight(true);
-		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
-		
-		// Add a listener for row clicks
-		resultsTable.addMouseListener(new RetrieveRequirementController(this));
-		
-		// Put the table in a scroll pane
-		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-		resultsScrollPane.setPreferredSize(new Dimension(700,400));
-		
-		btnNew = new JButton("New Requirement");
-		btnRefresh = new JButton("Refresh");
-		
-		controller = new RetrieveAllRequirementsController(this);
-		btnRefresh.setAction(new RefreshRequirementsAction(controller));
-		
-		// Construct an action listener and add it to the create button
-		btnNew.addActionListener(new ActionListener() {
- 
-            public void actionPerformed(ActionEvent e)
-            {
-            	// set all of the UI fields appropriately when the "create requirement" button is clicked
-            	mode = Mode.CREATE;
-            	
-            	txtName.setText("");
-            	txtDescription.setText("");
-            	typeBox.setSelectedIndex(0);
-            	statusBox.setSelectedIndex(0);
-            	priorityBox.setSelectedIndex(0);
-            	txtReleaseNum.setText("");
-            	txtEstimate.setText("0");
-            	txtActualEffort.setText("0");
-            	
-            	btnSave.setText("Create");
-            	btnSave.setEnabled(true);
-            	
-            	txtName.setEnabled(true);
-            	txtDescription.setEnabled(true);
-            	typeBox.setEnabled(true);
-            	statusBox.setEnabled(false);
-            	priorityBox.setEnabled(true);
-            	txtReleaseNum.setEnabled(true);
-            	txtEstimate.setEnabled(false);
-            	txtActualEffort.setEnabled(false);
-            }
-        });
-		
-		//Actually add the list to the right panel
-		rightPanel.add(resultsScrollPane, BorderLayout.PAGE_START);
-		
-		//Actually add the create button to the right panel
-		rightPanel.add(btnNew, BorderLayout.LINE_START);
-		
-		//Actually add the refresh button to the right panel
-		rightPanel.add(btnRefresh, BorderLayout.LINE_END);
-		
-		//end RIGHT PANEL
-		
-		//MAIN PANEL
-		//Set the layout manager for the main requirement panel
-		setLayout(new GridBagLayout()); //set the layout
-		GridBagConstraints mainConstraints = new GridBagConstraints();//create the constraints variable
-		
-		//Add the two panels to the view
-		mainConstraints.anchor = GridBagConstraints.WEST;
-		add(leftPanel);
-
-		JLabel blankLabel = new JLabel("                 "); //add a blank label to create space between the panels
-		mainConstraints.anchor = GridBagConstraints.CENTER;
-		add(blankLabel);
-		
-		mainConstraints.anchor = GridBagConstraints.EAST;
-		add(rightPanel);
-		
-		
-		//end MAIN PANEL
-		
+			
 	}
 	
 	/**
@@ -510,29 +373,6 @@ public class RequirementPanel extends JPanel {
 	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
-	}
-	
-	/**
-	 * This returns the RetrieveAllRequirementsController "controller"
-	 * @return the controller RetrieveAllRequirementsController
-	 */
-	public RetrieveAllRequirementsController getRefreshController() {
-		return controller;
-	}
-	
-	/**
-	 * This returns the JButton "btnSave"
-	 * @return the btnSave JButton
-	 */
-	public JButton getSaveButton() {
-		return btnSave;
-	}
-	/**
-	 * This returns the ResultsTableModel "resultsTableModel"
-	 * @return the resultsTableModel ResultsTableModel
-	 */
-	public ResultsTableModel getModel() {
-		return resultsTableModel;
 	}
 	
 	/**
