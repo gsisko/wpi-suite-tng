@@ -298,7 +298,113 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 7;
 		add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
-			
+
+		
+		//Save button:
+		//Set the constraints for the "btnSave" and add it to the view
+		leftConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch to fill it's area
+		leftConstraints.weighty = 1;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
+		leftConstraints.anchor = GridBagConstraints.PAGE_END; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
+		leftConstraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
+		leftConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
+		leftConstraints.gridy = 8;//Set the y coord of the cell of the layout we are describing
+		leftPanel.add(btnSave, leftConstraints);//Actually add the "btnSave" to the layout given the previous constraints
+		//end Save button
+		
+		//end LEFT PANEL
+		
+		
+		//RIGHT PANEL:
+		
+		rightPanel = new JPanel();
+		
+		// Set the layout
+		rightPanel.setLayout(new BorderLayout());
+		
+		// Construct the table model
+		resultsTableModel = new ResultsTableModel();
+		
+		// Construct the table and configure it
+		resultsTable = new JTable(resultsTableModel);
+		resultsTable.setAutoCreateRowSorter(true);
+		resultsTable.setFillsViewportHeight(true);
+		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
+		
+		// Add a listener for row clicks
+		//resultsTable.addMouseListener(new RetrieveRequirementController(this));
+		
+		// Put the table in a scroll pane
+		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
+		resultsScrollPane.setPreferredSize(new Dimension(700,400));
+		
+		btnNew = new JButton("New Requirement");
+		btnRefresh = new JButton("Refresh");
+		
+		//controller = new RetrieveAllRequirementsController(this);
+		btnRefresh.setAction(new RefreshRequirementsAction(controller));
+		
+		// Construct an action listener and add it to the create button
+		btnNew.addActionListener(new ActionListener() {
+ 
+            public void actionPerformed(ActionEvent e)
+            {
+            	// set all of the UI fields appropriately when the "create requirement" button is clicked
+            	mode = Mode.CREATE;
+            	
+            	txtName.setText("");
+            	txtDescription.setText("");
+            	typeBox.setSelectedIndex(0);
+            	statusBox.setSelectedIndex(0);
+            	priorityBox.setSelectedIndex(0);
+            	txtReleaseNum.setText("");
+            	txtEstimate.setText("0");
+            	txtActualEffort.setText("0");
+            	
+            	btnSave.setText("Create");
+            	btnSave.setEnabled(true);
+            	
+            	txtName.setEnabled(true);
+            	txtDescription.setEnabled(true);
+            	typeBox.setEnabled(true);
+            	statusBox.setEnabled(false);
+            	priorityBox.setEnabled(true);
+            	txtReleaseNum.setEnabled(true);
+            	txtEstimate.setEnabled(false);
+            	txtActualEffort.setEnabled(false);
+            }
+        });
+		
+		//Actually add the list to the right panel
+		rightPanel.add(resultsScrollPane, BorderLayout.PAGE_START);
+		
+		//Actually add the create button to the right panel
+		rightPanel.add(btnNew, BorderLayout.LINE_START);
+		
+		//Actually add the refresh button to the right panel
+		rightPanel.add(btnRefresh, BorderLayout.LINE_END);
+		
+		//end RIGHT PANEL
+		
+		//MAIN PANEL
+		//Set the layout manager for the main requirement panel
+		setLayout(new GridBagLayout()); //set the layout
+		GridBagConstraints mainConstraints = new GridBagConstraints();//create the constraints variable
+		
+		//Add the two panels to the view
+		mainConstraints.anchor = GridBagConstraints.WEST;
+		add(leftPanel);
+
+		JLabel blankLabel = new JLabel("                 "); //add a blank label to create space between the panels
+		mainConstraints.anchor = GridBagConstraints.CENTER;
+		add(blankLabel);
+		
+		mainConstraints.anchor = GridBagConstraints.EAST;
+		add(rightPanel);
+		
+		
+		//end MAIN PANEL
+		
+
 	}
 	
 	/**

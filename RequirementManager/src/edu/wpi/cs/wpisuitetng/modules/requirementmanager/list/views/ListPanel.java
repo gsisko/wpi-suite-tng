@@ -74,11 +74,19 @@ public class ListPanel extends JPanel {
 		this.add(resultsPanel);
 	}
 	
-	public ResultsPanel getResultsPanel() {
+	public ResultsPanel getResultsPanel(){
 		return resultsPanel;
 	}
-
-	public MainTabController getTabController() {
+	
+	public MainTabController getTabController(){
 		return this.tabController;
+	}
+	
+	public FilterBuilderPanel getBuilderPanel(){
+	    return builderPanel;
+	}
+	
+	public FilterListPanel getFilterPanel(){
+	    return filtersPanel;
 	}
 }
