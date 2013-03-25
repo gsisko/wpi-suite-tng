@@ -46,7 +46,7 @@ public class SaveRequirementController implements ActionListener
     		JOptionPane.showMessageDialog(null, "ActualEffort must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
     		return;
     	}
-
+    	
     	
 	    if (view.getMode() == CREATE) { // if we are creating a new requirement
 		
@@ -65,9 +65,18 @@ public class SaveRequirementController implements ActionListener
 		}
 		else { // we are updating an existing requirement
 			
+			Requirement oldRequirement = view.getCurrentRequirement();//grab the old requirement
+			
+			//Check to see if the status update is invalid because the user had tried to change the status from "InProgress" to "Deleted")
+			RequirementStatus oldStatus = oldRequirement.getStatus(); //grab the old status
+			RequirementStatus newStatus = RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()); //get the new status
+			if (   ( oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted) ) {//if user had tried to change the status from "InProgress" to "Deleted"...
+				JOptionPane.showMessageDialog(null, "Description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
+				return;//cancel the update
+			}
+   		 
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement(); 
-			Requirement oldRequirement = view.getCurrentRequirement();
 			
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
@@ -112,9 +121,6 @@ public class SaveRequirementController implements ActionListener
 			view.getRequirementEstimate().setText("");
 			view.getRequirementActualEffort().setText("");
 			
-			view.getSaveButton().setText("Update");
-			view.getSaveButton().setEnabled(false);
-
 			view.getRequirementName().setEnabled(false);
 			view.getRequirementDescription().setEnabled(false);
 			view.getRequirementType().setEnabled(false);
