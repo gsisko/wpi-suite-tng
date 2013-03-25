@@ -11,7 +11,6 @@ import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
@@ -24,8 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */
 	private Data db;
-	/** Current implementation of unique ID's for filters  */
-	private static int nextFilterId;
+
 	
 	/** This is for advanced logging and debugging of the server interactions */
 	private static final Logger logger = Logger.getLogger(FilterManager.class.getName());
@@ -41,7 +39,6 @@ public class FilterManager implements EntityManager<Filter> {
 	 */		
 	public FilterManager(Data data){
 		this.setDb(data);
-		this.setNextFilterId(1);
 	}
 	
  
@@ -49,26 +46,29 @@ public class FilterManager implements EntityManager<Filter> {
 	/** Takes a filter and assigns a unique id if necessary
      * 
      * @param req The filter that possibly needs a unique id
+	 * @throws WPISuiteException 
      */
-    private void assignUniqueID(Filter filter){
+    private void assignUniqueID(Filter filter) throws WPISuiteException{
         if (filter.getUniqueID() == -1){// -1 is a flag that says a unique id is needed            
-            filter.setUniqueID(this.getNextFilterId()); // Makes first Filter have id = 1
-            this.setNextFilterId(this.getNextFilterId() + 1);
+            filter.setUniqueID(this.Count() +1); // Makes first Filter have id = 1
         }        
     }
 	
+
+    
 	
 	/** Returns the number of filters currently in the database. Counts only those 
 	 * filters specific to the current user
-	 * 
 	 *  
 	@return The number of Requirements currently in the database 
-	 * @throws NotImplementedException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	public int Count() throws WPISuiteException {
-		throw new NotImplementedException();
+		// Passing a dummy Filter lets the db know what type of object to retrieve
+		return this.db.retrieveAll(new Filter()).size();
 	}
+	
+	
 	
 	/** Saves the given Filter into the database if possible.
 	 * 
@@ -215,7 +215,8 @@ public class FilterManager implements EntityManager<Filter> {
 	
 	
 	
-	/** Deletes a Filter from the database. Allowed here because Filters are trivial
+	/** Modifies the Filter so that it is inaccessible- sudo-deleted
+	 *  Not fully deleted to preserve the count/unique ID
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the filter to delete
@@ -226,13 +227,8 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
-		Filter oldFilter = getEntity(s,   id    )[0];
-		
-	    if (this.db.delete(oldFilter) == oldFilter){
-	    	return true; // the deletion was successful
-	    }	    
-		return false; // The deletion was unsuccessful
+		db.update(Filter.class, "UniqueID",id,"User", null);
+		return true; // The deletion was unsuccessful
 	}
 
 
@@ -293,17 +289,5 @@ public class FilterManager implements EntityManager<Filter> {
 		// TODO Auto-generated method stub
 	}
 
-	/**
-	 * @return the nextFilterId
-	 */
-	public int getNextFilterId() {
-		return nextFilterId;
-	}
 
-	/**
-	 * @param nextFilterId the nextFilterId to set
-	 */
-	public void setNextFilterId(int nextFilterId) {
-		this.nextFilterId = nextFilterId;
-	}
 }
