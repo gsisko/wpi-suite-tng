@@ -63,13 +63,18 @@ public class RetrieveAllRequirementsController {
 
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when the
-	 * response is received
+	 * response is received. This method will now also take into account active filters
+	 * when determining what requirements to show. 
 	 * 
 	 * @param requirements an array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
 		
-		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet
+		//Array of all the user's filters that are used 
+		//(could also be list of all filters and use could be checked here) 
+		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
+		
+		//Array to keep track of which requirements should be filtered
 		ArrayList<Boolean> isFiltered;
 		
 		// empty the table
@@ -83,10 +88,12 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 			
-			// get the number of requirements whose status is Deleted
+			// get the number of requirements that should be filtered
 			int numOfFiltered = 0;
+			
 			Filter currentFilter;
 			boolean temp;
+			
 			for (int i = 0; i < requirements.length; i++) {
 				//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 				for(int x = 0; x < filters.size() ; x++){
@@ -167,6 +174,10 @@ public class RetrieveAllRequirementsController {
 							break;
 							
 						}
+						
+						if(temp){
+							x = filters.size();
+						}
 					}
 				}
 			}
@@ -222,14 +233,15 @@ public class RetrieveAllRequirementsController {
 	}
 	
 	
-	/** work in progress
+	/**This method takes in two object values and an operator type and  
+	 * performs a comparison.
 	 * 
-	 * @param filterValue
-	 * @param op
-	 * @param requirementValue
-	 * @return
+	 * @param filterValue The value from the filter to compare
+	 * @param op The operator to be used for the comparison
+	 * @param requirementValue The value from the requirement to compare
+	 * @return True if the comparison was true
 	 */
-	public boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
+	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
 		switch(op){
 		case GreaterThan:
 			return (int) requirementValue > (int) filterValue;
