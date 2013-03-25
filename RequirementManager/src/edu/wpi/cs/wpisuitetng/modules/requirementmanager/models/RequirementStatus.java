@@ -11,7 +11,7 @@ public enum RequirementStatus {
 	Open,     // The status of a requirement that is in the backlog
 	Complete,  // A complete Requirement
 	Deleted;	// Any of these status's may lead to DELETED, but DELETED may move to any but NEW
-	 // Need to ask Marty about this, but some of the project descriptions hint at this
+	// Need to ask Marty about this, but some of the project descriptions hint at this
 	
 
 	/** Converts a string to the proper RequirementStatus 

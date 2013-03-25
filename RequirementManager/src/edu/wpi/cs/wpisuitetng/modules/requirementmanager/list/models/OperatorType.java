@@ -21,7 +21,7 @@ public enum OperatorType {
 	NotEqualTo,
 	Contains,
 	DoesNotContain,
-	OTHER;
+	Other;
 	
 	
 	

@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-
+import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 /** This is the entity manager for filters in the RequirementManager module
  * @author Team 5
  *
@@ -118,12 +118,18 @@ public class FilterManager implements EntityManager<Filter> {
 			newFilter.setUser(s.getUser());
 		}
 		
-		
-		// Check to see if the requirement exists in the database already - check by ID only
-		if(getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0] != null){ //indicates it exists already
+		try {
+			// Check to see if the requirement exists in the database already - check by ID only
+			 Filter fromDB = getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0];			
+		} catch (NotFoundException nfe){
+			// This would indicate that the 
+			
+		}	
+		if( != null){ //indicates it exists already
 			logger.log(Level.WARNING, "ID Conflict Exception during Filter creation.");
 			throw new ConflictException("A Filter with the given ID already exists. Entity String: " + content); 
 		}
+		
 		
 		// Saves the requirement in the database
 		this.save(s,newFilter); // An exception may be thrown here if we can't save it
@@ -259,35 +265,32 @@ public class FilterManager implements EntityManager<Filter> {
 		}
 	}
 	
+	private void setDb(Data data) {
+		this.db = data;
+	}
 	
 	
-	
-// Not going to be implemented until hell freezes over	
+// Not going to be implemented until we have good reason to
 	@Override
 	public String advancedPut(Session s, String[] args, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	
 	@Override
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
-	private void setDb(Data data) {
-		// TODO Auto-generated method stub
-	}
+
 
 
 }

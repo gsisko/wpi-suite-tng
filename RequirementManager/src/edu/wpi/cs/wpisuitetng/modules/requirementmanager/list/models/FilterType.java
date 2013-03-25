@@ -5,16 +5,16 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
  *
  */
 public enum FilterType {
-	ID,
-	NAME,
-	DESCRIPTION,
-	TYPE,
-	STATUS,
-	PRIORITY,
-	RELEASE_NUMBER,
-	ESTIMATE,
-	ACTUAL_EFFORT,
-	OTHER;
+	Id,
+	Name,
+	Description,
+	Type,
+	Status,
+	Priority,
+	Release_Number,
+	Estimate,
+	Actual_Effort,
+	Othe;
 	
 	/** Converts a string to the proper FilterType
 	 * 

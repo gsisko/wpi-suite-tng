@@ -44,8 +44,10 @@ public class Filter extends AbstractModel {
 	 * @param value
 	 * @param useFilter
 	 */
-	public Filter( FilterType type, OperatorType comparator,
-			Object value, boolean useFilter) {
+	public Filter( FilterType type, 
+			OperatorType comparator,
+			Object value, 
+			boolean useFilter) {
 		this.setUniqueID(-1); // default as a flag to entity manager
 		this.setType(type);
 		this.setComparator(comparator);
