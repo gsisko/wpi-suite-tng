@@ -25,7 +25,7 @@ public class FilterManager implements EntityManager<Filter> {
 	/** The database */
 	private Data db;
 	/** Current implementation of unique ID's for filters  */
-	private int nextFilterId;
+	private static int nextFilterId;
 	
 	/** This is for advanced logging and debugging of the server interactions */
 	private static final Logger logger = Logger.getLogger(FilterManager.class.getName());
@@ -50,7 +50,7 @@ public class FilterManager implements EntityManager<Filter> {
      * 
      * @param req The filter that possibly needs a unique id
      */
-    public void assignUniqueID(Filter filter){
+    private void assignUniqueID(Filter filter){
         if (filter.getUniqueID() == -1){// -1 is a flag that says a unique id is needed            
             filter.setUniqueID(this.getNextFilterId()); // Makes first Filter have id = 1
             this.setNextFilterId(this.getNextFilterId() + 1);

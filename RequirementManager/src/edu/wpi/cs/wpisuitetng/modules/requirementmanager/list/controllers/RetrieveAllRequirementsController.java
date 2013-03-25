@@ -1,13 +1,20 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -21,8 +28,15 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveAllRequirementsController {
 
 	/** The search requirements view */
-	protected ListPanel view;
+	//protected ListPanel view;
 
+	/** The panel where the results will display*/
+	protected ResultsPanel resultsPanel;
+	
+	/** The panel that contains all the filters*/
+	protected FilterListPanel filterPanel;
+	
+	
 	/** The requirements data retrieved from the server */
 	protected Requirement[] data = null;
 
@@ -32,7 +46,8 @@ public class RetrieveAllRequirementsController {
 	 * @param view the search requirements view
 	 */
 	public RetrieveAllRequirementsController(ListRequirementsView view) {
-		this.view = view.getListPanel();
+		this.resultsPanel = view.getListPanel().getResultsPanel();
+		this.filterPanel = view.getListPanel().getFilterPanel();
 	}
 
 	/**
@@ -48,39 +63,137 @@ public class RetrieveAllRequirementsController {
 
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when the
-	 * response is received
+	 * response is received. This method will now also take into account active filters
+	 * when determining what requirements to show. 
 	 * 
 	 * @param requirements an array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
 		
+		//Array of all the user's filters that are used 
+		//(could also be list of all filters and use could be checked here) 
+		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
+		
+		//Array to keep track of which requirements should be filtered
+		ArrayList<Boolean> isFiltered;
+		
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		view.getModel().setColumnNames(emptyColumns);
-		view.getModel().setData(emptyData);
-		view.getModel().fireTableStructureChanged();
+		resultsPanel.getModel().setColumnNames(emptyColumns);
+		resultsPanel.getModel().setData(emptyData);
+		resultsPanel.getModel().fireTableStructureChanged();
 		
 		if (requirements.length > 0) {
 			// save the data
 			this.data = requirements;
 			
-			// get the number of requirements whose status is Deleted
-			int numOfDeleted = 0;
+			// get the number of requirements that should be filtered
+			int numOfFiltered = 0;
+			
+			Filter currentFilter;
+			boolean temp;
+			
 			for (int i = 0; i < requirements.length; i++) {
-				if (requirements[i].getStatus() == Deleted) numOfDeleted++;
+				//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
+				for(int x = 0; x < filters.size() ; x++){
+					
+					//get current filter
+					currentFilter = filters.get(x); 
+					
+					//if the filter is used
+					if(currentFilter.isUseFilter()){
+						//determine the filter type
+						switch(currentFilter.getType()){
+						//use the filter helper with the associated filter value, operator, and requirement value
+						//use the result to indicate if the requirement being looked at should be filtered out
+						case ID:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getId());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case NAME:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getName());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case DESCRIPTION:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getDescription());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case TYPE:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getType());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case STATUS:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getStatus());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case PRIORITY:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getPriority());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case RELEASE_NUMBER:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getReleaseNumber());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case ESTIMATE:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getEstimate());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case ACTUAL_EFFORT:
+							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getActualEffort());
+							if(temp){
+								numOfFiltered++;
+								isFiltered.set(i, temp);
+							}
+							break;
+						case OTHER:
+							break;
+							
+						}
+						
+						if(temp){
+							x = filters.size();
+						}
+					}
+				}
 			}
 			
-			if (requirements.length > numOfDeleted){
+			if (requirements.length > numOfFiltered){
 
 				// set the column names
 				String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNum", "Estimate", "ActualEffort"};
 				
 				// put the data in the table
-				Object[][] entries = new Object[requirements.length - numOfDeleted][columnNames.length];
+				Object[][] entries = new Object[requirements.length - numOfFiltered][columnNames.length];
 				int j = 0;
 				for (int i = 0; i < requirements.length; i++) {
-					if (requirements[i].getStatus() != Deleted) {
+					
+					//if value at the index i is true, then the filters were all passed
+					if (isFiltered.get(i)){//   requirements[i].getStatus() != Deleted) {
 						entries[j][0] = String.valueOf(requirements[i].getId());
 						entries[j][1] = requirements[i].getName();
 						entries[j][2] = requirements[i].getDescription();
@@ -99,9 +212,9 @@ public class RetrieveAllRequirementsController {
 				}
 				
 				// fill the table
-				view.getModel().setColumnNames(columnNames);
-				view.getModel().setData(entries);
-				view.getModel().fireTableStructureChanged();
+				resultsPanel.getModel().setColumnNames(columnNames);
+				resultsPanel.getModel().setData(entries);
+				resultsPanel.getModel().fireTableStructureChanged();
 				
 			}
 		}
@@ -115,7 +228,44 @@ public class RetrieveAllRequirementsController {
 	 * error occurs retrieving the requirements from the server.
 	 */
 	public void errorReceivingData(String error) {
-		JOptionPane.showMessageDialog(view, "An error occurred retrieving requirements from the server. " + error, 
+		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	
+	/**This method takes in two object values and an operator type and  
+	 * performs a comparison.
+	 * 
+	 * @param filterValue The value from the filter to compare
+	 * @param op The operator to be used for the comparison
+	 * @param requirementValue The value from the requirement to compare
+	 * @return True if the comparison was true
+	 */
+	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
+		switch(op){
+		case GreaterThan:
+			return (int) requirementValue > (int) filterValue;
+		case GreaterThanOrEqualTo:
+			return (int) requirementValue >= (int) filterValue;
+		case LessThan:
+			return (int) requirementValue < (int) filterValue;
+		case LessThanOrEqualTo:
+			return (int) requirementValue <= (int) filterValue;
+		case EqualTo:
+			return requirementValue.equals(filterValue);
+		case NotEqualTo:
+			return !(requirementValue.equals(filterValue));
+		case Contains:
+			return requirementValue.toString().contains(filterValue.toString());
+		case DoesNotContain:
+			return !(requirementValue.toString().contains(filterValue.toString()));
+		case OTHER:
+			return true;
+		}
+		return true;
+	}
 }
+
+
+
+
