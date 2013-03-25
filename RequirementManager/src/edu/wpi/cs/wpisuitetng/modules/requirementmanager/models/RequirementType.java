@@ -23,6 +23,10 @@ public enum RequirementType {
 	
 	 * @return  The proper RequirementType */
 	public static RequirementType toType(String toConvert){     
-		return valueOf(toConvert);
+    	String blank = " ";
+    	if (toConvert.equals(blank))
+    		return valueOf("NoType");
+    	else
+    		return valueOf(toConvert);
 	}
 }

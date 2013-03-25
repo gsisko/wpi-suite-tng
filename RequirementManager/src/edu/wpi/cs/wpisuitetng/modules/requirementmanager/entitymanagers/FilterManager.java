@@ -113,6 +113,12 @@ public class FilterManager implements EntityManager<Filter> {
 			throw new BadRequestException("The Filter creation string had invalid formatting. Entity String: " + content);			
 		}
 		
+		// If the filter doesnt have a "user", give it one
+		if (newFilter.getUser() == null){
+			newFilter.setUser(s.getUser());
+		}
+		
+		
 		// Check to see if the requirement exists in the database already - check by ID only
 		if(getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0] != null){ //indicates it exists already
 			logger.log(Level.WARNING, "ID Conflict Exception during Filter creation.");

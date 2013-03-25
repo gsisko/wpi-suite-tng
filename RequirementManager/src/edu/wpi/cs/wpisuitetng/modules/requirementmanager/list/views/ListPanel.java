@@ -78,19 +78,25 @@ public class ListPanel extends JPanel {
 
 	}
 	
-	public ResultsPanel getResultsPanel() {
+	public ResultsPanel getResultsPanel(){
 		return resultsPanel;
 	}
+<<<<<<< HEAD
 
 
 	public MainTabController getTabController() {
 		
+=======
+	
+	public MainTabController getTabController(){
+>>>>>>> 067b609b1e9e3993e24d6a4d27e88dd3ecee3100
 		return this.tabController;
 	}
 
 	public FilterBuilderPanel getBuilderPanel(){
 	    return builderPanel;
 	}
+	
 	public FilterListPanel getFilterPanel(){
 	    return filtersPanel;
 	}
