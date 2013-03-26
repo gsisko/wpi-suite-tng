@@ -68,11 +68,11 @@ public class RequirementManager implements EntityManager<Requirement> {
 			throw new BadRequestException("The Requirement creation string had invalid formatting. Entity String: " + content);			
 		}
 		
-		// Check to see if the requirement exists in the database already - check by ID only
-		if(getEntity(s,((Integer) newRequirement.getId()).toString())[0] != null){ //indicates it exists already
-			logger.log(Level.WARNING, "ID Conflict Exception during Requirement creation.");
-			throw new ConflictException("A Requirement with the given ID already exists. Entity String: " + content); 
-		}
+//		// Check to see if the requirement exists in the database already - check by ID only
+//		if(getEntity(s,((Integer) newRequirement.getId()).toString())[0] != null){ //indicates it exists already
+//			logger.log(Level.WARNING, "ID Conflict Exception during Requirement creation.");
+//			throw new ConflictException("A Requirement with the given ID already exists. Entity String: " + content); 
+//		}
 		
 		// Saves the requirement in the database
 		this.save(s,newRequirement); // An exception may be thrown here if we can't save it
