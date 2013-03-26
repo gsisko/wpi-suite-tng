@@ -53,34 +53,39 @@ public class RequirementPanel extends JPanel {
 
 
 	//The labels
-	private final JLabel nameLabel; //The label for the name text field ("txtName")
-	private final JLabel descriptionLabel;//The label for the description text area ("txtDescription")
-	private final JLabel typeLabel; //The label for the type combo box ("typeBox")
-	private final JLabel statusLabel; //The label for the status combo box ("statusBox")
-	private final JLabel priorityLabel; //The label for the priority combo box ("priorityBox")
-	private final JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
-	private final JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
-	private final JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
+	private  JLabel nameLabel; //The label for the name text field ("txtName")
+	private  JLabel descriptionLabel;//The label for the description text area ("txtDescription")
+	private  JLabel typeLabel; //The label for the type combo box ("typeBox")
+	private  JLabel statusLabel; //The label for the status combo box ("statusBox")
+	private  JLabel priorityLabel; //The label for the priority combo box ("priorityBox")
+	private  JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
+	private  JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
+	private  JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
 
 	//The fillable components
-	private final JTextField txtName;//The name text field 
-	private final JTextArea txtDescription;//The description text area
-	private final JComboBox<String> typeBox;//The type combo box
-	private final JComboBox<String> statusBox;//The status combo box
-	private final JComboBox<String> priorityBox;//The priority combo box
-	private final JNumberTextField txtReleaseNum;//The release number text field
-	private final JNumberTextField txtEstimate;//The estimate text field
-	private final JNumberTextField txtActualEffort;//The actual effort text field
+	private  JTextField txtName;//The name text field 
+	private  JTextArea txtDescription;//The description text area
+	private  JComboBox<String> typeBox;//The type combo box
+	private  JComboBox<String> statusBox;//The status combo box
+	private  JComboBox<String> priorityBox;//The priority combo box
+	private  JNumberTextField txtReleaseNum;//The release number text field
+	private  JNumberTextField txtEstimate;//The estimate text field
+	private  JNumberTextField txtActualEffort;//The actual effort text field
 
 	//The variables to hold information about the current instance of the panel
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
-	@SuppressWarnings("unused")
 	private RequirementView parent; //Stores the RequirementView that contains the panel
 	
 	private JPanel innerPanel;//A JPanel to hold all the components. This allows for alignment of the components as a group
+	private GridBagConstraints reqPanelConstraints;//The constraints variable for the layout of the innerPanel
 
-
+	
+	protected boolean inputEnabled;//A flag indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+	
+	//The layout managers
+	protected GridBagLayout innerLayout; //The layout for the inner panel ("innerPanel")
+	protected BoxLayout outerLayout;//The layout for the RequirementPanel (this holds the innerPanel)
 
 	/**
 	 * The constructor for RequirementPanel;
@@ -95,10 +100,34 @@ public class RequirementPanel extends JPanel {
 		parent = view;//Set the RequirementView that contains this instance of this panel
 		currentRequirement = requirement; //Set the requirement that is currently open for editing or creation
 		mode = editMode;//Set the indicated mode
+		
+		// Indicate that input is enabled
+		inputEnabled = true;
 
 		innerPanel = new JPanel();//Construct the innerPanel
 		
+		//Create and set the layout manager for the innerPanel that controls the positions of the components
+		innerLayout = new GridBagLayout();//Create the innerLayout
+		innerPanel.setLayout(innerLayout); //Set the layout for the innerPanel
 		
+		//Create and set the layout manager for the this RequirementPanel
+		outerLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);//Create the layout
+		this.setLayout(outerLayout);//Set the layout of this panel (this instance of a RequirementPanel)
+		
+		
+		addComponents();//TODO
+
+		updateFields();//TODO
+		
+	}
+	
+	/**
+	 * Adds the components to both the innerPanel and 
+	 * this instance of a RequirementPanel and places
+	 * constraints on the components within the innerPanel
+	 * for the GridBagLayout.
+	 */
+	protected void addComponents(){
 		//Construct the labels
 		nameLabel = new JLabel("Name:");
 		descriptionLabel = new JLabel("Description:");
@@ -108,7 +137,7 @@ public class RequirementPanel extends JPanel {
 		releaseNumLabel = new JLabel("ReleaseNum:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
-		
+
 		//Construct the misc components
 		txtName = new JTextField("");
 		txtDescription = new JTextArea("", 2, 2);
@@ -136,57 +165,11 @@ public class RequirementPanel extends JPanel {
 		
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
 		{
-			//Set the fields to the values passed in with "requirement"
-			txtName.setText(requirement.getName());
-			txtDescription.setText(requirement.getDescription());
-			txtReleaseNum.setText( String.valueOf(requirement.getReleaseNumber()) );
-			txtEstimate.setText( String.valueOf(requirement.getEstimate()) );
-			txtActualEffort.setText(String.valueOf(requirement.getActualEffort()) );
-			
-			String oldType = (requirement.getType()).toString();//grab the string version of the type passed in with "requirement"
-			String oldStatus = (requirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
-			String oldPriority = (requirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
-			
-			//Set the selected index of the typeBox to the correct value, based on the oldType
-			if (oldType.equals("Epic"))
-				typeBox.setSelectedIndex(1);
-			else if (oldType.equals("Theme"))
-				typeBox.setSelectedIndex(2);
-			else if (oldType.equals("UserStory"))
-				typeBox.setSelectedIndex(3);
-			else if (oldType.equals("NonFunctional"))
-				typeBox.setSelectedIndex(4);
-			else if (oldType.equals("Scenario"))
-				typeBox.setSelectedIndex(5);
-			else// oldType = "NoType"
-				typeBox.setSelectedIndex(0);
-			
-			//Set the selected index of the statusBox to the correct value, based on the oldStatus
-			if (oldStatus.equals("New"))
-				statusBox.setSelectedIndex(0);
-			else if (oldStatus.equals("InProgress"))
-				statusBox.setSelectedIndex(1);
-			else if (oldStatus.equals("Open"))
-				statusBox.setSelectedIndex(2);
-			else if (oldStatus.equals("Complete"))
-				statusBox.setSelectedIndex(3);
-			else // oldStatus = "Deleted"
-				statusBox.setSelectedIndex(4);
-			
-			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
-			if (oldPriority.equals("High"))
-				priorityBox.setSelectedIndex(1);
-			else if (oldPriority.equals("Medium"))
-				priorityBox.setSelectedIndex(2);
-			else if (oldPriority.equals("Low"))
-				priorityBox.setSelectedIndex(3);
-			else // oldPriority = "NoPriority"
-				priorityBox.setSelectedIndex(0);
-			
+			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
+
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
 				txtEstimate.setEnabled(false);
-			
 		}
 		else//We are creating a new requirement
 		{
@@ -206,11 +189,6 @@ public class RequirementPanel extends JPanel {
 
 		}
 		
-
-		// Set the layout manager for the innerPanel that controls the positions of the components
-		innerPanel.setLayout(new GridBagLayout()); //set the layout for the innerPanel
-		GridBagConstraints reqPanelConstraints = new GridBagConstraints();//create the constraints variable for the layout of the innerPanel
-
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
 		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll panel
@@ -218,6 +196,8 @@ public class RequirementPanel extends JPanel {
 		//In this last section we adjust the size and alignments of all the components and add them to the innerPanel.
 		//Please read all the comments in this section if you are having trouble understanding what is going on.
 
+		reqPanelConstraints = new GridBagConstraints();//create the constraints variable for the layout of the innerPanel
+		
 		//Name:
 		//Set the constraints for "nameLabel" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
@@ -334,15 +314,149 @@ public class RequirementPanel extends JPanel {
 		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
 		
-		
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));//Set the layout of this panel
+
 		this.add(innerPanel);//Add the innerPanel to this panel
 		innerPanel.setAlignmentX(Component.LEFT_ALIGNMENT); //Set the alignment of the innerPanel
 		innerPanel.setMaximumSize(new Dimension(300,400));//Set the maximum size of the innerPanel
+	}
+	
+	/**
+	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	 * JComponent#setEnabled because setEnabled does not affect its children.
+	 * 
+	 * @param enabled Whether or not input is enabled.
+	 */
+	protected void setInputEnabled(boolean enabled){
+		inputEnabled = enabled;
 		
+		txtName.setEnabled(enabled);
+		txtDescription.setEnabled(enabled);
+		typeBox.setEnabled(enabled);
+		statusBox.setEnabled(enabled);
+		priorityBox.setEnabled(enabled);
+		txtReleaseNum.setEnabled(enabled);
+		txtEstimate.setEnabled(enabled);
+		txtActualEffort.setEnabled(enabled);
 		
+
+	}
+	
+	/**
+	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement and sets the 
+	 * RequirementPanel's "mode" to {@link Mode#EDIT}.
+	 * 
+	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
+	 */
+	protected void updateModel(Requirement requirement) {
+		updateModel(requirement, Mode.EDIT);
 	}
 
+	/**
+	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement.
+	 * 
+	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
+	 * @param newMode		The new "mode"
+	 */
+	protected void updateModel(Requirement requirement, Mode newMode){
+		mode = newMode;
+		
+		currentRequirement.setId(requirement.getId());
+		currentRequirement.setName(requirement.getName());
+		currentRequirement.setDescription(requirement.getDescription());
+		currentRequirement.setType(requirement.getType());
+		currentRequirement.setStatus(requirement.getStatus());
+		currentRequirement.setPriority(requirement.getPriority());
+		currentRequirement.setReleaseNumber(requirement.getReleaseNumber());
+		currentRequirement.setEstimate(requirement.getEstimate());
+		currentRequirement.setActualEffort(requirement.getActualEffort());
+		
+		updateFields();
+		innerPanel.revalidate();
+
+		innerLayout.invalidateLayout(innerPanel);
+		innerLayout.layoutContainer(innerPanel);
+		innerPanel.repaint();
+		
+		this.revalidate();
+		outerLayout.invalidateLayout(this);
+		outerLayout.layoutContainer(this);
+		this.repaint();
+		
+		parent.refreshScrollPane();
+	}
+	
+	/**
+	 * Updates the RequirementPanel's fields to match those in the current model (stored in "currentRequirement").
+	 */
+	private void updateFields(){
+
+		if (mode == Mode.EDIT)//If we are editing an existing requirement
+		{
+			//Set the fields to the values passed in with "requirement"
+			txtName.setText(currentRequirement.getName());
+			txtDescription.setText(currentRequirement.getDescription());
+			txtReleaseNum.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
+			txtEstimate.setText( String.valueOf(currentRequirement.getEstimate()) );
+			txtActualEffort.setText(String.valueOf(currentRequirement.getActualEffort()) );
+			
+			String oldType = (currentRequirement.getType()).toString();//grab the string version of the type passed in with "requirement"
+			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
+			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
+			
+			//Set the selected index of the typeBox to the correct value, based on the oldType
+			if (oldType.equals("Epic"))
+				typeBox.setSelectedIndex(1);
+			else if (oldType.equals("Theme"))
+				typeBox.setSelectedIndex(2);
+			else if (oldType.equals("UserStory"))
+				typeBox.setSelectedIndex(3);
+			else if (oldType.equals("NonFunctional"))
+				typeBox.setSelectedIndex(4);
+			else if (oldType.equals("Scenario"))
+				typeBox.setSelectedIndex(5);
+			else// oldType = "NoType"
+				typeBox.setSelectedIndex(0);
+			
+			//Set the selected index of the statusBox to the correct value, based on the oldStatus
+			if (oldStatus.equals("New"))
+				statusBox.setSelectedIndex(0);
+			else if (oldStatus.equals("InProgress"))
+				statusBox.setSelectedIndex(1);
+			else if (oldStatus.equals("Open"))
+				statusBox.setSelectedIndex(2);
+			else if (oldStatus.equals("Complete"))
+				statusBox.setSelectedIndex(3);
+			else // oldStatus = "Deleted"
+				statusBox.setSelectedIndex(4);
+			
+			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
+			if (oldPriority.equals("High"))
+				priorityBox.setSelectedIndex(1);
+			else if (oldPriority.equals("Medium"))
+				priorityBox.setSelectedIndex(2);
+			else if (oldPriority.equals("Low"))
+				priorityBox.setSelectedIndex(3);
+			else // oldPriority = "NoPriority"
+				priorityBox.setSelectedIndex(0);
+			
+			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
+			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
+				txtEstimate.setEnabled(false);
+			
+		}
+
+		
+	}
+	
+	/**
+	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
+	 * 
+	 * @return	A boolean representing whether or not input is enabled for the RequirementPanel.
+	 */
+	public boolean getInputEnabled() {
+		return inputEnabled;
+	}
+	
 	/**
 	 * This returns the JTextField "txtName"
 	 * @return the txtName JTextField
