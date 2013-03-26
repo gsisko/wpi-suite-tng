@@ -19,6 +19,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,6 +36,9 @@ public class FilterListPanel extends JPanel {
 	
 	/** The table of results */
 	protected JTable resultsTable;
+	
+	protected JButton btnCreate;
+	protected JButton btnDelete;
 	
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
@@ -61,12 +65,22 @@ public class FilterListPanel extends JPanel {
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-
-		add(resultsScrollPane, BorderLayout.CENTER);
 		
 		// TODO implement the rest of the controls to display saved filters
 		// and store saved filters in the ConfigManager
 		add(Box.createRigidArea(new Dimension(0, 150)));
+		
+		add(resultsScrollPane, BorderLayout.CENTER);
+		
+		btnCreate = new JButton ("New Filter");
+		btnDelete = new JButton ("Delete");
+		
+		add(btnCreate);
+		add(btnDelete);
+		
+		// TODO: add listeners
+		
+		
 	}
 	
 	/**
