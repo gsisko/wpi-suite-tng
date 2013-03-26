@@ -11,11 +11,13 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /**
  * This class is a JPanel. 
- * It contains:
+ * It contains an inner JPanel containing:
  * 		-an enum to indicate a "create" or "edit" mode
  * 		-a text field for entering a new name,
  * 		-a text area for entering a description,
@@ -75,7 +77,7 @@ public class RequirementPanel extends JPanel {
 	@SuppressWarnings("unused")
 	private RequirementView parent; //Stores the RequirementView that contains the panel
 	
-
+	private JPanel innerPanel;//A JPanel to hold all the components. This allows for alignment of the components as a group
 
 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
@@ -94,6 +96,9 @@ public class RequirementPanel extends JPanel {
 		currentRequirement = requirement; //Set the requirement that is currently open for editing or creation
 		mode = editMode;//Set the indicated mode
 
+		innerPanel = new JPanel();//Construct the innerPanel
+		
+		
 		//Construct the labels
 		nameLabel = new JLabel("Name:");
 		descriptionLabel = new JLabel("Description:");
@@ -103,26 +108,17 @@ public class RequirementPanel extends JPanel {
 		releaseNumLabel = new JLabel("ReleaseNum:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
-
+		
 		//Construct the misc components
-		txtName = new JTextField(/*"Enter a name here."*/"");
-		txtDescription = new JTextArea(/*"Enter a description here."*/"", 2, 2);
+		txtName = new JTextField("");
+		txtDescription = new JTextArea("", 2, 2);
 		txtReleaseNum = new JNumberTextField();
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
-		txtEstimate.setText("0");
-		txtActualEffort.setText("0");
 		txtReleaseNum.setAllowNegative(false);
 		txtEstimate.setAllowNegative(false);
 		txtActualEffort.setAllowNegative(false);
-
-		//Set the following fields to be initially greyed out
-		txtName.setEnabled(false);
-		txtDescription.setEnabled(false);
-		txtReleaseNum.setEnabled(false);
-		txtEstimate.setEnabled(false);
-		txtActualEffort.setEnabled(false);
-
+		
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
 		txtDescription.setWrapStyleWord(true);
@@ -137,141 +133,212 @@ public class RequirementPanel extends JPanel {
 		statusBox = new JComboBox<String>(statusStrings);
 		priorityBox = new JComboBox<String>(priorityStrings);
 
-		//Set the initial selections for the boxes
-		typeBox.setSelectedIndex(0);
-		typeBox.setEnabled(false);
-		statusBox.setSelectedIndex(0);
-		statusBox.setEnabled(false);
-		priorityBox.setSelectedIndex(0);
-		priorityBox.setEnabled(false);
+		
+		if (mode == Mode.EDIT)//If we are editing an existing requirement
+		{
+			//Set the fields to the values passed in with "requirement"
+			txtName.setText(requirement.getName());
+			txtDescription.setText(requirement.getDescription());
+			txtReleaseNum.setText( String.valueOf(requirement.getReleaseNumber()) );
+			txtEstimate.setText( String.valueOf(requirement.getEstimate()) );
+			txtActualEffort.setText(String.valueOf(requirement.getActualEffort()) );
+			
+			String oldType = (requirement.getType()).toString();//grab the string version of the type passed in with "requirement"
+			String oldStatus = (requirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
+			String oldPriority = (requirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
+			
+			//Set the selected index of the typeBox to the correct value, based on the oldType
+			if (oldType.equals("Epic"))
+				typeBox.setSelectedIndex(1);
+			else if (oldType.equals("Theme"))
+				typeBox.setSelectedIndex(2);
+			else if (oldType.equals("UserStory"))
+				typeBox.setSelectedIndex(3);
+			else if (oldType.equals("NonFunctional"))
+				typeBox.setSelectedIndex(4);
+			else if (oldType.equals("Scenario"))
+				typeBox.setSelectedIndex(5);
+			else// oldType = "NoType"
+				typeBox.setSelectedIndex(0);
+			
+			//Set the selected index of the statusBox to the correct value, based on the oldStatus
+			if (oldStatus.equals("New"))
+				statusBox.setSelectedIndex(0);
+			else if (oldStatus.equals("InProgress"))
+				statusBox.setSelectedIndex(1);
+			else if (oldStatus.equals("Open"))
+				statusBox.setSelectedIndex(2);
+			else if (oldStatus.equals("Complete"))
+				statusBox.setSelectedIndex(3);
+			else // oldStatus = "Deleted"
+				statusBox.setSelectedIndex(4);
+			
+			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
+			if (oldPriority.equals("High"))
+				priorityBox.setSelectedIndex(1);
+			else if (oldPriority.equals("Medium"))
+				priorityBox.setSelectedIndex(2);
+			else if (oldPriority.equals("Low"))
+				priorityBox.setSelectedIndex(3);
+			else // oldPriority = "NoPriority"
+				priorityBox.setSelectedIndex(0);
+			
+			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
+			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
+				txtEstimate.setEnabled(false);
+			
+		}
+		else//We are creating a new requirement
+		{
+			//Set the estimate and actual effort to 0 since this is a new requirement
+			txtEstimate.setText("0");
+			txtActualEffort.setText("0");
+			
+			//Set the initial selections for the boxes
+			typeBox.setSelectedIndex(0);
+			statusBox.setSelectedIndex(0);
+			priorityBox.setSelectedIndex(0);
+			
+			//Set the following fields to be initially grayed out
+			txtEstimate.setEnabled(false);
+			txtActualEffort.setEnabled(false);
+			statusBox.setEnabled(false);
+
+		}
 		
 
-		// Set the layout manager that controls the positions of the components
-		setLayout(new GridBagLayout()); //set the layout
-		GridBagConstraints reqPanelConstraints = new GridBagConstraints();//create the constraints variable
+		// Set the layout manager for the innerPanel that controls the positions of the components
+		innerPanel.setLayout(new GridBagLayout()); //set the layout for the innerPanel
+		GridBagConstraints reqPanelConstraints = new GridBagConstraints();//create the constraints variable for the layout of the innerPanel
 
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
 		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll panel
 
-		//In this last section we adjust the size and alignments of all the components and add them to the panel.
+		//In this last section we adjust the size and alignments of all the components and add them to the innerPanel.
 		//Please read all the comments in this section if you are having trouble understanding what is going on.
 
 		//Name:
-		//Set the constraints for "nameLabel" and add it to the view
+		//Set the constraints for "nameLabel" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
 		reqPanelConstraints.insets = new Insets(10,5,0,0);  //Set the top padding to 10 units of blank space
 		reqPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		reqPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
-		add(nameLabel, reqPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-		//Set the constraints for "txtName" and add it to the view
+		innerPanel.add(nameLabel, reqPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		//Set the constraints for "txtName" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 150;//This tells the layout to stretch this field horizontally by 250 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 0;
-		add(txtName, reqPanelConstraints);
+		innerPanel.add(txtName, reqPanelConstraints);
 		//end Name
 
 		//Description:		
-		//Set the constraints for the "descriptionLabel" and add it to the view
+		//Set the constraints for the "descriptionLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 150 units to now 0 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 1;
-		add(descriptionLabel, reqPanelConstraints);
-		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the view
+		innerPanel.add(descriptionLabel, reqPanelConstraints);
+		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 150;
 		reqPanelConstraints.ipady = 150;//This tells the layout to stretch this field vertically by 150 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 1;
-		add(scrollPane, reqPanelConstraints);
+		innerPanel.add(scrollPane, reqPanelConstraints);
 		//end Description
 
 		//Type:
-		//Set the constraints for the "typeLabel" and add it to the view
+		//Set the constraints for the "typeLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;
 		reqPanelConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 150 units to now 0 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 2;
-		add(typeLabel, reqPanelConstraints);
-		//Set the constraints for the "typeBox"  and add it to the view
+		innerPanel.add(typeLabel, reqPanelConstraints);
+		//Set the constraints for the "typeBox"  and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 2;
-		add(typeBox, reqPanelConstraints);
+		innerPanel.add(typeBox, reqPanelConstraints);
 		//end Type
 
 		//Status:		
-		//Set the constraints for the "statusLabel" and add it to the view
+		//Set the constraints for the "statusLabel" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 3;
-		add(statusLabel, reqPanelConstraints);
-		//Set the constraints for the "statusBox" and add it to the view
+		innerPanel.add(statusLabel, reqPanelConstraints);
+		//Set the constraints for the "statusBox" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 3;
-		add(statusBox, reqPanelConstraints);
+		innerPanel.add(statusBox, reqPanelConstraints);
 		//end Status
 
 		//Priority:
-		//Set the constraints for the "priorityLabel" and add it to the view
+		//Set the constraints for the "priorityLabel" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 4;
-		add(priorityLabel, reqPanelConstraints);
-		//Set the constraints for the "priorityBox" and add it to the view
+		innerPanel.add(priorityLabel, reqPanelConstraints);
+		//Set the constraints for the "priorityBox" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 4;
-		add(priorityBox, reqPanelConstraints);
+		innerPanel.add(priorityBox, reqPanelConstraints);
 		//end Priority
 
 		//Release number:
-		//Set the constraints for the "releaseNumLabel" and add it to the view
+		//Set the constraints for the "releaseNumLabel" and add it to the innerPanel
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 5;
-		add(releaseNumLabel, reqPanelConstraints);
-		//Set the constraints for the "txtReleaseNum" and add it to the view
-		reqPanelConstraints.ipadx = 100;//This tells the layout to stretch this field horizontally by 90 units
+		innerPanel.add(releaseNumLabel, reqPanelConstraints);
+		//Set the constraints for the "txtReleaseNum" and add it to the innerPanel
+		reqPanelConstraints.ipadx = 80;//This tells the layout to stretch this field horizontally by 90 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 5;
-		add(txtReleaseNum, reqPanelConstraints);
+		innerPanel.add(txtReleaseNum, reqPanelConstraints);
 		//end Release number
 
 		//Estimate:		
-		//Set the constraints for the "estimateLabel" and add it to the view
+		//Set the constraints for the "estimateLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 100 units to now 0 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 6;
-		add(estimateLabel, reqPanelConstraints);
-		//Set the constraints for the "txtEstimate" and add it to the view
-		reqPanelConstraints.ipadx = 90;
+		innerPanel.add(estimateLabel, reqPanelConstraints);
+		//Set the constraints for the "txtEstimate" and add it to the innerPanel
+		reqPanelConstraints.ipadx = 80;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 6;
-		add(txtEstimate, reqPanelConstraints);
+		innerPanel.add(txtEstimate, reqPanelConstraints);
 		//end Estimate
 
 		//Actual effort:
-		//Set the constraints for the "actualEffortLabel" and add it to the view
+		//Set the constraints for the "actualEffortLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 90 units to now 0 units
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 7;
-		add(actualEffortLabel, reqPanelConstraints);
-		//Set the constraints for the "txtActualEffort" and add it to the view
-		reqPanelConstraints.ipadx = 90;
+		innerPanel.add(actualEffortLabel, reqPanelConstraints);
+		//Set the constraints for the "txtActualEffort" and add it to the innerPanel
+		reqPanelConstraints.ipadx = 80;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 7;
-		add(txtActualEffort, reqPanelConstraints);
+		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
+		
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));//Set the layout of this panel
+		this.add(innerPanel);//Add the innerPanel to this panel
+		innerPanel.setAlignmentX(Component.LEFT_ALIGNMENT); //Set the alignment of the innerPanel
+		innerPanel.setMaximumSize(new Dimension(300,400));//Set the maximum size of the innerPanel
 		
 		
 	}
