@@ -16,17 +16,20 @@ public class SaveFilterController implements ActionListener
 {
     private final FilterListPanel panel;
     private final FilterBuilderPanel builder;
+    private final ListRequirementsView view;
     
     public SaveFilterController(ListRequirementsView view) 
     {
     	this.panel = view.getListPanel().getFilterPanel();
     	this.builder = view.getListPanel().getBuilderPanel();
+    	this.view = view;
     }
 
-    @Override
+
     public void actionPerformed(ActionEvent event) 
     {
-    	/*/ check if any inputs are invalid, print an error message if one is
+	/*
+    	// check if any inputs are invalid, print an error message if one is
     	if (view.getFilterName().getText().length() == 0) {
     		JOptionPane.showMessageDialog(null, "Name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
     		return;
@@ -49,26 +52,27 @@ public class SaveFilterController implements ActionListener
     	}*/
 
     	
-	    if (view.getMode() == CREATE) { // if we are creating a new filter
+	    //if (view.getMode() == CREATE) { // if we are creating a new filter
 		
 	    	// get the fields from the UI
-	    	String name = view.getFilterName().getText();
-			String description = view.getFilterDescription().getText();
-			int releaseNumber = Integer.parseInt((view.getFilterReleaseNumber().getText().equals("")) ? "-1" : (view.getFilterReleaseNumber().getText()));
-			FilterPriority priority = FilterPriority.toPriority(view.getFilterPriority().getSelectedItem().toString());
-			FilterType type = FilterType.toType(view.getFilterType().getSelectedItem().toString());
+	    	String name = builder.getFilterName().toString();
+		String description = builder.getFilterDescription().getText();
+		Object value = builder.getValue();
+		OperatorType comparator = OperatorType.toType(builder.getOperatorType().toString());
+		FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
 		
 			// make a PUT http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.PUT); // PUT == create
-		    request.setBody(new Filter(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
+		    request.setBody(new Filter(type, comparator, value, true).toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
-		}
+		//}
+		/*
 		else { // we are updating an existing filter
 			
-			// make a new filter to story the updated data
+			// make a new filter to store the updated data
 			Filter updatedFilter = new Filter(); 
-			Filter oldFilter = view.getCurrentFilter();
+			Filter oldFilter = builder.getListPanel();
 			
 			// give the new filter the correct ID number
 			updatedFilter.setId(oldFilter.getId());
@@ -89,7 +93,7 @@ public class SaveFilterController implements ActionListener
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
 			
-		}
+		}*/
 	
     }
     
@@ -102,8 +106,8 @@ public class SaveFilterController implements ActionListener
 	public void saveSuccess(Filter newReq) {
 		// if success, set all of the UI fields appropriately for post-save actions
 		if (newReq != null) {
-			System.out.print("Filter " + newReq.getId() + " saved successfully\n");
-			
+			System.out.print("Filter " +/* newReq.getId() +*/ " saved successfully\n");
+			/*
 			view.getFilterName().setText("");
 			view.getFilterDescription().setText("");
 			view.getFilterType().setSelectedIndex(0);
@@ -123,15 +127,16 @@ public class SaveFilterController implements ActionListener
 			view.getFilterPriority().setEnabled(false);
 			view.getFilterReleaseNumber().setEnabled(false);
 			view.getFilterEstimate().setEnabled(false);
-			view.getFilterActualEffort().setEnabled(false);
+			view.getFilterActualEffort().setEnabled(false);*/
 		}
 		else {
 			System.err.print("Undected error saving filter\n");
 		}
 	}
 	
+	/*
 	public FilterListPanel getView() {
 		return view;
-	}
+	}*/
 }
 
