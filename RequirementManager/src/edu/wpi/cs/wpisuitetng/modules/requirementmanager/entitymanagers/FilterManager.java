@@ -15,6 +15,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 /** This is the entity manager for filters in the RequirementManager module
  * @author Team 5
@@ -80,7 +81,7 @@ public class FilterManager implements EntityManager<Filter> {
 	public void save(Session s, Filter model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 		
-		// If the filter doesnt have a "user", give it one
+		// If the filter doesn't have a "user", give it one
 		if (model.getUser() == null){
 			model.setUser(s.getUser());
 		}
@@ -222,7 +223,7 @@ public class FilterManager implements EntityManager<Filter> {
 	
 	
 	
-	/** Modifies the Filter so that it is inaccessible- sudo-deleted
+	/** Modifies the Filter so that it is inaccessible: sudo-deleted
 	 *  Not fully deleted to preserve the count/unique ID
 	 *  
 	 *  @param s The current user session
@@ -234,8 +235,16 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		db.update(Filter.class, "UniqueID",id,"User",null);
-		return true; // The deletion was unsuccessful
+		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
+		Filter oldFilter = getEntity(s, id   )[0];
+		
+		// Set User field of Filter to a different user so that it is not pulled out by "getAll" calls... effectively deleted
+		oldFilter.setUser(new User("admin", "admin", "password", 0 )); // set to admin, so that somebody can still see it
+		
+		// Attempt to save. WPISuiteException may be thrown
+		this.save(s,oldFilter);
+	
+		return true; // The deletion was successful
 	}
 
 

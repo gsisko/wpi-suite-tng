@@ -162,7 +162,7 @@ public class FilterManagerTest extends TestCase {
 	@Test
 	public void testGetAll() throws WPISuiteException {
 		Filter[] gotten = manager.getAll(defaultSession);
-		assertEquals(2, gotten.length);  // Not sure if tests are persistent..  either 2 or 3
+		assertEquals(2, gotten.length); 
 		assertTrue(existingFilter.equals(gotten[0])
 				|| existingFilter.equals(gotten[1]));  // The order is not guranteed
 		assertTrue(otherFilter.equals( gotten[1])
@@ -183,24 +183,24 @@ public class FilterManagerTest extends TestCase {
 	 * 
 	 * @throws WPISuiteException
 	 */
-//	@Test
-//	public void testDelete() throws WPISuiteException {
-//		assertSame(existingFilter, db.retrieve(Filter.class, "UniqueID", 1).get(0));
-//		assertSame(existingUser, ((Filter) db.retrieve(Filter.class, "UniqueID",1).get(0)).getUser());
-//		int numFilters = manager.getAll(defaultSession).length; // getAll pulls by username- critical to deletion method
-//		
-//		assertTrue(manager.deleteEntity(defaultSession, "1"));
-//	
-//		System.out.println(numFilters);
-//		System.out.println(manager.getAll(defaultSession).length);
-//		
-//		assertTrue( numFilters  != manager.getAll(defaultSession).length); // show proper deletion
-//	}
-	
-	@Test(expected=NotFoundException.class)
-	public void testDeleteMissing() throws WPISuiteException {
-		manager.deleteEntity(adminSession, "4534");
+	@Test
+	public void testDelete() throws WPISuiteException {
+		assertSame(existingFilter, db.retrieve(Filter.class, "UniqueID", 1).get(0));
+		assertSame(existingUser, ((Filter) db.retrieve(Filter.class, "UniqueID",1).get(0)).getUser());
+		int numFilters = manager.getAll(defaultSession).length; // getAll pulls by username- critical to deletion method
+		
+		assertTrue(manager.deleteEntity(defaultSession, "1"));
+		assertNotSame(existingUser, ((Filter) db.retrieve(Filter.class, "UniqueID",1).get(0)).getUser());
+		System.out.println(numFilters);
+		System.out.println(manager.getAll(defaultSession).length);
+		
+		assertTrue( numFilters  != manager.getAll(defaultSession).length); // show proper deletion
 	}
+	
+//	@Test(expected=NotFoundException.class)
+//	public void testDeleteMissing() throws WPISuiteException {
+//		manager.deleteEntity(adminSession, "4534");
+//	}
 	
 	@Test(expected=NotFoundException.class)
 	public void testDeleteFromOtherProject() throws WPISuiteException {
@@ -240,31 +240,19 @@ public class FilterManagerTest extends TestCase {
 		assertEquals(2, manager.Count());
 	}
 	
-//	@SuppressWarnings("unchecked")
-//	@Test
-//	public void testUpdate() throws WPISuiteException {
-//		Filter updated = manager.update(defaultSession, goodUpdatedFilter.toJSON());
-//		assertSame(existingFilter, updated);
-//		assertEquals(goodUpdatedFilter.getType(), updated.getType()); // make sure ModelMapper is used
-//		assertEquals(1, updated.getEvents().size());
-//		
-//		FilterChangeset changeset = (FilterChangeset) updated.getEvents().get(0);
-//		assertSame(existingUser, changeset.getUser());
-//		assertEquals(updated.getLastModifiedDate(), changeset.getDate());
-//		
-//		Map<String, FieldChange<?>> changes = changeset.getChanges();
-//		// these fields shouldn't be recorded in the changeset
-//		// creator was different in goodUpdatedFilter, but should be ignored
-//		assertFalse(changes.keySet().containsAll(Arrays.asList("events", "lastModifiedDate", "creator")));
-//		
-//		FieldChange<String> titleChange = (FieldChange<String>) changes.get("title");
-//		assertEquals("An existing Filter", titleChange.getOldValue());
-//		assertEquals("A changed title", titleChange.getNewValue());
-//		
-//		// make sure events are being saved explicitly to get around a bug
-//		// TODO: remove this when said bug is fixed
-//		assertSame(updated.getEvents(), db.retrieveAll(new ArrayList<FilterEvent>()).get(0));
-//	}
+
+	@Test
+	public void testUpdate() throws WPISuiteException {
+		Filter toUpdate = manager.getEntity(defaultSession, "1")[0];  // Get something to update
+		
+		assertNotSame(toUpdate.getType(), "Random Value"); // Make sure it isn't the value we want to update to		
+		toUpdate.setValue("Random Value"); // Change the value
+
+		Filter updated = manager.update(defaultSession, toUpdate.toJSON()); // Perform the update
+		
+		assertTrue(toUpdate.equals( updated)); // update returned the right thing
+		assertEquals(manager.getEntity(defaultSession, "1")[0], toUpdate); // The right thing was changed in the DB	
+	}
 	
 //	@Test(expected=BadRequestException.class)
 //	public void testBadUpdate() throws WPISuiteException {
