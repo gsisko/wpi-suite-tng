@@ -8,6 +8,10 @@ import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** A filter is one set of constraints that a user can use to filter a list of requirements.
  * @author Team 5
@@ -20,8 +24,8 @@ public class Filter extends AbstractModel {
 	private FilterType type;
 	/**	Operator to use for comparison	*/
 	private OperatorType comparator;
-	/**	String, integer, or enum only	*/
-	private Object value;
+	/**	String, integer, or RequirementStatus, RequirementPriority	*/
+	private String value;
 	/**	Use filter? */
 	private boolean useFilter;
 	
@@ -33,7 +37,7 @@ public class Filter extends AbstractModel {
 	 * 
 	 */
 	public Filter () {
-		new Filter(FilterType.OTHER, OperatorType.OTHER, null, true);
+		new Filter(FilterType.Other, OperatorType.Other, null, true);
 	}
 	
 	
@@ -46,7 +50,7 @@ public class Filter extends AbstractModel {
 	 */
 	public Filter( FilterType type, 
 			OperatorType comparator,
-			Object value, 
+			String value, 
 			boolean useFilter) {
 		this.setUniqueID(-1); // default as a flag to entity manager
 		this.setType(type);
@@ -204,20 +208,7 @@ public class Filter extends AbstractModel {
 		this.comparator = comparator;
 	}
 
-	/**
-	 * @return the value
-	 */
-	public Object getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value the value to set
-	 */
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
+	
 	/**
 	 * @return the useFilter
 	 */
@@ -248,4 +239,99 @@ public class Filter extends AbstractModel {
 		this.user = user;
 	}
 
+	
+	
+	
+	
+	
+	
+	/** Returns false when the Requirement should be filtered out
+	*
+	*	@param req The Requirement in question
+	*	@return True if the Requirement should be passes the filter, false otherwise
+	*/
+	public boolean passesFilter(Requirement req){
+		switch (this.type){
+		
+		// The following two are strings
+		case Name:
+			return OperatorType.perform(this.comparator,this.value, req.getName());
+		case Description:
+			return OperatorType.perform(this.comparator, this.value, req.getDescription());
+		
+		// The following four are Integers
+		case Id: 
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+		case Actual_Effort:
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());		
+		case Estimate:
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());		
+		case Release_Number:
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+	
+		// The following three are different enums
+		case Status:
+			return OperatorType.perform(this.comparator, RequirementStatus.toStatus(this.value), req.getStatus());
+		case Type:
+			return OperatorType.perform(this.comparator, RequirementType.toType(this.value), req.getType());
+		case Priority:
+			return OperatorType.perform(this.comparator, RequirementPriority.toPriority(this.value), req.getPriority());
+	
+		// Default
+		default:
+			return true;  // default to not filter out stuff
+		}
+	}
+	
+	
+	
+	
+/** The following getters and setters allow us to input different 
+ *  kinds of values into a Filter, store them as strings, and 
+ *  take them back out and use them as the proper types that they 
+ *  should be. 
+ */
+	
+	/**
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+
+	/** Sets the value of the Filter when the input is a string
+	 * @param value the value to set
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/** Sets the value of the Filter when the input is an Integer
+	 * @param value the value to set
+	 */
+	public void setValue(Integer value) {
+		this.value = value.toString();
+	}
+	
+	/** Sets the value of the Filter when the input is an RequirementStatus
+	 * @param value the value to set
+	 */
+	public void setValue(RequirementStatus value) {
+		this.value = value.toString();
+	}
+	
+	/** Sets the value of the Filter when the input is an RequirementType
+	 * @param value the value to set
+	 */
+	public void setValue(RequirementType value) {
+		this.value = value.toString();
+	}
+	
+	/** Sets the value of the Filter when the input is RequirementPriority
+	 * @param value the value to set
+	 */
+	public void setValue(RequirementPriority value) {
+		this.value = value.toString();
+	}
 }

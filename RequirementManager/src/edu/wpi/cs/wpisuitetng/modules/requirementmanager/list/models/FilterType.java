@@ -14,7 +14,7 @@ public enum FilterType {
 	Release_Number,
 	Estimate,
 	Actual_Effort,
-	Othe;
+	Other;
 	
 	/** Converts a string to the proper FilterType
 	 * 
