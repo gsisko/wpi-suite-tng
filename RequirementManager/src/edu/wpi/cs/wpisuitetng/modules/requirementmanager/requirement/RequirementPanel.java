@@ -115,9 +115,9 @@ public class RequirementPanel extends JPanel {
 		this.setLayout(outerLayout);//Set the layout of this panel (this instance of a RequirementPanel)
 		
 		
-		addComponents();//TODO
+		addComponents();//Add the components to the inner panel, and add the inner panel to this panel
 
-		updateFields();//TODO
+		updateFields();//Update the fields to those given in the currentRequirement, if necessary.
 		
 	}
 	
