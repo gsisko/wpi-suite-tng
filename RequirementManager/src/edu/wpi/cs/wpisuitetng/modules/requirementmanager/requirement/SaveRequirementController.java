@@ -13,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class SaveRequirementController implements ActionListener 
+public class SaveRequirementController
 {
     private final RequirementPanel view;
 
@@ -22,8 +22,7 @@ public class SaveRequirementController implements ActionListener
     	this.view = view.getRequirementPanel();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event) 
+    public void save() 
     {
     	// check if any inputs are invalid, print an error message if one is
     	if (view.getRequirementName().getText().length() == 0) {
@@ -60,7 +59,7 @@ public class SaveRequirementController implements ActionListener
 			// make a PUT http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 		    request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
-		    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
+		    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		    request.send();
 		}
 		else { // we are updating an existing requirement
@@ -94,7 +93,7 @@ public class SaveRequirementController implements ActionListener
 			// make a POST http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		    request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
-		    request.addObserver(new SaveRequirementObserver(this)); // add an observer to process the response
+		    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		    request.send();
 			
 		}
@@ -111,24 +110,6 @@ public class SaveRequirementController implements ActionListener
 		// if success, set all of the UI fields appropriately for post-save actions
 		if (newReq != null) {
 			System.out.print("Requirement " + newReq.getId() + " saved successfully\n");
-			
-			view.getRequirementName().setText("");
-			view.getRequirementDescription().setText("");
-			view.getRequirementType().setSelectedIndex(0);
-			view.getRequirementStatus().setSelectedIndex(0);
-			view.getRequirementPriority().setSelectedIndex(0);
-			view.getRequirementReleaseNumber().setText("");
-			view.getRequirementEstimate().setText("");
-			view.getRequirementActualEffort().setText("");
-			
-			view.getRequirementName().setEnabled(false);
-			view.getRequirementDescription().setEnabled(false);
-			view.getRequirementType().setEnabled(false);
-			view.getRequirementStatus().setEnabled(false);
-			view.getRequirementPriority().setEnabled(false);
-			view.getRequirementReleaseNumber().setEnabled(false);
-			view.getRequirementEstimate().setEnabled(false);
-			view.getRequirementActualEffort().setEnabled(false);
 		}
 		else {
 			System.err.print("Undected error saving requirement\n");

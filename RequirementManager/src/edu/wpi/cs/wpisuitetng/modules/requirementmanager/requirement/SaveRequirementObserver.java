@@ -1,5 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -12,10 +15,10 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class SaveRequirementObserver implements RequestObserver {
 	
-	private final SaveRequirementController rmcontroller;
+	private final RequirementView view;
 	
-	public SaveRequirementObserver(SaveRequirementController rmcontroller) {
-		this.rmcontroller = rmcontroller;
+	public SaveRequirementObserver(RequirementView view) {
+		this.view = view;
 	}
 	
 	/*
@@ -32,11 +35,23 @@ public class SaveRequirementObserver implements RequestObserver {
 		// Parse the message out of the response body
 		final Requirement message = Requirement.fromJSON(response.getBody());
 		
-		// Pass the messages back to the controller
-		rmcontroller.saveSuccess(message);
+		final Requirement requirement = Requirement.fromJSON(response.getBody());
+
+		// make sure the requirement isn't null
+		if (requirement != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					//((RequirementPanel) view.getRequirementPanel()).updateModel(requirement);
+					view.setEditModeDescriptors(requirement);
+				}
+			});
+		}
+		else {
+			JOptionPane.showMessageDialog(view,	"Unable to parse requirement received from server.", 
+					"Save Requirement Error", JOptionPane.ERROR_MESSAGE);
+		}
 		
-		// auto-update
-		rmcontroller.getView().getRefreshController().refreshData();
 	}
 	/* This method responses when there is a save response error
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)

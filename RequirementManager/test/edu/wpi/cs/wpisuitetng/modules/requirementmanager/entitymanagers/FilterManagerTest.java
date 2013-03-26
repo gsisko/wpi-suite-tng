@@ -65,7 +65,7 @@ public class FilterManagerTest extends TestCase {
 
 		
 		// New instances of the model for the manager that we are testing
-		existingFilter    = new Filter(FilterType.Actual_Effort, OperatorType.EqualTo, 2, true);    // has user
+		existingFilter    = new Filter(FilterType.ActualEffort, OperatorType.EqualTo, 2, true);    // has user
 		otherFilter       = new Filter(FilterType.Description, OperatorType.Contains, "Cat", true); // has user
 		newFilter         = new Filter(FilterType.Status, OperatorType.NotEqualTo, RequirementStatus.New, false); // no user
 		goodUpdatedFilter = new Filter(FilterType.Name, OperatorType.EqualTo, "Random Name", true); // has user - not special until history logs

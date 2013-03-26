@@ -69,7 +69,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	public void showRequirement(Requirement requirement) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
 		view.getTabController().addEditRequirementTab(requirement);
-		}
+	}
 
 	/**
 	 * Called by {@link RetrieveRequirementRequestObserver} when an error

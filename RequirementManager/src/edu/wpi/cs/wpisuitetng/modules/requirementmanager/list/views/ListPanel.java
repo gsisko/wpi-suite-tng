@@ -46,9 +46,9 @@ public class ListPanel extends JPanel {
 		this.setLayout(layout);
 
 		// Construct the panels that compose the list view
-		this.builderPanel = new FilterBuilderPanel();
+		this.builderPanel = new FilterBuilderPanel(this);
 		JScrollPane builderScrollPane = new JScrollPane(builderPanel);
-		this.filtersPanel = new FilterListPanel();
+		this.filtersPanel = new FilterListPanel(this);
 		JScrollPane filtersScrollPane = new JScrollPane(filtersPanel);
 		this.resultsPanel = new ResultsPanel(tabController);
 
@@ -81,16 +81,10 @@ public class ListPanel extends JPanel {
 	public ResultsPanel getResultsPanel(){
 		return resultsPanel;
 	}
-<<<<<<< HEAD
 
 
 	public MainTabController getTabController() {
-		
-=======
-	
-	public MainTabController getTabController(){
->>>>>>> 067b609b1e9e3993e24d6a4d27e88dd3ecee3100
-		return this.tabController;
+		return tabController;
 	}
 
 	public FilterBuilderPanel getBuilderPanel(){

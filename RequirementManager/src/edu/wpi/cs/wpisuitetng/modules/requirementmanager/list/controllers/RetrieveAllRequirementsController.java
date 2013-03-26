@@ -75,7 +75,7 @@ public class RetrieveAllRequirementsController {
 		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
 		
 		//Array to keep track of which requirements should be filtered
-		ArrayList<Boolean> isFiltered;
+		ArrayList<Boolean> isFiltered = new ArrayList<Boolean>();
 		
 		// empty the table
 		String[] emptyColumns = {};
@@ -92,7 +92,7 @@ public class RetrieveAllRequirementsController {
 			int numOfFiltered = 0;
 			
 			Filter currentFilter;
-			boolean temp;
+			boolean temp = false;
 			
 			for (int i = 0; i < requirements.length; i++) {
 				//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
@@ -107,70 +107,70 @@ public class RetrieveAllRequirementsController {
 						switch(currentFilter.getType()){
 						//use the filter helper with the associated filter value, operator, and requirement value
 						//use the result to indicate if the requirement being looked at should be filtered out
-						case ID:
+						case Id:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getId());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case NAME:
+						case Name:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getName());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case DESCRIPTION:
+						case Description:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getDescription());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case TYPE:
+						case Type:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getType());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case STATUS:
+						case Status:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getStatus());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case PRIORITY:
+						case Priority:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getPriority());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case RELEASE_NUMBER:
+						case ReleaseNumber:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getReleaseNumber());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case ESTIMATE:
+						case Estimate:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getEstimate());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case ACTUAL_EFFORT:
+						case ActualEffort:
 							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getActualEffort());
 							if(temp){
 								numOfFiltered++;
 								isFiltered.set(i, temp);
 							}
 							break;
-						case OTHER:
+						case Other:
 							break;
 							
 						}
@@ -244,13 +244,13 @@ public class RetrieveAllRequirementsController {
 	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
 		switch(op){
 		case GreaterThan:
-			return (int) requirementValue > (int) filterValue;
+			return (Integer) requirementValue > (Integer) filterValue;
 		case GreaterThanOrEqualTo:
-			return (int) requirementValue >= (int) filterValue;
+			return (Integer) requirementValue >= (Integer) filterValue;
 		case LessThan:
-			return (int) requirementValue < (int) filterValue;
+			return (Integer) requirementValue < (Integer) filterValue;
 		case LessThanOrEqualTo:
-			return (int) requirementValue <= (int) filterValue;
+			return (Integer) requirementValue <= (Integer) filterValue;
 		case EqualTo:
 			return requirementValue.equals(filterValue);
 		case NotEqualTo:
@@ -259,7 +259,7 @@ public class RetrieveAllRequirementsController {
 			return requirementValue.toString().contains(filterValue.toString());
 		case DoesNotContain:
 			return !(requirementValue.toString().contains(filterValue.toString()));
-		case OTHER:
+		case Other:
 			return true;
 		}
 		return true;

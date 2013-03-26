@@ -437,5 +437,9 @@ public class RequirementPanel extends JPanel {
 	public void setCurrentRequirement(Requirement currentRequirement) {
 		this.currentRequirement = currentRequirement;
 	}
+	
+	public RequirementView getParent() {
+		return parent;
+	}
 
 }

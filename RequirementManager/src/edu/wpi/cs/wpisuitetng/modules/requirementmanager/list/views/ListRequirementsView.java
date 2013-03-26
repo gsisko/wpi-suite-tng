@@ -79,7 +79,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		buttonGroup.setPreferredWidth(150);
 		
 		// Add a listener for row clicks in the actual table
-		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this));
+		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
 		
 		// Load initial data
 		controller.refreshData();

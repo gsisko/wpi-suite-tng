@@ -14,18 +14,17 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 
 /**
@@ -43,10 +42,13 @@ public class FilterListPanel extends JPanel {
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 	
+	private final ListPanel parent;
 	/**
-	 * Constructs the panel
+	 * Construct the panel
 	 */
-	public FilterListPanel() {
+	public FilterListPanel(ListPanel view) {
+		parent = view;
+		
 		// Set the layout manager and give the panel a border
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createTitledBorder("Filters"));
@@ -83,6 +85,10 @@ public class FilterListPanel extends JPanel {
 		
 	}
 	
+	public ArrayList<Filter> getActiveFilters() {
+		return null;
+	}
+	
 	/**
 	 * @return the data model for the table
 	 */
@@ -103,6 +109,13 @@ public class FilterListPanel extends JPanel {
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	public ListPanel getParent() {
+		return parent;
 	}
 }
 

@@ -103,7 +103,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 
 		// Instantiate the save button and add it to the button panel
 		saveButton = new JButton();
-		saveButton.addActionListener(new SaveRequirementController(this));
+		saveButton.setAction(new SaveChangesAction(controller));
 		buttonGroup.getContent().add(saveButton);
 		buttonGroup.setPreferredWidth(150);
 	}

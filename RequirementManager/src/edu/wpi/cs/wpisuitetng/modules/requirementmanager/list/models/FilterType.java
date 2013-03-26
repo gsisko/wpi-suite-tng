@@ -11,9 +11,9 @@ public enum FilterType {
 	Type,
 	Status,
 	Priority,
-	Release_Number,
+	ReleaseNumber,
 	Estimate,
-	Actual_Effort,
+	ActualEffort,
 	Other;
 	
 	/** Converts a string to the proper FilterType

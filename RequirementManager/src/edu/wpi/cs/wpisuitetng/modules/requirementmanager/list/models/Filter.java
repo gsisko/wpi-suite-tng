@@ -262,11 +262,11 @@ public class Filter extends AbstractModel {
 		// The following four are Integers
 		case Id: 
 			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
-		case Actual_Effort:
+		case ActualEffort:
 			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());		
 		case Estimate:
 			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());		
-		case Release_Number:
+		case ReleaseNumber:
 			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
 	
 		// The following three are different enums
