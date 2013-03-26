@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 /** This is the entity manager for filters in the RequirementManager module
@@ -80,6 +81,11 @@ public class FilterManager implements EntityManager<Filter> {
 	public void save(Session s, Filter model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 		
+		// If the filter doesnt have a "user", give it one
+		if (model.getUser() == null){
+			model.setUser(s.getUser());
+		}
+		
 		// Save the filter in the database if possible, otherwise throw an exception
 		// We DON'T want the filter to be associated with any project
 		if (!this.db.save(model)) {
@@ -113,23 +119,17 @@ public class FilterManager implements EntityManager<Filter> {
 			throw new BadRequestException("The Filter creation string had invalid formatting. Entity String: " + content);			
 		}
 		
-		// If the filter doesnt have a "user", give it one
-		if (newFilter.getUser() == null){
-			newFilter.setUser(s.getUser());
-		}
 		
 		try {
 			// Check to see if the requirement exists in the database already - check by ID only
 			
-			System.out.println("About to check DB: " + newFilter.getUniqueID());
 			@SuppressWarnings("unused") // It is a test, fromDB stores the result temporarily
 			Filter fromDB = getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0];			
-			System.out.println("about to throw conflict exception");
+
 			// Happens if getEntity found something
 			throw new ConflictException("A Filter with the given ID already exists. Entity String: " + content); 				 
 		} catch (NotFoundException nfe){
 			// This would indicate that the Filter is not in the DB already.. this is actually a good thing, so we want to do this
-			System.out.println("caught not found exception");
 			// Proceed with normal operation
 			
 			// Saves the requirement in the database
@@ -160,14 +160,13 @@ public class FilterManager implements EntityManager<Filter> {
 		final int intId = Integer.parseInt(id);
 	
 		if(intId < 1) {
-			System.out.println("here");
 			throw new NotFoundException("The Filter with the specified id was not found:" + intId);
 		}
 		Filter[] filters = null;
 		
 		// Try to retrieve the specific Filter
 		try {
-			filters = db.retrieve(Filter.class, "UniqueID", intId, s.getProject()).toArray(new Filter[0]);
+			filters = db.retrieve(Filter.class, "UniqueID", intId).toArray(new Filter[0]);
 		} catch (WPISuiteException e) { // caught and re-thrown with a new message
 			e.printStackTrace();
 			throw new WPISuiteException("There was a problem retrieving from the database." );
@@ -175,7 +174,6 @@ public class FilterManager implements EntityManager<Filter> {
 		
 		// If a filter was pulled, but has no content
 		if(filters.length < 1 || filters[0] == null) {
-			System.out.println("purple");
 			throw new NotFoundException("The Filter with the specified id was not found:" + intId);
 		}
 		return filters;
@@ -237,7 +235,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		db.update(Filter.class, "UniqueID",id,"User", null);
+		db.update(Filter.class, "UniqueID",id,"User",null);
 		return true; // The deletion was unsuccessful
 	}
 
@@ -250,7 +248,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException -- thrown if there are problems retrieving
 	 */
 	public Filter[] getAll(Session s) throws WPISuiteException {
-		 List<Model> filterList =  this.db.retrieve(Filter.class, "user", s.getUser());
+		 List<Model> filterList =  this.db.retrieve(Filter.class, "User", s.getUser());
 		 filterList.size();
 		 return filterList.toArray(new Filter[filterList.size()]);
 	}
