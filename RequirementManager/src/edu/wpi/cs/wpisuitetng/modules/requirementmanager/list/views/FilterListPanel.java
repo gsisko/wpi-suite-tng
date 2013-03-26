@@ -77,8 +77,8 @@ public class FilterListPanel extends JPanel {
 		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
 		
-		add(btnCreate);
-		add(btnDelete);
+		//add(btnCreate);
+		//add(btnDelete);
 		
 		// TODO: add listeners
 		
