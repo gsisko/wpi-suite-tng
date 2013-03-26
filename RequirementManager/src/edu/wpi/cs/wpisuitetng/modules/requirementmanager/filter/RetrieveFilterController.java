@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirem
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterStatus.*;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType.*;
 
 /**
  * Controller to handle retrieving one requirement from the server
@@ -58,7 +58,7 @@ public class RetrieveFilterController extends MouseAdapter {
 				// Create and send a request for the requirement with the given ID
 				Request request;
 				request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
-				request.addObserver(new RetrieveFilterRequestObserver(this));
+				request.addObserver(new RetrieveFilterObserver(this));
 				request.send();
 			}
 		}
@@ -72,8 +72,8 @@ public class RetrieveFilterController extends MouseAdapter {
 	public void showFilter(Filter requirement) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
 		
-		view.setMode(EDIT);
-
+		builder.setMode(EDIT);
+		/*
 		view.getFilterName().setText(requirement.getName());
 		view.getFilterDescription().setText(requirement.getDescription());
 		view.getFilterType().setSelectedItem(requirement.getType().toString());
@@ -101,9 +101,9 @@ public class RetrieveFilterController extends MouseAdapter {
 		} else {
 			view.getFilterEstimate().setEnabled(true);
 		}
-		view.getFilterActualEffort().setEnabled(true);
+		builder.getFilterActualEffort().setEnabled(true);
 		
-		view.setCurrentFilter(requirement);
+		builder.setCurrentFilter(requirement);*/
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class RetrieveFilterController extends MouseAdapter {
 	 * occurred retrieving the requirement from the server.
 	 */
 	public void errorRetrievingFilter(String error) {
-		JOptionPane.showMessageDialog(view, 
+		JOptionPane.showMessageDialog(builder, 
 				"An error occurred opening the requirement you selected. " + error, "Error opening requirement", 
 				JOptionPane.ERROR_MESSAGE);
 	}
