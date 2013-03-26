@@ -94,6 +94,7 @@ public class RetrieveAllRequirementsController {
 			Filter currentFilter;
 			boolean temp = false;
 			
+			if(filters != null && filters.size()>0){
 			for (int i = 0; i < requirements.length; i++) {
 				//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 				for(int x = 0; x < filters.size() ; x++){
@@ -181,7 +182,7 @@ public class RetrieveAllRequirementsController {
 					}
 				}
 			}
-			
+			}
 			if (requirements.length > numOfFiltered){
 
 				// set the column names
@@ -193,7 +194,7 @@ public class RetrieveAllRequirementsController {
 				for (int i = 0; i < requirements.length; i++) {
 					
 					//if value at the index i is true, then the filters were all passed
-					if (isFiltered.get(i)){//   requirements[i].getStatus() != Deleted) {
+					if (numOfFiltered==0 || isFiltered.get(i)){//   requirements[i].getStatus() != Deleted) {
 						entries[j][0] = String.valueOf(requirements[i].getId());
 						entries[j][1] = requirements[i].getName();
 						entries[j][2] = requirements[i].getDescription();
