@@ -37,25 +37,25 @@ public class Filter extends AbstractModel {
 	 * 
 	 */
 	public Filter () {
-		new Filter(FilterType.Other, OperatorType.Other, null, true);
+		new Filter(FilterType.Other, OperatorType.Other, "value", true);
 	}
 	
 	
-	/**	Full constructor for Filter.
+	/**	Full constructor for Filter. 
 	 * 
 	 * @param type
 	 * @param comparator
-	 * @param value
-	 * @param useFilter
+	 * @param value     Could be anything, preferably Integer, String, RequirementStatus, RequirementType, RequirementPriority
+	 * @param useFilter  Field that says whether or not to use the filter
 	 */
 	public Filter( FilterType type, 
 			OperatorType comparator,
-			String value, 
+			Object value, 
 			boolean useFilter) {
 		this.setUniqueID(-1); // default as a flag to entity manager
 		this.setType(type);
 		this.setComparator(comparator);
-		this.setValue(value);
+		this.setValue(value);  // Calls correctly overloaded setValue method
 		this.setUseFilter(useFilter);
 		this.setUser(null);          // User is defaulted to null and handled at the manager layer
 	}
@@ -141,8 +141,8 @@ public class Filter extends AbstractModel {
 	 */
 	public boolean equals(Filter toCompareTo){
 		if (this.getType() != toCompareTo.getType()) return false;
-		if (this.getComparator() != toCompareTo.getComparator()) return false;
-		if (this.getValue() != toCompareTo.getValue()) return false;		
+		if (this.getComparator() != toCompareTo.getComparator()) return false;	
+		if (!this.getValue().equals(toCompareTo.getValue())  ) return false;		
 		return true;
 	}	
 	
@@ -245,14 +245,14 @@ public class Filter extends AbstractModel {
 	
 	
 	
-	/** Returns false when the Requirement should be filtered out
+	/** Returns false when the Requirement should be filtered out. All filters should be 
 	*
 	*	@param req The Requirement in question
 	*	@return True if the Requirement should be passes the filter, false otherwise
 	*/
 	public boolean passesFilter(Requirement req){
-		switch (this.type){
-		
+		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
+		switch (this.type){	
 		// The following two are strings
 		case Name:
 			return OperatorType.perform(this.comparator,this.value, req.getName());
@@ -333,5 +333,13 @@ public class Filter extends AbstractModel {
 	 */
 	public void setValue(RequirementPriority value) {
 		this.value = value.toString();
+	}
+	
+	
+	/** Sets the value of the Filter when the input is Object
+	 * @param value the value to set
+	 */
+	public void setValue(Object o){
+		this.value = o.toString();		
 	}
 }

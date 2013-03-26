@@ -120,23 +120,25 @@ public class FilterManager implements EntityManager<Filter> {
 		
 		try {
 			// Check to see if the requirement exists in the database already - check by ID only
-			 Filter fromDB = getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0];			
-		} catch (NotFoundException nfe){
-			// This would indicate that the 
 			
-		}	
-		if( != null){ //indicates it exists already
-			logger.log(Level.WARNING, "ID Conflict Exception during Filter creation.");
-			throw new ConflictException("A Filter with the given ID already exists. Entity String: " + content); 
+			System.out.println("About to check DB: " + newFilter.getUniqueID());
+			@SuppressWarnings("unused") // It is a test, fromDB stores the result temporarily
+			Filter fromDB = getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0];			
+			System.out.println("about to throw conflict exception");
+			// Happens if getEntity found something
+			throw new ConflictException("A Filter with the given ID already exists. Entity String: " + content); 				 
+		} catch (NotFoundException nfe){
+			// This would indicate that the Filter is not in the DB already.. this is actually a good thing, so we want to do this
+			System.out.println("caught not found exception");
+			// Proceed with normal operation
+			
+			// Saves the requirement in the database
+			this.save(s,newFilter); // An exception may be thrown here if we can't save it
+			
+			// Return the newly created requirement (this gets passed back to the client)
+			logger.log(Level.FINER, "Filter creation success!");
+			return newFilter;  // End method
 		}
-		
-		
-		// Saves the requirement in the database
-		this.save(s,newFilter); // An exception may be thrown here if we can't save it
-		
-		// Return the newly created requirement (this gets passed back to the client)
-		logger.log(Level.FINER, "Filter creation success!");
-		return newFilter;
 	}
 
 
@@ -158,13 +160,14 @@ public class FilterManager implements EntityManager<Filter> {
 		final int intId = Integer.parseInt(id);
 	
 		if(intId < 1) {
+			System.out.println("here");
 			throw new NotFoundException("The Filter with the specified id was not found:" + intId);
 		}
 		Filter[] filters = null;
 		
 		// Try to retrieve the specific Filter
 		try {
-			filters = db.retrieve(Filter.class, "id", intId, s.getProject()).toArray(new Filter[0]);
+			filters = db.retrieve(Filter.class, "UniqueID", intId, s.getProject()).toArray(new Filter[0]);
 		} catch (WPISuiteException e) { // caught and re-thrown with a new message
 			e.printStackTrace();
 			throw new WPISuiteException("There was a problem retrieving from the database." );
@@ -172,6 +175,7 @@ public class FilterManager implements EntityManager<Filter> {
 		
 		// If a filter was pulled, but has no content
 		if(filters.length < 1 || filters[0] == null) {
+			System.out.println("purple");
 			throw new NotFoundException("The Filter with the specified id was not found:" + intId);
 		}
 		return filters;
