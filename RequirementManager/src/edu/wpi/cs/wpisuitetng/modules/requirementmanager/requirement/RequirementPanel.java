@@ -392,6 +392,9 @@ public class RequirementPanel extends JPanel {
 
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
 		{
+			//Enable all fields
+			setInputEnabled(true);
+			
 			//Set the fields to the values passed in with "requirement"
 			txtName.setText(currentRequirement.getName());
 			txtDescription.setText(currentRequirement.getDescription());
@@ -442,7 +445,6 @@ public class RequirementPanel extends JPanel {
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
 				txtEstimate.setEnabled(false);
-			
 		}
 
 		

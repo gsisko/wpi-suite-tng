@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
@@ -90,11 +91,11 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		// Prevent content of scroll pane from smearing (credit: https://gist.github.com/303464)
 		mainPanelScrollPane.getVerticalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener(){
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent ae){
-				//SwingUtilities.invokeLater(new Runnable(){
-				//	public void run(){
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
 						mainPanelScrollPane.repaint();
-				//	}
-				//});
+					}
+				});
 			}
 		});
 		
@@ -118,8 +119,6 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		inputEnabled = enabled;
 
 		saveButton.setEnabled(enabled);
-		// commented out because controller performs this action already
-		//mainPanel.setInputEnabled(enabled);
 	}
 	
 	/**

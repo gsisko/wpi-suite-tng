@@ -67,10 +67,10 @@ public class FilterBuilderPanel extends JPanel {
 		this.setBorder(BorderFactory.createTitledBorder("Filter Builder"));
 		
 		//construct the panels
-		typeLabel = new JLabel("Type");
-		comparatorLabel = new JLabel("Comparator");
-		valueLabel = new JLabel("Value");
-		userFilterLabel = new JLabel("User Filter");
+		typeLabel = new JLabel("Type:");
+		comparatorLabel = new JLabel("Comparator:");
+		valueLabel = new JLabel("Value:");
+		userFilterLabel = new JLabel("Status:");
 		Save= new JButton("Save");
 
 		//construct the components
@@ -80,7 +80,7 @@ public class FilterBuilderPanel extends JPanel {
 		
 
 		//create strings for the boxes
-		String[] typeStrings = { "Id", "Name", "Description","TYPE", "Status","Priority","Release_Number","Estimate","Actual Effort"};
+		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
 		String[] comparatorStrings = {"Greater than","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo","Contains","DoesNotContain"};
 		String[] userFilterStrings ={"Active","Inactive"};
 		

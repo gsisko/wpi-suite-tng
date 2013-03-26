@@ -33,8 +33,6 @@ public class SaveRequirementObserver implements RequestObserver {
 		final ResponseModel response = iReq.getResponse();
 		
 		// Parse the message out of the response body
-		final Requirement message = Requirement.fromJSON(response.getBody());
-		
 		final Requirement requirement = Requirement.fromJSON(response.getBody());
 
 		// make sure the requirement isn't null
@@ -42,7 +40,7 @@ public class SaveRequirementObserver implements RequestObserver {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					//((RequirementPanel) view.getRequirementPanel()).updateModel(requirement);
+					((RequirementPanel) view.getRequirementPanel()).updateModel(requirement);
 					view.setEditModeDescriptors(requirement);
 				}
 			});
