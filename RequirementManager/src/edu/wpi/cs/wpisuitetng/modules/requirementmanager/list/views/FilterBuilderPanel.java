@@ -117,7 +117,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=15;
 		add(typeLabel, FilterBuilderConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "typeBox"  and add it to the view
@@ -126,7 +126,7 @@ public class FilterBuilderPanel extends JPanel {
 		//FilterBuilderConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		FilterBuilderConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 	//	FilterBuilderConstraints.gridwidth = 1;   //Tell the layout that this field will fill 2 columns
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		//FilterBuilderConstraints.ipadx=15;
 		add(typeBox, FilterBuilderConstraints);//Actually add the "typeBox" to the layout given the previous constraints
 		//end Type
@@ -139,7 +139,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=15;
 		add(comparatorLabel, FilterBuilderConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "comparator"  and add it to the view
@@ -148,9 +148,9 @@ public class FilterBuilderPanel extends JPanel {
 		//FilterBuilderConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		FilterBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
 	//	FilterBuilderConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		//FilterBuilderConstraints.ipadx=15;
-		add(comparatorBox, FilterBuilderConstraints);//Actually add the "typeBox" to the layout given the previous constraints
+		add(comparatorBox, FilterBuilderConstraints);//Actually add the "comparatorBox" to the layout given the previous constraints
 		//end comparator
 
 		//userfilter
@@ -161,7 +161,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=15;
 		add(userFilterLabel, FilterBuilderConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "userfilter"  and add it to the view
@@ -170,9 +170,9 @@ public class FilterBuilderPanel extends JPanel {
 		//FilterBuilderConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		FilterBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 	//	FilterBuilderConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		//FilterBuilderConstraints.ipadx=15;
-		add(userFilterBox, FilterBuilderConstraints);//Actually add the "typeBox" to the layout given the previous constraints
+		add(userFilterBox, FilterBuilderConstraints);//Actually add the "userFilterBox" to the layout given the previous constraints
 		//end userfilter
 
 		//value:
@@ -182,7 +182,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 6;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=15;
 		add(valueLabel, FilterBuilderConstraints);//Actually add the "releaseNumLabel" to the layout given the previous constraints
 		//Set the constraints for the "value" and add it to the view
@@ -191,9 +191,9 @@ public class FilterBuilderPanel extends JPanel {
 		//FilterBuilderConstraints.insets = new Insets(10,5,0,0); //Set the padding; here, there will be 10 units of blank space padding on the top and 5 on the left side
 		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
 	//	FilterBuilderConstraints.gridwidth = 2;   //Tell the layout that this field will fill 2 columns
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=80;
-		add(txtValue, FilterBuilderConstraints);//Actually add the "txtReleaseNum" to the layout given the previous constraints
+		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
 		//end value
 		
 		//Save button:
@@ -203,8 +203,8 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.EAST; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
 		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
-		add(Save, FilterBuilderConstraints);//Actually add the "btnSave" to the layout given the previous constraints
+		FilterBuilderConstraints.gridy = 4;//Set the y coord of the cell of the layout we are describing
+		add(Save, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 
 	}
