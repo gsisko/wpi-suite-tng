@@ -26,13 +26,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,7 +59,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
  * 		-a JNumber text field for entering an estimate,
  * 		-a JNumber text field for entering an actual effort
  * 		-Associated labels for each component
- * -Layout managers for both the inner panel (a GridBagLayout) and this panel (a BoxLayout)
+ * -Layout managers for both the inner panel (a GridBagLayout) and this panel (a FlowLayout)
  * -A constraints variable to store the constraints for the inner GridBagLayout
  * 
  * This class also contains getters and setters for many of the components and variables listed above
@@ -106,10 +105,11 @@ public class RequirementPanel extends JPanel {
 	
 	//The layout managers
 	protected GridBagLayout innerLayout; //The layout for the inner panel ("innerPanel")
-	protected BoxLayout outerLayout;//The layout for the RequirementPanel (this holds the innerPanel)
+	protected FlowLayout outerLayout;//The layout for the RequirementPanel (this holds the innerPanel)
 	
 	//The constraints
 	private GridBagConstraints reqPanelConstraints;//The constraints variable for the layout of the innerPanel
+	
 
 	/**
 	 * The constructor for RequirementPanel;
@@ -135,9 +135,9 @@ public class RequirementPanel extends JPanel {
 		innerPanel.setLayout(innerLayout); //Set the layout for the innerPanel
 		
 		//Create and set the layout manager for the this RequirementPanel
-		outerLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);//Create the layout
+		outerLayout = new FlowLayout();//Create the layout
 		this.setLayout(outerLayout);//Set the layout of this panel (this instance of a RequirementPanel)
-		
+		outerLayout.setAlignment(FlowLayout.LEFT); //Set the alignment of the components of the outerLayout
 		
 		addComponents();//Add the components to the inner panel, and add the inner panel to this panel
 
@@ -215,7 +215,7 @@ public class RequirementPanel extends JPanel {
 		
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
-		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll panel
+		scrollPane.setPreferredSize(new Dimension(400,200)); //Set the initial size of the txtDescription scroll panel
 
 		//In this last section we adjust the size and alignments of all the components and add them to the innerPanel.
 		//Please read all the comments in this section if you are having trouble understanding what is going on.
@@ -224,13 +224,15 @@ public class RequirementPanel extends JPanel {
 		
 		//Name:
 		//Set the constraints for "nameLabel" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.07; //This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		reqPanelConstraints.insets = new Insets(10,5,0,0);  //Set the top padding to 10 units of blank space
+		reqPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 10 units of blank space
 		reqPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		reqPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
 		innerPanel.add(nameLabel, reqPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for "txtName" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 150;//This tells the layout to stretch this field horizontally by 250 units
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 0;
@@ -240,6 +242,7 @@ public class RequirementPanel extends JPanel {
 		//Description:		
 		//Set the constraints for the "descriptionLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 150 units to now 0 units
+		reqPanelConstraints.weightx = 0.07; 
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 1;
@@ -247,6 +250,7 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 150;
 		reqPanelConstraints.ipady = 150;//This tells the layout to stretch this field vertically by 150 units
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 1;
@@ -257,11 +261,13 @@ public class RequirementPanel extends JPanel {
 		//Set the constraints for the "typeLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;
 		reqPanelConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 150 units to now 0 units
+		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 2;
 		innerPanel.add(typeLabel, reqPanelConstraints);
 		//Set the constraints for the "typeBox"  and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 2;
@@ -270,11 +276,13 @@ public class RequirementPanel extends JPanel {
 
 		//Status:		
 		//Set the constraints for the "statusLabel" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 3;
 		innerPanel.add(statusLabel, reqPanelConstraints);
 		//Set the constraints for the "statusBox" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 3;
@@ -283,11 +291,13 @@ public class RequirementPanel extends JPanel {
 
 		//Priority:
 		//Set the constraints for the "priorityLabel" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 4;
 		innerPanel.add(priorityLabel, reqPanelConstraints);
 		//Set the constraints for the "priorityBox" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 4;
@@ -296,12 +306,14 @@ public class RequirementPanel extends JPanel {
 
 		//Release number:
 		//Set the constraints for the "releaseNumLabel" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 5;
 		innerPanel.add(releaseNumLabel, reqPanelConstraints);
 		//Set the constraints for the "txtReleaseNum" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 80;//This tells the layout to stretch this field horizontally by 90 units
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 5;
@@ -311,12 +323,14 @@ public class RequirementPanel extends JPanel {
 		//Estimate:		
 		//Set the constraints for the "estimateLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 100 units to now 0 units
+		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 6;
 		innerPanel.add(estimateLabel, reqPanelConstraints);
 		//Set the constraints for the "txtEstimate" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 80;
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 6;
@@ -326,22 +340,23 @@ public class RequirementPanel extends JPanel {
 		//Actual effort:
 		//Set the constraints for the "actualEffortLabel" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 90 units to now 0 units
+		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		reqPanelConstraints.gridx = 0;
 		reqPanelConstraints.gridy = 7;
 		innerPanel.add(actualEffortLabel, reqPanelConstraints);
 		//Set the constraints for the "txtActualEffort" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 80;
+		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 7;
 		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
 		
-
 		this.add(innerPanel);//Add the innerPanel to this panel
-		innerPanel.setAlignmentX(Component.LEFT_ALIGNMENT); //Set the alignment of the innerPanel
-		innerPanel.setMaximumSize(new Dimension(300,400));//Set the maximum size of the innerPanel
+		innerPanel.setMaximumSize(new Dimension(400,600));//Set the maximum size of the innerPanel
+		
 	}
 	
 	/**
@@ -402,8 +417,6 @@ public class RequirementPanel extends JPanel {
 		innerPanel.repaint();
 		
 		this.revalidate();
-		outerLayout.invalidateLayout(this);
-		outerLayout.layoutContainer(this);
 		this.repaint();
 		
 		parent.refreshScrollPane();
