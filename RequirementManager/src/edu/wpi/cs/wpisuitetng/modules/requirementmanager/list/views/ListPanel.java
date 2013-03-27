@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
@@ -54,6 +55,8 @@ public class ListPanel extends JPanel {
 	
 	/** The main tab controller */
 	protected MainTabController tabController;
+	
+	private RetrieveAllFiltersController retriever;
 
 	/**
 	 * Constructs the list panel and sets up the layout for the sub-panels

@@ -62,16 +62,16 @@ public class SaveFilterObserver implements RequestObserver {
 		rmcontroller.saveSuccess(message);
 		
 		// auto-update
-		//rmcontroller.getView().getRetrieveAllFiltersController().refreshData();
+		rmcontroller.getView().getFilterController().refreshData();
 	}
-	/* This method responses when there is a save response error
+	/** This method responses when there is a save response error
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
 		System.err.println("Cannot save a filter.");
 	}
-	/*This method responses when the save action failed 
+	/** This method responses when the save action failed 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
 	 */
 	@Override

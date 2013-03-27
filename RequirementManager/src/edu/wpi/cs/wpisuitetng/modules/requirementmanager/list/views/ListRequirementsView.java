@@ -32,6 +32,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
@@ -58,6 +59,8 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
+	
+	protected RetrieveAllFiltersController filterController;
 	
 	/** The main tab controller */
 	protected MainTabController tabController;
@@ -89,8 +92,9 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		// Add the mainPanel to this view
 		this.add(mainPanel);
 		
-		// Instantiate the controller
+		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
+		filterController = new RetrieveAllFiltersController(this);
 		
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("List/Filter");
@@ -110,6 +114,10 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	
 	public RetrieveAllRequirementsController getController() {
 		return controller;
+	}
+	
+	public RetrieveAllFiltersController getFilterController() {
+		return filterController;
 	}
 	
 	public ListPanel getListPanel() {
