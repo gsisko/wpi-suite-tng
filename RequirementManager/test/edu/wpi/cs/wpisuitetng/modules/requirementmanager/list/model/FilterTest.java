@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.model;
 
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,7 +9,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
-import junit.framework.TestCase;
+
 
 /**
  * The class <code>FilterTest</code> contains tests for the class {@link
@@ -17,7 +18,7 @@ import junit.framework.TestCase;
  * @pattern JUnit Test Case
  * @author Team5
  */
-public class FilterTest extends TestCase {
+public class FilterTest {
 
 	// This is the data that will be used during testing
 	
@@ -28,13 +29,8 @@ public class FilterTest extends TestCase {
 	Filter newFilter;
 	Filter badFilter;
 	
-	/** Construct new test instance
-	 *
-	 * @param name the test name
-	 */
-	public FilterTest(String name) {
-		super(name);
-	}
+
+
 
 	/**
 	 * Perform pre-test initialization
@@ -45,7 +41,7 @@ public class FilterTest extends TestCase {
 	 */
 	@Before
 	protected void setUp() throws Exception {
-		super.setUp();
+		
 		
 		// Requirements to sort
 		
@@ -148,4 +144,7 @@ public class FilterTest extends TestCase {
 		fixture.updateFilter(filterUpdate);
 		assertTrue(false);
 	}
+
 }
+
+
