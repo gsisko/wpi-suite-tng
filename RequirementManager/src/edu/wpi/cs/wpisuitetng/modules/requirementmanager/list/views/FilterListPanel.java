@@ -55,7 +55,7 @@ public class FilterListPanel extends JPanel {
 	protected JButton btnCreate;
 	protected JButton btnDelete;
 	
-	private Filter[] localFilters;
+	private Filter[] localFilters = {};
 	
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
