@@ -62,7 +62,7 @@ public class ListPanel extends JPanel {
 		layout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.EAST, filtersScrollPane);
 		layout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 150, SpringLayout.NORTH, builderScrollPane);
+		layout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 100, SpringLayout.NORTH, builderScrollPane);
 		
 		// Constrain the resultsPanel
 		layout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);
