@@ -90,7 +90,7 @@ public class FilterBuilderPanel extends JPanel {
 
 		//construct the components
 		txtValue = new JTextField();
-		txtValue.setEnabled(true);
+		txtValue.setEnabled(false);
 
 
 
@@ -106,14 +106,14 @@ public class FilterBuilderPanel extends JPanel {
 
 		//set initial conditions
 		typeBox.setSelectedIndex(0);
-		typeBox.setEnabled(true);
+		typeBox.setEnabled(false);
 		comparatorBox.setSelectedIndex(0);
-		comparatorBox.setEnabled(true);
+		comparatorBox.setEnabled(false);
 		userFilterBox.setSelectedIndex(0);
-		userFilterBox.setEnabled(true);
+		userFilterBox.setEnabled(false);
 
 		//Save.addActionListener(new SaveFilterController(parent));
-		btnSave.setEnabled(true);
+		btnSave.setEnabled(false);
 
 		//set the layout
 		setLayout(new GridBagLayout());
@@ -190,7 +190,10 @@ public class FilterBuilderPanel extends JPanel {
 		//end Save button
 
 	}
-
+	public JButton getButton()
+	{
+		return btnSave;
+	}
 	public JComboBox<String> getFilterType()
 	{
 	    return typeBox;

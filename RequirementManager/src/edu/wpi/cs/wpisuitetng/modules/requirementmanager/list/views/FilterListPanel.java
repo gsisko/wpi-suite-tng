@@ -113,17 +113,20 @@ public class FilterListPanel extends JPanel {
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
 		
-		// TODO: add listeners
-//		btnCreate.addActionListener(new ActionListener(){
-//
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				
-//			}
-//			
-//		}
-	
-		
+		btnCreate.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				FilterBuilderPanel builder = parent.getBuilderPanel();
+				builder.getFilterType().setEnabled(true);
+				builder.getFilterOperator().setEnabled(true);
+				builder.getStatus().setEnabled(true);
+				builder.getFilterValue().setEnabled(true);
+				builder.getButton().setText("Create");
+				builder.getButton().setEnabled(true);
+			
+
+		}
+});
 	}
 	
 	/**This method returns an ArrayList of active filters
