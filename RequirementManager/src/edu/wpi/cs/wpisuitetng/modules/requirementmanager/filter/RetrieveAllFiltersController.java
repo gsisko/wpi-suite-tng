@@ -43,10 +43,11 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveAllFiltersController {
 
 	/** The search filters view */
-    private final FilterListPanel panel;
-    private final FilterBuilderPanel builder;
+    private final FilterListPanel filterList;
+    @SuppressWarnings("unused")
+	private final FilterBuilderPanel builder;
     private final ListRequirementsView view;
-
+    
 	/** The filters data retrieved from the server */
 	protected Filter[] data = null;
 
@@ -56,7 +57,7 @@ public class RetrieveAllFiltersController {
 	 * @param view the search filters view
 	 */
 	public RetrieveAllFiltersController(ListRequirementsView view){
-	    	this.panel = view.getListPanel().getFilterPanel();
+	    	this.filterList = view.getListPanel().getFilterPanel();
 	    	this.builder = view.getListPanel().getBuilderPanel();
 	    	this.view = view;
 	}
@@ -64,7 +65,7 @@ public class RetrieveAllFiltersController {
 	/**
 	 * Sends a request for all of the filters
 	 */
-	public void refreshData() {		
+	public void refreshData() {
 		final RequestObserver requestObserver = new RetrieveAllFiltersObserver(this);
 		Request request;
 		request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.GET);
@@ -79,61 +80,42 @@ public class RetrieveAllFiltersController {
 	 * @param filters an array of filters returned by the server
 	 */
 	public void receivedData(Filter[] filters) {
-		/*
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		view.getModel().setColumnNames(emptyColumns);
-		view.getModel().setData(emptyData);
-		view.getModel().fireTableStructureChanged();
+		
+		filterList.getModel().setColumnNames(emptyColumns);
+		filterList.getModel().setData(emptyData);
+		filterList.getModel().fireTableStructureChanged();
+		
+		// Add the list of filters to the FilterListPanel object
+		filterList.setLocalFilters(filters);
 		
 		if (filters.length > 0) {
 			// save the data
 			this.data = filters;
 			
-			// get the number of filters whose status is Deleted
-			int numOfDeleted = 0;
+			// set the column names
+			String[] columnNames = {"ID", "Type", "Comparator", "Value", "Use Filter"};
+			
+			// put the data in the table
+			Object[][] entries = new Object[filters.length][columnNames.length];
 			for (int i = 0; i < filters.length; i++) {
-				if (filters[i].getStatus() == Deleted) numOfDeleted++;
+				entries[i][0] = String.valueOf(filters[i].getUniqueID());
+				entries[i][1] = filters[i].getType().toString();
+				entries[i][2] = filters[i].getComparator().toString();
+				entries[i][3] = filters[i].getValue();
+				entries[i][4] = filters[i].isUseFilter();
 			}
 			
-			if (filters.length > numOfDeleted){
-
-				// set the column names
-				String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNum", "Estimate", "ActualEffort"};
-				
-				// put the data in the table
-				Object[][] entries = new Object[filters.length - numOfDeleted][columnNames.length];
-				int j = 0;
-				for (int i = 0; i < filters.length; i++) {
-					if (filters[i].getStatus() != Deleted) {
-						entries[j][0] = String.valueOf(filters[i].getId());
-						entries[j][1] = filters[i].getName();
-						entries[j][2] = filters[i].getDescription();
-						entries[j][3] = filters[i].getType().toString();
-						entries[j][4] = filters[i].getStatus().toString();
-						entries[j][5] = filters[i].getPriority().toString();
-						if (filters[i].getReleaseNumber() == -1) {
-							entries[j][6] = "none";
-						} else {
-							entries[j][6] = String.valueOf(filters[i].getReleaseNumber());
-						}
-						entries[j][7] = String.valueOf(filters[i].getEstimate());
-						entries[j][8] = String.valueOf(filters[i].getActualEffort());
-						j++; 
-					}
-				}
-				
-				// fill the table
-				view.getModel().setColumnNames(columnNames);
-				view.getModel().setData(entries);
-				view.getModel().fireTableStructureChanged();
-				
-			}
+			// fill the table
+			filterList.getModel().setColumnNames(columnNames);
+			filterList.getModel().setData(entries);
+			filterList.getModel().fireTableStructureChanged();
 		}
 		else {
-			// do nothing, there are no non-Deleted filters
-		}*/
+			// do nothing, there are no filters
+		}
 	}
 
 	/**

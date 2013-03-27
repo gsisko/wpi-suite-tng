@@ -39,6 +39,30 @@ public enum OperatorType {
 		return valueOf(toConvert);
 	}
 	
+	public String toString () {
+		switch (OperatorType.this) {
+		case Contains:
+			return "Contains";
+		case DoesNotContain:
+			return "Does Not Contain";
+		case EqualTo:
+			return "=";
+		case GreaterThan:
+			return ">";
+		case GreaterThanOrEqualTo:
+			return ">=";
+		case LessThan:
+			return "<";
+		case LessThanOrEqualTo:
+			return "<=";
+		case NotEqualTo:
+			return "!=";
+		case Other:
+		default:
+			return "";
+		}
+	}
+	
 	
 	/** Performs the operation described for integers. Returns false for 
 	 *  any non-integer operations, like Contains etc.
