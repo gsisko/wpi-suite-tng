@@ -73,7 +73,6 @@ public class FilterBuilderPanel extends JPanel {
 	private final ListPanel parent;
 	
 	private Filter currentFilter;
-	private Mode currentMode;
 	/**
 	 * Construct the panel
 	 */
@@ -222,19 +221,6 @@ public class FilterBuilderPanel extends JPanel {
 	    return userFilterBox;
 	}
 
-	/**
-	 * @return the currentMode
-	 */
-	public Mode getCurrentMode() {
-		return currentMode;
-	}
-
-	/**
-	 * @param currentMode the currentMode to set
-	 */
-	public void setCurrentMode(Mode currentMode) {
-		this.currentMode = currentMode;
-	}
 
 	public Mode getMode()
 	{
