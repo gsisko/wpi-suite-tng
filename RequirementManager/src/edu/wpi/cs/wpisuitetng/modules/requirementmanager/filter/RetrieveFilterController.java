@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.*;
 //import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.FilterPanel.Mode.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
@@ -17,7 +16,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirem
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType.*;
 
 /**
  * Controller to handle retrieving one requirement from the server
@@ -27,6 +25,7 @@ public class RetrieveFilterController extends MouseAdapter {
 	/** The results panel */
         private final FilterListPanel panel;
         private final FilterBuilderPanel builder;
+        private final ListRequirementsView view;
 
 	/**
 	 * Construct the controller
@@ -36,6 +35,7 @@ public class RetrieveFilterController extends MouseAdapter {
 	public RetrieveFilterController(ListRequirementsView view){
 	    	this.panel = view.getListPanel().getFilterPanel();
 	    	this.builder = view.getListPanel().getBuilderPanel();
+	    	this.view = view;
 	}
 
 	/**
@@ -69,10 +69,18 @@ public class RetrieveFilterController extends MouseAdapter {
 	 * is received from the server.
 	 * @param requirement the requirement that was retrieved
 	 */
-	public void showFilter(Filter requirement) {
+	public void showFilter(Filter filter) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
 		
-		//builder.setMode(EDIT);
+		builder.setMode(FilterBuilderPanel.Mode.EDIT);
+		
+		builder.getFilterType().setSelectedItem(filter.getType());
+		builder.getFilterOperator().setSelectedItem(filter.getComparator());
+		builder.getFilterValue().setText(filter.getValue().toString());
+		
+		builder.getFilterType().setEnabled(true);
+		builder.getFilterOperator().setEnabled(true);
+		builder.getFilterValue().setEnabled(true);
 		/*
 		view.getFilterName().setText(requirement.getName());
 		view.getFilterDescription().setText(requirement.getDescription());
@@ -103,7 +111,7 @@ public class RetrieveFilterController extends MouseAdapter {
 		}
 		builder.getFilterActualEffort().setEnabled(true);
 		
-		builder.setCurrentFilter(requirement);*/
+		builder.setCurrentFilter(filter);*/
 	}
 
 	/**
