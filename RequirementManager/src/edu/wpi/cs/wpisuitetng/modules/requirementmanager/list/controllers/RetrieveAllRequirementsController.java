@@ -30,18 +30,12 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -98,7 +92,7 @@ public class RetrieveAllRequirementsController {
 		
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
-		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
+		Filter[] filters = filterPanel.getLocalFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
 		
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
@@ -115,17 +109,17 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 
-			if(filters != null && filters.size()>0){
+			if(filters != null && filters.length >0){
 			
 				for (int i = 0; i < requirements.length; i++) {
 					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
-					for(int x = 0; x < filters.size() ; x++){
-						Filter currentFilter = filters.get(x); //get current filter
+					for(int x = 0; x < filters.length ; x++){
+						Filter currentFilter = filters[x]; //get current filter
 						
 						if(!currentFilter.passesFilter(requirements[i])){
 							passAllFilters = false;
-							x=filters.size();
+							x=filters.length;
 						}
 					}
 					if(passAllFilters){
@@ -147,9 +141,20 @@ public class RetrieveAllRequirementsController {
 				entries[i][0] = String.valueOf(isFiltered.get(i).getId());
 				entries[i][1] = isFiltered.get(i).getName();
 				entries[i][2] = isFiltered.get(i).getDescription();
-				entries[i][3] = isFiltered.get(i).getType().toString();
+				// Process "NoType" case
+				if (isFiltered.get(i).getType().toString().equals("NoType")){
+					entries[i][3] = " ";					
+				} else {
+					entries[i][3] = isFiltered.get(i).getType().toString();;
+				}				
 				entries[i][4] = isFiltered.get(i).getStatus().toString();
-				entries[i][5] = isFiltered.get(i).getPriority().toString();
+				// Process "NoPriority" case
+				if (isFiltered.get(i).getPriority().toString().equals("NoPriority")){
+					entries[i][5] = " ";					
+				} else {
+					entries[i][5] = isFiltered.get(i).getPriority().toString();
+				}
+				// Process invalid release number case
 				if (isFiltered.get(i).getReleaseNumber() == -1) {
 					entries[i][6] = "none";
 				} else {
@@ -176,43 +181,8 @@ public class RetrieveAllRequirementsController {
 		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
-	
-<<<<<<< HEAD
-	
-	/**This method takes in two object values and an operator type and  
-	 * performs a comparison.
-	 * 
-	 * @param filterValue The value from the filter to compare
-	 * @param op The operator to be used for the comparison
-	 * @param requirementValue The value from the requirement to compare
-	 * @return True if the comparison was true
-	 */
-	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
-		switch(op){
-		case GreaterThan:
-			return (Integer) requirementValue > (Integer) filterValue;
-		case GreaterThanOrEqualTo:
-			return (Integer) requirementValue >= (Integer) filterValue;
-		case LessThan:
-			return (Integer) requirementValue < (Integer) filterValue;
-		case LessThanOrEqualTo:
-			return (Integer) requirementValue <= (Integer) filterValue;
-		case EqualTo:
-			return requirementValue.equals(filterValue);
-		case NotEqualTo:
-			return !(requirementValue.equals(filterValue));
-		case Contains:
-			return requirementValue.toString().contains(filterValue.toString());
-		case DoesNotContain:
-			return !(requirementValue.toString().contains(filterValue.toString()));
-		case Other:
-			return true;
-		}
-		return true;
-	}
-=======
+		
 
->>>>>>> bfa13ff683ea745be689aca3059176c2a888bb90
 }
 
 
