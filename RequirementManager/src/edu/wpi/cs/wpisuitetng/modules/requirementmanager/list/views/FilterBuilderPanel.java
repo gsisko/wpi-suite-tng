@@ -51,7 +51,7 @@ public class FilterBuilderPanel extends JPanel {
 	private final JComboBox<String> comparatorBox;
 	private final JTextField txtValue;
 	private final JComboBox<String> userFilterBox;
-
+	
 	//button
 	private final JButton Save;
 	
@@ -207,6 +207,26 @@ public class FilterBuilderPanel extends JPanel {
 		add(Save, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 
+	}
+
+	public JComboBox<String> getFilterType()
+	{
+	    return typeBox;
+	}
+	
+	public JComboBox<String> getFilterOperator()
+	{
+	    return comparatorBox;
+	}
+	
+	public JTextField getFilterValue()
+	{
+	    return txtValue;
+	}
+	
+	public JComboBox<String> getStatus() //?
+	{
+	    return userFilterBox;
 	}
 
 }
