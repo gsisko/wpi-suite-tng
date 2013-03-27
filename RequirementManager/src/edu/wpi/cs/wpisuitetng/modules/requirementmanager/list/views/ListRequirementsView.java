@@ -79,7 +79,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 			tab.setToolTipText("List for requirements");
 		}
 		
-		mainPanel = new ListPanel(tabController);
+		mainPanel = new ListPanel(tabController, this);
 		
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();

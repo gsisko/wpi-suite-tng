@@ -57,13 +57,16 @@ public class ListPanel extends JPanel {
 	protected MainTabController tabController;
 	
 	private RetrieveAllFiltersController retriever;
+	
+	private ListRequirementsView parent; 
 
 	/**
 	 * Constructs the list panel and sets up the layout for the sub-panels
 	 * @param tabController The main tab controller
 	 */
-	public ListPanel(MainTabController tabController) {
+	public ListPanel(MainTabController tabController, ListRequirementsView view) {
 		this.tabController = tabController;
+		this.parent = view;
 		
 		// Set the layout manager of this panel
 		this.layout = new SpringLayout();
@@ -117,5 +120,33 @@ public class ListPanel extends JPanel {
 	
 	public FilterListPanel getFilterPanel(){
 	    return filtersPanel;
+	}
+
+	/**
+	 * @return the retriever
+	 */
+	public RetrieveAllFiltersController getRetriever() {
+		return retriever;
+	}
+
+	/**
+	 * @param retriever the retriever to set
+	 */
+	public void setRetriever(RetrieveAllFiltersController retriever) {
+		this.retriever = retriever;
+	}
+
+	/**
+	 * @return the listView
+	 */
+	public ListRequirementsView getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param listView the listView to set
+	 */
+	public void setParent(ListRequirementsView listView) {
+		this.parent = listView;
 	}
 }

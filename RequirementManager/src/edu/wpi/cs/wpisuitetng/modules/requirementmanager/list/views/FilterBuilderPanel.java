@@ -38,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 
@@ -67,8 +68,8 @@ public class FilterBuilderPanel extends JPanel {
 	//button
 	private final JButton btnSave;
 	
-	@SuppressWarnings("unused")
 	private final ListPanel parent;
+	private final FilterListPanel grandpa;
 	
 	private Filter currentFilter;
 	private Mode currentMode;
@@ -77,6 +78,7 @@ public class FilterBuilderPanel extends JPanel {
 	 */
 	public FilterBuilderPanel(ListPanel view) {
 		parent = view;
+		grandpa = null;
 		currentMode = Mode.CREATE;
 		//create title
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -112,7 +114,7 @@ public class FilterBuilderPanel extends JPanel {
 		userFilterBox.setSelectedIndex(0);
 		userFilterBox.setEnabled(false);
 
-		//Save.addActionListener(new SaveFilterController(parent));
+		btnSave.addActionListener(new SaveFilterController(parent.getParent()));
 		btnSave.setEnabled(false);
 
 		//set the layout
@@ -237,6 +239,12 @@ public class FilterBuilderPanel extends JPanel {
 	public void setCurrentFilter(Filter newFilter)
 	{
 	    currentFilter = newFilter;
+	}
+	/**
+	 * @return the grandpa
+	 */
+	public FilterListPanel getGrandpa() {
+		return grandpa;
 	}
 
 }

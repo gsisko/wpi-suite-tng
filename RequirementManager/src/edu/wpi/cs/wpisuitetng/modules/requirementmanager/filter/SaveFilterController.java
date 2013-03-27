@@ -56,18 +56,20 @@ public class SaveFilterController implements ActionListener
     public void actionPerformed(ActionEvent event) 
     {
 	    if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
+	    	System.err.println("Creating a new requirement");
 		    // get the fields from the UI
 			FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
 			OperatorType comparator = OperatorType.toType(builder.getFilterOperator().toString());
 			String value = builder.getFilterValue().toString();
 			
 			// make a PUT http request and let the observer get the response
-		    final Request request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.PUT); // PUT == create
+		    final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.PUT); // PUT == create
 		    request.setBody(new Filter(type, comparator, value, true).toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
     	}
 		else if (builder.getCurrentMode() == Mode.EDIT){ // we are updating an existing filter
+			System.err.println("Editing an existing requirement");
 			// make a new filter to store the updated data
 			Filter updatedFilter = new Filter(); 
 			
@@ -81,7 +83,7 @@ public class SaveFilterController implements ActionListener
 			updatedFilter.setValue(builder.getFilterValue().toString());
 			
 			// make a POST http request and let the observer get the response
-		    final Request request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.POST); // POST == update
+		    final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.POST); // POST == update
 		    request.setBody(updatedFilter.toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
@@ -95,33 +97,11 @@ public class SaveFilterController implements ActionListener
     /**
      * Simple success message for saving a new filter.  If we want the boxes to clear automatically,
      * this is probably where we would want to implement it.
-     * @param newReq Filter that was saved.
+     * @param newFilter Filter that was saved.
      */
-	public void saveSuccess(Filter newReq) {
-		// if success, set all of the UI fields appropriately for post-save actions
-		if (newReq != null) {
-			System.out.print("Filter " +/* newReq.getId() +*/ " saved successfully\n");
-			/*
-			view.getFilterName().setText("");
-			view.getFilterDescription().setText("");
-			view.getFilterType().setSelectedIndex(0);
-			view.getFilterStatus().setSelectedIndex(0);
-			view.getFilterPriority().setSelectedIndex(0);
-			view.getFilterReleaseNumber().setText("");
-			view.getFilterEstimate().setText("");
-			view.getFilterActualEffort().setText("");
-			
-			view.getSaveButton().setText("Update");
-			view.getSaveButton().setEnabled(false);
-
-			view.getFilterName().setEnabled(false);
-			view.getFilterDescription().setEnabled(false);
-			view.getFilterType().setEnabled(false);
-			view.getFilterStatus().setEnabled(false);
-			view.getFilterPriority().setEnabled(false);
-			view.getFilterReleaseNumber().setEnabled(false);
-			view.getFilterEstimate().setEnabled(false);
-			view.getFilterActualEffort().setEnabled(false);*/
+	public void saveSuccess(Filter newFilter) {
+		if (newFilter != null) {
+			System.out.print("Filter " + newFilter.getUniqueID() + " saved successfully\n");
 		}
 		else {
 			System.err.print("Undected error saving filter\n");
