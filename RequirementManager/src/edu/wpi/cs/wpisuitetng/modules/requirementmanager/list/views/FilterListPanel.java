@@ -24,7 +24,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteFilterController;
 
 /**
  * Panel to contain the list of filters that have been saved by the user
@@ -123,10 +123,10 @@ public class FilterListPanel extends JPanel {
 				builder.getFilterValue().setEnabled(true);
 				builder.getButton().setText("Create");
 				builder.getButton().setEnabled(true);
-			
-
 		}
 });
+		
+		btnDelete.addActionListener(new DeleteFilterController(this.parent.getParent());
 	}
 	
 	/**This method returns an ArrayList of active filters
