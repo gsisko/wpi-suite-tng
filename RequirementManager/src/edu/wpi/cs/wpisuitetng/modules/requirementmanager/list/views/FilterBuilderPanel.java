@@ -57,7 +57,6 @@ public class FilterBuilderPanel extends JPanel {
 	private final JLabel typeLabel; 
 	private final JLabel comparatorLabel;
 	private final JLabel valueLabel;
-	private final JLabel userFilterLabel;
 
 	//the fillable components
 	private final JComboBox<String> typeBox;
@@ -87,7 +86,6 @@ public class FilterBuilderPanel extends JPanel {
 		typeLabel = new JLabel("Type:");
 		comparatorLabel = new JLabel("Comparator:");
 		valueLabel = new JLabel("Value:");
-		userFilterLabel = new JLabel("Status:");
 		btnSave= new JButton("Save");
 
 		//construct the components
@@ -158,17 +156,9 @@ public class FilterBuilderPanel extends JPanel {
 		//end comparator
 
 		//userfilter
-		//Set the constraints for the "userfilterLabel" and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
-		FilterBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(userFilterLabel, FilterBuilderConstraints);//Actually add the "userFilterLabel" to the layout given the previous constraints
 		//Set the constraints for the "userfilter"  and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		FilterBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(userFilterBox, FilterBuilderConstraints);//Actually add the "userFilterBox" to the layout given the previous constraints
 		//end userfilter
@@ -178,12 +168,12 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
 		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
 		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
-		FilterBuilderConstraints.gridx = 6;//Set the x coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(valueLabel, FilterBuilderConstraints);//Actually add the "valueLabel" to the layout given the previous constraints
 		//Set the constraints for the "value" and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=80;
 		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
