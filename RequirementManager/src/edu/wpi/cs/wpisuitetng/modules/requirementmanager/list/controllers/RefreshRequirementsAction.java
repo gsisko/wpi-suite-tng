@@ -1,3 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 import java.awt.event.ActionEvent;
@@ -12,7 +37,7 @@ import javax.swing.AbstractAction;
 @SuppressWarnings("serial")
 public class RefreshRequirementsAction extends AbstractAction {
 	
-	/** The controller to be called when this action is performed */
+	// The controller to be called when this action is performed
 	protected final RetrieveAllRequirementsController controller;
 	
 	/**
@@ -26,6 +51,11 @@ public class RefreshRequirementsAction extends AbstractAction {
 	}
 
 	@Override
+	/**
+	 * Tell the controller to actually perform the refresh.
+	 * 
+	 * @param arg0 Unused
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		controller.refreshData();
 	}

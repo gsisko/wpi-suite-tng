@@ -7,7 +7,19 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Edison Jimenez
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
@@ -23,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
@@ -67,19 +80,23 @@ public class FilterListPanel extends JPanel {
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
+		resultsScrollPane.setPreferredSize(new Dimension(180, 500));
 		
 		// TODO implement the rest of the controls to display saved filters
 		// and store saved filters in the ConfigManager
-		add(Box.createRigidArea(new Dimension(0, 150)));
+		add(Box.createRigidArea(new Dimension(0, 100)));
 		
-		add(resultsScrollPane, BorderLayout.CENTER);
-		
+		add(resultsScrollPane, BorderLayout.NORTH);
+				
 		btnCreate = new JButton ("New Filter");
+		btnCreate.setSize(new Dimension (50,20));
 		btnDelete = new JButton ("Delete");
+		btnDelete.setSize(new Dimension (50,20));
 		
-		//add(btnCreate);
-		//add(btnDelete);
 		
+		
+		add(btnCreate, BorderLayout.CENTER);
+		add(btnDelete, BorderLayout.SOUTH);
 		// TODO: add listeners
 		
 		

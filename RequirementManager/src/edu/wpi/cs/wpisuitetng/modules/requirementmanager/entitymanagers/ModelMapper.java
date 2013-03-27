@@ -1,3 +1,29 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
+
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,15 +56,12 @@ public class ModelMapper {
 	 * Construct a ModelMapper with default blacklist of "permission"
 	 */
 	public ModelMapper() {
-		// this has two parameters
 		blacklist.add("permission");
 	}
 	
 	/**
 	 * Blacklist should contain field names.
 	 * e.g. getSomeField() -> getBlacklist().add("someField")
-	 * 
-	
 	 * @return A set of field names to ignore, which can be modified */
 	public Set<String> getBlacklist() {
 		return blacklist;
@@ -50,6 +73,7 @@ public class ModelMapper {
 	 * @version $Revision: 1.0 $
 	 */
 	public interface MapCallback {
+		
 		/**
 		 * Called for every get/set method pair.
 		 * 
@@ -68,7 +92,8 @@ public class ModelMapper {
 	/**
 	
 	 * @param methodName String
-	 * @return field name from given accessor name ("getBlahField" -> "blahField") */
+	 * @return field name from given accessor name ("getBlahField" -> "blahField")
+	 */
 	private static String accessorNameToFieldName(String methodName) {
 		methodName = methodName.substring(3); // cut out "get" or "set"
 		return methodName.substring(0, 1).toLowerCase() + methodName.substring(1); // BlahField -> blahField
@@ -82,7 +107,8 @@ public class ModelMapper {
 	 * @param destination The Model to copy to
 	 * @param callback The callback whose return value is set on the destination
 	
-	 * @throws RuntimeException If something goes wrong during copying */
+	 * @throws RuntimeException If something goes wrong during copying
+	 */
 	public void map(final Model source, final Model destination, MapCallback callback)
 			throws RuntimeException {
 		final Method[] sourceMethods = source.getClass().getMethods();
@@ -137,7 +163,8 @@ public class ModelMapper {
 	 * @param source The Model to copy from
 	 * @param destination The Model to copy to
 	
-	 * @throws RuntimeException If something goes wrong during copying */
+	 * @throws RuntimeException If something goes wrong during copying
+	 */
 	public void map(final Model source, final Model destination) throws RuntimeException {
 		this.map(source, destination, defaultMapCallback );
 	}
