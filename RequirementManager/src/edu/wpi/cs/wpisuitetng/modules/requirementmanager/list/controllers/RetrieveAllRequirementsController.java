@@ -30,18 +30,13 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -176,8 +171,7 @@ public class RetrieveAllRequirementsController {
 		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
-	
-<<<<<<< HEAD
+
 	
 	/**This method takes in two object values and an operator type and  
 	 * performs a comparison.
@@ -187,6 +181,7 @@ public class RetrieveAllRequirementsController {
 	 * @param requirementValue The value from the requirement to compare
 	 * @return True if the comparison was true
 	 */
+	@SuppressWarnings("unused")
 	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
 		switch(op){
 		case GreaterThan:
@@ -210,9 +205,6 @@ public class RetrieveAllRequirementsController {
 		}
 		return true;
 	}
-=======
-
->>>>>>> bfa13ff683ea745be689aca3059176c2a888bb90
 }
 
 

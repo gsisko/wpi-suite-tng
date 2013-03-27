@@ -26,13 +26,10 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -40,18 +37,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 
 /**
  * Panel to contain the filter builder for requirement searching
@@ -81,11 +68,14 @@ public class FilterBuilderPanel extends JPanel {
 	//button
 	private final JButton Save;
 	
+	@SuppressWarnings("unused")
 	private final ListPanel parent;
+	
+	private Filter currentFilter;
+	private Mode currentMode;
 	/**
 	 * Construct the panel
 	 */
-	@SuppressWarnings("deprecation")
 	public FilterBuilderPanel(ListPanel view) {
 		parent = view;
 		
@@ -259,6 +249,34 @@ public class FilterBuilderPanel extends JPanel {
 	public JComboBox<String> getStatus() //?
 	{
 	    return userFilterBox;
+	}
+
+	/**
+	 * @return the currentFilter
+	 */
+	public Filter getCurrentFilter() {
+		return currentFilter;
+	}
+
+	/**
+	 * @param currentFilter the currentFilter to set
+	 */
+	public void setCurrentFilter(Filter currentFilter) {
+		this.currentFilter = currentFilter;
+	}
+
+	/**
+	 * @return the currentMode
+	 */
+	public Mode getCurrentMode() {
+		return currentMode;
+	}
+
+	/**
+	 * @param currentMode the currentMode to set
+	 */
+	public void setCurrentMode(Mode currentMode) {
+		this.currentMode = currentMode;
 	}
 
 
