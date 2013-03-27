@@ -21,10 +21,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @version $Revision: 1.0 $
  */
 public class RequirementManager implements EntityManager<Requirement> {
-	/** The database */
+	// The database
 	private Data db;
 	
-	/** This is for advanced logging and debugging of the server interactions */
+	//This is for advanced logging and debugging of the server interactions
 	private static final Logger logger = Logger.getLogger(RequirementManager.class.getName());
 	
 	/** Constructs the entity manager. This constructor is called by
@@ -46,10 +46,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** Takes an encoded Requirement(as a string) and converts it back to a 
 	 *  Requirement and saves it in the database
 	 *  
-	 *	@param s The current user session
-	 *	@param content The requirement that comes in the form of a string to be recreated
-	 *	
-	@return the Requirement that originally came as a string
+	 * @param s The current user session
+	 * @param content The requirement that comes in the form of a string to be recreated
+	 * @return the Requirement that originally came as a string
 	 * @throws BadRequestException "The Requirement creation string had invalid formatting. Entity String: " + content
 	 * @throws ConflictException "A Requirement with the given ID already exists. Entity String: " + content
 	 * @throws WPISuiteException "Unable to save Requirement."
@@ -67,12 +66,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 			logger.log(Level.WARNING, "Invalid Requirement entity creation string.");
 			throw new BadRequestException("The Requirement creation string had invalid formatting. Entity String: " + content);			
 		}
-		
-//		// Check to see if the requirement exists in the database already - check by ID only
-//		if(getEntity(s,((Integer) newRequirement.getId()).toString())[0] != null){ //indicates it exists already
-//			logger.log(Level.WARNING, "ID Conflict Exception during Requirement creation.");
-//			throw new ConflictException("A Requirement with the given ID already exists. Entity String: " + content); 
-//		}
 		
 		// Saves the requirement in the database
 		this.save(s,newRequirement); // An exception may be thrown here if we can't save it
@@ -107,7 +100,7 @@ public class RequirementManager implements EntityManager<Requirement> {
     /** Takes a Requirement and assigns a unique id if necessary
      * 
      * @param req The requirement that possibly needs a unique id
-    
+     * 
      * @throws WPISuiteException "Count failed"
      */
     public void assignUniqueID(Requirement req) throws WPISuiteException{
@@ -121,8 +114,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** Returns the number of Requirements currently in the database. Disregards
 	 *  the current user session
 	 * 
-	 *  
-	@return The number of Requirements currently in the database 
+	 * @return The number of Requirements currently in the database 
 	 * @throws WPISuiteException "Retrieve all failed"
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
@@ -136,6 +128,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** Takes a session and returns an array of all the Requirements contained
 	 * 
 	 * @param s The current user session
+	 * 
 	 * @return An array of all requirements in the Database	 
 	 */
 	public Requirement[] getAll(Session s)  {
@@ -155,10 +148,10 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  @param s  The current user session
 	 *  @param id Points to a specific requirement
 	 *  
- 	@return An array of Requirements  
- 	 * @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
-	 * @throws WPISuiteException  "There was a problem retrieving from the database." 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
+	 *  @return An array of Requirements  
+ 	 *  @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
+	 *  @throws WPISuiteException  "There was a problem retrieving from the database." 
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Requirement[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
 		
@@ -188,11 +181,11 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *   
 	 *  @param s The current user session
 	 *  @param content The requirement to be update + the updates
-	 * 	
-	@return the changed requirement 
-	 * @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
-	 * @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
+	 *  
+	 *  @return the changed requirement 
+	 *  @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
+	 *  @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Requirement update(Session s, String content) throws WPISuiteException {
 		// If there is no session
@@ -233,8 +226,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the requirement to delete
-	 *  
-	@return TRUE if successful or FALSE if it fails
+	 * 
+	 * @return TRUE if successful or FALSE if it fails
 	 * @throws NotFoundException  "The Requirement with the specified id was not found:" + intId
 	 * @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
@@ -254,15 +247,11 @@ public class RequirementManager implements EntityManager<Requirement> {
 	/** Deletes ALL Requirement from the database (not advised)
 	 * 
 	 *  @param s The current user session
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s)  {
 		this.db.deleteAll(new Requirement());
 	}
-	
-
-	
-	
 	
 // Unimplemented Manager methods	
 // Advanced Manager methods
@@ -271,9 +260,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  @param s The current user session
 	 *  @param args 
 	 *  
-	  @return String
-	 * @throws WPISuiteException
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedGet(Session, String[])
+	 *  @return String
+	 *  @throws WPISuiteException
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedGet(Session, String[])
 	 */
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
@@ -287,7 +276,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
-	  @return String
+	 * 
+	 * @return String
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
@@ -303,6 +293,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param s Session
 	 * @param string String
 	 * @param content String
+	 * 
 	 * @return String
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
