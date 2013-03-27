@@ -41,7 +41,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class SaveFilterController implements ActionListener 
 {
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused" })
 	private final FilterListPanel filterList;
     private final FilterBuilderPanel builder;
     private final ListRequirementsView view;
