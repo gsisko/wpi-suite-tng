@@ -26,6 +26,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -35,6 +36,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 
@@ -59,6 +64,7 @@ public class FilterListPanel extends JPanel {
 	/**
 	 * Construct the panel
 	 */
+
 	public FilterListPanel(ListPanel view) {
 		parent = view;
 		
@@ -76,7 +82,7 @@ public class FilterListPanel extends JPanel {
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 
 		// Add a listener for row clicks
-		//resultsTable.addMouseListener(new RetrieveAllFiltersController(this));
+		//resultsTable.addMouseListener(new RetrieveFilterController(this.panel));
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -95,7 +101,15 @@ public class FilterListPanel extends JPanel {
 
 		
 		// TODO: add listeners
-		
+//		btnCreate.addActionListener(new ActionListener(){
+//
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				
+//			}
+//			
+//		}
+	
 		
 	}
 	
