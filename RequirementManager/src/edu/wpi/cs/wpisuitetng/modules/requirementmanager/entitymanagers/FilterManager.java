@@ -40,8 +40,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * 
 	 * Expects that the data passed is valid and does no error checking!
 	 * 
-	 * @param data
-	 *            Database in the core
+	 * @param data  Database in the core
 	 */
 	public FilterManager(Data data) {
 		this.setDb(data);
@@ -50,8 +49,7 @@ public class FilterManager implements EntityManager<Filter> {
 	/**
 	 * Takes a filter and assigns a unique id if necessary
 	 * 
-	 * @param req
-	 *            The filter that possibly needs a unique id
+	 * @param req  The filter that possibly needs a unique id
 	 * @throws WPISuiteException
 	 */
 	private void assignUniqueID(Filter filter) throws WPISuiteException {
@@ -78,21 +76,14 @@ public class FilterManager implements EntityManager<Filter> {
 	/**
 	 * Saves the given Filter into the database if possible.
 	 * 
-	 * @param s
-	 *            The current user session
-	 * @param model
-	 *            The Filter to be saved to the database
+	 * @param s  The current user session
+	 * @param model The Filter to be saved to the database
 	 * 
-	 * @throws WPISuiteException
-	 *             "Unable to save Filter."
+	 * @throws WPISuiteException   "Unable to save Filter."
 	 */
 	public void save(Session s, Filter model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 
-		// If the filter doesn't have a "user", give it one
-		if (model.getUser() == null) {
-			model.setUser(s.getUser());
-		}
 
 		// Save the filter in the database if possible, otherwise throw an
 		// exception
@@ -107,22 +98,14 @@ public class FilterManager implements EntityManager<Filter> {
 	 * Takes an encoded Filter(as a string) and converts it back to a
 	 * Requirement and saves it in the database
 	 * 
-	 * @param s
-	 *            The current user session
-	 * @param content
-	 *            The filter that comes in the form of a string to be recreated
+	 * @param s The current user session
+	 * @param content  The filter that comes in the form of a string to be recreated
 	 * 
 	 @return the Requirement that originally came as a string
-	 * @throws BadRequestException
-	 *             "The Filter creation string had invalid formatting. Entity String: "
-	 *             + content
-	 * @throws ConflictException
-	 *             "A filter with the given ID already exists. Entity String: "
-	 *             + content
-	 * @throws WPISuiteException
-	 *             "Unable to save Requirement."
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session,
-	 *      String)
+	  @throws BadRequestException   "The Filter creation string had invalid formatting. Entity String: " + content
+	 * @throws ConflictException  "A filter with the given ID already exists. Entity String: " + content
+	 * @throws WPISuiteException  "Unable to save Requirement."
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
 	 */
 	public Filter makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
@@ -137,7 +120,12 @@ public class FilterManager implements EntityManager<Filter> {
 					"The Filter creation string had invalid formatting. Entity String: "
 							+ content);
 		}
-
+		
+		// If the filter doesn't have a "user", give it one
+		if (newFilter.getUser() == null) {
+			newFilter.setUser(s.getUser());
+		}
+		
 		try {
 			// Check to see if the requirement exists in the database already -
 			// check by ID only
@@ -171,18 +159,13 @@ public class FilterManager implements EntityManager<Filter> {
 	 * For the current user session, Takes a specific id for a Filter and
 	 * returns it in an array.
 	 * 
-	 * @param s
-	 *            The current user session
-	 * @param id
-	 *            Points to a specific Filter
+	 * @param s   The current user session
+	 * @param id  Points to a specific Filter
 	 * 
 	 @return An array of Requirements
-	 * @throws NotFoundException
-	 *             "The Filter with the specified id was not found:" + intId
-	 * @throws WPISuiteException
-	 *             "There was a problem retrieving from the database."
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session,
-	 *      String)
+	 * @throws NotFoundException  "The Filter with the specified id was not found:" + intId
+	 * @throws WPISuiteException  "There was a problem retrieving from the database."
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session,  String)
 	 */
 	public Filter[] getEntity(Session s, String id) throws NotFoundException,
 			WPISuiteException {
@@ -216,17 +199,12 @@ public class FilterManager implements EntityManager<Filter> {
 	/**
 	 * Updates a Filter already in the database
 	 * 
-	 * @param s
-	 *            The current user session
-	 * @param content
-	 *            The filter to be update + the updates
+	 * @param s The current user session
+	 * @param content  The filter to be update + the updates
 	 * 
 	 @return the changed Filter
-	 * @throws NotFoundException
-	 *             "The Filter with the specified id was not found:" + intId
-	 * @throws WPISuiteException
-	 *             "There was a problem retrieving from the database." or
-	 *             "Null session."
+	  @throws NotFoundException  "The Filter with the specified id was not found:" + intId
+	 * @throws WPISuiteException "There was a problem retrieving from the database." or  "Null session."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Filter update(Session s, String content) throws WPISuiteException,
@@ -269,37 +247,34 @@ public class FilterManager implements EntityManager<Filter> {
 	 * Modifies the Filter so that it is inaccessible: sudo-deleted Not fully
 	 * deleted to preserve the count/unique ID
 	 * 
-	 * @param s
-	 *            The current user session
-	 * @param id
-	 *            The unique of the filter to delete
+	 * @param s  The current user session
+	 * @param id The unique of the filter to delete
 	 * 
 	 @return TRUE if successful or FALSE if it fails
-	 * @throws NotFoundException
-	 *             "The Filter with the specified id was not found:" + intId
-	 * @throws WPISuiteException
-	 *             "There was a problem retrieving from the database." or
-	 *             "Null session."
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session,
-	 *      String)
+	 * @throws NotFoundException    "The Filter with the specified id was not found:" + intId
+	 * @throws WPISuiteException    "There was a problem retrieving from the database." or "Null session."
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may
 		// be thrown
 		Filter oldFilter = getEntity(s, id)[0];
 
+	
+		
 		// Set User field of Filter to a different user so that it is not pulled
 		// out by "getAll" calls... effectively deleted
-		oldFilter.setUser(new User("admin", "admin", "password", 0)); // set to
-																		// admin,
-																		// so
-																		// that
-																		// somebody
-																		// can
-																		// still
-																		// see
-																		// it
-
+		oldFilter.setUser(new User("Gary Pollice", "gpollice", "ducks", 0)); 
+		/* This is an EasterEgg. Robert Dabrowski (rpdabrowski) bet ONE of 
+		 * his WPIDOLLARS that you wouldn't find this by Iteration2-end.		
+		 * 
+		 * All Easter Eggs will be removed before Iteration3 Release... after Easter 2013
+		 * 
+		 * Anyways, the user is set to not match the current user to simulate deletion
+		 * because users can only retrieve filters that belong to them. 
+		 * 
+		 */
+		
 		// Attempt to save. WPISuiteException may be thrown
 		this.save(s, oldFilter);
 
@@ -309,11 +284,9 @@ public class FilterManager implements EntityManager<Filter> {
 	/**
 	 * Get's all Filters made by the current user
 	 * 
-	 * @param s
-	 *            The current session. The current user is extracted from this.
+	 * @param s  The current session. The current user is extracted from this.
 	 * @return All of the Filters made by the current user.
-	 * @throws WPISuiteException
-	 *             -- thrown if there are problems retrieving
+	 * @throws WPISuiteException    -- thrown if there are problems retrieving
 	 */
 	public Filter[] getAll(Session s) throws WPISuiteException {
 		List<Model> filterList = this.db.retrieve(Filter.class, "User",
@@ -325,8 +298,7 @@ public class FilterManager implements EntityManager<Filter> {
 	/**
 	 * Delete all Filters made by the current user
 	 * 
-	 * @param s
-	 *            The current session. The current user is extracted from this.
+	 * @param s  The current session. The current user is extracted from this.
 	 * @throws WPISuiteException
 	 *             -- thrown when there are problems deleting
 	 */
