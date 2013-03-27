@@ -64,10 +64,9 @@ public class FilterBuilderPanel extends JPanel {
 	private final JComboBox<String> comparatorBox;
 	private final JTextField txtValue;
 	private final JComboBox<String> userFilterBox;
-	private Mode mode;
 
 	//button
-	private final JButton Save;
+	private final JButton btnSave;
 	
 	@SuppressWarnings("unused")
 	private final ListPanel parent;
@@ -79,7 +78,7 @@ public class FilterBuilderPanel extends JPanel {
 	 */
 	public FilterBuilderPanel(ListPanel view) {
 		parent = view;
-		mode = Mode.CREATE;
+		currentMode = Mode.CREATE;
 		//create title
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setBorder(BorderFactory.createTitledBorder("Filter Builder"));
@@ -89,7 +88,7 @@ public class FilterBuilderPanel extends JPanel {
 		comparatorLabel = new JLabel("Comparator:");
 		valueLabel = new JLabel("Value:");
 		userFilterLabel = new JLabel("Status:");
-		Save= new JButton("Save");
+		btnSave= new JButton("Save");
 
 		//construct the components
 		txtValue = new JTextField();
@@ -116,7 +115,7 @@ public class FilterBuilderPanel extends JPanel {
 		userFilterBox.setEnabled(true);
 
 		//Save.addActionListener(new SaveFilterController(parent));
-		Save.setEnabled(true);
+		btnSave.setEnabled(true);
 
 		//set the layout
 		setLayout(new GridBagLayout());
@@ -124,7 +123,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor= GridBagConstraints.NORTH;
 
 		//adjust location
-		Save.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnSave.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		//type
 		//Set the constraints for the "typeLabel" and add it to the view
@@ -196,8 +195,8 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
 		FilterBuilderConstraints.gridx = 8;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		Save.setPreferredSize(new Dimension (10,30));
-		add(Save, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
+		btnSave.setPreferredSize(new Dimension (10,30));
+		add(btnSave, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 
 	}
@@ -235,17 +234,7 @@ public class FilterBuilderPanel extends JPanel {
 	public void setCurrentMode(Mode currentMode) {
 		this.currentMode = currentMode;
 	}
-
-	public Mode getMode()
-	{
-	    return mode;
-	}
-
-	public void setMode(Mode editMode)
-	{
-	    mode = editMode;
-	}
-
+	
 	public Filter getCurrentFilter()
 	{
 	    return currentFilter;
