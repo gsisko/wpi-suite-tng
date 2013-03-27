@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
@@ -14,9 +13,8 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 
 
 /**
@@ -67,6 +65,10 @@ public class JanewayModule implements IJanewayModule {
 		return tabs;
 	}
 	
+	/**
+	 * Registers basic keyboard shortcuts.
+	 * @param tab JanewayTabModel to modify
+	 */
 	@SuppressWarnings("serial")
 	private void registerKeyboardShortcuts(JanewayTabModel tab) {
 		String osName = System.getProperty("os.name").toLowerCase();
