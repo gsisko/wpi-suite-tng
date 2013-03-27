@@ -12,7 +12,7 @@ import javax.swing.AbstractAction;
 @SuppressWarnings("serial")
 public class RefreshRequirementsAction extends AbstractAction {
 	
-	/** The controller to be called when this action is performed */
+	// The controller to be called when this action is performed
 	protected final RetrieveAllRequirementsController controller;
 	
 	/**
@@ -26,6 +26,11 @@ public class RefreshRequirementsAction extends AbstractAction {
 	}
 
 	@Override
+	/**
+	 * Tell the controller to actually perform the refresh.
+	 * 
+	 * @param arg0 Unused
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		controller.refreshData();
 	}

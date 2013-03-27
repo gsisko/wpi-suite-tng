@@ -4,18 +4,13 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -27,23 +22,23 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class RetrieveAllRequirementsController {
 
-	/** The search requirements view */
-	//protected ListPanel view;
+	// The search requirements view
+//	protected ListPanel view;
 
-	/** The panel where the results will display*/
+	// The panel where the results will display
 	protected ResultsPanel resultsPanel;
 	
-	/** The panel that contains all the filters*/
+	// The panel that contains all the filters
 	protected FilterListPanel filterPanel;
 	
 	
-	/** The requirements data retrieved from the server */
+	// The requirements data retrieved from the server
 	protected Requirement[] data = null;
 
 	/**
 	 * Constructs a new RetrieveAllRequirementsController
 	 * 
-	 * @param view the search requirements view
+	 * @param view The search requirements view
 	 */
 	public RetrieveAllRequirementsController(ListRequirementsView view) {
 		this.resultsPanel = view.getListPanel().getResultsPanel();
@@ -51,7 +46,7 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/**
-	 * Sends a request for all of the requirements
+	 * Sends a request for all requirements
 	 */
 	public void refreshData() {		
 		final RequestObserver requestObserver = new RetrieveAllRequirementsRequestObserver(this);
@@ -63,10 +58,10 @@ public class RetrieveAllRequirementsController {
 
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when the
-	 * response is received. This method will now also take into account active filters
+	 * response is received. This method will also take into account active filters
 	 * when determining what requirements to show. 
 	 * 
-	 * @param requirements an array of requirements returned by the server
+	 * @param requirements An array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
 		
@@ -227,6 +222,8 @@ public class RetrieveAllRequirementsController {
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
 	 * error occurs retrieving the requirements from the server.
+	 * 
+	 * @param error Error message received from the server
 	 */
 	public void errorReceivingData(String error) {
 		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
@@ -240,6 +237,7 @@ public class RetrieveAllRequirementsController {
 	 * @param filterValue The value from the filter to compare
 	 * @param op The operator to be used for the comparison
 	 * @param requirementValue The value from the requirement to compare
+	 * 
 	 * @return True if the comparison was true
 	 */
 	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
