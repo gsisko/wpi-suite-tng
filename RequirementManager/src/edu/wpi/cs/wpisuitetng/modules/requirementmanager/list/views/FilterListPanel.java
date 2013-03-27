@@ -113,8 +113,18 @@ public class FilterListPanel extends JPanel {
 		
 	}
 	
+	/**This method returns an ArrayList of active filters
+	 * 
+	 * @return activeFilters An ArrayList of the active filters
+	 */
 	public ArrayList<Filter> getActiveFilters() {
-		return null;
+		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
+	    
+	    for(int i = 0; i < localFilters.length; i++){
+	    	if(localFilters[i].isUseFilter()) activeFilters.add(localFilters[i]);
+	    }
+		
+		return activeFilters;
 	}
 	
 	/**

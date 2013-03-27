@@ -93,7 +93,7 @@ public class RetrieveAllRequirementsController {
 		
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
-		Filter[] filters = filterPanel.getLocalFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
+		ArrayList<Filter> filters = filterPanel.getActiveFilters();
 		
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
@@ -110,17 +110,17 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 
-			if(filters != null && filters.length > 0){
+			if(filters != null && filters.size() > 0){
 			
 				for (int i = 0; i < requirements.length; i++) {
 					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
-					for(int x = 0; x < filters.length ; x++){
-						Filter currentFilter = filters[x]; //get current filter
+					for(int x = 0; x < filters.size(); x++){
+						Filter currentFilter = filters.get(x); //get current filter
 						
 						if(!currentFilter.passesFilter(requirements[i])){
 							passAllFilters = false;
-							x=filters.length;
+							x=filters.size();
 						}
 					}
 					if(passAllFilters){
