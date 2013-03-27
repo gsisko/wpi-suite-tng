@@ -76,7 +76,7 @@ public class FilterListPanel extends JPanel {
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 
 		// Add a listener for row clicks
-		//resultsTable.addMouseListener(new RetrieveFilterController(this));
+		//resultsTable.addMouseListener(new RetrieveAllFiltersController(this));
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
