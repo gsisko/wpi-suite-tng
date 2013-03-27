@@ -35,6 +35,7 @@ import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -75,11 +76,11 @@ public class RetrieveFilterController extends MouseAdapter {
 
 			// make sure the user actually clicked on a row
 			if (row > -1) {
-				String requirementId = (String) resultsTable.getValueAt(row, 0);
+				String filterId = (String) resultsTable.getValueAt(row, 0);
 
 				// Create and send a request for the requirement with the given ID
 				Request request;
-				request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
+				request = Network.getInstance().makeRequest("requirementmanager/filter/" + filterId, HttpMethod.GET);
 				request.addObserver(new RetrieveFilterObserver(this));
 				request.send();
 			}
@@ -91,23 +92,23 @@ public class RetrieveFilterController extends MouseAdapter {
 	 * is received from the server.
 	 * @param requirement the requirement that was retrieved
 	 */
-	public void showFilter(Filter requirement) {
+	public void showFilter(Filter filter) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
 		
-		//builder.setMode(EDIT);
-		/*
-		view.getFilterName().setText(requirement.getName());
-		view.getFilterDescription().setText(requirement.getDescription());
-		view.getFilterType().setSelectedItem(requirement.getType().toString());
-		view.getFilterStatus().setSelectedItem(requirement.getStatus().toString());
-		view.getFilterPriority().setSelectedItem(requirement.getPriority().toString());
-		if (requirement.getReleaseNumber() == -1) {
+		builder.setCurrentMode(Mode.EDIT);
+		
+		/*view.getFilterName().setText(filter.getName());
+		view.getFilterDescription().setText(filter.getDescription());
+		view.getFilterType().setSelectedItem(filter.getType().toString());
+		view.getFilterStatus().setSelectedItem(filter.getStatus().toString());
+		view.getFilterPriority().setSelectedItem(filter.getPriority().toString());
+		if (filter.getReleaseNumber() == -1) {
 			view.getFilterReleaseNumber().setText("");
 		} else {
-			view.getFilterReleaseNumber().setText(Integer.toString(requirement.getReleaseNumber()));
+			view.getFilterReleaseNumber().setText(Integer.toString(filter.getReleaseNumber()));
 		}
-		view.getFilterEstimate().setText(Integer.toString(requirement.getEstimate()));
-		view.getFilterActualEffort().setText(Integer.toString(requirement.getActualEffort()));
+		view.getFilterEstimate().setText(Integer.toString(filter.getEstimate()));
+		view.getFilterActualEffort().setText(Integer.toString(filter.getActualEffort()));
 		
 		view.getSaveButton().setText("Update");
 		view.getSaveButton().setEnabled(true);
@@ -122,10 +123,10 @@ public class RetrieveFilterController extends MouseAdapter {
 			view.getFilterEstimate().setEnabled(false);
 		} else {
 			view.getFilterEstimate().setEnabled(true);
-		}
-		builder.getFilterActualEffort().setEnabled(true);
+		} */
+//		builder.getFilterActualEffort().setEnabled(true);
 		
-		builder.setCurrentFilter(requirement);*/
+		builder.setCurrentFilter(filter);
 	}
 
 	/**
@@ -134,7 +135,7 @@ public class RetrieveFilterController extends MouseAdapter {
 	 */
 	public void errorRetrievingFilter(String error) {
 		JOptionPane.showMessageDialog(builder, 
-				"An error occurred opening the requirement you selected. " + error, "Error opening requirement", 
+				"An error occurred opening the requirement you selected. " + error, "Error opening filter", 
 				JOptionPane.ERROR_MESSAGE);
 	}
 

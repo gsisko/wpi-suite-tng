@@ -1,6 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+#
+# The above will handle all files NOT found below
+#
+
 # Custom for Visual Studio
 *.cs     diff=csharp
 *.sln    merge=union
@@ -21,7 +25,13 @@
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
 
-# For Java
-*.java diff=astextplain
-*.txt diff=astextplain
-*.xml diff=astextplain
+# These files are text and should be normalized (Convert crlf => lf)
+*.java text
+*.xml text
+*.txt text
+
+# These files are binary and should be left untouched
+# (binary is a macro for -text -diff)
+*.jar binary
+*.so binary
+*.dll binary

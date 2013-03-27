@@ -126,7 +126,7 @@ public class FilterListPanel extends JPanel {
 		}
 });
 		
-		btnDelete.addActionListener(new DeleteFilterController(this.parent.getParent());
+		btnDelete.addActionListener(new DeleteFilterController(this.parent.getParent()));
 	}
 	
 	/**This method returns an ArrayList of active filters
