@@ -43,10 +43,11 @@ public enum FilterType {
 	
 	/** Converts a string to the proper FilterType
 	 * 
-	 * !NOTE: This method is designed to only take strings retrieved from a UE.dropdonwlist that contains
+	 * NOTE: This method is designed to only take strings retrieved from a UE.dropdonwlist that contains
 	 * only the enums listed as FilterType.
 	 * 
 	 * @param toConvert The string you want to convert
+	 * 
 	 * @return the proper FilterType
 	 */
 	public static FilterType toType (String toConvert){
