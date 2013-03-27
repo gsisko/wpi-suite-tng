@@ -1,4 +1,26 @@
-
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
 
@@ -19,10 +41,11 @@ import javax.swing.JTabbedPane;
 @SuppressWarnings("serial")
 public class ClosableTabComponent extends JPanel implements ActionListener {
 	
+	// tabbed pane to be given a close button
 	private final JTabbedPane tabbedPane;
 	
 	/**
-	 * Create a closable tab component belonging to the given tabbedPane.
+	 * Create a close-able tab component belonging to the given tabbedPane.
 	 * The title is extracted with {@link JTabbedPane#getTitleAt(int)}.
 	 * @param tabbedPane  The JTabbedPane this tab component belongs to
 	 */

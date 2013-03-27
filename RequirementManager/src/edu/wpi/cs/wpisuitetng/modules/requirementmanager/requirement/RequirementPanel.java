@@ -45,16 +45,25 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /**
  * This class is a JPanel. 
- * It contains an inner JPanel containing:
- * 		-an enum to indicate a "create" or "edit" mode
+ * 
+ * It contains:
+ * -a boolean indicating if input is enabled on the form
+ * -a Requirement storing the requirement currently open for editing or creation
+ * -a RequirementView storing the RequirementView that contains the panel
+ * -an enum to indicate a "create" or "edit" mode
+ * -an inner JPanel containing:
  * 		-a text field for entering a new name,
  * 		-a text area for entering a description,
  * 		-a combo box for entering a status,
  * 		-a combo box for entering a priority,
  * 		-a JNumber text field for entering a release number,
  * 		-a JNumber text field for entering an estimate,
- * 		-a JNumber text field for entering an actual effort,
- * @author Team 5
+ * 		-a JNumber text field for entering an actual effort
+ * 		-Associated labels for each component
+ * -Layout managers for both the inner panel (a GridBagLayout) and this panel (a BoxLayout)
+ * -A constraints variable to store the constraints for the inner GridBagLayout
+ * 
+ * This class also contains getters and setters for many of the components and variables listed above
  *
  */
 @SuppressWarnings("serial")
@@ -65,7 +74,6 @@ public class RequirementPanel extends JPanel {
 		CREATE,//When Mode is this value, we are creating a new requirement
 		EDIT//When Mode is this value, we are editing an existing requirement
 	}
-
 
 	//The labels
 	private  JLabel nameLabel; //The label for the name text field ("txtName")
@@ -83,24 +91,25 @@ public class RequirementPanel extends JPanel {
 	private  JComboBox<String> typeBox;//The type combo box
 	private  JComboBox<String> statusBox;//The status combo box
 	private  JComboBox<String> priorityBox;//The priority combo box
-	private  JNumberTextField txtReleaseNum;//The release number text field
+	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
 
 	//The variables to hold information about the current instance of the panel
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
 	private RequirementView parent; //Stores the RequirementView that contains the panel
-	
-	private JPanel innerPanel;//A JPanel to hold all the components. This allows for alignment of the components as a group
-	private GridBagConstraints reqPanelConstraints;//The constraints variable for the layout of the innerPanel
-
-	
-	protected boolean inputEnabled;//A flag indicating if input is enabled on the form 
+	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+	
+	//The inner Jpanel	
+	private JPanel innerPanel;//A JPanel to hold all the components. This allows for alignment of the components as a group
 	
 	//The layout managers
 	protected GridBagLayout innerLayout; //The layout for the inner panel ("innerPanel")
 	protected BoxLayout outerLayout;//The layout for the RequirementPanel (this holds the innerPanel)
+	
+	//The constraints
+	private GridBagConstraints reqPanelConstraints;//The constraints variable for the layout of the innerPanel
 
 	/**
 	 * The constructor for RequirementPanel;
@@ -149,17 +158,17 @@ public class RequirementPanel extends JPanel {
 		typeLabel = new JLabel("Type:");
 		statusLabel = new JLabel("Status:");
 		priorityLabel = new JLabel("Priority:");
-		releaseNumLabel = new JLabel("ReleaseNum:");
+		releaseNumLabel = new JLabel("ReleaseNumber:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
 
 		//Construct the misc components
 		txtName = new JTextField("");
 		txtDescription = new JTextArea("", 2, 2);
-		txtReleaseNum = new JNumberTextField();
+		txtReleaseNumber = new JNumberTextField();
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
-		txtReleaseNum.setAllowNegative(false);
+		txtReleaseNumber.setAllowNegative(false);
 		txtEstimate.setAllowNegative(false);
 		txtActualEffort.setAllowNegative(false);
 		
@@ -296,7 +305,7 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 5;
-		innerPanel.add(txtReleaseNum, reqPanelConstraints);
+		innerPanel.add(txtReleaseNumber, reqPanelConstraints);
 		//end Release number
 
 		//Estimate:		
@@ -349,7 +358,7 @@ public class RequirementPanel extends JPanel {
 		typeBox.setEnabled(enabled);
 		statusBox.setEnabled(enabled);
 		priorityBox.setEnabled(enabled);
-		txtReleaseNum.setEnabled(enabled);
+		txtReleaseNumber.setEnabled(enabled);
 		txtEstimate.setEnabled(enabled);
 		txtActualEffort.setEnabled(enabled);
 		
@@ -413,7 +422,7 @@ public class RequirementPanel extends JPanel {
 			//Set the fields to the values passed in with "requirement"
 			txtName.setText(currentRequirement.getName());
 			txtDescription.setText(currentRequirement.getDescription());
-			txtReleaseNum.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
+			txtReleaseNumber.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
 			txtEstimate.setText( String.valueOf(currentRequirement.getEstimate()) );
 			txtActualEffort.setText(String.valueOf(currentRequirement.getActualEffort()) );
 			
@@ -467,8 +476,7 @@ public class RequirementPanel extends JPanel {
 	
 	/**
 	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
-	 * 
-	 * @return	A boolean representing whether or not input is enabled for the RequirementPanel.
+	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for the RequirementPanel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
@@ -520,7 +528,7 @@ public class RequirementPanel extends JPanel {
 	 * @return the txtReleaseNum JTextField
 	 */
 	public JTextField getRequirementReleaseNumber() {
-		return txtReleaseNum;
+		return txtReleaseNumber;
 	}
 
 	/**
@@ -540,35 +548,41 @@ public class RequirementPanel extends JPanel {
 	}
 
 	/**
-	 * This returns the "mode"
-	 * @return the mode
+	 * This returns the "mode" of this panel (Mode.EDIT or Mode.CREATE)
+	 * @return the mode Mode
 	 */
 	public Mode getMode() {
 		return mode;
 	}
 
 	/**
-	 * This sets the Mode 
-	 * @param Mode m to set mode to
+	 * This sets the Mode "mode" of this panel
+	 * @param Mode m to set mode to (Mode.EDIT or Mode.CREATE)
 	 */
 	public void setMode(Mode m) {
 		mode = m;
 	}
 
 	/**
-	 * @return the currentRequirement
+	 * This returns the Requirement "currentRequirement" 
+	 * @return the currentRequirement Requirement
 	 */
 	public Requirement getCurrentRequirement() {
 		return currentRequirement;
 	}
 
 	/**
-	 * @param currentRequirement the currentRequirement to set
+	 * This sets the Requirement "currentRequirement" 
+	 * @param Requirement currentRequirement the currentRequirement to set
 	 */
 	public void setCurrentRequirement(Requirement currentRequirement) {
 		this.currentRequirement = currentRequirement;
 	}
 	
+	/**
+	 * This returns the "parent" (a RequirementView) of this panel
+	 * @return the parent RequirementView
+	 */
 	public RequirementView getParent() {
 		return parent;
 	}

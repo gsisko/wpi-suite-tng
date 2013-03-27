@@ -1,12 +1,28 @@
-
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
-
-/**
- * Contributors:
- * AHurle
- * JPage
- */
 
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -15,9 +31,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.event.ChangeListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.dashboard.DashboardView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -154,6 +170,12 @@ public class MainTabController {
 			final int clickedIndex = view.indexAtLocation(event.getX(), event.getY());
 			if(clickedIndex > -1) {
 				view.removeTabAt(clickedIndex);
+			}
+		}
+		else { // auto-refresh if it is the list of requirements
+			Component tab = view.getComponentAt(view.indexAtLocation(event.getX(), event.getY()));
+			if (tab instanceof ListRequirementsView) {
+				((ListRequirementsView)tab).getController().refreshData();
 			}
 		}
 	}

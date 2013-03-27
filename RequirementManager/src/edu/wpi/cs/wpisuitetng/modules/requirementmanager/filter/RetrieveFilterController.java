@@ -34,16 +34,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.*;
-//import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.FilterPanel.Mode.*;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType.*;
 
 /**
  * Controller to handle retrieving one requirement from the server
@@ -140,5 +136,12 @@ public class RetrieveFilterController extends MouseAdapter {
 		JOptionPane.showMessageDialog(builder, 
 				"An error occurred opening the requirement you selected. " + error, "Error opening requirement", 
 				JOptionPane.ERROR_MESSAGE);
+	}
+
+	/**
+	 * @return the panel
+	 */
+	public FilterListPanel getPanel() {
+		return panel;
 	}
 }
