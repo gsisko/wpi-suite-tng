@@ -58,7 +58,6 @@ public class RetrieveAllFiltersController {
 	 */
 	public RetrieveAllFiltersController(ListRequirementsView view){
 	    	this.filterList = view.getListPanel().getFilterPanel();
-	    	this.data = filterList.getLocalFilters();
 	    	this.builder = view.getListPanel().getBuilderPanel();
 	    	this.view = view;
 	}
