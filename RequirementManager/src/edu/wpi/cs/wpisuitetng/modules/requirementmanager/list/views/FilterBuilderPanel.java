@@ -54,7 +54,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 
 /**
- * Panel to contain the filter builder for defect searching
+ * Panel to contain the filter builder for requirement searching
  */
 @SuppressWarnings("serial")
 public class FilterBuilderPanel extends JPanel {

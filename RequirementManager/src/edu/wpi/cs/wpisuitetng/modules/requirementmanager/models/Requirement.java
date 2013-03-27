@@ -141,9 +141,9 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * @param json Json string to parse containing Defect
+	 * @param json Json string to parse containing Requirement
 	
-	 * @return The Defect given by json */
+	 * @return The Requirement given by json */
 	public static Requirement fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
 		addGsonDependencies(builder);

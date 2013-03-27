@@ -21,7 +21,7 @@ public class ValidationIssue {
 	
 	/**
 	 * Create a generic ValidationIssue with no specific field at fault
-	 * @param message An error message ("You are not allowed to edit defects")
+	 * @param message An error message ("You are not allowed to edit requirements")
 	 */
 	public ValidationIssue(String message) {
 		this(message, null);

@@ -47,7 +47,7 @@ public class JanewayModule implements IJanewayModule {
 		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabView);
 		tabs.add(tab);
 		
-		// add keyboard shortcuts to defects tab
+		// add keyboard shortcuts to requirements tab
 	    registerKeyboardShortcuts(tab);
 	}
 

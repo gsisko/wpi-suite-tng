@@ -20,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTabl
 
 /**
  * Tests the ResultsTableModel that contains the data to be
- * displayed in the defects JTable.
+ * displayed in the requirements JTable.
  */
 public class TestResultsTableModel {
 
