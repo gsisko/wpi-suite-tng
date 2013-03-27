@@ -93,7 +93,7 @@ public class RetrieveAllRequirementsController {
 		
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
-		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
+		Filter[] filters = filterPanel.getLocalFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
 		
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
@@ -110,17 +110,17 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 
-			if(filters != null && filters.size()>0){
+			if(filters != null && filters.length >0){
 			
 				for (int i = 0; i < requirements.length; i++) {
 					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
-					for(int x = 0; x < filters.size() ; x++){
-						Filter currentFilter = filters.get(x); //get current filter
+					for(int x = 0; x < filters.length ; x++){
+						Filter currentFilter = filters[x]; //get current filter
 						
 						if(!currentFilter.passesFilter(requirements[i])){
 							passAllFilters = false;
-							x=filters.size();
+							x=filters.length;
 						}
 					}
 					if(passAllFilters){
@@ -142,9 +142,20 @@ public class RetrieveAllRequirementsController {
 				entries[i][0] = String.valueOf(isFiltered.get(i).getId());
 				entries[i][1] = isFiltered.get(i).getName();
 				entries[i][2] = isFiltered.get(i).getDescription();
-				entries[i][3] = isFiltered.get(i).getType().toString();
+				// Process "NoType" case
+				if (isFiltered.get(i).getType().toString().equals("NoType")){
+					entries[i][3] = " ";					
+				} else {
+					entries[i][3] = isFiltered.get(i).getType().toString();;
+				}				
 				entries[i][4] = isFiltered.get(i).getStatus().toString();
-				entries[i][5] = isFiltered.get(i).getPriority().toString();
+				// Process "NoPriority" case
+				if (isFiltered.get(i).getPriority().toString().equals("NoPriority")){
+					entries[i][5] = " ";					
+				} else {
+					entries[i][5] = isFiltered.get(i).getPriority().toString();
+				}
+				// Process invalid release number case
 				if (isFiltered.get(i).getReleaseNumber() == -1) {
 					entries[i][6] = "none";
 				} else {
@@ -171,7 +182,7 @@ public class RetrieveAllRequirementsController {
 		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
-
+	
 	
 	/**This method takes in two object values and an operator type and  
 	 * performs a comparison.

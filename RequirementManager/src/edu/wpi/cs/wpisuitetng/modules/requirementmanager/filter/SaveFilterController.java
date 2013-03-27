@@ -23,7 +23,6 @@
  ******************************************************************************/
 
 
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
 import java.awt.event.ActionEvent;
@@ -42,7 +41,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class SaveFilterController implements ActionListener 
 {
-    @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private final FilterListPanel filterList;
     private final FilterBuilderPanel builder;
     private final ListRequirementsView view;
@@ -54,7 +53,7 @@ public class SaveFilterController implements ActionListener
     	this.view = view;
     }
 
-
+    
     public void actionPerformed(ActionEvent event) 
     {
 	    if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
@@ -136,4 +135,3 @@ public class SaveFilterController implements ActionListener
 		return view;
 	}
 }
-
