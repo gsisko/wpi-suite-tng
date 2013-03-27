@@ -116,7 +116,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		//FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
+		FilterBuilderConstraints.insets = new Insets(0,25,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		//FilterBuilderConstraints.ipadx=1;
@@ -138,7 +138,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.ipady = 0;//This tell	s the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		//FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,0,0);
+		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
 		FilterBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		//FilterBuilderConstraints.ipadx=1;
@@ -160,7 +160,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 	//	FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,0,0);
+		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
@@ -182,7 +182,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
 		//FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,0,0);
+		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 6;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
@@ -207,6 +207,7 @@ public class FilterBuilderPanel extends JPanel {
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
 		FilterBuilderConstraints.gridx = 8;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		Save.setPreferredSize(new Dimension (15,20));
 		add(Save, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 
