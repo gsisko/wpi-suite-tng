@@ -51,6 +51,7 @@ public class FilterBuilderPanel extends JPanel {
 	private final JComboBox<String> comparatorBox;
 	private final JTextField txtValue;
 	private final JComboBox<String> userFilterBox;
+	private Mode mode;
 	
 	//button
 	private final JButton Save;
@@ -62,7 +63,7 @@ public class FilterBuilderPanel extends JPanel {
 	@SuppressWarnings("deprecation")
 	public FilterBuilderPanel(ListPanel view) {
 		parent = view;
-		
+		mode = Mode.CREATE;
 		//create title
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setBorder(BorderFactory.createTitledBorder("Filter Builder"));
@@ -227,6 +228,16 @@ public class FilterBuilderPanel extends JPanel {
 	public JComboBox<String> getStatus() //?
 	{
 	    return userFilterBox;
+	}
+	
+	public Mode getMode()
+	{
+	    return mode;
+	}
+	
+	public void setMode(Mode editMode)
+	{
+	    mode = editMode;
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.*;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -52,7 +53,7 @@ public class SaveFilterController implements ActionListener
     	}*/
 
     	
-	   // if (view.getMode() == CREATE) { // if we are creating a new filter
+	    if (builder.getMode() == CREATE) { // if we are creating a new filter
 		
 	    	// get the fields from the UI
 		FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
@@ -65,12 +66,12 @@ public class SaveFilterController implements ActionListener
 		    request.setBody(new Filter(type, comparator, value, true).toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
-	    	/*}
+	    	}
 		else { // we are updating an existing filter
-			
+			/*
 			// make a new filter to store the updated data
 			Filter updatedFilter = new Filter(); 
-			Filter oldFilter = builder.;
+			Filter oldFilter = builder;
 			
 			// give the new filter the correct ID number
 			updatedFilter.setId(oldFilter.getId());
@@ -90,8 +91,8 @@ public class SaveFilterController implements ActionListener
 		    request.setBody(updatedFilter.toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
-			
-		}*/
+			*/
+		}
 	
     }
     
