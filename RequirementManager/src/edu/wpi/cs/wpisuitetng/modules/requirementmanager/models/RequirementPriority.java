@@ -21,7 +21,7 @@ public enum RequirementPriority {
 	 * @return  The proper RequirementPriority 
 	 */
     public static RequirementPriority toPriority(String toConvert){
-    	String blank = " ";
+    	String blank = "";
     	if (toConvert.equals(blank))
     		return valueOf("NoPriority");
     	else

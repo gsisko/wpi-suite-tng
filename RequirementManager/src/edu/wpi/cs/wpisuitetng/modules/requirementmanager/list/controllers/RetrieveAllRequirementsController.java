@@ -101,7 +101,7 @@ public class RetrieveAllRequirementsController {
 		ArrayList<Filter> filters = filterPanel.getActiveFilters(); //function may not be writen yet, could also be: filterPanel.getFilters()
 		
 		//Array to keep track of which requirements should be filtered
-		ArrayList<Boolean> isFiltered = new ArrayList<Boolean>();
+		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
 		
 		// empty the table
 		String[] emptyColumns = {};
@@ -110,144 +110,62 @@ public class RetrieveAllRequirementsController {
 		resultsPanel.getModel().setData(emptyData);
 		resultsPanel.getModel().fireTableStructureChanged();
 		
+		// Filtering Phase
 		if (requirements.length > 0) {
 			// save the data
 			this.data = requirements;
-			
-			// get the number of requirements that should be filtered
-			int numOfFiltered = 0;
-			
-			Filter currentFilter;
-			boolean temp = false;
-			
-			if(filters != null && filters.size()>0){
-			for (int i = 0; i < requirements.length; i++) {
-				//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
-				for(int x = 0; x < filters.size() ; x++){
-					
-					//get current filter
-					currentFilter = filters.get(x); 
-					
-					//if the filter is used
-					if(currentFilter.isUseFilter()){
-						//determine the filter type
-						switch(currentFilter.getType()){
-						//use the filter helper with the associated filter value, operator, and requirement value
-						//use the result to indicate if the requirement being looked at should be filtered out
-						case Id:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getId());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Name:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getName());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Description:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getDescription());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Type:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getType());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Status:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getStatus());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Priority:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getPriority());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case ReleaseNumber:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getReleaseNumber());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Estimate:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getEstimate());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case ActualEffort:
-							temp = filterHelper(currentFilter.getValue(),currentFilter.getComparator(),requirements[i].getActualEffort());
-							if(temp){
-								numOfFiltered++;
-								isFiltered.set(i, temp);
-							}
-							break;
-						case Other:
-							break;
-							
-						}
-						
-						if(temp){
-							x = filters.size();
-						}
-					}
-				}
-			}
-			}
-			if (requirements.length > numOfFiltered){
 
-				// set the column names
-				String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNum", "Estimate", "ActualEffort"};
-				
-				// put the data in the table
-				Object[][] entries = new Object[requirements.length - numOfFiltered][columnNames.length];
-				int j = 0;
+			if(filters != null && filters.size()>0){
+			
 				for (int i = 0; i < requirements.length; i++) {
-					
-					//if value at the index i is true, then the filters were all passed
-					if (numOfFiltered==0 || isFiltered.get(i)){//   requirements[i].getStatus() != Deleted) {
-						entries[j][0] = String.valueOf(requirements[i].getId());
-						entries[j][1] = requirements[i].getName();
-						entries[j][2] = requirements[i].getDescription();
-						entries[j][3] = requirements[i].getType().toString();
-						entries[j][4] = requirements[i].getStatus().toString();
-						entries[j][5] = requirements[i].getPriority().toString();
-						if (requirements[i].getReleaseNumber() == -1) {
-							entries[j][6] = "none";
-						} else {
-							entries[j][6] = String.valueOf(requirements[i].getReleaseNumber());
+					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
+					boolean passAllFilters = true; // Must reset to true before going into filter loop
+					for(int x = 0; x < filters.size() ; x++){
+						Filter currentFilter = filters.get(x); //get current filter
+						
+						if(!currentFilter.passesFilter(requirements[i])){
+							passAllFilters = false;
+							x=filters.size();
 						}
-						entries[j][7] = String.valueOf(requirements[i].getEstimate());
-						entries[j][8] = String.valueOf(requirements[i].getActualEffort());
-						j++; 
+					}
+					if(passAllFilters){
+						isFiltered.set(i, requirements[i]);
 					}
 				}
-				
-				// fill the table
-				resultsPanel.getModel().setColumnNames(columnNames);
-				resultsPanel.getModel().setData(entries);
-				resultsPanel.getModel().fireTableStructureChanged();
-				
 			}
-		}
-		else {
-			// do nothing, there are no non-Deleted requirements
-		}
+		}	
+		// Transferring Phase
+		// Put the requirements that passed the filters
+		if (isFiltered.size() > 0){
+			// set the column names
+			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNum", "Estimate", "ActualEffort"};
+			
+			// put the data in the table
+			Object[][] entries = new Object[isFiltered.size() ][columnNames.length];
+			for (int i = 0; i < isFiltered.size(); i++) {				
+				//if value at the index i is true, then the filters were all passed
+				entries[i][0] = String.valueOf(isFiltered.get(i).getId());
+				entries[i][1] = isFiltered.get(i).getName();
+				entries[i][2] = isFiltered.get(i).getDescription();
+				entries[i][3] = isFiltered.get(i).getType().toString();
+				entries[i][4] = isFiltered.get(i).getStatus().toString();
+				entries[i][5] = isFiltered.get(i).getPriority().toString();
+				if (isFiltered.get(i).getReleaseNumber() == -1) {
+					entries[i][6] = "none";
+				} else {
+					entries[i][6] = String.valueOf(isFiltered.get(i).getReleaseNumber());
+				}
+				entries[i][7] = String.valueOf(isFiltered.get(i).getEstimate());
+				entries[i][8] = String.valueOf(isFiltered.get(i).getActualEffort());
+			}
+			
+			// fill the table
+			resultsPanel.getModel().setColumnNames(columnNames);
+			resultsPanel.getModel().setData(entries);
+			resultsPanel.getModel().fireTableStructureChanged();			
+		}		
+		// ELSE:  do nothing, there are no Requirements that passed the filters
+	
 	}
 
 	/**
@@ -259,6 +177,7 @@ public class RetrieveAllRequirementsController {
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
 	
+<<<<<<< HEAD
 	
 	/**This method takes in two object values and an operator type and  
 	 * performs a comparison.
@@ -291,6 +210,9 @@ public class RetrieveAllRequirementsController {
 		}
 		return true;
 	}
+=======
+
+>>>>>>> bfa13ff683ea745be689aca3059176c2a888bb90
 }
 
 

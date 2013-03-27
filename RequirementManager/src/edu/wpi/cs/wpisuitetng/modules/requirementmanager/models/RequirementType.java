@@ -23,7 +23,7 @@ public enum RequirementType {
 	
 	 * @return  The proper RequirementType */
 	public static RequirementType toType(String toConvert){     
-    	String blank = " ";
+    	String blank = "";
     	if (toConvert.equals(blank))
     		return valueOf("NoType");
     	else

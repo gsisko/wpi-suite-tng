@@ -76,11 +76,13 @@ public enum OperatorType {
 	 * 
 	 * @return the result of the operation
 	 */
-	public static boolean perform(OperatorType op, String sample, String fromReq){
+	public static boolean perform(OperatorType op, String sample, String fromReq, boolean isEnum){
 		switch(op){
 		case Contains:
+			if (isEnum) return false;// False because enums can't be compared by contain
 			return fromReq.contains(sample);
 		case DoesNotContain:
+			if (isEnum) return false; // False because enums can't be compared by contain
 			return !fromReq.contains(sample); // if it contains, returns false
 		case EqualTo:
 			return sample.equals(fromReq);
@@ -92,6 +94,8 @@ public enum OperatorType {
 		
 		}	
 	}
+	
+
 
 	
 	/** Performs the operation described for RequirementType. Returns false 

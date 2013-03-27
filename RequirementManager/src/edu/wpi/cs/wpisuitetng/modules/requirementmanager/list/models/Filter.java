@@ -249,35 +249,37 @@ public class Filter extends AbstractModel {
 	*/
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
+	
 		switch (this.type){	
 		// The following two are strings
 		case Name:
-			return OperatorType.perform(this.comparator,this.value, req.getName());
+			return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
 		case Description:
-			return OperatorType.perform(this.comparator, this.value, req.getDescription());
+			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
 		
 		// The following four are Integers
 		case Id: 
 			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
 		case ActualEffort:
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());		
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
 		case Estimate:
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());		
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
 		case ReleaseNumber:
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
 	
 		// The following three are different enums
 		case Status:
-			return OperatorType.perform(this.comparator, RequirementStatus.toStatus(this.value), req.getStatus());
+			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
 		case Type:
-			return OperatorType.perform(this.comparator, RequirementType.toType(this.value), req.getType());
+			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
 		case Priority:
-			return OperatorType.perform(this.comparator, RequirementPriority.toPriority(this.value), req.getPriority());
+			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
 	
 		// Default
 		default:
 			return true;  // default to not filter out stuff
 		}
+		
 	}
 	
 	

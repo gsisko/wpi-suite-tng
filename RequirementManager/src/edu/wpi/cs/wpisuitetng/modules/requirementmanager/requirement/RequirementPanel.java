@@ -168,9 +168,9 @@ public class RequirementPanel extends JPanel {
 		txtDescription.setWrapStyleWord(true);
 
 		//Create the strings for the boxes
-		String[] typeStrings = { " ", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
+		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
-		String[] priorityStrings = { " ", "High", "Medium", "Low"};
+		String[] priorityStrings = { "", "High", "Medium", "Low"};
 
         //Construct the boxes 
 		typeBox = new JComboBox<String>(typeStrings);
