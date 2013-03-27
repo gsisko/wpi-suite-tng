@@ -56,7 +56,7 @@ public class SaveFilterController implements ActionListener
     
     public void actionPerformed(ActionEvent event) 
     {
-	    if (builder.getMode() == Mode.CREATE) { // if we are creating a new filter
+	    if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
 		    // get the fields from the UI
 			FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
 			OperatorType comparator = OperatorType.toType(builder.getFilterOperator().toString());
@@ -68,7 +68,7 @@ public class SaveFilterController implements ActionListener
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
     	}
-		else if (builder.getMode() == Mode.EDIT){ // we are updating an existing filter
+		else if (builder.getCurrentMode() == Mode.EDIT){ // we are updating an existing filter
 			// make a new filter to store the updated data
 			Filter updatedFilter = new Filter(); 
 			
