@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -69,7 +71,7 @@ public class FilterListPanel extends JPanel {
 		parent = view;
 		
 		// Set the layout manager and give the panel a border
-		setLayout(new BorderLayout());
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createTitledBorder("Filters"));
 
 		// Construct the table model
@@ -86,18 +88,29 @@ public class FilterListPanel extends JPanel {
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-		resultsScrollPane.setPreferredSize(new Dimension(175,325));
+		resultsScrollPane.setPreferredSize(new Dimension(175,250));
+		this.add(resultsScrollPane);
+		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
 		
 		// TODO implement the rest of the controls to display saved filters
 		// and store saved filters in the ConfigManager
 		
-		add(resultsScrollPane, BorderLayout.CENTER);
+		this.add(Box.createRigidArea(new Dimension(0,6)));
 		
 		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
 		
-		add(btnCreate, BorderLayout.NORTH);
-		add(btnDelete, BorderLayout.SOUTH);
+		btnCreate.setMaximumSize(new Dimension(100, 40));
+		btnCreate.setMinimumSize(new Dimension(100, 40));
+		btnDelete.setMaximumSize(new Dimension(100, 40));
+		btnDelete.setMinimumSize(new Dimension(100, 40));
+		
+		this.add(btnCreate);
+		this.add(Box.createRigidArea(new Dimension(0,6)));
+		this.add(btnDelete);
+		this.add(Box.createRigidArea(new Dimension(0,6)));
+		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
+		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
 		
 		// TODO: add listeners
