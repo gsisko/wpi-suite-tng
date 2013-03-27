@@ -18,6 +18,7 @@ import javax.swing.event.ChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.dashboard.DashboardView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -154,6 +155,12 @@ public class MainTabController {
 			final int clickedIndex = view.indexAtLocation(event.getX(), event.getY());
 			if(clickedIndex > -1) {
 				view.removeTabAt(clickedIndex);
+			}
+		}
+		else { // auto-refresh if it is the list of requirements
+			Component tab = view.getComponentAt(view.indexAtLocation(event.getX(), event.getY()));
+			if (tab instanceof ListRequirementsView) {
+				((ListRequirementsView)tab).getController().refreshData();
 			}
 		}
 	}

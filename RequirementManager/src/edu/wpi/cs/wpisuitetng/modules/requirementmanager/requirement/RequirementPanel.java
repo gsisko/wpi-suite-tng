@@ -83,7 +83,7 @@ public class RequirementPanel extends JPanel {
 	private  JComboBox<String> typeBox;//The type combo box
 	private  JComboBox<String> statusBox;//The status combo box
 	private  JComboBox<String> priorityBox;//The priority combo box
-	private  JNumberTextField txtReleaseNum;//The release number text field
+	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
 
@@ -149,17 +149,17 @@ public class RequirementPanel extends JPanel {
 		typeLabel = new JLabel("Type:");
 		statusLabel = new JLabel("Status:");
 		priorityLabel = new JLabel("Priority:");
-		releaseNumLabel = new JLabel("ReleaseNum:");
+		releaseNumLabel = new JLabel("ReleaseNumber:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
 
 		//Construct the misc components
 		txtName = new JTextField("");
 		txtDescription = new JTextArea("", 2, 2);
-		txtReleaseNum = new JNumberTextField();
+		txtReleaseNumber = new JNumberTextField();
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
-		txtReleaseNum.setAllowNegative(false);
+		txtReleaseNumber.setAllowNegative(false);
 		txtEstimate.setAllowNegative(false);
 		txtActualEffort.setAllowNegative(false);
 		
@@ -296,7 +296,7 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 5;
-		innerPanel.add(txtReleaseNum, reqPanelConstraints);
+		innerPanel.add(txtReleaseNumber, reqPanelConstraints);
 		//end Release number
 
 		//Estimate:		
@@ -349,7 +349,7 @@ public class RequirementPanel extends JPanel {
 		typeBox.setEnabled(enabled);
 		statusBox.setEnabled(enabled);
 		priorityBox.setEnabled(enabled);
-		txtReleaseNum.setEnabled(enabled);
+		txtReleaseNumber.setEnabled(enabled);
 		txtEstimate.setEnabled(enabled);
 		txtActualEffort.setEnabled(enabled);
 		
@@ -413,7 +413,7 @@ public class RequirementPanel extends JPanel {
 			//Set the fields to the values passed in with "requirement"
 			txtName.setText(currentRequirement.getName());
 			txtDescription.setText(currentRequirement.getDescription());
-			txtReleaseNum.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
+			txtReleaseNumber.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
 			txtEstimate.setText( String.valueOf(currentRequirement.getEstimate()) );
 			txtActualEffort.setText(String.valueOf(currentRequirement.getActualEffort()) );
 			
@@ -520,7 +520,7 @@ public class RequirementPanel extends JPanel {
 	 * @return the txtReleaseNum JTextField
 	 */
 	public JTextField getRequirementReleaseNumber() {
-		return txtReleaseNum;
+		return txtReleaseNumber;
 	}
 
 	/**

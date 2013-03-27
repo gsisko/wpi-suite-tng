@@ -108,6 +108,10 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		controller.refreshData();
 	}
 	
+	public RetrieveAllRequirementsController getController() {
+		return controller;
+	}
+	
 	public ListPanel getListPanel() {
 		return mainPanel;
 	}

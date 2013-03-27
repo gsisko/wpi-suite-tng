@@ -110,7 +110,7 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 
-			if(filters != null && filters.length >0){
+			if(filters != null && filters.length > 0){
 			
 				for (int i = 0; i < requirements.length; i++) {
 					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
@@ -124,8 +124,13 @@ public class RetrieveAllRequirementsController {
 						}
 					}
 					if(passAllFilters){
-						isFiltered.set(i, requirements[i]);
+						isFiltered.add(requirements[i]);
 					}
+				}
+			}
+			else {
+				for (int i = 0; i < requirements.length; i++) {
+					isFiltered.add(requirements[i]);
 				}
 			}
 		}	
@@ -133,7 +138,7 @@ public class RetrieveAllRequirementsController {
 		// Put the requirements that passed the filters
 		if (isFiltered.size() > 0){
 			// set the column names
-			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNum", "Estimate", "ActualEffort"};
+			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
 			
 			// put the data in the table
 			Object[][] entries = new Object[isFiltered.size() ][columnNames.length];

@@ -196,7 +196,7 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
 		FilterBuilderConstraints.gridx = 8;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		Save.setPreferredSize(new Dimension (15,20));
+		Save.setPreferredSize(new Dimension (10,30));
 		add(Save, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 

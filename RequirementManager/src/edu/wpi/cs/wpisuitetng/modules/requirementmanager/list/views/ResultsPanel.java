@@ -31,10 +31,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 
 
 /**
@@ -70,10 +68,6 @@ public class ResultsPanel extends JPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
-		
-		// TODO delete this is it works in ListPanel
-		// Add a listener for row clicks
-	//	resultsTable.addMouseListener(new RetrieveRequirementController(this));
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
