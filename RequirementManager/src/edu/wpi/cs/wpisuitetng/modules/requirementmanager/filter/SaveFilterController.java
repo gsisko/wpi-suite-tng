@@ -85,7 +85,6 @@ public class SaveFilterController implements ActionListener
 		FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
 		OperatorType comparator = OperatorType.toType(builder.getFilterOperator().toString());
 		String value = builder.getFilterValue().toString();
-		int Id;
 		
 			// make a PUT http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.PUT); // PUT == create
@@ -94,14 +93,19 @@ public class SaveFilterController implements ActionListener
 		    request.send();
 	    	}
 		else { // we are updating an existing filter
-			/*
+			
 			// make a new filter to store the updated data
 			Filter updatedFilter = new Filter(); 
-			Filter oldFilter = builder;
+			Filter oldFilter = builder.getCurrentFilter();
 			
 			// give the new filter the correct ID number
-			updatedFilter.setId(oldFilter.getId());
+			updatedFilter.setUniqueID(oldFilter.getUniqueID());
 			
+			updatedFilter.setType(FilterType.toType(builder.getFilterType().toString()));
+			updatedFilter.setComparator(OperatorType.toType(builder.getFilterType().toString()));
+			updatedFilter.setValue(builder.getFilterValue().toString());
+			
+			/*
 			// fill in the rest of the fields with the data from the UI
 			updatedFilter.setName(view.getFilterName().getText());
 			updatedFilter.setDescription(view.getFilterDescription().getText());
@@ -111,13 +115,13 @@ public class SaveFilterController implements ActionListener
 			updatedFilter.setPriority(FilterPriority.toPriority(view.getFilterPriority().getSelectedItem().toString()));
 			updatedFilter.setEstimate(Integer.parseInt(view.getFilterEstimate().getText()));
 			updatedFilter.setActualEffort(Integer.parseInt(view.getFilterActualEffort().getText()));
-		
+			*/
 			// make a POST http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.POST); // POST == update
 		    request.setBody(updatedFilter.toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveFilterObserver(this)); // add an observer to process the response
 		    request.send();
-			*/
+			
 		}
 	
     }

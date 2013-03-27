@@ -51,6 +51,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 
 /**
  * Panel to contain the filter builder for defect searching
@@ -75,6 +76,7 @@ public class FilterBuilderPanel extends JPanel {
 	private final JComboBox<String> comparatorBox;
 	private final JTextField txtValue;
 	private final JComboBox<String> userFilterBox;
+	private Filter currentFilter;
 	private Mode mode;
 	
 	//button
@@ -265,6 +267,16 @@ public class FilterBuilderPanel extends JPanel {
 	public void setMode(Mode editMode)
 	{
 	    mode = editMode;
+	}
+	
+	public Filter getCurrentFilter()
+	{
+	    return currentFilter;
+	}
+	
+	public void setCurrentFilter(Filter newFilter)
+	{
+	    currentFilter = newFilter;
 	}
 
 }
