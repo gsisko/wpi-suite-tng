@@ -9,8 +9,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** Possible operations that a filter can perform
  * 
- * !NOTE: If filtering by a field that is an "enum", only use EqualTo or NotEqualTo
- * 
+ * NOTE: If filtering by a field that is an "enum", only use EqualTo or NotEqualTo
  * 
  * @author Team 5
  *
@@ -27,13 +26,13 @@ public enum OperatorType {
 	Other;
 	
 	
-	
 	/** Converts a string to the proper OperatorType
 	 * 
-	 * !NOTE: This method is designed to only take strings retrieved from a UE.dropdonwlist that contains
+	 * NOTE: This method is designed to only take strings retrieved from a UE.dropdonwlist that contains
 	 * only the enums listed as OperatorType.
 	 * 
 	 * @param toConvert The string you want to convert
+	 * 
 	 * @return the proper OperatorType
 	 */
 	public static OperatorType toType (String toConvert){
@@ -41,12 +40,12 @@ public enum OperatorType {
 	}
 	
 	
-	
 	/** Performs the operation described for integers. Returns false for 
 	 *  any non-integer operations, like Contains etc.
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
+	 * 
 	 * @return the result
 	 */
 	public static boolean perform(OperatorType op,  Integer sample, Integer fromReq){
@@ -68,11 +67,13 @@ public enum OperatorType {
 		}
 	}
 	
+	
 	/** Performs the operation described for Strings. Returns false 
 	 *  for requested operations other than Contains/DoesNotContain/EqualTo/NotEqualTo
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
+	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, String sample, String fromReq){
@@ -98,6 +99,7 @@ public enum OperatorType {
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
+	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, RequirementType sample, RequirementType fromReq){
@@ -116,6 +118,7 @@ public enum OperatorType {
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
+	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, RequirementStatus sample, RequirementStatus fromReq){
@@ -134,6 +137,7 @@ public enum OperatorType {
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
+	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, RequirementPriority sample,RequirementPriority fromReq){

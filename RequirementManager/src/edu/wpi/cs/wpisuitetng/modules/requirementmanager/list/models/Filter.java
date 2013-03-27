@@ -28,7 +28,6 @@ public class Filter extends AbstractModel {
 	private String value;
 	/**	Use filter? */
 	private boolean useFilter;
-	
 	/** The owner of the filter */
 	private User user;
 	
@@ -48,21 +47,19 @@ public class Filter extends AbstractModel {
 	 * @param value     Could be anything, preferably Integer, String, RequirementStatus, RequirementType, RequirementPriority
 	 * @param useFilter  Field that says whether or not to use the filter
 	 */
-	public Filter( FilterType type, 
-			OperatorType comparator,
-			Object value, 
-			boolean useFilter) {
-		this.setUniqueID(-1); // default as a flag to entity manager
+	public Filter( FilterType type, OperatorType comparator, Object value, boolean useFilter) {
+		this.setUniqueID(-1); 		// default as a flag to entity manager
 		this.setType(type);
 		this.setComparator(comparator);
-		this.setValue(value);  // Calls correctly overloaded setValue method
+		this.setValue(value);  		// Calls correctly overloaded setValue method
 		this.setUseFilter(useFilter);
-		this.setUser(null);          // User is defaulted to null and handled at the manager layer
+		this.setUser(null);         // User is defaulted to null and handled at the manager layer
 	}
 	
 	
 	/**
 	 * Converts this Filter to a JSON string
+	 * 
 	 * @return a string in JSON representing this Filter
 	 */
 	public String toJSON() {
@@ -74,8 +71,9 @@ public class Filter extends AbstractModel {
 	
 	/**
 	 * Converts the given list of Filters to a JSON string
-	 * @param dlist a list of Filters
-	 * @return a string in JSON representing the list of Filters
+	 * @param dlist A list of Filters
+	 * 
+	 * @return A string in JSON representing the list of Filters
 	 */
 	public static String toJSON(Filter[] dlist) {
 		String json;
@@ -91,7 +89,8 @@ public class Filter extends AbstractModel {
 	
 	/**
 	 * @param json Json string to parse containing Filter
-	 * @return The Filter given by json
+	 * 
+	 * @return The Filter given by Json
 	 */
 	public static Filter fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
@@ -100,6 +99,7 @@ public class Filter extends AbstractModel {
 	
 	/**
 	 * @param json Json string to parse containing Filter array
+	 * 
 	 * @return The Filter array given by json
 	 */
 	public static Filter[] fromJSONArray(String json) {
@@ -107,7 +107,7 @@ public class Filter extends AbstractModel {
 		return builder.create().fromJson(json, Filter[].class);
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(java.lang.Object)
 	 */
 	@Override
@@ -136,6 +136,7 @@ public class Filter extends AbstractModel {
 	}
 	
 	/** Compares two filters. Intended use in the makeEntity method
+	 * 
 	 * @param toCompareTo The Filter to compare to
 	 * @return Whether the two Filters are equal or not
 	 */
@@ -147,7 +148,7 @@ public class Filter extends AbstractModel {
 	}	
 	
 	
-	/* (non-Javadoc)
+	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	@Override
@@ -156,7 +157,7 @@ public class Filter extends AbstractModel {
 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	@Override
@@ -174,35 +175,35 @@ public class Filter extends AbstractModel {
 	}
 
 	/**
-	 * @param uniqueID the uniqueID to set
+	 * @param uniqueID The uniqueID to set
 	 */
 	public void setUniqueID(int uniqueID) {
 		this.uniqueID = uniqueID;
 	}
 
 	/**
-	 * @return the type
+	 * @return The type
 	 */
 	public FilterType getType() {
 		return type;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type The type to set
 	 */
 	public void setType(FilterType type) {
 		this.type = type;
 	}
 
 	/**
-	 * @return the comparator
+	 * @return The comparator
 	 */
 	public OperatorType getComparator() {
 		return comparator;
 	}
 
 	/**
-	 * @param comparator the comparator to set
+	 * @param comparator The comparator to set
 	 */
 	public void setComparator(OperatorType comparator) {
 		this.comparator = comparator;
@@ -210,14 +211,14 @@ public class Filter extends AbstractModel {
 
 	
 	/**
-	 * @return the useFilter
+	 * @return The useFilter
 	 */
 	public boolean isUseFilter() {
 		return useFilter;
 	}
 
 	/**
-	 * @param useFilter the useFilter to set
+	 * @param useFilter The useFilter to set
 	 */
 	public void setUseFilter(boolean useFilter) {
 		this.useFilter = useFilter;
@@ -225,7 +226,7 @@ public class Filter extends AbstractModel {
 
 
 	/**
-	 * @return the user
+	 * @return The user
 	 */
 	public User getUser() {
 		return user;
@@ -233,22 +234,18 @@ public class Filter extends AbstractModel {
 
 
 	/**
-	 * @param user the user to set
+	 * @param user The user to set
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
 
 	
-	
-	
-	
-	
-	
-	/** Returns false when the Requirement should be filtered out. All filters should be 
+	/** Determines whether a Requirement passes a filter
 	*
 	*	@param req The Requirement in question
-	*	@return True if the Requirement should be passes the filter, false otherwise
+	*
+	*	@return True if the Requirement passes, false if it does not
 	*/
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
@@ -284,13 +281,10 @@ public class Filter extends AbstractModel {
 	}
 	
 	
-	
-	
-/** The following getters and setters allow us to input different 
- *  kinds of values into a Filter, store them as strings, and 
- *  take them back out and use them as the proper types that they 
- *  should be. 
- */
+//	 The following getters and setters allow us to input different 
+//	 kinds of values into a Filter, store them as strings, and 
+//	 take them back out and use them as the proper types that they 
+//	 should be. 
 	
 	/**
 	 * @return the value
@@ -301,6 +295,7 @@ public class Filter extends AbstractModel {
 
 
 	/** Sets the value of the Filter when the input is a string
+	 * 
 	 * @param value the value to set
 	 */
 	public void setValue(String value) {
@@ -308,6 +303,7 @@ public class Filter extends AbstractModel {
 	}
 
 	/** Sets the value of the Filter when the input is an Integer
+	 * 
 	 * @param value the value to set
 	 */
 	public void setValue(Integer value) {
@@ -315,6 +311,7 @@ public class Filter extends AbstractModel {
 	}
 	
 	/** Sets the value of the Filter when the input is an RequirementStatus
+	 * 
 	 * @param value the value to set
 	 */
 	public void setValue(RequirementStatus value) {
@@ -322,6 +319,7 @@ public class Filter extends AbstractModel {
 	}
 	
 	/** Sets the value of the Filter when the input is an RequirementType
+	 * 
 	 * @param value the value to set
 	 */
 	public void setValue(RequirementType value) {
@@ -329,6 +327,7 @@ public class Filter extends AbstractModel {
 	}
 	
 	/** Sets the value of the Filter when the input is RequirementPriority
+	 * 
 	 * @param value the value to set
 	 */
 	public void setValue(RequirementPriority value) {
@@ -337,6 +336,7 @@ public class Filter extends AbstractModel {
 	
 	
 	/** Sets the value of the Filter when the input is Object
+	 * 
 	 * @param value the value to set
 	 */
 	public void setValue(Object o){
