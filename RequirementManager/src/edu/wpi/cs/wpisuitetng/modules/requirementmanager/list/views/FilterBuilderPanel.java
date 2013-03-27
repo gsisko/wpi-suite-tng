@@ -116,10 +116,10 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		//FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,15,0);  //Set the top padding to 10 units  of blank space
+		FilterBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		FilterBuilderConstraints.ipadx=1;
+		//FilterBuilderConstraints.ipadx=1;
 		add(typeLabel, FilterBuilderConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "typeBox"  and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.FIRST_LINE_START;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
@@ -138,10 +138,10 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.ipady = 0;//This tell	s the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		//FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,15,0);
+		FilterBuilderConstraints.insets = new Insets(0,15,0,0);
 		FilterBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		FilterBuilderConstraints.ipadx=1;
+		//FilterBuilderConstraints.ipadx=1;
 		add(comparatorLabel, FilterBuilderConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "comparator"  and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.FIRST_LINE_START;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
@@ -160,11 +160,11 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 	//	FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,15,0);
+		FilterBuilderConstraints.insets = new Insets(0,15,0,0);
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		FilterBuilderConstraints.ipadx=1;
+		//FilterBuilderConstraints.ipadx=1;
 		add(userFilterLabel, FilterBuilderConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "userfilter"  and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.FIRST_LINE_START;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
@@ -182,11 +182,11 @@ public class FilterBuilderPanel extends JPanel {
 		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
 		//FilterBuilderConstraints.weightx = 0.25;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,15,15,0);
+		FilterBuilderConstraints.insets = new Insets(0,15,0,0);
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);  //Set the top padding to 10 units  of blank space
 		FilterBuilderConstraints.gridx = 6;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		FilterBuilderConstraints.ipadx=1;
+		//FilterBuilderConstraints.ipadx=1;
 		add(valueLabel, FilterBuilderConstraints);//Actually add the "releaseNumLabel" to the layout given the previous constraints
 		//Set the constraints for the "value" and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.FIRST_LINE_START;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -202,7 +202,7 @@ public class FilterBuilderPanel extends JPanel {
 		//Save button:
 		//Set the constraints for the "Save" and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch to fill it's area
-	//	FilterBuilderConstraints.weighty = 1;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
+		//FilterBuilderConstraints.weighty = 0.5;//This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
 		FilterBuilderConstraints.anchor = GridBagConstraints.FIRST_LINE_START; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
 		//FilterBuilderConstraints.insets = new Insets(10,0,0,0);//Set the top padding to 10 units
 		FilterBuilderConstraints.gridx = 8;//Set the x coord of the cell of the layout we are describing
