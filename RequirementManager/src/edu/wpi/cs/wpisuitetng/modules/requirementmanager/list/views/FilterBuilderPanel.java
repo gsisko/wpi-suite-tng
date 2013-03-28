@@ -89,7 +89,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 		//construct the panels
 		typeLabel = new JLabel("Type:");
-		comparatorLabel = new JLabel("Comparator:");
+		comparatorLabel = new JLabel("Operator:");
 		valueLabel = new JLabel("Value:");
 		btnSave= new JButton("Create");
 

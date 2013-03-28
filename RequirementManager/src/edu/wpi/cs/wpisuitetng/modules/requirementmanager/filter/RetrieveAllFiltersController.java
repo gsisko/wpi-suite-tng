@@ -96,7 +96,7 @@ public class RetrieveAllFiltersController {
 			this.data = filters;
 			
 			// set the column names
-			String[] columnNames = {"Id", "Type", "Comparator", "Value", "Active"};
+			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
 			
 			// put the data in the table
 			Object[][] entries = new Object[filters.length][columnNames.length];
