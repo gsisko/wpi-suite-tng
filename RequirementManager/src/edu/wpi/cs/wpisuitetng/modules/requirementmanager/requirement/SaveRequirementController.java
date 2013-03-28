@@ -93,7 +93,7 @@ public class SaveRequirementController
 			RequirementStatus oldStatus = oldRequirement.getStatus(); //grab the old status
 			RequirementStatus newStatus = RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()); //get the new status
 			if (   ( oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted) ) {//if user had tried to change the status from "InProgress" to "Deleted"...
-				JOptionPane.showMessageDialog(null, "Description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
+				JOptionPane.showMessageDialog(null, "Cannot change status from InProgress to Deleted.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
 				return;//cancel the update
 			}
    		 
