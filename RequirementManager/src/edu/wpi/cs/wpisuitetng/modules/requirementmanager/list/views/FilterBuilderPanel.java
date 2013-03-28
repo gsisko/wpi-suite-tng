@@ -29,9 +29,12 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -46,7 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
  * Panel to contain the filter builder for defect searching
  */
 @SuppressWarnings("serial")
-public class FilterBuilderPanel extends JPanel {
+public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 	// enum to say whether or not you are creating
 	public enum Mode {
@@ -98,7 +101,7 @@ public class FilterBuilderPanel extends JPanel {
 
 		//create strings for the boxes
 		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
-		String[] comparatorStrings = {"Greater than","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo","Contains","DoesNotContain"};
+		String[] comparatorStrings = {"Greater than","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo"};
 		String[] userFilterStrings ={"Active","Inactive"};
 
 		//construct the boxes
@@ -113,6 +116,8 @@ public class FilterBuilderPanel extends JPanel {
 		comparatorBox.setEnabled(false);
 		userFilterBox.setSelectedIndex(0);
 		userFilterBox.setEnabled(false);
+		
+		typeBox.addActionListener(this);
 
 		btnSave.addActionListener(new SaveFilterController(parent.getParent()));
 		btnSave.setEnabled(false);
@@ -246,5 +251,29 @@ public class FilterBuilderPanel extends JPanel {
 	public FilterListPanel getGrandpa() {
 		return grandpa;
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		@SuppressWarnings("unchecked")
+		JComboBox<String> comboBox = (JComboBox<String>) e.getSource();
+		
+        String selected = (String) comboBox.getSelectedItem();
+        System.out.println("Selected Item  = " + selected);
+        
+        String[] comparatorStrings = null;
+        
+        if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
+        	comparatorStrings = new String[]{"Greater than","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo"};
+        else if(selected=="Name" ||selected=="Description" )
+        	comparatorStrings = new String[]{"EqualTo","NotEqualTo","Contains","DoesNotContain"};
+        else if(selected=="Type" ||selected=="Status"  ||selected=="Priority")
+        	comparatorStrings = new String[]{"EqualTo","NotEqualTo"};
+		
+		
+		
+		DefaultComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(comparatorStrings);
+		comparatorBox.setModel(cbm);
+		
+	}
+
 
 }
