@@ -22,7 +22,6 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.CREATE;

@@ -21,6 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import static org.junit.Assert.assertEquals;

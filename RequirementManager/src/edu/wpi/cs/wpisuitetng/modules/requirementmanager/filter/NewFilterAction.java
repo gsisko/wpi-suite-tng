@@ -21,6 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
 import java.awt.event.ActionEvent;

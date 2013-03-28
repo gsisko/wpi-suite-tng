@@ -22,7 +22,6 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 import java.awt.event.ActionEvent;

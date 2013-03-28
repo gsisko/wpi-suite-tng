@@ -7,8 +7,19 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Robert Smieja
- *    
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
@@ -103,6 +114,7 @@ public class RequirementManagerTest {
 		assertSame(db.retrieve(Requirement.class, "id", 3).get(0), created);
 	}
 	
+	// this test should print a warning to the console
 	@Test(expected=BadRequestException.class)
 	public void testMakeBadEntity() throws WPISuiteException {
 		newRequirement.setName(""); // invalid title
@@ -196,6 +208,7 @@ public class RequirementManagerTest {
 		assertSame(toUpdate.getStatus(), updated.getStatus()); 
 	}
 	
+	// this test should print a warning to the console
 	@Test(expected=BadRequestException.class)
 	public void testBadUpdate() throws WPISuiteException {
 		goodUpdatedRequirement.setName("");

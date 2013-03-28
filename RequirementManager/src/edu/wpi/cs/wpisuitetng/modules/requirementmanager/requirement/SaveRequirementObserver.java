@@ -22,8 +22,6 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import javax.swing.JOptionPane;

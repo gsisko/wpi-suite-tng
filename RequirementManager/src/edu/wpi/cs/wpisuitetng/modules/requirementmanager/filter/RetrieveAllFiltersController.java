@@ -22,7 +22,6 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
 import javax.swing.JOptionPane;
@@ -30,7 +29,6 @@ import javax.swing.JOptionPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.*;
-//import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType.*;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;

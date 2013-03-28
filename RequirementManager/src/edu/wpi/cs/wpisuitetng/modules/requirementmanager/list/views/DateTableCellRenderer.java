@@ -22,8 +22,6 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.text.SimpleDateFormat;

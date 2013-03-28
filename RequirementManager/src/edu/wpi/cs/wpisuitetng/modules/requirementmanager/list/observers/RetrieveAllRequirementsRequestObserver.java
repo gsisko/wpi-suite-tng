@@ -22,8 +22,6 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
