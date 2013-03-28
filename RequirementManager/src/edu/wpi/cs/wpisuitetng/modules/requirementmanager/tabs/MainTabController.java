@@ -175,7 +175,6 @@ public class MainTabController {
 		else { // auto-refresh if it is the list of requirements
 			Component tab = view.getComponentAt(view.indexAtLocation(event.getX(), event.getY()));
 			if (tab instanceof ListRequirementsView) {
-				((ListRequirementsView)tab).getController().refreshData();
 				((ListRequirementsView)tab).getFilterController().refreshData();
 			}
 		}
