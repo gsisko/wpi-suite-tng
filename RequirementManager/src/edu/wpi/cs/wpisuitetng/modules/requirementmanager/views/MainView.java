@@ -37,4 +37,3 @@ public class MainView extends JPanel {
 	}
 }
 
-// THIS FILE WILL BE DELETED IN ITERATION 2!!!!
