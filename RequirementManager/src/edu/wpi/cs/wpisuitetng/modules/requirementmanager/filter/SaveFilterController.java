@@ -28,6 +28,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
@@ -56,6 +58,12 @@ public class SaveFilterController implements ActionListener
     {
     	this.builder = view.getListPanel().getBuilderPanel();
     	this.filterList = view.getListPanel().getFilterPanel();
+    	
+    	if (builder.getFilterValue().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	
     	if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
 	    	System.err.println("Creating a new filter");
 		    // get the fields from the UI
