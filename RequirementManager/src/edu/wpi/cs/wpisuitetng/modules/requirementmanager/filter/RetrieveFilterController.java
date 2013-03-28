@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -66,7 +67,7 @@ public class RetrieveFilterController extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		if (me.getClickCount() == 2) { /* respond to double clicks */
+		if (me.getClickCount() >= 2) { /* respond to double clicks */
 
 			// Get a reference to the results JTable from the mouse event
 			JTable resultsTable = (JTable) me.getSource();
@@ -94,37 +95,35 @@ public class RetrieveFilterController extends MouseAdapter {
 	 */
 	public void showFilter(Filter filter) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
-		
+				
+		//Set edit mode
 		builder.setCurrentMode(Mode.EDIT);
+//		builder.getButton().setText("Edit");
 		
-		/*view.getFilterName().setText(filter.getName());
-		view.getFilterDescription().setText(filter.getDescription());
-		view.getFilterType().setSelectedItem(filter.getType().toString());
-		view.getFilterStatus().setSelectedItem(filter.getStatus().toString());
-		view.getFilterPriority().setSelectedItem(filter.getPriority().toString());
-		if (filter.getReleaseNumber() == -1) {
-			view.getFilterReleaseNumber().setText("");
-		} else {
-			view.getFilterReleaseNumber().setText(Integer.toString(filter.getReleaseNumber()));
-		}
-		view.getFilterEstimate().setText(Integer.toString(filter.getEstimate()));
-		view.getFilterActualEffort().setText(Integer.toString(filter.getActualEffort()));
+		//Type
+		builder.getFilterType().setSelectedItem(filter.getType().toString());
+		builder.getFilterType().setEnabled(true);
 		
-		view.getSaveButton().setText("Update");
-		view.getSaveButton().setEnabled(true);
-
-		view.getFilterName().setEnabled(true);
-		view.getFilterDescription().setEnabled(true);
-		view.getFilterType().setEnabled(true);
-		view.getFilterStatus().setEnabled(true);
-		view.getFilterPriority().setEnabled(true);
-		view.getFilterReleaseNumber().setEnabled(true);
-		if (requirement.getStatus() == InProgress || requirement.getStatus() == Complete) {
-			view.getFilterEstimate().setEnabled(false);
-		} else {
-			view.getFilterEstimate().setEnabled(true);
-		} */
-//		builder.getFilterActualEffort().setEnabled(true);
+		//User
+//		builder.
+		filter.getUser();
+		
+		
+		//UniqueID
+//		builder.get
+		filter.getUniqueID();
+		
+		//Comparator
+		builder.getFilterOperator().setSelectedItem(filter.getComparator());
+		builder.getFilterOperator().setEnabled(true);
+		
+		//Value
+		builder.getFilterValue().setText(filter.getValue());
+		builder.getFilterValue().setEnabled(true);
+		
+		//Enable
+//		filter.setValue(builder.getFilterValue().getText());
+//		builder.getFilterType().setEnabled(true);
 		
 		builder.setCurrentFilter(filter);
 	}
