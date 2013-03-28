@@ -140,14 +140,7 @@ public class SaveFilterController implements ActionListener
 		if (newFilter != null) {
 			System.out.print("Filter " + newFilter.getUniqueID() + " saved successfully\n");
 
-			builder.getFilterType().setEnabled(false);
-			builder.getFilterOperator().setEnabled(false);
-			builder.getStatus().setEnabled(false);
-			builder.getFilterValue().setEnabled(false);
-			builder.getFilterValue().setText("");
-			builder.getFilterValueBox().setEnabled(false);
-			builder.getButton().setText("Create");
-			builder.getButton().setEnabled(false);
+			builder.setInputEnabled(false);
 			filterList.getBtnCreate().setText("New Filter");
 			filterList.setBtnCreateIsCancel(false);
 		}
