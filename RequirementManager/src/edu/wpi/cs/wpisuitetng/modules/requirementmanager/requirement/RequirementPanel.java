@@ -215,7 +215,7 @@ public class RequirementPanel extends JPanel {
 		
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
-		scrollPane.setPreferredSize(new Dimension(400,200)); //Set the initial size of the txtDescription scroll panel
+		scrollPane.setPreferredSize(new Dimension(400,100)); //Set the initial size of the txtDescription scroll panel
 
 		//In this last section we adjust the size and alignments of all the components and add them to the innerPanel.
 		//Please read all the comments in this section if you are having trouble understanding what is going on.
@@ -231,7 +231,7 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
 		innerPanel.add(nameLabel, reqPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for "txtName" and add it to the innerPanel
-		reqPanelConstraints.ipadx = 150;//This tells the layout to stretch this field horizontally by 250 units
+		reqPanelConstraints.ipadx = 150;//This tells the layout to stretch this field horizontally by 150 units
 		reqPanelConstraints.weightx = 0.93;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
 		reqPanelConstraints.gridx = 1;
