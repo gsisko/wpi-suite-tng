@@ -250,36 +250,39 @@ public class Filter extends AbstractModel {
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
 	
-		switch (this.type){	
-		// The following two are strings
-		case Name:
-			return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
-		case Description:
-			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
+		try{
+			switch (this.type){	
+			// The following two are strings
+			case Name:
+				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
+			case Description:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
+			
+			// The following four are Integers
+			case Id: 
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+			case ActualEffort:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
+			case Estimate:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
+			case ReleaseNumber:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
 		
-		// The following four are Integers
-		case Id: 
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
-		case ActualEffort:
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
-		case Estimate:
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
-		case ReleaseNumber:
-			return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
-	
-		// The following three are different enums
-		case Status:
-			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
-		case Type:
-			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
-		case Priority:
-			return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
-	
-		// Default
-		default:
-			return true;  // default to not filter out stuff
+			// The following three are different enums
+			case Status:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
+			case Type:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
+			case Priority:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
+		
+			// Default
+			default:
+				return true;  // default to not filter out stuff
+			}
+		} catch (NumberFormatException nfe){
+			return false; // If parseInt is given a string with no numbers, the filter is set to pass the filter
 		}
-		
 	}
 	
 	
