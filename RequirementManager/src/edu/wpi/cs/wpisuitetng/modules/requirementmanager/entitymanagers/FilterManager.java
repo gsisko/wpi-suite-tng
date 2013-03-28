@@ -314,19 +314,43 @@ public class FilterManager implements EntityManager<Filter> {
 	}
 
 	// Not going to be implemented until we have good reason to
-	@Override
+	/**
+	 * Method advancedPut.
+	 * @param s Session
+	 * @param args String[]
+	 * @param content String
+	  @return String
+	 * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
+	 */
 	public String advancedPut(Session s, String[] args, String content)
 			throws WPISuiteException {
 		throw new NotImplementedException();
 	}
 
-	@Override
+	/**
+	 * Method advancedPost.
+	 * @param s Session
+	 * @param string String
+	 * @param content String
+	 * @return String
+	 * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
+	 */
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
 		throw new NotImplementedException();
 	}
-
-	@Override
+	
+	/** 
+	 * 
+	 *  @param s The current user session
+	 *  @param args 
+	 *  
+	  @return String
+	 * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedGet(Session, String[])
+	 */
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 		throw new NotImplementedException();

@@ -1,6 +1,27 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
 
 import com.google.gson.Gson;
@@ -9,9 +30,6 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** A filter is one set of constraints that a user can use to filter a list of requirements.
  * @author Team 5
@@ -33,7 +51,6 @@ public class Filter extends AbstractModel {
 	
 	
 	/**	Basic constructor
-	 * 
 	 */
 	public Filter () {
 		new Filter(FilterType.Other, OperatorType.Other, "value", true);
@@ -57,8 +74,7 @@ public class Filter extends AbstractModel {
 	}
 	
 	
-	/**
-	 * Converts this Filter to a JSON string
+	/** Converts this Filter to a JSON string
 	 * 
 	 * @return a string in JSON representing this Filter
 	 */
@@ -69,10 +85,9 @@ public class Filter extends AbstractModel {
 		return json;
 	}
 	
-	/**
-	 * Converts the given list of Filters to a JSON string
-	 * @param dlist A list of Filters
+	/** Converts the given list of Filters to a JSON string
 	 * 
+	 * @param dlist A list of Filters
 	 * @return A string in JSON representing the list of Filters
 	 */
 	public static String toJSON(Filter[] dlist) {
@@ -87,9 +102,9 @@ public class Filter extends AbstractModel {
 		return toJSON();
 	}
 	
-	/**
-	 * @param json Json string to parse containing Filter
+	/** Converts a given json string to a Filter
 	 * 
+	 * @param json Json string to parse containing Filter
 	 * @return The Filter given by Json
 	 */
 	public static Filter fromJSON(String json) {
@@ -97,10 +112,11 @@ public class Filter extends AbstractModel {
 		return builder.create().fromJson(json, Filter.class);
 	}
 	
-	/**
-	 * @param json Json string to parse containing Filter array
-	 * 
-	 * @return The Filter array given by json
+	/** Converts a JSON string of an array of filters to
+	 *  an array of filters.
+	 *  
+	 * @param json JSON string to parse containing Filter array
+	 * @return The Filter array given by JSON
 	 */
 	public static Filter[] fromJSONArray(String json) {
 		GsonBuilder builder = new GsonBuilder();
@@ -110,7 +126,6 @@ public class Filter extends AbstractModel {
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(java.lang.Object)
 	 */
-	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
 		if(o instanceof Filter && uniqueID == ((Filter) o).getUniqueID()) {
@@ -147,11 +162,54 @@ public class Filter extends AbstractModel {
 		return true;
 	}	
 	
+	/** Determines whether a Requirement passes a filter
+	*
+	*	@param req The Requirement in question
+	*
+	*	@return True if the Requirement passes, false if it does not
+	*/
+	public boolean passesFilter(Requirement req){
+		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
+	
+		try{
+			switch (this.type){	
+			// The following two are strings
+			case Name:
+				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
+			case Description:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
+			
+			// The following four are Integers
+			case Id: 
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+			case ActualEffort:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
+			case Estimate:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
+			case ReleaseNumber:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
+		
+			// The following three are different enums
+			case Status:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
+			case Type:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
+			case Priority:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
+		
+			// Default
+			default:
+				return true;  // default to not filter out stuff
+			}
+		} catch (NumberFormatException nfe){
+			return false; // If parseInt is given a string with no numbers, the filter is set to pass the filter
+		}
+	}
+	
 	
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
-	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 
@@ -160,7 +218,6 @@ public class Filter extends AbstractModel {
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
-	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 
@@ -241,55 +298,9 @@ public class Filter extends AbstractModel {
 	}
 
 	
-	/** Determines whether a Requirement passes a filter
-	*
-	*	@param req The Requirement in question
-	*
-	*	@return True if the Requirement passes, false if it does not
-	*/
-	public boolean passesFilter(Requirement req){
-		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
-	
-		try{
-			switch (this.type){	
-			// The following two are strings
-			case Name:
-				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
-			case Description:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
-			
-			// The following four are Integers
-			case Id: 
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
-			case ActualEffort:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
-			case Estimate:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
-			case ReleaseNumber:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
-		
-			// The following three are different enums
-			case Status:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
-			case Type:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
-			case Priority:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
-		
-			// Default
-			default:
-				return true;  // default to not filter out stuff
-			}
-		} catch (NumberFormatException nfe){
-			return false; // If parseInt is given a string with no numbers, the filter is set to pass the filter
-		}
-	}
+
 	
 	
-//	 The following getters and setters allow us to input different 
-//	 kinds of values into a Filter, store them as strings, and 
-//	 take them back out and use them as the proper types that they 
-//	 should be. 
 	
 	/**
 	 * @return the value
@@ -299,47 +310,6 @@ public class Filter extends AbstractModel {
 	}
 
 
-	/** Sets the value of the Filter when the input is a string
-	 * 
-	 * @param value the value to set
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	/** Sets the value of the Filter when the input is an Integer
-	 * 
-	 * @param value the value to set
-	 */
-	public void setValue(Integer value) {
-		this.value = value.toString();
-	}
-	
-	/** Sets the value of the Filter when the input is an RequirementStatus
-	 * 
-	 * @param value the value to set
-	 */
-	public void setValue(RequirementStatus value) {
-		this.value = value.toString();
-	}
-	
-	/** Sets the value of the Filter when the input is an RequirementType
-	 * 
-	 * @param value the value to set
-	 */
-	public void setValue(RequirementType value) {
-		this.value = value.toString();
-	}
-	
-	/** Sets the value of the Filter when the input is RequirementPriority
-	 * 
-	 * @param value the value to set
-	 */
-	public void setValue(RequirementPriority value) {
-		this.value = value.toString();
-	}
-	
-	
 	/** Sets the value of the Filter when the input is Object
 	 * 
 	 * @param value the value to set

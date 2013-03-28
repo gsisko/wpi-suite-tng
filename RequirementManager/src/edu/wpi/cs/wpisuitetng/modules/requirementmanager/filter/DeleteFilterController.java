@@ -43,8 +43,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class DeleteFilterController implements ActionListener {
 	/**  The view that this controller is watching */
 	private final ListRequirementsView theView;
-	/**  Table of filters that might need to be deleted*/
-	private JTable filters;
 
 	/** Default constructor. Also pulls filter table to 
 	 *  for referencing later.
@@ -53,18 +51,19 @@ public class DeleteFilterController implements ActionListener {
 	 */
 	public DeleteFilterController(ListRequirementsView view){
 		this.theView = view;
-
 	}
-
-
 
 	/** Action listener for when the "Delete" button is pressed
 	 *  AND more than one Filter in the list is highlighted.
 	 * 
+	 * NOTE: Doubles as a "Cancel" button
+	 * 
 	 * @param buttonPress The input that triggers the controller 
 	 */
 	public void actionPerformed(ActionEvent buttonPress) {		
-		this.filters = theView.getListPanel().getFilterPanel().getResultsTable();
+		// Get the table with the filters to delete
+		JTable filters = theView.getListPanel().getFilterPanel().getResultsTable();
+		
 		// get highlighted rows 
 		int[] rowNumbers = filters.getSelectedRows();
 

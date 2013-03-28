@@ -10,6 +10,7 @@ import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -257,28 +258,17 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s)  {
-		this.db.deleteAll(new Requirement());
+		this.db.deleteAll(new Requirement(), s.getProject());
 	}
 	
 
-	
-	
-	
+		
 // Unimplemented Manager methods	
 // Advanced Manager methods
-	/** 
-	 * 
-	 *  @param s The current user session
-	 *  @param args 
-	 *  
-	  @return String
-	 * @throws WPISuiteException
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedGet(Session, String[])
-	 */
+
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 	
 	
@@ -291,11 +281,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
-	@Override
 	public String advancedPut(Session s, String[] args, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	/**
@@ -307,11 +295,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
 	 */
-	@Override
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 

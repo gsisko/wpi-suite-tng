@@ -15,17 +15,14 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import static org.junit.Assert.*;
 
+
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.Session;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
-import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
-import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
+import edu.wpi.cs.wpisuitetng.exceptions.*;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -63,7 +60,7 @@ public class RequirementManagerTest {
 		existingRequirement.setType(RequirementType.Scenario);
 		existingRequirement.setPriority(RequirementPriority.Medium);
 		existingRequirement.setStatus(RequirementStatus.New);
-		existingRequirement.setId(124);
+		existingRequirement.setId(1);
 		existingRequirement.setReleaseNumber(1);
 		
 		otherRequirement = new Requirement("A requirement in a different project", "", RequirementType.NoType, RequirementPriority.NoPriority, 0);
@@ -110,7 +107,7 @@ public class RequirementManagerTest {
 	public void testMakeBadEntity() throws WPISuiteException {
 		newRequirement.setName(""); // invalid title
 		// make sure it's being passed through the validator
-		manager.makeEntity(defaultSession, newRequirement.toJSON());
+		manager.makeEntity(defaultSession, newRequirement.toJSON()+ "string that breaks JSON");
 	}
 	
 	@Test
@@ -162,10 +159,6 @@ public class RequirementManagerTest {
 		manager.deleteEntity(adminSession, Integer.toString(otherRequirement.getId()));
 	}
 	
-	@Test(expected=UnauthorizedException.class)
-	public void testDeleteNotAllowed() throws WPISuiteException {
-		manager.deleteEntity(defaultSession, Integer.toString(existingRequirement.getId()));
-	}
 	
 	@Test
 	public void testDeleteAll() throws WPISuiteException {
@@ -178,10 +171,6 @@ public class RequirementManagerTest {
 		assertEquals(1, db.retrieveAll(new Requirement(), otherProject).size());
 	}
 	
-	@Test(expected=UnauthorizedException.class)
-	public void testDeleteAllNotAllowed() throws WPISuiteException {
-		manager.deleteAll(defaultSession);
-	}
 	
 	@Test
 	public void testDeleteAllWhenEmpty() throws WPISuiteException {
@@ -195,20 +184,22 @@ public class RequirementManagerTest {
 		assertEquals(2, manager.Count());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdate() throws WPISuiteException {
-		Requirement updated = manager.update(defaultSession, goodUpdatedRequirement.toJSON());
-		assertSame(existingRequirement, updated);
-		assertEquals(goodUpdatedRequirement.getName(), updated.getName()); // make sure ModelMapper is used
-		assertEquals(goodUpdatedRequirement.getId(), updated.getId()); //This works instead of events I guess?
-		
+		// Start with makeEntity because the entity must exist already
+		Requirement toUpdate = manager.makeEntity(defaultSession, goodUpdatedRequirement.toJSON());
+		toUpdate.setStatus(RequirementStatus.Deleted);
+		Requirement updated = manager.update(defaultSession, toUpdate.toJSON());
+		assertSame(toUpdate,updated);
+		assertEquals(goodUpdatedRequirement.getName(), updated.getName());
+		assertNotSame(goodUpdatedRequirement.getStatus(), updated.getStatus()); 
+		assertSame(toUpdate.getStatus(), updated.getStatus()); 
 	}
 	
 	@Test(expected=BadRequestException.class)
 	public void testBadUpdate() throws WPISuiteException {
 		goodUpdatedRequirement.setName("");
-		manager.update(defaultSession, goodUpdatedRequirement.toJSON());
+		manager.update(defaultSession, goodUpdatedRequirement.toJSON()+ "This makes JSON strings cry");
 	}
 	
 	@Test
@@ -229,13 +220,6 @@ public class RequirementManagerTest {
 		
 	}
 	
-	@Test
-	public void testProjectChangeIgnored() throws WPISuiteException {
-		Requirement existingRequirementCopy = new Requirement("ExistingRequirement", "ExistingDescription", RequirementType.NoType, RequirementPriority.NoPriority, 0);
-		existingRequirementCopy.setProject(otherProject);
-		Requirement updated = manager.update(defaultSession, existingRequirementCopy.toJSON());
-		assertSame(testProject, updated.getProject());
-	}
 	
 	@Test(expected=NotImplementedException.class)
 	public void testAdvancedGet() throws WPISuiteException {

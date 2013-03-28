@@ -50,9 +50,9 @@ public class DeleteFilterObserver implements RequestObserver {
 	 * @param iReq The request response from the server 
 	 */
 	public void responseSuccess(IRequest iReq) {
-		// TODO Auto-generated method stub
-		refreshController.refreshData();
-
+		// If deleted successfully, we refresh the
+		// list view so we can see the changes.
+		refreshController.refreshData(); 
 	}
 
 	/**  Upon failure, prints to console
