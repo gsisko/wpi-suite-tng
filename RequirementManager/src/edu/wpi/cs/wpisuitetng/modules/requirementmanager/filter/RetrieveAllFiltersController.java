@@ -96,7 +96,7 @@ public class RetrieveAllFiltersController {
 			this.data = filters;
 			
 			// set the column names
-			String[] columnNames = {"ID", "Type", "Comparator", "Value", "Use Filter"};
+			String[] columnNames = {"Id", "Type", "Comparator", "Value", "Active"};
 			
 			// put the data in the table
 			Object[][] entries = new Object[filters.length][columnNames.length];
@@ -105,7 +105,11 @@ public class RetrieveAllFiltersController {
 				entries[i][1] = filters[i].getType().toString();
 				entries[i][2] = filters[i].getComparator().toString();
 				entries[i][3] = filters[i].getValue();
-				entries[i][4] = filters[i].isUseFilter();
+				if (filters[i].isUseFilter()) {
+					entries[i][4] = "yes";
+				} else {
+					entries[i][4] = "no";
+				}
 			}
 			
 			// fill the table

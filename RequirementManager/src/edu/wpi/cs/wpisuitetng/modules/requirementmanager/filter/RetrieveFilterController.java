@@ -122,6 +122,9 @@ public class RetrieveFilterController extends MouseAdapter {
 		builder.getStatus().setEnabled(true);
 		
 		builder.setCurrentFilter(filter);
+		
+		panel.getBtnCreate().setText("New Filter");
+		panel.setBtnCreateIsCancel(false);
 	}
 
 	/**

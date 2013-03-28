@@ -216,11 +216,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 	    return txtValue;
 	}
 
-	public JComboBox<String> getStatus() //?
+	public JComboBox<String> getStatus()
 	{
 	    return userFilterBox;
 	}
-
 
 	/**
 	 * @return the currentMode
