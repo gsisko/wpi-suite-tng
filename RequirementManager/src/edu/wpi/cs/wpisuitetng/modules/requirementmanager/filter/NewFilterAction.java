@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
 
 public class NewFilterAction implements ActionListener {
 	/** The button to watch */
@@ -15,17 +16,16 @@ public class NewFilterAction implements ActionListener {
 	FilterListPanel inPanel;
 	/** THE filter builder panel that will be set when this button is pressed*/
 	FilterBuilderPanel  builder;
-	
- 
+
+
 	/** When pressed, the information in the filter builder panel
-     *  is reset and the fields are grayed out.
+	 *  is reset and the fields are grayed out.
 	 * 
 	 * @param theButton The button to watch
 	 * @param builder   The filter builder panel to do work on
 	 */
 	public NewFilterAction(FilterListPanel thePanel, FilterBuilderPanel builder){
-					this.inPanel = thePanel;
-
+		this.inPanel = thePanel;
 		this.filterListPanelButton = inPanel.getBtnCreate();
 		this.builder = builder;		
 		inPanel.setBtnCreateIsCancel(false);
@@ -41,6 +41,8 @@ public class NewFilterAction implements ActionListener {
 			builder.setInputEnabled(true);
 			filterListPanelButton.setText("Cancel");  
 		}
+		builder.setCurrentMode(Mode.CREATE);
+		builder.setCurrentFilter(null);
 		inPanel.setBtnCreateIsCancel(!inPanel.isBtnCreateIsCancel());
 	}
 
