@@ -29,6 +29,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTable;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -50,10 +53,10 @@ public class DeleteFilterController implements ActionListener {
 	 */
 	public DeleteFilterController(ListRequirementsView view){
 		this.theView = view;
-				
+
 	}
-	
-	
+
+
 
 	/** Action listener for when the "Delete" button is pressed
 	 *  AND more than one Filter in the list is highlighted.
@@ -64,19 +67,28 @@ public class DeleteFilterController implements ActionListener {
 		this.filters = theView.getListPanel().getFilterPanel().getResultsTable();
 		// get highlighted rows 
 		int[] rowNumbers = filters.getSelectedRows();
-		
+
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < rowNumbers.length; i++){			
 			// Getting the ID from the current highlighted row
 			String filterId = (String) filters.getValueAt(rowNumbers[i], 0);
-			
+
 			// Create and send a request for the Filter with the given ID
 			// Send message for each filter ID for deletion
 			Request request;
 			request = Network.getInstance().makeRequest("requirementmanager/filter/" + filterId, HttpMethod.DELETE);
 			request.addObserver(new DeleteFilterObserver(this));
 			request.send();
-		}		
+		}
+		// Remove anything in the filter builder panel whenever the delete button is pressed
+		FilterBuilderPanel resetBuilderFields = 	theView.getListPanel().getBuilderPanel();
+		resetBuilderFields.setInputEnabled(false);
+		resetBuilderFields.setCurrentMode(Mode.CREATE);
+
+		// Set the cancel button back to New Filter if it was in cancel mode 
+		FilterListPanel resetListCancelButtons = theView.getListPanel().getFilterPanel();
+		resetListCancelButtons.getBtnCreate().setText("New Filter"); 
+		resetListCancelButtons.setBtnCreateIsCancel(false);
 	}
 
 
