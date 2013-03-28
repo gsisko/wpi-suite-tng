@@ -52,6 +52,7 @@ public class DeleteFilterObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// TODO Auto-generated method stub
 		refreshController.refreshData();
+		controller.getTheView().getController().refreshData();
 	}
 
 	/**  Upon failure, prints to console
