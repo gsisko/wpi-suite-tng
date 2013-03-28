@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilde
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -91,26 +90,19 @@ public class RetrieveFilterController extends MouseAdapter {
 	/**
 	 * Called by {@link RetrieveFilterRequestObserver} when the response
 	 * is received from the server.
-	 * @param requirement the requirement that was retrieved
+	 * @param filter the filter that was retrieved
 	 */
 	public void showFilter(Filter filter) {
-		// if a user has double-clicked on a requirement, set UI fields appropriately
+		// if a user has double-clicked on a filter, set UI fields appropriately
 				
 		//Set edit mode
 		builder.setCurrentMode(Mode.EDIT);
 		builder.getButton().setText("Update");
+		builder.getButton().setEnabled(true);
 		
 		//Type
 		builder.getFilterType().setSelectedItem(filter.getType().toString());
 		builder.getFilterType().setEnabled(true);
-		
-		//User
-//		builder.
-//		filter.getUser();
-		
-		//UniqueID
-//		builder.get
-//		filter.getUniqueID();
 		
 		//Comparator
 		builder.getFilterOperator().setSelectedItem(filter.getComparator());
@@ -120,20 +112,17 @@ public class RetrieveFilterController extends MouseAdapter {
 		builder.getFilterValue().setText(filter.getValue());
 		builder.getFilterValue().setEnabled(true);
 		
-		//Enable
-//		filter.setValue(builder.getFilterValue().getText());
-//		builder.getFilterType().setEnabled(true);
 		
 		builder.setCurrentFilter(filter);
 	}
 
 	/**
 	 * Called by {@link RetrieveFilterRequestObserver} when an error
-	 * occurred retrieving the requirement from the server.
+	 * occurred filter the filter from the server.
 	 */
 	public void errorRetrievingFilter(String error) {
 		JOptionPane.showMessageDialog(builder, 
-				"An error occurred opening the requirement you selected. " + error, "Error opening filter", 
+				"An error occurred opening the filter you selected. " + error, "Error opening filter", 
 				JOptionPane.ERROR_MESSAGE);
 	}
 
