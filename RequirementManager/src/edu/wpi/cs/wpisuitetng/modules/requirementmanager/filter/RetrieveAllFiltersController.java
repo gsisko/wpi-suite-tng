@@ -130,4 +130,8 @@ public class RetrieveAllFiltersController {
 		JOptionPane.showMessageDialog(view, "An error occurred retrieving filters from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
+	/** gets the Requirements list view */
+	public ListRequirementsView getView(){
+		return this.view;
+	}
 }
