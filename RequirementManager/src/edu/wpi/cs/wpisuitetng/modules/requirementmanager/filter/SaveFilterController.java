@@ -57,11 +57,11 @@ public class SaveFilterController implements ActionListener
     	this.builder = view.getListPanel().getBuilderPanel();
     	this.filterList = view.getListPanel().getFilterPanel();
     	if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
-	    	System.err.println("Creating a new requirement");
+	    	System.err.println("Creating a new filter");
 		    // get the fields from the UI
 			FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
-			OperatorType comparator = OperatorType.toType(builder.getFilterOperator().toString());
-			String value = builder.getFilterValue().toString();
+			OperatorType comparator = OperatorType.toType(builder.getFilterOperator().getSelectedItem().toString());
+			String value = builder.getFilterValue().getText();
 			
 			// make a PUT http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.PUT); // PUT == create
@@ -70,7 +70,7 @@ public class SaveFilterController implements ActionListener
 		    request.send();
     	}
 		else if (builder.getCurrentMode() == Mode.EDIT){ // we are updating an existing filter
-			System.err.println("Editing an existing requirement");
+			System.err.println("Editing an existing filter");
 			// make a new filter to store the updated data
 			Filter updatedFilter = new Filter(); 
 			
@@ -80,8 +80,8 @@ public class SaveFilterController implements ActionListener
 			updatedFilter.setUniqueID(oldFilter.getUniqueID());
 			// Copy in the new value of the fields
 			updatedFilter.setType(FilterType.toType(builder.getFilterType().getSelectedItem().toString()));
-			updatedFilter.setComparator(OperatorType.toType(builder.getFilterOperator().toString()));
-			updatedFilter.setValue(builder.getFilterValue().toString());
+			updatedFilter.setComparator(OperatorType.toType(builder.getFilterOperator().getSelectedItem().toString()));
+			updatedFilter.setValue(builder.getFilterValue().getText());
 			
 			// make a POST http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.POST); // POST == update

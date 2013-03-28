@@ -68,7 +68,7 @@ public class RetrieveAllFiltersController {
 	public void refreshData() {
 		final RequestObserver requestObserver = new RetrieveAllFiltersObserver(this);
 		Request request;
-		request = Network.getInstance().makeRequest("filtermanager/filter", HttpMethod.GET);
+		request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.GET);
 		request.addObserver(requestObserver);
 		request.send();
 	}
