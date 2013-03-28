@@ -52,7 +52,7 @@ public class FilterListPanel extends JPanel {
 	
 	protected JButton btnCreate;
 	protected JButton btnDelete;
-	private boolean btnCreateIsCancel = false;
+	private boolean btnCreateIsCancel;
 	
 	private Filter[] localFilters = {};
 	
@@ -66,7 +66,7 @@ public class FilterListPanel extends JPanel {
 
 	public FilterListPanel(ListPanel view) {
 		parent = view;
-		
+		this.btnCreateIsCancel = false;
 		// Set the layout manager and give the panel a border
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createTitledBorder("Filters"));

@@ -22,7 +22,8 @@ public class NewFilterAction implements ActionListener {
 	 * @param theButton The button to watch
 	 * @param builder   The filter builder panel to do work on
 	 */
-	public NewFilterAction(FilterListPanel inPanel, FilterBuilderPanel builder){
+	public NewFilterAction(FilterListPanel thePanel, FilterBuilderPanel builder){
+		this.inPanel = thePanel;
 		this.filterListPanelButton = inPanel.getBtnCreate();
 		this.builder = builder;
 		inPanel.setBtnCreateIsCancel(false);
