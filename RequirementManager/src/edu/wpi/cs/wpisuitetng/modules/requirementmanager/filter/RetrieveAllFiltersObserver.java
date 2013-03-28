@@ -66,6 +66,7 @@ public class RetrieveAllFiltersObserver implements RequestObserver {
 		else {
 			controller.errorReceivingData("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 		}
+		controller.getView().getController().refreshData();
 	}
 
 	@Override

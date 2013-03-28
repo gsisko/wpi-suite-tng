@@ -96,7 +96,7 @@ public class RetrieveAllFiltersController {
 			this.data = filters;
 			
 			// set the column names
-			String[] columnNames = {"Id", "Type", "Comparator", "Value", "Active"};
+			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
 			
 			// put the data in the table
 			Object[][] entries = new Object[filters.length][columnNames.length];
@@ -129,5 +129,9 @@ public class RetrieveAllFiltersController {
 	public void errorReceivingData(String error) {
 		JOptionPane.showMessageDialog(view, "An error occurred retrieving filters from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
+	}
+	/** gets the Requirements list view */
+	public ListRequirementsView getView(){
+		return this.view;
 	}
 }

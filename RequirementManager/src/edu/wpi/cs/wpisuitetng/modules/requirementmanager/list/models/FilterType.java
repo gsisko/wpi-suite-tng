@@ -32,13 +32,13 @@ public enum FilterType {
 	public String toString () {
 		switch (FilterType.this) {
 		case ActualEffort:
-			return "Actual Effort";
+			return "ActualEffort";
 		case Description:
 			return "Description";
 		case Estimate:
 			return "Estimate";
 		case Id:
-			return "ID";
+			return "Id";
 		case Name:
 			return "Name";
 		case Other:
@@ -46,7 +46,7 @@ public enum FilterType {
 		case Priority:
 			return "Priority";
 		case ReleaseNumber:
-			return "Release Number";
+			return "ReleaseNumber";
 		case Status:
 			return "Status";
 		case Type:

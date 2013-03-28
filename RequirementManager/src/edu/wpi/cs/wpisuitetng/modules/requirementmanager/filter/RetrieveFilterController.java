@@ -48,7 +48,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveFilterController extends MouseAdapter {
 
 	/** The results panel */
-        private final FilterListPanel panel;
+        private final ListPanel view;
         private final FilterBuilderPanel builder;
 
 	/**
@@ -56,9 +56,9 @@ public class RetrieveFilterController extends MouseAdapter {
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveFilterController(ListPanel view){
-	    	this.panel = view.getFilterPanel();
-	    	this.builder = view.getBuilderPanel();
+	public RetrieveFilterController(ListPanel listView){
+	    	this.view =listView;
+	    	this.builder = listView.getBuilderPanel();
 	}
 
 	/**
@@ -94,6 +94,8 @@ public class RetrieveFilterController extends MouseAdapter {
 	 */
 	public void showFilter(Filter filter) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
+		
+		FilterListPanel panel = view.getFilterPanel();
 				
 		//Set edit mode
 		builder.setCurrentMode(Mode.EDIT);
@@ -105,7 +107,7 @@ public class RetrieveFilterController extends MouseAdapter {
 		builder.getFilterType().setEnabled(true);
 		
 		//Comparator
-		builder.getFilterOperator().setSelectedItem(filter.getComparator());
+		builder.getFilterOperator().setSelectedItem(filter.getComparator().toString());
 		builder.getFilterOperator().setEnabled(true);
 		
 		//Value
@@ -117,9 +119,9 @@ public class RetrieveFilterController extends MouseAdapter {
 		
 		
 		if(filter.isUseFilter()){
-			builder.getStatus().setSelectedItem(0);
+			builder.getStatus().setSelectedIndex(0);
 		} else{
-			builder.getStatus().setSelectedItem(1);
+			builder.getStatus().setSelectedIndex(1);
 		}
 		
 		builder.getStatus().setEnabled(true);
@@ -144,6 +146,6 @@ public class RetrieveFilterController extends MouseAdapter {
 	 * @return the panel
 	 */
 	public FilterListPanel getPanel() {
-		return panel;
+		return view.getFilterPanel();
 	}
 }
