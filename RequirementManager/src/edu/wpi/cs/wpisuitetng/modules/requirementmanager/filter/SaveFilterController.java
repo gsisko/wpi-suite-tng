@@ -59,17 +59,28 @@ public class SaveFilterController implements ActionListener
 		this.builder = view.getListPanel().getBuilderPanel();
 		this.filterList = view.getListPanel().getFilterPanel();
 
-		if (builder.getFilterValue().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+		String curtype = builder.getFilterType().getSelectedItem().toString();
+    	if (curtype != "Type" && curtype != "Status" && curtype != "Priority" && builder.getFilterValue().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+
 
 		if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
 			System.err.println("Creating a new filter");
 			// get the fields from the UI
 			FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
 			OperatorType comparator = OperatorType.toType(builder.getFilterOperator().getSelectedItem().toString());
-			String value = builder.getFilterValue().getText();
+			String value = "";
+			if(type == FilterType.toType("Type"))
+				value = builder.getFilterValueBox().getSelectedItem().toString();
+			else if(type == FilterType.toType("Status"))
+				value = builder.getFilterValueBox().getSelectedItem().toString();
+			else if(type == FilterType.toType("Priority"))
+				value = builder.getFilterValueBox().getSelectedItem().toString();
+			else
+				value = builder.getFilterValue().getText();
+
 
 			// make a PUT http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.PUT); // PUT == create
@@ -87,9 +98,20 @@ public class SaveFilterController implements ActionListener
 			// Make sure to use the old ID
 			updatedFilter.setUniqueID(oldFilter.getUniqueID());
 			// Copy in the new value of the fields
-			updatedFilter.setType(FilterType.toType(builder.getFilterType().getSelectedItem().toString()));
+			FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
+			updatedFilter.setType(type);
 			updatedFilter.setComparator(OperatorType.toType(builder.getFilterOperator().getSelectedItem().toString()));
-			updatedFilter.setValue(builder.getFilterValue().getText());
+			String value = "";
+			if(type == FilterType.toType("Type"))
+				value = builder.getFilterValueBox().getSelectedItem().toString();
+			else if(type == FilterType.toType("Status"))
+				value = builder.getFilterValueBox().getSelectedItem().toString();
+			else if(type == FilterType.toType("Priority"))
+				value = builder.getFilterValueBox().getSelectedItem().toString();
+			else
+				value = builder.getFilterValue().getText();
+			updatedFilter.setValue(value);
+
 
 			// make a POST http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.POST); // POST == update
@@ -117,6 +139,7 @@ public class SaveFilterController implements ActionListener
 			builder.getStatus().setEnabled(false);
 			builder.getFilterValue().setEnabled(false);
 			builder.getFilterValue().setText("");
+			builder.getFilterValueBox().setEnabled(false);
 			builder.getButton().setText("Create");
 			builder.getButton().setEnabled(false);
 			filterList.getBtnCreate().setText("New Filter");

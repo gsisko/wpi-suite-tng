@@ -112,6 +112,9 @@ public class RetrieveFilterController extends MouseAdapter {
 		builder.getFilterValue().setText(filter.getValue());
 		builder.getFilterValue().setEnabled(true);
 		
+		builder.getFilterValueBox().setSelectedItem(filter.getValue());
+		builder.getFilterValueBox().setEnabled(true);
+		
 		
 		if(filter.isUseFilter()){
 			builder.getStatus().setSelectedItem(0);
