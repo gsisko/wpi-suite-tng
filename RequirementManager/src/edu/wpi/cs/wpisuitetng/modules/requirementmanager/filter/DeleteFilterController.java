@@ -41,7 +41,7 @@ public class DeleteFilterController implements ActionListener {
 	/**  The view that this controller is watching */
 	private final ListRequirementsView theView;
 	/**  Table of filters that might need to be deleted*/
-	private final JTable filters;
+	private JTable filters;
 
 	/** Default constructor. Also pulls filter table to 
 	 *  for referencing later.
@@ -50,7 +50,7 @@ public class DeleteFilterController implements ActionListener {
 	 */
 	public DeleteFilterController(ListRequirementsView view){
 		this.theView = view;
-		this.filters = view.getListPanel().getFilterPanel().getResultsTable();		
+				
 	}
 	
 	
@@ -61,6 +61,7 @@ public class DeleteFilterController implements ActionListener {
 	 * @param buttonPress The input that triggers the controller 
 	 */
 	public void actionPerformed(ActionEvent buttonPress) {		
+		this.filters = theView.getListPanel().getFilterPanel().getResultsTable();
 		// get highlighted rows 
 		int[] rowNumbers = filters.getSelectedRows();
 		

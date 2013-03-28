@@ -41,21 +41,22 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class SaveFilterController implements ActionListener 
 {
-	private final FilterListPanel filterList;
-    private final FilterBuilderPanel builder;
+	private FilterListPanel filterList;
+    private FilterBuilderPanel builder;
     private final ListRequirementsView view;
     
     public SaveFilterController(ListRequirementsView view) 
     {
-    	this.filterList = view.getListPanel().getFilterPanel();
-    	this.builder = view.getListPanel().getBuilderPanel();
+    	
     	this.view = view;
     }
 
     
     public void actionPerformed(ActionEvent event) 
     {
-	    if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
+    	this.builder = view.getListPanel().getBuilderPanel();
+    	this.filterList = view.getListPanel().getFilterPanel();
+    	if (builder.getCurrentMode() == Mode.CREATE) { // if we are creating a new filter
 	    	System.err.println("Creating a new requirement");
 		    // get the fields from the UI
 			FilterType type = FilterType.toType(builder.getFilterType().getSelectedItem().toString());
