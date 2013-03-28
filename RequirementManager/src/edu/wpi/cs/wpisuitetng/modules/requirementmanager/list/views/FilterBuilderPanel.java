@@ -279,15 +279,17 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo){
-	      this.getFilterType().setEnabled(setTo);
-	      this.getFilterOperator().setEnabled(setTo);
-	      this.getStatus().setEnabled(setTo);
-	      this.getFilterValue().setEnabled(setTo);
-	      this.getFilterValue().setText("");
-	      this.getButton().setEnabled(setTo);
-	      this.getButton().setText("Create");      
-	}
-	
+	    this.getFilterOperator().setSelectedIndex(0);
+	    this.getFilterType().setSelectedIndex(0);
+	    this.getStatus().setSelectedIndex(0);	    
+		this.getFilterType().setEnabled(setTo);
+	    this.getFilterOperator().setEnabled(setTo);
+	    this.getStatus().setEnabled(setTo);
+	    this.getFilterValue().setEnabled(setTo);
+	    this.getFilterValue().setText("");
+	    this.getButton().setEnabled(setTo);
+	    this.getButton().setText("Create");      
+	}	
 	
 
 }

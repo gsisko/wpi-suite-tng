@@ -34,14 +34,14 @@ public class NewFilterAction implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		    if (inPanel.isBtnCreateIsCancel()){
-			      builder.setInputEnabled(false);
-			      filterListPanelButton.setText("New Filter");  
-			    } else {
-			    	builder.setInputEnabled(true);
-			      filterListPanelButton.setText("Cancel");  
-			    }
-			    inPanel.setBtnCreateIsCancel(!inPanel.isBtnCreateIsCancel());
+		if (inPanel.isBtnCreateIsCancel()){
+			builder.setInputEnabled(false);
+			filterListPanelButton.setText("New Filter");  
+		} else {
+			builder.setInputEnabled(true);
+			filterListPanelButton.setText("Cancel");  
+		}
+		inPanel.setBtnCreateIsCancel(!inPanel.isBtnCreateIsCancel());
 	}
 
 }
