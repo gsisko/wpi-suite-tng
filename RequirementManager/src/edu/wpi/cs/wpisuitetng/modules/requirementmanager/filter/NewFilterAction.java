@@ -16,38 +16,43 @@ public class NewFilterAction implements ActionListener {
 	/** THE filter builder panel that will be set when this button is pressed*/
 	FilterBuilderPanel  builder;
 	
-	
-	public NewFilterAction(FilterListPanel inPanel, FilterBuilderPanel builder) {
-		this.inPanel = inPanel;
-		filterListPanelButton = inPanel.getBtnCreate();
-		this.builder = builder;
-	}
-	
-	/** Constructor to be used by "CancelFilterAction" - completes a loop between 
-	 * the filters
+ 
+	/** When pressed, the information in the filter builder panel
+     *  is reset and the fields are grayed out.
 	 * 
 	 * @param theButton The button to watch
 	 * @param builder   The filter builder panel to do work on
 	 */
-	public NewFilterAction(JButton theButton, FilterBuilderPanel builder){
-		this.filterListPanelButton = theButton;
-		this.builder = builder;
+	public NewFilterAction(FilterListPanel thePanel, FilterBuilderPanel builder){
+					this.inPanel = thePanel;
+
+		this.filterListPanelButton = inPanel.getBtnCreate();
+		this.builder = builder;		
+		inPanel.setBtnCreateIsCancel(false);
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Changes the button label
-		filterListPanelButton.setText("Cancel");  
-		// Sets a new action listener to the button: Allows for cancel
-		filterListPanelButton.addActionListener(new CancelFilterAction(filterListPanelButton, builder));
-		
-		builder.getFilterType().setEnabled(true);
-		builder.getFilterOperator().setEnabled(true);
-		builder.getStatus().setEnabled(true);
-		builder.getFilterValue().setEnabled(true);
-		builder.getButton().setText("Create");
-		builder.getButton().setEnabled(true);
-
+		    if (inPanel.isBtnCreateIsCancel()){
+			      builder.getFilterType().setEnabled(false);
+			      builder.getFilterOperator().setEnabled(false);
+		      builder.getStatus().setEnabled(false);
+			      builder.getFilterValue().setEnabled(false);
+			      builder.getFilterValue().setText(" ");
+			      builder.getButton().setText("Create");
+			      builder.getButton().setEnabled(false);
+			      filterListPanelButton.setText("New Filter");  
+			    } else {
+			      builder.getFilterType().setEnabled(true);
+			      builder.getFilterOperator().setEnabled(true);
+			      builder.getStatus().setEnabled(true);
+			      builder.getFilterValue().setEnabled(true);
+			      builder.getButton().setText("Create");
+			      builder.getButton().setEnabled(true);
+			      filterListPanelButton.setText("Cancel");  
+			    }
+			    inPanel.setBtnCreateIsCancel(!inPanel.isBtnCreateIsCancel());
 	}
 
 }

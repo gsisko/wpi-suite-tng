@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -37,16 +36,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.CancelFilterAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewFilterAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteFilterController;
 
 /**
  * Panel to contain the list of filters that have been saved by the user
@@ -59,6 +53,7 @@ public class FilterListPanel extends JPanel {
 	
 	protected JButton btnCreate;
 	protected JButton btnDelete;
+	private boolean btnCreateIsCancel;
 	
 	private Filter[] localFilters = {};
 	
@@ -72,7 +67,7 @@ public class FilterListPanel extends JPanel {
 
 	public FilterListPanel(ListPanel view) {
 		parent = view;
-		
+		this.setBtnCreateIsCancel(false);
 		// Set the layout manager and give the panel a border
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createTitledBorder("Filters"));
@@ -181,6 +176,20 @@ public class FilterListPanel extends JPanel {
 	
 	public JButton getBtnCreate(){
 		return btnCreate;
+	}
+
+	/**
+	 * @return the btnCreateIsCancel
+	 */
+	public boolean isBtnCreateIsCancel() {
+		return btnCreateIsCancel;
+	}
+
+	/**
+	 * @param btnCreateIsCancel the btnCreateIsCancel to set
+	 */
+	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
+		this.btnCreateIsCancel = btnCreateIsCancel;
 	}
 	
 }
