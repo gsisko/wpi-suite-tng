@@ -113,6 +113,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 		comparatorBox = new JComboBox<String>(comparatorStrings);
 		userFilterBox = new JComboBox<String>(userFilterStrings);
 		valueBox = new JComboBox<String>();
+		valueBox.setVisible(false);
 
 		//set initial conditions
 		typeBox.setSelectedIndex(0);
@@ -190,6 +191,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		FilterBuilderConstraints.ipadx=80;
 		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
+		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
 		//end value
 
 		//Save button:
@@ -299,28 +301,20 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 		DefaultComboBoxModel<String> compbox = new DefaultComboBoxModel<String>(comparatorStrings);
 		comparatorBox.setModel(compbox);
 
-
-		GridBagConstraints FilterBuilderConstraints = new GridBagConstraints();
-		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		FilterBuilderConstraints.ipadx=80;
-
 		DefaultComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(comparatorStrings);
 		comparatorBox.setModel(cbm);
 
 
 		if(curType == "Id" ||curType=="ReleaseNumber" ||curType=="Estimate" ||curType=="ActualEffort" ||curType=="Name" ||curType=="Description" ){
 			if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
-				this.remove(txtValue);
-				add(valueBox, FilterBuilderConstraints);
+				txtValue.setVisible(false);
+				valueBox.setVisible(true);
 			}
 		}
 		else{
 			if(selected == "Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" ||selected=="Name" ||selected=="Description" ){
-				this.remove(valueBox);
-				txtValue = new JTextField();
-				add(txtValue, FilterBuilderConstraints);
+				valueBox.setVisible(false);
+				txtValue.setVisible(true);
 			}
 		}
 
