@@ -103,7 +103,13 @@ public class RetrieveAllFiltersController {
 			for (int i = 0; i < filters.length; i++) {
 				entries[i][0] = String.valueOf(filters[i].getUniqueID());
 				entries[i][1] = filters[i].getType().toString();
-				entries[i][2] = filters[i].getComparator().toString();
+				if (filters[i].getComparator().toString().equals("Contains")) {
+					entries[i][2] = "c";
+				} else if (filters[i].getComparator().toString().equals("DoesNotContain")) {
+					entries[i][2] = "!c";
+				} else {
+					entries[i][2] = filters[i].getComparator().toString();
+				}
 				entries[i][3] = filters[i].getValue();
 				if (filters[i].isUseFilter()) {
 					entries[i][4] = "yes";
