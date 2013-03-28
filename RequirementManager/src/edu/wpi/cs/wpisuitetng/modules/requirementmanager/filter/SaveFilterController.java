@@ -112,7 +112,13 @@ public class SaveFilterController implements ActionListener
 				value = builder.getFilterValue().getText();
 			updatedFilter.setValue(value);
 
-
+			//Copy over active status properly
+			if(builder.getStatus().getSelectedIndex() == 1){
+				updatedFilter.setUseFilter(false);
+			} else {
+				updatedFilter.setUseFilter(true);
+			}
+		
 			// make a POST http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.POST); // POST == update
 			request.setBody(updatedFilter.toJSON()); // put the new message in the body of the request
