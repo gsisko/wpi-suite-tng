@@ -101,7 +101,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 		//create strings for the boxes
 		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
-		String[] comparatorStrings = {"GreaterThan","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo","Contains","DoesNotContain"};
+		String[] comparatorStrings = {">",">=","<","<=","=","!=","Contains","DoesNotContain"};
 		String[] userFilterStrings ={"Active","Inactive"};
 
 		//construct the boxes
@@ -261,11 +261,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
         String[] comparatorStrings = null;
         
         if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
-        	comparatorStrings = new String[]{"GreaterThan","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo"};
+        	comparatorStrings = new String[]{">",">=","<","<=","=","!="};
         else if(selected=="Name" ||selected=="Description" )
-        	comparatorStrings = new String[]{"EqualTo","NotEqualTo","Contains","DoesNotContain"};
+        	comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
         else if(selected=="Type" ||selected=="Status"  ||selected=="Priority")
-        	comparatorStrings = new String[]{"EqualTo","NotEqualTo"};
+        	comparatorStrings = new String[]{"=","!="};
 		
 		
 		

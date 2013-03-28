@@ -90,6 +90,11 @@ public class SaveFilterController implements ActionListener
 			updatedFilter.setType(FilterType.toType(builder.getFilterType().getSelectedItem().toString()));
 			updatedFilter.setComparator(OperatorType.toType(builder.getFilterOperator().getSelectedItem().toString()));
 			updatedFilter.setValue(builder.getFilterValue().getText());
+			if (builder.getStatus().getSelectedIndex() == 0) {
+				updatedFilter.setUseFilter(true);
+			} else {
+				updatedFilter.setUseFilter(false);
+			}
 
 			// make a POST http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/filter", HttpMethod.POST); // POST == update

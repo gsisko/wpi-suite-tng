@@ -24,8 +24,8 @@ public enum OperatorType {
 	Contains,
 	DoesNotContain,
 	Other;
-	
-	
+
+
 	/** Converts a string to the proper OperatorType
 	 * 
 	 * NOTE: This method is designed to only take strings retrieved from a UE.dropdonwlist that contains
@@ -36,15 +36,29 @@ public enum OperatorType {
 	 * @return the proper OperatorType
 	 */
 	public static OperatorType toType (String toConvert){
-		return valueOf(toConvert);
+		if (toConvert.equals("=")) {
+			return EqualTo;
+		} else if (toConvert.equals(">")) {
+			return GreaterThan;
+		} else if (toConvert.equals(">=")) {
+			return GreaterThanOrEqualTo;
+		} else if (toConvert.equals("<")) {
+			return LessThan;
+		} else if (toConvert.equals("=<")) {
+			return LessThanOrEqualTo;
+		} else if (toConvert.equals("!=")) {
+			return NotEqualTo;
+		} else {
+			return valueOf(toConvert);
+		}
 	}
-	
+
 	public String toString () {
 		switch (OperatorType.this) {
 		case Contains:
 			return "Contains";
 		case DoesNotContain:
-			return "Does Not Contain";
+			return "DoesNotContain";
 		case EqualTo:
 			return "=";
 		case GreaterThan:
@@ -62,8 +76,8 @@ public enum OperatorType {
 			return "";
 		}
 	}
-	
-	
+
+
 	/** Performs the operation described for integers. Returns false for 
 	 *  any non-integer operations, like Contains etc.
 	 * 
@@ -90,8 +104,8 @@ public enum OperatorType {
 			return false; // any other operator should be false
 		}
 	}
-	
-	
+
+
 	/** Performs the operation described for Strings. Returns false 
 	 *  for requested operations other than Contains/DoesNotContain/EqualTo/NotEqualTo
 	 * 
@@ -114,14 +128,14 @@ public enum OperatorType {
 			return !sample.equals(fromReq); // if not equal, return true
 		default:
 			return false; // any other operator should be false
-		
-		
+
+
 		}	
 	}
-	
 
 
-	
+
+
 	/** Performs the operation described for RequirementType. Returns false 
 	 *  for requested operations other than EqualTo/NotEqualTo
 	 * 
@@ -140,7 +154,7 @@ public enum OperatorType {
 			return false;	// any other operator should be false
 		}		
 	}
-	
+
 	/** Performs the operation described for RequirementStatus. Returns false 
 	 *  for requested operations other than EqualTo/NotEqualTo
 	 * 
@@ -159,7 +173,7 @@ public enum OperatorType {
 			return false;	// any other operator should be false
 		}		
 	}
-	
+
 	/** Performs the operation described for RequirementPriority. Returns false 
 	 *  for requested operations other than EqualTo/NotEqualTo
 	 * 

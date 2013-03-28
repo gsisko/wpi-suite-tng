@@ -63,7 +63,6 @@ public class SaveFilterObserver implements RequestObserver {
 		
 		// auto-update
 		rmcontroller.getView().getFilterController().refreshData();
-		rmcontroller.getView().getController().refreshData();
 		
 	}
 	/** This method responses when there is a save response error
