@@ -29,8 +29,7 @@ public class FilterManager implements EntityManager<Filter> {
 	private Data db;
 
 	/** This is for advanced logging and debugging of the server interactions */
-	private static final Logger logger = Logger.getLogger(FilterManager.class
-			.getName());
+	private static final Logger logger = Logger.getLogger(FilterManager.class.getName());
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -84,7 +83,11 @@ public class FilterManager implements EntityManager<Filter> {
 	public void save(Session s, Filter model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 
-
+		// If the filter doesn't have a "user", give it one
+		if (model.getUser() == null) {
+			model.setUser(s.getUser());
+		}
+		
 		// Save the filter in the database if possible, otherwise throw an
 		// exception
 		// We DON'T want the filter to be associated with any project
@@ -121,10 +124,7 @@ public class FilterManager implements EntityManager<Filter> {
 							+ content);
 		}
 		
-		// If the filter doesn't have a "user", give it one
-		if (newFilter.getUser() == null) {
-			newFilter.setUser(s.getUser());
-		}
+
 		
 		try {
 			// Check to see if the requirement exists in the database already -

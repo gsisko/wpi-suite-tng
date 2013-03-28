@@ -110,6 +110,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		
 		// Load initial data
 		controller.refreshData();
+		filterController.refreshData();
 	}
 	
 	public RetrieveAllRequirementsController getController() {

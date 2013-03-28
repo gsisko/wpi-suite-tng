@@ -176,6 +176,7 @@ public class MainTabController {
 			Component tab = view.getComponentAt(view.indexAtLocation(event.getX(), event.getY()));
 			if (tab instanceof ListRequirementsView) {
 				((ListRequirementsView)tab).getController().refreshData();
+				((ListRequirementsView)tab).getFilterController().refreshData();
 			}
 		}
 	}

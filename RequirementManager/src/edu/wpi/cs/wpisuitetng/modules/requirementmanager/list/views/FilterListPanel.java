@@ -40,6 +40,8 @@ import javax.swing.JTable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.CancelFilterAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewFilterAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
@@ -114,18 +116,8 @@ public class FilterListPanel extends JPanel {
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
 		
-		btnCreate.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				FilterBuilderPanel builder = parent.getBuilderPanel();
-				builder.getFilterType().setEnabled(true);
-				builder.getFilterOperator().setEnabled(true);
-				builder.getStatus().setEnabled(true);
-				builder.getFilterValue().setEnabled(true);
-				builder.getButton().setText("Create");
-				builder.getButton().setEnabled(true);
-		}
-});
+		// Sets up listener system. Once pressed, changes to CancelFilterAction listener, then back to this.
+		btnCreate.addActionListener(new NewFilterAction(this, parent.getBuilderPanel()));
 		
 		btnDelete.addActionListener(new DeleteFilterController(this.parent.getParent()));
 	}
@@ -186,5 +178,10 @@ public class FilterListPanel extends JPanel {
 	public void setLocalFilters(Filter[] localFilters) {
 		this.localFilters = localFilters;
 	}
+	
+	public JButton getBtnCreate(){
+		return btnCreate;
+	}
+	
 }
 
