@@ -64,9 +64,9 @@ public class RetrieveFilterObserver implements RequestObserver {
 		}
 
 		// parse the requirement received from the core
-		Filter[] requirements = Filter.fromJSONArray(response.getBody());
-		if (requirements.length > 0 && requirements[0] != null) {
-			controller.showFilter(requirements[0]);
+		Filter[] filters = Filter.fromJSONArray(response.getBody());
+		if (filters.length > 0 && filters[0] != null) {
+			controller.showFilter(filters[0]);
 		}
 		else {
 			controller.errorRetrievingFilter("No requirements received.");

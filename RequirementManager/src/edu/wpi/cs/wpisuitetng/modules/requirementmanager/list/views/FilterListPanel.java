@@ -41,6 +41,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteFilterController;
@@ -84,7 +85,7 @@ public class FilterListPanel extends JPanel {
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 
 		// Add a listener for row clicks
-		//resultsTable.addMouseListener(new RetrieveFilterController(this.panel));
+		resultsTable.addMouseListener(new RetrieveFilterController(parent));
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);

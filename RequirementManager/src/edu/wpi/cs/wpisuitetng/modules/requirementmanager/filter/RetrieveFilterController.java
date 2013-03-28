@@ -57,9 +57,9 @@ public class RetrieveFilterController extends MouseAdapter {
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveFilterController(ListRequirementsView view){
-	    	this.panel = view.getListPanel().getFilterPanel();
-	    	this.builder = view.getListPanel().getBuilderPanel();
+	public RetrieveFilterController(ListPanel view){
+	    	this.panel = view.getFilterPanel();
+	    	this.builder = view.getBuilderPanel();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class RetrieveFilterController extends MouseAdapter {
 				
 		//Set edit mode
 		builder.setCurrentMode(Mode.EDIT);
-//		builder.getButton().setText("Edit");
+		builder.getButton().setText("Update");
 		
 		//Type
 		builder.getFilterType().setSelectedItem(filter.getType().toString());
@@ -106,12 +106,11 @@ public class RetrieveFilterController extends MouseAdapter {
 		
 		//User
 //		builder.
-		filter.getUser();
-		
+//		filter.getUser();
 		
 		//UniqueID
 //		builder.get
-		filter.getUniqueID();
+//		filter.getUniqueID();
 		
 		//Comparator
 		builder.getFilterOperator().setSelectedItem(filter.getComparator());
