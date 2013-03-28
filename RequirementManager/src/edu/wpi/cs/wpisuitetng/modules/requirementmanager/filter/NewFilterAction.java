@@ -69,6 +69,7 @@ public class NewFilterAction implements ActionListener {
 			filterListPanelButton.setText("New Filter");  
 		} else {
 			builder.setInputEnabled(true);
+			builder.getStatus().setEnabled(false);
 			filterListPanelButton.setText("Cancel");  
 		}
 		// Set up system for next button press

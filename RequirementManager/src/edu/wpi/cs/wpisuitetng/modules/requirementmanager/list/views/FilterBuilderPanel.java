@@ -71,13 +71,13 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 	//button
 	private final JButton btnSave;
-	
+
 	private final ListPanel parent;
 	private final FilterListPanel grandpa;
-	
+
 	private Filter currentFilter;
 	private Mode currentMode;
-	
+
 	private String curType = "Id";
 
 	/**
@@ -105,7 +105,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 		//create strings for the boxes
 		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
-		String[] comparatorStrings = {"GreaterThan","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo","Contains","DoesNotContain"};
+		String[] comparatorStrings = {"=", "!=", ">","<",">=","<=","Contains","DoesNotContain"};
 		String[] userFilterStrings ={"Active","Inactive"};
 
 		//construct the boxes
@@ -113,7 +113,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 		comparatorBox = new JComboBox<String>(comparatorStrings);
 		userFilterBox = new JComboBox<String>(userFilterStrings);
 		valueBox = new JComboBox<String>();
-		
+
 		//set initial conditions
 		typeBox.setSelectedIndex(0);
 		typeBox.setEnabled(false);
@@ -121,7 +121,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 		comparatorBox.setEnabled(false);
 		userFilterBox.setSelectedIndex(0);
 		userFilterBox.setEnabled(false);
-		
+
 		// The action listener for this is below
 		typeBox.addActionListener(this);
 
@@ -209,28 +209,28 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 	}
 	public JComboBox<String> getFilterType()
 	{
-	    return typeBox;
+		return typeBox;
 	}
 
 	public JComboBox<String> getFilterOperator()
 	{
-	    return comparatorBox;
+		return comparatorBox;
 	}
 
 	public JTextField getFilterValue()
 	{
-	    return txtValue;
+		return txtValue;
 	}
-	
+
 	public JComboBox<String> getFilterValueBox()
 	{
-	    return valueBox;
+		return valueBox;
 	}
 
 
 	public JComboBox<String> getStatus()
 	{
-	    return userFilterBox;
+		return userFilterBox;
 	}
 
 	/**
@@ -249,12 +249,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 	public Filter getCurrentFilter()
 	{
-	    return currentFilter;
+		return currentFilter;
 	}
 
 	public void setCurrentFilter(Filter newFilter)
 	{
-	    currentFilter = newFilter;
+		currentFilter = newFilter;
 	}
 	/**
 	 * @return the grandpa
@@ -262,7 +262,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 	public FilterListPanel getGrandpa() {
 		return grandpa;
 	}
-	
+
 	/** Watches for changes in the "FilterType JCombo box
 	 *  and updates the comparator drop down box to only
 	 *  all the user to pick valid operators
@@ -272,34 +272,34 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		@SuppressWarnings("unchecked")
 		JComboBox<String> comboBox = (JComboBox<String>) e.getSource();
-		
-        String selected = (String) comboBox.getSelectedItem();
-                
-        String[] comparatorStrings = null;
-        String[] valueStrings = null;
-        
-        // Limit the options for comparators by the FilterType
-        if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
-        	comparatorStrings = new String[]{"GreaterThan","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo"};
-        else if(selected=="Name" ||selected=="Description" )
-        	comparatorStrings = new String[]{"EqualTo","NotEqualTo","Contains","DoesNotContain"};
-        else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
-        	comparatorStrings = new String[]{"EqualTo","NotEqualTo"};
-        	if(selected=="Type" )
-        		valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
-        	if(selected=="Status" )
-        		valueStrings=new String[]{"New","InProgress","Open","Complete","Deleted"};
-        	if(selected=="Priority")
-        		valueStrings=new String[]{"","High","Medium","Low"};
-        	DefaultComboBoxModel<String> valb = new DefaultComboBoxModel<String>(valueStrings);
-        	valueBox.setModel(valb);
-        }
-		
+
+		String selected = (String) comboBox.getSelectedItem();
+
+		String[] comparatorStrings = null;
+		String[] valueStrings = null;
+
+		// Limit the options for comparators by the FilterType
+		if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
+			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
+		else if(selected=="Name" ||selected=="Description" )
+			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
+		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
+			comparatorStrings = new String[]{"=","!="};
+			if(selected=="Type" )
+				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
+			if(selected=="Status" )
+				valueStrings=new String[]{"New","InProgress","Open","Complete","Deleted"};
+			if(selected=="Priority")
+				valueStrings=new String[]{"","High","Medium","Low"};
+			DefaultComboBoxModel<String> valb = new DefaultComboBoxModel<String>(valueStrings);
+			valueBox.setModel(valb);
+		}
+
 
 		DefaultComboBoxModel<String> compbox = new DefaultComboBoxModel<String>(comparatorStrings);
 		comparatorBox.setModel(compbox);
-		
-		
+
+
 		GridBagConstraints FilterBuilderConstraints = new GridBagConstraints();
 		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
 		FilterBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
@@ -309,7 +309,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 		DefaultComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(comparatorStrings);
 		comparatorBox.setModel(cbm);
 
-		
+
 		if(curType == "Id" ||curType=="ReleaseNumber" ||curType=="Estimate" ||curType=="ActualEffort" ||curType=="Name" ||curType=="Description" ){
 			if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
 				this.remove(txtValue);
@@ -323,37 +323,37 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 				add(txtValue, FilterBuilderConstraints);
 			}
 		}
-		  		
+
 		curType = selected;
 	}
 
-	
+
 	/** Enables or disables all fields in the builder panel. Not intended for
 	 *  use by controllers trying to load in data to the FilterBuilderPanel
 	 * 
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo){
-	    // Reset the JCombo boxes
+		// Reset the JCombo boxes
 		this.getFilterOperator().setSelectedIndex(0);
-	    this.getFilterType().setSelectedIndex(0);
-	    this.getStatus().setSelectedIndex(0);	    
-		
-	    // Enable/Disable
-	    this.getFilterType().setEnabled(setTo);
-	    this.getFilterOperator().setEnabled(setTo);
-	    this.getStatus().setEnabled(setTo);
-	    this.getFilterValue().setEnabled(setTo);
+		this.getFilterType().setSelectedIndex(0);
+		this.getStatus().setSelectedIndex(0);	    
 
-	    this.getFilterValueBox().setEnabled(setTo);
-	    this.getFilterValue().setText("");
+		// Enable/Disable
+		this.getFilterType().setEnabled(setTo);
+		this.getFilterOperator().setEnabled(setTo);
+		this.getStatus().setEnabled(setTo);
+		this.getFilterValue().setEnabled(setTo);
 
-	    this.getButton().setEnabled(setTo);
-	    
-	    // Reset value field
-	    this.getFilterValue().setText("");
-	    
-	    // Ensure that the button is set correctly
-	    this.getButton().setText("Create");      
+		this.getFilterValueBox().setEnabled(setTo);
+		this.getFilterValue().setText("");
+
+		this.getButton().setEnabled(setTo);
+
+		// Reset value field
+		this.getFilterValue().setText("");
+
+		// Ensure that the button is set correctly
+		this.getButton().setText("Create");      
 	}	
 }
