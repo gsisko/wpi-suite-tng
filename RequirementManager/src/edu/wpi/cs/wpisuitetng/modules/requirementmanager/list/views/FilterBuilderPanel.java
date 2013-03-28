@@ -101,11 +101,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 		//create strings for the boxes
 		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
-<<<<<<< HEAD
-		String[] comparatorStrings = {"Greater than","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo"};
-=======
 		String[] comparatorStrings = {"GreaterThan","GreaterThanOrEqualTo","LessThan","LessThanOrEqualTo","EqualTo","NotEqualTo","Contains","DoesNotContain"};
->>>>>>> Filters Can Be Made And Deleted
 		String[] userFilterStrings ={"Active","Inactive"};
 
 		//construct the boxes
