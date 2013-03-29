@@ -73,7 +73,7 @@ public class JanewayFrame extends JFrame {
 		int yPos = (int)((dim.height - height) / 2 * .75);
 		setBounds(xPos, yPos, width, height);
 		this.setPreferredSize(new Dimension(width, height));
-		this.setMinimumSize(new Dimension(1300,700));
+	
 		
 		// Setup the layout manager
 		this.setLayout(new BorderLayout());

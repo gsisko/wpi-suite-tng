@@ -22,36 +22,41 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
 /**
- * Action that calls {@link RetrieveAllRequirementsController#refreshData()}, default mnemonic key is R
+ * Action that calls {@link MainTabController#addListRequirementsTab()}, default mnemonic key is D.
  */
 @SuppressWarnings("serial")
-public class RefreshRequirementsAction extends AbstractAction {
+public class ListRequirementsAction extends AbstractAction {
 	
-	/** The controller to be called when this action is performed */
-	protected final RetrieveAllRequirementsController controller;
+	private final MainTabController controller;
 	
 	/**
-	 * Construct a RefreshRequirementsAction
-	 * @param controller when the action is performed this controller's refreshData() method will be called
+	 * Construct a list requirements action
+	 * @param controller the controller to call when the action is performed
 	 */
-	public RefreshRequirementsAction(RetrieveAllRequirementsController controller) {
-		super("Refresh");
+	public ListRequirementsAction(MainTabController controller) {
+		super("List Requirements");
 		this.controller = controller;
-		putValue(MNEMONIC_KEY, KeyEvent.VK_R);
+		putValue(MNEMONIC_KEY, KeyEvent.VK_D);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		controller.refreshData();
+		Tab tab = controller.addTab();
+		ListRequirementsView view = new ListRequirementsView(controller, tab);
+		tab.setComponent(view);
+		view.requestFocus();
 	}
 
 }

@@ -1,12 +1,34 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus.*;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority.*;
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /** Requirement: Holds data that makes up a Requirement
  * 
@@ -35,7 +57,7 @@ public class Requirement extends AbstractModel {
 	
 	// blank constructor
 	public Requirement(){
-		new Requirement("","",NoType,NoPriority,0);
+		new Requirement("","",RequirementType.NoType, RequirementPriority.NoPriority,0);
 	}
 	
 	
@@ -57,7 +79,7 @@ public class Requirement extends AbstractModel {
 		// The rest are default values
 		this.setEstimate(0);
 		this.setActualEffort(0);			// Initial actual effort set to zero
-		this.setStatus(New);		// Initial status should be set to NEW
+		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
 	}
 	
@@ -143,12 +165,11 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * @param json Json string to parse containing Defect
+	 * @param json Json string to parse containing Requirement
 	
-	 * @return The Defect given by json */
+	 * @return The Requirement given by json */
 	public static Requirement fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
-		addGsonDependencies(builder);
 		return builder.create().fromJson(json, Requirement.class);
 	}
 	
@@ -158,16 +179,7 @@ public class Requirement extends AbstractModel {
 	 * @return The Requirement array given by json */
 	public static Requirement[] fromJSONArray(String json) {
 		GsonBuilder builder = new GsonBuilder();
-		addGsonDependencies(builder);
 		return builder.create().fromJson(json, Requirement[].class);
-	}
-	
-	/**
-	 * Add dependencies necessary for Gson to interact with this class
-	 * @param builder Builder to modify
-	 */
-	public static void addGsonDependencies(GsonBuilder builder) {
-		RequirementEvent.addGsonDependencies(builder);
 	}
 	
 	/**
@@ -175,7 +187,6 @@ public class Requirement extends AbstractModel {
 	 * @param project Project
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setProject(Project) */
-	@Override
 	public void setProject(Project project) {
 		super.setProject(project);
 	}

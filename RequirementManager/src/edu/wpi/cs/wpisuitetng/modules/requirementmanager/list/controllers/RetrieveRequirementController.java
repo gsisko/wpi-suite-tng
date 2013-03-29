@@ -1,3 +1,27 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 import java.awt.event.MouseAdapter;
@@ -6,9 +30,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -19,14 +43,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
-	protected RequirementPanel view;
+	protected ResultsPanel view;
 
 	/**
 	 * Construct the controller
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveRequirementController(RequirementPanel view) {
+	public RetrieveRequirementController(ResultsPanel view) {
 		this.view = view;
 	}
 
@@ -63,35 +87,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 	 */
 	public void showRequirement(Requirement requirement) {
 		// if a user has double-clicked on a requirement, set UI fields appropriately
-		
-		view.setCreateNew(false);
-
-		view.getRequirementName().setText(requirement.getName());
-		view.getRequirementDescription().setText(requirement.getDescription());
-		view.getRequirementType().setSelectedItem(requirement.getType().toString());
-		view.getRequirementStatus().setSelectedItem(requirement.getStatus().toString());
-		view.getRequirementPriority().setSelectedItem(requirement.getPriority().toString());
-		if (requirement.getReleaseNumber() == -1) {
-			view.getRequirementReleaseNumber().setText("");
-		} else {
-			view.getRequirementReleaseNumber().setText(Integer.toString(requirement.getReleaseNumber()));
-		}
-		view.getRequirementEstimate().setText(Integer.toString(requirement.getEstimate()));
-		view.getRequirementActualEffort().setText(Integer.toString(requirement.getActualEffort()));
-		
-		view.getSaveButton().setText("Update");
-		view.getSaveButton().setEnabled(true);
-
-		view.getRequirementName().setEnabled(true);
-		view.getRequirementDescription().setEnabled(true);
-		view.getRequirementType().setEnabled(true);
-		view.getRequirementStatus().setEnabled(true);
-		view.getRequirementPriority().setEnabled(true);
-		view.getRequirementReleaseNumber().setEnabled(true);
-		view.getRequirementEstimate().setEnabled(true);
-		view.getRequirementActualEffort().setEnabled(true);
-		
-		view.setCurrentRequirement(requirement);
+		view.getTabController().addEditRequirementTab(requirement);
 	}
 
 	/**
