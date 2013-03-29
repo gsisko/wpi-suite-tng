@@ -22,36 +22,37 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
- * Action that calls {@link RetrieveAllRequirementsController#refreshData()}, default mnemonic key is R
+ * Action that calls {@link MainTabController#addCreateRequirementTab()}, default mnemonic key is C. 
  */
 @SuppressWarnings("serial")
-public class RefreshRequirementsAction extends AbstractAction {
-	
-	/** The controller to be called when this action is performed */
-	protected final RetrieveAllRequirementsController controller;
+public class CreateRequirementAction extends AbstractAction {
+
+	private final MainTabController controller;
 	
 	/**
-	 * Construct a RefreshRequirementsAction
-	 * @param controller when the action is performed this controller's refreshData() method will be called
+	 * Create a CreateRequirementAction
+	 * @param controller When the action is performed, controller.addCreateRequirementTab() is called
 	 */
-	public RefreshRequirementsAction(RetrieveAllRequirementsController controller) {
-		super("Refresh");
+	public CreateRequirementAction(MainTabController controller) {
+		super("Create Requirement");
 		this.controller = controller;
-		putValue(MNEMONIC_KEY, KeyEvent.VK_R);
+		putValue(MNEMONIC_KEY, KeyEvent.VK_C);
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		controller.refreshData();
+	public void actionPerformed(ActionEvent e) {
+		controller.addCreateRequirementTab();
 	}
 
 }

@@ -22,31 +22,34 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.AbstractAction;
 
 /**
- * Custom cell renderer for JTables. Displays dates in the
- * following format: MM/dd/yy hh:mm am/pm
- *
+ * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
  */
 @SuppressWarnings("serial")
-public class DateTableCellRenderer extends DefaultTableCellRenderer {
-	
-	/** The date formatter */
-	protected SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy hh:mm a");
+public class SaveChangesAction extends AbstractAction {
 
+	private final SaveRequirementController controller;
+	
 	/**
-	 * @see java.swing.table.DefaultTableCellRenderer#setValue
+	 * Create a SaveChangesAction
+	 * @param controller When the action is performed, controller.save will be called
 	 */
-	@Override
-	public void setValue(Object value) {
-		if (value instanceof Date) {			
-			setText(formatter.format((Date) value));
-		}
+	public SaveChangesAction(SaveRequirementController controller) {
+		super("Save Changes");
+		this.controller = controller;
+		putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		controller.save();
+	}
+
 }
