@@ -110,17 +110,17 @@ public enum OperatorType {
 	public static boolean perform(OperatorType op,  Integer sample, Integer fromReq){
 		switch(op){
 		case EqualTo:
-			return sample == fromReq;
+			return sample.intValue() == fromReq.intValue();
 		case GreaterThan:
-			return sample < fromReq;
+			return sample.intValue() < fromReq.intValue();
 		case GreaterThanOrEqualTo:
-			return sample <= fromReq;
+			return sample.intValue() <= fromReq.intValue();
 		case LessThan:
-			return sample > fromReq;
+			return sample.intValue() > fromReq.intValue();
 		case LessThanOrEqualTo:
-			return sample >= fromReq;
+			return sample.intValue() >= fromReq.intValue();
 		case NotEqualTo:
-			return sample != fromReq;
+			return sample.intValue() != fromReq.intValue();
 		default:
 			return false; // any other operator should be false
 		}
