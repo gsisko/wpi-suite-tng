@@ -65,7 +65,7 @@ public enum OperatorType {
 			return GreaterThanOrEqualTo;
 		} else if (toConvert.equals("<")) {
 			return LessThan;
-		} else if (toConvert.equals("=<")) {
+		} else if (toConvert.equals("<=")) {
 			return LessThanOrEqualTo;
 		} else if (toConvert.equals("!=")) {
 			return NotEqualTo;
