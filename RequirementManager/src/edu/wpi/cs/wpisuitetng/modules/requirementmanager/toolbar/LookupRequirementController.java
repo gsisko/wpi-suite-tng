@@ -83,6 +83,7 @@ public class LookupRequirementController implements ActionListener {
 			catch (NumberFormatException nfe) { // Invalid id, alert the user
 				listField.clearText();
 				JOptionPane.showMessageDialog(parentView, "The requirement ID you entered is not valid.", "Invalid Requirement ID", JOptionPane.WARNING_MESSAGE);
+				waitingForResponse = false;
 				return;
 			}
 
