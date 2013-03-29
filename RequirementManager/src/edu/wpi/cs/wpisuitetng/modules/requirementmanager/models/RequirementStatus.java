@@ -1,3 +1,27 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Christian Gonzalez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /**
@@ -11,7 +35,7 @@ public enum RequirementStatus {
 	Open,     // The status of a requirement that is in the backlog
 	Complete,  // A complete Requirement
 	Deleted;	// Any of these status's may lead to DELETED, but DELETED may move to any but NEW
-	 // Need to ask Marty about this, but some of the project descriptions hint at this
+	// Need to ask Marty about this, but some of the project descriptions hint at this
 	
 
 	/** Converts a string to the proper RequirementStatus 

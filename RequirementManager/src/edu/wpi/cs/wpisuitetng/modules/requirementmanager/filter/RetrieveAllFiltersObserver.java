@@ -22,10 +22,10 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -34,16 +34,16 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * An observer for a request to retrieve all requirements
  */
-public class RetrieveAllRequirementsRequestObserver implements RequestObserver {
+public class RetrieveAllFiltersObserver implements RequestObserver {
 
 	/** The controller managing the request */
-	protected RetrieveAllRequirementsController controller;
+	protected RetrieveAllFiltersController controller;
 
 	/**
 	 * Construct the observer
 	 * @param controller
 	 */
-	public RetrieveAllRequirementsRequestObserver(RetrieveAllRequirementsController controller) {
+	public RetrieveAllFiltersObserver(RetrieveAllFiltersController controller) {
 		this.controller = controller;
 	}
 
@@ -57,7 +57,7 @@ public class RetrieveAllRequirementsRequestObserver implements RequestObserver {
 
 		if (response.getStatusCode() == 200) {
 			// parse the response				
-			Requirement[] requirements = Requirement.fromJSONArray(response.getBody());
+			Filter[] requirements = Filter.fromJSONArray(response.getBody());
 
 			// notify the controller
 			controller.receivedData(requirements);
@@ -65,6 +65,7 @@ public class RetrieveAllRequirementsRequestObserver implements RequestObserver {
 		else {
 			controller.errorReceivingData("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 		}
+		controller.getView().getController().refreshData();
 	}
 
 	@Override

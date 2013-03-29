@@ -25,7 +25,7 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class FilterListPanel extends JPanel {
-	
+		
 	/**
 	 * Constructs the panel
 	 */
