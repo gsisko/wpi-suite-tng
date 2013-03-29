@@ -187,6 +187,11 @@ public class Filter extends AbstractModel {
 			case Estimate:
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
 			case ReleaseNumber:
+				
+				if (this.value.equals("none")){
+					return OperatorType.perform(this.comparator, -1, req.getReleaseNumber());				
+				}				
+
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
 		
 			// The following three are different enums
