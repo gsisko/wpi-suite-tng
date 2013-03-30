@@ -89,6 +89,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private Mode currentMode;
 
 	private String curType = "Id";
+	private boolean isBuilderActive = true;
 
 	/**
 	 * Construct the panel
@@ -333,6 +334,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo){
+		isBuilderActive = setTo;
+		
 		// Reset the JCombo boxes
 		this.getFilterOperator().setSelectedIndex(0);
 		this.getFilterType().setSelectedIndex(0);
@@ -406,7 +409,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	}
 	@Override
 	public void toggleNewCancalMode() {
-		
+		setInputEnabled(!isBuilderActive);
 	}
 	@Override
 	public void translateAndDisplayModel(String jsonArray) {
