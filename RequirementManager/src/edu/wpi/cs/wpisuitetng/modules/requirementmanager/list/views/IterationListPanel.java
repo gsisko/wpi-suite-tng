@@ -29,7 +29,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -37,13 +36,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.DeleteIterationController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.NewIterationAction;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.RetrieveIterationController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewModelAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IterationBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
@@ -60,17 +58,22 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	private boolean btnCreateIsCancel;
 
 	private Iteration[] localIterations = {};
+	
+	private RetrieveAllModelsController retrieveAllController;
+	private DeleteModelController deleteController;
+	private RetrieveModelController retrieveController;
 
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
 	private final ListPanel parent;
+	
 	/**
 	 * Construct the panel
 	 */
-
 	public IterationListPanel(ListPanel view) {
 		parent = view;
+		
 		this.setBtnCreateIsCancel(false);
 		// Set the layout manager
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -83,9 +86,6 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
-
-		// Add a listener for row clicks
-		//resultsTable.addMouseListener(new RetrieveIterationController(parent));
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -113,12 +113,17 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
+		retrieveAllController = new RetrieveAllModelsController(this, parent.getBuilderPanel(), "iteration");
+		deleteController = new DeleteModelController(this, parent.getBuilderPanel(), "iteration");
+		retrieveController = new RetrieveModelController(this, parent.getBuilderPanel(), "iteration");
+		
+		// Add a listener for row clicks
+		resultsTable.addMouseListener(retrieveController);
 
-		/*// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
-		btnCreate.addActionListener(new NewIterationAction(this, parent.getBuilderPanel()));
-
-		btnDelete.addActionListener(new DeleteIterationController(this.parent.getParent()));
-*/
+		
+		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
+		btnCreate.addActionListener(new NewModelAction(this, parent.getBuilderPanel()));
+		btnDelete.addActionListener(deleteController);
 
 	}
 
@@ -165,7 +170,6 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		return parent;
 	}
 
-	
 	/**
 	 * @return the localIterations
 	 */
@@ -199,13 +203,6 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	}
 
 	/**
-	 * Remove anything in the filter builder panel whenever the delete button is pressed
-	 */
-	public void clearAndReset() {
-		
-	}
-
-	/**
 	 * Set the cancel button back to New Iteration if it was in cancel mode
 	 */
 	public void setCancelBtnToNew() {
@@ -226,7 +223,8 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	 * @return true on success, false on failure
 	 */
 	public boolean refreshAll() {
-		return false;
+		retrieveAllController.refreshData();
+		return true;
 	}
 
 	/** Gets the unique identifier of the list entry that was double clicked
@@ -280,7 +278,7 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	 * @param jsonString An array of models in the form of a JSON string
 	 */
 	public void showRecievedModels(String jsonString) {
-		/*// empty the table
+		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
 		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
@@ -312,9 +310,16 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		}
 		else {
 			// do nothing, there are no iterations
-		}*/
+		}
 	}
 
+	/**
+	 * Remove anything in the filter builder panel whenever the delete button is pressed
+	 */
+	public void clearAndReset() {
+		
+	}
+	
 	public String getModelMessage() {
 		return null;
 	}
