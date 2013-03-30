@@ -28,6 +28,7 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requ
 
 import javax.swing.JOptionPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
@@ -142,6 +143,22 @@ public class SaveRequirementController
 	
 	public RequirementPanel getView() {
 		return view;
+	}
+	/**
+	 * Saves a new note to the Requirement
+	 */
+	public void saveNote() {
+		Requirement currentRequirement = view.getCurrentRequirement();
+    	
+    	String NoteContent = view.getRequirementNote().getText();
+		
+    	currentRequirement.getNotes().add(new Note(NoteContent));
+    	
+    	// make a POST http request and let the observer get the response
+	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+	    request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+	    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+	    request.send();
 	}
 }
 

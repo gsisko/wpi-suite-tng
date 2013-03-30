@@ -35,13 +35,13 @@ import javax.swing.AbstractAction;
 @SuppressWarnings("serial")
 public class SaveNoteAction extends AbstractAction {
 
-	private final SaveNoteController controller;
+	private final SaveRequirementController controller;
 	
 	/**
 	 * Create a SaveChangesAction
 	 * @param controller When the action is performed, controller.save will be called
 	 */
-	public SaveNoteAction(SaveNoteController controller) {
+	public SaveNoteAction(SaveRequirementController controller) {
 		super("Save Note");
 		this.controller = controller;
 		putValue(MNEMONIC_KEY, KeyEvent.VK_S);
@@ -49,7 +49,7 @@ public class SaveNoteAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		controller.save();
+		controller.saveNote();
 	}
 
 }
