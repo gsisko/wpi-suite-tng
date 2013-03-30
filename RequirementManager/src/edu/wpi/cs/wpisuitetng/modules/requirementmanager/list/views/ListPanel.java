@@ -30,6 +30,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
 
 /**
  * Panel to hold the three portions of the requirement list interface. The
@@ -49,6 +50,9 @@ public class ListPanel extends JPanel {
 	/** Panel containing the results of the requirement list */
 	protected ResultsPanel resultsPanel;
 
+	/** Panel containing tabs instead of filter */
+	protected ListTabView filtersTabPanel;
+	
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
 	
@@ -77,7 +81,10 @@ public class ListPanel extends JPanel {
 		this.filtersPanel = new FilterListPanel(this);
 		JScrollPane filtersScrollPane = new JScrollPane(filtersPanel);
 		this.resultsPanel = new ResultsPanel(tabController);
-
+		
+		//Testing adding tab views
+		this.filtersTabPanel = new ListTabView(this);
+		
 		// Constrain the filtersPanel
 		layout.putConstraint(SpringLayout.NORTH, filtersScrollPane, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, filtersScrollPane, 0, SpringLayout.WEST, this);
@@ -96,12 +103,17 @@ public class ListPanel extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, resultsPanel, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, resultsPanel, 0, SpringLayout.SOUTH, this);
 
+		//Constrain our new filterTabPanel
+		layout.putConstraint(SpringLayout.NORTH, filtersTabPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, filtersTabPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, filtersTabPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, filtersTabPanel, 200, SpringLayout.WEST, filtersScrollPane);
+		
 		// Add the panels
-		this.add(filtersScrollPane);
+//		this.add(filtersScrollPane);
 		this.add(builderScrollPane);
 		this.add(resultsPanel);
-		
-
+		this.add(filtersTabPanel);
 	}
 	
 	public ResultsPanel getResultsPanel(){
