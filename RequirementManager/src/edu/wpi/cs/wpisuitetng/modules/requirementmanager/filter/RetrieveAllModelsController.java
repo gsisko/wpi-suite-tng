@@ -24,6 +24,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -32,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * Controller to handle retrieving all filters from the server and
  * displaying them in the {@link SearchFiltersView}
  */
-public class RetrieveAllModelsController {
+public class RetrieveAllModelsController implements ActionListener{
 	/**  The list view that this controller is watching */
 	private final IListBuilder listView;
 	/**  The builder view that this controller must interact with */
@@ -56,6 +59,16 @@ public class RetrieveAllModelsController {
 		this.builderView = builderView;
 	}
 
+	
+	/** The action to be performed 
+	 * 
+	 */
+	public void actionPerformed(ActionEvent arg0) {
+		this.refreshData();		
+	}
+	
+	
+	
 	/**
 	 * Sends a request for all of the filters
 	 */
@@ -83,5 +96,7 @@ public class RetrieveAllModelsController {
 	public void errorReceivingData(String error) {
 		System.err.println("An error occured while receiving data");
 	}
+
+
 
 }
