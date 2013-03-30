@@ -45,6 +45,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.ClosableTabCompone
 public class ListTabView extends JTabbedPane {
 	
 	private ListPanel parent;
+	private FilterListPanel filterList;
 	
 	public ListTabView(ListPanel view) {
 		
@@ -52,13 +53,14 @@ public class ListTabView extends JTabbedPane {
 		
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-//		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
-		addTab("Filters", new ImageIcon(), new FilterListPanel(parent),
-		       "Your Dashboard - notifications, etc.");
+		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
+		filterList = new FilterListPanel(parent);
+		addTab("Filters", new ImageIcon(), filterList,
+		       "List of Filters");
 		
-		addTab("Iterations", new ImageIcon(), new JPanel(), "Iterations go here.");
+		addTab("Iterations", new ImageIcon(), new JPanel(), "List of Iterations");
 		
-		this.setPreferredSize(new Dimension(200, 500)); //TODO: Magic numbers
+		this.setPreferredSize(new Dimension(190, 500)); //TODO: Magic numbers
 	}
 	
 	@Override
@@ -82,6 +84,20 @@ public class ListTabView extends JTabbedPane {
 	public void setComponentAt(int index, Component component) {
 		super.setComponentAt(index, component);
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
+	}
+
+	/**
+	 * @return the listPanel
+	 */
+	public FilterListPanel getFilterList() {
+		return filterList;
+	}
+
+	/**
+	 * @param listPanel the listPanel to set
+	 */
+	public void setFilterList(FilterListPanel filterList) {
+		this.filterList = filterList;
 	}
 	
 }
