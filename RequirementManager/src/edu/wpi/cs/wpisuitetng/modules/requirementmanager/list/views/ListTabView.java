@@ -24,14 +24,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.dashboard.DashboardView;
@@ -46,6 +44,7 @@ public class ListTabView extends JTabbedPane {
 	
 	private ListPanel parent;
 	private FilterListPanel filterList;
+	private IterationListPanel iterationList;
 	
 	public ListTabView(ListPanel view) {
 		
@@ -55,12 +54,11 @@ public class ListTabView extends JTabbedPane {
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
 		filterList = new FilterListPanel(parent);
-		addTab("Filters", new ImageIcon(), filterList,
-		       "List of Filters");
+		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
+		iterationList = new IterationListPanel(parent);
+		addTab("Iterations", new ImageIcon(), iterationList, "List of Iterations");
 		
-		addTab("Iterations", new ImageIcon(), new JPanel(), "List of Iterations");
-		
-		this.setPreferredSize(new Dimension(190, 500)); //TODO: Magic numbers
+		this.setPreferredSize(new Dimension(190, 500));
 	}
 	
 	@Override
@@ -98,6 +96,20 @@ public class ListTabView extends JTabbedPane {
 	 */
 	public void setFilterList(FilterListPanel filterList) {
 		this.filterList = filterList;
+	}
+	
+	/**
+	 * @return the listPanel
+	 */
+	public IterationListPanel getIterationList() {
+		return iterationList;
+	}
+
+	/**
+	 * @param listPanel the listPanel to set
+	 */
+	public void setIterationList(IterationListPanel iterationrList) {
+		this.iterationList = iterationList;
 	}
 	
 }
