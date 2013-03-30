@@ -44,9 +44,6 @@ public class ListPanel extends JPanel {
 	/** Panel containing the filter building interface */
 	protected FilterBuilderPanel builderPanel;
 
-	/** Panel containing the list of filters saved by the user */
-	protected FilterListPanel filtersPanel;
-
 	/** Panel containing the results of the requirement list */
 	protected ResultsPanel resultsPanel;
 
@@ -78,12 +75,11 @@ public class ListPanel extends JPanel {
 		// Construct the panels that compose the list view
 		this.builderPanel = new FilterBuilderPanel(this);
 		JScrollPane builderScrollPane = new JScrollPane(builderPanel);
-		this.filtersPanel = new FilterListPanel(this);
-		JScrollPane filtersScrollPane = new JScrollPane(filtersPanel);
-		this.resultsPanel = new ResultsPanel(tabController);
-		
 		//Testing adding tab views
 		this.filtersTabPanel = new ListTabView(this);
+		JScrollPane filtersScrollPane = new JScrollPane(filtersTabPanel);
+		this.resultsPanel = new ResultsPanel(tabController);
+		
 		
 		// Constrain the filtersPanel
 		layout.putConstraint(SpringLayout.NORTH, filtersScrollPane, 0, SpringLayout.NORTH, this);
@@ -110,10 +106,10 @@ public class ListPanel extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, filtersTabPanel, 200, SpringLayout.WEST, filtersScrollPane);
 		
 		// Add the panels
-//		this.add(filtersScrollPane);
+		this.add(filtersScrollPane);
 		this.add(builderScrollPane);
 		this.add(resultsPanel);
-		this.add(filtersTabPanel);
+		//this.add(filtersTabPanel);
 	}
 	
 	public ResultsPanel getResultsPanel(){
@@ -130,7 +126,7 @@ public class ListPanel extends JPanel {
 	}
 	
 	public FilterListPanel getFilterPanel(){
-	    return filtersPanel;
+	    return filtersTabPanel.getFilterList();
 	}
 
 	/**

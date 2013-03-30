@@ -70,7 +70,7 @@ public class FilterListPanel extends JPanel {
 		this.setBtnCreateIsCancel(false);
 		// Set the layout manager and give the panel a border
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		setBorder(BorderFactory.createTitledBorder("Filters"));
+		//setBorder(BorderFactory.createTitledBorder("Filters"));
 
 		// Construct the table model
 		resultsTableModel = new ResultsTableModel();
