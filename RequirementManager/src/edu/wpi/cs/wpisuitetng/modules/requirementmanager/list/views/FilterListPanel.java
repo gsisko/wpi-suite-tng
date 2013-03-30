@@ -29,8 +29,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -72,9 +70,8 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 	public FilterListPanel(ListPanel view) {
 		parent = view;
 		this.setBtnCreateIsCancel(false);
-		// Set the layout manager and give the panel a border
+		// Set the layout manager
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		setBorder(BorderFactory.createTitledBorder("Filters"));
 
 		// Construct the table model
 		resultsTableModel = new ResultsTableModel();
@@ -102,10 +99,10 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
 		
-		btnCreate.setMaximumSize(new Dimension(100, 40));
-		btnCreate.setMinimumSize(new Dimension(100, 40));
-		btnDelete.setMaximumSize(new Dimension(100, 40));
-		btnDelete.setMinimumSize(new Dimension(100, 40));
+		btnCreate.setMaximumSize(new Dimension(120, 40));
+		btnCreate.setMinimumSize(new Dimension(120, 40));
+		btnDelete.setMaximumSize(new Dimension(120, 40));
+		btnDelete.setMinimumSize(new Dimension(120, 40));
 		
 		this.add(btnCreate);
 		this.add(Box.createRigidArea(new Dimension(0,6)));
@@ -258,12 +255,35 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 
 	@Override
 	public void translateAndDisplayModel(String jsonArray) {
+		// TODO no
+
+	}
+
+	@Override
+	public String getSelectedUniqueIdentifier(MouseEvent me) {
+		// TODO Auto-generated method stub
+		
+		JTable filters = parent.getFilterPanel().getResultsTable();
+		
+		int row = filters.rowAtPoint(me.getPoint());
+
+		String filterId=null;
+		// make sure the user actually clicked on a row
+		if (row > -1) {
+			filterId = (String) resultsTable.getValueAt(row, 0);
+		}
+		
+		return filterId;
+	}
+
+	@Override
+	public void showRecievedModels(String jsonString) {
 		// TODO Auto-generated method stub
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
 		
-		Filter[] filters = Filter.fromJSONArray(jsonArray);
+		Filter[] filters = Filter.fromJSONArray(jsonString);
 		
 		this.getModel().setColumnNames(emptyColumns);
 		this.getModel().setData(emptyData);
@@ -305,24 +325,6 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 		else {
 			// do nothing, there are no filters
 		}
-	}
-
-	@Override
-	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// TODO Auto-generated method stub
-		
-		JTable filters = parent.getFilterPanel().getResultsTable();
-		
-		// get highlighted row
-		int rowNumber = filters.getSelectedRow();
-		
-		return (String) filters.getValueAt(rowNumber, 0);
-	}
-
-	@Override
-	public void showRecievedModels(String jsonString) {
-		// TODO Auto-generated method stub
-		
 	}
 }
 
