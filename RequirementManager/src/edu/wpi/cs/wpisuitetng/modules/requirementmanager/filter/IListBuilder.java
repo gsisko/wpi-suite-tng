@@ -23,6 +23,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
+import java.awt.event.MouseEvent;
+
 
 /** Interface to go over builder and list panels that work together
  * and have buttons/controllers that include the following.
@@ -88,9 +90,10 @@ public interface IListBuilder {
 
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
+	 * @param me The mouse event that was triggered by a double click
 	 * @return The unique identifier, either name or ID number
 	 */
-	public String getSelectedUniqueIdentifier();
+	public String getSelectedUniqueIdentifier(MouseEvent me);
 
 
 	/** Takes a JSON string that holds an array of models and uploads them
