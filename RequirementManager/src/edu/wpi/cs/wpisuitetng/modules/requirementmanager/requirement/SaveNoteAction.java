@@ -42,7 +42,7 @@ public class SaveNoteAction extends AbstractAction {
 	 * @param controller When the action is performed, controller.save will be called
 	 */
 	public SaveNoteAction(SaveRequirementController controller) {
-		super("Save Note");
+		super("Add Note");
 		this.controller = controller;
 		putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 	}
