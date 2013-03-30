@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +38,8 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
@@ -242,6 +245,17 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// be saved back into the database
 		oldReq.updateReq(reqUpdate);
 		
+		// If there are Notes, and the last one is new, set its User to the current User
+		ArrayList<Note> notes = oldReq.getNotes();
+		if (notes.size() > 0)
+		{
+			Note lastNote = notes.get(notes.size() - 1);
+			User lastUser = lastNote.getUser();
+			if (lastUser.getIdNum() == -1)
+			{
+				lastNote.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
+			}
+		}
 		// Attempt to save. WPISuiteException may be thrown
 		this.save(s,oldReq);
 				
