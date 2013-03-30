@@ -92,7 +92,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private Mode currentMode;
 
 	private String curType = "Id";
-	private boolean isBuilderActive = true;
+	private boolean isBuilderActive = false;
 	
 	private SaveModelController saveController;
 
@@ -341,6 +341,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 				txtValue.setVisible(false);
 				txtNumValue.setVisible(true);
 			}
+			else{ // if it needs a number field 
+				valueBox.setVisible(false);
+				txtValue.setVisible(false);
+				txtNumValue.setVisible(true);
+			}
 		}
 
 		curType = selected;
@@ -408,6 +413,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		
 		if(this.getCurrentMode() == Mode.EDIT)
 			filter.setUniqueID(currentFilter.getUniqueID());
+		else
+			filter.setUniqueID(-1);
 		
 		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
 		filter.setType(type);
@@ -428,41 +435,34 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	}
 	@Override
 	public void toggleNewCancalMode() {
+		currentMode = Mode.CREATE; 
 		setInputEnabled(!isBuilderActive);
 	}
 	@Override
-	public void translateAndDisplayModel(String jsonArray) {
-		
-	}
-	@Override
-	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		return null;
-	}
-	@Override
-	public void showRecievedModels(String jsonString) {
-				
-		Filter filter = Filter.fromJSON(jsonString);
+	public void translateAndDisplayModel(String jsonString) {
+
+		Filter filter = Filter.fromJSONArray(jsonString)[0];
 		//Set edit mode
 		this.setCurrentMode(Mode.EDIT);
 		this.getButton().setText("Update");
 		this.getButton().setEnabled(true);
-		
+
 		//Type
 		this.getFilterType().setSelectedItem(filter.getType().toString());
 		this.getFilterType().setEnabled(true);
-		
+
 		//Comparator
 		this.getFilterOperator().setSelectedItem(filter.getComparator().toString());
 		this.getFilterOperator().setEnabled(true);
-		
+
 		//Value
 		this.getFilterValue().setText(filter.getValue());
 		this.getFilterValue().setEnabled(true);
-		
+
 		//Value?
 		this.getFilterValueBox().setSelectedItem(filter.getValue());
 		this.getFilterValueBox().setEnabled(true);
-		
+
 		//Active
 		if(filter.isUseFilter()){
 			this.getStatus().setSelectedIndex(0);
@@ -470,12 +470,22 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 			this.getStatus().setSelectedIndex(1);
 		}
 		this.getStatus().setEnabled(true);
-		
+
 		//Set current filter to the one retrieved
 		this.setCurrentFilter(filter);
-		
+
 		//Update button
 		parent.getFilterPanel().getBtnCreate().setText("New Filter");
 		parent.getFilterPanel().setBtnCreateIsCancel(false);
+	}
+	@Override
+	public String getSelectedUniqueIdentifier(MouseEvent me) {
+		return null;
+	}
+	@Override
+	public void showRecievedModels(String jsonString) {
+		//no
 	}	
+	
+
 }

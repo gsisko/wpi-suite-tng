@@ -27,6 +27,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -59,8 +61,16 @@ public class SaveModelController implements ActionListener
 
 	public void actionPerformed(ActionEvent event) 
 	{
+		final Request request;
+		if (((FilterBuilderPanel) builderView).getCurrentMode() == Mode.EDIT){
+			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.POST); // post == update
+
+			
+		} else {
+			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
+		}
+		
 		// make a PUT http request and let the observer get the response
-		final Request request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
 		request.setBody(builderView.getModelMessage()); // put the new message in the body of the request
 		request.addObserver(new SaveModelObserver(this)); // add an observer to process the response
 		request.send();		
