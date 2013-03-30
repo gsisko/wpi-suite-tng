@@ -68,7 +68,7 @@ public class RetrieveModelController extends MouseAdapter {
 		if (me.getClickCount() >= 2) { /* respond to double clicks */
 		
 			// Get the unique identifier of the item that was double clicked
-			String modelID = listView.getSelectedUniqueIdentifier();
+			String modelID = listView.getSelectedUniqueIdentifier(me);
 			
 			// Create and send a request for the requirement with the given ID
 			Request request;
