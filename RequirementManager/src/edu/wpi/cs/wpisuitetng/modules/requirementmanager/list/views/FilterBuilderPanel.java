@@ -214,6 +214,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		FilterBuilderConstraints.ipadx=80;
 		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
 		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
+		add(txtNumValue, FilterBuilderConstraints);//Actually add the "txtNumValue" to the layout given the previous constraints
 		//end value
 
 		//Save button:
