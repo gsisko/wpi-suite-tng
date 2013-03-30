@@ -36,10 +36,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteFilterController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewFilterAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveFilterController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewModelAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
@@ -62,6 +63,10 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 	
+	private DeleteModelController deleteController;
+	private RetrieveModelController retrieveController;
+	private RetrieveAllModelsController retrieveAllController;
+	
 	private final ListPanel parent;
 	/**
 	 * Construct the panel
@@ -81,9 +86,6 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
-
-		// Add a listener for row clicks
-		resultsTable.addMouseListener(new RetrieveFilterController(parent));
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -111,11 +113,17 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
+		deleteController = new DeleteModelController(this, parent.getBuilderPanel(),"filter");
+		retrieveController = new RetrieveModelController(this, parent.getBuilderPanel(),"filter");
+		setRetrieveAllController(new RetrieveAllModelsController(this, parent.getBuilderPanel(),"filter"));
 		
+		// Add a listener for row clicks
+		resultsTable.addMouseListener(retrieveController);
+				
 		// Sets up listener system. Once pressed, changes to CancelFilterAction listener, then back to this.
-		btnCreate.addActionListener(new NewFilterAction(this, parent.getBuilderPanel()));
+		btnCreate.addActionListener(new NewModelAction(this, parent.getBuilderPanel()));
 		
-		btnDelete.addActionListener(new DeleteFilterController(this.parent.getParent()));
+		btnDelete.addActionListener(deleteController);
 	}
 	
 	/**This method returns an ArrayList of active filters
@@ -325,6 +333,20 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 		else {
 			// do nothing, there are no filters
 		}
+	}
+
+	/**
+	 * @return the retrieveAllController
+	 */
+	public RetrieveAllModelsController getRetrieveAllController() {
+		return retrieveAllController;
+	}
+
+	/**
+	 * @param retrieveAllController the retrieveAllController to set
+	 */
+	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
+		this.retrieveAllController = retrieveAllController;
 	}
 }
 

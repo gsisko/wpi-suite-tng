@@ -31,12 +31,16 @@ import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
-public class Iteration extends AbstractModel {
-	private int id;    
+public class Iteration extends AbstractModel {   
 	private String name;
 	private Date startDate;
 	private Date endDate;
 	
+	// Basic constructor for empty iteration
+	public Iteration()
+	{
+		new Iteration("", new Date(), new Date());
+	}
 	
 	/**
 	 * Create an Iteration with given properties
@@ -50,22 +54,8 @@ public class Iteration extends AbstractModel {
 		this.setName(name);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
-		this.setId(-1);
 	}
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	/**
 	 * @return the name
@@ -168,10 +158,10 @@ public class Iteration extends AbstractModel {
 	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
-		if(o instanceof Iteration && id == ((Iteration) o).getId()) {
+		if(o instanceof Iteration && name == ((Iteration) o).getName()) {
 			returnValue = true;
 		}	
-		if(o instanceof String && Integer.toString(id).equals(o)) {
+		if(o instanceof String && name.equals(o)) {
 			returnValue = true;
 		}
 		return returnValue;
@@ -182,7 +172,7 @@ public class Iteration extends AbstractModel {
 	 * 
 	 * @param iterationUpdate Iteration holding the updates
 	 */
-	public void updateFilter(Iteration iterationUpdate){	
+	public void updateIteration(Iteration iterationUpdate){	
 		this.setName(iterationUpdate.getName());
 		this.setStartDate(iterationUpdate.getStartDate());
 		this.setEndDate(iterationUpdate.getEndDate());

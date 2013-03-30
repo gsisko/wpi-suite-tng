@@ -39,14 +39,22 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * Panel to contain the filter builder for defect searching
@@ -82,6 +90,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private Mode currentMode;
 
 	private String curType = "Id";
+	private boolean isBuilderActive = true;
+	
+	private SaveModelController saveController;
 
 	/**
 	 * Construct the panel
@@ -129,7 +140,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		// The action listener for this is below
 		typeBox.addActionListener(this);
 
-		btnSave.addActionListener(new SaveFilterController(parent.getParent()));
+		saveController = new SaveModelController(grandpa,this,"filter");
+		btnSave.addActionListener(saveController);
 		btnSave.setEnabled(false);
 
 		//set the layout
@@ -300,13 +312,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 			valueBox.setModel(valb);
 		}
 
-
 		DefaultComboBoxModel<String> compbox = new DefaultComboBoxModel<String>(comparatorStrings);
 		comparatorBox.setModel(compbox);
-
-		DefaultComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(comparatorStrings);
-		comparatorBox.setModel(cbm);
-
 
 		if(curType == "Id" ||curType=="ReleaseNumber" ||curType=="Estimate" ||curType=="ActualEffort" ||curType=="Name" ||curType=="Description" ){
 			if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
@@ -331,6 +338,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo){
+		isBuilderActive = setTo;
+		
 		// Reset the JCombo boxes
 		this.getFilterOperator().setSelectedIndex(0);
 		this.getFilterType().setSelectedIndex(0);
@@ -351,52 +360,107 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		this.getFilterValue().setText("");
 
 		// Ensure that the button is set correctly
-		this.getButton().setText("Create");      
+		this.getButton().setText("Create");   
+		
+		valueBox.setVisible(false);
+		txtValue.setVisible(true);
 	}
 	
 	@Override
 	public String[] getUniqueIdentifiers() {
-		// TODO no
 		return null;
 	}
 	@Override
 	public void clearAndReset() {
-		// TODO Auto-generated method stub
-		
+		setInputEnabled(false);
 	}
 	@Override
 	public void setCancelBtnToNew() {
-		// TODO no
 		
 	}
 	@Override
 	public boolean refreshAll() {
-		// TODO yes
 		return false;
 	}
 	@Override
 	public String getModelMessage() {
-		// TODO no
-		return null;
-	}
-	@Override
-	public void toggleNewCancalMode() {
-		// TODO no
+		String curtype = this.getFilterType().getSelectedItem().toString();
+    	if (curtype != "Type" && curtype != "Status" && curtype != "Priority" && this.getFilterValue().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    	
+		Filter filter = new Filter(); 
+		
+		if(this.getCurrentMode() == Mode.EDIT)
+			filter.setUniqueID(currentFilter.getUniqueID());
+		
+		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
+		filter.setType(type);
+		filter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
+		
+		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
+			filter.setValue(this.getFilterValueBox().getSelectedItem().toString());
+		else
+			filter.setValue(this.getFilterValue().getText());
+		
+		if(this.getStatus().getSelectedIndex() == 1)
+			filter.setUseFilter(false);
+		else
+			filter.setUseFilter(true);
+		
+		return filter.toJSON();
 		
 	}
 	@Override
+	public void toggleNewCancalMode() {
+		setInputEnabled(!isBuilderActive);
+	}
+	@Override
 	public void translateAndDisplayModel(String jsonArray) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
 	public void showRecievedModels(String jsonString) {
-		// TODO Auto-generated method stub
+				
+		Filter filter = Filter.fromJSON(jsonString);
+		//Set edit mode
+		this.setCurrentMode(Mode.EDIT);
+		this.getButton().setText("Update");
+		this.getButton().setEnabled(true);
 		
+		//Type
+		this.getFilterType().setSelectedItem(filter.getType().toString());
+		this.getFilterType().setEnabled(true);
+		
+		//Comparator
+		this.getFilterOperator().setSelectedItem(filter.getComparator().toString());
+		this.getFilterOperator().setEnabled(true);
+		
+		//Value
+		this.getFilterValue().setText(filter.getValue());
+		this.getFilterValue().setEnabled(true);
+		
+		//Value?
+		this.getFilterValueBox().setSelectedItem(filter.getValue());
+		this.getFilterValueBox().setEnabled(true);
+		
+		//Active
+		if(filter.isUseFilter()){
+			this.getStatus().setSelectedIndex(0);
+		} else{
+			this.getStatus().setSelectedIndex(1);
+		}
+		this.getStatus().setEnabled(true);
+		
+		//Set current filter to the one retrieved
+		this.setCurrentFilter(filter);
+		
+		//Update button
+		parent.getFilterPanel().getBtnCreate().setText("New Filter");
+		parent.getFilterPanel().setBtnCreateIsCancel(false);
 	}	
 }
