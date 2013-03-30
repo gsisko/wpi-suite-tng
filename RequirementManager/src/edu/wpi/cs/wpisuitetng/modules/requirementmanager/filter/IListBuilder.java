@@ -23,7 +23,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
-import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /** Interface to go over builder and list panels that work together
  * and have buttons/controllers that include the following.
@@ -100,5 +99,13 @@ public interface IListBuilder {
 	 * @param jsonArray An array of models in JSON string form
 	 */
 	public void translateAndDisplayModel(String jsonArray);
+
+ 
+	/** Show the models in the list view
+	 *  Do nothing in builder
+	 * 
+	 * @param jsonString An array of models in the form of a JSON string
+	 */
+	public void showRecievedModels(String jsonString);
 
 }
