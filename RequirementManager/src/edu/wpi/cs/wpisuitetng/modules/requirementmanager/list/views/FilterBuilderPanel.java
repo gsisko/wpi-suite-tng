@@ -361,17 +361,14 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	
 	@Override
 	public String[] getUniqueIdentifiers() {
-		// TODO no
 		return null;
 	}
 	@Override
 	public void clearAndReset() {
-		// TODO yes
 		setInputEnabled(false);
 	}
 	@Override
 	public void setCancelBtnToNew() {
-		// TODO no
 		
 	}
 	@Override
@@ -380,13 +377,16 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	}
 	@Override
 	public String getModelMessage() {
-		// TODO no
 		String curtype = this.getFilterType().getSelectedItem().toString();
     	if (curtype != "Type" && curtype != "Status" && curtype != "Priority" && this.getFilterValue().getText().length() == 0) {
     		JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     	
 		Filter filter = new Filter(); 
+		
+		if(this.getCurrentMode() == Mode.EDIT)
+			filter.setUniqueID(currentFilter.getUniqueID());
+		
 		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
 		filter.setType(type);
 		filter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
@@ -406,17 +406,14 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	}
 	@Override
 	public void toggleNewCancalMode() {
-		// TODO no
 		
 	}
 	@Override
 	public void translateAndDisplayModel(String jsonArray) {
-		// TODO no
 		
 	}
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// TODO no
 		return null;
 	}
 	@Override
