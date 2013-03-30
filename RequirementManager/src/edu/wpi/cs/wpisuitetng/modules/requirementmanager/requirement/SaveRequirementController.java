@@ -85,7 +85,8 @@ public class SaveRequirementController
 		    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		    request.send();
 		}
-		else { // we are updating an existing requirement
+	   
+	    else { // we are updating an existing requirement
 			
 			Requirement oldRequirement = view.getCurrentRequirement();//grab the old requirement
 			

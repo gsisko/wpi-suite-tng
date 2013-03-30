@@ -31,6 +31,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -41,6 +42,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
@@ -49,7 +52,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
  * Panel to contain the filter builder for defect searching
  */
 @SuppressWarnings("serial")
-public class FilterBuilderPanel extends JPanel implements ActionListener{
+public class FilterBuilderPanel extends JPanel implements ActionListener, IListBuilder{
 
 	// enum to say whether or not you are creating
 	public enum Mode {
@@ -349,5 +352,51 @@ public class FilterBuilderPanel extends JPanel implements ActionListener{
 
 		// Ensure that the button is set correctly
 		this.getButton().setText("Create");      
+	}
+	
+	@Override
+	public String[] getUniqueIdentifiers() {
+		// TODO no
+		return null;
+	}
+	@Override
+	public void clearAndReset() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setCancelBtnToNew() {
+		// TODO no
+		
+	}
+	@Override
+	public boolean refreshAll() {
+		// TODO yes
+		return false;
+	}
+	@Override
+	public String getModelMessage() {
+		// TODO no
+		return null;
+	}
+	@Override
+	public void toggleNewCancalMode() {
+		// TODO no
+		
+	}
+	@Override
+	public void translateAndDisplayModel(String jsonArray) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public String getSelectedUniqueIdentifier(MouseEvent me) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void showRecievedModels(String jsonString) {
+		// TODO Auto-generated method stub
+		
 	}	
 }

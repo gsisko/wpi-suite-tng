@@ -72,7 +72,7 @@ public class SaveModelController implements ActionListener
 	public void saveSuccess() {
 		// If "getUniqueID" was added to Model, then overridden by models, that ID 
 		// could be printed here and we would have a better save message
-		System.out.println(modelName + " saved successfully");
+		System.out.println(modelName  + " saved successfully");
 
 		builderView.clearAndReset();
 		listView.setCancelBtnToNew();

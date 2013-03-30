@@ -24,6 +24,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,7 +55,9 @@ public class Requirement extends AbstractModel {
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
-	private int actualEffort;    
+	private int actualEffort;
+	/** This is the list of notes for this Requirement */
+	private ArrayList<Note> notes; 
 	
 	// blank constructor
 	public Requirement(){
@@ -81,6 +85,7 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(0);			// Initial actual effort set to zero
 		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
 		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		this.notes = new ArrayList<Note>();
 	}
 	
 	
@@ -319,6 +324,7 @@ public class Requirement extends AbstractModel {
 		setEstimate(reqUpdate.getEstimate());
 		setActualEffort(reqUpdate.getActualEffort());
 		setType(reqUpdate.getType());
+		setNotes(reqUpdate.getNotes());
 	}
 
 
@@ -335,6 +341,22 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setType(RequirementType type) {
 		this.type = type;
+	}
+
+
+	/**
+	 * @return the notes
+	 */
+	public ArrayList<Note> getNotes() {
+		return notes;
+	}
+
+
+	/**
+	 * @param notes the notes to set
+	 */
+	public void setNotes(ArrayList<Note> notes) {
+		this.notes = notes;
 	}
 
 }
