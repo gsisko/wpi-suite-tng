@@ -233,9 +233,8 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 	@Override
 	public void setCancelBtnToNew() {
 		// Set the cancel button back to New Filter if it was in cancel mode 
-		FilterListPanel resetListCancelButtons = parent.getFilterPanel();
-		resetListCancelButtons.getBtnCreate().setText("New Filter"); 
-		resetListCancelButtons.setBtnCreateIsCancel(false);
+		this.getBtnCreate().setText("New Filter"); 
+		this.setBtnCreateIsCancel(false);
 		
 	}
 

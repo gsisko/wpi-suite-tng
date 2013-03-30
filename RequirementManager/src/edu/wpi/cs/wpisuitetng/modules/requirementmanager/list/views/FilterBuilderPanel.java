@@ -52,6 +52,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -77,6 +78,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private final JComboBox<String> typeBox;
 	private final JComboBox<String> comparatorBox;
 	private JTextField txtValue;
+	private JNumberTextField txtNumValue;
 	private final JComboBox<String> valueBox;
 	private final JComboBox<String> userFilterBox;
 
@@ -90,7 +92,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private Mode currentMode;
 
 	private String curType = "Id";
-	private boolean isBuilderActive = true;
+	private boolean isBuilderActive = false;
 	
 	private SaveModelController saveController;
 
@@ -114,7 +116,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		//construct the components
 		txtValue = new JTextField();
 		txtValue.setEnabled(false);
-
+		txtValue.setVisible(false);
+		
+		//construct the Number Text Field
+		txtNumValue = new JNumberTextField();
+		txtNumValue.setEnabled(false);
+		txtNumValue.setAllowNegative(false);
 
 
 		//create strings for the boxes
@@ -207,6 +214,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		FilterBuilderConstraints.ipadx=80;
 		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
 		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
+		add(txtNumValue, FilterBuilderConstraints);//Actually add the "txtNumValue" to the layout given the previous constraints
 		//end value
 
 		//Save button:
@@ -318,13 +326,20 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		if(curType == "Id" ||curType=="ReleaseNumber" ||curType=="Estimate" ||curType=="ActualEffort" ||curType=="Name" ||curType=="Description" ){
 			if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
 				txtValue.setVisible(false);
+				txtNumValue.setVisible(false);
 				valueBox.setVisible(true);
 			}
 		}
 		else{
-			if(selected == "Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" ||selected=="Name" ||selected=="Description" ){
+			if(selected=="Name" ||selected=="Description"){
 				valueBox.setVisible(false);
+				txtNumValue.setVisible(false);
 				txtValue.setVisible(true);
+			}
+			else{ // if it needs a number field 
+				valueBox.setVisible(false);
+				txtValue.setVisible(false);
+				txtNumValue.setVisible(true);
 			}
 		}
 
@@ -393,6 +408,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		
 		if(this.getCurrentMode() == Mode.EDIT)
 			filter.setUniqueID(currentFilter.getUniqueID());
+		else
+			filter.setUniqueID(-1);
 		
 		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
 		filter.setType(type);
@@ -413,41 +430,34 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	}
 	@Override
 	public void toggleNewCancalMode() {
+		currentMode = Mode.CREATE; 
 		setInputEnabled(!isBuilderActive);
 	}
 	@Override
-	public void translateAndDisplayModel(String jsonArray) {
-		
-	}
-	@Override
-	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		return null;
-	}
-	@Override
-	public void showRecievedModels(String jsonString) {
-				
-		Filter filter = Filter.fromJSON(jsonString);
+	public void translateAndDisplayModel(String jsonString) {
+
+		Filter filter = Filter.fromJSONArray(jsonString)[0];
 		//Set edit mode
 		this.setCurrentMode(Mode.EDIT);
 		this.getButton().setText("Update");
 		this.getButton().setEnabled(true);
-		
+
 		//Type
 		this.getFilterType().setSelectedItem(filter.getType().toString());
 		this.getFilterType().setEnabled(true);
-		
+
 		//Comparator
 		this.getFilterOperator().setSelectedItem(filter.getComparator().toString());
 		this.getFilterOperator().setEnabled(true);
-		
+
 		//Value
 		this.getFilterValue().setText(filter.getValue());
 		this.getFilterValue().setEnabled(true);
-		
+
 		//Value?
 		this.getFilterValueBox().setSelectedItem(filter.getValue());
 		this.getFilterValueBox().setEnabled(true);
-		
+
 		//Active
 		if(filter.isUseFilter()){
 			this.getStatus().setSelectedIndex(0);
@@ -455,12 +465,22 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 			this.getStatus().setSelectedIndex(1);
 		}
 		this.getStatus().setEnabled(true);
-		
+
 		//Set current filter to the one retrieved
 		this.setCurrentFilter(filter);
-		
+
 		//Update button
 		parent.getFilterPanel().getBtnCreate().setText("New Filter");
 		parent.getFilterPanel().setBtnCreateIsCancel(false);
+	}
+	@Override
+	public String getSelectedUniqueIdentifier(MouseEvent me) {
+		return null;
+	}
+	@Override
+	public void showRecievedModels(String jsonString) {
+		//no
 	}	
+	
+
 }
