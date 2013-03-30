@@ -52,6 +52,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -77,6 +78,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private final JComboBox<String> typeBox;
 	private final JComboBox<String> comparatorBox;
 	private JTextField txtValue;
+	private JNumberTextField txtNumValue;
 	private final JComboBox<String> valueBox;
 	private final JComboBox<String> userFilterBox;
 
@@ -114,7 +116,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		//construct the components
 		txtValue = new JTextField();
 		txtValue.setEnabled(false);
-
+		txtValue.setVisible(false);
+		
+		//construct the Number Text Field
+		txtNumValue = new JNumberTextField();
+		txtNumValue.setEnabled(false);
+		txtNumValue.setAllowNegative(false);
 
 
 		//create strings for the boxes
@@ -318,13 +325,20 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		if(curType == "Id" ||curType=="ReleaseNumber" ||curType=="Estimate" ||curType=="ActualEffort" ||curType=="Name" ||curType=="Description" ){
 			if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
 				txtValue.setVisible(false);
+				txtNumValue.setVisible(false);
 				valueBox.setVisible(true);
 			}
 		}
 		else{
-			if(selected == "Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" ||selected=="Name" ||selected=="Description" ){
+			if(selected=="Name" ||selected=="Description"){
 				valueBox.setVisible(false);
+				txtNumValue.setVisible(false);
 				txtValue.setVisible(true);
+			}
+			else{ // if it needs a number field 
+				valueBox.setVisible(false);
+				txtValue.setVisible(false);
+				txtNumValue.setVisible(true);
 			}
 		}
 
