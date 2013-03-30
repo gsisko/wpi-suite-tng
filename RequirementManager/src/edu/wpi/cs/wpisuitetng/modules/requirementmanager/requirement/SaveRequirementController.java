@@ -151,7 +151,7 @@ public class SaveRequirementController
 		Requirement currentRequirement = view.getCurrentRequirement();
     	
     	String NoteContent = view.getRequirementNote().getText();
-		
+		view.getRequirementNote().setText("");
     	currentRequirement.getNotes().add(new Note(NoteContent));
     	
     	// make a POST http request and let the observer get the response
