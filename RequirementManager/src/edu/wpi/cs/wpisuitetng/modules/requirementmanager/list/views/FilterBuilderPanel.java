@@ -47,6 +47,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
@@ -90,6 +91,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 
 	private String curType = "Id";
 	private boolean isBuilderActive = true;
+	
+	private SaveModelController saveController;
 
 	/**
 	 * Construct the panel
@@ -137,7 +140,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		// The action listener for this is below
 		typeBox.addActionListener(this);
 
-		btnSave.addActionListener(new SaveFilterController(parent.getParent()));
+		saveController = new SaveModelController(grandpa,this,"filter");
+		btnSave.addActionListener(saveController);
 		btnSave.setEnabled(false);
 
 		//set the layout
