@@ -46,7 +46,8 @@ public interface IListBuilder {
 	
 	
 	/** Sets clears and resets any fields in the current builder panel
-	 *  and also resets the mode to "CREATE" if applicable. 
+	 *  and also resets the mode to "CREATE" if applicable. If called 
+	 *  on a list view, sets the button to clear/cancel
 	 */
 	public void clearAndReset();
 
@@ -78,12 +79,26 @@ public interface IListBuilder {
 	/** Gets the model and passes it around 
 	 *  When given to another view, must be cast appropriately (might not work)
 	 */
-	public Model getModel();
-	
-	
-	
-	
-	
-	
-	
+//	public Model getModel();
+
+
+	/** Toggles between "New Model" and "Cancel" mode */
+	public void toggleNewCancalMode();
+
+
+
+	/** Gets the unique identifier of the list entry that was double clicked
+	 * 
+	 * @return The unique identifier, either name or ID number
+	 */
+	public String getSelectedUniqueIdentifier();
+
+
+	/** Takes a JSON string that holds an array of models and uploads them
+	 *  to the builder panel. Also sets the 
+	 *  
+	 * @param jsonArray An array of models in JSON string form
+	 */
+	public void translateAndDisplayModel(String jsonArray);
+
 }
