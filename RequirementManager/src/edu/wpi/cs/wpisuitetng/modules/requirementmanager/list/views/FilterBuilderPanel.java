@@ -341,6 +341,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 				txtValue.setVisible(false);
 				txtNumValue.setVisible(true);
 			}
+			else{ // if it needs a number field 
+				valueBox.setVisible(false);
+				txtValue.setVisible(false);
+				txtNumValue.setVisible(true);
+			}
 		}
 
 		curType = selected;
