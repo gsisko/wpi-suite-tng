@@ -91,6 +91,7 @@ public class RequirementPanel extends JPanel {
 	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
+	private  JTextArea txtNote;//The Note text area
 
 	//The variables to hold information about the current instance of the panel
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
@@ -556,6 +557,13 @@ public class RequirementPanel extends JPanel {
 	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
+	}
+	/**
+	 * This returns the JTextArea "txtNote"
+	 * @return the txtNote JTextArea
+	 */
+	public JTextArea getRequirementNote() {
+		return txtNote;
 	}
 
 	/**
