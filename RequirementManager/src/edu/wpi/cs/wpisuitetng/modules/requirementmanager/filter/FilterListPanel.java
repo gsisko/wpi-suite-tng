@@ -95,9 +95,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		this.add(resultsScrollPane);
 		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
 		
-		// TODO implement the rest of the controls to display saved filters
-		// and store saved filters in the ConfigManager
-		
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		
 		btnCreate = new JButton ("New Filter");
@@ -252,7 +249,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// TODO Auto-generated method stub
 		
 		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
 		
@@ -269,7 +265,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public void showRecievedModels(String jsonString) {
-		// TODO Auto-generated method stub
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
