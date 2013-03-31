@@ -46,6 +46,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.toedter.calendar.JDateChooser;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePicker;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
@@ -68,8 +70,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	//the fillable components
 	private JTextField nameValue;
-	private JTextField startValue;
-	private JTextField endValue;
+	
+	private JDateChooser startDateChooser;
+	private JDateChooser endDateChooser;
 	
 	//button
 	private final JButton btnSave;
@@ -108,11 +111,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameValue = new JTextField();
 		nameValue.setEnabled(false);
 		
-		startValue = new JTextField();
-		startValue.setEnabled(false);
-		
-		endValue = new JTextField();
-		endValue.setEnabled(false);
+		startDateChooser = new JDateChooser();
+		endDateChooser = new JDateChooser();
 		
 		// The action listener for this is below
 		btnSave.setEnabled(false);
@@ -153,8 +153,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-
-		
+		add(startDateChooser, IterationBuilderConstraints);
+	
 		//End Date
 		//Set the constraints for the "typeLabel" and add it to the view
 		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -166,6 +166,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		add(endDateChooser, IterationBuilderConstraints);
 
 		
 		//Save button:
@@ -236,8 +237,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	@Override
 	public void setInputEnabled(boolean setTo) {
 		this.nameValue.setEnabled(setTo);
-		this.startValue.setEnabled(setTo);
-		this.endValue.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
 	}
 	@Override
