@@ -49,8 +49,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	private ToolbarGroupView buttonGroup;
 	private JButton saveButton;
 	private RequirementPanel mainPanel;
+	private RequirementTabPanel tabPanel; //Notes, etc
 	private SaveRequirementController controller;
 	final JScrollPane mainPanelScrollPane;
+	final JScrollPane tabPanelScrollPane;
 	private Tab containingTab;
 	private boolean inputEnabled = true;
 
@@ -98,6 +100,12 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		mainPanelScrollPane = new JScrollPane(mainPanel);
 		mainPanelScrollPane.getVerticalScrollBar().setUnitIncrement(10);
 		
+		//Instantiate the tab panel on the side for notes, etc
+		tabPanel = new RequirementTabPanel();
+		this.setLayout(new BorderLayout()); //Do we need?
+		tabPanelScrollPane = new JScrollPane(tabPanel);
+		tabPanelScrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		
 		// Prevent content of scroll pane from smearing (credit: https://gist.github.com/303464)
 		mainPanelScrollPane.getVerticalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener(){
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent ae){
@@ -109,7 +117,19 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 			}
 		});
 		
+		//Prevent content of scroll pane from smearing in tab view?
+		tabPanelScrollPane.getVerticalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener(){
+			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent ae){
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						tabPanelScrollPane.repaint();
+					}
+				});
+			}
+		});
+		
 		this.add(mainPanelScrollPane, BorderLayout.CENTER);
+		this.add(tabPanelScrollPane, BorderLayout.EAST);
 		controller = new SaveRequirementController(this);
 
 		// Instantiate the save button and add it to the button panel
@@ -149,6 +169,15 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		return mainPanel;
 	}
 	
+	/**
+	 * Returns the tab panel with the data fields
+	 * 
+	 * @return the tab panel with the data fields
+	 */
+	public RequirementTabPanel getRequirementTabPanel() {
+		return tabPanel;
+	}
+	
 	@Override
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
@@ -177,6 +206,9 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	public void refreshScrollPane() {
 		mainPanelScrollPane.revalidate();
 		mainPanelScrollPane.repaint();
+		
+		tabPanelScrollPane.revalidate();
+		tabPanelScrollPane.repaint();
 	}
 	
 }
