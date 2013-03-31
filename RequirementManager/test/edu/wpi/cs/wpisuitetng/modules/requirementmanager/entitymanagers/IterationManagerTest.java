@@ -115,6 +115,13 @@ public class IterationManagerTest {
 		manager.makeEntity(defaultSession, newIteration.toJSON()+ "string that breaks JSON");
 	}
 	
+	@Test(expected=ConflictException.class)
+	public void testMakeDuplicateEntity() throws  ConflictException, WPISuiteException{
+		//simply call make entity on an iteration that we know is in the database
+		manager.makeEntity(defaultSession, existingIteration.toJSON());	
+		System.out.println("Shouldn't be here...");
+	}
+	
 	@Test
 	public void testGetEntity() throws WPISuiteException {
 		Iteration[] gotten = manager.getEntity(defaultSession, "Iteration 1");
@@ -122,7 +129,7 @@ public class IterationManagerTest {
 	}
 
 	@Test(expected=NotFoundException.class)
-	public void testGetBadId() throws WPISuiteException {
+	public void testGetBadName() throws WPISuiteException {
 		manager.getEntity(defaultSession, "-1");
 	}
 
