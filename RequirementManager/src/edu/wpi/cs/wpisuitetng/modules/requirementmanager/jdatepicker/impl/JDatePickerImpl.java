@@ -25,7 +25,7 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Juan Heyns.
 */
-package net.sourceforge.jdatepicker.impl;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,9 +49,10 @@ import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.jdatepicker.DateModel;
-import net.sourceforge.jdatepicker.JDatePanel;
-import net.sourceforge.jdatepicker.JDatePicker;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.DateModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePicker;
+
 
 
 /**

@@ -25,34 +25,37 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Juan Heyns.
 */
-package net.sourceforge.jdatepicker.impl;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker;
 
-import java.util.Calendar;
-import java.util.Date;
 
-import net.sourceforge.jdatepicker.AbstractDateModel;
+public interface JDatePicker extends JDatePanel {
 
-public class UtilDateModel extends AbstractDateModel<java.util.Date> {
+	/**
+	 * Is the text component editable or not. Defaults to false.
+	 * 
+	 * @param editable
+	 */
+	public abstract void setTextEditable(boolean editable);
 
-	public UtilDateModel() {
-		this(null);
-	}
-	
-	public UtilDateModel(Date value) {
-		super();
-		setValue(value);
-	}
+	/**
+	 * Is the text component editable or not.
+	 * 
+	 * @return
+	 */
+	public abstract boolean isTextEditable();
 
-	@Override
-	protected Date fromCalendar(Calendar from) {
-		return new Date(from.getTimeInMillis());
-	}
+	/**
+	 * Sets the button to be focusable. Defaults to true.
+	 * 
+	 * @param focusable
+	 */
+	public abstract void setButtonFocusable(boolean focusable);
 
-	@Override
-	protected Calendar toCalendar(Date from) {
-		Calendar to = Calendar.getInstance();
-		to.setTime(from);
-		return to;
-	}
+	/**
+	 * Is the button focusable.
+	 * 
+	 * @return
+	 */
+	public abstract boolean getButtonFocusable();
 
 }

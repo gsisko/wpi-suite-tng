@@ -25,7 +25,7 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Juan Heyns.
 */
-package net.sourceforge.jdatepicker.graphics;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.graphics;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -93,7 +93,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		
 		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
-		filterController = new RetrieveAllModelsController(mainPanel.getFilterPanel(), mainPanel.getFilterBuilderPanel(), "filter");
+		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
 		
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("List/Filter");

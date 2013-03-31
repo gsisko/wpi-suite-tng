@@ -66,7 +66,7 @@ public class RetrieveAllRequirementsController {
 	 */
 	public RetrieveAllRequirementsController(ListRequirementsView view) {
 		this.resultsPanel = view.getListPanel().getResultsPanel();
-		this.filterPanel = view.getListPanel().getFilterPanel();
+		this.filterPanel = view.getListPanel().getTabPanel().getFilterList();
 	}
 
 	/**

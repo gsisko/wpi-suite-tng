@@ -55,7 +55,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
  * Panel to contain the filter builder for defect searching
  */
 @SuppressWarnings("serial")
-public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel{
+public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
 	// enum to say whether or not you are creating
 	public enum Mode {
@@ -225,7 +225,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	}
 	
 	public void setUp() {
-		saveController = new SaveModelController(parent.getFilterPanel(),this,"filter");
+		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"filter");
 		btnSave.addActionListener(saveController);
 	}
 	

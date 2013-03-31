@@ -25,15 +25,16 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Juan Heyns.
 */
-package net.sourceforge.jdatepicker;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker;
 
 import javax.swing.JFormattedTextField;
 
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.SqlDateModel;
-import net.sourceforge.jdatepicker.impl.UtilCalendarModel;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl.JDatePanelImpl;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl.JDatePickerImpl;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl.SqlDateModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl.UtilCalendarModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl.UtilDateModel;
+
 
 /**
  * Created 18 April 2010

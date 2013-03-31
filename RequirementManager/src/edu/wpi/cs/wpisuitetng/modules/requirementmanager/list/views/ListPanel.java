@@ -57,7 +57,7 @@ public class ListPanel extends JPanel {
 	protected ResultsPanel resultsPanel;
 
 	/** Panel containing tabs instead of filter */
-	protected ListTabView filtersTabPanel;
+	protected ListTabView tabPanel;
 
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
@@ -86,11 +86,11 @@ public class ListPanel extends JPanel {
 
 		// Construct the panels that compose the list view
 		this.filterBuilderPanel = new FilterBuilderPanel(this);
-		this.filtersTabPanel = new ListTabView(this);
+		this.tabPanel = new ListTabView(this);
 		this.filterBuilderPanel.setUp();
 
 
-		JScrollPane listScrollPane = new JScrollPane(filtersTabPanel);
+		JScrollPane listScrollPane = new JScrollPane(tabPanel);
 		this.iterationBuilderPanel = new IterationBuilderPanel(this);
 		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
 		this.resultsPanel = new ResultsPanel(tabController);
@@ -115,10 +115,10 @@ public class ListPanel extends JPanel {
 		layout.putConstraint(SpringLayout.SOUTH, resultsPanel, 0, SpringLayout.SOUTH, this);
 
 		//Constrain our new filterTabPanel
-		layout.putConstraint(SpringLayout.NORTH, filtersTabPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, filtersTabPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, filtersTabPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, filtersTabPanel, 200, SpringLayout.WEST, listScrollPane);
+		layout.putConstraint(SpringLayout.NORTH, tabPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, tabPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, tabPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, tabPanel, 200, SpringLayout.WEST, listScrollPane);
 
 		// Add the panels
 		this.add(listScrollPane);
@@ -143,8 +143,8 @@ public class ListPanel extends JPanel {
 		return iterationBuilderPanel;
 	}
 
-	public FilterListPanel getFilterPanel(){
-		return filtersTabPanel.getFilterList();
+	public ListTabView getTabPanel(){
+		return tabPanel;
 	}
 
 	/**

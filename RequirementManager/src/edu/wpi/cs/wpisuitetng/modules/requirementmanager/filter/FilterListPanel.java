@@ -206,7 +206,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 	@Override
 	public String[] getUniqueIdentifiers() {
 		
-		JTable filters = parent.getFilterPanel().getResultsTable();
+		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
 		
 		// get highlighted rows 
 		int[] rowNumbers = filters.getSelectedRows();
@@ -254,7 +254,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 		// TODO Auto-generated method stub
 		
-		JTable filters = parent.getFilterPanel().getResultsTable();
+		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
 		
 		int row = filters.rowAtPoint(me.getPoint());
 

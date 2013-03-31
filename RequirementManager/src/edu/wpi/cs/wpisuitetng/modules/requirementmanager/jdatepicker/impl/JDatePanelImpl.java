@@ -25,7 +25,7 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Juan Heyns.
 */
-package net.sourceforge.jdatepicker.impl;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -60,11 +60,12 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.jdatepicker.DateModel;
-import net.sourceforge.jdatepicker.JDatePanel;
-import net.sourceforge.jdatepicker.graphics.JNextIcon;
-import net.sourceforge.jdatepicker.graphics.JPreviousIcon;
-import net.sourceforge.jdatepicker.util.JDatePickerUtil;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.DateModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.graphics.JNextIcon;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.graphics.JPreviousIcon;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.util.JDatePickerUtil;
+
 
 /**
  * Created on 26 Mar 2004

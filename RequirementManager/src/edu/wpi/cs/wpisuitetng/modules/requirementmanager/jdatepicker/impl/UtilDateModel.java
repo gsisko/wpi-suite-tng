@@ -25,15 +25,35 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Juan Heyns.
 */
-package net.sourceforge.jdatepicker.util;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-public class JDatePickerUtil {
-	
-	public static DateFormat getMediumDateFormat() {
-		return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.AbstractDateModel;
+
+
+public class UtilDateModel extends AbstractDateModel<java.util.Date> {
+
+	public UtilDateModel() {
+		this(null);
 	}
 	
+	public UtilDateModel(Date value) {
+		super();
+		setValue(value);
+	}
+
+	@Override
+	protected Date fromCalendar(Calendar from) {
+		return new Date(from.getTimeInMillis());
+	}
+
+	@Override
+	protected Calendar toCalendar(Date from) {
+		Calendar to = Calendar.getInstance();
+		to.setTime(from);
+		return to;
+	}
+
 }
