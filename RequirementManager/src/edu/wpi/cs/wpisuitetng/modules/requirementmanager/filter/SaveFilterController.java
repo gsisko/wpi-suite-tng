@@ -55,7 +55,7 @@ public class SaveFilterController implements ActionListener
 
 	public void actionPerformed(ActionEvent event) 
 	{
-		this.builder = view.getListPanel().getBuilderPanel();
+		this.builder = view.getListPanel().getFilterBuilderPanel();
 		this.filterList = view.getListPanel().getFilterPanel();
 
 		String curtype = builder.getFilterType().getSelectedItem().toString();

@@ -56,7 +56,7 @@ public class RetrieveFilterController extends MouseAdapter {
 	 */
 	public RetrieveFilterController(ListPanel listView){
 	    	this.view =listView;
-	    	this.builder = listView.getBuilderPanel();
+	    	this.builder = listView.getFilterBuilderPanel();
 	}
 
 	/**

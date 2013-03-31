@@ -28,12 +28,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.dashboard.DashboardView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.ClosableTabComponent;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel.Mode;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
@@ -62,26 +60,20 @@ public class ListTabView extends JTabbedPane {
 	}
 	
 	@Override
-	public void insertTab(String title, Icon icon, Component component, String tip, int index) {
-		super.insertTab(title, icon, component, tip, index);
-		// this sets every panel except DashboardView as a closable tab
-//		if(!(component instanceof DashboardView)) {
-//			setTabComponentAt(index, new ClosableTabComponent(this));
-//		}
-	}
-	
-	@Override
-	public void removeTabAt(int index) {
-		// if a tab does not have the close button UI, it cannot be removed
-		if(getTabComponentAt(index) instanceof ClosableTabComponent) {
-			super.removeTabAt(index);
-		}
-	}
-	
-	@Override
 	public void setComponentAt(int index, Component component) {
 		super.setComponentAt(index, component);
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
+	}
+	
+	@Override
+	public void setSelectedIndex(int index) {
+		super.setSelectedIndex(index);
+		if (getComponentAt(index) instanceof FilterListPanel) {
+			parent.setMode(Mode.FILTER);
+		}
+		else {
+			parent.setMode(Mode.ITERATION);
+		}
 	}
 
 	/**
@@ -108,7 +100,7 @@ public class ListTabView extends JTabbedPane {
 	/**
 	 * @param listPanel the listPanel to set
 	 */
-	public void setIterationList(IterationListPanel iterationrList) {
+	public void setIterationList(IterationListPanel iterationList) {
 		this.iterationList = iterationList;
 	}
 	

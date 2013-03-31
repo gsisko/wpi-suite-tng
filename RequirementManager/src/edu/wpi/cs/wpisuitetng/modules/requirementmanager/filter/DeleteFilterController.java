@@ -80,7 +80,7 @@ public class DeleteFilterController implements ActionListener {
 			request.send();
 		}
 		// Remove anything in the filter builder panel whenever the delete button is pressed
-		FilterBuilderPanel resetBuilderFields = 	theView.getListPanel().getBuilderPanel();
+		FilterBuilderPanel resetBuilderFields = 	theView.getListPanel().getFilterBuilderPanel();
 		resetBuilderFields.setInputEnabled(false);
 		resetBuilderFields.setCurrentMode(Mode.CREATE);
 
