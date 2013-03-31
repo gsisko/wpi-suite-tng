@@ -66,8 +66,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final JLabel nameLabel;
 
 	//the fillable components
-	private JTextField txtValue;
-
+	private JTextField nameValue;
+	private JTextField startValue;
+	private JTextField endValue;
 	//button
 	private final JButton btnSave;
 
@@ -98,8 +99,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnSave = new JButton("Save");
 
 		//construct the components
-		txtValue = new JTextField();
-		txtValue.setEnabled(false);
+		nameValue = new JTextField();
+		nameValue.setEnabled(false);
+		
+		startValue = new JTextField();
+		startValue.setEnabled(false);
+		
+		endValue = new JTextField();
+		endValue.setEnabled(false);
 		
 		// The action listener for this is below
 
@@ -113,64 +120,59 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//adjust location
 		btnSave.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
-		//Start Date
-		//Set the constraints for the "typeLabel" and add it to the view
+		
+		//Iteration Name
+		//Set the constraints for the "nameLabel" and add it to the view
 		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
 		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		IterationBuilderConstraints.insets = new Insets(0,25,0,0);  //Set the top padding to 10 units  of blank space
+		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
 		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		//add(typeLabel, IterationBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
-		//Set the constraints for the "endBox"  and add it to the view
+		add(nameLabel, IterationBuilderConstraints);
 		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		//add(typeBox, IterationBuilderConstraints);//Actually add the "typeBox" to the layout given the previous constraints
-		//end Start Date
+		IterationBuilderConstraints.ipadx=80;
+		add(nameValue, IterationBuilderConstraints);
 
+		//Start Date
+		//Set the constraints for the "startDateLabel" and add it to the view
+		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
+		IterationBuilderConstraints.ipady = 0;//This tell	s the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
+		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
+		IterationBuilderConstraints.insets = new Insets(0,15,0,0);
+		IterationBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		add(startDateLabel, IterationBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
+		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
+		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		add(startValue, IterationBuilderConstraints);
+		
 		//End Date
 		//Set the constraints for the "typeLabel" and add it to the view
 		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
 		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		IterationBuilderConstraints.insets = new Insets(0,25,0,0);  //Set the top padding to 10 units  of blank space
-		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		//add(typeLabel, IterationBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
-		//Set the constraints for the "endBox"  and add it to the view
-		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		IterationBuilderConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		//add(typeBox, IterationBuilderConstraints);//Actually add the "typeBox" to the layout given the previous constraints
-		//end End Date
-
-		
-		//value:
-		//Set the constraints for the "value" and add it to the view
-		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		IterationBuilderConstraints.insets = new Insets(0,25,0,0);
+		IterationBuilderConstraints.insets = new Insets(0,15,0,0);
 		IterationBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		//add(valueLabel, IterationBuilderConstraints);//Actually add the "valueLabel" to the layout given the previous constraints
-		//Set the constraints for the "value" and add it to the view
-		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
+		add(endDateLabel, IterationBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
+		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		IterationBuilderConstraints.ipadx=80;
-		add(txtValue, IterationBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
-		//add(valueBox, IterationBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
-		//end value
-
-		//Search button:
+		add(endValue, IterationBuilderConstraints);
+		
+		//Save button:
 		//Set the constraints for the "Save" and add it to the view
 		IterationBuilderConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch to fill it's area
 		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
 		IterationBuilderConstraints.gridx = 8;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		btnSave.setPreferredSize(new Dimension (10,30));
+		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
+		IterationBuilderConstraints.gridx = 9;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(btnSave, IterationBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 
@@ -191,7 +193,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	public JTextField getIterationValue()
 	{
-		return txtValue;
+		return nameValue;
 	}
 
 	/*public JComboBox<String> getIterationValueBox()
