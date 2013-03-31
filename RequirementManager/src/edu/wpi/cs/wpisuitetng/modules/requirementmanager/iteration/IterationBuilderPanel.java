@@ -31,6 +31,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -185,8 +187,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 	
 	public void setUp() {
-		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"iteration");
-		btnSave.addActionListener(saveController);
+		setupControllersAndListeners();
 	}
 	
 	public JButton getButton()
@@ -237,6 +238,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	@Override
 	public void setInputEnabled(boolean setTo) {
 		this.nameValue.setEnabled(setTo);
+		this.startDateChooser.setEnabled(setTo);
+		this.endDateChooser.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
 	}
 	@Override
@@ -259,10 +262,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	// New methods for the refactor.
 	public void resetFields() {
 		this.nameValue.setText("");
-		
-		
-		// TODO Do for both calendars
+		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
+		endDateChooser.setDate(new Date());
 	}
+	
 	
 	public void setModeAndBtn(Mode mode) {
 		this.currentMode = mode;
@@ -281,18 +284,45 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toSend = new Iteration();
 		
 		toSend.setName(this.nameValue.getText());
-		//toSend.setStartDate(this.startDate.getDate());
-		//toSend.setEndDate(this.endDate.getDate());
+		toSend.setStartDate(this.startDateChooser.getDate());
+		toSend.setEndDate(this.endDateChooser.getDate());
 		
 		return toSend.toJSON();
 	}
 	
 	
 	public void displayModelFromJSONArray(String jsonArray) {
+		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
 		
+		this.nameValue.setText(toDisplay.getName());
+		this.startDateChooser.setDate(toDisplay.getStartDate());
+		this.endDateChooser.setDate(toDisplay.getEndDate());
+		
+		setInputEnabled(true);
 	}
 	
-	// setNewCancelMode already exists
+	// toggleNewCancelMode already exists
 	
+	public void setupControllersAndListeners() {
+		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"iteration");
+		btnSave.addActionListener(saveController);
+		
+		startDateChooser.getDateEditor().addPropertyChangeListener(
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						endDateChooser = null;
+					}
+				}
+		);
+		
+		endDateChooser.getDateEditor().addPropertyChangeListener(
+				new PropertyChangeListener() {
+					public void propertyChange(PropertyChangeEvent e) {
+						// Update invalid dates for startDatePicker
+					}
+				}
+		);
+	}
 }
 
