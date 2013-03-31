@@ -26,16 +26,14 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 import java.awt.event.MouseEvent;
 
 
-/** Interface to go over builder and list panels that work together
+/** Interface to go over list panels that work together
  * and have buttons/controllers that include the following.
  * Delete
  * New Model/Cancel
- * Save
- * (upload functionality from a list view)
  * 
  */
-public interface IListBuilder {
-	
+public interface IListPanel {
+
 	/** Takes whatever model(s) is(are) stored in the the current panel,
 	 *  and returns the unique identifier(s) in an array. Generally
 	 *  pulls the highlighted identifiers from a table view.
@@ -44,13 +42,11 @@ public interface IListBuilder {
 	 */
 	public String[] getUniqueIdentifiers();
 
-	
-	
-	/** Sets clears and resets any fields in the current builder panel
-	 *  and also resets the mode to "CREATE" if applicable. If called 
-	 *  on a list view, sets the button to clear/cancel
+
+
+	/** If called  on a list view, sets the button to clear/cancel
 	 */
-	public void clearAndReset();
+	public void setNewBtnToCancel();
 
 
 	/** Sets the "Cancel" button back to "New <Model>" 
@@ -67,24 +63,11 @@ public interface IListBuilder {
 
 
 
-	/** Gets the model from the view/panel in the form of a JSON string
-	 *  that is ready to be sent as a message over the network
-	 * 
-	 * *NOTE: can be used for passing messages between views!
-	 * 
-	 * @return JSON string of the model to be sent
-	 */
-	public String getModelMessage();
 
-	
-	/** Gets the model and passes it around 
-	 *  When given to another view, must be cast appropriately (might not work)
-	 */
-//	public Model getModel();
 
 
 	/** Toggles between "New Model" and "Cancel" mode */
-	public void toggleNewCancalMode();
+	public void toggleNewCancelMode();
 
 
 
@@ -96,16 +79,10 @@ public interface IListBuilder {
 	public String getSelectedUniqueIdentifier(MouseEvent me);
 
 
-	/** Takes a JSON string that holds an array of models and uploads them
-	 *  to the builder panel. Also sets the 
-	 *  
-	 * @param jsonArray An array of models in JSON string form
-	 */
-	public void translateAndDisplayModel(String jsonArray);
 
- 
+
 	/** Show the models in the list view
-	 *  Do nothing in builder
+	 *
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 */

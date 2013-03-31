@@ -37,7 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteModelController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveModelController;
@@ -49,7 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilde
  * Panel to contain the list of filters that have been saved by the user
  */
 @SuppressWarnings("serial")
-public class FilterListPanel extends JPanel implements IListBuilder{
+public class FilterListPanel extends JPanel implements IListPanel{
 	
 	/** The table of results */
 	protected JTable resultsTable;
@@ -113,15 +113,15 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
-		deleteController = new DeleteModelController(this, parent.getBuilderPanel(),"filter");
-		retrieveController = new RetrieveModelController(this, parent.getBuilderPanel(),"filter");
-		setRetrieveAllController(new RetrieveAllModelsController(this, parent.getBuilderPanel(),"filter"));
+		deleteController = new DeleteModelController(this, parent.getFilterBuilderPanel(),"filter");
+		retrieveController = new RetrieveModelController(this, parent.getFilterBuilderPanel(),"filter");
+		setRetrieveAllController(new RetrieveAllModelsController(this, parent.getFilterBuilderPanel(),"filter"));
 		
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
 				
 		// Sets up listener system. Once pressed, changes to CancelFilterAction listener, then back to this.
-		btnCreate.addActionListener(new NewModelAction(this, parent.getBuilderPanel()));
+		btnCreate.addActionListener(new NewModelAction(this, parent.getFilterBuilderPanel()));
 		
 		btnDelete.addActionListener(deleteController);
 	}
@@ -217,17 +217,10 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 	}
 
 	@Override
-	public void clearAndReset() {
-		// Remove anything in the filter builder panel whenever the delete button is pressed
-		FilterBuilderPanel resetBuilderFields = parent.getBuilderPanel();
-		resetBuilderFields.setInputEnabled(false);
-		resetBuilderFields.setCurrentMode(Mode.CREATE);
-
-		// Set the cancel button back to New Filter if it was in cancel mode 
-		FilterListPanel resetListCancelButtons = parent.getFilterPanel();
-		resetListCancelButtons.getBtnCreate().setText("New Filter"); 
-		resetListCancelButtons.setBtnCreateIsCancel(false);
-		
+	public void setNewBtnToCancel() {
+		// set the New/Cancel button to cancel
+		getBtnCreate().setText("Cancel"); 
+		setBtnCreateIsCancel(true);
 	}
 
 	@Override
@@ -239,32 +232,21 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 	}
 
 	@Override
-	public boolean refreshAll() {
-		// TODO make this work....
-		return false;
-	}
-
-	@Override
-	public String getModelMessage() {
-		// TODO check later
-		return null;
-	}
-
-	@Override
-	public void toggleNewCancalMode() {
-		FilterListPanel resetListCancelButtons = parent.getFilterPanel();
-		if(resetListCancelButtons.isBtnCreateIsCancel())
-			resetListCancelButtons.getBtnCreate().setText("New Filter");
+	public void toggleNewCancelMode() {
+		btnCreateIsCancel = !btnCreateIsCancel;
+		if(btnCreateIsCancel)
+			this.getBtnCreate().setText("Cancel"); 			
 		else
-			resetListCancelButtons.getBtnCreate().setText("Cancel"); 
-		resetListCancelButtons.setBtnCreateIsCancel(!resetListCancelButtons.isBtnCreateIsCancel());
+			this.getBtnCreate().setText("New Filter");
 	}
-
+	
+	
 	@Override
-	public void translateAndDisplayModel(String jsonArray) {
-		// TODO no
-
+	public boolean refreshAll() {
+		retrieveAllController.refreshData();
+		return true;
 	}
+
 
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
@@ -347,5 +329,7 @@ public class FilterListPanel extends JPanel implements IListBuilder{
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
 	}
+
+
 }
 

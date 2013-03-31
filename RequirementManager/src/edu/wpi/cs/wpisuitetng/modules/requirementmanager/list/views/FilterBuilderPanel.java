@@ -31,7 +31,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -43,25 +42,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 
 /**
  * Panel to contain the filter builder for defect searching
  */
 @SuppressWarnings("serial")
-public class FilterBuilderPanel extends JPanel implements ActionListener, IListBuilder{
+public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel{
 
 	// enum to say whether or not you are creating
 	public enum Mode {
@@ -89,9 +82,13 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	private final FilterListPanel grandpa;
 
 	private Filter currentFilter;
+	
+	/** EDIT or CREATE mode */
 	private Mode currentMode;
 
 	private String curType = "Id";
+	
+	/** Keeps track of active/inactive state of builder */
 	private boolean isBuilderActive = false;
 	
 	private SaveModelController saveController;
@@ -226,7 +223,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		btnSave.setPreferredSize(new Dimension (10,30));
 		add(btnSave, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
-
+		
+		currentFilter = new Filter();
 	}
 	public JButton getButton()
 	{
@@ -247,6 +245,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		return txtValue;
 	}
 
+	public JNumberTextField getFilterNumValue()
+	{
+		return txtNumValue;
+	}
+	
 	public JComboBox<String> getFilterValueBox()
 	{
 		return valueBox;
@@ -295,6 +298,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 	 * @param e The input resulting from the action
 	 */
 	public void actionPerformed(ActionEvent e) {
+	
 		@SuppressWarnings("unchecked")
 		JComboBox<String> comboBox = (JComboBox<String>) e.getSource();
 
@@ -323,31 +327,25 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		DefaultComboBoxModel<String> compbox = new DefaultComboBoxModel<String>(comparatorStrings);
 		comparatorBox.setModel(compbox);
 
-		if(curType == "Id" ||curType=="ReleaseNumber" ||curType=="Estimate" ||curType=="ActualEffort" ||curType=="Name" ||curType=="Description" ){
-			if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
-				txtValue.setVisible(false);
-				txtNumValue.setVisible(false);
-				valueBox.setVisible(true);
-			}
+		if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
+			txtValue.setVisible(false);
+			txtNumValue.setVisible(false);
+			valueBox.setVisible(true);
 		}
-		else{
-			if(selected=="Name" ||selected=="Description"){
-				valueBox.setVisible(false);
-				txtNumValue.setVisible(false);
-				txtValue.setVisible(true);
-			}
-			else{ // if it needs a number field 
-				valueBox.setVisible(false);
-				txtValue.setVisible(false);
-				txtNumValue.setVisible(true);
-			}
-			else{ // if it needs a number field 
-				valueBox.setVisible(false);
-				txtValue.setVisible(false);
-				txtNumValue.setVisible(true);
-			}
+		else if(selected=="Name" ||selected=="Description"){
+			valueBox.setVisible(false);
+			txtNumValue.setVisible(false);
+			txtValue.setVisible(true);
 		}
-
+		else{ // id, estimate, actual value, or release number
+			valueBox.setVisible(false);
+			txtValue.setVisible(false);
+			txtNumValue.setVisible(true);
+		}
+		// reset values 
+		this.getFilterValue().setText("");
+		this.getFilterNumValue().setText("");
+		
 		curType = selected;
 	}
 
@@ -364,16 +362,18 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		this.getFilterOperator().setSelectedIndex(0);
 		this.getFilterType().setSelectedIndex(0);
 		this.getStatus().setSelectedIndex(0);	    
-
+		
 		// Enable/Disable
 		this.getFilterType().setEnabled(setTo);
 		this.getFilterOperator().setEnabled(setTo);
 		this.getStatus().setEnabled(setTo);
 		this.getFilterValue().setEnabled(setTo);
-
+		this.getFilterNumValue().setEnabled(setTo);
+		
 		this.getFilterValueBox().setEnabled(setTo);
 		this.getFilterValue().setText("");
-
+		this.getFilterNumValue().setText("");
+				
 		this.getButton().setEnabled(setTo);
 
 		// Reset value field
@@ -383,38 +383,52 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		this.getButton().setText("Create");   
 		
 		valueBox.setVisible(false);
-		txtValue.setVisible(true);
+		txtValue.setVisible(false);
+		txtNumValue.setVisible(true);
 	}
 	
-	@Override
-	public String[] getUniqueIdentifiers() {
-		return null;
-	}
-	@Override
+
+	/** Sets clears and resets any fields in the current builder panel
+	 *  and also resets the mode to "CREATE" if applicable. 
+	 */
 	public void clearAndReset() {
+		currentMode = Mode.CREATE; // default for this function
 		setInputEnabled(false);
+		isBuilderActive = false;
 	}
-	@Override
-	public void setCancelBtnToNew() {
-		
+	
+	/** Toggles between active and inactive modes mode */
+	public void toggleNewCancelMode() {
+		currentMode = Mode.CREATE; // default for this function
+		isBuilderActive = !isBuilderActive;
+		setInputEnabled(isBuilderActive);
 	}
-	@Override
-	public boolean refreshAll() {
-		return false;
-	}
-	@Override
+
+	/** Gets the model from the panel in the form of a JSON string
+	 *  that is ready to be sent as a message over the network
+	 * 
+	 * *NOTE: can be used for passing messages between views!
+	 * 
+	 * @return JSON string of the model to be sent
+	 */
 	public String getModelMessage() {
 		String curtype = this.getFilterType().getSelectedItem().toString();
-    	if (curtype != "Type" && curtype != "Status" && curtype != "Priority" && this.getFilterValue().getText().length() == 0) {
+    	if (curtype != "Type" 
+    			&& curtype != "Status" 
+    			&& curtype != "Priority" 
+    			&& 	this.getFilterValue().getText().length() == 0   
+    			&&  this.getFilterNumValue().getText().length() == 0) {
+    		
+    		
     		JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return null;
     	}
     	
 		Filter filter = new Filter(); 
 		
-		if(this.getCurrentMode() == Mode.EDIT)
-			filter.setUniqueID(currentFilter.getUniqueID());
-		else
-			filter.setUniqueID(-1);
+		//if(this.getCurrentMode() == Mode.EDIT)	filter.setUniqueID(currentFilter.getUniqueID());
+		if (currentFilter.getUniqueID() != -1) System.err.println(" unique id not = 1");
+		
 		
 		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
 		filter.setType(type);
@@ -433,14 +447,17 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		return filter.toJSON();
 		
 	}
-	@Override
-	public void toggleNewCancalMode() {
-		currentMode = Mode.CREATE; 
-		setInputEnabled(!isBuilderActive);
-	}
-	@Override
-	public void translateAndDisplayModel(String jsonString) {
 
+	
+	/** Takes a JSON string that holds an array of models and uploads them
+	 *  to the builder panel. Also sets the modes
+	 *  
+	 * @param jsonArray An array of models in JSON string form
+	 */
+	public void translateAndDisplayModel(String jsonString) {
+		isBuilderActive = true;
+		setInputEnabled(true);
+		
 		Filter filter = Filter.fromJSONArray(jsonString)[0];
 		//Set edit mode
 		this.setCurrentMode(Mode.EDIT);
@@ -459,6 +476,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		this.getFilterValue().setText(filter.getValue());
 		this.getFilterValue().setEnabled(true);
 
+		//NumValue
+		this.getFilterNumValue().setText(filter.getValue());
+		this.getFilterNumValue().setEnabled(true);
+		
 		//Value?
 		this.getFilterValueBox().setSelectedItem(filter.getValue());
 		this.getFilterValueBox().setEnabled(true);
@@ -478,14 +499,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IListB
 		parent.getFilterPanel().getBtnCreate().setText("New Filter");
 		parent.getFilterPanel().setBtnCreateIsCancel(false);
 	}
-	@Override
-	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		return null;
-	}
-	@Override
-	public void showRecievedModels(String jsonString) {
-		//no
-	}	
+	
 	
 
 }

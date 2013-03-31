@@ -37,9 +37,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class RetrieveModelController extends MouseAdapter {
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 	
 	
 	/** The model name, in string form, which will be used for sending messsages */
@@ -55,7 +55,7 @@ public class RetrieveModelController extends MouseAdapter {
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public RetrieveModelController(IListBuilder listView, IListBuilder builderView, String modelName){
+	public RetrieveModelController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
 		this.modelName = modelName;
 		this.builderView = builderView;
@@ -87,7 +87,7 @@ public class RetrieveModelController extends MouseAdapter {
 		// if a user has double-clicked on a filter, set UI fields appropriately
 		builderView.translateAndDisplayModel(jsonArray);
 		
-		listView.clearAndReset();
+		listView.setNewBtnToCancel();
 	}
 
 	/**

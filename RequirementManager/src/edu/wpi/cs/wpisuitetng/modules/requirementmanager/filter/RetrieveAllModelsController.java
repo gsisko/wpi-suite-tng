@@ -37,10 +37,10 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class RetrieveAllModelsController implements ActionListener{
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
 	@SuppressWarnings("unused")
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 	
 	
 	/** The model name, in string form, which will be used for sending messsages */
@@ -53,7 +53,7 @@ public class RetrieveAllModelsController implements ActionListener{
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public RetrieveAllModelsController(IListBuilder listView, IListBuilder builderView, String modelName){
+	public RetrieveAllModelsController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
 		this.modelName = modelName;
 		this.builderView = builderView;

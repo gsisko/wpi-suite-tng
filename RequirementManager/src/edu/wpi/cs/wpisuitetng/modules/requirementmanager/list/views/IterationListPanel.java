@@ -37,7 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteModelController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveModelController;
@@ -48,7 +48,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  * Panel to contain the list of Iterations that have been saved by the user
  */
 @SuppressWarnings("serial")
-public class IterationListPanel extends JPanel implements IListBuilder {
+public class IterationListPanel extends JPanel implements IListPanel {
 
 	/** The table of results */
 	protected JTable resultsTable;
@@ -113,16 +113,16 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
-		retrieveAllController = new RetrieveAllModelsController(this, parent.getBuilderPanel(), "iteration");
-		deleteController = new DeleteModelController(this, parent.getBuilderPanel(), "iteration");
-		retrieveController = new RetrieveModelController(this, parent.getBuilderPanel(), "iteration");
+		retrieveAllController = new RetrieveAllModelsController(this, parent.getFilterBuilderPanel(), "iteration");
+		deleteController = new DeleteModelController(this, parent.getFilterBuilderPanel(), "iteration");
+		retrieveController = new RetrieveModelController(this, parent.getFilterBuilderPanel(), "iteration");
 		
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
 
 		
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
-		btnCreate.addActionListener(new NewModelAction(this, parent.getBuilderPanel()));
+		btnCreate.addActionListener(new NewModelAction(this, parent.getFilterBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
 
 	}
@@ -213,7 +213,7 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	/** 
 	 * Toggles between "New Model" and "Cancel" mode 
 	 */
-	public void toggleNewCancalMode() {
+	public void toggleNewCancelMode() {
 
 	}
 
@@ -326,6 +326,12 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 
 	public void translateAndDisplayModel(String jsonArray) {
 
+	}
+
+	@Override
+	public void setNewBtnToCancel() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

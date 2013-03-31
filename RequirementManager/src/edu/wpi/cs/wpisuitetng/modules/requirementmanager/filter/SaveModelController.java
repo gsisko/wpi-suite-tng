@@ -36,9 +36,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class SaveModelController implements ActionListener 
 {
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 		
 	/** The model name, in string form, which will be used for sending messsages */
 	private final String modelName;
@@ -51,7 +51,7 @@ public class SaveModelController implements ActionListener
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public SaveModelController(IListBuilder listView, IListBuilder builderView, String modelName) 
+	public SaveModelController(IListPanel listView, IBuilderPanel builderView, String modelName) 
 	{
 		this.listView = listView;
 		this.modelName = modelName;
@@ -71,7 +71,12 @@ public class SaveModelController implements ActionListener
 		}
 		
 		// make a PUT http request and let the observer get the response
-		request.setBody(builderView.getModelMessage()); // put the new message in the body of the request
+		String body = builderView.getModelMessage();
+		if (body == null){
+			System.err.println("Failed to get the model");
+			return;
+		}
+		request.setBody(body); // put the new message in the body of the request
 		request.addObserver(new SaveModelObserver(this)); // add an observer to process the response
 		request.send();		
 	}
@@ -95,13 +100,7 @@ public class SaveModelController implements ActionListener
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
-			// try to refresh from the builder
-			if(!builderView.refreshAll()){
-				// Print error message upon both failing
-				System.err.println("Fail: cannot refresh views after deleting a Model.");
-			}
-		
-		}
+			System.err.println("Fail: cannot refresh views after deleting a Model.");
+		}		
 	}
-
 }

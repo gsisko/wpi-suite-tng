@@ -29,9 +29,9 @@ import java.awt.event.ActionListener;
 
 public class NewModelAction implements ActionListener {
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 	
 	
 	/** When pressed, the information in the filter builder panel
@@ -40,7 +40,7 @@ public class NewModelAction implements ActionListener {
 	 * @param theButton The button to watch
 	 * @param builder   The filter builder panel to do work on
 	 */
-	public NewModelAction(IListBuilder listView, IListBuilder builderView){
+	public NewModelAction(IListPanel listView, IBuilderPanel builderView){
 		this.listView = listView;
 		this.builderView = builderView;
 
@@ -56,8 +56,8 @@ public class NewModelAction implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// Toggle between the new and cancel modes
-		builderView.toggleNewCancalMode();
-		listView.toggleNewCancalMode();
+		builderView.toggleNewCancelMode();
+		listView.toggleNewCancelMode();
 		
 	}
 }

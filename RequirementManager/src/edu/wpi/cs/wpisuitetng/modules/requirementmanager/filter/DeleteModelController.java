@@ -36,9 +36,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class DeleteModelController implements ActionListener {
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 	
 	
 	/** The model name, in string form, which will be used for sending messsages */
@@ -52,7 +52,7 @@ public class DeleteModelController implements ActionListener {
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public DeleteModelController(IListBuilder listView, IListBuilder builderView, String modelName){
+	public DeleteModelController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
 		this.modelName = modelName;
 		this.builderView = builderView;
@@ -93,12 +93,7 @@ public class DeleteModelController implements ActionListener {
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
-			// try to refresh from the builder
-			if(!builderView.refreshAll()){
-				// Print error message upon both failing
-				System.err.println("Fail: cannot refresh views after deleting a Model.");
-			}
-		
+			System.err.println("Fail: cannot refresh views after deleting a Model.");
 		}
 	}
 }
