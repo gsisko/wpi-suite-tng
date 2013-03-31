@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableColumnModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
@@ -94,9 +95,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
 		this.add(resultsScrollPane);
 		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
-		
-		// TODO implement the rest of the controls to display saved filters
-		// and store saved filters in the ConfigManager
 		
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		
@@ -252,7 +250,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// TODO Auto-generated method stub
 		
 		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
 		
@@ -269,7 +266,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public void showRecievedModels(String jsonString) {
-		// TODO Auto-generated method stub
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
@@ -312,10 +308,16 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			resultsTable.getColumn("Id").setMinWidth(0);
+			resultsTable.getColumn("Id").setMaxWidth(0);
+			resultsTable.getColumn("Id").setWidth(0);
 		}
 		else {
 			// do nothing, there are no filters
 		}
+		
+		
+		
 		parent.getParent().getController().refreshData();
 	}
 

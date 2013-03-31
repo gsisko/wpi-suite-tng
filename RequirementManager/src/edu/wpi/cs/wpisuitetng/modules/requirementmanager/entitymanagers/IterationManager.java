@@ -93,11 +93,20 @@ public class IterationManager implements EntityManager<Iteration> {
 			throw new BadRequestException("The Iteration creation string had invalid formatting. Entity String: " + content);			
 		}
 		
-//		// Check to see if the iteration exists in the database already - check by ID only
-//		if(getEntity(s,((Integer) newIteration.getId()).toString())[0] != null){ //indicates it exists already
-//			logger.log(Level.WARNING, "ID Conflict Exception during Iteration creation.");
-//			throw new ConflictException("A Iteration with the given ID already exists. Entity String: " + content); 
-//		}
+		
+		// Check to see if the iteration exists in the database already - check by name only
+		Iteration resultOfCheck = null;
+		try {	
+		resultOfCheck = getEntity(s,newIteration.getName())[0]; //indicates it exists already
+		} catch (WPISuiteException wse){ // We want this, because it indicates that the name was not found for this project
+			logger.log(Level.FINE, "The name for the given iteration has not been used. Continueing creation.");
+		}
+		if (resultOfCheck != null){  // If no excepts are thrown and an Iteration is returned, we know this iteration exists alredy
+			logger.log(Level.WARNING, "Name Conflict Exception during Iteration creation.");
+			throw new ConflictException("A Iteration with the given name already exists. Entity String: " + content); 
+		}
+		
+		
 		
 		// Saves the iteration in the database
 		this.save(s,newIteration); // An exception may be thrown here if we can't save it
