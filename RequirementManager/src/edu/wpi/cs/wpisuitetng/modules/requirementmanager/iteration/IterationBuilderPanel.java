@@ -46,6 +46,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePicker;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
@@ -69,6 +70,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private JTextField nameValue;
 	private JTextField startValue;
 	private JTextField endValue;
+	
 	//button
 	private final JButton btnSave;
 
@@ -79,6 +81,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private String curType = "Id";
 	
 	private Iteration currentIteration;
+	private boolean isBuilderActive;
+	
+	private SaveModelController saveController;
 
 	/**
 	 * Construct the panel
@@ -87,6 +92,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		parent = view;
 		currentMode = Mode.CREATE;
 		currentIteration = null;
+		isBuilderActive = false;
 		
 		//create title
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -109,8 +115,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		endValue.setEnabled(false);
 		
 		// The action listener for this is below
-
-		btnSave.addActionListener(new SaveModelController(parent.getTabPanel().getIterationList(), this, "Iteration"));
 		btnSave.setEnabled(false);
 
 		//set the layout
@@ -177,35 +181,21 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//end Save button
 
 	}
+	
+	public void setUp() {
+		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"iteration");
+		btnSave.addActionListener(saveController);
+	}
+	
 	public JButton getButton()
 	{
 		return btnSave;
 	}
-	/*public JComboBox<String> getIterationType()
-	{
-		return typeBox;
-	}
-
-	public JComboBox<String> getIterationOperator()
-	{
-		return comparatorBox;
-	}*/
 
 	public JTextField getIterationValue()
 	{
 		return nameValue;
 	}
-
-	/*public JComboBox<String> getIterationValueBox()
-	{
-		return valueBox;
-	}
-
-
-	public JComboBox<String> getStatus()
-	{
-		return userIterationBox;
-	}*/
 
 	/**
 	 * @return the currentMode
@@ -235,34 +225,74 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void clearAndReset() {
-		// TODO Auto-generated method stub
-		
+		this.resetFields();
+		this.setInputEnabled(false);	
 	}
 	@Override
 	public void setInputEnabled(boolean setTo) {
-		// TODO Auto-generated method stub
-		
+		this.nameValue.setEnabled(setTo);
+		this.startValue.setEnabled(setTo);
+		this.endValue.setEnabled(setTo);
+		this.btnSave.setEnabled(setTo);
 	}
 	@Override
 	public String getModelMessage() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.convertCurrentModelToJSON();
 	}
 	@Override
 	public void translateAndDisplayModel(String jsonArray) {
-		// TODO Auto-generated method stub
-		
+		this.displayModelFromJSONArray(jsonArray);
 	}
 	@Override
 	public void toggleNewCancelMode() {
-		// TODO Auto-generated method stub
+		currentMode = Mode.CREATE; // default for this function
+		isBuilderActive = !isBuilderActive;
+		setInputEnabled(isBuilderActive);
+	}
+
+	
+	
+	// New methods for the refactor.
+	public void resetFields() {
+		this.nameValue.setText("");
+		
+		
+		// TODO Do for both calendars
+	}
+	
+	public void setModeAndBtn(Mode mode) {
+		this.currentMode = mode;
+		if (mode == Mode.CREATE) {
+			this.btnSave.setText("Create");
+		}
+		else if (mode == Mode.EDIT) {
+			this.btnSave.setText("Save");
+		}
+	}
+	
+	// getCurrentMode already exists
+	// setInputEnabled already exists
+	
+	public String convertCurrentModelToJSON() {
+		Iteration toSend = new Iteration();
+		
+		toSend.setName(this.nameValue.getText());
+		//toSend.setStartDate(this.startDate.getDate());
+		//toSend.setEndDate(this.endDate.getDate());
+		
+		return toSend.toJSON();
+	}
+	
+	
+	public void displayModelFromJSONArray(String jsonArray) {
 		
 	}
+	
+	// setNewCancelMode already exists
 	
 }
 
