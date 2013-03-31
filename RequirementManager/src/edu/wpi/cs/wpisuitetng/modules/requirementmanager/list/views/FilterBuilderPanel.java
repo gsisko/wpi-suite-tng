@@ -424,20 +424,19 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
     		return null;
     	}
     	
-		Filter filter = new Filter(); 
+		Filter filter = new Filter();
 		
-		//if(this.getCurrentMode() == Mode.EDIT)	filter.setUniqueID(currentFilter.getUniqueID());
-		if (currentFilter.getUniqueID() != -1) System.err.println(" unique id not = 1");
-		
-		
+		if (this.getCurrentMode() == Mode.EDIT) filter.setUniqueID(currentFilter.getUniqueID());
 		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
 		filter.setType(type);
 		filter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
 		
 		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
 			filter.setValue(this.getFilterValueBox().getSelectedItem().toString());
-		else
+		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
 			filter.setValue(this.getFilterValue().getText());
+		else
+			filter.setValue(this.getFilterNumValue().getText());
 		
 		if(this.getStatus().getSelectedIndex() == 1)
 			filter.setUseFilter(false);
