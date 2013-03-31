@@ -87,6 +87,11 @@ public class MainTabController {
 	 * @param mode The Mode to use
 	 */
 	private Tab addRequirementTab(Requirement requirement, Mode mode) {
+		if(view.indexOfTab("Requirement #"+requirement.getId()) != -1){
+			view.setSelectedIndex(view.indexOfTab("Requirement #"+requirement.getId()));
+			return null;
+		}
+
 		Tab tab = addTab();
 		RequirementView view = new RequirementView(requirement, mode, tab);
 		tab.setComponent(view);
