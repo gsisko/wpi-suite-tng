@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -42,11 +42,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 
@@ -79,7 +80,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final JButton btnSave;
 
 	private final ListPanel parent;
-	private final FilterListPanel grandpa;
 
 	private Filter currentFilter;
 	
@@ -98,7 +98,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 */
 	public IterationBuilderPanel(ListPanel view) {
 		parent = view;
-		grandpa = null;
 		currentMode = Mode.CREATE;
 		//create title
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -144,8 +143,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		// The action listener for this is below
 		typeBox.addActionListener(this);
 
-		saveController = new SaveModelController(grandpa,this,"filter");
-		btnSave.addActionListener(saveController);
 		btnSave.setEnabled(false);
 
 		//set the layout
@@ -226,10 +223,17 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		
 		currentFilter = new Filter();
 	}
+	
+	public void setUp() {
+		saveController = new SaveModelController(parent.getFilterPanel(),this,"filter");
+		btnSave.addActionListener(saveController);
+	}
+	
 	public JButton getButton()
 	{
 		return btnSave;
 	}
+	
 	public JComboBox<String> getFilterType()
 	{
 		return typeBox;
@@ -283,12 +287,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	public void setCurrentFilter(Filter newFilter)
 	{
 		currentFilter = newFilter;
-	}
-	/**
-	 * @return the grandpa
-	 */
-	public FilterListPanel getGrandpa() {
-		return grandpa;
 	}
 
 	/** Watches for changes in the "FilterType JCombo box
@@ -402,6 +400,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		currentMode = Mode.CREATE; // default for this function
 		isBuilderActive = !isBuilderActive;
 		setInputEnabled(isBuilderActive);
+		this.getStatus().setEnabled(false);
 	}
 
 	/** Gets the model from the panel in the form of a JSON string
@@ -424,27 +423,26 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
     		return null;
     	}
     	
-		Filter filter = new Filter(); 
+		Filter newFilter = new Filter();
 		
-		//if(this.getCurrentMode() == Mode.EDIT)	filter.setUniqueID(currentFilter.getUniqueID());
-		if (currentFilter.getUniqueID() != -1) System.err.println(" unique id not = 1");
-		
-		
+		if (this.getCurrentMode() == Mode.EDIT) newFilter.setUniqueID(currentFilter.getUniqueID());
 		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
-		filter.setType(type);
-		filter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
+		newFilter.setType(type);
+		newFilter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
 		
 		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
-			filter.setValue(this.getFilterValueBox().getSelectedItem().toString());
+			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
+		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
+			newFilter.setValue(this.getFilterValue().getText());
 		else
-			filter.setValue(this.getFilterValue().getText());
+			newFilter.setValue(this.getFilterNumValue().getText());
 		
 		if(this.getStatus().getSelectedIndex() == 1)
-			filter.setUseFilter(false);
+			newFilter.setUseFilter(false);
 		else
-			filter.setUseFilter(true);
+			newFilter.setUseFilter(true);
 		
-		return filter.toJSON();
+		return newFilter.toJSON();
 		
 	}
 
@@ -462,7 +460,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Set edit mode
 		this.setCurrentMode(Mode.EDIT);
 		this.getButton().setText("Update");
-		this.getButton().setEnabled(true);
 
 		//Type
 		this.getFilterType().setSelectedItem(filter.getType().toString());
@@ -494,10 +491,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//Set current filter to the one retrieved
 		this.setCurrentFilter(filter);
-
-		//Update button
-		parent.getFilterPanel().getBtnCreate().setText("New Filter");
-		parent.getFilterPanel().setBtnCreateIsCancel(false);
 	}
 	
 	

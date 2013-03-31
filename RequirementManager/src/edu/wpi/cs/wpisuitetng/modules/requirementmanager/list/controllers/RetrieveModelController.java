@@ -22,12 +22,15 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveModelObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -86,7 +89,6 @@ public class RetrieveModelController extends MouseAdapter {
 	public void showModel(String jsonArray) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
 		builderView.translateAndDisplayModel(jsonArray);
-		
 		listView.setNewBtnToCancel();
 	}
 

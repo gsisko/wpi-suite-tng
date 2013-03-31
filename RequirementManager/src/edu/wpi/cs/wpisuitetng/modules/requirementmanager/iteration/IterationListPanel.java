@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -36,12 +36,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteModelController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewModelAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllModelsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**

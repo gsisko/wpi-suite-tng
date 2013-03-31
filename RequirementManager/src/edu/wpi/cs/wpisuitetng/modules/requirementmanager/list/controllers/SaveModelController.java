@@ -22,68 +22,78 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveModelObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/** Full process of deleting filters from Press of the delete button
- *  to sending the delete message
- */
-public class DeleteModelController implements ActionListener {
+public class SaveModelController implements ActionListener 
+{
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
-	
-	
+		
 	/** The model name, in string form, which will be used for sending messsages */
 	private final String modelName;
 	
 	
 	/** Constructs a controller with an action listener that can, on a button
-	 *  press, delete the highlighted items in a list view.
+	 *  press, save the model currently loaded into the builder view
 	 * 
 	 * @param listView The list view that this controller is watching
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public DeleteModelController(IListPanel listView, IBuilderPanel builderView, String modelName){
+	public SaveModelController(IListPanel listView, IBuilderPanel builderView, String modelName) 
+	{
 		this.listView = listView;
 		this.modelName = modelName;
 		this.builderView = builderView;
 	}
 
-	/** Action listener for when the "Delete" button is pressed
-	 *  AND more than one Filter in the list is highlighted.
-	 * 
-	 * NOTE: Doubles as a "Cancel" button
-	 * 
-	 * @param buttonPress The input that triggers the controller 
-	 */
-	public void actionPerformed(ActionEvent buttonPress) {		
-		
-		String[] uniqueIdentifiers = listView.getUniqueIdentifiers();
-		
-		// get array of row numbers, if there are any highlighted rows
-		for(int i = 0; i < uniqueIdentifiers.length; i++){			
-			// Create and send a request for the Model with the given ID
-			// Send message for each Model ID for deletion
-			Request request;
-			request = Network.getInstance().makeRequest("requirementmanager/" + modelName + "/" + uniqueIdentifiers[i], HttpMethod.DELETE);
-			request.addObserver(new DeleteModelObserver(this));
-			request.send();
+
+	public void actionPerformed(ActionEvent event) 
+	{
+		final Request request;
+		if (((FilterBuilderPanel) builderView).getCurrentMode() == Mode.EDIT){
+			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.POST); // post == update
+
+			
+		} else {
+			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
 		}
 		
-		// Remove anything in the builder panel whenever the delete button is pressed and also
-		// set the "Cancel" button back to new
-		builderView.clearAndReset();				
+		// make a PUT http request and let the observer get the response
+		String body = builderView.getModelMessage();
+		if (body == null){
+			System.err.println("Failed to get the model");
+			return;
+		}
+		request.setBody(body); // put the new message in the body of the request
+		request.addObserver(new SaveModelObserver(this)); // add an observer to process the response
+		request.send();		
+	}
+
+
+	/** Simple success message for saving a model.  
+	 */
+	public void saveSuccess() {
+		// If "getUniqueID" was added to Model, then overridden by models, that ID 
+		// could be printed here and we would have a better save message
+		System.out.println(modelName  + " saved successfully");
+
+		builderView.clearAndReset();
 		listView.setCancelBtnToNew();
-	
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
@@ -94,9 +104,6 @@ public class DeleteModelController implements ActionListener {
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
 			System.err.println("Fail: cannot refresh views after deleting a Model.");
-		}
+		}		
 	}
 }
-
-
-

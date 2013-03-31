@@ -28,7 +28,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
@@ -62,11 +65,11 @@ public class ListPanel extends JPanel {
 	/** The main tab controller */
 	protected MainTabController tabController;
 
-	private RetrieveAllFiltersController retriever;
-
 	private ListRequirementsView parent; 
 
 	private JScrollPane builderScrollPane;
+
+	private Mode currentMode;
 
 	/**
 	 * Constructs the list panel and sets up the layout for the sub-panels
@@ -75,6 +78,7 @@ public class ListPanel extends JPanel {
 	public ListPanel(MainTabController tabController, ListRequirementsView view) {
 		this.tabController = tabController;
 		this.parent = view;
+		this.currentMode = Mode.FILTER;
 
 		// Set the layout manager of this panel
 		this.layout = new SpringLayout();
@@ -82,12 +86,13 @@ public class ListPanel extends JPanel {
 
 		// Construct the panels that compose the list view
 		this.filterBuilderPanel = new FilterBuilderPanel(this);
+		this.filtersTabPanel = new ListTabView(this);
+		this.filterBuilderPanel.setUp();
+
+
+		JScrollPane listScrollPane = new JScrollPane(filtersTabPanel);
 		this.iterationBuilderPanel = new IterationBuilderPanel(this);
 		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
-
-		//Testing adding tab views
-		this.filtersTabPanel = new ListTabView(this);
-		JScrollPane listScrollPane = new JScrollPane(filtersTabPanel);
 		this.resultsPanel = new ResultsPanel(tabController);
 
 
@@ -143,20 +148,6 @@ public class ListPanel extends JPanel {
 	}
 
 	/**
-	 * @return the retriever
-	 */
-	public RetrieveAllFiltersController getRetriever() {
-		return retriever;
-	}
-
-	/**
-	 * @param retriever the retriever to set
-	 */
-	public void setRetriever(RetrieveAllFiltersController retriever) {
-		this.retriever = retriever;
-	}
-
-	/**
 	 * @return the listView
 	 */
 	public ListRequirementsView getParent() {
@@ -171,10 +162,13 @@ public class ListPanel extends JPanel {
 	}
 
 	public void setMode(Mode newMode) {
-		if (newMode == Mode.FILTER) {
-			this.builderScrollPane.setViewportView(filterBuilderPanel);
-		} else {
-			this.builderScrollPane.setViewportView(iterationBuilderPanel);
+		if (this.currentMode != newMode) {
+			if (newMode == Mode.FILTER) {
+				this.builderScrollPane.setViewportView(filterBuilderPanel);
+			} else {
+				this.builderScrollPane.setViewportView(iterationBuilderPanel);
+			}
+			this.currentMode = newMode;
 		}
 	}
 }

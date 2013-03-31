@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

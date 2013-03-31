@@ -53,7 +53,7 @@ public class Filter extends AbstractModel {
 	/**	Basic constructor
 	 */
 	public Filter () {
-		new Filter(FilterType.Other, OperatorType.Other, "value", true);
+		this.setUniqueID(-1); 		// default as a flag to entity manager
 	}
 	
 	
@@ -65,12 +65,11 @@ public class Filter extends AbstractModel {
 	 * @param useFilter  Field that says whether or not to use the filter
 	 */
 	public Filter( FilterType type, OperatorType comparator, Object value, boolean useFilter) {
-		this.setUniqueID(-1); 		// default as a flag to entity manager
+		this();
 		this.setType(type);
 		this.setComparator(comparator);
 		this.setValue(value);  		// Calls correctly overloaded setValue method
 		this.setUseFilter(useFilter);
-		this.setUser(null);         // User is defaulted to null and handled at the manager layer
 	}
 	
 	

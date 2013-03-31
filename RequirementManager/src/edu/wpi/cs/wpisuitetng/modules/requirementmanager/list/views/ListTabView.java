@@ -31,6 +31,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel.Mode;
 
 /**

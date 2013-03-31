@@ -22,8 +22,9 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 

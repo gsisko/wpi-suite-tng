@@ -28,10 +28,10 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;

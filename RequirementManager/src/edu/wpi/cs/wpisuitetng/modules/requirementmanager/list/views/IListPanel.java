@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.event.MouseEvent;
 

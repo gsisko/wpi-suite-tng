@@ -61,7 +61,11 @@ public class Requirement extends AbstractModel {
 	
 	// blank constructor
 	public Requirement(){
-		new Requirement("","",RequirementType.NoType, RequirementPriority.NoPriority,0);
+		this.setEstimate(0);
+		this.setActualEffort(0);			// Initial actual effort set to zero
+		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
+		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		this.notes = new ArrayList<Note>();
 	}
 	
 	
@@ -74,18 +78,12 @@ public class Requirement extends AbstractModel {
 	 * @param estimate int
 	 */
 	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber) {
+		this();
 		this.setName(name);
 		this.setDescription(description);
 		this.setType(type);
 		this.setPriority(priority); // Initialize priority
 		this.setReleaseNumber(releaseNumber); // release number of current project
-		
-		// The rest are default values
-		this.setEstimate(0);
-		this.setActualEffort(0);			// Initial actual effort set to zero
-		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
-		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
-		this.notes = new ArrayList<Note>();
 	}
 	
 	

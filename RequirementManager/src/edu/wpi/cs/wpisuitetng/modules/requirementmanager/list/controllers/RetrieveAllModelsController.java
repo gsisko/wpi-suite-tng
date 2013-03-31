@@ -22,11 +22,14 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllModelsObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -74,7 +77,7 @@ public class RetrieveAllModelsController implements ActionListener{
 	 */
 	public void refreshData() {
 		Request request;
-		request = Network.getInstance().makeRequest("requirementmanager/" +modelName, HttpMethod.GET);
+		request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.GET);
 		request.addObserver(new RetrieveAllModelsObserver(this));
 		request.send();
 	}
