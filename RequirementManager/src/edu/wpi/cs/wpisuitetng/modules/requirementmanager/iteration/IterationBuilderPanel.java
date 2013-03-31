@@ -73,7 +73,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	
 	//button
 	private final JButton btnSave;
-
+	private final JButton btnStart;
+	private final JButton btnEnd;
+	
+	
 	private final ListPanel parent;
 
 	private Mode currentMode;
@@ -103,6 +106,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
 		btnSave = new JButton("Save");
+		
+		btnStart = new JButton("Start Date");
+		btnEnd = new JButton("End Date");
 
 		//construct the components
 		nameValue = new JTextField();
