@@ -48,7 +48,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.toedter.calendar.JDateChooser;
+//import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePicker;
@@ -73,8 +73,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	//the fillable components
 	private JTextField nameValue;
 	
-	private JDateChooser startDateChooser;
-	private JDateChooser endDateChooser;
+	private JTextField startDateChooser;
+	private JTextField endDateChooser;
+	//private JDateChooser startDateChooser;
+	//private JDateChooser endDateChooser;
 	
 	//button
 	private final JButton btnSave;
@@ -113,8 +115,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameValue = new JTextField();
 		nameValue.setEnabled(false);
 		
-		startDateChooser = new JDateChooser();
-		endDateChooser = new JDateChooser();
+		startDateChooser = new JTextField();//JDateChooser();
+		endDateChooser = new JTextField();//DateChooser();
 		
 		// The action listener for this is below
 		btnSave.setEnabled(false);
@@ -262,8 +264,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	// New methods for the refactor.
 	public void resetFields() {
 		this.nameValue.setText("");
-		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
-		endDateChooser.setDate(new Date());
+		//startDateChooser.setDate(new Date());	// Set the two date-choosers to today
+		//endDateChooser.setDate(new Date());
 	}
 	
 	
@@ -284,8 +286,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toSend = new Iteration();
 		
 		toSend.setName(this.nameValue.getText());
-		toSend.setStartDate(this.startDateChooser.getDate());
-		toSend.setEndDate(this.endDateChooser.getDate());
+		//toSend.setStartDate(this.startDateChooser.getDate());
+		//toSend.setEndDate(this.endDateChooser.getDate());
 		
 		return toSend.toJSON();
 	}
@@ -295,8 +297,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
 		
 		this.nameValue.setText(toDisplay.getName());
-		this.startDateChooser.setDate(toDisplay.getStartDate());
-		this.endDateChooser.setDate(toDisplay.getEndDate());
+		//this.startDateChooser.setDate(toDisplay.getStartDate());
+		//this.endDateChooser.setDate(toDisplay.getEndDate());
 		
 		setInputEnabled(true);
 	}
@@ -306,7 +308,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"iteration");
 		btnSave.addActionListener(saveController);
-		
+		/*
 		startDateChooser.getDateEditor().addPropertyChangeListener(
 				new PropertyChangeListener() {
 					@Override
@@ -323,6 +325,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					}
 				}
 		);
+		*/
 	}
 }
 
