@@ -73,10 +73,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	
 	//button
 	private final JButton btnSave;
-	private final JButton btnStart;
-	private final JButton btnEnd;
-	
-	
+
 	private final ListPanel parent;
 
 	private Mode currentMode;
@@ -106,9 +103,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
 		btnSave = new JButton("Save");
-		
-		btnStart = new JButton("Start Date");
-		btnEnd = new JButton("End Date");
 
 		//construct the components
 		nameValue = new JTextField();
@@ -130,6 +124,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//adjust location
 		btnSave.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
 		
 		//Iteration Name
 		//Set the constraints for the "nameLabel" and add it to the view
@@ -158,7 +153,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(startValue, IterationBuilderConstraints);
+
 		
 		//End Date
 		//Set the constraints for the "typeLabel" and add it to the view
@@ -171,7 +166,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(endValue, IterationBuilderConstraints);
+
 		
 		//Save button:
 		//Set the constraints for the "Save" and add it to the view
