@@ -76,9 +76,6 @@ public class NotePanel extends JPanel {
 		txtMessage = new JTextArea("", 1, 1);
 		saveButton = new JButton("Add Note");
 
-		// Set controller for save button
-		//saveButton.setAction(new SaveNoteAction(parent.getParent().getController()));
-
 		//Set the txtMessage component to wrap
 		txtMessage.setLineWrap(true);
 		txtMessage.setWrapStyleWord(true);
@@ -103,7 +100,8 @@ public class NotePanel extends JPanel {
 	}
 
 	public void setUp() {
-		//saveButton.addActionListener(parent.getParent().getController());
+		// Set controller for save button
+		saveButton.setAction(new SaveNoteAction(parent.getParent().getController()));
 	}
 
 	/**
@@ -135,6 +133,10 @@ public class NotePanel extends JPanel {
 	 */
 	public JTextArea getNoteMessage() {
 		return txtMessage;
+	}
+	
+	public JButton getSaveButton() {
+		return saveButton;
 	}
 
 	/**

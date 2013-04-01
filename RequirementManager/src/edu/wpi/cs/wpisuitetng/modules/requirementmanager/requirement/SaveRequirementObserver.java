@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -66,6 +67,11 @@ public class SaveRequirementObserver implements RequestObserver {
 				public void run() {
 					((RequirementPanel) view.getRequirementPanel()).updateModel(requirement);
 					view.setEditModeDescriptors(requirement);
+					NoteListModel noteListModel = view.getRequirementPanel().getTabPanel().getNotePanel().getNoteListModel();
+					if (noteListModel.getSize() < requirement.getNotes().size()) {
+						noteListModel.addMessage(requirement.getNotes().get(requirement.getNotes().size() - 1));
+						view.getRequirementPanel().getRequirementNote().setText("");
+					}
 				}
 			});
 		}

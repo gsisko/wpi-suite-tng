@@ -141,13 +141,12 @@ public class RequirementPanel extends JPanel {
 		this.setLayout(outerLayout);//Set the layout of this panel (this instance of a RequirementPanel)
 		outerLayout.setAlignment(FlowLayout.LEFT); //Set the alignment of the components of the outerLayout
 
+		//Instantiate the tab panel on the side for notes, etc
+		tabPanel = new RequirementTabPanel(this);
+		
 		addComponents();//Add the components to the inner panel, and add the inner panel to this panel
 
 		updateFields();//Update the fields to those given in the currentRequirement, if necessary.
-		
-		//Instantiate the tab panel on the side for notes, etc
-		tabPanel = new RequirementTabPanel(this);
-		this.add(tabPanel);
 
 	}
 
@@ -360,6 +359,11 @@ public class RequirementPanel extends JPanel {
 		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
 
+		this.add(tabPanel);
+		if (mode == Mode.CREATE) {
+			tabPanel.getNotePanel().getNoteMessage().setEnabled(false);
+			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
+		}
 		this.add(innerPanel);//Add the innerPanel to this panel
 		innerPanel.setMaximumSize(new Dimension(400,600));//Set the maximum size of the innerPanel
 
@@ -383,7 +387,8 @@ public class RequirementPanel extends JPanel {
 		txtEstimate.setEnabled(enabled);
 		txtActualEffort.setEnabled(enabled);
 
-
+		tabPanel.getNotePanel().getNoteMessage().setEnabled(enabled);
+		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
 	}
 
 	/**
