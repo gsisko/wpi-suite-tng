@@ -4,6 +4,8 @@
 
 	<property name="core-jar-dest" location="${core-lib}/RequirementManager.jar"/>
 	<property name="janeway-jar-dest" location="../Janeway/modules/RequirementManager.jar"/>
+	<!--<property name="jgoodies-looks-jar" location="${dependencies.basedir}/RequirementManager/lib"/>
+	<property name="jcalender-jar" location="${dependencies.basedir}/RequirementManager/lib"/>-->
 
 	<path id="classpath">
 		<pathelement path="../Janeway/build"/>
@@ -11,6 +13,10 @@
 		<pathelement path="../Core/WPISuite-Interfaces/build"/>
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
+		</fileset>
+		<fileset dir="${dependencies.basedir}">
+			<include name="jgoodies-looks-2.4.1.jar"/>
+			<include name="jcalendar-1.4.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 	</path>
