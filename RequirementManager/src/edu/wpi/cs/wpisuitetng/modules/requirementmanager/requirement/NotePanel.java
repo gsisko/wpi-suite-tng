@@ -149,14 +149,6 @@ public class NotePanel extends JPanel {
 		this.currentNote = currentNote;
 	}
 
-	/**
-	 * This returns the "parent" (a RequirementView) of this panel
-	 * @return the parent RequirementView
-	 */
-	public RequirementPanel getParent() {
-		return parent;
-	}
-	
 	public JList getNoteList() {
 		return noteList;
 	}

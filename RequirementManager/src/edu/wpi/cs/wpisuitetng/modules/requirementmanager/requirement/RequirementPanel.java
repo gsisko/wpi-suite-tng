@@ -356,14 +356,16 @@ public class RequirementPanel extends JPanel {
 		reqPanelConstraints.gridy = 7;
 		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
+		
+		this.add(innerPanel);//Add the innerPanel to this panel
+		innerPanel.setMaximumSize(new Dimension(400,600));//Set the maximum size of the innerPanel
 
 		this.add(tabPanel);
 		if (mode == Mode.CREATE) {
 			tabPanel.getNotePanel().getNoteMessage().setEnabled(false);
 			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 		}
-		this.add(innerPanel);//Add the innerPanel to this panel
-		innerPanel.setMaximumSize(new Dimension(400,600));//Set the maximum size of the innerPanel
+		
 
 	}
 
@@ -424,6 +426,9 @@ public class RequirementPanel extends JPanel {
 		innerLayout.invalidateLayout(innerPanel);
 		innerLayout.layoutContainer(innerPanel);
 		innerPanel.repaint();
+		
+		tabPanel.revalidate();
+		tabPanel.repaint();
 
 		this.revalidate();
 		this.repaint();
