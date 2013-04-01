@@ -1,7 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
@@ -11,15 +9,11 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","rawtypes","unchecked"})
 public class NotePanel extends JPanel {
 	
 	//The fillable component
@@ -37,7 +31,7 @@ public class NotePanel extends JPanel {
 	//A boolean indicating if input is enabled on the form 
 	protected boolean inputEnabled;
 	
-	private JList<String> noteList;
+	private JList noteList;
 	
 	private NoteListModel noteListModel;
 	
@@ -61,7 +55,7 @@ public class NotePanel extends JPanel {
 		noteListModel = new NoteListModel();
 
 		// Construct the components to be displayed
-		noteList = new JList<String>(noteListModel);
+		noteList = new JList(noteListModel);
 		
 		ArrayList<Note> notes = parent.getCurrentRequirement().getNotes();
 		for (int i = 0; i < notes.size(); i++) {
@@ -163,7 +157,7 @@ public class NotePanel extends JPanel {
 		return parent;
 	}
 	
-	public JList<String> getNoteList() {
+	public JList getNoteList() {
 		return noteList;
 	}
 	

@@ -24,7 +24,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 

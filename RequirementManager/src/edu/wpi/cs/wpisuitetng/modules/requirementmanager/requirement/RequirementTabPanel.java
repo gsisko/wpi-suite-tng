@@ -24,17 +24,11 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel.Mode;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.

@@ -26,9 +26,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.CREATE;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;

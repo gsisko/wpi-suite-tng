@@ -27,7 +27,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -35,9 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableColumnModel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;

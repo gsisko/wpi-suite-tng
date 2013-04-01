@@ -30,7 +30,6 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 

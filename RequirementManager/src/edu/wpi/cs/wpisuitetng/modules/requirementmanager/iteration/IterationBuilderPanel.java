@@ -33,31 +33,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","unused"})
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 	public enum Mode {
 		CREATE,
