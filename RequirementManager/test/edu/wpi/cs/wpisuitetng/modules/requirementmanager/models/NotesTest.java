@@ -26,6 +26,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -91,7 +93,12 @@ public class NotesTest {
 		assertEquals(newRequirement.getActualEffort(), 18);
 		assertEquals(newRequirement.getStatus(), RequirementStatus.InProgress);
 		assertEquals(newRequirement.getId(), 50);
-		assertEquals(newRequirement.getNotes(), r1.getNotes());
+		
+		ArrayList<Note> r1Notes = r1.getNotes();
+		ArrayList<Note> newNotes = newRequirement.getNotes();
+		for (int i = 0; i < r1Notes.size(); i++) {
+			assertEquals(newNotes.get(i).getMessage(), r1Notes.get(i).getMessage());
+		}
 	}
 
 }
