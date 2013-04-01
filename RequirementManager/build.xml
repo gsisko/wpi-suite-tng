@@ -14,11 +14,11 @@
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
 		</fileset>
-		<fileset dir="${dependencies.basedir}">
+		<pathelement path="build"/>
+		<fileset dir="../RequirementModule/lib">
 			<include name="jgoodies-looks-2.4.1.jar"/>
 			<include name="jcalendar-1.4.jar"/>
 		</fileset>
-		<pathelement path="build"/>
 	</path>
 
 	<path id="test-classpath">
