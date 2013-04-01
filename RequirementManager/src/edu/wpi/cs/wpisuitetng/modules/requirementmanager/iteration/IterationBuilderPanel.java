@@ -113,6 +113,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameValue = new JTextField();
 		nameValue.setEnabled(false);
 		
+		startDateChooser = new JDateChooser();
+		endDateChooser = new JDateChooser();
 //		startDateChooser = new JTextField();//JDateChooser();
 //		endDateChooser = new JTextField();//DateChooser();
 //		

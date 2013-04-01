@@ -15,7 +15,7 @@
 			<include name="gson-*.jar"/>
 		</fileset>
 		<pathelement path="build"/>
-		<fileset dir="../RequirementModule/lib">
+		<fileset dir="../RequirementManager/lib">
 			<include name="jgoodies-looks-2.4.1.jar"/>
 			<include name="jcalendar-1.4.jar"/>
 		</fileset>

@@ -23,6 +23,8 @@
 				debuglevel="lines,vars,source">
 			<classpath refid="classpath"/>
 		</javac>
+		<zipfileset src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar"/>
+		<zipfileset src="../RequirementManager/lib/jcalendar-1.4.jar"/>
 	</target>
 
 	<target name="compile-test" depends="compile">
