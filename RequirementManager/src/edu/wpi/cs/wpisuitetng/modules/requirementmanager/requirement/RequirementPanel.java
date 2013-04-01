@@ -24,7 +24,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -37,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
@@ -65,7 +63,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
  * This class also contains getters and setters for many of the components and variables listed above
  *
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","rawtypes","unchecked"})
 public class RequirementPanel extends JPanel {
 
 	//An enum to store the mode of the current instance of this panel
@@ -87,9 +85,9 @@ public class RequirementPanel extends JPanel {
 	//The fillable components
 	private  JTextField txtName;//The name text field 
 	private  JTextArea txtDescription;//The description text area
-	private  JComboBox<String> typeBox;//The type combo box
-	private  JComboBox<String> statusBox;//The status combo box
-	private  JComboBox<String> priorityBox;//The priority combo box
+	private  JComboBox typeBox;//The type combo box
+	private  JComboBox statusBox;//The status combo box
+	private  JComboBox priorityBox;//The priority combo box
 	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
@@ -187,9 +185,9 @@ public class RequirementPanel extends JPanel {
 		String[] priorityStrings = { "", "High", "Medium", "Low"};
 
 		//Construct the boxes 
-		typeBox = new JComboBox<String>(typeStrings);
-		statusBox = new JComboBox<String>(statusStrings);
-		priorityBox = new JComboBox<String>(priorityStrings);
+		typeBox = new JComboBox(typeStrings);
+		statusBox = new JComboBox(statusStrings);
+		priorityBox = new JComboBox(priorityStrings);
 
 
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
@@ -527,7 +525,7 @@ public class RequirementPanel extends JPanel {
 	 * This returns the JComboBox "typeBox"
 	 * @return the typeBox JComboBox
 	 */
-	public JComboBox<String> getRequirementType() {
+	public JComboBox getRequirementType() {
 		return typeBox;
 	}
 
@@ -535,7 +533,7 @@ public class RequirementPanel extends JPanel {
 	 * This returns the JComboBox "statusBox"
 	 * @return the statusBox JComboBox
 	 */
-	public JComboBox<String> getRequirementStatus() {
+	public JComboBox getRequirementStatus() {
 		return statusBox;
 	}
 
@@ -543,7 +541,7 @@ public class RequirementPanel extends JPanel {
 	 * This returns the JComboBox "priorityBox"
 	 * @return the priorityBox JComboBox
 	 */
-	public JComboBox<String> getRequirementPriority() {
+	public JComboBox getRequirementPriority() {
 		return priorityBox;
 	}
 

@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -56,7 +55,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 /**
  * Panel to contain the filter builder for defect searching
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","rawtypes","unchecked"})
 public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
 	// enum to say whether or not you are creating
@@ -71,12 +70,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	private final JLabel valueLabel;
 
 	//the fillable components
-	private final JComboBox<String> typeBox;
-	private final JComboBox<String> comparatorBox;
+	private final JComboBox typeBox;
+	private final JComboBox comparatorBox;
 	private JTextField txtValue;
 	private JNumberTextField txtNumValue;
-	private final JComboBox<String> valueBox;
-	private final JComboBox<String> userFilterBox;
+	private final JComboBox valueBox;
+	private final JComboBox userFilterBox;
 
 	//the default color
 	private final Color initialColor;
@@ -131,10 +130,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		String[] userFilterStrings ={"Active","Inactive"};
 
 		//construct the boxes
-		typeBox = new JComboBox<String>(typeStrings);
-		comparatorBox = new JComboBox<String>(comparatorStrings);
-		userFilterBox = new JComboBox<String>(userFilterStrings);
-		valueBox = new JComboBox<String>();
+		typeBox = new JComboBox(typeStrings);
+		comparatorBox = new JComboBox(comparatorStrings);
+		userFilterBox = new JComboBox(userFilterStrings);
+		valueBox = new JComboBox();
 		valueBox.setVisible(false);
 
 		//grab the initial color
@@ -242,12 +241,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		return btnSave;
 	}
 
-	public JComboBox<String> getFilterType()
+	public JComboBox getFilterType()
 	{
 		return typeBox;
 	}
 
-	public JComboBox<String> getFilterOperator()
+	public JComboBox getFilterOperator()
 	{
 		return comparatorBox;
 	}
@@ -262,13 +261,13 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		return txtNumValue;
 	}
 
-	public JComboBox<String> getFilterValueBox()
+	public JComboBox getFilterValueBox()
 	{
 		return valueBox;
 	}
 
 
-	public JComboBox<String> getStatus()
+	public JComboBox getStatus()
 	{
 		return userFilterBox;
 	}
@@ -305,8 +304,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 */
 	public void actionPerformed(ActionEvent e) {
 
-		@SuppressWarnings("unchecked")
-		JComboBox<String> comboBox = (JComboBox<String>) e.getSource();
+		JComboBox comboBox = (JComboBox) e.getSource();
 
 		String selected = (String) comboBox.getSelectedItem();
 
@@ -352,7 +350,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.getFilterValue().setText("");
 		this.getFilterNumValue().setText("");
 
-		curType = selected;
+		setCurType(selected);
 	}
 
 
@@ -502,7 +500,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	}
 
 
-	public void enable(JComboBox<String> box, boolean enabled) {
+	public void enable(JComboBox box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
 			box.setBackground(Color.WHITE);
@@ -533,6 +531,20 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			box.setEnabled(false);
 			box.setBackground(initialColor);
 		}
+	}
+
+	/**
+	 * @return the curType
+	 */
+	public String getCurType() {
+		return curType;
+	}
+
+	/**
+	 * @param curType the curType to set
+	 */
+	public void setCurType(String curType) {
+		this.curType = curType;
 	}
 
 }
