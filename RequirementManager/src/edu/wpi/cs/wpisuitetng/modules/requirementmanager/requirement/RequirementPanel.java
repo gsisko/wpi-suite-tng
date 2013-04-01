@@ -362,8 +362,7 @@ public class RequirementPanel extends JPanel {
 
 		this.add(tabPanel);
 		if (mode == Mode.CREATE) {
-			tabPanel.getNotePanel().getNoteMessage().setEnabled(false);
-			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
+			tabPanel.getNotePanel().setEnabled(false);
 		}
 		
 

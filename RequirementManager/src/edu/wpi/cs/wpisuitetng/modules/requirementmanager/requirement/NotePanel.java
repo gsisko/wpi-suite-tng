@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class NotePanel extends JPanel {
@@ -49,6 +51,8 @@ public class NotePanel extends JPanel {
 
 		// Set the layout manager
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));//Create the layout
+		
+		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
 
 		// Construct list box
 		// Construct the list box model
@@ -74,12 +78,16 @@ public class NotePanel extends JPanel {
 		txtMessage.setLineWrap(true);
 		txtMessage.setWrapStyleWord(true);
 
-		listScrollPane.setMaximumSize(new Dimension(580, 300));
-		listScrollPane.setMinimumSize(new Dimension(580, 300));
-		txtMessage.setMinimumSize(new Dimension(580, 100));
-		txtMessage.setMaximumSize(new Dimension(580, 100));
-		saveButton.setMaximumSize(new Dimension(120, 40));
-		saveButton.setMinimumSize(new Dimension(120, 40));
+		listScrollPane.setPreferredSize(new Dimension(580, 300));
+		txtMessage.setPreferredSize(new Dimension(580, 100));
+		saveButton.setPreferredSize(new Dimension(120, 40));
+		
+		if ((parent.getMode()) == Mode.CREATE)
+		{
+			saveButton.setEnabled(false);
+			txtMessage.setEnabled(false);
+		}
+	
 		
 		// Add components
 		this.add(listScrollPane);
@@ -90,12 +98,16 @@ public class NotePanel extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		
 		saveButton.setAlignmentX(CENTER_ALIGNMENT);
+		
 
 	}
 
+
 	public void setUp() {
 		// Set controller for save button
+		Boolean restoreEnableStateBool = saveButton.isEnabled();
 		saveButton.setAction(new SaveNoteAction(parent.getParent().getController()));
+		saveButton.setEnabled(restoreEnableStateBool);
 	}
 
 	/**
@@ -110,7 +122,6 @@ public class NotePanel extends JPanel {
 
 		saveButton.setEnabled(enabled);
 		txtMessage.setEnabled(enabled);
-
 	}
 
 	/**
