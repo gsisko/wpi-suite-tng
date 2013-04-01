@@ -51,7 +51,6 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.jdatepicker.JDatePicker;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
