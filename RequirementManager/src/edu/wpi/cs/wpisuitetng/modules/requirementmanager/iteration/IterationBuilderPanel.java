@@ -67,9 +67,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	//the fillable components
 	private JTextField nameValue;
 	
-//	private JDateChooser startDateChooser;
-//	private JDateChooser endDateChooser;
-	
 	//button
 	private final JButton btnSave;
 	private final ListPanel parent;
@@ -83,14 +80,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	
 	private SaveModelController saveController;
 	
-	/* Temp fix for dates */
 	Calendar cal = Calendar.getInstance();
-//	JSpinner startDateMonth;
-//	JSpinner startDateDay;
-//	JSpinner startDateYear;
-//	JSpinner endDateMonth;
-//	JSpinner endDateDay;
-//	JSpinner endDateYear;
 	JSpinner startDate;
 	JSpinner endDate;
 
@@ -122,18 +112,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Date dateStart = cal.getTime();
 		cal.add(Calendar.YEAR, 110);
 		Date dateEnd = cal.getTime();
-//		SpinnerModel sdm = new SpinnerDateModel(1, 1, 12, 1);
-//		SpinnerModel sdd = new SpinnerDateModel(1, 1, 31, 1);
-//		SpinnerModel sdy = new SpinnerDateModel(2013, 2013, 2023, 1);
-//		SpinnerModel edm = new SpinnerDateModel(1, 1, 12, 1);
-//		SpinnerModel edd = new SpinnerDateModel(1, 1, 31, 1);
-//		SpinnerModel edy = new SpinnerDateModel(2013, 2013, 2023, 1);
-//		startDateMonth = new JSpinner(sdm);
-//		startDateDay = new JSpinner(sdd);
-//		startDateYear = new JSpinner(sdy);
-//		endDateMonth = new JSpinner(edm);
-//		endDateDay = new JSpinner(edd);
-//		endDateYear = new JSpinner(edy);
 		SpinnerModel start = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);
 		SpinnerModel end = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);
 		this.startDate = new JSpinner(start);
@@ -143,12 +121,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnSave.setEnabled(false);
 		this.startDate.setEnabled(false);
 		this.endDate.setEnabled(false);
-//		startDateMonth.setEnabled(false);
-//		startDateDay.setEnabled(false);
-//		startDateYear.setEnabled(false);
-//		endDateMonth.setEnabled(false);
-//		endDateDay.setEnabled(false);
-//		endDateYear.setEnabled(false);
 
 		//set the layout
 		setLayout(new GridBagLayout());
@@ -190,21 +162,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(startDate, IterationBuilderConstraints);
-//		add(startDateMonth, IterationBuilderConstraints);
-//		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-//		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-//		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-//		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
-//		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
-//		IterationBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
-//		add(startDateDay, IterationBuilderConstraints);
-//		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-//		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-//		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-//		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
-//		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
-//		IterationBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
-//		add(startDateYear, IterationBuilderConstraints);
 	
 		//End Date
 		//Set the constraints for the "typeLabel" and add it to the view
@@ -221,22 +178,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(endDate, IterationBuilderConstraints);
-//		add(endDateMonth, IterationBuilderConstraints);
-//		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-//		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-//		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-//		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
-//		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
-//		IterationBuilderConstraints.gridy = 2;//Set the y coord of the cell of the layout we are describing
-//		add(endDateDay, IterationBuilderConstraints);
-//		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-//		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-//		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-//		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
-//		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
-//		IterationBuilderConstraints.gridy = 3;//Set the y coord of the cell of the layout we are describing
-//		add(endDateYear, IterationBuilderConstraints);
-
 		
 		//Save button:
 		//Set the constraints for the "Save" and add it to the view
@@ -304,12 +245,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.nameValue.setEnabled(setTo);
 		this.startDate.setEnabled(setTo);
 		this.endDate.setEnabled(setTo);
-//		this.startDateMonth.setEnabled(setTo);
-//		this.startDateDay.setEnabled(setTo);
-//		this.startDateYear.setEnabled(setTo);
-//		this.endDateMonth.setEnabled(setTo);
-//		this.endDateDay.setEnabled(setTo);
-//		this.endDateYear.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
 	}
 
@@ -330,12 +265,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.nameValue.setText("");
 		this.startDate.setValue(this.cal.getTime());
 		this.endDate.setValue(this.cal.getTime());
-//		this.startDateMonth.setValue(1);
-//		this.startDateDay.setValue(1);
-//		this.startDateYear.setValue(2013);
-//		this.endDateMonth.setValue(1);
-//		this.endDateDay.setValue(1);
-//		this.endDateYear.setValue(2013);
 	}
 	
 	
@@ -359,13 +288,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		long startTime = 0;
 		long endTime = 0;
 		
-//		startTime += ((Integer)this.startDateYear.getValue()).longValue()*365 + ((Integer)this.startDateMonth.getValue()).longValue()*30 + ((Integer)this.startDateDay.getValue()).longValue();	// HACK and Doesn't Fully Work
-//		startTime *= 24*60*60*1000;
-//		endTime += ((Integer)this.endDateYear.getValue()).longValue()*365 + ((Integer)this.endDateMonth.getValue()).longValue()*30 + ((Integer)this.endDateDay.getValue()).longValue();
-//		endTime *= 24*60*60*1000;
-//		start.setTime(startTime);
-//		end.setTime(endTime);
-		
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate((Date) this.startDate.getValue());
 		toSend.setEndDate((Date) this.endDate.getValue());
@@ -377,18 +299,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	public void displayModelFromJSONArray(String jsonArray) {
 		System.out.println("JSON read");
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
-		long startTime = toDisplay.getStartDate().getTime()/(24*60*60*1000);	// Get time in days
-		long endTime = toDisplay.getEndDate().getTime()/(24*60*60*1000);
 		
-//		this.startDateYear.setValue(startTime / 365);
-//		startTime %= 365;
-//		this.startDateMonth.setValue(startTime / 30);
-//		this.startDateDay.setValue(startTime % 30);
-//		
-//		this.endDateYear.setValue(endTime / 365);
-//		endTime %= 365;
-//		this.endDateMonth.setValue(endTime / 30);
-//		this.endDateDay.setValue(endTime % 30);
 		this.startDate.setValue(toDisplay.getStartDate());
 		this.endDate.setValue(toDisplay.getEndDate());
 		
@@ -417,12 +328,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		};
 		this.startDate.addChangeListener(listener);
 		this.endDate.addChangeListener(listener);
-//		this.startDateMonth.addChangeListener(this);
-//		this.startDateDay.addChangeListener(this);
-//		this.startDateYear.addChangeListener(this);
-//		this.endDateMonth.addChangeListener(this);
-//		this.endDateDay.addChangeListener(this);
-//		this.endDateYear.addChangeListener(this);
 	}
 	
 
