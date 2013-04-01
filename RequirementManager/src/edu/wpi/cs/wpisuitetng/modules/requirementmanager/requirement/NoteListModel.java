@@ -8,8 +8,8 @@ import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 
-@SuppressWarnings({"serial"})
-public class NoteListModel extends AbstractListModel<String> {
+@SuppressWarnings({"serial","rawtypes"})
+public class NoteListModel extends AbstractListModel {
 	
 	/** The list of messages on the board */
 	private List<Note> notes;
