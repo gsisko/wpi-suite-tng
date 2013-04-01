@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -38,6 +39,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -48,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveMo
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 
 @SuppressWarnings({"serial","unused"})
@@ -77,6 +80,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private boolean isBuilderActive;
 	
 	private SaveModelController saveController;
+	//color
+	private final Color initialColor;
 
 	/**
 	 * Construct the panel
@@ -99,8 +104,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//construct the components
 		nameValue = new JTextField();
-		nameValue.setEnabled(false);
-		
+	    	
 		startDateChooser = new JDateChooser();
 		endDateChooser = new JDateChooser();
 //		startDateChooser = new JTextField();//JDateChooser();
@@ -108,7 +112,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 //		
 		// The action listener for this is below
 		btnSave.setEnabled(false);
-
+		
+		//initial conditions
+	    //nameValue.setEnabled(false);
+    	enable(nameValue,false);
+    //	enable(startDateChooser,false);
+    	//enable(endDateChooser,true);
+    	
+		//grab the initial color
+		initialColor = nameValue.getBackground();
+		
 		//set the layout
 		setLayout(new GridBagLayout());
 		GridBagConstraints IterationBuilderConstraints = new GridBagConstraints();
@@ -303,6 +316,39 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					}
 				}
 		);
+	}
+	
+	public void enable(JDateChooser box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(initialColor);
+		}
+	}
+	
+	public void enable(JTextField box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(initialColor);
+		}
+	}
+	
+	public void enable(JNumberTextField box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(initialColor);
+		}
 	}
 }
 
