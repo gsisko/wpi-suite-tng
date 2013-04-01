@@ -26,6 +26,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.CREATE;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
@@ -37,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class SaveRequirementController
+public class SaveRequirementController implements ActionListener
 {
     private final RequirementPanel view;
 
@@ -159,6 +162,11 @@ public class SaveRequirementController
 	    request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
 	    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 	    request.send();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		saveNote();
 	}
 }
 

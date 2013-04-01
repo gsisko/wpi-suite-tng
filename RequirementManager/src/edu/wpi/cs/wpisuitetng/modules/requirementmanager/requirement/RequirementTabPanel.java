@@ -43,19 +43,20 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel.Mo
 @SuppressWarnings("serial")
 public class RequirementTabPanel extends JTabbedPane {
 	
-//	private ListPanel parent;
-//	private NotePanel filterList;
+	private RequirementPanel parent;
+	private NotePanel notePanel;
 	
-	public RequirementTabPanel(){
-//	public RequirementTabView(ListPanel view) {
+	public RequirementTabPanel(RequirementPanel view) {
 		
-//		this.parent = view;
+		this.parent = view;
 		
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
+		//setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
 		
-		addTab("Notes", new ImageIcon(), new JPanel(), "Notes for the current requirement");
+		notePanel = new NotePanel(parent);
+		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
+		addTab("Attachments", new ImageIcon(), new JPanel(), "Attachments for the current requirement");
 		
 		this.setPreferredSize(new Dimension(600, 500));
 	}
@@ -63,40 +64,20 @@ public class RequirementTabPanel extends JTabbedPane {
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
-		if (getComponentAt(index) instanceof FilterListPanel) {
-//			parent.setMode(Mode.FILTER);
-		}
-		else {
-//			parent.setMode(Mode.ITERATION);
-		}
 	}
 
-//	/**
-//	 * @return the listPanel
-//	 */
-//	public FilterListPanel getFilterList() {
-//		return filterList;
-//	}
-//
-//	/**
-//	 * @param listPanel the listPanel to set
-//	 */
-//	public void setFilterList(FilterListPanel filterList) {
-//		this.filterList = filterList;
-//	}
-//	
-//	/**
-//	 * @return the listPanel
-//	 */
-//	public IterationListPanel getIterationList() {
-//		return iterationList;
-//	}
+	/**
+	 * @return the notePanel
+	 */
+	public NotePanel getNotePanel() {
+		return notePanel;
+	}
 
-//	/**
-//	 * @param listPanel the listPanel to set
-//	 */
-//	public void setIterationList(IterationListPanel iterationList) {
-//		this.iterationList = iterationList;
-//	}
+	/**
+	 * @param notePanel the notePanel to set
+	 */
+	public void setNotePanel(NotePanel notePanel) {
+		this.notePanel = notePanel;
+	}
 	
 }

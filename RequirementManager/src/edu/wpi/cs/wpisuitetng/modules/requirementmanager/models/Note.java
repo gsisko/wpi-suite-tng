@@ -24,6 +24,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -47,6 +49,13 @@ public class Note {
 		this.date = new Date();
 	}
 
+	public String toString() {
+		// Format the date-time stamp
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
+				
+		return dateFormat.format(date) + ":    " + message + " (added by " + user.getName() + ")";
+	}
+	
 	/**
 	 * @return the message
 	 */
