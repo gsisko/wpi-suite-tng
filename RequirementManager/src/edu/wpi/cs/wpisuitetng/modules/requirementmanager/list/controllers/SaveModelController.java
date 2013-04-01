@@ -27,10 +27,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveModelObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -43,7 +42,7 @@ public class SaveModelController implements ActionListener
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
 		
-	/** The model name, in string form, which will be used for sending messsages */
+	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
 	
 	
@@ -65,16 +64,16 @@ public class SaveModelController implements ActionListener
 	public void actionPerformed(ActionEvent event) 
 	{
 		final Request request;
-		if (((FilterBuilderPanel) builderView).getCurrentMode() == Mode.EDIT){
+		if ( builderView.getCurrentMode().equals(Mode.EDIT))
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.POST); // post == update
-
-			
-		} else {
+		else 
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
-		}
+		
 		
 		// make a PUT http request and let the observer get the response
-		String body = builderView.getModelMessage();
+		String body = builderView.convertCurrentModelToJSON();
+		
+		// Check to make sure the message is good, or at least not nothing
 		if (body == null){
 			System.err.println("Failed to get the model");
 			return;
@@ -92,8 +91,12 @@ public class SaveModelController implements ActionListener
 		// could be printed here and we would have a better save message
 		System.out.println(modelName  + " saved successfully");
 
-		builderView.clearAndReset();
+		builderView.resetFields();
+		builderView.setInputEnabled(false);
+		
+		
 		listView.setCancelBtnToNew();
+		listView.refreshAll();
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
@@ -103,7 +106,7 @@ public class SaveModelController implements ActionListener
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
-			System.err.println("Fail: cannot refresh views after deleting a Model.");
+			System.err.println("Failed to refresh the list view after saving the Model.");
 		}		
 	}
 }

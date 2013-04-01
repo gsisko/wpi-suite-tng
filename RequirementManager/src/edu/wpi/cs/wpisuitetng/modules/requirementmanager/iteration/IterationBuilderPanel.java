@@ -52,10 +52,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 @SuppressWarnings({"serial","unused"})
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
-	public enum Mode {
-		CREATE,
-		EDIT
-	}
 
 	//the labels
 	private final JLabel startDateLabel; 
@@ -224,11 +220,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	public void actionPerformed(ActionEvent e) {
 		
 	}
-	@Override
-	public void clearAndReset() {
-		this.resetFields();
-		this.setInputEnabled(false);	
-	}
+
 	@Override
 	public void setInputEnabled(boolean setTo) {
 		this.nameValue.setEnabled(setTo);
@@ -236,14 +228,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.endDateChooser.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
 	}
-	@Override
-	public String getModelMessage() {
-		return this.convertCurrentModelToJSON();
-	}
-	@Override
-	public void translateAndDisplayModel(String jsonArray) {
-		this.displayModelFromJSONArray(jsonArray);
-	}
+
+
 	@Override
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function

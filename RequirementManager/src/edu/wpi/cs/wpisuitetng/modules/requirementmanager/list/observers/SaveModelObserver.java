@@ -49,9 +49,7 @@ public class SaveModelObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Pass the messages back to the controller
 		rmcontroller.saveSuccess();
-		
-		// auto-update
-		rmcontroller.refreshListViews();
+
 		
 	}
 	/** This method responses when there is a save response error

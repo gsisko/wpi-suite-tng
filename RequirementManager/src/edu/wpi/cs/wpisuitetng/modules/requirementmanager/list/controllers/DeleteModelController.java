@@ -84,9 +84,13 @@ public class DeleteModelController implements ActionListener {
 		
 		// Remove anything in the builder panel whenever the delete button is pressed and also
 		// set the "Cancel" button back to new
-		builderView.clearAndReset();				
+		builderView.resetFields();
+		builderView.setInputEnabled(false);
+		
+		
 		listView.setCancelBtnToNew();
-	
+		listView.refreshAll();
+
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.

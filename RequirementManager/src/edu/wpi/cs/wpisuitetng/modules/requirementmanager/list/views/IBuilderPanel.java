@@ -31,15 +31,31 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
  * 
  */
 public interface IBuilderPanel {
-
-	/** Sets clears and resets any fields in the current builder panel
-	 *  and also resets the mode to "CREATE" if applicable. 
-	 */
-	public void clearAndReset();
-
+	// enum to say whether or not you are creating
+	public enum Mode {
+		CREATE,
+		EDIT
+	}
 	
-	/** Enables or disables all fields in the builder panel. Not intended for
-	 *  use by controllers trying to load in data to the  builder panel
+	/** Restore all fields to their initial values */
+	public void resetFields();
+
+	/** Sets the mode of the builder panel to the given mode. ALSO changes
+	 *  the text in the button 
+	 *  Mode.CREATE or Mode.EDIT
+	 * 
+	 * @param mode The mode that the builder panel should be in
+	 */
+	public void setModeAndBtn(Mode mode);
+
+	/** Return the current "mode" of the panel. Can be either
+	 *  Mode.EDIT or Mode.Create
+	 * 
+	 *  @return The current mode
+	 */
+	public Mode getCurrentMode();
+
+	/** Enables or disables all fields in the builder panel.
 	 * 
 	 * @param setTo True activates the fields and false deactivates them
 	 */
@@ -53,22 +69,29 @@ public interface IBuilderPanel {
 	 * 
 	 * @return JSON string of the model to be sent
 	 */
-	public String getModelMessage();
+	public String convertCurrentModelToJSON();
 
 
 	/** Takes a JSON string that holds an array of models and uploads them
-	 *  to the builder panel. Also sets the the modes
+	 *  to the builder panel.
 	 *  
 	 * @param jsonArray An array of models in JSON string form
 	 */
-	public void translateAndDisplayModel(String jsonArray);
+	public void displayModelFromJSONArray(String jsonArray);
 
 
 	/** Toggles between active and inactive modes mode */
 	public void toggleNewCancelMode();
 
+
+	/** Sets up the controllers and action listeners. This should be where all
+	 *  controllers and action listeners are initialized because the controllers
+	 *  require references that are not not fully initialized when the 
+	 *  constructor for this class is called.
+     */
+	public void setupControllersAndListeners();
  
-	
-	
-	
+
+
+
 }

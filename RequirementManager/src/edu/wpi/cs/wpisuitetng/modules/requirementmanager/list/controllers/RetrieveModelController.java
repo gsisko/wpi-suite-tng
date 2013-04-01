@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveModelObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -88,8 +89,13 @@ public class RetrieveModelController extends MouseAdapter {
 	 */
 	public void showModel(String jsonArray) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
-		builderView.translateAndDisplayModel(jsonArray);
+		builderView.displayModelFromJSONArray(jsonArray);
+		builderView.setInputEnabled(true);
+		builderView.setModeAndBtn(Mode.EDIT);
+		
 		listView.setNewBtnToCancel();
+		listView.refreshAll();
+
 	}
 
 	/**

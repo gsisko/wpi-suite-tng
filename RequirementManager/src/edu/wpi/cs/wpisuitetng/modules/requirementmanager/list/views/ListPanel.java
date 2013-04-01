@@ -87,7 +87,7 @@ public class ListPanel extends JPanel {
 		this.filterBuilderPanel = new FilterBuilderPanel(this);
 		this.iterationBuilderPanel = new IterationBuilderPanel(this);
 		this.tabPanel = new ListTabView(this);
-		this.filterBuilderPanel.setUp();
+		this.filterBuilderPanel.setupControllersAndListeners();
 
 
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);

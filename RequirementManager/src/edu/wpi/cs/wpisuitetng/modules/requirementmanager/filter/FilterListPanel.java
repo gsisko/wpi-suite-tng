@@ -332,6 +332,11 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		this.retrieveAllController = retrieveAllController;
 	}
 
+	@Override
+	public void refreshRequirements() {
+		parent.getParent().getController().refreshData();
+	}
+
 
 }
 

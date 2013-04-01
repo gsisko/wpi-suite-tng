@@ -88,4 +88,8 @@ public interface IListPanel {
 	 */
 	public void showRecievedModels(String jsonString);
 
+
+
+	public void refreshRequirements();
+
 }

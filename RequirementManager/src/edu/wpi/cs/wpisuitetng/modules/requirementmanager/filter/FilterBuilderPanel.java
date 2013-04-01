@@ -50,19 +50,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorTyp
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.SaveFilterController;
 
 /**
  * Panel to contain the filter builder for defect searching
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
-
-	// enum to say whether or not you are creating
-	public enum Mode {
-		CREATE,
-		EDIT
-	}
 
 	//the labels
 	private final JLabel typeLabel; 
@@ -71,11 +64,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 	//the fillable components
 	private final JComboBox typeBox;
-	private final JComboBox comparatorBox;
+	private final JComboBox operatorBox;
 	private JTextField txtValue;
-	private JNumberTextField txtNumValue;
+	private JNumberTextField numValue;
 	private final JComboBox valueBox;
-	private final JComboBox userFilterBox;
+	private final JComboBox statusBox;
 
 	//the default color
 	private final Color initialColor;
@@ -119,9 +112,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		txtValue.setVisible(false);
 
 		//construct the Number Text Field
-		txtNumValue = new JNumberTextField();
-		enable(txtNumValue, false);
-		txtNumValue.setAllowNegative(false);
+		numValue = new JNumberTextField();
+		enable(numValue, false);
+		numValue.setAllowNegative(false);
 
 
 		//create strings for the boxes
@@ -131,8 +124,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		//construct the boxes
 		typeBox = new JComboBox(typeStrings);
-		comparatorBox = new JComboBox(comparatorStrings);
-		userFilterBox = new JComboBox(userFilterStrings);
+		operatorBox = new JComboBox(comparatorStrings);
+		statusBox = new JComboBox(userFilterStrings);
 		valueBox = new JComboBox();
 		valueBox.setVisible(false);
 
@@ -142,10 +135,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//set initial conditions
 		typeBox.setSelectedIndex(0);
 		enable(typeBox, false);
-		comparatorBox.setSelectedIndex(0);
-		enable(comparatorBox, false);
-		userFilterBox.setSelectedIndex(0);
-		enable(userFilterBox, false);
+		operatorBox.setSelectedIndex(0);
+		enable(operatorBox, false);
+		statusBox.setSelectedIndex(0);
+		enable(statusBox, false);
 
 		// The action listener for this is below
 		typeBox.addActionListener(this);
@@ -189,7 +182,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		FilterBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(comparatorBox, FilterBuilderConstraints);//Actually add the "comparatorBox" to the layout given the previous constraints
+		add(operatorBox, FilterBuilderConstraints);//Actually add the "operatorBox" to the layout given the previous constraints
 		//end comparator
 
 		//userfilter
@@ -197,7 +190,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
 		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(userFilterBox, FilterBuilderConstraints);//Actually add the "userFilterBox" to the layout given the previous constraints
+		add(statusBox, FilterBuilderConstraints);//Actually add the "userFilterBox" to the layout given the previous constraints
 		//end userfilter
 
 		//value:
@@ -215,7 +208,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		FilterBuilderConstraints.ipadx=80;
 		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
 		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
-		add(txtNumValue, FilterBuilderConstraints);//Actually add the "txtNumValue" to the layout given the previous constraints
+		add(numValue, FilterBuilderConstraints);//Actually add the "numValue" to the layout given the previous constraints
 		//end value
 
 		//Save button:
@@ -231,9 +224,63 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		currentFilter = new Filter();
 	}
 
-	public void setUp() {
-		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"filter");
-		btnSave.addActionListener(saveController);
+	/** Watches the "Type" box for changes and sets up the "value" field
+	 *  to be a number box when numbers are expected, a drop down when the 
+	 *  options are finite (enumerators), and a string for the rest of the time.
+	 *  Also sets up the operator boxes in a similar fashion This reduces the
+	 *  possibility of user error.
+	 * 
+	 */
+	public void actionPerformed(ActionEvent e) {
+
+		JComboBox comboBox = (JComboBox) e.getSource();
+
+		String selected = (String) comboBox.getSelectedItem();
+
+		String[] comparatorStrings = null;
+		String[] valueStrings = null;
+
+		// Limit the options for comparators by the FilterType
+		if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
+			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
+		else if(selected=="Name" ||selected=="Description" )
+			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
+
+		// This section is for enumerators, which need specific operators and values
+		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
+			comparatorStrings = new String[]{"=","!="};
+			if(selected=="Type" )
+				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
+			if(selected=="Status" )
+				valueStrings=new String[]{"New","InProgress","Open","Complete","Deleted"};
+			if(selected=="Priority")
+				valueStrings=new String[]{"","High","Medium","Low"};
+			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
+			valueBox.setModel(valb);
+		}
+
+		DefaultComboBoxModel  compbox = new DefaultComboBoxModel (comparatorStrings);
+		operatorBox.setModel(compbox);
+
+		// Sets the visibility of the appropriate value boxes so that the correct one is used after
+		// resetting all of them
+		txtValue.setVisible(false);
+		numValue.setVisible(false);
+		valueBox.setVisible(false);
+
+		if(selected=="Type" ||selected=="Status"  ||selected=="Priority")
+			valueBox.setVisible(true);
+		else if(selected=="Name" ||selected=="Description")
+			txtValue.setVisible(true);
+		else // id, estimate, actual value, or release number
+			numValue.setVisible(true);
+
+		// reset values 
+		this.getFilterValue().setText("");
+		this.getFilterNumValue().setText("");
+
+		// Save the value of the current filter type selected
+		setCurType(selected);
 	}
 
 	public JButton getButton()
@@ -248,7 +295,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 	public JComboBox getFilterOperator()
 	{
-		return comparatorBox;
+		return operatorBox;
 	}
 
 	public JTextField getFilterValue()
@@ -258,7 +305,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 	public JNumberTextField getFilterNumValue()
 	{
-		return txtNumValue;
+		return numValue;
 	}
 
 	public JComboBox getFilterValueBox()
@@ -269,7 +316,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 	public JComboBox getStatus()
 	{
-		return userFilterBox;
+		return statusBox;
 	}
 
 	/**
@@ -296,118 +343,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		currentFilter = newFilter;
 	}
 
-	/** Watches for changes in the "FilterType JCombo box
-	 *  and updates the comparator drop down box to only
-	 *  all the user to pick valid operators
-	 * 
-	 * @param e The input resulting from the action
-	 */
-	public void actionPerformed(ActionEvent e) {
-
-		JComboBox comboBox = (JComboBox) e.getSource();
-
-		String selected = (String) comboBox.getSelectedItem();
-
-		String[] comparatorStrings = null;
-		String[] valueStrings = null;
-
-		// Limit the options for comparators by the FilterType
-		if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
-			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
-		else if(selected=="Name" ||selected=="Description" )
-			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
-		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
-			comparatorStrings = new String[]{"=","!="};
-			if(selected=="Type" )
-				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
-			if(selected=="Status" )
-				valueStrings=new String[]{"New","InProgress","Open","Complete","Deleted"};
-			if(selected=="Priority")
-				valueStrings=new String[]{"","High","Medium","Low"};
-			DefaultComboBoxModel<String> valb = new DefaultComboBoxModel<String>(valueStrings);
-			valueBox.setModel(valb);
-		}
-
-		DefaultComboBoxModel<String> compbox = new DefaultComboBoxModel<String>(comparatorStrings);
-		comparatorBox.setModel(compbox);
-
-		if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
-			txtValue.setVisible(false);
-			txtNumValue.setVisible(false);
-			valueBox.setVisible(true);
-		}
-		else if(selected=="Name" ||selected=="Description"){
-			valueBox.setVisible(false);
-			txtNumValue.setVisible(false);
-			txtValue.setVisible(true);
-		}
-		else{ // id, estimate, actual value, or release number
-			valueBox.setVisible(false);
-			txtValue.setVisible(false);
-			txtNumValue.setVisible(true);
-		}
-		// reset values 
-		this.getFilterValue().setText("");
-		this.getFilterNumValue().setText("");
-
-		setCurType(selected);
-	}
-
-
-	/** Enables or disables all fields in the builder panel. Not intended for
-	 *  use by controllers trying to load in data to the FilterBuilderPanel
-	 * 
-	 * @param setTo True activates the fields and false deactivates them
-	 */
-	public void setInputEnabled(boolean setTo){
-		isBuilderActive = setTo;
-
-		// Reset the JCombo boxes
-		this.getFilterOperator().setSelectedIndex(0);
-		this.getFilterType().setSelectedIndex(0);
-		this.getStatus().setSelectedIndex(0);	    
-
-		// Enable/Disable
-		enable(this.getFilterType(), setTo);
-		enable(this.getFilterOperator(), setTo);
-		enable(this.getStatus(), setTo);
-		enable(this.getFilterValue(), setTo);
-		enable(this.getFilterNumValue(), setTo);
-		enable(this.getFilterValueBox(), setTo);
-
-		this.getFilterValue().setText("");
-		this.getFilterNumValue().setText("");
-
-		this.getButton().setEnabled(setTo);
-
-		// Reset value field
-		this.getFilterValue().setText("");
-
-		// Ensure that the button is set correctly
-		this.getButton().setText("Create");   
-
-		valueBox.setVisible(false);
-		txtValue.setVisible(false);
-		txtNumValue.setVisible(true);
-	}
-
-
-	/** Sets clears and resets any fields in the current builder panel
-	 *  and also resets the mode to "CREATE" if applicable. 
-	 */
-	public void clearAndReset() {
-		currentMode = Mode.CREATE; // default for this function
-		setInputEnabled(false);
-		isBuilderActive = false;
-	}
-
-	/** Toggles between active and inactive modes mode */
-	public void toggleNewCancelMode() {
-		currentMode = Mode.CREATE; // default for this function
-		isBuilderActive = !isBuilderActive;
-		setInputEnabled(isBuilderActive);
-		enable(this.getStatus(),false);
-	}
 
 	/** Gets the model from the panel in the form of a JSON string
 	 *  that is ready to be sent as a message over the network
@@ -510,7 +445,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			box.setBackground(initialColor);
 		}
 	}
-	
+
 	public void enable(JTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
@@ -521,7 +456,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			box.setBackground(initialColor);
 		}
 	}
-	
+
 	public void enable(JNumberTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
@@ -546,5 +481,163 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public void setCurType(String curType) {
 		this.curType = curType;
 	}
+
+	// The following methods are required by the interface: IBuilderPanel
+	/** Sets up the controllers and action listeners. This should be where all
+	 *  controllers and action listeners are initialized because the controllers
+	 *  require references that are not not fully initialized when the 
+	 *  constructor for this class is called.
+	 */
+	public void setupControllersAndListeners() {
+		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"filter");
+		btnSave.addActionListener(saveController);
+	}
+
+	/** Sets the mode of the builder panel to the given mode. ALSO changes
+	 *  the text in the button 
+	 *  Mode.CREATE or Mode.EDIT
+	 * 
+	 * @param mode The mode that the builder panel should be in
+	 */
+	public void setModeAndBtn(Mode mode) {
+		currentMode = mode;
+		// Ensure that the button text is set correctly
+		if (currentMode == Mode.CREATE)
+			btnSave.setText("Create");
+		else
+			btnSave.setText("Save");
+	}
+
+
+	/** Enables or disables all fields in the builder panel. 
+	 * 
+	 * @param setTo True activates the fields and false deactivates them
+	 */
+	public void setInputEnabled(boolean setTo){
+		// Record wether enabled/disabled
+		isBuilderActive = setTo;
+
+		// Enable/Disable
+		enable(this.getFilterType(), setTo);
+		enable(this.getFilterOperator(), setTo);
+		enable(this.getStatus(), setTo);
+		enable(this.getFilterValue(), setTo);
+		enable(this.getFilterNumValue(), setTo);
+		enable(this.getFilterValueBox(), setTo);
+
+		// Enable the button		
+		this.getButton().setEnabled(setTo);
+	}
+
+
+	/** Resets the values of the fields/drop downs in the builder panel  */
+	public void resetFields() {
+		// Reset Type field
+		typeBox.setSelectedIndex(0);
+		//Reset Operator field
+		operatorBox.setSelectedIndex(0);
+
+		// Reset all layers of the value field
+		txtValue.setText("");
+		numValue.setText("");
+
+		// Reset status field
+		statusBox.setSelectedIndex(0);			
+	}
+
+	/** Toggles between active and inactive modes mode */
+	public void toggleNewCancelMode() {
+		currentMode = Mode.CREATE; // default for this function
+		isBuilderActive = !isBuilderActive;
+		setInputEnabled(isBuilderActive);
+		enable(this.getStatus(),false);
+	}
+
+
+	/** Gets the model from the panel in the form of a JSON string
+	 *  that is ready to be sent as a message over the network
+	 * 
+	 * *NOTE: can be used for passing messages between views!
+	 * 
+	 * @return JSON string of the model to be sent, null if a message cannot be made
+	 */
+	public String convertCurrentModelToJSON() {
+		String curtype = this.getFilterType().getSelectedItem().toString();
+		// Check conditions that verify that the value field has something
+		if (curtype != "Type" && curtype != "Status" && curtype != "Priority" 
+				&& 	this.getFilterValue().getText().length() == 0   
+				&&  this.getFilterNumValue().getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+		// Instantiate a filter to hold the data
+		Filter newFilter = new Filter();
+
+		// If the current model is being edited, the unique ID needs to be preserved
+		if (this.getCurrentMode() == Mode.EDIT) newFilter.setUniqueID(currentFilter.getUniqueID());
+
+		// Set the fields.
+		newFilter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
+		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
+		newFilter.setType(type);
+
+		// The selected type determines how the filter value should be obtained
+		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
+			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
+		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
+			newFilter.setValue(this.getFilterValue().getText());
+		else
+			newFilter.setValue(this.getFilterNumValue().getText());
+
+		// The status drop down box has two values, index 1 = inactive and index 0 = active
+		if(this.getStatus().getSelectedIndex() == 1)
+			newFilter.setUseFilter(false);
+		else
+			newFilter.setUseFilter(true);
+
+		// Convert the filter to a JSON string and send it away
+		return newFilter.toJSON();
+
+	}
+
+
+	/** Takes a JSON string that holds an array of models and uploads them
+	 *  to the builder panel. 
+	 *  
+	 * @param jsonArray An array of models in JSON string form
+	 */
+	public void displayModelFromJSONArray(String jsonString) {
+		// Translate the filter from a JSONArray	
+		Filter filter = Filter.fromJSONArray(jsonString)[0];
+
+		// Store the filter in the builder
+		currentFilter = filter;
+
+		//Type
+		typeBox.setSelectedItem(filter.getType().toString());
+
+		//Comparator
+		operatorBox.setSelectedItem(filter.getComparator().toString());
+
+		//Value
+		txtValue.setText(filter.getValue());
+
+		//NumValue
+		numValue.setText(filter.getValue());
+
+		//Value box
+		valueBox.setSelectedItem(filter.getValue());
+
+
+		//Active
+		if(filter.isUseFilter()){
+			this.getStatus().setSelectedIndex(0);
+		} else{
+			this.getStatus().setSelectedIndex(1);
+		}
+	}	
+
+
 
 }
