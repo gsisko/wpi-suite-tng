@@ -99,23 +99,29 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//construct the panels
 		nameLabel = new JLabel("Name:");
-		startDateLabel = new JLabel("Start Date:");
-		endDateLabel = new JLabel("End Date:");
+		startDateLabel = new JLabel("Start Date:(mm/dd/yyyy)");
+		endDateLabel = new JLabel("End Date:(mm/dd/yyyy)");
 		btnSave = new JButton("Save");
 
 		//construct the components
 		nameValue = new JTextField();
 		nameValue.setEnabled(false);
 		
-		Date now = cal.getTime();
+		Date now = cal.getTime();		// Get dates for start and end of range
 		cal.add(Calendar.YEAR, -10);
 		Date dateStart = cal.getTime();
 		cal.add(Calendar.YEAR, 110);
 		Date dateEnd = cal.getTime();
-		SpinnerModel start = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);
+		SpinnerModel start = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);	// Create the spinner-models
 		SpinnerModel end = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);
-		this.startDate = new JSpinner(start);
+		this.startDate = new JSpinner(start);		// Create the spinners
 		this.endDate = new JSpinner(end);
+		
+		JSpinner.DateEditor startDE = new JSpinner.DateEditor(this.startDate, "dd/MM/yyyy");
+		JSpinner.DateEditor endDE = new JSpinner.DateEditor(this.startDate, "dd/MM/yyyy");
+		this.startDate.setEditor(startDE);
+		this.endDate.setEditor(endDE);
+		
 		
 		// The action listener for these are below
 		btnSave.setEnabled(false);
@@ -191,8 +197,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(btnSave, IterationBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
-
-		System.out.println("This shit better fucking print");
 	}
 	
 	
@@ -319,7 +323,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// Set max and min years
-				System.out.println("Something changed");
 				SpinnerDateModel tmpStart = (SpinnerDateModel) startDate.getModel();
 				SpinnerDateModel tmpEnd = (SpinnerDateModel) endDate.getModel();
 				tmpStart.setEnd((Comparable) endDate.getValue());
