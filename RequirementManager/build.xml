@@ -50,7 +50,11 @@
 		</jar>
 	</target>
 
-	<target name="compile" depends="janeway-jar, core-jar"/>
+	<target name="compile" depends="janeway-jar, core-jar">
+		<!--hackaround to adding jars... -->
+		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>
+	</target>
 
 	<target name="compile-test" depends="compile-base">
 		<mkdir dir="build-test"/>
@@ -58,9 +62,6 @@
 				debuglevel="lines,vars,source">
 			<classpath refid="test-classpath"/>
 		</javac>
-		<!--hackaround to adding jars... -->
-		<!--Should extract any future jars we decide to add -->
-		<unzip src="../RequirementManager/lib/*.jar" dest="../Janeway/bin"/>
 	</target>
 
 	<target name="clean">
