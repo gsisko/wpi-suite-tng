@@ -42,9 +42,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * Keep in mind that this controller is visible as a public field in the module.
  */
 public class MainTabController {
-	
+
 	private final MainTabView view;
-	
+
 	/**
 	 * @param view Create a controller that controls this MainTabView
 	 */
@@ -57,7 +57,7 @@ public class MainTabController {
 			}
 		});
 	}
-	
+
 	/**
 	 * Adds a tab.
 	 * 
@@ -73,14 +73,14 @@ public class MainTabController {
 		view.setSelectedIndex(index);
 		return new Tab(view, view.getTabComponentAt(index));
 	}
-	
+
 	/**
 	 * @return Same as addTab(null, null, null, null)
 	 */
 	public Tab addTab() {
 		return addTab(null, null, null, null);
 	}
-	
+
 	/**
 	 * Adds a tab that displays the given requirement in the given mode
 	 * @param requirement The requirement to display
@@ -98,7 +98,7 @@ public class MainTabController {
 		view.requestFocus();
 		return tab;
 	}
-	
+
 	/**
 	 * Adds a tab that displays the given requirement
 	 * @param requirement the requirement to display
@@ -107,7 +107,7 @@ public class MainTabController {
 	public Tab addEditRequirementTab(Requirement requirement) {
 		return addRequirementTab(requirement, Mode.EDIT);
 	}
-	
+
 	/**
 	 * Adds a tab that allows the user to create a new Requirement
 	 * @return The created Tab
@@ -115,7 +115,7 @@ public class MainTabController {
 	public Tab addCreateRequirementTab() {
 		return addRequirementTab(new Requirement(), Mode.CREATE);
 	}
-	
+
 	/**
 	 * Add a change listener to the view this is controlling.
 	 * @param listener the ChangeListener that should receive ChangeEvents
@@ -123,7 +123,7 @@ public class MainTabController {
 	public void addChangeListener(ChangeListener listener) {
 		view.addChangeListener(listener);
 	}
-	
+
 	/**
 	 * Changes the selected tab to the tab left of the current tab
 	 */
@@ -132,14 +132,14 @@ public class MainTabController {
 			switchToTab(view.getSelectedIndex() - 1);
 		}
 	}
-	
+
 	/**
 	 * Changes the selected tab to the tab right of the current tab
 	 */
 	public void switchToRightTab() {
 		switchToTab(view.getSelectedIndex() + 1);
 	}
-	
+
 	/**
 	 * Closes the currently active tab
 	 */
@@ -151,7 +151,7 @@ public class MainTabController {
 			// do nothing, tried to close tab that does not exist
 		}
 	}
-	
+
 	/**
 	 * Changes the selected tab to the tab with the given index
 	 * @param tabIndex the index of the tab to select
@@ -164,7 +164,7 @@ public class MainTabController {
 			// an invalid tab was requested, do nothing
 		}
 	}
-	
+
 	/**
 	 * Close tabs upon middle clicks.
 	 * @param event MouseEvent that happened on this.view
@@ -178,9 +178,12 @@ public class MainTabController {
 			}
 		}
 		else { // auto-refresh if it is the list of requirements
-			Component tab = view.getComponentAt(view.indexAtLocation(event.getX(), event.getY()));
-			if (tab instanceof ListRequirementsView) {
-				((ListRequirementsView)tab).getModelController().refreshData();
+			int index = view.indexAtLocation(event.getX(), event.getY());
+			if (index >= 0 && index < view.getTabCount()) {
+				Component tab = view.getComponentAt(index);
+				if (tab instanceof ListRequirementsView) {
+					((ListRequirementsView)tab).getModelController().refreshData();
+				}
 			}
 		}
 	}

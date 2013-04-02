@@ -36,7 +36,6 @@ import javax.swing.JTabbedPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
@@ -124,11 +123,14 @@ public class ListTabView extends JTabbedPane {
 	 */
 	private void onMouseClick(MouseEvent event) {
 		// auto-refresh if it is the list of requirements
-		Component tab = this.getComponentAt(this.indexAtLocation(event.getX(), event.getY()));
-		if (tab instanceof IterationListPanel) {
-			((IterationListPanel)tab).getRetrieveAllController().refreshData();
-		} else {
-			((FilterListPanel)tab).getRetrieveAllController().refreshData();	
+		int index = this.indexAtLocation(event.getX(), event.getY());
+		if (index >= 0 && index < this.getTabCount()) {
+			Component tab = this.getComponentAt(index);
+			if (tab instanceof IterationListPanel) {
+				((IterationListPanel)tab).getRetrieveAllController().refreshData();
+			} else {
+				((FilterListPanel)tab).getRetrieveAllController().refreshData();	
+			}
 		}
 
 	}

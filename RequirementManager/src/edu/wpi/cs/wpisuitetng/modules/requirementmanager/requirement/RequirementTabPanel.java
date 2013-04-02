@@ -27,7 +27,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
