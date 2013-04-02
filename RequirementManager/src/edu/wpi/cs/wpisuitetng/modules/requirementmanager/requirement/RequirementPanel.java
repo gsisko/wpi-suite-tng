@@ -216,7 +216,7 @@ public class RequirementPanel extends JPanel {
 			
 			//Disables the notePanel upon creation
 			toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), false);
-			toggleEnabled(tabPanel.getNotePanel().getSaveButton(), false);
+			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 			
 			//Set the following fields to be initially grayed out
 			toggleEnabled(txtEstimate, false);
@@ -398,7 +398,7 @@ public class RequirementPanel extends JPanel {
 
 		// toggles note panel boxes
 		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
-		toggleEnabled(tabPanel.getNotePanel().getSaveButton(), enabled);
+		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
 	}
 
 	/**

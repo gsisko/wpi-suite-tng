@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -98,7 +99,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//construct the components
 		nameValue = new JTextField();
-		nameValue.setEnabled(false);
+		enable(nameValue, false);
 		
 		startDateChooser = new JDateChooser(new Date());
 		endDateChooser = new JDateChooser(new Date());
@@ -222,7 +223,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	@Override
 	public void setInputEnabled(boolean setTo) {
-		this.nameValue.setEnabled(setTo);
+		enable(this.nameValue, setTo);
 		this.startDateChooser.setEnabled(setTo);
 		this.endDateChooser.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
@@ -282,7 +283,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	
 	public void setupControllersAndListeners() {
-		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"iteration");
+		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
 		btnSave.addActionListener(saveController);
 
 		startDateChooser.getDateEditor().addPropertyChangeListener("date",
@@ -305,6 +306,17 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					}
 				}
 		);
+	}
+	
+	public void enable(JTextField box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(new Color(238,238,238));
+		}
 	}
 }
 

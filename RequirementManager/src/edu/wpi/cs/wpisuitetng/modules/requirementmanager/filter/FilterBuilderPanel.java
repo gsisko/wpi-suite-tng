@@ -70,9 +70,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	private final JComboBox valueBox;
 	private final JComboBox statusBox;
 
-	//the default color
-	private final Color initialColor;
-
 	//button
 	private final JButton btnSave;
 
@@ -128,9 +125,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		statusBox = new JComboBox(userFilterStrings);
 		valueBox = new JComboBox();
 		valueBox.setVisible(false);
-
-		//grab the initial color
-		initialColor = typeBox.getBackground();
 
 		//set initial conditions
 		typeBox.setSelectedIndex(0);
@@ -442,7 +436,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 		else {
 			box.setEnabled(false);
-			box.setBackground(initialColor);
+			box.setBackground(new Color(238,238,238));
 		}
 	}
 
@@ -453,7 +447,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 		else {
 			box.setEnabled(false);
-			box.setBackground(initialColor);
+			box.setBackground(new Color(238,238,238));
 		}
 	}
 
@@ -464,7 +458,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 		else {
 			box.setEnabled(false);
-			box.setBackground(initialColor);
+			box.setBackground(new Color(238,238,238));
 		}
 	}
 
