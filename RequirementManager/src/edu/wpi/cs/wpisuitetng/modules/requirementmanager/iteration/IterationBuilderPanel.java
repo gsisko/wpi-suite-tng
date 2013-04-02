@@ -42,6 +42,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -295,9 +296,17 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					@Override
 					public void propertyChange(PropertyChangeEvent e) {
 						if (startDateChooser.getDate().compareTo(new Date()) > 0) {
-							endDateChooser.setMinSelectableDate(startDateChooser.getDate());
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
+								}
+							});
 						} else {
-							endDateChooser.setMinSelectableDate(new Date());
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									endDateChooser.setMinSelectableDate(new Date());
+								}
+							});
 						}
 					}
 				}
@@ -306,7 +315,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		endDateChooser.getDateEditor().addPropertyChangeListener(
 				new PropertyChangeListener() {
 					public void propertyChange(PropertyChangeEvent e) {
-						startDateChooser.setMaxSelectableDate(endDateChooser.getDate());
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								startDateChooser.setMaxSelectableDate(endDateChooser.getDate());
+							}
+						});
 					}
 				}
 		);
