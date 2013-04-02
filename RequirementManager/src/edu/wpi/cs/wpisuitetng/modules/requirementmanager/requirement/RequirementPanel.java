@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -31,6 +32,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -196,7 +198,7 @@ public class RequirementPanel extends JPanel {
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
-				txtEstimate.setEnabled(false);
+				toggleEnabled(txtEstimate, false);
 		}
 		else//We are creating a new requirement
 		{
@@ -210,9 +212,9 @@ public class RequirementPanel extends JPanel {
 			priorityBox.setSelectedIndex(0);
 
 			//Set the following fields to be initially grayed out
-			txtEstimate.setEnabled(false);
-			txtActualEffort.setEnabled(false);
-			statusBox.setEnabled(false);
+			toggleEnabled(txtEstimate, false);
+			toggleEnabled(txtActualEffort, false);
+			toggleEnabled(statusBox, false);
 
 		}
 
@@ -377,14 +379,14 @@ public class RequirementPanel extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		txtName.setEnabled(enabled);
-		txtDescription.setEnabled(enabled);
-		typeBox.setEnabled(enabled);
-		statusBox.setEnabled(enabled);
-		priorityBox.setEnabled(enabled);
-		txtReleaseNumber.setEnabled(enabled);
-		txtEstimate.setEnabled(enabled);
-		txtActualEffort.setEnabled(enabled);
+		toggleEnabled(txtName, true);
+		toggleEnabled(txtDescription, true);
+		toggleEnabled(typeBox, true);
+		toggleEnabled(statusBox, true);
+		toggleEnabled(priorityBox, true);
+		toggleEnabled(txtReleaseNumber, true);
+		toggleEnabled(txtEstimate, true);
+		toggleEnabled(txtActualEffort, true);
 
 		tabPanel.getNotePanel().getNoteMessage().setEnabled(enabled);
 		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
@@ -494,12 +496,30 @@ public class RequirementPanel extends JPanel {
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
-				txtEstimate.setEnabled(false);
+				toggleEnabled(txtEstimate, false);
 		}
 
 
 	}
+	
+	/**
+	 * Enables or disables a given JComponent and sets is color accordingly
+	 * 
+	 * @param box Box to be enabled / disabled
+	 * @param enabled True for enable, false for disable
+	 */
+	public void toggleEnabled(JComponent box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(new Color(238,238,238));
+		}
+	}
 
+	
 	/**
 	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
 	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for the RequirementPanel.
