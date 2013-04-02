@@ -223,10 +223,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	@Override
 	public void setInputEnabled(boolean setTo) {
+		isBuilderActive = setTo;
 		enable(this.nameValue, setTo);
 		this.startDateChooser.setEnabled(setTo);
 		this.endDateChooser.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
+		if (!setTo){
+			this.nameValue.setText("");
+		}
 	}
 
 

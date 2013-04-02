@@ -57,6 +57,7 @@ public class NewModelAction implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// Toggle between the new and cancel modes
 		builderView.toggleNewCancelMode();
+		builderView.resetFields();
 		listView.toggleNewCancelMode();
 		
 	}
