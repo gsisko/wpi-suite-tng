@@ -293,8 +293,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		long endTime = 0;
 		
 		toSend.setName(this.nameValue.getText());
-		toSend.setStartDate((Date) this.startDate.getValue());
-		toSend.setEndDate((Date) this.endDate.getValue());
+		toSend.setStartDate(((SpinnerDateModel)this.startDate.getModel()).getDate());
+		toSend.setEndDate(((SpinnerDateModel) this.endDate.getModel()).getDate());
 		
 		return toSend.toJSON();
 	}
