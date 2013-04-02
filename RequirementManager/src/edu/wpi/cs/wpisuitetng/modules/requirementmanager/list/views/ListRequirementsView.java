@@ -108,8 +108,8 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
 		
 		// Load initial data
-		controller.refreshData();
-		filterController.refreshData();
+		//controller.refreshData();
+		filterController.refreshData(); // refreshes filters which triggers a requirement refresh
 	}
 	
 	public RetrieveAllRequirementsController getController() {

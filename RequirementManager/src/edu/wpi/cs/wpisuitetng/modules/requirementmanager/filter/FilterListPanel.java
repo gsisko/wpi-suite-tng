@@ -50,23 +50,23 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelActi
  */
 @SuppressWarnings("serial")
 public class FilterListPanel extends JPanel implements IListPanel{
-	
+
 	/** The table of results */
 	protected JTable resultsTable;
-	
+
 	protected JButton btnCreate;
 	protected JButton btnDelete;
 	private boolean btnCreateIsCancel;
-	
+
 	private Filter[] localFilters = {};
-	
+
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
-	
+
 	private DeleteModelController deleteController;
 	private RetrieveModelController retrieveController;
 	private RetrieveAllModelsController retrieveAllController;
-	
+
 	private final ListPanel parent;
 	/**
 	 * Construct the panel
@@ -92,17 +92,17 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
 		this.add(resultsScrollPane);
 		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-		
+
 		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
-		
+
 		btnCreate.setMaximumSize(new Dimension(120, 40));
 		btnCreate.setMinimumSize(new Dimension(120, 40));
 		btnDelete.setMaximumSize(new Dimension(120, 40));
 		btnDelete.setMinimumSize(new Dimension(120, 40));
-		
+
 		this.add(btnCreate);
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(btnDelete);
@@ -113,44 +113,44 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		deleteController = new DeleteModelController(this, parent.getFilterBuilderPanel(),"filter");
 		retrieveController = new RetrieveModelController(this, parent.getFilterBuilderPanel(),"filter");
 		setRetrieveAllController(new RetrieveAllModelsController(this, parent.getFilterBuilderPanel(),"filter"));
-		
+
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
-				
+
 		// Sets up listener system. Once pressed, changes to CancelFilterAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getFilterBuilderPanel()));
-		
+
 		btnDelete.addActionListener(deleteController);
 	}
-	
+
 	/**This method returns an ArrayList of active filters
 	 * 
 	 * @return activeFilters An ArrayList of the active filters
 	 */
 	public ArrayList<Filter> getActiveFilters() {
 		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
-	    
-	    for(int i = 0; i < localFilters.length; i++){
-	    	if(localFilters[i].isUseFilter()) activeFilters.add(localFilters[i]);
-	    }
-		
+
+		for(int i = 0; i < localFilters.length; i++){
+			if(localFilters[i].isUseFilter()) activeFilters.add(localFilters[i]);
+		}
+
 		return activeFilters;
 	}
-	
+
 	/**
 	 * @return the data model for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
-	
+
 	/**
 	 * @return the results table
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
-	
+
 	/**
 	 * Replace the results table with the given table
 	 * @param newTable the new results table
@@ -179,7 +179,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 	public void setLocalFilters(Filter[] localFilters) {
 		this.localFilters = localFilters;
 	}
-	
+
 	public JButton getBtnCreate(){
 		return btnCreate;
 	}
@@ -200,12 +200,12 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public String[] getUniqueIdentifiers() {
-		
+
 		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
-		
+
 		// get highlighted rows 
 		int[] rowNumbers = filters.getSelectedRows();
-		
+
 		String[] ids = new String [rowNumbers.length];
 		for(int i=0; i<rowNumbers.length;i++){
 			ids[i] = (String) filters.getValueAt(rowNumbers[i], 0);
@@ -225,7 +225,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		// Set the cancel button back to New Filter if it was in cancel mode 
 		this.getBtnCreate().setText("New Filter"); 
 		this.setBtnCreateIsCancel(false);
-		
+
 	}
 
 	@Override
@@ -236,8 +236,8 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		else
 			this.getBtnCreate().setText("New Filter");
 	}
-	
-	
+
+
 	@Override
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
@@ -247,9 +247,9 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		
+
 		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
-		
+
 		int row = filters.rowAtPoint(me.getPoint());
 
 		String filterId=null;
@@ -257,30 +257,24 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		if (row > -1) {
 			filterId = (String) resultsTable.getValueAt(row, 0);
 		}
-		
+
 		return filterId;
 	}
 
 	@Override
 	public void showRecievedModels(String jsonString) {
-		// empty the table
+		// Setup data structures
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		
+
 		Filter[] filters = Filter.fromJSONArray(jsonString);
-		
-		this.getModel().setColumnNames(emptyColumns);
-		this.getModel().setData(emptyData);
-		this.getModel().fireTableStructureChanged();
-		
+
 		// Add the list of filters to the FilterListPanel object
-		this.setLocalFilters(filters);
-		
 		if (filters.length > 0) {
-			
+			this.setLocalFilters(filters);
 			// set the column names
 			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
-			
+
 			// put the data in the table
 			Object[][] entries = new Object[filters.length][columnNames.length];
 			for (int i = 0; i < filters.length; i++) {
@@ -300,7 +294,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 					entries[i][4] = "no";
 				}
 			}
-			
+
 			// fill the table
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
@@ -310,11 +304,14 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			resultsTable.getColumn("Id").setWidth(0);
 		}
 		else {
-			// do nothing, there are no filters
+			// Fire blanks so that the old contents are removed
+			this.getModel().setColumnNames(emptyColumns);
+			this.getModel().setData(emptyData);
+			this.getModel().fireTableStructureChanged();
 		}
-		
-		
-		
+
+
+		// Get the requirement list controller and fire a refresh
 		parent.getParent().getController().refreshData();
 	}
 

@@ -51,11 +51,11 @@ public class RetrieveAllRequirementsController {
 
 	/** The panel where the results will display*/
 	protected ResultsPanel resultsPanel;
-	
+
 	/** The panel that contains all the filters*/
 	protected FilterListPanel filterPanel;
-	
-	
+
+
 	/** The requirements data retrieved from the server */
 	protected Requirement[] data = null;
 
@@ -88,34 +88,32 @@ public class RetrieveAllRequirementsController {
 	 * @param requirements an array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
-		
+
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
 		ArrayList<Filter> filters = filterPanel.getActiveFilters();
-		
+
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
-		
+
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		resultsPanel.getModel().setColumnNames(emptyColumns);
-		resultsPanel.getModel().setData(emptyData);
-		resultsPanel.getModel().fireTableStructureChanged();
-		
+
+
 		// Filtering Phase
 		if (requirements.length > 0) {
 			// save the data
 			this.data = requirements;
 
 			if(filters != null && filters.size() > 0){
-			
+
 				for (int i = 0; i < requirements.length; i++) {
 					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
 					for(int x = 0; x < filters.size(); x++){
 						Filter currentFilter = filters.get(x); //get current filter
-						
+
 						if(!currentFilter.passesFilter(requirements[i])){
 							passAllFilters = false;
 							x=filters.size();
@@ -137,7 +135,7 @@ public class RetrieveAllRequirementsController {
 		if (isFiltered.size() > 0){
 			// set the column names
 			String[] columnNames = {"ID", "Name", "Description", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
-			
+
 			// put the data in the table
 			Object[][] entries = new Object[isFiltered.size() ][columnNames.length];
 			for (int i = 0; i < isFiltered.size(); i++) {				
@@ -167,14 +165,18 @@ public class RetrieveAllRequirementsController {
 				entries[i][7] = String.valueOf(isFiltered.get(i).getEstimate());
 				entries[i][8] = String.valueOf(isFiltered.get(i).getActualEffort());
 			}
-			
+
 			// fill the table
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
 			resultsPanel.getModel().fireTableStructureChanged();			
-		}		
+		}	else {
+			resultsPanel.getModel().setColumnNames(emptyColumns);
+			resultsPanel.getModel().setData(emptyData);
+			resultsPanel.getModel().fireTableStructureChanged();
+		}
 		// ELSE:  do nothing, there are no Requirements that passed the filters
-	
+
 	}
 
 	/**
@@ -185,40 +187,9 @@ public class RetrieveAllRequirementsController {
 		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
-	
-	
-	/**This method takes in two object values and an operator type and  
-	 * performs a comparison.
-	 * 
-	 * @param filterValue The value from the filter to compare
-	 * @param op The operator to be used for the comparison
-	 * @param requirementValue The value from the requirement to compare
-	 * @return True if the comparison was true
-	 */
-	@SuppressWarnings("unused")
-	private boolean filterHelper(Object filterValue, OperatorType op, Object requirementValue){
-		switch(op){
-		case GreaterThan:
-			return (Integer) requirementValue > (Integer) filterValue;
-		case GreaterThanOrEqualTo:
-			return (Integer) requirementValue >= (Integer) filterValue;
-		case LessThan:
-			return (Integer) requirementValue < (Integer) filterValue;
-		case LessThanOrEqualTo:
-			return (Integer) requirementValue <= (Integer) filterValue;
-		case EqualTo:
-			return requirementValue.equals(filterValue);
-		case NotEqualTo:
-			return !(requirementValue.equals(filterValue));
-		case Contains:
-			return requirementValue.toString().contains(filterValue.toString());
-		case DoesNotContain:
-			return !(requirementValue.toString().contains(filterValue.toString()));
-		case Other:
-			return true;
-		}
-		return true;
-	}
+
+
+
 }
 
 
