@@ -269,7 +269,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 
-		String[] uniqueIdentifiers = {};
+		String[] uniqueIdentifiers = new String [rowNumbers.length];
 
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < rowNumbers.length; i++){			
@@ -289,14 +289,8 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	 */
 	public void showRecievedModels(String jsonString) {
 		// empty the table
-		String[] emptyColumns = {};
-		Object[][] emptyData = {};
-		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
 		
-		this.getModel().setColumnNames(emptyColumns);
-		this.getModel().setData(emptyData);
-		this.getModel().fireTableStructureChanged();
-
+		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
 		// Add the list of iterations to the IterationListPanel object
 		this.setLocalIterations(iterations);
 
@@ -317,9 +311,16 @@ public class IterationListPanel extends JPanel implements IListPanel {
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			return; // end now
 		}
 		else {
-			// do nothing, there are no iterations
+			// Fire blanks so that the old contents are removed
+			String[] emptyColumns = {};
+			Object[][] emptyData = {};
+		
+			this.getModel().setColumnNames(emptyColumns);
+			this.getModel().setData(emptyData);
+			this.getModel().fireTableStructureChanged();
 		}
 	}
 

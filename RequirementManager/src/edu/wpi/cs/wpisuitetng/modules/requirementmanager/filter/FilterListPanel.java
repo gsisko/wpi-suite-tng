@@ -200,15 +200,13 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	@Override
 	public String[] getUniqueIdentifiers() {
-
-		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
-
 		// get highlighted rows 
-		int[] rowNumbers = filters.getSelectedRows();
+		int[] rowNumbers = resultsTable.getSelectedRows();
 
 		String[] ids = new String [rowNumbers.length];
+		// get array of row numbers, if there are any highlighted rows
 		for(int i=0; i<rowNumbers.length;i++){
-			ids[i] = (String) filters.getValueAt(rowNumbers[i], 0);
+			ids[i] = (String) resultsTable.getValueAt(rowNumbers[i], 0);
 		}
 		return ids;
 	}
