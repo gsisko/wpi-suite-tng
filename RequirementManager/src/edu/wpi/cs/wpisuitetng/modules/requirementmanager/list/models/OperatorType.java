@@ -74,6 +74,11 @@ public enum OperatorType {
 		}
 	}
 
+	/** Takes an OperatorType and converts it into a string
+	 * 
+	 * @return the string value of the OperatorType
+	 */
+	
 	public String toString () {
 		switch (OperatorType.this) {
 		case Contains:
