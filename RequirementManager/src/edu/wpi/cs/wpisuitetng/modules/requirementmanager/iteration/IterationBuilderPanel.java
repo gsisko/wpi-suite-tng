@@ -31,7 +31,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -39,12 +40,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.*;
+
+import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
@@ -52,12 +50,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","unused"})
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
-	public enum Mode {
-		CREATE,
-		EDIT
-	}
 
 	//the labels
 	private final JLabel startDateLabel; 
@@ -66,12 +60,15 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	//the fillable components
 	private JTextField nameValue;
+	private JDateChooser startDateChooser;
+	private JDateChooser endDateChooser;
 	
 	//button
 	private final JButton btnSave;
+
 	private final ListPanel parent;
 
-	private IBuilderPanel.Mode currentMode;
+	private Mode currentMode;
 
 	private String curType = "Id";
 	
@@ -79,17 +76,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private boolean isBuilderActive;
 	
 	private SaveModelController saveController;
-	
-	Calendar cal = Calendar.getInstance();
-	JSpinner startDate;
-	JSpinner endDate;
 
 	/**
 	 * Construct the panel
 	 */
 	public IterationBuilderPanel(ListPanel view) {
 		parent = view;
-		currentMode = IBuilderPanel.Mode.CREATE;
+		currentMode = Mode.CREATE;
 		currentIteration = null;
 		isBuilderActive = false;
 		
@@ -99,34 +92,21 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//construct the panels
 		nameLabel = new JLabel("Name:");
-		startDateLabel = new JLabel("Start Date:(mm/dd/yyyy)");
-		endDateLabel = new JLabel("End Date:(mm/dd/yyyy)");
+		startDateLabel = new JLabel("Start Date:");
+		endDateLabel = new JLabel("End Date:");
 		btnSave = new JButton("Save");
 
 		//construct the components
 		nameValue = new JTextField();
 		nameValue.setEnabled(false);
 		
-		Date now = cal.getTime();		// Get dates for start and end of range
-		cal.add(Calendar.YEAR, -10);
-		Date dateStart = cal.getTime();
-		cal.add(Calendar.YEAR, 110);
-		Date dateEnd = cal.getTime();
-		SpinnerModel start = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);	// Create the spinner-models
-		SpinnerModel end = new SpinnerDateModel(now, dateStart, dateEnd, Calendar.DAY_OF_MONTH);
-		this.startDate = new JSpinner(start);		// Create the spinners
-		this.endDate = new JSpinner(end);
-		
-		JSpinner.DateEditor startDE = new JSpinner.DateEditor(this.startDate, "dd/MM/yyyy");
-		JSpinner.DateEditor endDE = new JSpinner.DateEditor(this.startDate, "dd/MM/yyyy");
-		this.startDate.setEditor(startDE);
-		this.endDate.setEditor(endDE);
-		
-		
+		startDateChooser = new JDateChooser(new Date());
+		endDateChooser = new JDateChooser(new Date());
+
 		// The action listener for these are below
 		btnSave.setEnabled(false);
-		this.startDate.setEnabled(false);
-		this.endDate.setEnabled(false);
+		startDateChooser.setEnabled(false);
+		endDateChooser.setEnabled(false);
 
 		//set the layout
 		setLayout(new GridBagLayout());
@@ -161,13 +141,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(startDateLabel, IterationBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
-		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
+		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(startDate, IterationBuilderConstraints);
+		add(startDateChooser, IterationBuilderConstraints);
 	
 		//End Date
 		//Set the constraints for the "typeLabel" and add it to the view
@@ -177,13 +154,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(endDateLabel, IterationBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
-		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		IterationBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		IterationBuilderConstraints.insets = new Insets(0,15,0,0);  //Set the top padding to 10 units  of blank space
+		IterationBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
 		IterationBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(endDate, IterationBuilderConstraints);
+		add(endDateChooser, IterationBuilderConstraints);
+
 		
 		//Save button:
 		//Set the constraints for the "Save" and add it to the view
@@ -197,8 +172,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
 		add(btnSave, IterationBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
+
 	}
 	
+	public void setUp() {
+		setupControllersAndListeners();
+	}
 	
 	public JButton getButton()
 	{
@@ -213,14 +192,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	/**
 	 * @return the currentMode
 	 */
-	public IBuilderPanel.Mode getCurrentMode() {
+	public Mode getCurrentMode() {
 		return currentMode;
 	}
 
 	/**
 	 * @param currentMode the currentMode to set
 	 */
-	public void setCurrentMode(IBuilderPanel.Mode currentMode) {
+	public void setCurrentMode(Mode currentMode) {
 		this.currentMode = currentMode;
 	}
 
@@ -238,25 +217,21 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Tried to do an action");
 		
 	}
 
-	
 	@Override
 	public void setInputEnabled(boolean setTo) {
-		System.out.println("Input set to " + setTo);
 		this.nameValue.setEnabled(setTo);
-		this.startDate.setEnabled(setTo);
-		this.endDate.setEnabled(setTo);
+		this.startDateChooser.setEnabled(setTo);
+		this.endDateChooser.setEnabled(setTo);
 		this.btnSave.setEnabled(setTo);
 	}
 
-	
+
 	@Override
 	public void toggleNewCancelMode() {
-		System.out.println("Mode toggled to " + !isBuilderActive);
-		currentMode = IBuilderPanel.Mode.CREATE; // default for this function
+		currentMode = Mode.CREATE; // default for this function
 		isBuilderActive = !isBuilderActive;
 		setInputEnabled(isBuilderActive);
 	}
@@ -265,74 +240,71 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	
 	// New methods for the refactor.
 	public void resetFields() {
-		System.out.println("Values reset");
 		this.nameValue.setText("");
-		this.startDate.setValue(this.cal.getTime());
-		this.endDate.setValue(this.cal.getTime());
+		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
+		endDateChooser.setDate(new Date());
 	}
 	
 	
-	public void setModeAndBtn(IBuilderPanel.Mode mode) {
-		System.out.println("Mode and button set to " + mode);
+	public void setModeAndBtn(Mode mode) {
 		this.currentMode = mode;
-		if (mode == IBuilderPanel.Mode.CREATE) {
+		if (mode == Mode.CREATE) {
 			this.btnSave.setText("Create");
 		}
-		else if (mode == IBuilderPanel.Mode.EDIT) {
+		else if (mode == Mode.EDIT) {
 			this.btnSave.setText("Save");
 		}
 	}
-	
+
 	
 	public String convertCurrentModelToJSON() {
-		System.out.println("JSON created");
 		Iteration toSend = new Iteration();
-		Date start = new Date();
-		Date end = new Date();
-		long startTime = 0;
-		long endTime = 0;
 		
 		toSend.setName(this.nameValue.getText());
-		toSend.setStartDate(((SpinnerDateModel)this.startDate.getModel()).getDate());
-		toSend.setEndDate(((SpinnerDateModel) this.endDate.getModel()).getDate());
+		toSend.setStartDate(this.startDateChooser.getDate());
+		toSend.setEndDate(this.endDateChooser.getDate());
+		
+		System.out.println(toSend.toJSON());
 		
 		return toSend.toJSON();
 	}
 	
 	
 	public void displayModelFromJSONArray(String jsonArray) {
-		System.out.println("JSON read");
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
 		
-		this.startDate.setValue(toDisplay.getStartDate());
-		this.endDate.setValue(toDisplay.getEndDate());
-		
-		
 		this.nameValue.setText(toDisplay.getName());
+		this.startDateChooser.setDate(toDisplay.getStartDate());
+		this.endDateChooser.setDate(toDisplay.getEndDate());
 		
 		setInputEnabled(true);
 	}
-	
+
 	
 	public void setupControllersAndListeners() {
-		System.out.println("Controller setup");
-		this.saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
-		this.btnSave.addActionListener(saveController);
-		
-		ChangeListener listener = new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				// Set max and min years
-				SpinnerDateModel tmpStart = (SpinnerDateModel) startDate.getModel();
-				SpinnerDateModel tmpEnd = (SpinnerDateModel) endDate.getModel();
-				tmpStart.setEnd((Comparable) endDate.getValue());
-				tmpEnd.setStart((Comparable) startDate.getValue());
-			}
-		};
-		this.startDate.addChangeListener(listener);
-		this.endDate.addChangeListener(listener);
-	}
-	
+		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"iteration");
+		btnSave.addActionListener(saveController);
 
+		startDateChooser.getDateEditor().addPropertyChangeListener("date",
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						if (startDateChooser.getDate().compareTo(new Date()) > 0) {
+							endDateChooser.setMinSelectableDate(startDateChooser.getDate());
+						} else {
+							endDateChooser.setMinSelectableDate(new Date());
+						}
+					}
+				}
+		);
+		
+		endDateChooser.getDateEditor().addPropertyChangeListener(
+				new PropertyChangeListener() {
+					public void propertyChange(PropertyChangeEvent e) {
+						startDateChooser.setMaxSelectableDate(endDateChooser.getDate());
+					}
+				}
+		);
+	}
 }
 

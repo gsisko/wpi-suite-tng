@@ -204,8 +204,8 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	 * Set the cancel button back to New Iteration if it was in cancel mode
 	 */
 	public void setCancelBtnToNew() {
-		getBtnCreate().setText("New Iteration"); 
-		setBtnCreateIsCancel(false);
+		this.getBtnCreate().setText("New Iteration"); 
+		this.setBtnCreateIsCancel(false);
 	}
 	
 	/**
