@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
@@ -58,7 +57,7 @@ public class RetrieveAllRequirementsController {
 
 	/** The requirements data retrieved from the server */
 	protected Requirement[] data = null;
-
+	
 	/**
 	 * Constructs a new RetrieveAllRequirementsController
 	 * 
@@ -67,6 +66,12 @@ public class RetrieveAllRequirementsController {
 	public RetrieveAllRequirementsController(ListRequirementsView view) {
 		this.resultsPanel = view.getListPanel().getResultsPanel();
 		this.filterPanel = view.getListPanel().getTabPanel().getFilterList();
+	}
+	
+	public RetrieveAllRequirementsController(ResultsPanel view, FilterListPanel filter)
+	{
+	    this.resultsPanel = view;
+	    this.filterPanel = filter;
 	}
 
 	/**
@@ -188,7 +193,21 @@ public class RetrieveAllRequirementsController {
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
 
-
+	/**A getter required for testing
+	 * 
+	 * @return resultsPanel
+	 */
+	public ResultsPanel getResultsPanel(){
+	    return resultsPanel;
+	}
+	
+	/**A getter for use in tests
+	 * 
+	 * @return the filterPanel
+	 */
+	public FilterListPanel getFilterPanel(){
+	    return filterPanel;
+	}
 
 }
 
