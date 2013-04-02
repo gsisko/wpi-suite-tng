@@ -58,6 +58,9 @@
 				debuglevel="lines,vars,source">
 			<classpath refid="test-classpath"/>
 		</javac>
+		<!--hackaround to adding jars... -->
+		<!--Should extract any future jars we decide to add -->
+		<unzip src="../RequirementManager/lib/*.jar" dest="../Janeway/bin"/>
 	</target>
 
 	<target name="clean">
