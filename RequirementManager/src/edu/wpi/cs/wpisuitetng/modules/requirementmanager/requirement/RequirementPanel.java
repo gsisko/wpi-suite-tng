@@ -210,7 +210,14 @@ public class RequirementPanel extends JPanel {
 			typeBox.setSelectedIndex(0);
 			statusBox.setSelectedIndex(0);
 			priorityBox.setSelectedIndex(0);
-
+			
+			//Enables the fields upon creation
+			setInputEnabled(inputEnabled);
+			
+			//Disables the notePanel upon creation
+			toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), false);
+			toggleEnabled(tabPanel.getNotePanel().getSaveButton(), false);
+			
 			//Set the following fields to be initially grayed out
 			toggleEnabled(txtEstimate, false);
 			toggleEnabled(txtActualEffort, false);
@@ -379,17 +386,19 @@ public class RequirementPanel extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		toggleEnabled(txtName, true);
-		toggleEnabled(txtDescription, true);
-		toggleEnabled(typeBox, true);
-		toggleEnabled(statusBox, true);
-		toggleEnabled(priorityBox, true);
-		toggleEnabled(txtReleaseNumber, true);
-		toggleEnabled(txtEstimate, true);
-		toggleEnabled(txtActualEffort, true);
+		// toggles requirement panel boxes
+		toggleEnabled(txtName, enabled);
+		toggleEnabled(txtDescription, enabled);
+		toggleEnabled(typeBox, enabled);
+		toggleEnabled(statusBox, enabled);
+		toggleEnabled(priorityBox, enabled);
+		toggleEnabled(txtReleaseNumber, enabled);
+		toggleEnabled(txtEstimate, enabled);
+		toggleEnabled(txtActualEffort, enabled);
 
-		tabPanel.getNotePanel().getNoteMessage().setEnabled(enabled);
-		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
+		// toggles note panel boxes
+		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
+		toggleEnabled(tabPanel.getNotePanel().getSaveButton(), enabled);
 	}
 
 	/**
@@ -483,6 +492,7 @@ public class RequirementPanel extends JPanel {
 				statusBox.setSelectedIndex(3);
 			else // oldStatus = "Deleted"
 				statusBox.setSelectedIndex(4);
+		
 
 			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
 			if (oldPriority.equals("High"))
@@ -493,13 +503,12 @@ public class RequirementPanel extends JPanel {
 				priorityBox.setSelectedIndex(3);
 			else // oldPriority = "NoPriority"
 				priorityBox.setSelectedIndex(0);
+			
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
 				toggleEnabled(txtEstimate, false);
 		}
-
-
 	}
 	
 	/**
