@@ -149,6 +149,13 @@ public class SaveRequirementController
 	 * Saves a new note to the Requirement
 	 */
 	public void saveNote() {
+		
+		// check if any inputs are invalid, print an error message if one is
+    	if (view.getTabPanel().getNotePanel().getNoteMessage().getText().length() == 0) {
+    		JOptionPane.showMessageDialog(null, "Note must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	
 		Requirement currentRequirement = view.getCurrentRequirement();
     	
     	String NoteContent = view.getRequirementNote().getText();
