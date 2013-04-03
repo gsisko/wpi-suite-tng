@@ -76,6 +76,11 @@ public class IterationManagerTest {
 		defaultSession = new Session(existingUser, testProject, mockSsid);
 		newIteration = new Iteration("A new iteration", new Date(600), new Date(800));
 		
+		// Setting ID's manually
+		existingIteration.setID(1);
+		otherIteration.setID(2);
+		
+		
 		db = new MockData(new HashSet<Object>());
 		db.save(existingIteration, testProject);
 		db.save(existingUser);
@@ -124,7 +129,7 @@ public class IterationManagerTest {
 	
 	@Test
 	public void testGetEntity() throws WPISuiteException {
-		Iteration[] gotten = manager.getEntity(defaultSession, "Iteration 1");
+		Iteration[] gotten = manager.getEntity(defaultSession, "1");
 		assertSame(existingIteration, gotten[0]);
 	}
 
@@ -148,8 +153,9 @@ public class IterationManagerTest {
 	@Test
 	public void testSave() throws WPISuiteException {
 		Iteration newIteration = new Iteration("New iteration", new Date(1000), new Date(3000));
+		newIteration.setID(3);
 		newIteration.setProject(testProject);
-		manager.save(defaultSession, newIteration);
+		manager.save(adminSession, newIteration);
 		assertSame(newIteration, db.retrieve(Iteration.class, "name", "New iteration").get(0));
 		assertSame(testProject, newIteration.getProject());
 	}
@@ -157,8 +163,8 @@ public class IterationManagerTest {
 	@Test
 	public void testDelete() throws WPISuiteException {
 		assertSame(existingIteration, db.retrieve(Iteration.class, "name", "Iteration 1").get(0));
-		assertTrue(manager.deleteEntity(adminSession, "Iteration 1"));
-		assertEquals(0, db.retrieve(Iteration.class, "name", "Iteration 1").size());
+		assertTrue(manager.deleteEntity(adminSession, "1"));
+		assertEquals(0, db.retrieve(Iteration.class, "id", "1").size());
 	}
 	
 	@Test(expected=NotFoundException.class)
@@ -168,7 +174,7 @@ public class IterationManagerTest {
 	
 	@Test(expected=NotFoundException.class)
 	public void testDeleteFromOtherProject() throws WPISuiteException {
-		manager.deleteEntity(adminSession, otherIteration.getName());
+		manager.deleteEntity(adminSession, ((Integer)otherIteration.getID()).toString());
 	}
 	
 	

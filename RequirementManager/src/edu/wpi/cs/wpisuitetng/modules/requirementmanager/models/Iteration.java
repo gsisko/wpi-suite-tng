@@ -57,6 +57,8 @@ public class Iteration extends AbstractModel {
 		this.setName(name);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		this.setID(-1);
+
 	}
 
 

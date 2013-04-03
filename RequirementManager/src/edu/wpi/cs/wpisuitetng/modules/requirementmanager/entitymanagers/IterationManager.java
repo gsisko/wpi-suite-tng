@@ -50,7 +50,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	private Data db;
 	
 	/** This is for advanced logging and debugging of the server interactions */
-	private static final Logger logger = Logger.getLogger(IterationManager.class.getName());
+	private static final Logger logger = Logger.getLogger("Iteration manager logger");
 	
 	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. 
@@ -93,20 +93,13 @@ public class IterationManager implements EntityManager<Iteration> {
 			throw new BadRequestException("The Iteration creation string had invalid formatting. Entity String: " + content);			
 		}
 		
-		
-		// Check to see if the iteration exists in the database already - check by name only
-		Iteration resultOfCheck = null;
-		try {	
-		resultOfCheck = getEntity(s,newIteration.getName())[0]; //indicates it exists already
-		} catch (WPISuiteException wse){ // We want this, because it indicates that the name was not found for this project
-			logger.log(Level.FINE, "The name for the given iteration has not been used. Continueing creation.");
+		// If the new iteration has an ID already, then it shouldn't be here
+		if (newIteration.getID() != -1){
+			throw new ConflictException("Cannot make a new entity that has an ID already.");
 		}
-		if (resultOfCheck != null){  // If no excepts are thrown and an Iteration is returned, we know this iteration exists alredy
-			logger.log(Level.WARNING, "Name Conflict Exception during Iteration creation.");
-			throw new ConflictException("A Iteration with the given name already exists. Entity String: " + content); 
-		}
-		
-		
+				
+		// Assign a unique ID
+		assignUniqueID(newIteration);		
 		
 		// Saves the iteration in the database
 		this.save(s,newIteration); // An exception may be thrown here if we can't save it
@@ -131,11 +124,24 @@ public class IterationManager implements EntityManager<Iteration> {
 		if (!this.db.save(model, s.getProject())) {
 			throw new WPISuiteException("Unable to save Iteration.");
 		}
-		model.setName(model.getName().replaceAll("\\s","_"));
+//		model.setName(model.getName().replaceAll("\\s","_"));
 		logger.log(Level.FINE, "Iteration Saved :" + model);
 	}
     
     
+    /** Takes a Requirement and assigns a unique id if necessary
+     * 
+     * @param req The requirement that possibly needs a unique id
+    
+     * @throws WPISuiteException "Count failed"
+     */
+    public void assignUniqueID(Iteration iter) throws WPISuiteException{
+        if (iter.getID() == -1){// -1 is a flag that says a unique id is needed            
+        	iter.setID(Count() + 1); // Makes first Requirement have id = 1
+        }        
+    }
+	
+	
 	/** Returns the number of Iterations currently in the database. Disregards
 	 *  the current user session
 	 * 
@@ -178,13 +184,15 @@ public class IterationManager implements EntityManager<Iteration> {
 	 * @throws WPISuiteException  "There was a problem retrieving from the database." 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
-	public Iteration[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
+	public Iteration[] getEntity(Session s, String sid) throws NotFoundException, WPISuiteException {
 		
 		Iteration[] iterations = null;
+		int id = Integer.parseInt(sid);
+		
 		
 		// Try to retrieve the specific Iteration
 		try {
-			iterations = db.retrieve(Iteration.class, "name", id, s.getProject()).toArray(new Iteration[0]);
+			iterations = db.retrieve(Iteration.class, "id", id, s.getProject()).toArray(new Iteration[0]);
 		} catch (WPISuiteException e) { // caught and re-thrown with a new message
 			e.printStackTrace();
 			throw new WPISuiteException("There was a problem retrieving from the database." );
@@ -225,7 +233,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		}
 		
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
-		Iteration oldIteration = getEntity(s, iterationUpdate.getName() )[0];
+		Iteration oldIteration = getEntity(s, ((Integer)iterationUpdate.getID()).toString() )[0];
 		
 		// Copy new field values into old Iteration. This is because the "same" model must
 		// be saved back into the database

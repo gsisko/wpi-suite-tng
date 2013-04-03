@@ -94,7 +94,6 @@ public class RetrieveModelController extends MouseAdapter {
 		builderView.setModeAndBtn(Mode.EDIT);
 		
 		listView.setNewBtnToCancel();
-		listView.refreshAll();
 
 	}
 
