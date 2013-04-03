@@ -66,7 +66,8 @@ public class MainTabController {
 				{
 					Component tab = view.getComponentAt(view.getSelectedIndex());
 					if (tab instanceof ListRequirementsView) {
-						((ListRequirementsView)tab).getController().refreshData();
+						((ListRequirementsView)tab).getFilterController().refreshData();
+						((ListRequirementsView)tab).getIterationController().refreshData();
 					}
 				}
 				else initialized = true;

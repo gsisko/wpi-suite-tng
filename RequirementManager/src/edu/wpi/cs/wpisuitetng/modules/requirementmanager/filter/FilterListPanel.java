@@ -308,6 +308,8 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			this.getModel().fireTableStructureChanged();
 		}
 		
+		refreshRequirements();
+		
 	}
 
 	/**

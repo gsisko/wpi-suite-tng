@@ -90,7 +90,6 @@ public class RetrieveAllModelsController implements ActionListener{
 	 */
 	public void receivedData(String jsonString) {
 		listView.showRecievedModels(jsonString);
-		listView.refreshRequirements();
 	}
 
 	/**

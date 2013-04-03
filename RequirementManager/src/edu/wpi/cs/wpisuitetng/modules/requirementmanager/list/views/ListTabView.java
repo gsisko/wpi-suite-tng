@@ -61,14 +61,6 @@ public class ListTabView extends JTabbedPane {
 		addTab("Iterations", new ImageIcon(), iterationList, "List of Iterations");
 
 		this.setPreferredSize(new Dimension(190, 500));
-
-		// Enables refreshing when changing tabs
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				ListTabView.this.onMouseClick(event);
-			}
-		});
 	}
 
 	@Override
@@ -115,26 +107,5 @@ public class ListTabView extends JTabbedPane {
 	public void setIterationList(IterationListPanel iterationList) {
 		this.iterationList = iterationList;
 	}
-
-
-	/** For refreshing the list views + requirement view on tab clicks
-	 * 
-	 * @param event MouseEvent that happened on this.view
-	 */
-	private void onMouseClick(MouseEvent event) {
-		// auto-refresh if it is the list of requirements
-		int index = this.indexAtLocation(event.getX(), event.getY());
-		if (index >= 0 && index < this.getTabCount()) {
-			Component tab = this.getComponentAt(index);
-			if (tab instanceof IterationListPanel) {
-				((IterationListPanel)tab).getRetrieveAllController().refreshData();
-			} else {
-				((FilterListPanel)tab).getRetrieveAllController().refreshData();	
-			}
-		}
-
-	}
-
-
 
 }

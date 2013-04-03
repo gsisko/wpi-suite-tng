@@ -24,6 +24,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -94,7 +97,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		
 		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("Requirements");
+		buttonGroup = new ToolbarGroupView("All Lists");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
@@ -102,11 +105,20 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		buttonGroup.getContent().add(btnRefresh);
 		buttonGroup.setPreferredWidth(150);
 		
+		btnRefresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterController.refreshData();
+				iterationController.refreshData();
+			}
+		});
+		
 	}
 	
 	public void refreshData() {
 		// Load initial data
 		filterController.refreshData();
+		iterationController.refreshData();
 	}
 	
 	public RetrieveAllRequirementsController getController() {
