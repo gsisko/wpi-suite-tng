@@ -255,12 +255,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 
 	public void setModeAndBtn(Mode mode) {
-		this.currentMode = mode;
-		if (mode == Mode.CREATE) {
-			this.btnCreate.setText("Create");
+		currentMode = mode;
+		if (currentMode == Mode.CREATE) {
+			btnCreate.setText("Create");
 		}
 		else if (mode == Mode.EDIT) {
-			this.btnCreate.setText("Save");
+			btnCreate.setText("Save");
 		}
 	}
 
