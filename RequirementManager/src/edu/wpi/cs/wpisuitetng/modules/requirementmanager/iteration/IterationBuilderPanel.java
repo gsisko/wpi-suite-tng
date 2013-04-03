@@ -50,6 +50,7 @@ import com.toedter.calendar.JDateChooser;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTabView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 
@@ -263,7 +264,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	public String convertCurrentModelToJSON(){
 		Iteration toSend = new Iteration();
 	
-		if(!isValid())
+		if(!isIterationValid())
 		   //return null;
 		
 		toSend.setName(this.nameValue.getText());
@@ -275,8 +276,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return toSend.toJSON();
 	}
 	
-	public boolean isValid(){
-	    ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();
+	public boolean isIterationValid(){
+		ListTabView tabPanel = parent.getTabPanel();
+		IterationListPanel listPanel = tabPanel.getIterationList();
+		ArrayList<Iteration> iters = listPanel.getIterations();
+		
+	   // ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();
 	    
 	    String error = "";
 	    
@@ -306,7 +311,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	    */
 	    return true;
 	}
-
+	
 
 	public void displayModelFromJSONArray(String jsonArray) {
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
