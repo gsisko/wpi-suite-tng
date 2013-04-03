@@ -76,16 +76,20 @@ public class NotePanel extends JPanel {
 		txtMessage = new JTextArea("", 1, 1);
 		saveButton = new JButton("Add Note");
 
-		//Set the txtMessage component to wrap
+		// Set the txtMessage component to wrap
 		txtMessage.setLineWrap(true);
 		txtMessage.setWrapStyleWord(true);
 
-		listScrollPane.setPreferredSize(new Dimension(580, 300));
-		txtMessage.setPreferredSize(new Dimension(580, 100));
-		saveButton.setPreferredSize(new Dimension(120, 40));
-		
 		// Put txtMessage in a scroll pane
 		scrollMessage = new JScrollPane(txtMessage);
+		scrollMessage.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		// Set dimensions of the panel elements
+		listScrollPane.setPreferredSize(new Dimension(580, 300));
+		scrollMessage.setPreferredSize(new Dimension(580, 100));
+		saveButton.setPreferredSize(new Dimension(120, 40));
+		
+		
 		
 		if ((parent.getMode()) == Mode.CREATE)
 		{
