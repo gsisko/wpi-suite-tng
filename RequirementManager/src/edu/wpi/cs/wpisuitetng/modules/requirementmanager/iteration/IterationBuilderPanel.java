@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -259,10 +260,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-
 	public String convertCurrentModelToJSON() {
 		Iteration toSend = new Iteration();
-
+	
+		if(!isValid()){
+		    //TODO throw error
+		}
+		
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(this.startDateChooser.getDate());
 		toSend.setEndDate(this.endDateChooser.getDate());
@@ -270,6 +274,24 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		System.out.println(toSend.toJSON());
 
 		return toSend.toJSON();
+	}
+	
+	public boolean isValid(){
+	    ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();
+	    
+	    if(this.nameValue.getText().length() <=0)
+		return false;
+	    
+	    for(int i = 0; i < iters.size(); i++){
+		if(this.nameValue.getText().equals(iters.get(i).getName()))
+		    return false;
+		
+		if(this.startDateChooser.getDate().before(iters.get(i).getEndDate()) ||
+			this.endDateChooser.getDate().after(iters.get(i).getEndDate()));
+			return false;
+	    }
+	    
+	    return true;
 	}
 
 
