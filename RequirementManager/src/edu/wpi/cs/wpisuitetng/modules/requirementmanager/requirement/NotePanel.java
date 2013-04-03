@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JViewport;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
@@ -20,6 +21,7 @@ public class NotePanel extends JPanel {
 	
 	//The fillable component
 	private  JTextArea txtMessage;//The message text field 
+	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
 
 	//Setting up button
 	private JButton saveButton;
@@ -82,17 +84,20 @@ public class NotePanel extends JPanel {
 		txtMessage.setPreferredSize(new Dimension(580, 100));
 		saveButton.setPreferredSize(new Dimension(120, 40));
 		
+		// Put txtMessage in a scroll pane
+		scrollMessage = new JScrollPane(txtMessage);
+		
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
-			txtMessage.setEnabled(false);
+			getNoteMessage().setEnabled(false);
 		}
 	
 		
 		// Add components
 		this.add(listScrollPane);
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-		this.add(txtMessage); // add the txtMessage box to the panel
+		this.add(scrollMessage); // add the txtMessage box (in the scroll pane)  to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // adds the save button to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
@@ -121,7 +126,7 @@ public class NotePanel extends JPanel {
 		inputEnabled = enabled;
 
 		saveButton.setEnabled(enabled);
-		txtMessage.setEnabled(enabled);
+		getNoteMessage().setEnabled(enabled);
 	}
 
 	/**
@@ -137,7 +142,8 @@ public class NotePanel extends JPanel {
 	 * @return the txtMessage JTextArea
 	 */
 	public JTextArea getNoteMessage() {
-		return txtMessage;
+		JViewport viewport = scrollMessage.getViewport(); 
+		return (JTextArea) viewport.getView();
 	}
 	
 	public JButton getSaveButton() {
