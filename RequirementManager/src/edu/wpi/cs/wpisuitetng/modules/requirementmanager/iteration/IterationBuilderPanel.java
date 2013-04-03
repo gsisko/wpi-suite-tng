@@ -304,10 +304,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 				}
 			}
 
-			if((this.startDateChooser.getDate().before(iters.get(i).getEndDate()) 
-				&& this.startDateChooser.getDate().after(iters.get(i).getStartDate()))
+			if(	((this.startDateChooser.getDate().before(iters.get(i).getEndDate()) 
+					&& this.startDateChooser.getDate().after(iters.get(i).getStartDate()))
 				|| (this.endDateChooser.getDate().before(iters.get(i).getEndDate()) 
 					&& this.endDateChooser.getDate().after(iters.get(i).getStartDate())))
+				|| (iters.get(i).getStartDate().after(this.startDateChooser.getDate()) 
+					&& iters.get(i).getStartDate().before(this.startDateChooser.getDate())) 
+				||(iters.get(i).getEndDate().after(this.startDateChooser.getDate())
+					&& iters.get(i).getEndDate().before(this.endDateChooser.getDate())))
 			{
 				if (!dateErrorFound)
 				{
