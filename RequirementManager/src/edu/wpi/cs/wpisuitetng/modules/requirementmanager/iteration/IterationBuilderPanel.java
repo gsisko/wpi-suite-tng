@@ -232,7 +232,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.btnCreate.setEnabled(setTo);
 		if (!setTo){
 			this.nameValue.setText("");
-			this.btnCreate.setText("Save");
 		}
 	}
 
