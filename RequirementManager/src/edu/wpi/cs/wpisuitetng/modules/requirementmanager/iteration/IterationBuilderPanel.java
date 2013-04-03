@@ -295,7 +295,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		{
 			boolean nameErrorFound = false;
 			boolean dateErrorFound = false;
-			
+			//TODO need to check if ID of current object equals that of the one it's checking
+			//in order to allow updates
 			if (this.nameValue.getText().equals(iters.get(i).getName()))
 			{
 				if (!nameErrorFound)
