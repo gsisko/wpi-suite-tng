@@ -26,8 +26,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -54,7 +52,7 @@ public class ListTabView extends JTabbedPane {
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
+		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
 		filterList = new FilterListPanel(parent);
 		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
 		iterationList = new IterationListPanel(parent);

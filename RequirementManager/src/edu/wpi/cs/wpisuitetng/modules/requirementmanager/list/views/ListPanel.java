@@ -96,13 +96,13 @@ public class ListPanel extends JPanel {
 		this.resultsPanel = new ResultsPanel(tabController);
 
 
-		// Constrain the filtersPanel
+		// Constrain the FilterListPanel and IterationListPanel
 		layout.putConstraint(SpringLayout.NORTH, listScrollPane, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, listScrollPane, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, listScrollPane, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, listScrollPane, 200, SpringLayout.WEST, listScrollPane);
+		layout.putConstraint(SpringLayout.EAST, listScrollPane, 250, SpringLayout.WEST, listScrollPane);
 
-		// Constrain the filterBuilderPanel
+		// Constrain the FilterBuilderPanel and IteationBuilderPanel
 		layout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.EAST, listScrollPane);
 		layout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, this);
