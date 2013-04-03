@@ -232,38 +232,50 @@ public class RequirementPanel extends JPanel {
 		//In this last section we adjust the size and alignments of all the components and add them to the innerPanel.
 		//Please read all the comments in this section if you are having trouble understanding what is going on.
 
-		reqPanelConstraints = new GridBagConstraints();//create the constraints variable for the layout of the innerPanel
+		//create the constraints variable for the layout of the innerPanel
+		reqPanelConstraints = new GridBagConstraints(); 
+		
+		//A quick note about constraints:
+		//A constraint variable is a single instance of an object that stores constraints,
+		//  so if you set variables within it, they persist to the next time it is used.
+		//This means you *must* reset variables within the constraint if you do not want
+		//  the previously stored value to effect the next component that uses it.
 
 		//Name:
 		//Set the constraints for "nameLabel" and add it to the innerPanel
-		reqPanelConstraints.weightx = 0.07; //This is the weight of this field, which tells the layout manager how big this field should be in proportion to the other components
+		reqPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		reqPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 10 units of blank space
+		reqPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 		reqPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		reqPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
 		innerPanel.add(nameLabel, reqPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for "txtName" and add it to the innerPanel
-		reqPanelConstraints.ipadx = 150;//This tells the layout to stretch this field horizontally by 150 units
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.77;
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;//This tells the layout to stretch this field horizontally to fit it's cell
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
 		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 3; //This tells the layout that this component will be 3 cells wide
 		reqPanelConstraints.gridy = 0;
 		innerPanel.add(txtName, reqPanelConstraints);
 		//end Name
 
 		//Description:		
 		//Set the constraints for the "descriptionLabel" and add it to the innerPanel
-		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 150 units to now 0 units
-		reqPanelConstraints.weightx = 0.07; 
+		reqPanelConstraints.weightx = 0.07;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;//This tells the layout to *not* stretch this field horizontally (or vertically, for that matter) to fit it's cell
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
+		reqPanelConstraints.insets = new Insets(15,15,0,0);  //Set the top padding to 15 units of blank space, left padding to 15 units of space
 		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridwidth = 1;//This tells the layout to reset the amount of cells the component will be wide, from the previous 3 cells wide down to the default of 1
 		reqPanelConstraints.gridy = 1;
 		innerPanel.add(descriptionLabel, reqPanelConstraints);
 		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the innerPanel
-		reqPanelConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 150 units to now 0 units
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.77;
+		reqPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		reqPanelConstraints.insets = new Insets(15,5,10,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space, right padding to 10 units
 		reqPanelConstraints.gridx = 1;
+		reqPanelConstraints.gridwidth = 3;
 		reqPanelConstraints.gridy = 1;
 		innerPanel.add(scrollPane, reqPanelConstraints);
 		//end Description
@@ -271,100 +283,109 @@ public class RequirementPanel extends JPanel {
 		//Type:
 		//Set the constraints for the "typeLabel" and add it to the innerPanel
 		reqPanelConstraints.weightx = 0.07;
+		reqPanelConstraints.fill = GridBagConstraints.NONE;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		reqPanelConstraints.insets = new Insets(15,15,0,0); 
 		reqPanelConstraints.gridx = 0;
+		reqPanelConstraints.gridwidth = 1;
 		reqPanelConstraints.gridy = 2;
 		innerPanel.add(typeLabel, reqPanelConstraints);
 		//Set the constraints for the "typeBox"  and add it to the innerPanel
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.43;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		reqPanelConstraints.insets = new Insets(15,5,10,0);
 		reqPanelConstraints.gridx = 1;
 		reqPanelConstraints.gridy = 2;
 		innerPanel.add(typeBox, reqPanelConstraints);
 		//end Type
 
-		//Status:		
-		//Set the constraints for the "statusLabel" and add it to the innerPanel
-		reqPanelConstraints.weightx = 0.07;
-		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
-		reqPanelConstraints.gridx = 0;
-		reqPanelConstraints.gridy = 3;
-		innerPanel.add(statusLabel, reqPanelConstraints);
-		//Set the constraints for the "statusBox" and add it to the innerPanel
-		reqPanelConstraints.weightx = 0.93;
-		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridy = 3;
-		innerPanel.add(statusBox, reqPanelConstraints);
-		//end Status
-
 		//Priority:
 		//Set the constraints for the "priorityLabel" and add it to the innerPanel
 		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		reqPanelConstraints.insets = new Insets(15,15,0,0);
 		reqPanelConstraints.gridx = 0;
-		reqPanelConstraints.gridy = 4;
+		reqPanelConstraints.gridy = 3;
 		innerPanel.add(priorityLabel, reqPanelConstraints);
 		//Set the constraints for the "priorityBox" and add it to the innerPanel
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.43;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		reqPanelConstraints.insets = new Insets(15,5,10,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridy = 4;
+		reqPanelConstraints.gridy = 3;
 		innerPanel.add(priorityBox, reqPanelConstraints);
 		//end Priority
-
+		
 		//Release number:
 		//Set the constraints for the "releaseNumLabel" and add it to the innerPanel
 		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		reqPanelConstraints.insets = new Insets(15,15,0,0);
 		reqPanelConstraints.gridx = 0;
-		reqPanelConstraints.gridy = 5;
+		reqPanelConstraints.gridy = 4;
 		innerPanel.add(releaseNumLabel, reqPanelConstraints);
 		//Set the constraints for the "txtReleaseNum" and add it to the innerPanel
-		reqPanelConstraints.ipadx = 80;//This tells the layout to stretch this field horizontally by 90 units
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.43;
+		reqPanelConstraints.ipadx = 80;//This tells the layout to pad the interior of this field horizontally with 80 units of space
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		reqPanelConstraints.insets = new Insets(15,5,10,0);
 		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridy = 5;
+		reqPanelConstraints.gridy = 4;
 		innerPanel.add(txtReleaseNumber, reqPanelConstraints);
 		//end Release number
+		
+		
+		//Status:		
+		//Set the constraints for the "statusLabel" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.07;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
+		reqPanelConstraints.insets = new Insets(15,5,0,0);
+		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
+		reqPanelConstraints.gridx = 2;
+		reqPanelConstraints.gridy = 2;
+		innerPanel.add(statusLabel, reqPanelConstraints);
+		//Set the constraints for the "statusBox" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.43;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		reqPanelConstraints.gridx = 3;
+		reqPanelConstraints.gridy = 2;
+		innerPanel.add(statusBox, reqPanelConstraints);
+		//end Status
 
 		//Estimate:		
 		//Set the constraints for the "estimateLabel" and add it to the innerPanel
-		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 100 units to now 0 units
 		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
-		reqPanelConstraints.gridx = 0;
-		reqPanelConstraints.gridy = 6;
+		reqPanelConstraints.gridx = 2;
+		reqPanelConstraints.gridy = 3;
 		innerPanel.add(estimateLabel, reqPanelConstraints);
 		//Set the constraints for the "txtEstimate" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 80;
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.43;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridy = 6;
+		reqPanelConstraints.gridx = 3;
+		reqPanelConstraints.gridy = 3;
 		innerPanel.add(txtEstimate, reqPanelConstraints);
 		//end Estimate
 
 		//Actual effort:
 		//Set the constraints for the "actualEffortLabel" and add it to the innerPanel
-		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 90 units to now 0 units
+		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
 		reqPanelConstraints.weightx = 0.07;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
-		reqPanelConstraints.gridx = 0;
-		reqPanelConstraints.gridy = 7;
+		reqPanelConstraints.gridx = 2;
+		reqPanelConstraints.gridy = 4;
 		innerPanel.add(actualEffortLabel, reqPanelConstraints);
 		//Set the constraints for the "txtActualEffort" and add it to the innerPanel
 		reqPanelConstraints.ipadx = 80;
-		reqPanelConstraints.weightx = 0.93;
+		reqPanelConstraints.weightx = 0.43;
 		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		reqPanelConstraints.gridx = 1;
-		reqPanelConstraints.gridy = 7;
+		reqPanelConstraints.gridx = 3;
+		reqPanelConstraints.gridy = 4;
 		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
 		
 		this.add(innerPanel);//Add the innerPanel to this panel
-		innerPanel.setMaximumSize(new Dimension(400,600));//Set the maximum size of the innerPanel
 
 		this.add(tabPanel);
 		if (mode == Mode.CREATE) {
