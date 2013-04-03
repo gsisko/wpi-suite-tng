@@ -243,19 +243,19 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 		// Get a reference to the results JTable from the mouse event
-		JTable resultsTable = (JTable) me.getSource();
+		JTable iterations = this.parent.getTabPanel().getIterationList().getResultsTable();
 
 		// Determine the row the user clicked on
 		int row = resultsTable.rowAtPoint(me.getPoint());
 
-		String iterationName = "";
+		String iterationId = null;
 
 		// make sure the user actually clicked on a row
 		if (row > -1) {
-			iterationName = (String) resultsTable.getValueAt(row, 0);
+			iterationId = resultsTable.getValueAt(row, 0).toString();
 		}
 
-		return iterationName;
+		return iterationId;
 	}
 
 	/** Takes whatever model(s) is(are) stored in the the current panel,
@@ -269,16 +269,15 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 
-		String[] uniqueIdentifiers = new String [rowNumbers.length];
+		String[] ids = new String [rowNumbers.length];
 
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < rowNumbers.length; i++){			
 			// Getting the name from the current highlighted row
-			String iterationName = (String) resultsTable.getValueAt(rowNumbers[i], 0);
-			uniqueIdentifiers[i] = iterationName;
+			ids[i] = (String) resultsTable.getValueAt(rowNumbers[i], 0);
 		}
 
-		return uniqueIdentifiers;
+		return ids;
 	}
 
 	/** 
@@ -289,6 +288,8 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	 */
 	public void showRecievedModels(String jsonString) {
 		// empty the table
+		String[] emptyColumns = {};
+		Object[][] emptyData = {};
 		
 		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
 		// Add the list of iterations to the IterationListPanel object
@@ -296,14 +297,15 @@ public class IterationListPanel extends JPanel implements IListPanel {
 
 		if (iterations.length > 0) {
 			// set the column names
-			String[] columnNames = {"Name", "StartDate", "EndDate"};
+			String[] columnNames = {"Id", "Name", "StartDate", "EndDate"};
 
 			// put the data in the table
 			Object[][] entries = new Object[iterations.length][columnNames.length];
 			for (int i = 0; i < iterations.length; i++) {
-				entries[i][0] = iterations[i].getName();
-				entries[i][1] = iterations[i].getStartDate();
-				entries[i][2] = iterations[i].getEndDate();
+				entries[i][0] = iterations[i].getID();
+				entries[i][1] = iterations[i].getName();
+				entries[i][2] = iterations[i].getStartDate();
+				entries[i][3] = iterations[i].getEndDate();
 
 			}
 
@@ -311,13 +313,13 @@ public class IterationListPanel extends JPanel implements IListPanel {
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			resultsTable.getColumn("Id").setMinWidth(0);
+			resultsTable.getColumn("Id").setMaxWidth(0);
+			resultsTable.getColumn("Id").setWidth(0);
 			return; // end now
 		}
 		else {
 			// Fire blanks so that the old contents are removed
-			String[] emptyColumns = {};
-			Object[][] emptyData = {};
-		
 			this.getModel().setColumnNames(emptyColumns);
 			this.getModel().setData(emptyData);
 			this.getModel().fireTableStructureChanged();
