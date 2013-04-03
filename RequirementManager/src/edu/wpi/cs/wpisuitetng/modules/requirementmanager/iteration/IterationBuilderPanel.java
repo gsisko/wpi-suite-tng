@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -259,10 +260,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-
-	public String convertCurrentModelToJSON() {
+	public String convertCurrentModelToJSON(){
 		Iteration toSend = new Iteration();
-
+	
+		if(!isValid())
+		   //return null;
+		
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(this.startDateChooser.getDate());
 		toSend.setEndDate(this.endDateChooser.getDate());
@@ -270,6 +273,38 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		System.out.println(toSend.toJSON());
 
 		return toSend.toJSON();
+	}
+	
+	public boolean isValid(){
+	    ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();
+	    
+	    String error = "";
+	    
+	    if(this.nameValue.getText().length() <=0){
+		return false;
+		//error += "The name field of the iteration must be non-blank.\n";
+	    }
+	    
+	    for(int i = 0; i < iters.size(); i++){
+		if(this.nameValue.getText().equals(iters.get(i).getName()))
+		{
+		    return false;
+		    //error += "The name field of the iteration cannot be the same as other iterations\n";
+		}
+		
+		if(this.startDateChooser.getDate().before(iters.get(i).getEndDate()) ||
+			this.endDateChooser.getDate().after(iters.get(i).getEndDate()))
+		{
+		    return false;
+		    //error += "The Start date and end date of the iteration cannot fall within another iterations dates.\n";
+		}
+	    }
+	    
+	    /*
+	    if(error.length() > 0)
+		throw new InvalidModelException(error);
+	    */
+	    return true;
 	}
 
 

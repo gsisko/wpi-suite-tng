@@ -67,7 +67,7 @@ public interface IBuilderPanel {
 	 * 
 	 * *NOTE: can be used for passing messages between views!
 	 * 
-	 * @return JSON string of the model to be sent
+	 * @return JSON string of the model to be sent, Returns null on failure
 	 */
 	public String convertCurrentModelToJSON();
 

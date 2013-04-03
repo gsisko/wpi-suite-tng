@@ -52,8 +52,9 @@
 
 	<target name="compile" depends="janeway-jar, core-jar">
 		<!--hackaround to adding jars... -->
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>
+		<!-- Causing issues... need to fix later... -->
+		<!-- <unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/> -->
 	</target>
 
 	<target name="compile-test" depends="compile-base">

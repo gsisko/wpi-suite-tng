@@ -124,7 +124,9 @@ public class IterationManager implements EntityManager<Iteration> {
 		if (!this.db.save(model, s.getProject())) {
 			throw new WPISuiteException("Unable to save Iteration.");
 		}
+
 //		model.setName(model.getName().replaceAll("\\s","_"));
+
 		logger.log(Level.FINE, "Iteration Saved :" + model);
 	}
     
