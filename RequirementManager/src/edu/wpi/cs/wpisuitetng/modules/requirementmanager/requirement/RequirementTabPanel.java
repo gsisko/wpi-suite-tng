@@ -50,7 +50,7 @@ public class RequirementTabPanel extends JTabbedPane {
 		notePanel = new NotePanel(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 		
-		this.setPreferredSize(new Dimension(600, 500));
+		this.setPreferredSize(new Dimension(450, 500));
 	}
 	
 	@Override

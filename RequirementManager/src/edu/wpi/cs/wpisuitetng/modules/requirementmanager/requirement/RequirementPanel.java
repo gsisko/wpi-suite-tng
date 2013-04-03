@@ -31,6 +31,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -135,6 +136,9 @@ public class RequirementPanel extends JPanel {
 		//Create and set the layout manager for the innerPanel that controls the positions of the components
 		innerLayout = new GridBagLayout();//Create the innerLayout
 		innerPanel.setLayout(innerLayout); //Set the layout for the innerPanel
+		
+		//add a border of blank space to the innerPanel
+		innerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5)); 
 
 		//Create and set the layout manager for the this RequirementPanel
 		outerLayout = new FlowLayout();//Create the layout
