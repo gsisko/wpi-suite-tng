@@ -30,15 +30,11 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.KeyStroke;
 
-import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
@@ -59,17 +55,20 @@ public class JanewayModule implements IJanewayModule {
 	public final MainTabController mainTabController;
 	public final ToolbarController toolbarController;
 	
+	public final MainTabView mainTabView;
+	public final ToolbarView toolbarView;
+	
 	/**
 	 * Construct a new DummyModule for demonstration purposes
 	 */
 	public JanewayModule() {
 		
 		// Setup main tab view and controller
-		MainTabView mainTabView = new MainTabView();
+		mainTabView = new MainTabView();
 		mainTabController = mainTabView.getMainTabController();
 		
 		// Setup tool bar view and controller
-		ToolbarView toolbarView = new ToolbarView(mainTabController);
+		toolbarView = new ToolbarView(mainTabController);
 		toolbarController = new ToolbarController(toolbarView, mainTabController);
 		
 		// Add the refresh button
@@ -139,5 +138,10 @@ public class JanewayModule implements IJanewayModule {
 				}
 			}));
 		}
+	}
+
+	@Override
+	public void invokeWhenSelected() {
+		((ListRequirementsView)mainTabView.getComponentAt(0)).refreshData();
 	}
 }

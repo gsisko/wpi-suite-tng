@@ -31,4 +31,9 @@ public interface IJanewayModule {
 	 */
 	public List<JanewayTabModel> getTabs();
 	
+	/**
+	 * method to run when tab is selected
+	 */
+	public void invokeWhenSelected();
+	
 }

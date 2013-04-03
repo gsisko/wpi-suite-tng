@@ -72,4 +72,10 @@ public class DummyModule implements IJanewayModule {
 	public List<JanewayTabModel> getTabs() {
 		return tabs;
 	}
+
+	@Override
+	public void invokeWhenSelected() {
+		// TODO Auto-generated method stub
+		
+	}
 }

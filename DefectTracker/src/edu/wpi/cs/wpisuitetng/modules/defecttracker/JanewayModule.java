@@ -107,4 +107,10 @@ public class JanewayModule implements IJanewayModule {
 			}));
 		}
 	}
+
+	@Override
+	public void invokeWhenSelected() {
+		// TODO Auto-generated method stub
+		
+	}
 }

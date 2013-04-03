@@ -242,8 +242,6 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	 * @return The unique identifier, either name or ID number
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// Get a reference to the results JTable from the mouse event
-		JTable iterations = this.parent.getTabPanel().getIterationList().getResultsTable();
 
 		// Determine the row the user clicked on
 		int row = resultsTable.rowAtPoint(me.getPoint());

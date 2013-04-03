@@ -58,6 +58,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	protected RetrieveAllRequirementsController controller;
 	
 	protected RetrieveAllModelsController filterController;
+	protected RetrieveAllModelsController iterationController;
 	
 	/** The main tab controller */
 	protected MainTabController tabController;
@@ -86,6 +87,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
 		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
+		iterationController = new RetrieveAllModelsController(mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
 		
 		// Add a listener for row clicks in the actual table
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
@@ -111,8 +113,12 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		return controller;
 	}
 	
-	public RetrieveAllModelsController getModelController() {
+	public RetrieveAllModelsController getFilterController() {
 		return filterController;
+	}
+	
+	public RetrieveAllModelsController getIterationController() {
+		return iterationController;
 	}
 	
 	public ListPanel getListPanel() {

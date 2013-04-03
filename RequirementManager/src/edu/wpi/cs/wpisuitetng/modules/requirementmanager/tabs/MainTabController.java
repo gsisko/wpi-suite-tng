@@ -29,6 +29,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
@@ -44,17 +45,33 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class MainTabController {
 
 	private final MainTabView view;
+	private boolean initialized = false;
 
 	/**
 	 * @param view Create a controller that controls this MainTabView
 	 */
-	public MainTabController(MainTabView view) {
+	public MainTabController(final MainTabView view) {
 		this.view = view;
 		this.view.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent event) {
 				MainTabController.this.onMouseClick(event);
 			}
+		});
+		this.view.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if (initialized)
+				{
+					Component tab = view.getComponentAt(view.getSelectedIndex());
+					if (tab instanceof ListRequirementsView) {
+						((ListRequirementsView)tab).getController().refreshData();
+					}
+				}
+				else initialized = true;
+			}
+
 		});
 	}
 
@@ -175,15 +192,6 @@ public class MainTabController {
 			final int clickedIndex = view.indexAtLocation(event.getX(), event.getY());
 			if(clickedIndex > -1) {
 				view.removeTabAt(clickedIndex);
-			}
-		}
-		else { // auto-refresh if it is the list of requirements
-			int index = view.indexAtLocation(event.getX(), event.getY());
-			if (index >= 0 && index < view.getTabCount()) {
-				Component tab = view.getComponentAt(index);
-				if (tab instanceof ListRequirementsView) {
-					((ListRequirementsView)tab).getModelController().refreshData();
-				}
 			}
 		}
 	}

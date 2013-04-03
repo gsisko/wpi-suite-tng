@@ -48,7 +48,7 @@ public class MainTabView extends JTabbedPane {
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
 		mainTabController = new MainTabController(this);
 		addTab("List Requirements", new ImageIcon(), new ListRequirementsView(mainTabController),
-		       "List of All Requirements for this Project");
+		       "List of all requirements for this project");
 	}
 	
 	public MainTabController getMainTabController() {
