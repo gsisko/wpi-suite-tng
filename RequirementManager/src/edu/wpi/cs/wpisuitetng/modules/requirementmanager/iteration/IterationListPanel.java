@@ -24,8 +24,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -35,6 +37,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
@@ -86,7 +90,20 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
-		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
+		resultsTable.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
+
+		    SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
+
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		        if( value instanceof Date) {
+		            value = f.format(value);
+		        }
+		        return super.getTableCellRendererComponent(table, value, isSelected,
+		                hasFocus, row, column);
+		    }
+		}
+		);
+		
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
