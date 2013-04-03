@@ -70,7 +70,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private JDateChooser endDateChooser;
 
 	//button
-	private final JButton btnSave;
+	private final JButton btnCreate;
 
 	private final ListPanel parent;
 
@@ -96,7 +96,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameLabel = new JLabel("Name:");
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
-		btnSave = new JButton("Save");
+		btnCreate = new JButton("Create");
 
 		//construct the components
 		nameValue = new JTextField();
@@ -105,7 +105,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		endDateChooser = new JDateChooser(new Date());
 
 		// The action listener for these are below
-		btnSave.setEnabled(false);
+		btnCreate.setEnabled(false);
 		startDateChooser.setEnabled(false);
 		endDateChooser.setEnabled(false);
 
@@ -119,7 +119,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Set the preferred sizes of the components
 		startDateChooser.setPreferredSize(new Dimension (125,20));
 		endDateChooser.setPreferredSize(new Dimension (125,20));
-		btnSave.setPreferredSize(new Dimension (75,30));
+		btnCreate.setPreferredSize(new Dimension (75,30));
 
 
 		//Iteration Name
@@ -168,11 +168,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 
 		//Save button:
-		//Set the constraints for the "Save" button and add it to the view
+		//Set the constraints for the "Create" button and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.gridx = 6;
 		IterationBuilderConstraints.gridy = 0;
-		add(btnSave, IterationBuilderConstraints);//Actually add the "Save" button to the layout given the previous constraints
+		add(btnCreate, IterationBuilderConstraints);//Actually add the "Create" button to the layout given the previous constraints
 
 
 	}
@@ -183,7 +183,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	public JButton getButton()
 	{
-		return btnSave;
+		return btnCreate;
 	}
 
 	public JTextField getIterationValue()
@@ -229,9 +229,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		enable(this.nameValue, setTo);
 		this.startDateChooser.setEnabled(setTo);
 		this.endDateChooser.setEnabled(setTo);
-		this.btnSave.setEnabled(setTo);
+		this.btnCreate.setEnabled(setTo);
 		if (!setTo){
 			this.nameValue.setText("");
+			this.btnCreate.setText("Save");
 		}
 	}
 
@@ -256,10 +257,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	public void setModeAndBtn(Mode mode) {
 		this.currentMode = mode;
 		if (mode == Mode.CREATE) {
-			this.btnSave.setText("Create");
+			this.btnCreate.setText("Create");
 		}
 		else if (mode == Mode.EDIT) {
-			this.btnSave.setText("Save");
+			this.btnCreate.setText("Save");
 		}
 	}
 
@@ -346,7 +347,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
-		btnSave.addActionListener(saveController);
+		btnCreate.addActionListener(saveController);
 
 		startDateChooser.getDateEditor().addPropertyChangeListener(
 				new PropertyChangeListener() {
