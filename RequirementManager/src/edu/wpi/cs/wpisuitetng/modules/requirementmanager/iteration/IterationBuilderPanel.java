@@ -251,6 +251,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
 		endDateChooser.setDate(new Date());
+		
+		btnCreate.setText("Create");
 	}
 	
 	/** Sets the mode of the builder panel to the given mode. ALSO changes

@@ -536,7 +536,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		numValue.setText("");
 
 		// Reset status field
-		statusBox.setSelectedIndex(0);			
+		statusBox.setSelectedIndex(0);
+		
+		//Reset buttons
+		btnSave.setText("Create");
 	}
 
 	/** Toggles between active and inactive modes mode */
