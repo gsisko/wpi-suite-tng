@@ -291,12 +291,15 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			error += "The name field of the iteration must be non-blank.\n";
 		}
 
+		boolean nameErrorFound = false;
+		boolean dateErrorFound = false;
+		
 		for (int i = 0; i < iters.size(); i++)
 		{
-			boolean nameErrorFound = false;
-			boolean dateErrorFound = false;
-			//TODO need to check if ID of current object equals that of the one it's checking
-			//in order to allow updates
+			
+			if(this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
+			    continue;
+			
 			if (this.nameValue.getText().equals(iters.get(i).getName()))
 			{
 				if (!nameErrorFound)
@@ -312,8 +315,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					&& this.endDateChooser.getDate().after(iters.get(i).getStartDate())))
 				|| (iters.get(i).getStartDate().after(this.startDateChooser.getDate()) 
 					&& iters.get(i).getStartDate().before(this.startDateChooser.getDate())) 
-				||(iters.get(i).getEndDate().after(this.startDateChooser.getDate())
-					&& iters.get(i).getEndDate().before(this.endDateChooser.getDate())))
+				|| (iters.get(i).getEndDate().after(this.startDateChooser.getDate())
+					&& iters.get(i).getEndDate().before(this.endDateChooser.getDate()))
+				|| (this.startDateChooser.getDate().equals(iters.get(i).getStartDate())
+					&& this.endDateChooser.getDate().equals(iters.get(i).getEndDate())))
 			{
 				if (!dateErrorFound)
 				{
