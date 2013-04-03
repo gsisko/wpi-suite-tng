@@ -289,6 +289,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return toSend.toJSON();
 	}
 
+	/**A validator function that checks to make sure that the dates and name of the iteration are valid
+	 * 
+	 * @return true if the iteration update/save is valid, false otherwise
+	 */
 	public boolean isIterationValid(){
 
 		ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();
