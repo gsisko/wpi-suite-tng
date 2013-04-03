@@ -288,35 +288,24 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
 		btnSave.addActionListener(saveController);
 
-		startDateChooser.getDateEditor().addPropertyChangeListener("date",
+		startDateChooser.getDateEditor().addPropertyChangeListener(
 				new PropertyChangeListener() {
 					@Override
 					public void propertyChange(PropertyChangeEvent e) {
-						if (startDateChooser.getDate().compareTo(new Date()) > 0) {
+						if (startDateChooser.getDate().compareTo(endDateChooser.getDate()) > 0) {
 							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
+									endDateChooser.setDate(startDateChooser.getDate());
 									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
 								}
 							});
 						} else {
 							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
-									endDateChooser.setMinSelectableDate(new Date());
+									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
 								}
 							});
 						}
-					}
-				}
-		);
-		
-		endDateChooser.getDateEditor().addPropertyChangeListener(
-				new PropertyChangeListener() {
-					public void propertyChange(PropertyChangeEvent e) {
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								startDateChooser.setMaxSelectableDate(endDateChooser.getDate());
-							}
-						});
 					}
 				}
 		);
