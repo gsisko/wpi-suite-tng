@@ -7,19 +7,19 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Robert Dabrowski
+ * Danielle LaRose
+ * Edison Jimenez
+ * Christian Gonzalez
+ * Mike Calder
+ * John Bosworth
+ * Paula Rudy
+ * Gabe Isko
+ * Bangyan Zhang
+ * Cassie Hudson
+ * Robert Smieja
+ * Alex Solomon
+ * Brian Hetherman
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
@@ -56,7 +56,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
 	//the labels
-	private final JLabel startDateLabel; 
+	private final JLabel startDateLabel;
 	private final JLabel endDateLabel;
 	private final JLabel nameLabel;
 
@@ -64,7 +64,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private JTextField nameValue;
 	private JDateChooser startDateChooser;
 	private JDateChooser endDateChooser;
-	
+
 	//button
 	private final JButton btnSave;
 
@@ -73,10 +73,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private Mode currentMode;
 
 	private String curType = "Id";
-	
+
 	private Iteration currentIteration;
 	private boolean isBuilderActive;
-	
+
 	private SaveModelController saveController;
 
 	/**
@@ -87,7 +87,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		currentMode = Mode.CREATE;
 		currentIteration = null;
 		isBuilderActive = false;
-		
+
 		//construct the panels
 		nameLabel = new JLabel("Name:");
 		startDateLabel = new JLabel("Start Date:");
@@ -107,11 +107,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//Add a titled boarder to this panel
 		setBorder(BorderFactory.createTitledBorder("Iteration Builder"));
-		
+
 		//set the layout for this panel
 		setLayout(new GridBagLayout());
 		GridBagConstraints IterationBuilderConstraints = new GridBagConstraints();
-		
+
 		//Set the preferred sizes of the components
 		startDateChooser.setPreferredSize(new Dimension (125,20));
 		endDateChooser.setPreferredSize(new Dimension (125,20));
@@ -121,7 +121,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Iteration Name
 		//Set the constraints for the "nameLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
-		IterationBuilderConstraints.insets = new Insets(10,10,10,0);  //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
+		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
 		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(nameLabel, IterationBuilderConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -135,7 +135,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//Start Date
 		//Set the constraints for the "startDateLabel" and add it to the view
-		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; 
+		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
 		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 80 units back to 0 units
 		IterationBuilderConstraints.gridx = 2;
@@ -147,7 +147,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 3;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateChooser, IterationBuilderConstraints);
-	
+
 		//End Date
 		//Set the constraints for the "endDateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
@@ -162,21 +162,21 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateChooser, IterationBuilderConstraints);
 
-		
+
 		//Save button:
 		//Set the constraints for the "Save" button and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.gridx = 6;
 		IterationBuilderConstraints.gridy = 0;
-		add(btnSave, IterationBuilderConstraints);//Actually add the "Save" button  to the layout given the previous constraints
+		add(btnSave, IterationBuilderConstraints);//Actually add the "Save" button to the layout given the previous constraints
 
 
 	}
-	
+
 	public void setUp() {
 		setupControllersAndListeners();
 	}
-	
+
 	public JButton getButton()
 	{
 		return btnSave;
@@ -210,13 +210,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	{
 		currentIteration = newIteration;
 	}
-	
+
 	/**
 	 * @return the grandpa
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 	}
 
 	@Override
@@ -239,16 +239,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		setInputEnabled(isBuilderActive);
 	}
 
-	
-	
+
+
 	// New methods for the refactor.
 	public void resetFields() {
 		this.nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
 		endDateChooser.setDate(new Date());
 	}
-	
-	
+
+
 	public void setModeAndBtn(Mode mode) {
 		this.currentMode = mode;
 		if (mode == Mode.CREATE) {
@@ -259,58 +259,69 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-	
+
 	public String convertCurrentModelToJSON() {
 		Iteration toSend = new Iteration();
-		
+
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(this.startDateChooser.getDate());
 		toSend.setEndDate(this.endDateChooser.getDate());
-		
+
 		System.out.println(toSend.toJSON());
-		
+
 		return toSend.toJSON();
 	}
-	
-	
+
+
 	public void displayModelFromJSONArray(String jsonArray) {
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
-		
+
 		this.nameValue.setText(toDisplay.getName());
 		this.startDateChooser.setDate(toDisplay.getStartDate());
 		this.endDateChooser.setDate(toDisplay.getEndDate());
-		
+
 		setInputEnabled(true);
 	}
 
-	
+
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
 		btnSave.addActionListener(saveController);
 
-		startDateChooser.getDateEditor().addPropertyChangeListener(
+		startDateChooser.getDateEditor().addPropertyChangeListener("date",
 				new PropertyChangeListener() {
-					@Override
-					public void propertyChange(PropertyChangeEvent e) {
-						if (startDateChooser.getDate().compareTo(endDateChooser.getDate()) > 0) {
-							SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									endDateChooser.setDate(startDateChooser.getDate());
-									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
-								}
-							});
-						} else {
-							SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
-								}
-							});
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if (startDateChooser.getDate().compareTo(new Date()) > 0) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							endDateChooser.setMinSelectableDate(startDateChooser.getDate());
 						}
+					});
+				} else {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							endDateChooser.setMinSelectableDate(new Date());
+						}
+					});
+				}
+			}
+		}
+				);
+
+		endDateChooser.getDateEditor().addPropertyChangeListener(
+				new PropertyChangeListener() {
+					public void propertyChange(PropertyChangeEvent e) {
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								startDateChooser.setMaxSelectableDate(endDateChooser.getDate());
+							}
+						});
 					}
 				}
-		);
+				);
 	}
-	
+
 	public void enable(JTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
@@ -322,4 +333,3 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 }
-
