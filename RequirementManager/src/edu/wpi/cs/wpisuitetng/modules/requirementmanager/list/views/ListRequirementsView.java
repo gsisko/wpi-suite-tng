@@ -24,7 +24,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -36,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
 /**
  * View that contains the entire requirement listing interface
@@ -69,14 +67,8 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	 * @param tabController The main tab controller
 	 * @param tab The Tab containing this view
 	 */
-	public ListRequirementsView(MainTabController tabController, Tab tab) {
+	public ListRequirementsView(MainTabController tabController) {
 		this.tabController = tabController;
-		
-		if(tab != null) {
-			tab.setTitle("List Requirements");
-			tab.setIcon(new ImageIcon());
-			tab.setToolTipText("List for requirements");
-		}
 		
 		mainPanel = new ListPanel(tabController, this);
 		
@@ -95,8 +87,12 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		controller = new RetrieveAllRequirementsController(this);
 		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
 		
+		// Add a listener for row clicks in the actual table
+		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
+		
+		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("List/Filter");
+		buttonGroup = new ToolbarGroupView("Requirements");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
@@ -104,12 +100,11 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		buttonGroup.getContent().add(btnRefresh);
 		buttonGroup.setPreferredWidth(150);
 		
-		// Add a listener for row clicks in the actual table
-		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
-		
+	}
+	
+	public void refreshData() {
 		// Load initial data
-		//controller.refreshData();
-		filterController.refreshData(); // refreshes filters which triggers a requirement refresh
+		filterController.refreshData();
 	}
 	
 	public RetrieveAllRequirementsController getController() {

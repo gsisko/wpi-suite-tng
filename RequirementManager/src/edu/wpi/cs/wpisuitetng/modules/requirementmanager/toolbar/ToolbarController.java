@@ -58,7 +58,7 @@ public class ToolbarController extends DefaultToolbarController implements Chang
 		tabController.addChangeListener(this);
 	}
 
-	private void setRelevantTabGroup(ToolbarGroupView group) {
+	public void setRelevantTabGroup(ToolbarGroupView group) {
 		// keep track of only one toolbar group for the active tab
 		if(relevantTabGroup != null) {
 			setRelevant(relevantTabGroup, false);

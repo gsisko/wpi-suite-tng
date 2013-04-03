@@ -30,11 +30,16 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.KeyStroke;
 
+import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
@@ -61,11 +66,14 @@ public class JanewayModule implements IJanewayModule {
 		
 		// Setup main tab view and controller
 		MainTabView mainTabView = new MainTabView();
-		mainTabController = new MainTabController(mainTabView);
+		mainTabController = mainTabView.getMainTabController();
 		
 		// Setup tool bar view and controller
 		ToolbarView toolbarView = new ToolbarView(mainTabController);
 		toolbarController = new ToolbarController(toolbarView, mainTabController);
+		
+		// Add the refresh button
+		toolbarController.setRelevantTabGroup(((ListRequirementsView)mainTabView.getComponentAt(0)).getGroup());
 		
 		// Sets up an array that holds all the tabs
 		tabs = new ArrayList<JanewayTabModel>();

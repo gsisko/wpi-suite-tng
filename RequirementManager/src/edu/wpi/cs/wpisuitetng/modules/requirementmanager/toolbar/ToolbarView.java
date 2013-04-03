@@ -41,8 +41,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 public class ToolbarView extends DefaultToolbarView {
 
 	private JButton createRequirement;
-	private JButton listRequirements;
 	private JPlaceholderTextField listField;
+	private ToolbarGroupView toolbarGroup;
 	
 	/**
 	 * Create a ToolbarView.
@@ -60,34 +60,31 @@ public class ToolbarView extends DefaultToolbarView {
 		createRequirement = new JButton();
 		createRequirement.setAction(new CreateRequirementAction(tabController));
 		
-		// Construct the list button
-		listRequirements = new JButton("List Requirements");
-		listRequirements.setAction(new ListRequirementsAction(tabController));
-		
 		// Construct the list field
 		listField = new JPlaceholderTextField("Lookup by ID", 15);
 		listField.addActionListener(new LookupRequirementController(tabController, listField, this));
 		
 		// Configure the layout of the buttons on the content panel
 		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content);
-		layout.putConstraint(SpringLayout.WEST, createRequirement, 8, SpringLayout.WEST, content);
-		layout.putConstraint(SpringLayout.WEST, listRequirements, 10, SpringLayout.EAST, createRequirement);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, listRequirements, 0, SpringLayout.VERTICAL_CENTER, createRequirement);
+		layout.putConstraint(SpringLayout.WEST, createRequirement, 15, SpringLayout.WEST, content);
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement);
-		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 5, SpringLayout.EAST, createRequirement);
+		layout.putConstraint(SpringLayout.EAST, listField, 7, SpringLayout.EAST, createRequirement);
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
-		content.add(listRequirements);
 		content.add(listField);
 		
 		// Construct a new toolbar group to be added to the end of the toolbar
-		ToolbarGroupView toolbarGroup = new ToolbarGroupView("Home", content);
+		toolbarGroup = new ToolbarGroupView("Home", content);
 		
 		// Calculate the width of the toolbar
-		Double toolbarGroupWidth = createRequirement.getPreferredSize().getWidth() + listRequirements.getPreferredSize().getWidth() + 40; // 40 accounts for margins between the buttons
+		Double toolbarGroupWidth = createRequirement.getPreferredSize().getWidth() + 40;
 		toolbarGroup.setPreferredWidth(toolbarGroupWidth.intValue());
 		addGroup(toolbarGroup);
+	}
+	
+	public ToolbarGroupView getToolbarGroup() {
+		return toolbarGroup;
 	}
 
 }

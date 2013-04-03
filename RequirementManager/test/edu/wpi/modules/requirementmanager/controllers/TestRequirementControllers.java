@@ -13,7 +13,6 @@ package edu.wpi.modules.requirementmanager.controllers;
 
 import static org.junit.Assert.*;
 
-import java.awt.Button;
 import java.awt.Canvas;
 
 import org.junit.Before;
