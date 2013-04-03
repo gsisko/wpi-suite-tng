@@ -109,8 +109,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 			}
 		});
 		
+		
 		this.add(mainPanelScrollPane, BorderLayout.CENTER);
 		controller = new SaveRequirementController(this);
+		mainPanel.getTabPanel().getNotePanel().setUp();
 
 		// Instantiate the save button and add it to the button panel
 		saveButton = new JButton();
@@ -149,6 +151,15 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		return mainPanel;
 	}
 	
+	/**
+	 * Returns the tab panel with the data fields
+	 * 
+	 * @return the tab panel with the data fields
+	 */
+	public RequirementTabPanel getRequirementTabPanel() {
+		return mainPanel.getTabPanel();
+	}
+	
 	@Override
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
@@ -177,6 +188,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	public void refreshScrollPane() {
 		mainPanelScrollPane.revalidate();
 		mainPanelScrollPane.repaint();
+	}
+	
+	public SaveRequirementController getController() {
+		return controller;
 	}
 	
 }

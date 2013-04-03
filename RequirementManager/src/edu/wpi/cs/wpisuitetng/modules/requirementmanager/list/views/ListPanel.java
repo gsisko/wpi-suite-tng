@@ -28,9 +28,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
 
 /**
  * Panel to hold the three portions of the requirement list interface. The
@@ -41,24 +42,33 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
 @SuppressWarnings("serial")
 public class ListPanel extends JPanel {
 
+	public enum Mode {
+		FILTER,
+		ITERATION
+	};
+
 	/** Panel containing the filter building interface */
-	protected FilterBuilderPanel builderPanel;
+	protected FilterBuilderPanel filterBuilderPanel;
+	/** Panel containing the filter building interface */
+	protected IterationBuilderPanel iterationBuilderPanel;
 
 	/** Panel containing the results of the requirement list */
 	protected ResultsPanel resultsPanel;
 
 	/** Panel containing tabs instead of filter */
-	protected ListTabView filtersTabPanel;
-	
+	protected ListTabView tabPanel;
+
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
-	
+
 	/** The main tab controller */
 	protected MainTabController tabController;
-	
-	private RetrieveAllFiltersController retriever;
-	
+
 	private ListRequirementsView parent; 
+
+	private JScrollPane builderScrollPane;
+
+	private Mode currentMode;
 
 	/**
 	 * Constructs the list panel and sets up the layout for the sub-panels
@@ -67,51 +77,55 @@ public class ListPanel extends JPanel {
 	public ListPanel(MainTabController tabController, ListRequirementsView view) {
 		this.tabController = tabController;
 		this.parent = view;
-		
+		this.currentMode = Mode.FILTER;
+
 		// Set the layout manager of this panel
 		this.layout = new SpringLayout();
 		this.setLayout(layout);
 
 		// Construct the panels that compose the list view
-		this.builderPanel = new FilterBuilderPanel(this);
-		JScrollPane builderScrollPane = new JScrollPane(builderPanel);
-		//Testing adding tab views
-		this.filtersTabPanel = new ListTabView(this);
-		JScrollPane filtersScrollPane = new JScrollPane(filtersTabPanel);
+		this.filterBuilderPanel = new FilterBuilderPanel(this);
+		this.iterationBuilderPanel = new IterationBuilderPanel(this);
+		this.tabPanel = new ListTabView(this);
+		this.filterBuilderPanel.setupControllersAndListeners();
+		this.iterationBuilderPanel.setupControllersAndListeners();
+
+
+		JScrollPane listScrollPane = new JScrollPane(tabPanel);
+		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
 		this.resultsPanel = new ResultsPanel(tabController);
-		
-		
+
+
 		// Constrain the filtersPanel
-		layout.putConstraint(SpringLayout.NORTH, filtersScrollPane, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, filtersScrollPane, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, filtersScrollPane, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, filtersScrollPane, 200, SpringLayout.WEST, filtersScrollPane);
-		
-		// Constrain the builderPanel
+		layout.putConstraint(SpringLayout.NORTH, listScrollPane, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, listScrollPane, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, listScrollPane, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, listScrollPane, 200, SpringLayout.WEST, listScrollPane);
+
+		// Constrain the filterBuilderPanel
 		layout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.EAST, filtersScrollPane);
+		layout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.EAST, listScrollPane);
 		layout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 85, SpringLayout.NORTH, builderScrollPane);
-		
+
 		// Constrain the resultsPanel
 		layout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);
-		layout.putConstraint(SpringLayout.WEST, resultsPanel, 0, SpringLayout.EAST, filtersScrollPane);
+		layout.putConstraint(SpringLayout.WEST, resultsPanel, 0, SpringLayout.EAST, listScrollPane);
 		layout.putConstraint(SpringLayout.EAST, resultsPanel, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, resultsPanel, 0, SpringLayout.SOUTH, this);
 
 		//Constrain our new filterTabPanel
-		layout.putConstraint(SpringLayout.NORTH, filtersTabPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, filtersTabPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, filtersTabPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, filtersTabPanel, 200, SpringLayout.WEST, filtersScrollPane);
-		
+		layout.putConstraint(SpringLayout.NORTH, tabPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, tabPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, tabPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.EAST, tabPanel, 200, SpringLayout.WEST, listScrollPane);
+
 		// Add the panels
-		this.add(filtersScrollPane);
+		this.add(listScrollPane);
 		this.add(builderScrollPane);
 		this.add(resultsPanel);
-		//this.add(filtersTabPanel);
 	}
-	
+
 	public ResultsPanel getResultsPanel(){
 		return resultsPanel;
 	}
@@ -121,26 +135,16 @@ public class ListPanel extends JPanel {
 		return tabController;
 	}
 
-	public FilterBuilderPanel getBuilderPanel(){
-	    return builderPanel;
-	}
-	
-	public FilterListPanel getFilterPanel(){
-	    return filtersTabPanel.getFilterList();
+	public FilterBuilderPanel getFilterBuilderPanel(){
+		return filterBuilderPanel;
 	}
 
-	/**
-	 * @return the retriever
-	 */
-	public RetrieveAllFiltersController getRetriever() {
-		return retriever;
+	public IterationBuilderPanel getIterationBuilderPanel(){
+		return iterationBuilderPanel;
 	}
 
-	/**
-	 * @param retriever the retriever to set
-	 */
-	public void setRetriever(RetrieveAllFiltersController retriever) {
-		this.retriever = retriever;
+	public ListTabView getTabPanel(){
+		return tabPanel;
 	}
 
 	/**
@@ -155,5 +159,16 @@ public class ListPanel extends JPanel {
 	 */
 	public void setParent(ListRequirementsView listView) {
 		this.parent = listView;
+	}
+
+	public void setMode(Mode newMode) {
+		if (this.currentMode != newMode) {
+			if (newMode == Mode.FILTER) {
+				this.builderScrollPane.setViewportView(filterBuilderPanel);
+			} else {
+				this.builderScrollPane.setViewportView(iterationBuilderPanel);
+			}
+			this.currentMode = newMode;
+		}
 	}
 }

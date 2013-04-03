@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -36,19 +36,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.DeleteModelController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.IListBuilder;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.NewModelAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllModelsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
  * Panel to contain the list of Iterations that have been saved by the user
  */
 @SuppressWarnings("serial")
-public class IterationListPanel extends JPanel implements IListBuilder {
+public class IterationListPanel extends JPanel implements IListPanel {
 
 	/** The table of results */
 	protected JTable resultsTable;
@@ -73,7 +75,6 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	 */
 	public IterationListPanel(ListPanel view) {
 		parent = view;
-		
 		this.setBtnCreateIsCancel(false);
 		// Set the layout manager
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -93,9 +94,6 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		this.add(resultsScrollPane);
 		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
 
-		// TODO implement the rest of the controls to display saved Iterations
-		// and store saved Iterations in the ConfigManager
-
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 
 		btnCreate = new JButton ("New Iteration");
@@ -113,16 +111,16 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
-		retrieveAllController = new RetrieveAllModelsController(this, parent.getBuilderPanel(), "iteration");
-		deleteController = new DeleteModelController(this, parent.getBuilderPanel(), "iteration");
-		retrieveController = new RetrieveModelController(this, parent.getBuilderPanel(), "iteration");
+		retrieveAllController = new RetrieveAllModelsController(this, parent.getIterationBuilderPanel(), "iteration");
+		deleteController = new DeleteModelController(this, parent.getIterationBuilderPanel(), "iteration");
+		retrieveController = new RetrieveModelController(this, parent.getIterationBuilderPanel(), "iteration");
 		
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
 
 		
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
-		btnCreate.addActionListener(new NewModelAction(this, parent.getBuilderPanel()));
+		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
 
 	}
@@ -206,15 +204,27 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	 * Set the cancel button back to New Iteration if it was in cancel mode
 	 */
 	public void setCancelBtnToNew() {
-		getBtnCreate().setText("New Iteration"); 
-		setBtnCreateIsCancel(false);
+		this.getBtnCreate().setText("New Iteration"); 
+		this.setBtnCreateIsCancel(false);
+	}
+	
+	/**
+	 * Set the new iteration button to cancel
+	 */
+	public void setNewBtnToCancel(){
+		getBtnCreate().setText("Cancel"); 
+		setBtnCreateIsCancel(true);
 	}
 
 	/** 
 	 * Toggles between "New Model" and "Cancel" mode 
 	 */
-	public void toggleNewCancalMode() {
-
+	public void toggleNewCancelMode() {
+		btnCreateIsCancel = !btnCreateIsCancel;
+		if(btnCreateIsCancel)
+			this.getBtnCreate().setText("Cancel"); 			
+		else
+			this.getBtnCreate().setText("New Iteration");
 	}
 
 	/** Begins refresh process, allows the panels to start triggering
@@ -259,7 +269,7 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 
-		String[] uniqueIdentifiers = {};
+		String[] uniqueIdentifiers = new String [rowNumbers.length];
 
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < rowNumbers.length; i++){			
@@ -279,20 +289,14 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 	 */
 	public void showRecievedModels(String jsonString) {
 		// empty the table
-		String[] emptyColumns = {};
-		Object[][] emptyData = {};
-		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
 		
-		this.getModel().setColumnNames(emptyColumns);
-		this.getModel().setData(emptyData);
-		this.getModel().fireTableStructureChanged();
-
-		// Add the list of filters to the IterationListPanel object
+		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
+		// Add the list of iterations to the IterationListPanel object
 		this.setLocalIterations(iterations);
 
 		if (iterations.length > 0) {
 			// set the column names
-			String[] columnNames = {"Name", "Start", "Finish"};
+			String[] columnNames = {"Name", "StartDate", "EndDate"};
 
 			// put the data in the table
 			Object[][] entries = new Object[iterations.length][columnNames.length];
@@ -307,25 +311,36 @@ public class IterationListPanel extends JPanel implements IListBuilder {
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			return; // end now
 		}
 		else {
-			// do nothing, there are no iterations
+			// Fire blanks so that the old contents are removed
+			String[] emptyColumns = {};
+			Object[][] emptyData = {};
+		
+			this.getModel().setColumnNames(emptyColumns);
+			this.getModel().setData(emptyData);
+			this.getModel().fireTableStructureChanged();
 		}
 	}
 
 	/**
-	 * Remove anything in the filter builder panel whenever the delete button is pressed
+	 * @return the retrieveAllController
 	 */
-	public void clearAndReset() {
-		
+	public RetrieveAllModelsController getRetrieveAllController() {
+		return retrieveAllController;
+	}
+
+	/**
+	 * @param retrieveAllController the retrieveAllController to set
+	 */
+	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
+		this.retrieveAllController = retrieveAllController;
 	}
 	
-	public String getModelMessage() {
-		return null;
-	}
-
-	public void translateAndDisplayModel(String jsonArray) {
-
+	@Override
+	public void refreshRequirements() {
+		parent.getParent().getController().refreshData();
 	}
 	
 }

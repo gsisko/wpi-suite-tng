@@ -22,13 +22,15 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.FilterBuilderPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveModelObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -36,11 +38,11 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class SaveModelController implements ActionListener 
 {
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 		
-	/** The model name, in string form, which will be used for sending messsages */
+	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
 	
 	
@@ -51,7 +53,7 @@ public class SaveModelController implements ActionListener
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public SaveModelController(IListBuilder listView, IListBuilder builderView, String modelName) 
+	public SaveModelController(IListPanel listView, IBuilderPanel builderView, String modelName) 
 	{
 		this.listView = listView;
 		this.modelName = modelName;
@@ -62,16 +64,21 @@ public class SaveModelController implements ActionListener
 	public void actionPerformed(ActionEvent event) 
 	{
 		final Request request;
-		if (((FilterBuilderPanel) builderView).getCurrentMode() == Mode.EDIT){
+		if ( builderView.getCurrentMode().equals(Mode.EDIT))
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.POST); // post == update
-
-			
-		} else {
+		else 
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
-		}
+		
 		
 		// make a PUT http request and let the observer get the response
-		request.setBody(builderView.getModelMessage()); // put the new message in the body of the request
+		String body = builderView.convertCurrentModelToJSON();
+		
+		// Check to make sure the message is good, or at least not nothing
+		if (body == null){
+			System.err.println("Failed to get the model");
+			return;
+		}
+		request.setBody(body); // put the new message in the body of the request
 		request.addObserver(new SaveModelObserver(this)); // add an observer to process the response
 		request.send();		
 	}
@@ -82,10 +89,15 @@ public class SaveModelController implements ActionListener
 	public void saveSuccess() {
 		// If "getUniqueID" was added to Model, then overridden by models, that ID 
 		// could be printed here and we would have a better save message
-		System.out.println(modelName  + " saved successfully");
 
-		builderView.clearAndReset();
+		builderView.resetFields();
+		builderView.setInputEnabled(false);
+		
+		
 		listView.setCancelBtnToNew();
+		listView.refreshAll();
+		
+		System.out.println(modelName  + " saved successfully");
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
@@ -95,13 +107,7 @@ public class SaveModelController implements ActionListener
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
-			// try to refresh from the builder
-			if(!builderView.refreshAll()){
-				// Print error message upon both failing
-				System.err.println("Fail: cannot refresh views after deleting a Model.");
-			}
-		
-		}
+			System.err.println("Failed to refresh the list view after saving the Model.");
+		}		
 	}
-
 }

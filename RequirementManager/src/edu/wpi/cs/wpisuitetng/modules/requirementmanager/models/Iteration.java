@@ -39,7 +39,9 @@ public class Iteration extends AbstractModel {
 	// Basic constructor for empty iteration
 	public Iteration()
 	{
-		new Iteration("", new Date(), new Date());
+		this.setName("");
+		this.setStartDate(new Date());
+		this.setEndDate(new Date());
 	}
 	
 	/**

@@ -22,8 +22,9 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -48,9 +49,7 @@ public class SaveModelObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Pass the messages back to the controller
 		rmcontroller.saveSuccess();
-		
-		// auto-update
-		rmcontroller.refreshListViews();
+
 		
 	}
 	/** This method responses when there is a save response error

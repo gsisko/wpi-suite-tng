@@ -31,8 +31,8 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.RetrieveAllFiltersController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
@@ -59,7 +59,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
 	
-	protected RetrieveAllFiltersController filterController;
+	protected RetrieveAllModelsController filterController;
 	
 	/** The main tab controller */
 	protected MainTabController tabController;
@@ -93,7 +93,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		
 		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
-		filterController = new RetrieveAllFiltersController(this);
+		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
 		
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("List/Filter");
@@ -108,15 +108,15 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
 		
 		// Load initial data
-		controller.refreshData();
-		filterController.refreshData();
+		//controller.refreshData();
+		filterController.refreshData(); // refreshes filters which triggers a requirement refresh
 	}
 	
 	public RetrieveAllRequirementsController getController() {
 		return controller;
 	}
 	
-	public RetrieveAllFiltersController getFilterController() {
+	public RetrieveAllModelsController getModelController() {
 		return filterController;
 	}
 	

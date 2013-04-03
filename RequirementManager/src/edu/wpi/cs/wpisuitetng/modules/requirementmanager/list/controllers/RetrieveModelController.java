@@ -22,12 +22,16 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveModelObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -37,9 +41,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class RetrieveModelController extends MouseAdapter {
 	/**  The list view that this controller is watching */
-	private final IListBuilder listView;
+	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IListBuilder builderView;
+	private final IBuilderPanel builderView;
 	
 	
 	/** The model name, in string form, which will be used for sending messsages */
@@ -55,7 +59,7 @@ public class RetrieveModelController extends MouseAdapter {
 	 * @param builderView The builder view that this controller must interact with
 	 * @param modelName  The model name, in string form, which will be used for sending messsages
 	 */
-	public RetrieveModelController(IListBuilder listView, IListBuilder builderView, String modelName){
+	public RetrieveModelController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
 		this.modelName = modelName;
 		this.builderView = builderView;
@@ -85,9 +89,13 @@ public class RetrieveModelController extends MouseAdapter {
 	 */
 	public void showModel(String jsonArray) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
-		builderView.translateAndDisplayModel(jsonArray);
+		builderView.displayModelFromJSONArray(jsonArray);
+		builderView.setInputEnabled(true);
+		builderView.setModeAndBtn(Mode.EDIT);
 		
-		listView.clearAndReset();
+		listView.setNewBtnToCancel();
+		listView.refreshAll();
+
 	}
 
 	/**

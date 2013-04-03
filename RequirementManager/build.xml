@@ -4,6 +4,8 @@
 
 	<property name="core-jar-dest" location="${core-lib}/RequirementManager.jar"/>
 	<property name="janeway-jar-dest" location="../Janeway/modules/RequirementManager.jar"/>
+	<!--<property name="jgoodies-looks-jar" location="${dependencies.basedir}/RequirementManager/lib"/>
+	<property name="jcalender-jar" location="${dependencies.basedir}/RequirementManager/lib"/>-->
 
 	<path id="classpath">
 		<pathelement path="../Janeway/build"/>
@@ -13,6 +15,10 @@
 			<include name="gson-*.jar"/>
 		</fileset>
 		<pathelement path="build"/>
+		<fileset dir="../RequirementManager/lib">
+			<include name="jgoodies-looks-2.4.1.jar"/>
+			<include name="jcalendar-1.4.jar"/>
+		</fileset>
 	</path>
 
 	<path id="test-classpath">
@@ -44,7 +50,11 @@
 		</jar>
 	</target>
 
-	<target name="compile" depends="janeway-jar, core-jar"/>
+	<target name="compile" depends="janeway-jar, core-jar">
+		<!--hackaround to adding jars... -->
+		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>
+	</target>
 
 	<target name="compile-test" depends="compile-base">
 		<mkdir dir="build-test"/>

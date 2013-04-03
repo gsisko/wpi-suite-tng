@@ -43,5 +43,8 @@ Janeway/janeway.conf
 #JavaDoc
 */doc/*
 /Core/WPISuite-Interfaces/doc/*
-
 *.gif
+
+#Janeway build folders
+Janeway/bin/*
+Janeway/build/*

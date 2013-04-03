@@ -22,29 +22,27 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
-/** Observer that waits for a single delete filter request to return
- *  from the server. It refreshes all requirement lists/ filter lists 
- *  upon success. Prints to console upon failure
+/** Observer that waits for a single delete Model request to return
+ *  from the server. It refreshes all list views applicable.
  */
-public class DeleteFilterObserver implements RequestObserver {
+public class DeleteModelObserver implements RequestObserver {
 	/** Controller that started this observer   	 */
-	private final DeleteFilterController controller;
-	/** Controller for refreshing after deletion */
-	private final RetrieveAllFiltersController refreshController;
+	private final DeleteModelController controller;
 	
 	/** Default constructor. Pulls  the refresh controller from the delete
 	 * controller from the view.
 	 * 
 	 * @param deleteFilterController
 	 */
-	public DeleteFilterObserver(DeleteFilterController deleteFilterController) {
+	public DeleteModelObserver(DeleteModelController deleteFilterController) {
 		this.controller = deleteFilterController;
-		this.refreshController = controller.getTheView().getFilterController();
+	//    controller.getTheView().getFilterController();
 	}
 
 	/** Upon success, refresh all lists
@@ -53,20 +51,20 @@ public class DeleteFilterObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// If deleted successfully, we refresh the
 		// list view so we can see the changes.
-		refreshController.refreshData(); 
+		controller.refreshListViews();
 	}
 
 	/**  Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void responseError(IRequest iReq) {
-		System.err.println("Could not delete the filter.");
+		System.err.println("Could not delete the model.");
 	}
 
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("Fail: Cannot delete the filter.");
+		System.err.println("Fail: Cannot delete the model.");
 	}
 }
