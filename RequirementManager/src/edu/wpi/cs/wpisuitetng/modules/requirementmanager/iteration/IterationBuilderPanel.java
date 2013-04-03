@@ -264,7 +264,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toSend = new Iteration();
 	
 		if(!isValid())
-		   return null;
+		   //return null;
 		
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(this.startDateChooser.getDate());
