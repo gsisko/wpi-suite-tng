@@ -46,8 +46,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import sun.nio.cs.ext.TIS_620;
-
 import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
