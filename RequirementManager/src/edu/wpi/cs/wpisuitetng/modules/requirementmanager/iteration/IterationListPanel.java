@@ -274,7 +274,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < rowNumbers.length; i++){			
 			// Getting the name from the current highlighted row
-			ids[i] = (String) resultsTable.getValueAt(rowNumbers[i], 0);
+			ids[i] = resultsTable.getValueAt(rowNumbers[i], 0).toString();
 		}
 
 		return ids;
