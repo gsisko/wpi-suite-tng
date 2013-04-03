@@ -266,10 +266,10 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		Object[][] emptyData = {};
 
 		Filter[] filters = Filter.fromJSONArray(jsonString);
+		this.setLocalFilters(filters);
 
 		// Add the list of filters to the FilterListPanel object
 		if (filters.length > 0) {
-			this.setLocalFilters(filters);
 			// set the column names
 			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
 
@@ -307,10 +307,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			this.getModel().setData(emptyData);
 			this.getModel().fireTableStructureChanged();
 		}
-
-
-		// Get the requirement list controller and fire a refresh
-		parent.getParent().getController().refreshData();
+		
 	}
 
 	/**
