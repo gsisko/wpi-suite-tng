@@ -35,13 +35,14 @@ public class Iteration extends AbstractModel {
 	private String name;
 	private Date startDate;
 	private Date endDate;
-	
+	private int LowercaseID;
 	// Basic constructor for empty iteration
 	public Iteration()
 	{
 		this.setName("");
 		this.setStartDate(new Date());
 		this.setEndDate(new Date());
+		this.setID(-1);
 	}
 	
 	/**
@@ -65,14 +66,26 @@ public class Iteration extends AbstractModel {
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * @return the name
+	 */
+	public int getID() {
+		return LowercaseID;
+	}
+	
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	/**
+	 * @param name the name to set
+	 */
+	public void setID(int ID) {
+		this.LowercaseID = ID;
+	}
 	/**
 	 * @return the startDate
 	 */
