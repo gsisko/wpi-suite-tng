@@ -46,6 +46,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import sun.nio.cs.ext.TIS_620;
+
 import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
@@ -304,8 +306,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 				}
 			}
 
-			if(this.startDateChooser.getDate().before(iters.get(i).getEndDate()) ||
-					this.endDateChooser.getDate().after(iters.get(i).getEndDate()))
+			if((this.startDateChooser.getDate().before(iters.get(i).getEndDate()) 
+				&& this.startDateChooser.getDate().after(iters.get(i).getStartDate()))
+				|| (this.endDateChooser.getDate().before(iters.get(i).getEndDate()) 
+					&& this.endDateChooser.getDate().after(iters.get(i).getStartDate())))
 			{
 				if (!dateErrorFound)
 				{
