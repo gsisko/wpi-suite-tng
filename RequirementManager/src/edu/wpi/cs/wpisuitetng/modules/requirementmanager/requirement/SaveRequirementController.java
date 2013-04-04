@@ -49,24 +49,25 @@ public class SaveRequirementController
     public void save() 
     {
     	// check if any inputs are invalid, print an error message if one is
+    	String error = "";
     	if (view.getRequirementName().getText().length() == 0) {
-    		JOptionPane.showMessageDialog(null, "Name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
-    		return;
+    		error += "Name must be non-blank.\n";
     	}
     	if (view.getRequirementName().getText().length() > 100) {
-    		JOptionPane.showMessageDialog(null, "Name cannot be greater than 100 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-    		return;
+    		error += "Name cannot be greater than 100 characters.\n";
     	}
     	if (view.getRequirementDescription().getText().length() == 0) {
-    		JOptionPane.showMessageDialog(null, "Description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
-    		return;
+    		error += "Description must be non-blank.\n";
     	}
     	if (view.getRequirementEstimate().getText().length() == 0) {
-    		JOptionPane.showMessageDialog(null, "Estimate must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
-    		return;
+    		error += "Estimate must be non-blank.\n";
     	}
     	if (view.getRequirementActualEffort().getText().length() == 0) {
-    		JOptionPane.showMessageDialog(null, "ActualEffort must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+    		error += "ActualEffort must be non-blank.\n";
+    	}
+    	
+    	if (!error.equals("")) {
+    		JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
     		return;
     	}
     	
