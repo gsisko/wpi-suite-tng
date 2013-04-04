@@ -1,11 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -62,6 +64,17 @@ public class NotePanel extends JPanel {
 
 		// Construct the components to be displayed
 		noteList = new JList(noteListModel);
+		
+		//prevent people from selecting notes in the list by changing the default cell renderer to
+		//always render components as not selected and not focused
+		noteList.setCellRenderer(new DefaultListCellRenderer() {
+		    public Component getListCellRendererComponent(JList list, Object value, int index,
+		            boolean isSelected, boolean cellHasFocus) {
+		        super.getListCellRendererComponent(list, value, index, false, false);
+		 
+		        return this;
+		    }
+		});
 		
 		ArrayList<Note> notes = parent.getCurrentRequirement().getNotes();
 		for (int i = 0; i < notes.size(); i++) {
