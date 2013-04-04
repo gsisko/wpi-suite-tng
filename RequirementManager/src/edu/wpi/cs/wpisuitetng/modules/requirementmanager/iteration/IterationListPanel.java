@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,6 +81,8 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	private final ListPanel parent;
 	int j;
 	int k;
+	int x;
+	int y;
 	
 	/**
 	 * Construct the panel
@@ -147,7 +150,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
 		
-		/*
+		//mouse check
 		//mouse hover effect	
 		resultsTable.addMouseListener(new MouseAdapter() {
 		    public void mouseEntered(MouseEvent e) {
@@ -160,19 +163,39 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		    	    toolTip.pack();
 		            Component c = (Component)e.getSource();
 		            String text;
-		            int x = ((JTable) c).rowAtPoint(e.getPoint());
-		            int y = ((JTable) c).columnAtPoint(e.getPoint());
-		            
+		            x = ((JTable) c).rowAtPoint(e.getPoint());
+		            y = ((JTable) c).columnAtPoint(e.getPoint());
+		         
+		            if (x<0||y<0){
+		            	x=x*-1;
+		            	y=y*-1;
+		            }
 		            c.repaint();
 		            int u= resultsTable.getLocationOnScreen().x;
 		            int o=resultsTable.getLocationOnScreen().y;
 		            Rectangle m = resultsTable.getCellRect(x, y,true);
+		            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		            int a = u +243;
 		            int b=(int) resultsTable.getCellRect(x, y,false).getY()+o;
-		            if (((String) resultsTable.getModel().getValueAt(x,1))!=null){
-		            text = (String) resultsTable.getModel().getValueAt(x,1);
-		            label.setText(text);
+		            if (y==1){
+		            if ((resultsTable.getModel().getValueAt(x,y))!=null){
+		            text = (String) resultsTable.getModel().getValueAt(x,y);
+		          label.setText(text);
+		          System.out.println(text);
+		            }}
+		            else if ((y==2)||(y==3)){
+		            	if (( resultsTable.getModel().getValueAt(x,y))!=null){
+				            text =  df.format(resultsTable.getModel().getValueAt(x,y));
+				            label.setText(text);
+				            System.out.println(text);
+				            }
 		            }
+		            else
+		            {}
+		            System.out.println(x);
+		            System.out.println(y);
+		            System.out.println(a);
+		            System.out.println(b);
 		            toolTip.setLocation(a,b);
 		            toolTip.setBounds(a,b,50,10);
 		            toolTip.pack();
@@ -181,9 +204,14 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		    public void mouseExited(MouseEvent e) {
 		    	  toolTip.setVisible(false);
 		            toolTip.dispose();
+		            x=0;
+		            y=0;
+		            j=0;
+		            k=0;
+		            
 		    }
 		});
-		*/
+		
 	}
 
 	/**This method returns an ArrayList of active Iterations
