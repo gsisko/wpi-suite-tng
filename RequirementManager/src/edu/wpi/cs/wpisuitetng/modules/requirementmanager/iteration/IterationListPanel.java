@@ -146,6 +146,8 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
+		
+		/*
 		//mouse hover effect	
 		resultsTable.addMouseListener(new MouseAdapter() {
 		    public void mouseEntered(MouseEvent e) {
@@ -181,6 +183,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		            toolTip.dispose();
 		    }
 		});
+		*/
 	}
 
 	/**This method returns an ArrayList of active Iterations
