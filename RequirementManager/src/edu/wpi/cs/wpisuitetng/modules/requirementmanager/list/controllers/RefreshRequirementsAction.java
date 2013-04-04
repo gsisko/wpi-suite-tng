@@ -53,5 +53,4 @@ public class RefreshRequirementsAction extends AbstractAction {
 	public void actionPerformed(ActionEvent arg0) {
 		controller.refreshData();
 	}
-
 }

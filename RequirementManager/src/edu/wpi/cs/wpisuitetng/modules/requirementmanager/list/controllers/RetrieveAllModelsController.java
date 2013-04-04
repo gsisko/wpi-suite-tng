@@ -85,7 +85,7 @@ public class RetrieveAllModelsController implements ActionListener{
 	 *  error occurs retrieving the filters from the server.
 	 */
 	public void errorReceivingData(String error) {
-		System.err.println("An error occured while receiving data");
+		System.err.println("An error occured while receiving the " + modelName);
 	}
 
 

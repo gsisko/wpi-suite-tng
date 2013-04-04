@@ -107,7 +107,7 @@ public class SaveModelController implements ActionListener
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
-			System.err.println("Failed to refresh the list view after saving the Model.");
+			System.err.println("Failed to refresh the list view after saving the " + modelName);
 		}		
 	}
 }

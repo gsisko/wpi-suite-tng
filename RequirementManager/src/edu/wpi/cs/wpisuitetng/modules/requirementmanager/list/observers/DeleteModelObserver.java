@@ -54,13 +54,13 @@ public class DeleteModelObserver implements RequestObserver {
 	 * @param iReq The request response from the server 
 	 */
 	public void responseError(IRequest iReq) {
-		System.err.println("Could not delete the model.");
+		System.err.println("Could not delete the " + controller.getModelName());
 	}
 
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("Fail: Cannot delete the model.");
+		System.err.println("Fail: Cannot delete the " + controller.getModelName());
 	}
 }

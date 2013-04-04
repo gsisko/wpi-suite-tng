@@ -94,8 +94,15 @@ public class DeleteModelController implements ActionListener {
 		System.out.println(modelName  + " deleted successfully");
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
-			System.err.println("Fail: cannot refresh views after deleting a Model.");
+			System.err.println("Fail: cannot refresh views after deleting a" + modelName);
 		}
+	}
+	
+	/** Gets the model name in this controller
+	 * @return the name that is being played with in this controller
+	 */
+	public String getModelName(){
+		return modelName;
 	}
 }
 

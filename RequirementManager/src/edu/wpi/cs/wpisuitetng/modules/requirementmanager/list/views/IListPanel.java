@@ -30,10 +30,8 @@ import java.awt.event.MouseEvent;
  * and have buttons/controllers that include the following.
  * Delete
  * New Model/Cancel
- * 
  */
 public interface IListPanel {
-
 	/** Takes whatever model(s) is(are) stored in the the current panel,
 	 *  and returns the unique identifier(s) in an array. Generally
 	 *  pulls the highlighted identifiers from a table view.
@@ -43,14 +41,11 @@ public interface IListPanel {
 	public String[] getUniqueIdentifiers();
 
 
-
-	/** If called  on a list view, sets the button to clear/cancel
-	 */
+	/** If called  on a list view, sets the button to clear/cancel	 */
 	public void setNewBtnToCancel();
 
 
-	/** Sets the "Cancel" button back to "New <Model>" 
-	 */
+	/** Sets the "Cancel" button back to "New <Model>" 	 */
 	public void setCancelBtnToNew();
 
 
@@ -61,16 +56,11 @@ public interface IListPanel {
 	 */
 	public boolean refreshAll();
 
-
-
-
-
-
+	
 	/** Toggles between "New Model" and "Cancel" mode */
 	public void toggleNewCancelMode();
 
-
-
+	
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
 	 * @param me The mouse event that was triggered by a double click
@@ -78,18 +68,13 @@ public interface IListPanel {
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me);
 
-
-
-
+	
 	/** Show the models in the list view
-	 *
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 */
 	public void showRecievedModels(String jsonString);
 
-
-
+	/** Refresh all the requirements    */
 	public void refreshRequirements();
-
 }
