@@ -24,7 +24,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -36,28 +35,23 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * Controller to handle retrieving one requirement from the server
- */
+/** Controller to handle retrieving one requirement from the server triggered
+ *  by double clicking on a model in the list of a list panel   */
 public class RetrieveModelController extends MouseAdapter {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	private final IBuilderPanel builderView;
-	
-	
-	/** The model name, in string form, which will be used for sending messsages */
+	private final IBuilderPanel builderView;	
+	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-
 	
-        
-        
+	
 	/** Constructs a controller with an action listener that can load up a 
 	 *  model when an item is double clicked in the list.
 	 * 
 	 * @param listView The list view that this controller is watching
 	 * @param builderView The builder view that this controller must interact with
-	 * @param modelName  The model name, in string form, which will be used for sending messsages
+	 * @param modelName  The model name, in string form, which will be used for sending messages
 	 */
 	public RetrieveModelController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
@@ -65,12 +59,13 @@ public class RetrieveModelController extends MouseAdapter {
 		this.builderView = builderView;
 	}
 
-	/**
+	/** When a row is double clicked on in a JTable in a list view, this action
+	 *  is triggered and full model data is retrieved from the server.
+	 *  
 	 * @see java.awt.event.MouseAdapter#mouseClicked(MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent me) {
-		if (me.getClickCount() >= 2) { /* respond to double clicks */
-		
+		if (me.getClickCount() >= 2) { /* respond to double clicks */	
 			// Get the unique identifier of the item that was double clicked
 			String modelID = listView.getSelectedUniqueIdentifier(me);
 			
@@ -82,10 +77,12 @@ public class RetrieveModelController extends MouseAdapter {
 		}
 	}
 
-	/**
-	 * Called by {@link RetrieveFilterRequestObserver} when the response
-	 * is received from the server.
-	 * @param filter the filter that was retrieved
+	/** Called by {@link RetrieveFilterRequestObserver} when the response
+	 *  is received from the server. The Builder fields are set up and 
+	 *  populated with the received model. The list panel button for 
+	 *  new/cancel is set to cancel mode.
+	 *  
+	 * @param jsonArray JSON string holding an array of one filter the filter 
 	 */
 	public void showModel(String jsonArray) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
@@ -94,16 +91,13 @@ public class RetrieveModelController extends MouseAdapter {
 		builderView.setModeAndBtn(Mode.EDIT);
 		
 		listView.setNewBtnToCancel();
-
+		System.out.println(modelName  + " retrieved and displayed successfully");
 	}
 
-	/**
-	 * Called by {@link RetrieveModelObserver} when an error
-	 * occurred getting the model from the server.
+	/** Called by {@link RetrieveModelObserver} when an error
+	 *  occurred getting the model from the server.
 	 */
 	public void errorRetrievingModel(String error) {
 		System.err.println("Error retrieving the model");
 	}
-
-
 }

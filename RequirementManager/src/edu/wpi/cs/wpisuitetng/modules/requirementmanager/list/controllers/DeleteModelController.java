@@ -42,9 +42,7 @@ public class DeleteModelController implements ActionListener {
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
-	
-	
-	/** The model name, in string form, which will be used for sending messsages */
+	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
 	
 	
@@ -53,7 +51,7 @@ public class DeleteModelController implements ActionListener {
 	 * 
 	 * @param listView The list view that this controller is watching
 	 * @param builderView The builder view that this controller must interact with
-	 * @param modelName  The model name, in string form, which will be used for sending messsages
+	 * @param modelName  The model name, in string form, which will be used for sending messages
 	 */
 	public DeleteModelController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
@@ -86,18 +84,14 @@ public class DeleteModelController implements ActionListener {
 		// set the "Cancel" button back to new
 		builderView.resetFields();
 		builderView.setInputEnabled(false);
-		
-		
+			
 		listView.setCancelBtnToNew();
-		listView.refreshAll();
-
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
-	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed.
-	 * 
-	 */
+	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. */
 	public void refreshListViews() {
+		System.out.println(modelName  + " deleted successfully");
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
 			System.err.println("Fail: cannot refresh views after deleting a Model.");

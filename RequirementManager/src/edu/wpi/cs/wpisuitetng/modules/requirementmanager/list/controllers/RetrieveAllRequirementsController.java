@@ -180,8 +180,7 @@ public class RetrieveAllRequirementsController {
 			resultsPanel.getModel().setData(emptyData);
 			resultsPanel.getModel().fireTableStructureChanged();
 		}
-		// ELSE:  do nothing, there are no Requirements that passed the filters
-
+		System.out.println("Existing requirements retrieved successfully.");
 	}
 
 	/**

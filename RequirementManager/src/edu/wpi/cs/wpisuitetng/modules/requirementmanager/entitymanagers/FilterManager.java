@@ -39,15 +39,9 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 
-/**
- * This is the entity manager for filters in the RequirementManager module
- * 
- * @author Team 5
- * 
- */
+/** This is the entity manager for filters in the RequirementManager module   */
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */
 	private Data db;
@@ -76,10 +70,8 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException
 	 */
 	private void assignUniqueID(Filter filter) throws WPISuiteException {
-		if (filter.getUniqueID() == -1) {// -1 is a flag that says a unique id
-											// is needed
-			filter.setUniqueID(this.Count() + 1); // Makes first Filter have id
-													// = 1
+		if (filter.getUniqueID() == -1) {// -1 is a flag that says a unique id is needed
+			filter.setUniqueID(this.Count() + 1); // Makes first Filter have id = 1
 		}
 	}
 
@@ -97,7 +89,9 @@ public class FilterManager implements EntityManager<Filter> {
 	}
 
 	/**
-	 * Saves the given Filter into the database if possible.
+	 * Saves the given Filter into the database if possible. Filters are not 
+	 * associated with a project, but instead have a field that ties them
+	 * to a specific user.
 	 * 
 	 * @param s  The current user session
 	 * @param model The Filter to be saved to the database
@@ -107,10 +101,7 @@ public class FilterManager implements EntityManager<Filter> {
 	public void save(Session s, Filter model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 
-
-		
-		// Save the filter in the database if possible, otherwise throw an
-		// exception
+		// Save the filter in the database if possible, otherwise throw an exception
 		// We DON'T want the filter to be associated with any project
 		if (!this.db.save(model)) {
 			throw new WPISuiteException("Unable to save Filter.");
@@ -131,8 +122,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException  "Unable to save Requirement."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
 	 */
-	public Filter makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
+	public Filter makeEntity(Session s, String content)	throws BadRequestException, ConflictException, WPISuiteException {
 		// Parse the requirement from JSON
 		final Filter newFilter;
 		logger.log(Level.FINER, "Attempting new Filter creation...");
@@ -140,41 +130,30 @@ public class FilterManager implements EntityManager<Filter> {
 			newFilter = Filter.fromJSON(content);
 		} catch (JsonSyntaxException e) { // the JSON conversion failed
 			logger.log(Level.WARNING, "Invalid Filter entity creation string.");
-			throw new BadRequestException(
-					"The Filter creation string had invalid formatting. Entity String: "
-							+ content);
+			throw new BadRequestException(	"The Filter creation string had invalid formatting. Entity String: "+ content);
 		}
-		
+
 		// If the filter doesn't have a "user", give it one
 		if (newFilter.getUser() == null) {
 			newFilter.setUser(s.getUser());
 		}
 
-		
 		try {
-			// Check to see if the filter exists in the database already -
-			// check by ID only
-
-			@SuppressWarnings("unused")
-			// It is a test, fromDB stores the result temporarily
-			Filter fromDB = getEntity(s,
-					((Integer) newFilter.getUniqueID()).toString())[0];
+			// Check to see if the filter exists in the database already - check by ID only
+			@SuppressWarnings("unused")	// It is a test, fromDB stores the result temporarily
+			Filter fromDB = getEntity(s,((Integer) newFilter.getUniqueID()).toString())[0];
 
 			// Happens if getEntity found something
-			throw new ConflictException(
-					"A Filter with the given ID already exists. Entity String: "
-							+ content);
+			throw new ConflictException("A Filter with the given ID already exists. Entity String: " + content);
 		} catch (NotFoundException nfe) {
 			// This would indicate that the Filter is not in the DB already..
 			// this is actually a good thing, so we want to do this
 			// Proceed with normal operation
 
 			// Saves the filter in the database
-			this.save(s, newFilter); // An exception may be thrown here if we
-										// can't save it
+			this.save(s, newFilter); // An exception may be thrown here if we can't save it
 
-			// Return the newly created filter (this gets passed back to
-			// the client)
+			// Return the newly created filter (this gets passed back to the client)
 			logger.log(Level.FINER, "Filter creation success!");
 			return newFilter; // End method
 		}
@@ -192,8 +171,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException  "There was a problem retrieving from the database."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session,  String)
 	 */
-	public Filter[] getEntity(Session s, String id) throws NotFoundException,
-			WPISuiteException {
+	public Filter[] getEntity(Session s, String id) throws NotFoundException, WPISuiteException {
 		final int intId = Integer.parseInt(id);
 
 		if (intId < 1) {
@@ -204,19 +182,15 @@ public class FilterManager implements EntityManager<Filter> {
 
 		// Try to retrieve the specific Filter
 		try {
-			filters = db.retrieve(Filter.class, "UniqueID", intId).toArray(
-					new Filter[0]);
-		} catch (WPISuiteException e) { // caught and re-thrown with a new
-										// message
+			filters = db.retrieve(Filter.class, "UniqueID", intId).toArray(	new Filter[0]);
+		} catch (WPISuiteException e) { // caught and re-thrown with a new message
 			e.printStackTrace();
-			throw new WPISuiteException(
-					"There was a problem retrieving from the database.");
+			throw new WPISuiteException("There was a problem retrieving from the database.");
 		}
 
 		// If a filter was pulled, but has no content
 		if (filters.length < 1 || filters[0] == null) {
-			throw new NotFoundException(
-					"The Filter with the specified id was not found:" + intId);
+			throw new NotFoundException("The Filter with the specified id was not found:" + intId);
 		}
 		return filters;
 	}
@@ -233,7 +207,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Filter update(Session s, String content) throws WPISuiteException,
-			BadRequestException {
+	BadRequestException {
 		// If there is no session
 		if (s == null) {
 			throw new WPISuiteException("Null session.");
@@ -246,26 +220,20 @@ public class FilterManager implements EntityManager<Filter> {
 			filterUpdate = Filter.fromJSON(content);
 		} catch (JsonSyntaxException e) { // the JSON conversion failed
 			logger.log(Level.FINER, "Invalid Requirement entity update string.");
-			throw new BadRequestException(
-					"The Requirement update string had invalid formatting. Entity String: "
-							+ content);
+			throw new BadRequestException("The Requirement update string had invalid formatting. Entity String: " + content);
 		}
 
-		// Attempt to get the entity, NotFoundException or WPISuiteException may
-		// be thrown
+		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown
 		Filter oldFilter = getEntity(s,
 				Integer.toString(filterUpdate.getUniqueID()))[0];
 
 		// Copy new field values into old Requirement. This is because the
-		// "same" model must
-		// be saved back into the database
+		// "same" model must be saved back into the database
 		oldFilter.updateFilter(filterUpdate);
 
 		// Attempt to save. WPISuiteException may be thrown
 		this.save(s, oldFilter);
-
 		return oldFilter;
-
 	}
 
 	/**
@@ -281,16 +249,13 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		// Attempt to get the entity, NotFoundException or WPISuiteException may
-		// be thrown
+		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown
 		Filter oldFilter = getEntity(s, id)[0];
 
-	
-		
 		// Set User field of Filter to a different user so that it is not pulled
 		// out by "getAll" calls... "effectively deleted"
 		oldFilter.setUser(null); 
-				
+
 		// Attempt to save. WPISuiteException may be thrown
 		this.save(s, oldFilter);
 
@@ -305,8 +270,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException    -- thrown if there are problems retrieving
 	 */
 	public Filter[] getAll(Session s) throws WPISuiteException {
-		List<Model> filterList = this.db.retrieve(Filter.class, "User",
-				s.getUser());
+		List<Model> filterList = this.db.retrieve(Filter.class, "User",	s.getUser());
 		filterList.size();
 		return filterList.toArray(new Filter[filterList.size()]);
 	}
@@ -315,8 +279,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * Delete all Filters made by the current user
 	 * 
 	 * @param s  The current session. The current user is extracted from this.
-	 * @throws WPISuiteException
-	 *             -- thrown when there are problems deleting
+	 * @throws WPISuiteException -- thrown when there are problems deleting
 	 */
 	public void deleteAll(Session s) throws WPISuiteException {
 		Filter[] filtersToDelete = this.getAll(s);
@@ -324,23 +287,22 @@ public class FilterManager implements EntityManager<Filter> {
 			this.deleteEntity(s, Integer.toString(ftd.getUniqueID()));
 		}
 	}
-
 	private void setDb(Data data) {
 		this.db = data;
 	}
 
-	// Not going to be implemented until we have good reason to
+// Not going to be implemented until we have good reason to
 	/**
 	 * Method advancedPut.
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
-	  @return String
+	 * @return String
 	 * @throws WPISuiteException
+	 * @throws NotImplementedException - Thrown because its not implemented!
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content)	throws WPISuiteException,NotImplementedException {
 		throw new NotImplementedException();
 	}
 
@@ -351,24 +313,23 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @param content String
 	 * @return String
 	 * @throws WPISuiteException
+	 * @throws NotImplementedException - Thrown because its not implemented!
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
 	 */
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content)throws WPISuiteException,NotImplementedException {
 		throw new NotImplementedException();
 	}
-	
+
 	/** 
-	 * 
 	 *  @param s The current user session
 	 *  @param args 
 	 *  
-	  @return String
+	 * @return String
 	 * @throws WPISuiteException
+	 * @throws NotImplementedException - Thrown because its not implemented!
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedGet(Session, String[])
 	 */
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args)	throws WPISuiteException,NotImplementedException {
 		throw new NotImplementedException();
 	}
 

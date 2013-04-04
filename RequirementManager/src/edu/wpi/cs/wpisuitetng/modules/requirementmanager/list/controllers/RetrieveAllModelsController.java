@@ -34,19 +34,15 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * Controller to handle retrieving all filters from the server and
- * displaying them in the {@link SearchFiltersView}
- */
+/** Controller to handle retrieving all Models from the server and
+ *  displaying them in the {@link SearchFiltersView} for a list panel */
 public class RetrieveAllModelsController implements ActionListener{
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") // May be used later
 	private final IBuilderPanel builderView;
-	
-	
-	/** The model name, in string form, which will be used for sending messsages */
+	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
 
 	/** Constructs a controller with an action listener that can, on a button
@@ -54,7 +50,7 @@ public class RetrieveAllModelsController implements ActionListener{
 	 * 
 	 * @param listView The list view that this controller is watching
 	 * @param builderView The builder view that this controller must interact with
-	 * @param modelName  The model name, in string form, which will be used for sending messsages
+	 * @param modelName  The model name, in string form, which will be used for sending messages
 	 */
 	public RetrieveAllModelsController(IListPanel listView, IBuilderPanel builderView, String modelName){
 		this.listView = listView;
@@ -62,19 +58,12 @@ public class RetrieveAllModelsController implements ActionListener{
 		this.builderView = builderView;
 	}
 
-	
-	/** The action to be performed 
-	 * 
-	 */
+	/** Once the attached button is pressed, this action is triggered. */
 	public void actionPerformed(ActionEvent arg0) {
 		this.refreshData();		
 	}
 	
-	
-	
-	/**
-	 * Sends a request for all of the filters
-	 */
+	/** Sends a request for all of the filters          */
 	public void refreshData() {
 		Request request;
 		request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.GET);
@@ -82,19 +71,18 @@ public class RetrieveAllModelsController implements ActionListener{
 		request.send();
 	}
 
-	/**
-	 * This method is called by the {@link RetrieveAllFiltersRequestObserver} when the
-	 * response is received
+	/** This method is called by the {@link RetrieveAllFiltersRequestObserver} when the
+	 *  response is received
 	 * 
 	 * @param jsonString an array of filters returned by the server
 	 */
 	public void receivedData(String jsonString) {
 		listView.showRecievedModels(jsonString);
+		System.out.println("All " + modelName  + "s retrieved successfully.");
 	}
 
-	/**
-	 * This method is called by the {@link RetrieveAllFiltersRequestObserver} when an
-	 * error occurs retrieving the filters from the server.
+	/** This method is called by the {@link RetrieveAllFiltersRequestObserver} when an
+	 *  error occurs retrieving the filters from the server.
 	 */
 	public void errorReceivingData(String error) {
 		System.err.println("An error occured while receiving data");
