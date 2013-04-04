@@ -451,6 +451,7 @@ public class RequirementPanel extends JPanel {
 		currentRequirement.setReleaseNumber(requirement.getReleaseNumber());
 		currentRequirement.setEstimate(requirement.getEstimate());
 		currentRequirement.setActualEffort(requirement.getActualEffort());
+		currentRequirement.setNotes(requirement.getNotes());
 
 		updateFields();
 		innerPanel.revalidate();
