@@ -313,7 +313,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			
 			if (this.nameValue.getText().equals(iters.get(i).getName()))
 			{
-				if (!nameErrorFound)
+				if (!nameErrorFound && Mode.EDIT != currentMode)
 				{
 					error += "The name field of the iteration cannot be the same as other iterations.\n";
 					nameErrorFound = true;
