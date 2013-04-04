@@ -51,6 +51,7 @@ public class RefreshRequirementsAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		controller.refreshData();
+		//commented this line out to prevent multiple refreshes
+		//controller.refreshData();
 	}
 }

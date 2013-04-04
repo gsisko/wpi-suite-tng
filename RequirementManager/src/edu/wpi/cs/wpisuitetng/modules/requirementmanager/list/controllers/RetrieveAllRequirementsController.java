@@ -104,6 +104,10 @@ public class RetrieveAllRequirementsController {
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
+		
+		resultsPanel.getModel().setColumnNames(emptyColumns);
+		resultsPanel.getModel().setData(emptyData);
+		resultsPanel.getModel().fireTableStructureChanged();
 
 
 		// Filtering Phase
@@ -175,10 +179,6 @@ public class RetrieveAllRequirementsController {
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
 			resultsPanel.getModel().fireTableStructureChanged();			
-		}	else {
-			resultsPanel.getModel().setColumnNames(emptyColumns);
-			resultsPanel.getModel().setData(emptyData);
-			resultsPanel.getModel().fireTableStructureChanged();
 		}
 		System.out.println("Existing requirements retrieved successfully.");
 	}

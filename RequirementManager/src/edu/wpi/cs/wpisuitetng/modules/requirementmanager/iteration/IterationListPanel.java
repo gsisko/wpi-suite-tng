@@ -377,6 +377,12 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
+
+		// Fire blanks so that the old contents are removed
+		this.getModel().setColumnNames(emptyColumns);
+		this.getModel().setData(emptyData);
+		this.getModel().fireTableStructureChanged();
+		
 		
 		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
 		// Add the list of iterations to the IterationListPanel object
@@ -404,12 +410,6 @@ public class IterationListPanel extends JPanel implements IListPanel {
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
 			return; // end now
-		}
-		else {
-			// Fire blanks so that the old contents are removed
-			this.getModel().setColumnNames(emptyColumns);
-			this.getModel().setData(emptyData);
-			this.getModel().fireTableStructureChanged();
 		}
 	}
 

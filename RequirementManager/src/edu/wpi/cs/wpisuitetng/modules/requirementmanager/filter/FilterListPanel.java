@@ -264,7 +264,13 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		// Setup data structures
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
+		
+		// Fire blanks so that the old contents are removed
+		this.getModel().setColumnNames(emptyColumns);
+		this.getModel().setData(emptyData);
+		this.getModel().fireTableStructureChanged();
 
+		
 		Filter[] filters = Filter.fromJSONArray(jsonString);
 		this.setLocalFilters(filters);
 
@@ -300,12 +306,6 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
-		}
-		else {
-			// Fire blanks so that the old contents are removed
-			this.getModel().setColumnNames(emptyColumns);
-			this.getModel().setData(emptyData);
-			this.getModel().fireTableStructureChanged();
 		}
 		
 		refreshRequirements();
