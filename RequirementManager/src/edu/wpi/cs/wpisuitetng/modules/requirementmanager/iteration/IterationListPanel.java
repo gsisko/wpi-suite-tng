@@ -26,6 +26,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,9 +36,12 @@ import java.util.Date;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JWindow;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
@@ -56,7 +61,9 @@ public class IterationListPanel extends JPanel implements IListPanel {
 
 	/** The table of results */
 	protected JTable resultsTable;
-
+	private JWindow toolTip;
+	private JLabel label;
+	private JFrame frame;
 	protected JButton btnCreate;
 	protected JButton btnDelete;
 	private boolean btnCreateIsCancel;
@@ -71,6 +78,8 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	protected ResultsTableModel resultsTableModel;
 
 	private final ListPanel parent;
+	int j;
+	int k;
 	
 	/**
 	 * Construct the panel
@@ -137,7 +146,41 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
-
+		//mouse hover effect	
+		resultsTable.addMouseListener(new MouseAdapter() {
+		    public void mouseEntered(MouseEvent e) {
+		    	 	  if (toolTip==null) {
+		                toolTip = new JWindow();
+		                label = new JLabel();
+		                toolTip.add(label);
+		            }
+		
+		    	    toolTip.pack();
+		            Component c = (Component)e.getSource();
+		            String text;
+		            int x = ((JTable) c).rowAtPoint(e.getPoint());
+		            int y = ((JTable) c).columnAtPoint(e.getPoint());
+		            
+		            c.repaint();
+		            int u= resultsTable.getLocationOnScreen().x;
+		            int o=resultsTable.getLocationOnScreen().y;
+		            Rectangle m = resultsTable.getCellRect(x, y,true);
+		            int a = u +243;
+		            int b=(int) resultsTable.getCellRect(x, y,false).getY()+o;
+		            if (((String) resultsTable.getModel().getValueAt(x,1))!=null){
+		            text = (String) resultsTable.getModel().getValueAt(x,1);
+		            label.setText(text);
+		            }
+		            toolTip.setLocation(a,b);
+		            toolTip.setBounds(a,b,50,10);
+		            toolTip.pack();
+		            toolTip.setVisible(true);
+		    }
+		    public void mouseExited(MouseEvent e) {
+		    	  toolTip.setVisible(false);
+		            toolTip.dispose();
+		    }
+		});
 	}
 
 	/**This method returns an ArrayList of active Iterations
