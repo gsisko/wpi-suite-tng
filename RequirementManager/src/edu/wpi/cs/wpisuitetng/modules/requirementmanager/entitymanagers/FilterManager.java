@@ -107,10 +107,7 @@ public class FilterManager implements EntityManager<Filter> {
 	public void save(Session s, Filter model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
 
-		// If the filter doesn't have a "user", give it one
-		if (model.getUser() == null) {
-			model.setUser(s.getUser());
-		}
+
 		
 		// Save the filter in the database if possible, otherwise throw an
 		// exception
@@ -148,10 +145,14 @@ public class FilterManager implements EntityManager<Filter> {
 							+ content);
 		}
 		
+		// If the filter doesn't have a "user", give it one
+		if (newFilter.getUser() == null) {
+			newFilter.setUser(s.getUser());
+		}
 
 		
 		try {
-			// Check to see if the requirement exists in the database already -
+			// Check to see if the filter exists in the database already -
 			// check by ID only
 
 			@SuppressWarnings("unused")
@@ -168,11 +169,11 @@ public class FilterManager implements EntityManager<Filter> {
 			// this is actually a good thing, so we want to do this
 			// Proceed with normal operation
 
-			// Saves the requirement in the database
+			// Saves the filter in the database
 			this.save(s, newFilter); // An exception may be thrown here if we
 										// can't save it
 
-			// Return the newly created requirement (this gets passed back to
+			// Return the newly created filter (this gets passed back to
 			// the client)
 			logger.log(Level.FINER, "Filter creation success!");
 			return newFilter; // End method
@@ -287,18 +288,9 @@ public class FilterManager implements EntityManager<Filter> {
 	
 		
 		// Set User field of Filter to a different user so that it is not pulled
-		// out by "getAll" calls... effectively deleted
-		oldFilter.setUser(new User("Gary Pollice", "gpollice", "ducks", 0)); 
-		/* This is an EasterEgg. Robert Dabrowski (rpdabrowski) bet ONE of 
-		 * his WPIDOLLARS that you wouldn't find this by Iteration2-end.		
-		 * 
-		 * All Easter Eggs will be removed before Iteration3 Release... after Easter 2013
-		 * 
-		 * Anyways, the user is set to not match the current user to simulate deletion
-		 * because users can only retrieve filters that belong to them. 
-		 * 
-		 */
-		
+		// out by "getAll" calls... "effectively deleted"
+		oldFilter.setUser(null); 
+				
 		// Attempt to save. WPISuiteException may be thrown
 		this.save(s, oldFilter);
 

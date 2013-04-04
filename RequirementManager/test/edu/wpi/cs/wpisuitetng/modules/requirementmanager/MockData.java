@@ -97,6 +97,11 @@ public class MockData implements Data {
 					} catch (InvocationTargetException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (NullPointerException e){ 
+						/* This exception is used to catch instances where getAll
+						   is called on a mock-db, but we know that there won't
+						   be anything to find. */
+						return rv;
 					}
 				}
 			}
