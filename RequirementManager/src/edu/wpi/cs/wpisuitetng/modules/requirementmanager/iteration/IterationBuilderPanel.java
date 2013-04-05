@@ -325,7 +325,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 				|| (this.endDateChooser.getDate().before(iters.get(i).getEndDate()) 
 					&& this.endDateChooser.getDate().after(iters.get(i).getStartDate())))
 				|| (iters.get(i).getStartDate().after(this.startDateChooser.getDate()) 
-					&& iters.get(i).getStartDate().before(this.startDateChooser.getDate())) 
+					&& iters.get(i).getStartDate().before(this.endDateChooser.getDate())) 
 				|| (iters.get(i).getEndDate().after(this.startDateChooser.getDate())
 					&& iters.get(i).getEndDate().before(this.endDateChooser.getDate()))
 				|| (this.startDateChooser.getDate().equals(iters.get(i).getStartDate())
