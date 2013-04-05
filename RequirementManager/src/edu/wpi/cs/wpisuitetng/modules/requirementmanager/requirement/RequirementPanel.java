@@ -138,7 +138,7 @@ public class RequirementPanel extends JPanel {
 		innerPanel.setLayout(innerLayout); //Set the layout for the innerPanel
 		
 		//add a border of blank space to the innerPanel
-		innerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5)); 
+		innerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 30)); 
 
 		//Create and set the layout manager for the this RequirementPanel
 		outerLayout = new FlowLayout();//Create the layout
