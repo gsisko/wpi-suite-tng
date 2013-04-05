@@ -333,7 +333,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			{
 				if (!dateErrorFound)
 				{
-					error += "The Start date and end date of the iteration cannot fall within another iterations dates.\n";
+					error += "The start date and end date of the iteration cannot fall within another iteration's dates.\n";
 					dateErrorFound = true;
 				}
 			}
