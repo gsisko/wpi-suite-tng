@@ -41,6 +41,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /**
@@ -635,7 +637,25 @@ public class RequirementPanel extends JPanel {
 	public RequirementTabPanel getTabPanel() {
 		return tabPanel;
 	}
-
+	/**
+	 * Gets a requirement from the current text fields
+	 * TODO error check
+	 * 
+	 * @return Requiremnt made from the text fields
+	 */
+	public Requirement getRequirement()
+	{
+		// get the fields from the UI
+    	String name = this.getRequirementName().getText();
+		String description = this.getRequirementDescription().getText();
+		int releaseNumber = Integer.parseInt((this.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (this.getRequirementReleaseNumber().getText()));
+		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
+		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
+		
+		return new Requirement(name, description, type, priority,  releaseNumber);
+	
+	}
+	
 	/**
 	 * This returns the "mode" of this panel (Mode.EDIT or Mode.CREATE)
 	 * @return the mode Mode

@@ -65,7 +65,7 @@ public class SaveRequirementController
     	if (view.getRequirementActualEffort().getText().length() == 0) {
     		error += "ActualEffort must be non-blank.\n";
     	}
-    	
+    	//TODO this should change to eliminate popups, maybe put error checking in the panel itself?
     	if (!error.equals("")) {
     		JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
     		return;
@@ -74,16 +74,17 @@ public class SaveRequirementController
     	
 	    if (view.getMode() == CREATE) { // if we are creating a new requirement
 		
-	    	// get the fields from the UI
-	    	String name = view.getRequirementName().getText();
-			String description = view.getRequirementDescription().getText();
-			int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (view.getRequirementReleaseNumber().getText()));
-			RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
-			RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
-		
+//	    	// get the fields from the UI
+//	    	String name = view.getRequirementName().getText();
+//			String description = view.getRequirementDescription().getText();
+//			int releaseNumber = Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (view.getRequirementReleaseNumber().getText()));
+//			RequirementPriority priority = RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString());
+//			RequirementType type = RequirementType.toType(view.getRequirementType().getSelectedItem().toString());
+//		
 			// make a PUT http request and let the observer get the response
 		    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
-		    request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
+		    //request.setBody(new Requirement(name, description, type, priority,  releaseNumber).toJSON()); // put the new message in the body of the request
+		    request.setBody(view.getRequirement().toJSON()); // put the new message in the body of the request
 		    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		    request.send();
 		}
