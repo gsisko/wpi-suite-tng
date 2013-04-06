@@ -50,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /**
@@ -243,7 +244,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
 
 		// This section is for enumerators, which need specific operators and values
-		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
+		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority" || selected == "Iteration"){
 			comparatorStrings = new String[]{"=","!="};
 			if(selected=="Type" )
 				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
@@ -253,8 +254,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 				valueStrings=new String[]{"","High","Medium","Low"};
 			String[] IterationArr = {"Backlog"};
 			if(selected=="Iteration")
-				IterationArr =new String[this.getIterationNames().size()];
-				IterationArr = this.getIterationNames().toArray(IterationArr);
+				IterationArr = this.getIterationNames();
 				valueStrings=IterationArr;
 			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
 			valueBox.setModel(valb);
@@ -269,7 +269,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		numValue.setVisible(false);
 		valueBox.setVisible(false);
 
-		if(selected=="Type" ||selected=="Status"  ||selected=="Priority")
+		if(selected=="Type" ||selected=="Status"  ||selected=="Priority" || selected == "Iteration")
 			valueBox.setVisible(true);
 		else if(selected=="Name" ||selected=="Description")
 			txtValue.setVisible(true);
@@ -357,6 +357,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		if (curtype != "Type" 
 				&& curtype != "Status" 
 				&& curtype != "Priority" 
+				&& curtype != "Iteration"
 				&& 	this.getFilterValue().getText().length() == 0   
 				&&  this.getFilterNumValue().getText().length() == 0) {
 
@@ -376,6 +377,18 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
 		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
 			newFilter.setValue(this.getFilterValue().getText());
+		else if (type == FilterType.toType("Iteration")) {
+			String chosen = this.getFilterValueBox().getSelectedItem().toString();
+			if (chosen.equals("Backlog")) {
+				newFilter.setValue("0");
+			} else {
+				ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
+				for (int i = 0; i < allIterations.size(); ++i) {
+					if (chosen.equals(allIterations.get(i).getName()))
+						newFilter.setValue(allIterations.get(i).getID());
+				}
+			}
+		}
 		else
 			newFilter.setValue(this.getFilterNumValue().getText());
 
@@ -573,7 +586,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public String convertCurrentModelToJSON() {
 		String curtype = this.getFilterType().getSelectedItem().toString();
 		// Check conditions that verify that the value field has something
-		if (curtype != "Type" && curtype != "Status" && curtype != "Priority" 
+		if (curtype != "Type" && curtype != "Status" && curtype != "Priority" && curtype != "Iteration"
 				&& 	this.getFilterValue().getText().length() == 0   
 				&&  this.getFilterNumValue().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -596,6 +609,18 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
 		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
 			newFilter.setValue(this.getFilterValue().getText());
+		else if (type == FilterType.toType("Iteration")) {
+			String chosen = this.getFilterValueBox().getSelectedItem().toString();
+			if (chosen.equals("Backlog")) {
+				newFilter.setValue("0");
+			} else {
+				ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
+				for (int i = 0; i < allIterations.size(); ++i) {
+					if (chosen.equals(allIterations.get(i).getName()))
+						newFilter.setValue(allIterations.get(i).getID());
+				}
+			}
+		}
 		else
 			newFilter.setValue(this.getFilterNumValue().getText());
 
@@ -652,16 +677,15 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	/**
 	 * Get a list of string iteration names
 	 */
-	@SuppressWarnings("null")
-	public ArrayList<String> getIterationNames(){
-		int size = this.parent.getTabPanel().getIterationList().getIterations().size();
-		int i=0;
-		ArrayList<String> IterationName = null;
-		if (i<size){
-		IterationName.add(this.parent.getTabPanel().getIterationList().getIterations().get(i).getName());
-		i++;
+	public String[] getIterationNames(){
+		ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
+		String[] names = new String[allIterations.size() + 1];
+		names[0] = "Backlog";
+		for (int i = 0; i < allIterations.size(); ++i) {
+			names[i+1] = (allIterations.get(i).getName());
 		}
-		return IterationName;
+		
+		return names;
 	}
 
 
