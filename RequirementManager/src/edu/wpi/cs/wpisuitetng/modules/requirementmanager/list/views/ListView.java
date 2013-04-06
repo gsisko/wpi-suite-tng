@@ -57,6 +57,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** The refresh button that reloads the results of the list/filter */
 	protected JButton btnRefresh;
 	
+	/** The display pie chart button that loads the pie chart tab */
+	protected JButton btnDisplayPieChart;
+
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
 	
@@ -97,13 +100,13 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("All Lists");
+		buttonGroup = new ToolbarGroupView("Refresh/Display Pie Chart");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(150);
+		buttonGroup.setPreferredWidth(400);
 		
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -112,7 +115,18 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				iterationController.refreshData();
 			}
 		});
-			
+		
+		// Instantiate the refresh button
+		btnDisplayPieChart = new JButton("Display Pie Chart");
+		buttonGroup.getContent().add(btnDisplayPieChart);
+		buttonGroup.setPreferredWidth(400);
+
+		btnRefresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO: Get Tab
+			}
+		});
 	}
 	
 	public void refreshData() {
