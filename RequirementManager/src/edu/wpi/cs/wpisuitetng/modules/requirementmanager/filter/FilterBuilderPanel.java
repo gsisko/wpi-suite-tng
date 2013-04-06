@@ -117,7 +117,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 
 		//create strings for the boxes
-		String[] typeStrings = { "Id", "Name","Iteration", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
+		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","Iteration","ReleaseNumber","Estimate","ActualEffort"};
 		String[] comparatorStrings = {"=", "!=", ">","<",">=","<=","Contains","DoesNotContain"};
 		String[] userFilterStrings ={"Active","Inactive"};
 
@@ -244,7 +244,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
 
 		// This section is for enumerators, which need specific operators and values
-		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority" || selected == "Iteration"){
+		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"||selected=="Iteration"){
 			comparatorStrings = new String[]{"=","!="};
 			if(selected=="Type" )
 				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
@@ -253,9 +253,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			if(selected=="Priority")
 				valueStrings=new String[]{"","High","Medium","Low"};
 			String[] IterationArr = {"Backlog"};
-			if(selected=="Iteration")
+			if(selected=="Iteration") {
 				IterationArr = this.getIterationNames();
 				valueStrings=IterationArr;
+			}
 			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
 			valueBox.setModel(valb);
 		}
