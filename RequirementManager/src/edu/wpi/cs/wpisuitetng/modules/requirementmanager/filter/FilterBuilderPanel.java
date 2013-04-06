@@ -32,6 +32,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -115,7 +116,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 
 		//create strings for the boxes
-		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
+		String[] typeStrings = { "Id", "Name","Iteration", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
 		String[] comparatorStrings = {"=", "!=", ">","<",">=","<=","Contains","DoesNotContain"};
 		String[] userFilterStrings ={"Active","Inactive"};
 
@@ -250,6 +251,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 				valueStrings=new String[]{"New","InProgress","Open","Complete","Deleted"};
 			if(selected=="Priority")
 				valueStrings=new String[]{"","High","Medium","Low"};
+			String[] IterationArr = {"Backlog"};
+			if(selected=="Iteration")
+				IterationArr =new String[this.getIterationNames().size()];
+				IterationArr = this.getIterationNames().toArray(IterationArr);
+				valueStrings=IterationArr;
 			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
 			valueBox.setModel(valb);
 		}
@@ -337,7 +343,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	{
 		currentFilter = newFilter;
 	}
-
+	
 
 	/** Gets the model from the panel in the form of a JSON string
 	 *  that is ready to be sent as a message over the network
@@ -643,7 +649,20 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.revalidate();
 		this.repaint();
 	}	
-
+	/**
+	 * Get a list of string iteration names
+	 */
+	@SuppressWarnings("null")
+	public ArrayList<String> getIterationNames(){
+		int size = this.parent.getTabPanel().getIterationList().getIterations().size();
+		int i=0;
+		ArrayList<String> IterationName = null;
+		if (i<size){
+		IterationName.add(this.parent.getTabPanel().getIterationList().getIterations().get(i).getName());
+		i++;
+		}
+		return IterationName;
+	}
 
 
 }
