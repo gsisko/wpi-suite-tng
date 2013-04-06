@@ -83,6 +83,7 @@ public class RequirementTab extends JPanel {
 	private  JLabel typeLabel; //The label for the type combo box ("typeBox")
 	private  JLabel statusLabel; //The label for the status combo box ("statusBox")
 	private  JLabel priorityLabel; //The label for the priority combo box ("priorityBox")
+	private  JLabel iterationLabel; //The label for the iteration combo box ("iterationBox")
 	private  JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
 	private  JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
 	private  JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
@@ -93,6 +94,7 @@ public class RequirementTab extends JPanel {
 	private  JComboBox typeBox;//The type combo box
 	private  JComboBox statusBox;//The status combo box
 	private  JComboBox priorityBox;//The priority combo box
+	private  JComboBox iterationBox;//The iteration combo box
 	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
@@ -169,6 +171,7 @@ public class RequirementTab extends JPanel {
 		typeLabel = new JLabel("Type:");
 		statusLabel = new JLabel("Status:");
 		priorityLabel = new JLabel("Priority:");
+		iterationLabel = new JLabel("Iteration:");
 		releaseNumLabel = new JLabel("ReleaseNumber:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
@@ -191,11 +194,13 @@ public class RequirementTab extends JPanel {
 		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
 		String[] priorityStrings = { "", "High", "Medium", "Low"};
+		String[] iterationStrings = { "Backlog"};
 
 		//Construct the boxes 
 		typeBox = new JComboBox(typeStrings);
 		statusBox = new JComboBox(statusStrings);
 		priorityBox = new JComboBox(priorityStrings);
+		setIterationBox(new JComboBox(iterationStrings));
 
 
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
@@ -216,6 +221,7 @@ public class RequirementTab extends JPanel {
 			typeBox.setSelectedIndex(0);
 			statusBox.setSelectedIndex(0);
 			priorityBox.setSelectedIndex(0);
+			getIterationBox().setSelectedIndex(0);
 			
 			//Enables the fields upon creation
 			setInputEnabled(inputEnabled);
@@ -228,6 +234,7 @@ public class RequirementTab extends JPanel {
 			toggleEnabled(txtEstimate, false);
 			toggleEnabled(txtActualEffort, false);
 			toggleEnabled(statusBox, false);
+			toggleEnabled(getIterationBox(), false);
 
 		}
 
@@ -391,6 +398,22 @@ public class RequirementTab extends JPanel {
 		innerPanel.add(txtActualEffort, reqPanelConstraints);
 		//end Actual effort
 		
+		//Iteration
+		//Set the constraints for the "iterationLabel" and add it to the innerPanel
+		reqPanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
+		reqPanelConstraints.weightx = 0.07;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		reqPanelConstraints.gridx = 2;
+		reqPanelConstraints.gridy = 5;
+		innerPanel.add(iterationLabel, reqPanelConstraints);
+		//Set the constraints for the "iterationBox" and add it to the innerPanel
+		reqPanelConstraints.weightx = 0.43;
+		reqPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		reqPanelConstraints.gridx = 3;
+		reqPanelConstraints.gridy = 5;
+		innerPanel.add(getIterationBox(), reqPanelConstraints);
+		//end Iteration
+		
 		this.add(innerPanel);//Add the innerPanel to this panel
 
 		this.add(tabPanel);
@@ -419,6 +442,7 @@ public class RequirementTab extends JPanel {
 		toggleEnabled(txtReleaseNumber, enabled);
 		toggleEnabled(txtEstimate, enabled);
 		toggleEnabled(txtActualEffort, enabled);
+		toggleEnabled(getIterationBox(), enabled);
 
 		// toggles note panel boxes
 		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
@@ -694,6 +718,20 @@ public class RequirementTab extends JPanel {
 	 */
 	public RequirementView getParent() {
 		return parent;
+	}
+
+	/**
+	 * @return the iterationBox
+	 */
+	public JComboBox getIterationBox() {
+		return iterationBox;
+	}
+
+	/**
+	 * @param iterationBox the iterationBox to set
+	 */
+	public void setIterationBox(JComboBox iterationBox) {
+		this.iterationBox = iterationBox;
 	}
 
 }
