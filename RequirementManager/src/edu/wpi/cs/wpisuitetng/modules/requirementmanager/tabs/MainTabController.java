@@ -36,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.PieChartView;
 
 /**
  * Controls the behavior of a given MainTabView.
@@ -68,6 +69,10 @@ public class MainTabController {
 					if (tab instanceof ListView) {
 						((ListView)tab).getFilterController().refreshData();
 						((ListView)tab).getIterationController().refreshData();
+					} 
+					
+					if (tab instanceof PieChartView) {
+//						((PieChartView)tab).paintAll(null);
 					}
 				}
 				else initialized = true;

@@ -13,6 +13,7 @@
 
 package edu.wpi.cs.wpisuitetng.janeway.modules;
 
+import java.awt.Graphics;
 import java.util.List;
 
 /**
@@ -35,5 +36,11 @@ public interface IJanewayModule {
 	 * method to run when tab is selected
 	 */
 	public void invokeWhenSelected();
+	
+//	/**
+//	 * method to run when paint is called on Janeway
+//	 */
+//	
+//	public void paint(Graphics g);
 	
 }
