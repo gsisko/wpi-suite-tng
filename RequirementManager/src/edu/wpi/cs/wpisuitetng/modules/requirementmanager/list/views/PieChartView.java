@@ -43,7 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
  * View that contains the entire requirement listing interface
  */
 @SuppressWarnings("serial")
-public class ListView extends JPanel implements IToolbarGroupProvider {
+public class PieChartView extends JPanel implements IToolbarGroupProvider {
 	
 	/** Panel containing the list interface */
 	protected ListTab mainPanel;
@@ -55,7 +55,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	protected ToolbarGroupView buttonGroup;
 	
 	/** The refresh button that reloads the results of the list/filter */
-	protected JButton btnRefresh;
+	protected JButton btnDisplayPieChart;
 	
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
@@ -71,10 +71,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 * @param tabController The main tab controller
 	 * @param tab The Tab containing this view
 	 */
-	public ListView(MainTabController tabController) {
+	public PieChartView(MainTabController tabController) {
 		this.tabController = tabController;
-		
-		mainPanel = new ListTab(tabController, this);
 		
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();
@@ -86,33 +84,27 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		// Add the mainPanel to this view
 		this.add(mainPanel);
-		
-		// Initialize the controllers
-		controller = new RetrieveAllRequirementsController(this);
-		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
-		iterationController = new RetrieveAllModelsController(mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
-		
+			
 		// Add a listener for row clicks in the actual table
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
 		
 		
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("All Lists");
-		
+	
 		// Instantiate the refresh button
-		btnRefresh = new JButton();
-		btnRefresh.setAction(new RefreshRequirementsAction(controller));
-		buttonGroup.getContent().add(btnRefresh);
+		btnDisplayPieChart = new JButton();
+		btnDisplayPieChart.setAction(new RefreshRequirementsAction(controller));
+		buttonGroup.getContent().add(btnDisplayPieChart);
 		buttonGroup.setPreferredWidth(150);
 		
-		btnRefresh.addActionListener(new ActionListener() {
+		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				filterController.refreshData();
 				iterationController.refreshData();
 			}
-		});
-			
+		});		
 	}
 	
 	public void refreshData() {
