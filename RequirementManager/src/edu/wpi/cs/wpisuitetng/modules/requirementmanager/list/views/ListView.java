@@ -24,9 +24,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,6 +42,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.*;
 
 /**
  * View that contains the entire requirement listing interface
@@ -75,7 +80,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 * @param tabController The main tab controller
 	 * @param tab The Tab containing this view
 	 */
-	public ListView(MainTabController tabController) {
+	public ListView(final MainTabController tabController) {
 		this.tabController = tabController;
 		
 		mainPanel = new ListTab(tabController, this);
@@ -122,10 +127,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		buttonGroup.getContent().add(new JLabel("     "));
 		buttonGroup.getContent().add(btnDisplayPieChart);
 
-		btnRefresh.addActionListener(new ActionListener() {
+		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Get Tab
+				tabController.addTab("Pie Chart", new ImageIcon(), new PieChartView(), "Pie Charts for Requirements");
 			}
 		});
 	}
