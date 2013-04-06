@@ -4,8 +4,6 @@
 
 	<property name="core-jar-dest" location="${core-lib}/RequirementManager.jar"/>
 	<property name="janeway-jar-dest" location="../Janeway/modules/RequirementManager.jar"/>
-	<!--<property name="jgoodies-looks-jar" location="${dependencies.basedir}/RequirementManager/lib"/>
-	<property name="jcalender-jar" location="${dependencies.basedir}/RequirementManager/lib"/>-->
 
 	<path id="classpath">
 		<pathelement path="../Janeway/build"/>
@@ -16,8 +14,7 @@
 		</fileset>
 		<pathelement path="build"/>
 		<fileset dir="../RequirementManager/lib">
-			<include name="jgoodies-looks-2.4.1.jar"/>
-			<include name="jcalendar-1.4.jar"/>
+			<include name="**/**/*.jar"/>
 		</fileset>
 	</path>
 
@@ -53,8 +50,11 @@
 	<target name="compile" depends="janeway-jar, core-jar">
 		<!--hackaround to adding jars... -->
 		<!-- Causing issues... need to fix later... -->
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>
+		<unzip dest="../Janeway/bin">
+			<fileset dir="../RequirementManager/lib/">
+				<include name="**/**/*.jar"/>
+			</fileset>
+		</unzip> 
 	</target>
 
 	<target name="compile-test" depends="compile-base">
@@ -70,10 +70,6 @@
 		<delete dir="build-test"/>
 		<delete file="${core-jar-dest}"/>
 		<delete file="${janeway-jar-dest}"/>
-		<!--hackaround to adding jars... -->
-		<!-- Causing issues... need to fix later... -->
-		<!--<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>-->
 	</target>
 
 	<!-- compile dependency is necessary since Core needs jars to run tests... hacky -->

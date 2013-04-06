@@ -32,14 +32,41 @@ import java.awt.Rectangle;
 import javax.swing.JComponent;
 //import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 class PieChart extends JComponent {
-	Slice[] slices = { new Slice(5, Color.black), new Slice(33, Color.green),
-			new Slice(20, Color.yellow), new Slice(15, Color.red) };
+	
+	/** Contains the actual 'slices' of the pie chart to render */
+	private Slice[] slices = { 	new Slice(5, Color.black),
+			new Slice(33, Color.green),
+			new Slice(20, Color.yellow),
+			new Slice(15, Color.red) 
+			};
+	
+	/** Contains the actual data values to put into the graph */
+	private int[] data;  
 
-	PieChart() {
+	public PieChart() {
+//		slices 
 	}
 
+	/** Forces the chart model to refresh data */
+	
+	public void refresh(){
+		
+		//Clear slices
+		slices = null;
+		
+		//Loop through data and make slices
+		for(int i = 0; i < data.length; i++){
+			slices[i] = new Slice(data[i], Color.green);
+		}
+		
+	}
+	
+	/** Actually render the chart. Needs to be called by parent panel! */
+	@Override
 	public void paint(Graphics g) {
+//		super.paint(g);
 		drawPie((Graphics2D) g, getBounds(), slices);
 	}
 
@@ -61,12 +88,12 @@ class PieChart extends JComponent {
 			curValue += slices[i].value;
 		}
 	}
+	
+	public int[] getData(){
+		return data;
+	}
+	
+	public void setData(int[] data){
+		this.data = data;
+	}
 }
-// public class Main {
-// public static void main(String[] argv) {
-// JFrame frame = new JFrame();
-// frame.getContentPane().add(new MyComponent());
-// frame.setSize(300, 200);
-// frame.setVisible(true);
-// }
-// }

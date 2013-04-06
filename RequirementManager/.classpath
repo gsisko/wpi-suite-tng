@@ -7,7 +7,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Janeway"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Network"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WPISuite-Interfaces"/>
-	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/calendar/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/calendar/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

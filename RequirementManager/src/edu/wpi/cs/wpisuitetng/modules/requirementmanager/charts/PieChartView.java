@@ -24,8 +24,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
@@ -48,7 +53,10 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	private PieChartPanel piePanel;
 	
 	/** The MainTabController holding this view */
-	MainTabController parent;
+	private MainTabController parent;
+	
+	/** Layout for the view */
+	private SpringLayout layout;
 	
 	/**
 	 * Construct the view
@@ -60,14 +68,23 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		this.piePanel = new PieChartPanel();
 		this.buttonGroup = new ToolbarGroupView("Pie Chart Refresh");
 		this.btnRefresh = new JButton();
+		
+		// Construct the layout manager and add constraints
+		this.setLayout(new BorderLayout());
 	}
 
 	/** Refresh and reload data in the pie chart */
 	public void refreshData() {
 		//TODO: Implement for PieChart Data?
 		// Load initial data
-//		filterController.refreshData();
-//		iterationController.refreshData();
+
+		piePanel.refreshChart();
+	}
+	
+	@Override
+	public void paint(Graphics g){
+		super.paint(g);
+		piePanel.paint(g);
 	}
 
 	/** Returns the button group to place on the top of the toolbar */

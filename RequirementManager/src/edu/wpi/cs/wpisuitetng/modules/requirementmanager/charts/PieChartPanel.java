@@ -26,19 +26,29 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 //import java.awt.Graphics;
 
+import java.awt.Graphics;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class PieChartPanel extends JPanel{
 	
-	private JComponent pieChart;
+	private PieChart chart;
 	
 	public PieChartPanel() {
-		super();
+//		super();
+		this.chart = new PieChart();
+	}
+	
+	/** Function to refresh and redraw pie chart */
+	public void refreshChart() {
+		chart.refresh();
 	}
 
-//	@Override
-//	public void paint() {
-//		super();
-//	}
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		chart.paint(g);
+	}
 }
