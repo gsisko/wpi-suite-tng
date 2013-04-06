@@ -93,9 +93,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public FilterBuilderPanel(ListPanel view) {
 		parent = view;
 		currentMode = Mode.CREATE;
-		//create title
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.setBorder(BorderFactory.createTitledBorder("Filter Builder"));
+		
+		//Add a titled boarder to this panel
+		setBorder(BorderFactory.createTitledBorder("Filter Builder"));
 
 		//construct the panels
 		typeLabel = new JLabel("Type:");
@@ -142,76 +142,77 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//set the layout
 		setLayout(new GridBagLayout());
 		GridBagConstraints FilterBuilderConstraints = new GridBagConstraints();
-		FilterBuilderConstraints.anchor= GridBagConstraints.NORTH;
-
-		//adjust location
-		btnSave.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
+		
+		btnSave.setPreferredSize(new Dimension (100,30));
+		
 		//type
 		//Set the constraints for the "typeLabel" and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.ipady = 0;//This tells the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,25,0,0);  //Set the top padding to 10 units  of blank space
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
+		FilterBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
 		FilterBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(typeLabel, FilterBuilderConstraints);//Actually add the "typenLabel" to the layout given the previous constraints
 		//Set the constraints for the "typeBox"  and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		FilterBuilderConstraints.gridx = 1;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
+		FilterBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
+		FilterBuilderConstraints.gridx = 1;
 		add(typeBox, FilterBuilderConstraints);//Actually add the "typeBox" to the layout given the previous constraints
 		//end Type
 
 		//comparator
 		//Set the constraints for the "comparatorLabel" and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.ipady = 0;//This tell	s the layout to reset the vertical ipad from the previously defined 20 units to now 0 units
-		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
-		FilterBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
+		FilterBuilderConstraints.insets = new Insets(10,10,10,0);
+	
+		FilterBuilderConstraints.gridx = 2;
+		FilterBuilderConstraints.gridy = 0;
 		add(comparatorLabel, FilterBuilderConstraints);//Actually add the "comparatorLabel" to the layout given the previous constraints
 		//Set the constraints for the "comparator"  and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		FilterBuilderConstraints.gridx = 3;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_START;
+		FilterBuilderConstraints.insets = new Insets(10,10,10,25);
+		FilterBuilderConstraints.gridx = 3;
+		FilterBuilderConstraints.gridy = 0;
 		add(operatorBox, FilterBuilderConstraints);//Actually add the "operatorBox" to the layout given the previous constraints
 		//end comparator
 
-		//userfilter
-		//Set the constraints for the "userfilter"  and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch both horizontally and vertically to fill it's area
-		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		add(statusBox, FilterBuilderConstraints);//Actually add the "userFilterBox" to the layout given the previous constraints
-		//end userfilter
+
 
 		//value:
 		//Set the constraints for the "value" and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the top center of it's field
-		FilterBuilderConstraints.insets = new Insets(0,25,0,0);
-		FilterBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
+		FilterBuilderConstraints.insets = new Insets(10,10,10,0);
+		FilterBuilderConstraints.gridx = 4;
+		FilterBuilderConstraints.gridy = 0;
 		add(valueLabel, FilterBuilderConstraints);//Actually add the "valueLabel" to the layout given the previous constraints
 		//Set the constraints for the "value" and add it to the view
-		FilterBuilderConstraints.fill = GridBagConstraints.CENTER;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
-		FilterBuilderConstraints.gridx = 5;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		FilterBuilderConstraints.ipadx=80;
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_START;
+		FilterBuilderConstraints.insets = new Insets(10,10,10,25);
+		FilterBuilderConstraints.ipadx=80;//pad this field horizontally by 80 units
+		FilterBuilderConstraints.gridx = 5;
+		FilterBuilderConstraints.gridy = 0;
 		add(txtValue, FilterBuilderConstraints);//Actually add the "txtValue" to the layout given the previous constraints
-		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
 		add(numValue, FilterBuilderConstraints);//Actually add the "numValue" to the layout given the previous constraints
+		FilterBuilderConstraints.ipadx=5;//pad this field horizontally by 5 units
+		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
 		//end value
+		
+		//userfilter
+		//Set the constraints for the "userfilter"  and add it to the view
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
+		FilterBuilderConstraints.insets = new Insets(10,10,10,40);
+		FilterBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 5 units back to 0 units
+		FilterBuilderConstraints.gridx = 6;
+		FilterBuilderConstraints.gridy = 0;
+		add(statusBox, FilterBuilderConstraints);//Actually add the "userFilterBox" to the layout given the previous constraints
+		//end userfilter
 
 		//Save button:
 		//Set the constraints for the "Save" and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.NONE;//This sets the constraints of this field so that the item will not stretch to fill it's area
-		FilterBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the bottom right of it's field
-		FilterBuilderConstraints.gridx = 8;//Set the x coord of the cell of the layout we are describing
-		FilterBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
-		btnSave.setPreferredSize(new Dimension (10,30));
+		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
+		FilterBuilderConstraints.gridx = 7;//Set the x coord of the cell of the layout we are describing
+		FilterBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(btnSave, FilterBuilderConstraints);//Actually add the "Save" to the layout given the previous constraints
 		//end Save button
 
@@ -500,6 +501,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			btnSave.setText("Create");
 		else
 			btnSave.setText("Save");
+
+			
+
 	}
 
 
@@ -540,6 +544,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		
 		//Reset buttons
 		btnSave.setText("Create");
+		this.revalidate();
+		this.repaint();
 	}
 
 	/** Toggles between active and inactive modes mode */
@@ -633,6 +639,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		} else{
 			this.getStatus().setSelectedIndex(1);
 		}
+		
+		this.revalidate();
+		this.repaint();
 	}	
 
 
