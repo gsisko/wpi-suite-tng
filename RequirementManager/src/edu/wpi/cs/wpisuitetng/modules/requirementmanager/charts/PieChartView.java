@@ -81,11 +81,11 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		piePanel.refreshChart();
 	}
 	
-	@Override
-	public void paint(Graphics g){
-		super.paint(g);
-		piePanel.paint(g);
-	}
+//	@Override
+//	public void paint(Graphics g){
+//		super.paint(g);
+//		piePanel.paint(g);
+//	}
 
 	/** Returns the button group to place on the top of the toolbar */
 	@Override

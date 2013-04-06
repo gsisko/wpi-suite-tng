@@ -38,17 +38,19 @@ public class PieChartPanel extends JPanel{
 	
 	public PieChartPanel() {
 //		super();
-		this.chart = new PieChart();
+		this.chart = new PieChart("Sample Chart");
+//        chart.pack(); //Resize Window to fit the size specified
+        chart.setVisible(true);
 	}
 	
 	/** Function to refresh and redraw pie chart */
 	public void refreshChart() {
-		chart.refresh();
+//		chart.refresh();
 	}
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		chart.paint(g);
-	}
+//	@Override
+//	public void paint(Graphics g) {
+//		super.paint(g);
+//		chart.paint(g);
+//	}
 }

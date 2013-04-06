@@ -1,99 +1,60 @@
-/*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
- ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import javax.swing.JPanel;
 
-import javax.swing.JComponent;
-//import javax.swing.JFrame;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.util.Rotation;
 
 @SuppressWarnings("serial")
-class PieChart extends JComponent {
-	
-	/** Contains the actual 'slices' of the pie chart to render */
-	private Slice[] slices = { 	new Slice(5, Color.black),
-			new Slice(33, Color.green),
-			new Slice(20, Color.yellow),
-			new Slice(15, Color.red) 
-			};
-	
-	/** Contains the actual data values to put into the graph */
-	private int[] data;  
+public class PieChart extends JPanel {
 
-	public PieChart() {
-//		slices 
-	}
+public PieChart(String chartTitle) {
+        // This will create the dataset 
+        PieDataset dataset = createDataset();
+        // based on the dataset we create the chart
+        JFreeChart chart = createChart(dataset, chartTitle);
+        // we put the chart into a panel
+        ChartPanel chartPanel = new ChartPanel(chart);
+        // default size
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        // add it to our application
+//        setContentPane(chartPanel);
 
-	/** Forces the chart model to refresh data */
-	
-	public void refresh(){
-		
-		//Clear slices
-		slices = null;
-		
-		//Loop through data and make slices
-		for(int i = 0; i < data.length; i++){
-			slices[i] = new Slice(data[i], Color.green);
-		}
-		
-	}
-	
-	/** Actually render the chart. Needs to be called by parent panel! */
-	@Override
-	public void paint(Graphics g) {
-//		super.paint(g);
-		drawPie((Graphics2D) g, getBounds(), slices);
-	}
+    }
+    
+    
+/** * Creates a sample dataset */
 
-	void drawPie(Graphics2D g, Rectangle area, Slice[] slices) {
-		double total = 0.0D;
-		
-		for (int i = 0; i < slices.length; i++) {
-			total += slices[i].value;
-		}
-		
-		double curValue = 0.0D;
-		int startAngle = 0;
-		for (int i = 0; i < slices.length; i++) {
-			startAngle = (int) (curValue * 360 / total);
-			int arcAngle = (int) (slices[i].value * 360 / total);
-			g.setColor(slices[i].color);
-			g.fillArc(area.x, area.y, area.width, area.height, startAngle,
-					arcAngle);
-			curValue += slices[i].value;
-		}
-	}
-	
-	public int[] getData(){
-		return data;
-	}
-	
-	public void setData(int[] data){
-		this.data = data;
-	}
-}
+    private  PieDataset createDataset() {
+        DefaultPieDataset result = new DefaultPieDataset();
+        result.setValue("Linux", 29);
+        result.setValue("Mac", 20);
+        result.setValue("Windows", 51);
+        return result;
+        
+    }
+    
+    
+/** * Creates a chart */
+
+    private JFreeChart createChart(PieDataset dataset, String title) {
+        
+        JFreeChart chart = ChartFactory.createPieChart3D(title,          // chart title
+            dataset,                // data
+            true,                   // include legend
+            true,
+            false);
+
+        PiePlot3D plot = (PiePlot3D) chart.getPlot();
+        plot.setStartAngle(290);
+        plot.setDirection(Rotation.CLOCKWISE);
+        plot.setForegroundAlpha(0.5f);
+        return chart;
+        
+    }
+} 
