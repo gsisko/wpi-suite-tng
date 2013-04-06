@@ -618,7 +618,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 				ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
 				for (int i = 0; i < allIterations.size(); ++i) {
 					if (chosen.equals(allIterations.get(i).getName()))
-						newFilter.setValue(allIterations.get(i).getID());
+						newFilter.setValue(allIterations.get(i).getName());
 				}
 			}
 		}

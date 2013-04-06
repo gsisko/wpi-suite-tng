@@ -44,6 +44,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilter
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
  * Panel to contain the list of filters that have been saved by the user
@@ -291,7 +292,21 @@ public class FilterListTab extends JPanel implements IListPanel{
 				} else {
 					entries[i][2] = filters[i].getComparator().toString();
 				}
-				entries[i][3] = filters[i].getValue();
+				String a = filters[i].getType().toString();
+				Iteration entry = new Iteration();
+				if(a=="Iteration"){
+					String n= filters[i].getValue();
+				for (Iteration m:parent.getTabPanel().getIterationList().getIterations()){
+					if (n.equals(m.getName())){
+						entry = m;
+					}
+				
+				}
+				
+				entries[i][3] = entry.getName(); 
+				}
+				else{
+				entries[i][3] = filters[i].getValue();}
 				if (filters[i].isUseFilter()) {
 					entries[i][4] = "yes";
 				} else {

@@ -49,7 +49,6 @@ public class Filter extends AbstractModel {
 	/** The owner of the filter */
 	private User user;
 
-
 	/**	Basic constructor.  Sets ID to -1 as a flag to the entity manager
 	 */
 	public Filter () {
@@ -70,6 +69,7 @@ public class Filter extends AbstractModel {
 		this.setComparator(comparator);
 		this.setValue(value);  		// Calls correctly overloaded setValue method
 		this.setUseFilter(useFilter);
+
 	}
 
 
@@ -308,11 +308,6 @@ public class Filter extends AbstractModel {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-
-
-
-
 
 	/**
 	 * @return the value
