@@ -45,12 +45,12 @@
 		<delete dir="build"/>
 		<delete dir="build-test"/>
 		<!-- temp hackaround-->
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin" overwrite="true"/>
+		<!--<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin" overwrite="true"/>
 		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin" overwrite="true"/> 
 		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/build" overwrite="true"/>
 		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build" overwrite="true"/> 
 		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/build-test" overwrite="true"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build-test" overwrite="true"/> 
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build-test" overwrite="true"/> -->
 	</target>
 
 	<target name="test" depends="compile-test">

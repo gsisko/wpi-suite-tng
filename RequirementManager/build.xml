@@ -72,8 +72,8 @@
 		<delete file="${janeway-jar-dest}"/>
 		<!--hackaround to adding jars... -->
 		<!-- Causing issues... need to fix later... -->
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>
+		<!--<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin"/>-->
 	</target>
 
 	<!-- compile dependency is necessary since Core needs jars to run tests... hacky -->
