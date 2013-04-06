@@ -79,7 +79,11 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider {
 		buttonGroup = new ToolbarGroupView("Pie Chart");
 	
 		// Instantiate the Display Pie Chart button
-		btnDisplayPieChart = new JButton("Display Pie Chart");
+		btnDisplayPieChart = new JButton();
+		//btnDisplayPieChart.setAction(new RefreshRequirementsAction(controller));
+		buttonGroup.getContent().add(btnDisplayPieChart);
+		buttonGroup.setPreferredWidth(200);
+		
 		add(btnDisplayPieChart);
 		
 		btnDisplayPieChart.addActionListener(new ActionListener() {
