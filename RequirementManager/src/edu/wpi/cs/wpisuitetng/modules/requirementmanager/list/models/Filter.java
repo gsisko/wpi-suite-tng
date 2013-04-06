@@ -48,19 +48,19 @@ public class Filter extends AbstractModel {
 	private boolean useFilter;
 	/** The owner of the filter */
 	private User user;
-	
-	
-	/**	Basic constructor
+
+
+	/**	Basic constructor.  Sets ID to -1 as a flag to the entity manager
 	 */
 	public Filter () {
 		this.setUniqueID(-1); 		// default as a flag to entity manager
 	}
-	
-	
+
+
 	/**	Full constructor for Filter. 
 	 * 
-	 * @param type
-	 * @param comparator
+	 * @param type What we are filtering by
+	 * @param comparator How we are searching
 	 * @param value     Could be anything, preferably Integer, String, RequirementStatus, RequirementType, RequirementPriority
 	 * @param useFilter  Field that says whether or not to use the filter
 	 */
@@ -71,8 +71,8 @@ public class Filter extends AbstractModel {
 		this.setValue(value);  		// Calls correctly overloaded setValue method
 		this.setUseFilter(useFilter);
 	}
-	
-	
+
+
 	/** Converts this Filter to a JSON string
 	 * 
 	 * @return a string in JSON representing this Filter
@@ -83,7 +83,7 @@ public class Filter extends AbstractModel {
 		json = gson.toJson(this, Filter.class);
 		return json;
 	}
-	
+
 	/** Converts the given list of Filters to a JSON string
 	 * 
 	 * @param dlist A list of Filters
@@ -95,12 +95,16 @@ public class Filter extends AbstractModel {
 		json = gson.toJson(dlist, Filter.class);
 		return json;
 	}
-	
+
 	@Override
+	/** Alternate call to convert class to a JSON
+	 * 
+	 * @return Same as {@link toJON()}
+	 */
 	public String toString() {
 		return toJSON();
 	}
-	
+
 	/** Converts a given json string to a Filter
 	 * 
 	 * @param json Json string to parse containing Filter
@@ -110,7 +114,7 @@ public class Filter extends AbstractModel {
 		GsonBuilder builder = new GsonBuilder();
 		return builder.create().fromJson(json, Filter.class);
 	}
-	
+
 	/** Converts a JSON string of an array of filters to
 	 *  an array of filters.
 	 *  
@@ -121,7 +125,7 @@ public class Filter extends AbstractModel {
 		GsonBuilder builder = new GsonBuilder();
 		return builder.create().fromJson(json, Filter[].class);
 	}
-	
+
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(java.lang.Object)
 	 */
@@ -135,8 +139,9 @@ public class Filter extends AbstractModel {
 		}
 		return returnValue;
 	}
-	
+
 	/** Changes all fields in the current Filter to equal the fields of the filterUpdate
+	 * User and UniqueID are ignored as they should never be updated
 	 * 
 	 * @param reqUpdate Filter holding the updates
 	 */
@@ -148,10 +153,11 @@ public class Filter extends AbstractModel {
 		// User does not need to be set, as it cannot be changed anyways
 		// Unique ID does not need to be set, as it cannot be changed anyways
 	}
-	
+
 	/** Compares two filters. Intended use in the makeEntity method
 	 * 
 	 * @param toCompareTo The Filter to compare to
+	 * 
 	 * @return Whether the two Filters are equal or not
 	 */
 	public boolean equals(Filter toCompareTo){
@@ -160,16 +166,16 @@ public class Filter extends AbstractModel {
 		if (!this.getValue().equals(toCompareTo.getValue())  ) return false;		
 		return true;
 	}	
-	
-	/** Determines whether a Requirement passes a filter
-	*
-	*	@param req The Requirement in question
-	*
-	*	@return True if the Requirement passes, false if it does not
-	*/
+
+	/** Determines whether a Requirement passes this filter
+	 *
+	 *	@param req The Requirement in question
+	 *
+	 *	@return True if the Requirement passes, false if it does not
+	 */
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
-	
+
 		try{
 			switch (this.type){	
 			// The following two are strings
@@ -177,31 +183,33 @@ public class Filter extends AbstractModel {
 				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
 			case Description:
 				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
-			
-			// The following four are Integers
+
+				// The following five are Integers
 			case Id: 
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+			case Iteration:
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getAssignedIteration());
 			case ActualEffort:
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
 			case Estimate:
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
 			case ReleaseNumber:
-				
+
 				if (this.value.equals("none")){
 					return OperatorType.perform(this.comparator, -1, req.getReleaseNumber());				
 				}				
 
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
-		
-			// The following three are different enums
+
+				// The following three are different enums
 			case Status:
 				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
 			case Type:
 				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
 			case Priority:
 				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
-		
-			// Default
+
+				// Default
 			default:
 				return true;  // default to not filter out stuff
 			}
@@ -209,8 +217,8 @@ public class Filter extends AbstractModel {
 			return false; // If parseInt is given a string with no numbers, the filter is set to pass the filter
 		}
 	}
-	
-	
+
+
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
@@ -226,8 +234,8 @@ public class Filter extends AbstractModel {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
+
+
 	/**
 	 * @return the uniqueID
 	 */
@@ -270,7 +278,7 @@ public class Filter extends AbstractModel {
 		this.comparator = comparator;
 	}
 
-	
+
 	/**
 	 * @return The useFilter
 	 */
@@ -301,11 +309,11 @@ public class Filter extends AbstractModel {
 		this.user = user;
 	}
 
-	
 
-	
-	
-	
+
+
+
+
 	/**
 	 * @return the value
 	 */
