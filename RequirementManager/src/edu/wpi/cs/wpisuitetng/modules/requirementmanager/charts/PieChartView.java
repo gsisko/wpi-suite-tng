@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
  * View that contains the pie chart 
@@ -46,16 +47,19 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	/** The panel containing the actual pie chart */
 	private PieChartPanel piePanel;
 	
+	/** The MainTabController holding this view */
+	MainTabController parent;
 	
 	/**
 	 * Construct the view
 	 */
-	public PieChartView(){
+	public PieChartView(MainTabController parent){
 		super();
 		
-		piePanel = new PieChartPanel();
-		buttonGroup = new ToolbarGroupView("Pie Chart Refresh");
-		btnRefresh = new JButton();
+		this.parent = parent;
+		this.piePanel = new PieChartPanel();
+		this.buttonGroup = new ToolbarGroupView("Pie Chart Refresh");
+		this.btnRefresh = new JButton();
 	}
 
 	/** Refresh and reload data in the pie chart */
