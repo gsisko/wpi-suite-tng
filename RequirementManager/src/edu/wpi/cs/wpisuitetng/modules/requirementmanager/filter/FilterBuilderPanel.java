@@ -254,7 +254,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			String[] IterationArr = {"Backlog"};
 			if(selected=="Iteration"){
 				IterationArr =new String[this.getIterationNames().size()];
-				IterationArr = this.getIterationNames().toArray(IterationArr);
+				IterationArr=this.getIterationNames().toArray(IterationArr);
 				valueStrings=IterationArr;}
 			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
 			valueBox.setModel(valb);
@@ -656,6 +656,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		public ArrayList<String> getIterationNames(){
 		int size = this.parent.getTabPanel().getIterationList().getIterations().size();
 		ArrayList<String> IterationName = new ArrayList<String>();
+		IterationName.add("Backlog");
 		for (int i=0;i<size;i++){
 		IterationName.add(this.parent.getTabPanel().getIterationList().getIterations().get(i).getName());
 		}
