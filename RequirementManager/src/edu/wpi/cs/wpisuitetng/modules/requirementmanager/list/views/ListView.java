@@ -43,10 +43,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
  * View that contains the entire requirement listing interface
  */
 @SuppressWarnings("serial")
-public class ListRequirementsView extends JPanel implements IToolbarGroupProvider {
+public class ListView extends JPanel implements IToolbarGroupProvider {
 	
 	/** Panel containing the list interface */
-	protected ListPanel mainPanel;
+	protected ListTab mainPanel;
 	
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
@@ -71,10 +71,10 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	 * @param tabController The main tab controller
 	 * @param tab The Tab containing this view
 	 */
-	public ListRequirementsView(MainTabController tabController) {
+	public ListView(MainTabController tabController) {
 		this.tabController = tabController;
 		
-		mainPanel = new ListPanel(tabController, this);
+		mainPanel = new ListTab(tabController, this);
 		
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();
@@ -133,7 +133,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		return iterationController;
 	}
 	
-	public ListPanel getListPanel() {
+	public ListTab getListPanel() {
 		return mainPanel;
 	}
 

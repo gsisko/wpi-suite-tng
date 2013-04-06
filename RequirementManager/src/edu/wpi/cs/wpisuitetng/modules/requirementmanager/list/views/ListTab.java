@@ -29,18 +29,18 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
  * Panel to hold the three portions of the requirement list interface. The
- * list of saved filters is displayed in {@link FilterListPanel}, the filter
+ * list of saved filters is displayed in {@link FilterListTab}, the filter
  * builder is displayed in {@link FilterBuilderPanel}, and the results of
- * the list are displayed in {@link ResultsPanel}.
+ * the list are displayed in {@link RequirementListPanel}.
  */
 @SuppressWarnings("serial")
-public class ListPanel extends JPanel {
+public class ListTab extends JPanel {
 
 	public enum Mode {
 		FILTER,
@@ -53,10 +53,10 @@ public class ListPanel extends JPanel {
 	protected IterationBuilderPanel iterationBuilderPanel;
 
 	/** Panel containing the results of the requirement list */
-	protected ResultsPanel resultsPanel;
+	protected RequirementListPanel resultsPanel;
 
 	/** Panel containing tabs instead of filter */
-	protected ListTabView tabPanel;
+	protected ListTabPanel tabPanel;
 
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
@@ -64,7 +64,7 @@ public class ListPanel extends JPanel {
 	/** The main tab controller */
 	protected MainTabController tabController;
 
-	private ListRequirementsView parent; 
+	private ListView parent; 
 
 	private JScrollPane builderScrollPane;
 
@@ -74,7 +74,7 @@ public class ListPanel extends JPanel {
 	 * Constructs the list panel and sets up the layout for the sub-panels
 	 * @param tabController The main tab controller
 	 */
-	public ListPanel(MainTabController tabController, ListRequirementsView view) {
+	public ListTab(MainTabController tabController, ListView view) {
 		this.tabController = tabController;
 		this.parent = view;
 		this.currentMode = Mode.FILTER;
@@ -86,14 +86,14 @@ public class ListPanel extends JPanel {
 		// Construct the panels that compose the list view
 		this.filterBuilderPanel = new FilterBuilderPanel(this);
 		this.iterationBuilderPanel = new IterationBuilderPanel(this);
-		this.tabPanel = new ListTabView(this);
+		this.tabPanel = new ListTabPanel(this);
 		this.filterBuilderPanel.setupControllersAndListeners();
 		this.iterationBuilderPanel.setupControllersAndListeners();
 
 
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
 		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
-		this.resultsPanel = new ResultsPanel(tabController);
+		this.resultsPanel = new RequirementListPanel(tabController);
 
 
 		// Constrain the FilterListPanel and IterationListPanel
@@ -126,7 +126,7 @@ public class ListPanel extends JPanel {
 		this.add(resultsPanel);
 	}
 
-	public ResultsPanel getResultsPanel(){
+	public RequirementListPanel getResultsPanel(){
 		return resultsPanel;
 	}
 
@@ -143,21 +143,21 @@ public class ListPanel extends JPanel {
 		return iterationBuilderPanel;
 	}
 
-	public ListTabView getTabPanel(){
+	public ListTabPanel getTabPanel(){
 		return tabPanel;
 	}
 
 	/**
 	 * @return the listView
 	 */
-	public ListRequirementsView getParent() {
+	public ListView getParent() {
 		return parent;
 	}
 
 	/**
 	 * @param listView the listView to set
 	 */
-	public void setParent(ListRequirementsView listView) {
+	public void setParent(ListView listView) {
 		this.parent = listView;
 	}
 

@@ -24,7 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
-import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode.CREATE;
+import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
 import javax.swing.JOptionPane;
 
@@ -39,7 +39,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class SaveRequirementController
 {
-    private final RequirementPanel view;
+    private final RequirementTab view;
 
     public SaveRequirementController(RequirementView view) 
     {
@@ -136,7 +136,7 @@ public class SaveRequirementController
 		}
 	}
 	
-	public RequirementPanel getView() {
+	public RequirementTab getView() {
 		return view;
 	}
 	/**

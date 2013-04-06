@@ -19,12 +19,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
@@ -33,11 +33,11 @@ public class TestRequirementControllers {
     
     RetrieveAllRequirementsController controller;
     
-    ResultsPanel view;
-    FilterListPanel filter;
+    RequirementListPanel view;
+    FilterListTab filter;
     
-    ListRequirementsView rView;
-    MainTabView mainView;
+    ListView rView;
+    MainTabPanel mainView;
     Tab tab;
     
     @Before
@@ -45,8 +45,8 @@ public class TestRequirementControllers {
 	Network.initNetwork(new MockNetwork());
 	Network.getInstance().setDefaultNetworkConfiguration(new NetworkConfiguration("http://wpisuitetng"));
 	
-	view = new ResultsPanel(new MainTabController(new MainTabView()));
-	mainView = new MainTabView();
+	view = new RequirementListPanel(new MainTabController(new MainTabPanel()));
+	mainView = new MainTabPanel();
 	tab = new Tab(mainView, new Canvas());
 	
 	//rView = new ListRequirementsView(new MainTabController(mainView), tab);

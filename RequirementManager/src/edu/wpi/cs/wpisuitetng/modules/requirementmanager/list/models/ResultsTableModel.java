@@ -27,7 +27,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * A model to manage the data displayed in the {@link ResultsPanel}
+ * A model to manage the data displayed in the {@link RequirementListPanel}
  */
 @SuppressWarnings("serial")
 public class ResultsTableModel extends AbstractTableModel {

@@ -35,9 +35,9 @@ import javax.swing.KeyStroke;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarController;
 
@@ -55,7 +55,7 @@ public class JanewayModule implements IJanewayModule {
 	public final MainTabController mainTabController;
 	public final ToolbarController toolbarController;
 	
-	public final MainTabView mainTabView;
+	public final MainTabPanel mainTabPanel;
 	public final ToolbarView toolbarView;
 	
 	/**
@@ -64,19 +64,19 @@ public class JanewayModule implements IJanewayModule {
 	public JanewayModule() {
 		
 		// Setup main tab view and controller
-		mainTabView = new MainTabView();
-		mainTabController = mainTabView.getMainTabController();
+		mainTabPanel = new MainTabPanel();
+		mainTabController = mainTabPanel.getMainTabController();
 		
 		// Setup tool bar view and controller
 		toolbarView = new ToolbarView(mainTabController);
 		toolbarController = new ToolbarController(toolbarView, mainTabController);
 		
 		// Add the refresh button
-		toolbarController.setRelevantTabGroup(((ListRequirementsView)mainTabView.getComponentAt(0)).getGroup());
+		toolbarController.setRelevantTabGroup(((ListView)mainTabPanel.getComponentAt(0)).getGroup());
 		
 		// Sets up an array that holds all the tabs
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabView);
+		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabPanel);
 		tabs.add(tab);
 		
 		// add keyboard shortcuts to requirements tab
@@ -142,6 +142,6 @@ public class JanewayModule implements IJanewayModule {
 
 	@Override
 	public void invokeWhenSelected() {
-		((ListRequirementsView)mainTabView.getComponentAt(0)).refreshData();
+		((ListView)mainTabPanel.getComponentAt(0)).refreshData();
 	}
 }

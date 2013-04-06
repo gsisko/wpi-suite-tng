@@ -16,10 +16,10 @@ import javax.swing.JTextArea;
 import javax.swing.JViewport;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
-public class NotePanel extends JPanel {
+public class NoteTab extends JPanel {
 	
 	//The fillable component
 	private  JTextArea txtMessage;//The message text field 
@@ -32,7 +32,7 @@ public class NotePanel extends JPanel {
 	private Note currentNote;//Stores the note currently open for editing or creation
 
 	// the parent might change to a Requirement View depending on how the UI is implemented
-	private RequirementPanel parent; //Stores the RequirementPanel that contains the panel
+	private RequirementTab parent; //Stores the RequirementPanel that contains the panel
 
 	//A boolean indicating if input is enabled on the form 
 	protected boolean inputEnabled;
@@ -49,7 +49,7 @@ public class NotePanel extends JPanel {
 	 * @param requirement	The requirement that is currently open for editing or creation.
 	 * @param editMode	The mode of the current panel. This is "CREATE" when we are creating a new requirement, and "EDIT" when we are editing an existing requirement.
 	 */
-	public NotePanel(RequirementPanel reqPanelParent) {
+	public NoteTab(RequirementTab reqPanelParent) {
 
 		parent = reqPanelParent; //Set the RequirementPanel that contains this instance of this panel
 

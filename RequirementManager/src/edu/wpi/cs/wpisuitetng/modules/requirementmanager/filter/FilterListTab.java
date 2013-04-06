@@ -22,14 +22,11 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,48 +34,45 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
- * Panel to contain the list of Iterations that have been saved by the user
+ * Panel to contain the list of filters that have been saved by the user
  */
 @SuppressWarnings("serial")
-public class IterationListPanel extends JPanel implements IListPanel {
+public class FilterListTab extends JPanel implements IListPanel{
 
 	/** The table of results */
 	protected JTable resultsTable;
+
 	protected JButton btnCreate;
 	protected JButton btnDelete;
 	private boolean btnCreateIsCancel;
 
-	private Iteration[] localIterations = {};
-	
-	private RetrieveAllModelsController retrieveAllController;
-	private DeleteModelController deleteController;
-	private RetrieveModelController retrieveController;
+	private Filter[] localFilters = {};
 
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
-	private final ListPanel parent;
-	int j;
-	int k;
-	int x;
-	int y;
-	
+	private DeleteModelController deleteController;
+	private RetrieveModelController retrieveController;
+	private RetrieveAllModelsController retrieveAllController;
+
+	private final ListTab parent;
 	/**
 	 * Construct the panel
 	 */
-	public IterationListPanel(ListPanel view) {
+
+	public FilterListTab(ListTab view) {
 		parent = view;
 		this.setBtnCreateIsCancel(false);
 		// Set the layout manager
@@ -91,20 +85,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
-		resultsTable.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
-
-		    SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
-
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		        if( value instanceof Date) {
-		            value = f.format(value);
-		        }
-		        return super.getTableCellRendererComponent(table, value, isSelected,
-		                hasFocus, row, column);
-		    }
-		}
-		);
-		
+		resultsTable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -114,7 +95,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 
-		btnCreate = new JButton ("New Iteration");
+		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
 
 		btnCreate.setMaximumSize(new Dimension(120, 40));
@@ -129,32 +110,31 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		btnCreate.setAlignmentX(CENTER_ALIGNMENT);
 		btnDelete.setAlignmentX(CENTER_ALIGNMENT);
 
-		retrieveAllController = new RetrieveAllModelsController(this, parent.getIterationBuilderPanel(), "iteration");
-		deleteController = new DeleteModelController(this, parent.getIterationBuilderPanel(), "iteration");
-		retrieveController = new RetrieveModelController(this, parent.getIterationBuilderPanel(), "iteration");
-		
+		deleteController = new DeleteModelController(this, parent.getFilterBuilderPanel(),"filter");
+		retrieveController = new RetrieveModelController(this, parent.getFilterBuilderPanel(),"filter");
+		setRetrieveAllController(new RetrieveAllModelsController(this, parent.getFilterBuilderPanel(),"filter"));
+
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
 
-		
-		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
-		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
+		// Sets up listener system. Once pressed, changes to CancelFilterAction listener, then back to this.
+		btnCreate.addActionListener(new NewModelAction(this, parent.getFilterBuilderPanel()));
+
 		btnDelete.addActionListener(deleteController);
-		
 	}
 
-	/**This method returns an ArrayList of active Iterations
+	/**This method returns an ArrayList of active filters
 	 * 
-	 * @return activeIterations An ArrayList of the active Iterations
+	 * @return activeFilters An ArrayList of the active filters
 	 */
-	public ArrayList<Iteration> getIterations() {
-		ArrayList<Iteration> allIterations = new ArrayList<Iteration>();
+	public ArrayList<Filter> getActiveFilters() {
+		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
 
-		for(int i = 0; i < localIterations.length; i++){
-			allIterations.add(localIterations[i]);
+		for(int i = 0; i < localFilters.length; i++){
+			if(localFilters[i].isUseFilter()) activeFilters.add(localFilters[i]);
 		}
 
-		return allIterations;
+		return activeFilters;
 	}
 
 	/**
@@ -182,22 +162,22 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	/**
 	 * @return the parent
 	 */
-	public ListPanel getParent() {
+	public ListTab getParent() {
 		return parent;
 	}
 
 	/**
-	 * @return the localIterations
+	 * @return the localFilters
 	 */
-	public Iteration[] getLocalIterations() {
-		return localIterations;
+	public Filter[] getLocalFilters() {
+		return localFilters;
 	}
 
 	/**
-	 * @param localIterations the localIterations to set
+	 * @param localFilters the localFilters to set
 	 */
-	public void setLocalIterations(Iteration[] localIterations) {
-		this.localIterations = localIterations;
+	public void setLocalFilters(Filter[] localFilters) {
+		this.localFilters = localFilters;
 	}
 
 	public JButton getBtnCreate(){
@@ -218,117 +198,105 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		this.btnCreateIsCancel = btnCreateIsCancel;
 	}
 
-	/**
-	 * Set the cancel button back to New Iteration if it was in cancel mode
-	 */
-	public void setCancelBtnToNew() {
-		this.getBtnCreate().setText("New Iteration"); 
-		this.setBtnCreateIsCancel(false);
+	@Override
+	public String[] getUniqueIdentifiers() {
+		// get highlighted rows 
+		int[] rowNumbers = resultsTable.getSelectedRows();
+
+		String[] ids = new String [rowNumbers.length];
+		// get array of row numbers, if there are any highlighted rows
+		for(int i=0; i<rowNumbers.length;i++){
+			ids[i] = (String) resultsTable.getValueAt(rowNumbers[i], 0);
+		}
+		return ids;
 	}
-	
-	/**
-	 * Set the new iteration button to cancel
-	 */
-	public void setNewBtnToCancel(){
+
+	@Override
+	public void setNewBtnToCancel() {
+		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	/** 
-	 * Toggles between "New Model" and "Cancel" mode 
-	 */
+	@Override
+	public void setCancelBtnToNew() {
+		// Set the cancel button back to New Filter if it was in cancel mode 
+		this.getBtnCreate().setText("New Filter"); 
+		this.setBtnCreateIsCancel(false);
+
+	}
+
+	@Override
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
 		if(btnCreateIsCancel)
 			this.getBtnCreate().setText("Cancel"); 			
 		else
-			this.getBtnCreate().setText("New Iteration");
+			this.getBtnCreate().setText("New Filter");
 	}
 
-	/** Begins refresh process, allows the panels to start triggering
-	 *  their own controllers and chains of controllers
-	 * 
-	 * @return true on success, false on failure
-	 */
+
+	@Override
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
 		return true;
 	}
 
-	/** Gets the unique identifier of the list entry that was double clicked
-	 * 
-	 * @return The unique identifier, either name or ID number
-	 */
+
+	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
-		// Determine the row the user clicked on
-		int row = resultsTable.rowAtPoint(me.getPoint());
+		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
 
-		String iterationId = null;
+		int row = filters.rowAtPoint(me.getPoint());
 
+		String filterId=null;
 		// make sure the user actually clicked on a row
 		if (row > -1) {
-			iterationId = resultsTable.getValueAt(row, 0).toString();
+			filterId = (String) resultsTable.getValueAt(row, 0);
 		}
 
-		return iterationId;
+		return filterId;
 	}
 
-	/** Takes whatever model(s) is(are) stored in the the current panel,
-	 *  and returns the unique identifier(s) in an array. Generally
-	 *  pulls the highlighted identifiers from a table view.
-	 * 
-	 * @return An array of unique identifiers in the form of strings
-	 */
-	public String[] getUniqueIdentifiers() {
-		
-		// get highlighted rows 
-		int[] rowNumbers = resultsTable.getSelectedRows();
-
-		String[] ids = new String [rowNumbers.length];
-
-		// get array of row numbers, if there are any highlighted rows
-		for(int i = 0; i < rowNumbers.length; i++){			
-			// Getting the name from the current highlighted row
-			ids[i] = resultsTable.getValueAt(rowNumbers[i], 0).toString();
-		}
-
-		return ids;
-	}
-
-	/** 
-	 * Show the models in the list view
-	 *  Do nothing in builder
-	 * 
-	 * @param jsonString An array of models in the form of a JSON string
-	 */
+	@Override
 	public void showRecievedModels(String jsonString) {
-		// empty the table
+		// Setup data structures
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-
+		
 		// Fire blanks so that the old contents are removed
 		this.getModel().setColumnNames(emptyColumns);
 		this.getModel().setData(emptyData);
 		this.getModel().fireTableStructureChanged();
-		
-		
-		Iteration[] iterations = Iteration.fromJSONArray(jsonString);
-		// Add the list of iterations to the IterationListPanel object
-		this.setLocalIterations(iterations);
 
-		if (iterations.length > 0) {
+		
+		Filter[] filters = Filter.fromJSONArray(jsonString);
+		this.setLocalFilters(filters);
+
+		// Add the list of filters to the FilterListPanel object
+		if (filters.length > 0) {
 			// set the column names
-			String[] columnNames = {"Id", "Name", "StartDate", "EndDate"};
+			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
 
 			// put the data in the table
-			Object[][] entries = new Object[iterations.length][columnNames.length];
-			for (int i = 0; i < iterations.length; i++) {
-				entries[i][0] = iterations[i].getID();
-				entries[i][1] = iterations[i].getName();
-				entries[i][2] = iterations[i].getStartDate();
-				entries[i][3] = iterations[i].getEndDate();
-
+			Object[][] entries = new Object[filters.length][columnNames.length];
+			for (int i = 0; i < filters.length; i++) {
+				entries[i][0] = String.valueOf(filters[i].getUniqueID());
+				entries[i][1] = filters[i].getType().toString();
+				if (filters[i].getComparator().toString().equals("Contains")) {
+					entries[i][2] = "c";
+				} else if (filters[i].getComparator().toString().equals("DoesNotContain")) {
+					entries[i][2] = "!c";
+				} else {
+					entries[i][2] = filters[i].getComparator().toString();
+				}
+				entries[i][3] = filters[i].getValue();
+				if (filters[i].isUseFilter()) {
+					entries[i][4] = "yes";
+				} else {
+					entries[i][4] = "no";
+				}
 			}
 
 			// fill the table
@@ -338,8 +306,10 @@ public class IterationListPanel extends JPanel implements IListPanel {
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
-			return; // end now
 		}
+		
+		refreshRequirements();
+		
 	}
 
 	/**
@@ -355,11 +325,12 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
 	}
-	
+
 	@Override
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
-	
+
+
 }
 

@@ -32,9 +32,9 @@ import javax.swing.Icon;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -44,13 +44,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class MainTabController {
 
-	private final MainTabView view;
+	private final MainTabPanel view;
 	private boolean initialized = false;
 
 	/**
 	 * @param view Create a controller that controls this MainTabView
 	 */
-	public MainTabController(final MainTabView view) {
+	public MainTabController(final MainTabPanel view) {
 		this.view = view;
 		this.view.addMouseListener(new MouseAdapter() {
 			@Override
@@ -65,9 +65,9 @@ public class MainTabController {
 				if (initialized)
 				{
 					Component tab = view.getComponentAt(view.getSelectedIndex());
-					if (tab instanceof ListRequirementsView) {
-						((ListRequirementsView)tab).getFilterController().refreshData();
-						((ListRequirementsView)tab).getIterationController().refreshData();
+					if (tab instanceof ListView) {
+						((ListView)tab).getFilterController().refreshData();
+						((ListView)tab).getIterationController().refreshData();
 					}
 				}
 				else initialized = true;

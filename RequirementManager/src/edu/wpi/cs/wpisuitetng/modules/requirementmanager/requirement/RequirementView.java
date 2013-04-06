@@ -36,7 +36,7 @@ import javax.swing.SwingUtilities;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.DummyTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
@@ -48,7 +48,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 
 	private ToolbarGroupView buttonGroup;
 	private JButton saveButton;
-	private RequirementPanel mainPanel;
+	private RequirementTab mainPanel;
 	private SaveRequirementController controller;
 	final JScrollPane mainPanelScrollPane;
 	private Tab containingTab;
@@ -93,7 +93,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		}
 		
 		// Instantiate the main create requirement panel
-		mainPanel = new RequirementPanel(this, requirement, editMode);
+		mainPanel = new RequirementTab(this, requirement, editMode);
 		this.setLayout(new BorderLayout());
 		mainPanelScrollPane = new JScrollPane(mainPanel);
 		mainPanelScrollPane.getVerticalScrollBar().setUnitIncrement(10);
@@ -147,7 +147,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 * 
 	 * @return the main panel with the data fields
 	 */
-	public RequirementPanel getRequirementPanel() {
+	public RequirementTab getRequirementPanel() {
 		return mainPanel;
 	}
 	

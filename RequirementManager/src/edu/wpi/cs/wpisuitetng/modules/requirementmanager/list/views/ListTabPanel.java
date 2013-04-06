@@ -31,31 +31,31 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab.Mode;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
  * It starts out showing the single Dashboard tab.
  */
 @SuppressWarnings("serial")
-public class ListTabView extends JTabbedPane {
+public class ListTabPanel extends JTabbedPane {
 
-	private ListPanel parent;
-	private FilterListPanel filterList;
-	private IterationListPanel iterationList;
+	private ListTab parent;
+	private FilterListTab filterList;
+	private IterationListTab iterationList;
 
-	public ListTabView(ListPanel view) {
+	public ListTabPanel(ListTab view) {
 
 		this.parent = view;
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
-		filterList = new FilterListPanel(parent);
+		filterList = new FilterListTab(parent);
 		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
-		iterationList = new IterationListPanel(parent);
+		iterationList = new IterationListTab(parent);
 		addTab("Iterations", new ImageIcon(), iterationList, "List of Iterations");
 
 		this.setPreferredSize(new Dimension(190, 500));
@@ -70,7 +70,7 @@ public class ListTabView extends JTabbedPane {
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
-		if (getComponentAt(index) instanceof FilterListPanel) {
+		if (getComponentAt(index) instanceof FilterListTab) {
 			parent.setMode(Mode.FILTER);
 		}
 		else {
@@ -81,28 +81,28 @@ public class ListTabView extends JTabbedPane {
 	/**
 	 * @return the listPanel
 	 */
-	public FilterListPanel getFilterList() {
+	public FilterListTab getFilterList() {
 		return filterList;
 	}
 
 	/**
 	 * @param listPanel the listPanel to set
 	 */
-	public void setFilterList(FilterListPanel filterList) {
+	public void setFilterList(FilterListTab filterList) {
 		this.filterList = filterList;
 	}
 
 	/**
 	 * @return the listPanel
 	 */
-	public IterationListPanel getIterationList() {
+	public IterationListTab getIterationList() {
 		return iterationList;
 	}
 
 	/**
 	 * @param listPanel the listPanel to set
 	 */
-	public void setIterationList(IterationListPanel iterationList) {
+	public void setIterationList(IterationListTab iterationList) {
 		this.iterationList = iterationList;
 	}
 

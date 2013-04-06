@@ -48,7 +48,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /**
@@ -73,7 +73,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	//button
 	private final JButton btnSave;
 
-	private final ListPanel parent;
+	private final ListTab parent;
 
 	private Filter currentFilter;
 
@@ -90,7 +90,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	/**
 	 * Construct the panel
 	 */
-	public FilterBuilderPanel(ListPanel view) {
+	public FilterBuilderPanel(ListTab view) {
 		parent = view;
 		currentMode = Mode.CREATE;
 		

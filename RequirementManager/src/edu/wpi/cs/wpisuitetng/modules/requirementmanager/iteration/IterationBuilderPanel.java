@@ -50,8 +50,8 @@ import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTabView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
@@ -72,7 +72,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	//button
 	private final JButton btnCreate;
 
-	private final ListPanel parent;
+	private final ListTab parent;
 
 	private Mode currentMode;
 
@@ -86,7 +86,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	/**
 	 * Construct the panel
 	 */
-	public IterationBuilderPanel(ListPanel view) {
+	public IterationBuilderPanel(ListTab view) {
 		parent = view;
 		currentMode = Mode.CREATE;
 		currentIteration = null;

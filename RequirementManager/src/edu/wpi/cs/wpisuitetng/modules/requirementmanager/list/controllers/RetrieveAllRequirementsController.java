@@ -28,11 +28,11 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -49,10 +49,10 @@ public class RetrieveAllRequirementsController {
 	//protected ListPanel view;
 
 	/** The panel where the results will display*/
-	protected ResultsPanel resultsPanel;
+	protected RequirementListPanel resultsPanel;
 
 	/** The panel that contains all the filters*/
-	protected FilterListPanel filterPanel;
+	protected FilterListTab filterPanel;
 
 
 	/** The requirements data retrieved from the server */
@@ -63,12 +63,12 @@ public class RetrieveAllRequirementsController {
 	 * 
 	 * @param view the search requirements view
 	 */
-	public RetrieveAllRequirementsController(ListRequirementsView view) {
+	public RetrieveAllRequirementsController(ListView view) {
 		this.resultsPanel = view.getListPanel().getResultsPanel();
 		this.filterPanel = view.getListPanel().getTabPanel().getFilterList();
 	}
 	
-	public RetrieveAllRequirementsController(ResultsPanel view, FilterListPanel filter)
+	public RetrieveAllRequirementsController(RequirementListPanel view, FilterListTab filter)
 	{
 	    this.resultsPanel = view;
 	    this.filterPanel = filter;
@@ -196,7 +196,7 @@ public class RetrieveAllRequirementsController {
 	 * 
 	 * @return resultsPanel
 	 */
-	public ResultsPanel getResultsPanel(){
+	public RequirementListPanel getResultsPanel(){
 	    return resultsPanel;
 	}
 	
@@ -204,7 +204,7 @@ public class RetrieveAllRequirementsController {
 	 * 
 	 * @return the filterPanel
 	 */
-	public FilterListPanel getFilterPanel(){
+	public FilterListTab getFilterPanel(){
 	    return filterPanel;
 	}
 

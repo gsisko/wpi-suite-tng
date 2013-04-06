@@ -69,7 +69,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
  *
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
-public class RequirementPanel extends JPanel {
+public class RequirementTab extends JPanel {
 
 	//An enum to store the mode of the current instance of this panel
 	public enum Mode {
@@ -124,7 +124,7 @@ public class RequirementPanel extends JPanel {
 	 * @param requirement	The requirement that is currently open for editing or creation.
 	 * @param editMode	The mode of the current panel. This is "CREATE" when we are creating a new requirement, and "EDIT" when we are editing an existing requirement.
 	 */
-	public RequirementPanel(RequirementView view, Requirement requirement, Mode editMode) {
+	public RequirementTab(RequirementView view, Requirement requirement, Mode editMode) {
 
 		parent = view;//Set the RequirementView that contains this instance of this panel
 		currentRequirement = requirement; //Set the requirement that is currently open for editing or creation
