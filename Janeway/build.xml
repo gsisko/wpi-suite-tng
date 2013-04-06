@@ -23,6 +23,11 @@
 				debuglevel="lines,vars,source">
 			<classpath refid="classpath"/>
 		</javac>
+			<!-- temp hackaround-->
+		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin" overwrite="true"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin" overwrite="true"/> 
+		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/build" overwrite="true"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build" overwrite="true"/> 
 	</target>
 
 	<target name="compile-test" depends="compile">
@@ -31,7 +36,9 @@
 				debuglevel="lines,vars,source">
 			<classpath refid="test-classpath"/>
 		</javac>
-
+		<!-- temp hackaround-->
+		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/build-test" overwrite="true"/>
+		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build-test" overwrite="true"/> 
 	</target>
 
 	<target name="clean">
