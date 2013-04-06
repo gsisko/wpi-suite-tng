@@ -346,7 +346,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 			//Name
 			resultsTable.getColumnModel().getColumn(1).setPreferredWidth(75);
 			//StartDate
-			resultsTable.getColumnModel().getColumn(2).setPreferredWidth(75);
+			resultsTable.getColumnModel().getColumn(2).setPreferredWidth(80);
 			//EndDate
 			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
 			
