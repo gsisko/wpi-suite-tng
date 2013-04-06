@@ -27,6 +27,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
@@ -178,7 +179,28 @@ public class RetrieveAllRequirementsController {
 			// fill the table
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
-			resultsPanel.getModel().fireTableStructureChanged();			
+			resultsPanel.getModel().fireTableStructureChanged();
+			
+			//Set default widths of all columns
+			//ID
+			resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
+			//Name
+			resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
+			//Description
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(300);
+			//Type
+			resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(120);
+			//Status
+			resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(100);
+			//Priority
+			resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(80);
+			//ReleaseNumber
+			resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(150);
+			//Estimate
+			resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(90);
+			//ActualEffort
+			resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(110);
+			
 		}
 		System.out.println("Existing requirements retrieved successfully.");
 	}
