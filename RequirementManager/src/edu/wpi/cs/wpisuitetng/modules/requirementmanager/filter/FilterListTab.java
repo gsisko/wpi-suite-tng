@@ -303,9 +303,21 @@ public class FilterListTab extends JPanel implements IListPanel{
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			
+			//Hide the Id column
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
+			
+			//Set preferred column widths
+			//Type
+			resultsTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+			//Op
+			resultsTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+			//Value
+			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			//Active
+			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
 		}
 		
 		refreshRequirements();

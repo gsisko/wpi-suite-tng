@@ -141,6 +141,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
 		
+		
 	}
 
 	/**This method returns an ArrayList of active Iterations
@@ -335,9 +336,21 @@ public class IterationListTab extends JPanel implements IListPanel {
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			
+			//Hide the Id column
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
+			
+			//Set preferred column widths
+			//Name
+			resultsTable.getColumnModel().getColumn(1).setPreferredWidth(75);
+			//StartDate
+			resultsTable.getColumnModel().getColumn(2).setPreferredWidth(75);
+			//EndDate
+			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			
+			
 			return; // end now
 		}
 	}

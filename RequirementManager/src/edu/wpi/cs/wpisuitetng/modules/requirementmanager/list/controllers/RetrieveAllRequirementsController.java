@@ -27,7 +27,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
