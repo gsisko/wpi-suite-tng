@@ -116,7 +116,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 
 		//create strings for the boxes
-		String[] typeStrings = { "Id", "Name","Iteration", "Description","Type", "Status","Priority","ReleaseNumber","Estimate","ActualEffort"};
+		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","Iteration","ReleaseNumber","Estimate","ActualEffort"};
 		String[] comparatorStrings = {"=", "!=", ">","<",">=","<=","Contains","DoesNotContain"};
 		String[] userFilterStrings ={"Active","Inactive"};
 
@@ -243,7 +243,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
 
 		// This section is for enumerators, which need specific operators and values
-		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"){
+		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"||selected=="Iteration"){
 			comparatorStrings = new String[]{"=","!="};
 			if(selected=="Type" )
 				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
@@ -252,10 +252,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			if(selected=="Priority")
 				valueStrings=new String[]{"","High","Medium","Low"};
 			String[] IterationArr = {"Backlog"};
-			if(selected=="Iteration")
+			if(selected=="Iteration"){
 				IterationArr =new String[this.getIterationNames().size()];
 				IterationArr = this.getIterationNames().toArray(IterationArr);
-				valueStrings=IterationArr;
+				valueStrings=IterationArr;}
 			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
 			valueBox.setModel(valb);
 		}
@@ -652,14 +652,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	/**
 	 * Get a list of string iteration names
 	 */
-	@SuppressWarnings("null")
-	public ArrayList<String> getIterationNames(){
+
+		public ArrayList<String> getIterationNames(){
 		int size = this.parent.getTabPanel().getIterationList().getIterations().size();
-		int i=0;
-		ArrayList<String> IterationName = null;
-		if (i<size){
+		ArrayList<String> IterationName = new ArrayList<String>();
+		for (int i=0;i<size;i++){
 		IterationName.add(this.parent.getTabPanel().getIterationList().getIterations().get(i).getName());
-		i++;
 		}
 		return IterationName;
 	}
