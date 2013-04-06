@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
@@ -100,13 +101,13 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("Refresh/Display Pie Chart");
+		buttonGroup = new ToolbarGroupView("All Lists                   For Requirements");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(400);
+		buttonGroup.setPreferredWidth(300);
 		
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -118,8 +119,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		// Instantiate the refresh button
 		btnDisplayPieChart = new JButton("Display Pie Chart");
+		buttonGroup.getContent().add(new JLabel("     "));
 		buttonGroup.getContent().add(btnDisplayPieChart);
-		buttonGroup.setPreferredWidth(400);
 
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
