@@ -9,7 +9,7 @@
  *    Team 5
  ******************************************************************************/
 
-package edu.wpi.modules.requirementmanager.controllers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers;
 
 import static org.junit.Assert.*;
 

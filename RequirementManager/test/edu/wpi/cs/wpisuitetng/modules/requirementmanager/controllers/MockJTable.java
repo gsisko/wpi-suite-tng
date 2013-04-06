@@ -10,7 +10,7 @@
  ******************************************************************************/
 
 
-package edu.wpi.modules.requirementmanager.controllers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers;
 
 import java.awt.Point;
 
