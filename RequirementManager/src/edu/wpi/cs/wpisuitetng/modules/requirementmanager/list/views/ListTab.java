@@ -24,8 +24,11 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
@@ -47,19 +50,35 @@ public class ListTab extends JPanel {
 		ITERATION
 	};
 
+	/** Panel containing filter/iteration builders and requirements list */
+	protected JPanel rightPanel;
+
+	/** Panel containing listPanels */
+	protected JPanel leftPanel;
+
 	/** Panel containing the filter building interface */
 	protected FilterBuilderPanel filterBuilderPanel;
+
 	/** Panel containing the filter building interface */
 	protected IterationBuilderPanel iterationBuilderPanel;
 
 	/** Panel containing the results of the requirement list */
 	protected RequirementListPanel resultsPanel;
 
-	/** Panel containing tabs instead of filter */
+	/** Panel containing tabs for the left panel*/
 	protected ListTabPanel tabPanel;
 
-	/** The layout manager for this panel */
+	/** layout for the left panel */
+	protected SpringLayout leftLayout;
+
+	/** layout for the right panel */
+	protected SpringLayout rightLayout;
+
+	/** layout for the panel */
 	protected SpringLayout layout;
+
+	/** layout for the left panel */
+	protected JSplitPane splitPane;
 
 	/** The main tab controller */
 	protected MainTabController tabController;
@@ -69,6 +88,7 @@ public class ListTab extends JPanel {
 	private JScrollPane builderScrollPane;
 
 	private Mode currentMode;
+
 
 	/**
 	 * Constructs the list panel and sets up the layout for the sub-panels
@@ -83,47 +103,69 @@ public class ListTab extends JPanel {
 		this.layout = new SpringLayout();
 		this.setLayout(layout);
 
+
+		splitPane = new JSplitPane();
+		leftPanel = new JPanel();
+		leftPanel.setMinimumSize(new Dimension (260, 500));
+		rightPanel = new JPanel();
+		rightPanel.setMinimumSize(new Dimension(500, 500));
+
+		this.splitPane.setOneTouchExpandable(true);
+		this.splitPane.setDividerLocation(260);
+		this.splitPane.setContinuousLayout(true);
+
 		// Construct the panels that compose the list view
 		this.filterBuilderPanel = new FilterBuilderPanel(this);
 		this.iterationBuilderPanel = new IterationBuilderPanel(this);
 		this.tabPanel = new ListTabPanel(this);
 		this.filterBuilderPanel.setupControllersAndListeners();
 		this.iterationBuilderPanel.setupControllersAndListeners();
-
-
+		
+		
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
 		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
 		this.resultsPanel = new RequirementListPanel(tabController);
 
 
-		// Constrain the FilterListPanel and IterationListPanel
-		layout.putConstraint(SpringLayout.NORTH, listScrollPane, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, listScrollPane, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, listScrollPane, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, listScrollPane, 250, SpringLayout.WEST, listScrollPane);
+
+		// Construct the layout manager and add constraints
+		this.rightLayout = new SpringLayout();
+		rightPanel.setLayout(rightLayout);
+		this.leftLayout = new SpringLayout();
+		leftPanel.setLayout(leftLayout);
 
 		// Constrain the FilterBuilderPanel and IteationBuilderPanel
-		layout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.EAST, listScrollPane);
-		layout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 85, SpringLayout.NORTH, builderScrollPane);
+		rightLayout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, rightPanel);
+		rightLayout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.WEST, rightPanel);
+		rightLayout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, rightPanel);
+		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 85, SpringLayout.NORTH, builderScrollPane);
 
 		// Constrain the resultsPanel
-		layout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);
-		layout.putConstraint(SpringLayout.WEST, resultsPanel, 0, SpringLayout.EAST, listScrollPane);
-		layout.putConstraint(SpringLayout.EAST, resultsPanel, 0, SpringLayout.EAST, this);
-		layout.putConstraint(SpringLayout.SOUTH, resultsPanel, 0, SpringLayout.SOUTH, this);
+		rightLayout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);
+		rightLayout.putConstraint(SpringLayout.WEST, resultsPanel, 0, SpringLayout.WEST, rightPanel);
+		rightLayout.putConstraint(SpringLayout.EAST, resultsPanel, 0, SpringLayout.EAST, rightPanel);
+		rightLayout.putConstraint(SpringLayout.SOUTH, resultsPanel, 0, SpringLayout.SOUTH, rightPanel);
 
-		//Constrain our new filterTabPanel
-		layout.putConstraint(SpringLayout.NORTH, tabPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, tabPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.SOUTH, tabPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.EAST, tabPanel, 200, SpringLayout.WEST, listScrollPane);
+		// Constrain the listScrollPane
+		leftLayout.putConstraint(SpringLayout.NORTH, listScrollPane, 0, SpringLayout.NORTH, leftPanel);
+		leftLayout.putConstraint(SpringLayout.WEST, listScrollPane, 0, SpringLayout.WEST, leftPanel);
+		leftLayout.putConstraint(SpringLayout.EAST, listScrollPane, 0, SpringLayout.EAST, leftPanel);
+		leftLayout.putConstraint(SpringLayout.SOUTH, listScrollPane, 0, SpringLayout.SOUTH, leftPanel);
+
+		// Constrain the splitPane
+		layout.putConstraint(SpringLayout.NORTH, splitPane, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, splitPane, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, splitPane, 0, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, splitPane, 0, SpringLayout.SOUTH, this);
 
 		// Add the panels
-		this.add(listScrollPane);
-		this.add(builderScrollPane);
-		this.add(resultsPanel);
+		leftPanel.add(listScrollPane);
+		rightPanel.add(builderScrollPane);
+		rightPanel.add(resultsPanel);
+		splitPane.setLeftComponent(leftPanel);
+		splitPane.setRightComponent(rightPanel);
+		this.add(splitPane);
+		
 	}
 
 	public RequirementListPanel getResultsPanel(){

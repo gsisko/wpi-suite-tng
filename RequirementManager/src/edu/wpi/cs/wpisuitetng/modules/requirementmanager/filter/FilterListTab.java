@@ -332,7 +332,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 			//Value
 			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
 			//Active
-			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			resultsTable.getColumnModel().getColumn(4).setPreferredWidth(75);
 		}
 		
 		refreshRequirements();
