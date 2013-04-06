@@ -24,7 +24,21 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
+//import java.awt.Graphics;
 
-public class PieChartPanel {
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+public class PieChartPanel extends JPanel{
 	
+	private JComponent pieChart;
+	
+	public PieChartPanel() {
+		super();
+	}
+
+//	@Override
+//	public void paint() {
+//		super();
+//	}
 }
