@@ -33,10 +33,6 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
@@ -56,12 +52,6 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider {
 	
 	/** The refresh button that reloads the results of the list/filter */
 	protected JButton btnDisplayPieChart;
-	
-	/** Controller to handle list and filter requests from the user */
-	protected RetrieveAllRequirementsController controller;
-	
-	protected RetrieveAllModelsController filterController;
-	protected RetrieveAllModelsController iterationController;
 	
 	/** The main tab controller */
 	protected MainTabController tabController;
@@ -85,44 +75,19 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider {
 		// Add the mainPanel to this view
 		this.add(mainPanel);
 			
-		// Add a listener for row clicks in the actual table
-		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
-		
-		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("All Lists");
+		buttonGroup = new ToolbarGroupView("Pie Chart");
 	
-		// Instantiate the refresh button
-		btnDisplayPieChart = new JButton();
-		btnDisplayPieChart.setAction(new RefreshRequirementsAction(controller));
-		buttonGroup.getContent().add(btnDisplayPieChart);
-		buttonGroup.setPreferredWidth(150);
+		// Instantiate the Display Pie Chart button
+		btnDisplayPieChart = new JButton("Display Pie Chart");
+		add(btnDisplayPieChart);
 		
 		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				filterController.refreshData();
-				iterationController.refreshData();
+				//TODO: get Tab
 			}
 		});		
-	}
-	
-	public void refreshData() {
-		// Load initial data
-		filterController.refreshData();
-		iterationController.refreshData();
-	}
-	
-	public RetrieveAllRequirementsController getController() {
-		return controller;
-	}
-	
-	public RetrieveAllModelsController getFilterController() {
-		return filterController;
-	}
-	
-	public RetrieveAllModelsController getIterationController() {
-		return iterationController;
 	}
 	
 	public ListTab getListPanel() {
