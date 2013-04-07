@@ -32,11 +32,17 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /**
  * View that contains the pie chart 
@@ -54,19 +60,22 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	/** The panel containing the actual pie chart */
 	private PieChartPanel piePanel;
 	
-	/** The MainTabController holding this view */
-	private MainTabController tabController;
-	
 	/** The panel containing various chart options on the left of the view */
 	private JPanel optionsPanel;
+	
+	/** The table with the list of displayed requirements */
+	private RequirementListPanel requirementListPanel;
+
+	private ListTab view;
 	
 	/**
 	 * Construct the view
 	 */
-	public PieChartView(MainTabController controller) {
-		this.tabController = controller;
+	public PieChartView(ListTab view) {
 		this.piePanel = new PieChartPanel();
 		this.buttonGroup = new ToolbarGroupView("All Charts");
+		this.view = view;
+		this.requirementListPanel = view.getResultsPanel();
 		this.btnRefresh = new JButton("Refresh");
 		buttonGroup.getContent().add(btnRefresh);
 		buttonGroup.setPreferredWidth(150);
@@ -95,21 +104,38 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** Refresh and reload data in the pie chart */
 	public void refreshData() {
-		//TODO: Implement for PieChart Data?
 		// Load initial data
-		piePanel.refreshChart();
+		view.getParent().refreshData();
+		Requirement[] requirements = getRequirements();
+		piePanel.refreshChart(requirements);
+	}
+	
+	/** Get the current list of requirements from the main list */
+	public Requirement[] getRequirements() {
+		JTable table = requirementListPanel.getResultsTable();
+		Requirement[] requirements = new Requirement[table.getRowCount()];
+		for (int i = 0; i < table.getRowCount(); i++) {
+			Requirement r = new Requirement();
+			r.setId(Integer.parseInt((String)table.getValueAt(i, 0)));
+			r.setName((String)table.getValueAt(i, 1));
+			r.setDescription((String)table.getValueAt(i, 2));
+			r.setType(RequirementType.toType((String)table.getValueAt(i, 3)));
+			r.setStatus(RequirementStatus.toStatus((String)table.getValueAt(i, 4)));
+			r.setPriority(RequirementPriority.toPriority((String)table.getValueAt(i, 5)));
+			if (((String)table.getValueAt(i, 6)).equals("none"))
+				r.setReleaseNumber(-1);
+			else
+				r.setReleaseNumber(Integer.parseInt((String)table.getValueAt(i, 6)));
+			r.setEstimate(Integer.parseInt((String)table.getValueAt(i, 7)));
+			r.setActualEffort(Integer.parseInt((String)table.getValueAt(i, 8)));
+			requirements[i] = r;
+		}
+		return requirements;
 	}
 	
 	/** Returns the piePanel */
 	public PieChartPanel getPiePanel() {
 		return piePanel;
-	}
-
-	/**
-	 * @return the parent
-	 */
-	public MainTabController getTabController() {
-		return tabController;
 	}
 
 	/** Returns the button group to place on the top of the toolbar */

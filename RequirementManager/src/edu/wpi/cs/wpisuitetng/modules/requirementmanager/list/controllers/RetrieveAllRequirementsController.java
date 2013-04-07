@@ -64,8 +64,8 @@ public class RetrieveAllRequirementsController {
 	 * @param view the search requirements view
 	 */
 	public RetrieveAllRequirementsController(ListView view) {
-		this.resultsPanel = view.getListPanel().getResultsPanel();
-		this.filterPanel = view.getListPanel().getTabPanel().getFilterList();
+		this.resultsPanel = view.getListTab().getResultsPanel();
+		this.filterPanel = view.getListTab().getTabPanel().getFilterList();
 	}
 	
 	public RetrieveAllRequirementsController(RequirementListPanel view, FilterListTab filter)
@@ -154,14 +154,14 @@ public class RetrieveAllRequirementsController {
 				entries[i][2] = isFiltered.get(i).getDescription();
 				// Process "NoType" case
 				if (isFiltered.get(i).getType().toString().equals("NoType")){
-					entries[i][3] = " ";					
+					entries[i][3] = "";					
 				} else {
 					entries[i][3] = isFiltered.get(i).getType().toString();;
 				}				
 				entries[i][4] = isFiltered.get(i).getStatus().toString();
 				// Process "NoPriority" case
 				if (isFiltered.get(i).getPriority().toString().equals("NoPriority")){
-					entries[i][5] = " ";					
+					entries[i][5] = "";					
 				} else {
 					entries[i][5] = isFiltered.get(i).getPriority().toString();
 				}

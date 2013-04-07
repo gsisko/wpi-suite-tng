@@ -24,11 +24,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -42,7 +40,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.*;
 
 /**
@@ -102,17 +99,17 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		iterationController = new RetrieveAllModelsController(mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
 		
 		// Add a listener for row clicks in the actual table
-		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
+		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
 		
 		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("Options for Displayed Requirements");
+		buttonGroup = new ToolbarGroupView("Options for Requirements");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(275);
+		buttonGroup.setPreferredWidth(250);
 		
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -123,14 +120,14 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		});
 		
 		// Instantiate the refresh button
-		btnDisplayPieChart = new JButton("Display Pie Chart");
-		buttonGroup.getContent().add(new JLabel("   "));
+		btnDisplayPieChart = new JButton("Display Charts");
+		buttonGroup.getContent().add(new JLabel(" "));
 		buttonGroup.getContent().add(btnDisplayPieChart);
 
 		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tabController.addTab("Pie Chart", new ImageIcon(), new PieChartView(tabController), "Pie Charts for Requirements");
+				tabController.addTab("Charts", new ImageIcon(), new PieChartView(mainPanel), "Charts for Requirements");
 			}
 		});
 	}
@@ -153,7 +150,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		return iterationController;
 	}
 	
-	public ListTab getListPanel() {
+	public ListTab getListTab() {
 		return mainPanel;
 	}
 

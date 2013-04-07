@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.DummyTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
 /**
@@ -53,12 +54,13 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	final JScrollPane mainPanelScrollPane;
 	private Tab containingTab;
 	private boolean inputEnabled = true;
+	private MainTabController tabController;
 
 	/**
 	 * Constructs a new CreateRequirementView where the user can enter the data for a new requirement.
 	 */
-	public RequirementView() {
-		this(new Requirement(), Mode.CREATE, null);
+	public RequirementView(MainTabController tabController) {
+		this(new Requirement(), Mode.CREATE, null, tabController);
 	}
 
 	/**
@@ -68,7 +70,9 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 * @param editMode	The editMode for editing the Requirement
 	 * @param tab		The Tab holding this RequirementView (can be null)
 	 */
-	public RequirementView(Requirement requirement, Mode editMode, Tab tab) {
+	public RequirementView(Requirement requirement, Mode editMode, Tab tab, MainTabController tabController) {
+		this.tabController = tabController;
+		
 		containingTab = tab;
 		if(containingTab == null) {
 			containingTab = new DummyTab();
@@ -192,6 +196,13 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	
 	public SaveRequirementController getController() {
 		return controller;
+	}
+
+	/**
+	 * @return the tabController
+	 */
+	public MainTabController getTabController() {
+		return tabController;
 	}
 	
 }

@@ -39,6 +39,9 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+
 @SuppressWarnings("serial")
 public class PieChartPanel extends JPanel {
 
@@ -101,8 +104,19 @@ public class PieChartPanel extends JPanel {
 	}
 
 	/** Function to refresh and redraw pie chart */
-	public void refreshChart() {
-		// TODO: ?
+	public void refreshChart(Requirement[] requirements) {
+		DefaultPieDataset data = new DefaultPieDataset();
+		for (RequirementStatus rs : RequirementStatus.values()) {
+			int count = 0;
+			for (int i = 0; i < requirements.length; i++) {
+				if (rs == requirements[i].getStatus()) count++;
+			}
+			if (count > 0) data.setValue(rs.toString(), count);
+		}
+		
+		this.dataset = data;
+		this.chart = createChart(dataset, "Status of Displayed Requirements");
+		this.chartPanel.setChart(this.chart);
 	}
 
 }

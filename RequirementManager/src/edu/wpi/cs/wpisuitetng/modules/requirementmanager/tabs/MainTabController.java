@@ -72,7 +72,7 @@ public class MainTabController {
 					} 
 					
 					if (tab instanceof PieChartView) {
-//						((PieChartView)tab).paintAll(null);
+						((PieChartView)tab).refreshData();
 					}
 				}
 				else initialized = true;
@@ -91,8 +91,8 @@ public class MainTabController {
 	 * @return				The created Tab
 	 */
 	public Tab addTab(String title, Icon icon, Component component, String tip) {
-		if(component instanceof PieChartView && view.indexOfTab("Pie Chart") != -1) {
-			view.setSelectedIndex(view.indexOfTab("Pie Chart"));
+		if(component instanceof PieChartView && view.indexOfTab("Charts") != -1) {
+			view.setSelectedIndex(view.indexOfTab("Charts"));
 			return null;
 		}
 		
@@ -121,7 +121,7 @@ public class MainTabController {
 		}
 
 		Tab tab = addTab();
-		RequirementView view = new RequirementView(requirement, mode, tab);
+		RequirementView view = new RequirementView(requirement, mode, tab, this);
 		tab.setComponent(view);
 		view.requestFocus();
 		return tab;
@@ -205,5 +205,9 @@ public class MainTabController {
 				view.removeTabAt(clickedIndex);
 			}
 		}
+	}
+	
+	public MainTabPanel getView() {
+		return view;
 	}
 }
