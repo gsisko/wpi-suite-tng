@@ -69,7 +69,8 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	private ListTab view;
 	
 	/**
-	 * Construct the view
+	 * Construct the view and initialize necessary internal variables
+	 * @param view A ListTab that this view will be used in
 	 */
 	public PieChartView(ListTab view) {
 		this.piePanel = new PieChartPanel();
