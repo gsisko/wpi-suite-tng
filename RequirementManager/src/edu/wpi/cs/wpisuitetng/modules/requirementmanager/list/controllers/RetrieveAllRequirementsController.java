@@ -185,7 +185,12 @@ public class RetrieveAllRequirementsController {
 			// fill the table
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
+			try{
 			resultsPanel.getModel().fireTableStructureChanged();
+			}
+			catch(NullPointerException e){
+			    return;
+			}
 			
 			//Set default widths of all columns
 			//ID

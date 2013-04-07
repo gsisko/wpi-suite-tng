@@ -11,21 +11,22 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers;
 
-import static org.junit.Assert.*;
-
-import java.awt.Canvas;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
@@ -33,12 +34,9 @@ public class TestRequirementControllers {
 
 	RetrieveAllRequirementsController controller;
 
-	RequirementListPanel view;
-	FilterListTab filter;
+	Filter testFilter, testOtherFilter;
 
-	ListView rView;
-	MainTabPanel mainView;
-	Tab tab;
+	MainTabPanel mainTabPanel;
 	ListView listView;
 	MainTabController tabController;
 
@@ -47,13 +45,24 @@ public class TestRequirementControllers {
 		Network.initNetwork(new MockNetwork());
 		Network.getInstance().setDefaultNetworkConfiguration(new NetworkConfiguration("http://wpisuitetng"));
 
-		mainView = new MainTabPanel();
-		tab = new Tab(mainView, new Canvas());
-		tabController = new MainTabController(mainView);
+		mainTabPanel = new MainTabPanel();
+		tabController = new MainTabController(mainTabPanel);
 		listView = new ListView(tabController);
-		view = new RequirementListPanel(tabController);
+		
+		listView.setAllFilters(null);
+		testFilter = new Filter(FilterType.Type, OperatorType.EqualTo, RequirementType.Epic, true);
+		testFilter.setType(FilterType.Type);
+		testFilter.setComparator(OperatorType.EqualTo);
+		testFilter.setValue(RequirementType.Epic);
+		testFilter.setUseFilter(true);
 
-		//rView = new ListRequirementsView(new MainTabController(mainView), tab);
+		testOtherFilter = new Filter(FilterType.Type, OperatorType.EqualTo, RequirementType.Epic, true);
+		testOtherFilter.setType(FilterType.Id);
+		testOtherFilter.setComparator(OperatorType.GreaterThan);
+		testOtherFilter.setValue(3);
+		testOtherFilter.setUseFilter(true);
+		Filter[] filterArray = {testFilter, testOtherFilter};
+		listView.setAllFilters(filterArray);
 
 		controller = new RetrieveAllRequirementsController(listView);//new RetrieveAllRequirementsController(rView);
 	}
@@ -61,8 +70,21 @@ public class TestRequirementControllers {
 	@Test
 	public void contructorSetsViewFieldCorrectly()
 	{
-		/** This test used the wrong constructor and is now broken, fix soon */
-		//assertEquals(view, controller.getResultsPanel());
-		//assertEquals(filter, controller.getFilterPanel());
+	    assertEquals(controller.getResultsPanel(), listView.getListTab().getResultsPanel());
+	    assertEquals(controller.getFilterPanel(), listView.getListTab().getTabPanel().getFilterList());
+	    
+	    controller.refreshData();
+	    Requirement requirementTester = new Requirement();
+	    requirementTester.setId(10);
+	    requirementTester.setPriority(RequirementPriority.High);
+	    requirementTester.setType(RequirementType.Epic);
+	    
+	    Requirement reqTest = new Requirement("test", "test", RequirementType.Epic, RequirementPriority.High, 1);
+	    reqTest.setType(RequirementType.NonFunctional);
+	    requirementTester.setPriority(RequirementPriority.Low);
+	    Requirement[] reqArray = {requirementTester, reqTest};
+	    
+	    //controller.errorReceivingData("Do I Work?");
+	    controller.receivedData(reqArray);
 	}
 }
