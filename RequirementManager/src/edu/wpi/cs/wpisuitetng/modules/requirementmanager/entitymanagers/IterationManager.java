@@ -114,10 +114,10 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *  
 	 *  @param s The current session which contains the current project    
 	 */
-	public void instantiateBacklog(Session s){
+	public void instantiateBacklog(Session s){		
 		// Get the current project
 		Project currentProject = s.getProject();
-		// Set up a flag to keep track of the existence or lack thereof of a backlog
+	/*	// Set up a flag to keep track of the existence or lack thereof of a backlog
 		boolean backlogExistsFlag = false;
 		// Get all Iterations for the current project
 		Iteration[] iterations ;
@@ -125,15 +125,37 @@ public class IterationManager implements EntityManager<Iteration> {
 		// Figure out if we actually have to check that there isn't a backlog 
 		if (iterations.length > 0){ 
 			// Check each iteration to see if it is the backlog
-			for (int j= 0; j< iterations.length; j++){
+			for (int j = 0; j< iterations.length; j++){
 				// Check the current iteration's ID to see if it is the backlog
+				System.out.println("Iteration ID: " +(iterations[j]).getID());
 				if ((iterations[j]).getID()== 0){
 					backlogExistsFlag = true;
 				}
 			}
-		}
-		// If a backlog wasn't found, make one for the current project
+		}   
+			// If a backlog wasn't found, make one for the current project
 		if (!backlogExistsFlag){
+			Iteration model = new Iteration("Backlog", null, null);
+			model.setID(0);
+			model.setProject(currentProject);
+			// Save the backlog in the database if possible, otherwise throw an exception
+			// We want the iteration to be associated with the project the user logged in to
+			if (!this.db.save(model,currentProject)) {
+
+				logger.log(Level.WARNING, "A backlog was not created properly.");
+			}
+		}
+		
+		*/
+		
+		try{
+			Iteration[] iterations = getEntity( s, "0");
+			if (iterations.length == 1) 
+				return; // There is a backlog already
+			else
+				System.err.println("There is more than one backlog!");
+		// Get entity throws an exception when it can't find things
+		} catch (WPISuiteException wse){
 			Iteration model = new Iteration("Backlog", null, null);
 			model.setID(0);
 			model.setProject(currentProject);
@@ -142,7 +164,7 @@ public class IterationManager implements EntityManager<Iteration> {
 			if (!this.db.save(model,currentProject)) {
 				logger.log(Level.WARNING, "A backlog was not created properly.");
 			}
-		}
+		}	
 	}	
 
 
