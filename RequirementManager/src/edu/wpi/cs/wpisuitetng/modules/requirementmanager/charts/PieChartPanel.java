@@ -27,7 +27,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -57,10 +59,12 @@ public class PieChartPanel extends JPanel {
 		this.chartPanel = new ChartPanel(chart);
 		
 		// default size
-		chartPanel.setPreferredSize(new Dimension(500, 500));
+		chartPanel.setPreferredSize(new Dimension(1300, 500));
 		
 		// Construct the layout
 		this.setLayout(new BorderLayout());
+		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+//		this.setBorder(BorderFactory.createLineBorder(5, 5, 5, 5));
 		
 		//Add the chart to our layout
 		add(chartPanel, BorderLayout.CENTER);

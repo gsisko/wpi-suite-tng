@@ -25,9 +25,13 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
@@ -52,6 +56,9 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	/** The MainTabController holding this view */
 	private MainTabController parent;
 	
+	/** The panel containing various chart options on the left of the view */
+	private JPanel optionsPanel;
+	
 	/**
 	 * Construct the view
 	 */
@@ -63,9 +70,19 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		this.buttonGroup = new ToolbarGroupView("Pie Chart Refresh");
 		this.btnRefresh = new JButton();
 		
+		this.optionsPanel = new JPanel();
+		
+		//TODO: Move this into a new file with a new class?
+		this.optionsPanel.setLayout(new BorderLayout());
+		this.optionsPanel.add(new JLabel("Fill me up with options please"), BorderLayout.NORTH);
+		optionsPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
-		add(piePanel, BorderLayout.CENTER);
+		
+		//Add the panels to the layout
+		this.add(piePanel, BorderLayout.CENTER);
+		this.add(optionsPanel, BorderLayout.WEST);
 	}
 
 	/** Refresh and reload data in the pie chart */
