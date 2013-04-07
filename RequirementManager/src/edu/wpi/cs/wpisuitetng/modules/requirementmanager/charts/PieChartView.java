@@ -55,9 +55,6 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	/** The MainTabController holding this view */
 	private MainTabController parent;
 	
-	/** Layout for the view */
-	private SpringLayout layout;
-	
 	/**
 	 * Construct the view
 	 */
@@ -69,8 +66,9 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		this.buttonGroup = new ToolbarGroupView("Pie Chart Refresh");
 		this.btnRefresh = new JButton();
 		
-		// Construct the layout manager and add constraints
+		// Construct the layout 
 		this.setLayout(new BorderLayout());
+		add(piePanel, BorderLayout.CENTER);
 	}
 
 	/** Refresh and reload data in the pie chart */
