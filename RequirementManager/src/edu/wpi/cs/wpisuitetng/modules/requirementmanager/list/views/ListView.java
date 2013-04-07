@@ -106,13 +106,13 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("All Lists                   For Requirements");
+		buttonGroup = new ToolbarGroupView("Options for Displayed Requirements");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(300);
+		buttonGroup.setPreferredWidth(275);
 		
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -124,7 +124,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		// Instantiate the refresh button
 		btnDisplayPieChart = new JButton("Display Pie Chart");
-		buttonGroup.getContent().add(new JLabel("     "));
+		buttonGroup.getContent().add(new JLabel("   "));
 		buttonGroup.getContent().add(btnDisplayPieChart);
 
 		btnDisplayPieChart.addActionListener(new ActionListener() {
