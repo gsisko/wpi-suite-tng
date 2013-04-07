@@ -81,7 +81,10 @@ public class IterationManagerTest {
 		otherIteration.setID(2);
 		
 		
-		db = new MockData(new HashSet<Object>());
+		db = new MockData(new HashSet<Object>(), new HashSet<Project>());
+		db.addProject(testProject);
+		db.addProject(otherProject);
+
 		db.save(existingIteration, testProject);
 		db.save(existingUser);
 		db.save(otherIteration, otherProject);
@@ -105,6 +108,22 @@ public class IterationManagerTest {
 		assertNotNull(manager);
 	}
 
+	@Test    // This is completely independent and tests setup
+	public void testInstantiateBacklogs() throws NotFoundException, WPISuiteException{
+		// Special setup is used here to perform a full test from the ground up
+		MockData testMockDB = new MockData(new HashSet<Object>(), new HashSet<Project>());
+		Project testProject = new Project("Tester", "1");	
+		Session testSession = new Session(existingUser, testProject, mockSsid);
+		testMockDB.save(existingUser);
+		testMockDB.addProject(testProject);
+		
+		// This is the fun part- in here instantiateBacklogs gets called
+		IterationManager manager = new IterationManager(testMockDB);
+		assertNotNull(manager.getEntity(testSession, "0")); // must find the backlog
+		assertNotNull(manager.getAll(  testSession ));
+	}
+
+	
 	@Test
 	public void testMakeEntity() throws WPISuiteException {
 		Iteration created = manager.makeEntity(defaultSession, newIteration.toJSON());
@@ -146,7 +165,7 @@ public class IterationManagerTest {
 	@Test
 	public void testGetAll() throws WPISuiteException {
 		Iteration[] gotten = manager.getAll(defaultSession);
-		assertEquals(1, gotten.length);
+		assertEquals(2, gotten.length);
 		assertSame(existingIteration, gotten[0]);
 	}
 	
@@ -182,11 +201,11 @@ public class IterationManagerTest {
 	public void testDeleteAll() throws WPISuiteException {
 		Iteration anotherIteration = new Iteration("Name", new Date(600), new Date(9000));
 		manager.makeEntity(defaultSession, anotherIteration.toJSON());
-		assertEquals(2, db.retrieveAll(new Iteration(), testProject).size());
+		assertEquals(3, db.retrieveAll(new Iteration(), testProject).size());
 		manager.deleteAll(adminSession);
 		assertEquals(0, db.retrieveAll(new Iteration(), testProject).size());
 		// otherIteration should still be around
-		assertEquals(1, db.retrieveAll(new Iteration(), otherProject).size());
+		assertEquals(2, db.retrieveAll(new Iteration(), otherProject).size());
 	}
 	
 	
@@ -199,7 +218,7 @@ public class IterationManagerTest {
 	
 	@Test
 	public void testCount() throws WPISuiteException {
-		assertEquals(2, manager.Count());
+		assertEquals(4, manager.Count());
 	}
 	
 	@Test

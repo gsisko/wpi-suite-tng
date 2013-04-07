@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**This is the entity manager for the Iteration in the IterationManager module
@@ -63,7 +64,46 @@ public class IterationManager implements EntityManager<Iteration> {
 	 */	
 	public IterationManager(Data data) {
 		this.db = data;
-	
+		instantiateBacklogs();
+	}
+
+
+	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
+	 *  each project. Makes one if necessary for each project.        */
+	private void instantiateBacklogs() {
+		Project[] projectsThatNeedBacklogs = new Project[1];
+		projectsThatNeedBacklogs = db.retrieveAll(new Project("","")).toArray(projectsThatNeedBacklogs);
+
+		// Go through the array of projects, and make sure each has a backlog
+		// If it doesn't have a backlog, make one!
+		for (int i = 0; i < projectsThatNeedBacklogs.length; i++){
+			boolean backlogExistsFlag = false;
+			// Get all Iterations for the current project
+			Iteration[] iterations = new Iteration[1];
+			iterations = this.db.retrieveAll(Iteration.class, projectsThatNeedBacklogs[i]).toArray(new Iteration[0]);
+			// Figure out if we actually have to check that there isn't a backlog 
+			if (iterations.length > 0){ 
+				// Check each iteration to see if it is the backlog
+				for (int j= 0; i< iterations.length; i++){
+					// Check the current iteration's ID to see if it is the backlog
+					if ((iterations[j]).getID()== 0){
+						backlogExistsFlag = true;
+					}
+				}
+			}
+			// If a backlog wasn't found, make one for the current project
+			if (!backlogExistsFlag){
+				Iteration model = new Iteration("Backlog", null, null);
+				model.setID(0);
+				model.setProject(projectsThatNeedBacklogs[i]);
+				// Save the backlog in the database if possible, otherwise throw an exception
+				// We want the iteration to be associated with the project the user logged in to
+				if (!this.db.save(model, projectsThatNeedBacklogs[i])) {
+					logger.log(Level.WARNING, "A backlog was not created properly.");
+				}
+			}
+		}
+		logger.log(Level.FINE, "Backlog creation successful");
 	}
 
 	
@@ -125,13 +165,11 @@ public class IterationManager implements EntityManager<Iteration> {
 			throw new WPISuiteException("Unable to save Iteration.");
 		}
 
-//		model.setName(model.getName().replaceAll("\\s","_"));
-
 		logger.log(Level.FINE, "Iteration Saved :" + model);
 	}
     
     
-    /** Takes a Requirement and assigns a unique id if necessary
+    /** Takes an Iteration and assigns a unique id if necessary
      * 
      * @param req The requirement that possibly needs a unique id
     
@@ -139,7 +177,7 @@ public class IterationManager implements EntityManager<Iteration> {
      */
     public void assignUniqueID(Iteration iter) throws WPISuiteException{
         if (iter.getID() == -1){// -1 is a flag that says a unique id is needed            
-        	iter.setID(Count() + 1); // Makes first Requirement have id = 1
+        	iter.setID(Count() + 1); // Makes first Iteration for a have id = 1
         }        
     }
 	
@@ -263,6 +301,10 @@ public class IterationManager implements EntityManager<Iteration> {
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Iteration oldIteration = getEntity(s, id)[0];
+		if (id.equals("0")){ // ID of 0 = backlog
+			return false;
+		}
+		
 		
 	    if (this.db.delete(oldIteration) == oldIteration){
 	    	return true; // the deletion was successful

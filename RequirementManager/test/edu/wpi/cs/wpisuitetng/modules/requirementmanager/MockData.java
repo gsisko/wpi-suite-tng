@@ -41,7 +41,10 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 public class MockData implements Data {
 
 	private final Set<Object> objects;
-	
+	/** Holds the projects stored in the DB */
+	private Set<Project> projects;
+
+
 	/**
 	 * Create a MockData instance initially containing the given set of objects
 	 * @param objects The set of objects this "database" starts with
@@ -50,6 +53,16 @@ public class MockData implements Data {
 		this.objects = objects;
 	}
 
+	/** This constructor includes the possibility of storing projects
+	 * Create a MockData instance initially containing the given set of objects
+	 * @param objects The set of objects this "database" starts with
+	 */
+	public MockData(Set<Object> objects, Set<Project> projects) {
+		this.objects = objects;
+		this.projects = projects;
+	}
+
+	
 	@Override
 	public <T> T delete(T arg0) {
 		if(objects.contains(arg0)) {
@@ -113,6 +126,17 @@ public class MockData implements Data {
 	@Override
 	public <T> List<T> retrieveAll(T arg0) {
 		List<T> all = new ArrayList<T>();
+
+		// Special case if the argument is a project
+		if (arg0 instanceof Project){
+			List<Project> allProjects = new ArrayList<Project>();
+			for(Project obj : projects) {
+				allProjects.add( obj);				
+			}
+			return (List<T>) allProjects;	
+		}
+
+		// Otherwise get the appropriate objects
 		for(Object obj : objects) {
 			if(arg0.getClass().isInstance(obj)) {
 				all.add((T) obj);
@@ -148,8 +172,8 @@ public class MockData implements Data {
 	@Override
 	public List<Model> complexRetrieve(Class arg0, String[] arg1,
 			List<Object> arg2, Class arg3, String[] arg4, List<Object> arg5)
-			throws WPISuiteException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+					throws WPISuiteException, IllegalArgumentException,
+					IllegalAccessException, InvocationTargetException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -179,7 +203,7 @@ public class MockData implements Data {
 		}
 		return filteredModels;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Model> retrieve(Class arg0, String arg1, Object arg2,
@@ -199,5 +223,14 @@ public class MockData implements Data {
 		save(arg0);
 		return true;
 	}
+
+	// The following were added for use when the projects included in the DB are significant
+	/** Adds a project to the DB
+	 *  @param Project
+	 */
+	public void addProject(Project toAdd){
+		projects.add(toAdd);
+	}
+
 
 }
