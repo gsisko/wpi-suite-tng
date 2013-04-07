@@ -25,7 +25,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -54,7 +55,7 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	private PieChartPanel piePanel;
 	
 	/** The MainTabController holding this view */
-	private MainTabController parent;
+	private MainTabController tabController;
 	
 	/** The panel containing various chart options on the left of the view */
 	private JPanel optionsPanel;
@@ -62,13 +63,20 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	/**
 	 * Construct the view
 	 */
-	public PieChartView(MainTabController parent){
-		super();
-		
-		this.parent = parent;
+	public PieChartView(MainTabController controller) {
+		this.tabController = controller;
 		this.piePanel = new PieChartPanel();
-		this.buttonGroup = new ToolbarGroupView("Pie Chart Refresh");
-		this.btnRefresh = new JButton();
+		this.buttonGroup = new ToolbarGroupView("All Charts");
+		this.btnRefresh = new JButton("Refresh");
+		buttonGroup.getContent().add(btnRefresh);
+		buttonGroup.setPreferredWidth(150);
+		
+		btnRefresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				refreshData();
+			}
+		});
 		
 		this.optionsPanel = new JPanel();
 		
@@ -89,14 +97,26 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	public void refreshData() {
 		//TODO: Implement for PieChart Data?
 		// Load initial data
-
 		piePanel.refreshChart();
 	}
 	
+	/** Returns the piePanel */
+	public PieChartPanel getPiePanel() {
+		return piePanel;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	public MainTabController getTabController() {
+		return tabController;
+	}
 
 	/** Returns the button group to place on the top of the toolbar */
 	@Override
 	public ToolbarGroupView getGroup() {
 		// TODO Auto-generated method stub
 		return buttonGroup;
-	}}
+	}
+	
+}

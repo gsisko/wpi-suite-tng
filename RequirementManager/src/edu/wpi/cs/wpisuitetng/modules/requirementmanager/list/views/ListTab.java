@@ -110,7 +110,7 @@ public class ListTab extends JPanel {
 		rightPanel = new JPanel();
 		rightPanel.setMinimumSize(new Dimension(500, 500));
 
-		this.splitPane.setOneTouchExpandable(true);
+		this.splitPane.setOneTouchExpandable(false);
 		this.splitPane.setDividerLocation(260);
 		this.splitPane.setContinuousLayout(true);
 

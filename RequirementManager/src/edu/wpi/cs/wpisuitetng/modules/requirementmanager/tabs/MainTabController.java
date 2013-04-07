@@ -91,6 +91,11 @@ public class MainTabController {
 	 * @return				The created Tab
 	 */
 	public Tab addTab(String title, Icon icon, Component component, String tip) {
+		if(component instanceof PieChartView && view.indexOfTab("Pie Chart") != -1) {
+			view.setSelectedIndex(view.indexOfTab("Pie Chart"));
+			return null;
+		}
+		
 		view.addTab(title, icon, component, tip);
 		int index = view.getTabCount() - 1;
 		view.setSelectedIndex(index);
