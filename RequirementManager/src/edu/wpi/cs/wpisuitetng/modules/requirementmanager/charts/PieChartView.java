@@ -28,13 +28,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.border.BevelBorder;
-
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
@@ -50,24 +46,24 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 @SuppressWarnings("serial")
 public class PieChartView extends JPanel implements IToolbarGroupProvider{
-	
+
 	/** The panel containing buttons for the tool bar */
 	protected ToolbarGroupView buttonGroup;
-	
+
 	/** The refresh button that reloads the results of the list/filter */
 	protected JButton btnRefresh;
-	
+
 	/** The panel containing the actual pie chart */
 	private PieChartPanel piePanel;
-	
+
 	/** The panel containing various chart options on the left of the view */
-	private JPanel optionsPanel;
-	
+	private ChartOptionsPanel optionsPanel; 
+
 	/** The table with the list of displayed requirements */
 	private RequirementListPanel requirementListPanel;
 
 	private ListTab view;
-	
+
 	/**
 	 * Construct the view and initialize necessary internal variables
 	 * @param view A ListTab that this view will be used in
@@ -80,24 +76,19 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		this.btnRefresh = new JButton("Refresh");
 		buttonGroup.getContent().add(btnRefresh);
 		buttonGroup.setPreferredWidth(150);
-		
+
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				refreshData();
 			}
 		});
-		
-		this.optionsPanel = new JPanel();
-		
-		//TODO: Move this into a new file with a new class?
-		this.optionsPanel.setLayout(new BorderLayout());
-		this.optionsPanel.add(new JLabel("Fill me up with options please"), BorderLayout.NORTH);
-		optionsPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		
+
+		this.optionsPanel = new ChartOptionsPanel(piePanel, this);
+
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
-		
+
 		//Add the panels to the layout
 		this.add(piePanel, BorderLayout.CENTER);
 		this.add(optionsPanel, BorderLayout.WEST);
@@ -110,7 +101,7 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		Requirement[] requirements = getRequirements();
 		piePanel.refreshChart(requirements);
 	}
-	
+
 	/** Get the current list of requirements from the main list */
 	public Requirement[] getRequirements() {
 		JTable table = requirementListPanel.getResultsTable();
@@ -135,7 +126,7 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		}
 		return requirements;
 	}
-	
+
 	/** Returns the piePanel */
 	public PieChartPanel getPiePanel() {
 		return piePanel;
@@ -147,5 +138,5 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		// TODO Auto-generated method stub
 		return buttonGroup;
 	}
-	
+
 }
