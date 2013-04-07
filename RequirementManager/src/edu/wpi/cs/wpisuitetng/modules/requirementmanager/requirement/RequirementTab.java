@@ -175,9 +175,12 @@ public class RequirementTab extends JPanel {
 	 */
 	protected void updateModel(Requirement requirement, Mode newMode){
 		mode = newMode;
+		
+		if (mode == Mode.EDIT)
+			setInputEnabled(true);
 
 		attributePanel.updateModel(requirement, newMode);
-		
+
 		tabPanel.revalidate();
 		tabPanel.repaint();
 
