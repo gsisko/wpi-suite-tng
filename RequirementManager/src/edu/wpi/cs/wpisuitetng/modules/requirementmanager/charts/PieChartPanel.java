@@ -40,6 +40,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
@@ -104,8 +105,8 @@ public class PieChartPanel extends JPanel {
 		return chart;
 	}
 
-	/** Function to refresh and redraw pie chart */
-	public void refreshChart(Requirement[] requirements) {
+	/** Function to refresh and redraw pie chart with Status */
+	public void refreshStatusChart(Requirement[] requirements) {
 		DefaultPieDataset data = new DefaultPieDataset();
 		for (RequirementStatus rs : RequirementStatus.values()) {
 			int count = 0;
@@ -121,5 +122,24 @@ public class PieChartPanel extends JPanel {
 		this.chart.getPlot().setOutlineVisible(false);
 		this.chartPanel.setChart(this.chart);
 	}
+	
+	/** Function to refresh and redraw pie chart with Iterations */
+	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
+		DefaultPieDataset data = new DefaultPieDataset();
+		for (Iteration iter : iterations) {
+			int count = 0;
+			for (int i = 0; i < requirements.length; i++) {
+				if (iter.getID() == requirements[i].getAssignedIteration()) count++;
+			}
+			if (count > 0) data.setValue(iter.getName(), count);
+		}
+		
+		this.dataset = data;
+		this.chart = createChart(dataset, "Iterations of Displayed Requirements");
+		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		this.chart.getPlot().setOutlineVisible(false);
+		this.chartPanel.setChart(this.chart);
+	}
+
 
 }

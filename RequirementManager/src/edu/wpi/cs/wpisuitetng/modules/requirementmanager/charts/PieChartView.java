@@ -30,15 +30,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTable;
+
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /**
  * View that contains the pie chart 
@@ -52,15 +49,18 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** The refresh button that reloads the results of the list/filter */
 	protected JButton btnRefresh;
+	
+	/** The panel containing the actual status pie chart */
+	private PieChartPanel statusPiePanel;
+	
+	/** The panel containing the actual iteration pie chart */
+	private PieChartPanel iterationPiePanel;
 
 	/** The panel containing the actual pie chart */
 	private PieChartPanel piePanel;
 
 	/** The panel containing various chart options on the left of the view */
 	private ChartOptionsPanel optionsPanel; 
-
-	/** The table with the list of displayed requirements */
-	private RequirementListPanel requirementListPanel;
 
 	private ListTab view;
 
@@ -69,10 +69,10 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	 * @param view A ListTab that this view will be used in
 	 */
 	public PieChartView(ListTab view) {
-		this.piePanel = new PieChartPanel();
+		this.statusPiePanel = new PieChartPanel();
+		this.iterationPiePanel = new PieChartPanel();
 		this.buttonGroup = new ToolbarGroupView("All Charts");
 		this.view = view;
-		this.requirementListPanel = view.getResultsPanel();
 		this.btnRefresh = new JButton("Refresh");
 		buttonGroup.getContent().add(btnRefresh);
 		buttonGroup.setPreferredWidth(150);
@@ -90,7 +90,12 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		this.setLayout(new BorderLayout());
 
 		//Add the panels to the layout
-		this.add(piePanel, BorderLayout.CENTER);
+		this.add(statusPiePanel, BorderLayout.CENTER);
+		statusPiePanel.setVisible(true);
+		/*   TODO:too be put in if statement depending on iteration or status
+		 * this.add(iterationPiePanel, BorderLayout.CENTER);
+		 * iterationPiePanel.setVisible(false);
+		*/
 		this.add(optionsPanel, BorderLayout.WEST);
 	}
 
@@ -98,33 +103,10 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	public void refreshData() {
 		// Load initial data
 		view.getParent().refreshData();
-		Requirement[] requirements = getRequirements();
-		piePanel.refreshChart(requirements);
-	}
-
-	/** Get the current list of requirements from the main list */
-	public Requirement[] getRequirements() {
-		JTable table = requirementListPanel.getResultsTable();
-		Requirement[] requirements = new Requirement[table.getRowCount()];
-		for (int i = 0; i < table.getRowCount(); i++) {
-			Requirement r = new Requirement();
-			r.setId(Integer.parseInt((String)table.getValueAt(i, 0)));
-			r.setName((String)table.getValueAt(i, 1));
-			r.setDescription((String)table.getValueAt(i, 2));
-			if (((String)table.getValueAt(i, 3)).equals("Backlog"))
-				r.setAssignedIteration(0);
-			r.setType(RequirementType.toType((String)table.getValueAt(i, 4)));
-			r.setStatus(RequirementStatus.toStatus((String)table.getValueAt(i, 5)));
-			r.setPriority(RequirementPriority.toPriority((String)table.getValueAt(i, 6)));
-			if (((String)table.getValueAt(i, 7)).equals("none"))
-				r.setReleaseNumber(-1);
-			else
-				r.setReleaseNumber(Integer.parseInt((String)table.getValueAt(i, 7)));
-			r.setEstimate(Integer.parseInt((String)table.getValueAt(i, 8)));
-			r.setActualEffort(Integer.parseInt((String)table.getValueAt(i, 9)));
-			requirements[i] = r;
-		}
-		return requirements;
+		Requirement[] requirements = view.getParent().getDisplayedRequirements();
+		Iteration[] iterations = view.getParent().getAllIterations();
+		statusPiePanel.refreshStatusChart(requirements);
+		iterationPiePanel.refreshIterationChart(requirements, iterations);
 	}
 
 	/** Returns the piePanel */
