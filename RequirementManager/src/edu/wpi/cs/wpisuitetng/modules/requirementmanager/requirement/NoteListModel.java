@@ -72,8 +72,8 @@ public class NoteListModel extends AbstractListModel {
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
-	public String getElementAt(int index) {
-		return notes.get(notes.size() - 1 - index).toString();
+	public Note getElementAt(int index) {
+		return notes.get(notes.size() - 1 - index);
 	}
 
 	/*

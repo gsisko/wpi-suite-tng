@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -71,8 +73,24 @@ public class NoteTab extends JPanel {
 		    public Component getListCellRendererComponent(JList list, Object value, int index,
 		            boolean isSelected, boolean cellHasFocus) {
 		        super.getListCellRendererComponent(list, value, index, false, false);
+		        JPanel panel = new JPanel();
+		        JLabel title = new JLabel(((Note)value).toString());
+		        JTextArea content =  new JTextArea(((Note)value).getMessage());
+		        content.setWrapStyleWord(true);
+		        //content.setPreferredSize(new Dimension(580, 100));
+		        //content.setMaximumSize(new Dimension(580, 500));
+				panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+				title.setFont(title.getFont().deriveFont(9));
+				title.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
+				content.setFont(content.getFont().deriveFont(9));
+				content.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+				content.setMaximumSize(new Dimension(noteList.getWidth(),1000));
+				panel.add(title);
+				panel.add(content);
+				panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0), BorderFactory.createLineBorder(Color.black, 1)), BorderFactory.createEmptyBorder(8, 8, 8, 8)));
 		 
-		        return this;
+		        return panel;		 
+		        //return this;
 		    }
 		});
 		

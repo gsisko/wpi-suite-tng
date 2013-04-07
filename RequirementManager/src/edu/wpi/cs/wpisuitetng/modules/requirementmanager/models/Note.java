@@ -53,7 +53,7 @@ public class Note {
 		// Format the date-time stamp
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 				
-		return dateFormat.format(date) + ":    " + message + " (added by " + user.getName() + ")";
+		return "Note added by " + user.getName() +" on "+dateFormat.format(date) ;
 	}
 	
 	/**
