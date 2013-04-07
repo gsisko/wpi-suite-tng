@@ -12,10 +12,46 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 
 public class FilterTest {
+	// Filters
     Filter testFilter;
+    Filter testFilter2;
+    Filter doNotUse;
+    Filter nameEquals;
+    Filter descriptionContains;
+    Filter idEquals;
+    Filter iterationEquals;
+    Filter actualEffortEquals;
+    Filter estimateEquals;
+    Filter releaseNumberEquals;
+    Filter releaseNumberNoneEquals;
+    
+    // Requirements
+    Requirement testRequirement;
+    
+    
     @Before
     public void setUp(){
-	testFilter = new Filter();
+	testFilter = new Filter(FilterType.Description, OperatorType.Contains, "something", false);
+	testFilter2 = new Filter(FilterType.Id, OperatorType.GreaterThan, "2", false);
+
+	doNotUse = new Filter();
+	doNotUse.setUseFilter(false);
+	nameEquals = new Filter(FilterType.Name, OperatorType.EqualTo, "a requirement", true);
+	descriptionContains = new Filter(FilterType.Description, OperatorType.Contains, "some", true);
+	idEquals = new Filter(FilterType.Id, OperatorType.EqualTo, "-1", true);
+	iterationEquals = new Filter(FilterType.Iteration, OperatorType.EqualTo, "5", true);
+	actualEffortEquals = new Filter(FilterType.ActualEffort, OperatorType.EqualTo, "10", true);
+	estimateEquals = new Filter(FilterType.Estimate, OperatorType.EqualTo, "7", true);
+	releaseNumberEquals = new Filter(FilterType.ReleaseNumber, OperatorType.EqualTo, "3", true);
+	releaseNumberNoneEquals = new Filter(FilterType.ReleaseNumber, OperatorType.EqualTo, "none", true);
+	
+	
+	
+	
+	testRequirement = new Requirement("A Requirement", "Some description", RequirementType.NoType, RequirementPriority.Medium, 3, 5);
+	testRequirement.setId(-1);
+	testRequirement.setActualEffort(10);
+	testRequirement.setEstimate(7);
     }
 
     @Test
@@ -118,5 +154,69 @@ public class FilterTest {
 	String json = testFilter.toString();
 	assertEquals("Hello World", testFilter.getValue());
 	assertTrue(testFilter.equals(Filter.fromJSON(json)));
+    }
+    
+//    @Test
+//    public void testToJSONArray () {
+//    	testFilter  = new Filter(FilterType.Id, OperatorType.EqualTo, "1", false);
+//    	testFilter.setUniqueID(1);
+//    	testFilter2 = new Filter(FilterType.Iteration, OperatorType.EqualTo, "5", true);
+//    	testFilter.setUniqueID(2);
+//    	Filter[] filterList = new Filter[2];
+//    	filterList[0] = testFilter;
+//    	filterList[1] = testFilter2;
+//    	
+//    	// Put filters into a json and parse them out again
+//    	String json = Filter.toJSON(filterList);
+//    	Filter[] parsedList = Filter.fromJSONArray(json);
+//    	
+//    	assertTrue(parsedList[0].equals(filterList[0]));
+//    	assertTrue(parsedList[1].equals(filterList[1]));
+//    }
+    
+    @Test
+    public void testUpdateArray () {
+    	Filter newFilter = new Filter(FilterType.ActualEffort, OperatorType.EqualTo, "5", true);
+    	newFilter.setUniqueID(1);
+    	
+    	// Show that only type, comparator, value and useFilter were changed
+    	assertFalse(testFilter.equals(newFilter));
+    	assertFalse(testFilter.isUseFilter() == newFilter.isUseFilter());
+    	assertFalse(testFilter.getUniqueID() == newFilter.getUniqueID());
+    	testFilter.updateFilter(newFilter);
+    	assertTrue(testFilter.equals(newFilter));
+    	assertTrue(testFilter.isUseFilter() == newFilter.isUseFilter());
+    	assertFalse(testFilter.getUniqueID() == newFilter.getUniqueID());
+    }
+    
+    @Test
+    public void testCompare () {
+    	Filter toCompare = new Filter(FilterType.Id, OperatorType.DoesNotContain, "something else", false);
+    	
+    	assertFalse(testFilter.equals(toCompare));
+    	toCompare.setType(FilterType.Description);
+    	assertFalse(testFilter.equals(toCompare));
+    	toCompare.setComparator(OperatorType.Contains);
+    	assertFalse(testFilter.equals(toCompare));
+    	toCompare.setValue("something");
+    	assertTrue(testFilter.equals(toCompare));
+    }
+    
+    
+    /**
+     * The following test of the passesFilter method assumes that the
+     * perform method works
+     */
+    @Test
+    public void testPassesFilter() {
+    	assertTrue(doNotUse.passesFilter(testRequirement));
+    	assertTrue(nameEquals.passesFilter(testRequirement));
+    	assertTrue(descriptionContains.passesFilter(testRequirement));
+    	assertTrue(idEquals.passesFilter(testRequirement));
+    	assertTrue(iterationEquals.passesFilter(testRequirement));
+    	assertTrue(actualEffortEquals.passesFilter(testRequirement));
+    	assertTrue(estimateEquals.passesFilter(testRequirement));
+    	assertTrue(releaseNumberEquals.passesFilter(testRequirement));
+    	assertFalse(releaseNumberNoneEquals.passesFilter(testRequirement));
     }
 }
