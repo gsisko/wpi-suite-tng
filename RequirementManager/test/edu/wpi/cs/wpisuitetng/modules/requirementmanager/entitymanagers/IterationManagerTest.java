@@ -44,53 +44,61 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 public class IterationManagerTest {
 
 	MockData db;
-	User existingUser;
-	Iteration existingIteration;
-	Session defaultSession;
-	String mockSsid;
 	IterationManager manager;
-	Iteration newIteration;
-	Iteration goodUpdatedIteration;
-	Session adminSession;
+	
 	Project testProject;
 	Project otherProject;
+	
+	User existingUser;
+	
+	String mockSsid = "abc123";
+	Session adminSession;
+	Session defaultSession;
+	
+	Iteration newIteration;
+	Iteration goodUpdatedIteration;
 	Iteration otherIteration;
+	Iteration existingIteration;
 	
 	@Before
 	public void setUp() throws Exception {
+		// Setup users
 		User admin = new User("admin", "admin", "1234", 27);
 		admin.setRole(Role.ADMIN);
+		existingUser = new User("joe", "joe", "1234", 2);
+		
+		// Setup projects
 		testProject = new Project("test", "1");
 		otherProject = new Project("other", "2");
-		mockSsid = "abc123";
+		
+		// Setup sessions
 		adminSession = new Session(admin, testProject, mockSsid);
-		
-		existingUser = new User("joe", "joe", "1234", 2);
-		existingIteration = new Iteration("Iteration 1", new Date(5000), new Date(6000));
-		
+		defaultSession = new Session(existingUser, testProject, mockSsid);
+	
+		// Setup iterations
+		existingIteration = new Iteration("Iteration 1", new Date(5000), new Date(6000));	
 		otherIteration = new Iteration("An Iteration of a different project", new Date(700), new Date (800));
-		
+		newIteration = new Iteration("A new iteration", new Date(600), new Date(800));
 		goodUpdatedIteration = new Iteration("A changed iteration name", new Date(300), new Date(400));
 		goodUpdatedIteration.setEndDate(new Date (500));
-		
-		defaultSession = new Session(existingUser, testProject, mockSsid);
-		newIteration = new Iteration("A new iteration", new Date(600), new Date(800));
-		
-		// Setting ID's manually
+	
+		// Setting ID's manually for iterations that will be added manually
 		existingIteration.setID(1);
 		otherIteration.setID(2);
 		
-		
+		// Create database and manager
 		db = new MockData(new HashSet<Object>(), new HashSet<Project>());
+		manager = new IterationManager(db);
+		
+		// Manually add projects
 		db.addProject(testProject);
 		db.addProject(otherProject);
 
+		// Manually add iterations and admin
 		db.save(existingIteration, testProject);
 		db.save(existingUser);
 		db.save(otherIteration, otherProject);
 		db.save(admin);
-		
-		manager = new IterationManager(db);
 		
 		//Check to make sure no set up failed
 		assertNotNull(admin);
@@ -108,22 +116,19 @@ public class IterationManagerTest {
 		assertNotNull(manager);
 	}
 
-	@Test    // This is completely independent and tests setup
-	public void testInstantiateBacklogs() throws NotFoundException, WPISuiteException{
-		// Special setup is used here to perform a full test from the ground up
-		MockData testMockDB = new MockData(new HashSet<Object>(), new HashSet<Project>());
-		Project testProject = new Project("Tester", "1");	
-		Session testSession = new Session(existingUser, testProject, mockSsid);
-		testMockDB.save(existingUser);
-		testMockDB.addProject(testProject);
-		
-		// This is the fun part- in here instantiateBacklogs gets called
-		IterationManager manager = new IterationManager(testMockDB);
-		manager.instantiateBacklog(testSession);
-		assertNotNull(manager.getEntity(testSession, "0")); // must find the backlog
-		assertNotNull(manager.getAll(  testSession ));
+	@Test   
+	public void testInstantiateBacklogFirst() throws NotFoundException, WPISuiteException{
+		assertSame(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).size(), 0); // must find that there is no backlog yet
+		manager.instantiateBacklog(defaultSession); 
+		assertNotNull(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).get(0)); // must find the backlog
 	}
 
+	@Test 
+	public void testInstantiateBackogTwice() throws WPISuiteException{
+		manager.instantiateBacklog(defaultSession); 
+		manager.instantiateBacklog(defaultSession); 
+		assertSame(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).size(), 1);
+	}
 	
 	@Test
 	public void testMakeEntity() throws WPISuiteException {

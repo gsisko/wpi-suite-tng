@@ -64,48 +64,8 @@ public class IterationManager implements EntityManager<Iteration> {
 	 */	
 	public IterationManager(Data data) {
 		this.db = data;
-		//instantiateBacklogs();
 	}
 
-
-	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
-	 *  each project. Makes one if necessary for each project.        */
-	@SuppressWarnings("unused")
-	private void instantiateBacklogs() {
-		Project[] projectsThatNeedBacklogs = new Project[1];
-		projectsThatNeedBacklogs = db.retrieveAll(new Project("","")).toArray(projectsThatNeedBacklogs);
-
-		// Go through the array of projects, and make sure each has a backlog
-		// If it doesn't have a backlog, make one!
-		for (int i = 0; i < projectsThatNeedBacklogs.length; i++){
-			boolean backlogExistsFlag = false;
-			// Get all Iterations for the current project
-			Iteration[] iterations = new Iteration[1];
-			iterations = this.db.retrieveAll(Iteration.class, projectsThatNeedBacklogs[i]).toArray(new Iteration[0]);
-			// Figure out if we actually have to check that there isn't a backlog 
-			if (iterations.length > 0){ 
-				// Check each iteration to see if it is the backlog
-				for (int j= 0; j< iterations.length; j++){
-					// Check the current iteration's ID to see if it is the backlog
-					if ((iterations[j]).getID()== 0){
-						backlogExistsFlag = true;
-					}
-				}
-			}
-			// If a backlog wasn't found, make one for the current project
-			if (!backlogExistsFlag){
-				Iteration model = new Iteration("Backlog", null, null);
-				model.setID(0);
-				model.setProject(projectsThatNeedBacklogs[i]);
-				// Save the backlog in the database if possible, otherwise throw an exception
-				// We want the iteration to be associated with the project the user logged in to
-				if (!this.db.save(model, projectsThatNeedBacklogs[i])) {
-					logger.log(Level.WARNING, "A backlog was not created properly.");
-				}
-			}
-		}
-		logger.log(Level.FINE, "Backlog creation successful");
-	}   
 
 	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
 	 *  the current project. Makes one if necessary
@@ -117,36 +77,6 @@ public class IterationManager implements EntityManager<Iteration> {
 	public void instantiateBacklog(Session s){		
 		// Get the current project
 		Project currentProject = s.getProject();
-	/*	// Set up a flag to keep track of the existence or lack thereof of a backlog
-		boolean backlogExistsFlag = false;
-		// Get all Iterations for the current project
-		Iteration[] iterations ;
-		iterations = db.retrieveAll(Iteration.class, currentProject).toArray(new Iteration[0]);
-		// Figure out if we actually have to check that there isn't a backlog 
-		if (iterations.length > 0){ 
-			// Check each iteration to see if it is the backlog
-			for (int j = 0; j< iterations.length; j++){
-				// Check the current iteration's ID to see if it is the backlog
-				System.out.println("Iteration ID: " +(iterations[j]).getID());
-				if ((iterations[j]).getID()== 0){
-					backlogExistsFlag = true;
-				}
-			}
-		}   
-			// If a backlog wasn't found, make one for the current project
-		if (!backlogExistsFlag){
-			Iteration model = new Iteration("Backlog", null, null);
-			model.setID(0);
-			model.setProject(currentProject);
-			// Save the backlog in the database if possible, otherwise throw an exception
-			// We want the iteration to be associated with the project the user logged in to
-			if (!this.db.save(model,currentProject)) {
-
-				logger.log(Level.WARNING, "A backlog was not created properly.");
-			}
-		}
-		
-		*/
 		
 		try{
 			Iteration[] iterations = getEntity( s, "0");
