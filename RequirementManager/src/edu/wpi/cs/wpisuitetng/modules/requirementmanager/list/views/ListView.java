@@ -39,6 +39,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Refres
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.*;
 
@@ -71,6 +74,12 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	
 	/** The main tab controller */
 	protected MainTabController tabController;
+	
+	/** The arrays of models stored in the database */
+	protected Filter[] allFilters;
+	protected Iteration[] allIterations;
+	protected Requirement[] allRequirements;
+	protected Requirement[] displayedRequirements;
 	
 	/**
 	 * Construct the view
@@ -158,4 +167,61 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
 	}
+	
+	/**
+	 * @return the allFilters
+	 */
+	public Filter[] getAllFilters() {
+		return allFilters;
+	}
+
+	/**
+	 * @param allFilters the allFilters to set
+	 */
+	public void setAllFilters(Filter[] allFilters) {
+		this.allFilters = allFilters;
+	}
+
+	/**
+	 * @return the allIterations
+	 */
+	public Iteration[] getAllIterations() {
+		return allIterations;
+	}
+
+	/**
+	 * @param allIterations the allIterations to set
+	 */
+	public void setAllIterations(Iteration[] allIterations) {
+		this.allIterations = allIterations;
+	}
+
+	/**
+	 * @return the allRequirements
+	 */
+	public Requirement[] getAllRequirements() {
+		return allRequirements;
+	}
+
+	/**
+	 * @param allRequirements the allRequirements to set
+	 */
+	public void setAllRequirements(Requirement[] allRequirements) {
+		this.allRequirements = allRequirements;
+	}
+
+	/**
+	 * @return the displayedRequirements
+	 */
+	public Requirement[] getDisplayedRequirements() {
+		return displayedRequirements;
+	}
+
+	/**
+	 * @param displayedRequirements the displayedRequirements to set
+	 */
+	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
+		this.displayedRequirements = displayedRequirements;
+	}
+	
 }

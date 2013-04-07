@@ -118,7 +118,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		//create strings for the boxes
 		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","Iteration","ReleaseNumber","Estimate","ActualEffort"};
-		String[] comparatorStrings = {"=", "!=", ">","<",">=","<=","Contains","DoesNotContain"};
+		String[] comparatorStrings = {"=", "!=", ">","<",">=","<="};
 		String[] userFilterStrings ={"Active","Inactive"};
 
 		//construct the boxes

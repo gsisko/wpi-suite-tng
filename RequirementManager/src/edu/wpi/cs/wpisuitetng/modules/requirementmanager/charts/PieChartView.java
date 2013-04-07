@@ -119,15 +119,17 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 			r.setId(Integer.parseInt((String)table.getValueAt(i, 0)));
 			r.setName((String)table.getValueAt(i, 1));
 			r.setDescription((String)table.getValueAt(i, 2));
-			r.setType(RequirementType.toType((String)table.getValueAt(i, 3)));
-			r.setStatus(RequirementStatus.toStatus((String)table.getValueAt(i, 4)));
-			r.setPriority(RequirementPriority.toPriority((String)table.getValueAt(i, 5)));
-			if (((String)table.getValueAt(i, 6)).equals("none"))
+			if (((String)table.getValueAt(i, 3)).equals("Backlog"))
+				r.setAssignedIteration(0);
+			r.setType(RequirementType.toType((String)table.getValueAt(i, 4)));
+			r.setStatus(RequirementStatus.toStatus((String)table.getValueAt(i, 5)));
+			r.setPriority(RequirementPriority.toPriority((String)table.getValueAt(i, 6)));
+			if (((String)table.getValueAt(i, 7)).equals("none"))
 				r.setReleaseNumber(-1);
 			else
-				r.setReleaseNumber(Integer.parseInt((String)table.getValueAt(i, 6)));
-			r.setEstimate(Integer.parseInt((String)table.getValueAt(i, 7)));
-			r.setActualEffort(Integer.parseInt((String)table.getValueAt(i, 8)));
+				r.setReleaseNumber(Integer.parseInt((String)table.getValueAt(i, 7)));
+			r.setEstimate(Integer.parseInt((String)table.getValueAt(i, 8)));
+			r.setActualEffort(Integer.parseInt((String)table.getValueAt(i, 9)));
 			requirements[i] = r;
 		}
 		return requirements;

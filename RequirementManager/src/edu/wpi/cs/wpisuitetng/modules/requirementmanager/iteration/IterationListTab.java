@@ -70,10 +70,6 @@ public class IterationListTab extends JPanel implements IListPanel {
 	protected ResultsTableModel resultsTableModel;
 
 	private final ListTab parent;
-	int j;
-	int k;
-	int x;
-	int y;
 	
 	/**
 	 * Construct the panel
@@ -318,6 +314,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 		// Add the list of iterations to the IterationListPanel object
 		this.setLocalIterations(iterations);
 
+		parent.getParent().setAllIterations(iterations);
+		
 		if (iterations.length > 0) {
 			// set the column names
 			String[] columnNames = {"Id", "Name", "StartDate", "EndDate"};

@@ -265,15 +265,16 @@ public class FilterListTab extends JPanel implements IListPanel{
 		// Setup data structures
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		
+
 		// Fire blanks so that the old contents are removed
 		this.getModel().setColumnNames(emptyColumns);
 		this.getModel().setData(emptyData);
 		this.getModel().fireTableStructureChanged();
 
-		
 		Filter[] filters = Filter.fromJSONArray(jsonString);
 		this.setLocalFilters(filters);
+		
+		parent.getParent().setAllFilters(filters);
 
 		// Add the list of filters to the FilterListPanel object
 		if (filters.length > 0) {
@@ -296,17 +297,19 @@ public class FilterListTab extends JPanel implements IListPanel{
 				Iteration entry = new Iteration();
 				if(a=="Iteration"){
 					String n= filters[i].getValue();
-				for (Iteration m:parent.getTabPanel().getIterationList().getIterations()){
-					if (n.equals(m.getName())){
-						entry = m;
+					if (n.equals("Backlog")) entries[i][3] = "Backlog";
+					else {
+						for (Iteration m:parent.getTabPanel().getIterationList().getIterations()){
+							if (n.equals(m.getName())){
+								entry = m;
+							}
+
+						}
+						entries[i][3] = entry.getName();
 					}
-				
-				}
-				
-				entries[i][3] = entry.getName(); 
 				}
 				else{
-				entries[i][3] = filters[i].getValue();}
+					entries[i][3] = filters[i].getValue();}
 				if (filters[i].isUseFilter()) {
 					entries[i][4] = "yes";
 				} else {
@@ -318,12 +321,12 @@ public class FilterListTab extends JPanel implements IListPanel{
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
-			
+
 			//Hide the Id column
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
-			
+
 			//Set preferred column widths
 			//Type
 			resultsTable.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -334,9 +337,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 			//Active
 			resultsTable.getColumnModel().getColumn(4).setPreferredWidth(75);
 		}
-		
+
 		refreshRequirements();
-		
+
 	}
 
 	/**
