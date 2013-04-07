@@ -25,12 +25,9 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
@@ -79,11 +76,6 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		piePanel.refreshChart();
 	}
 	
-//	@Override
-//	public void paint(Graphics g){
-//		super.paint(g);
-//		piePanel.paint(g);
-//	}
 
 	/** Returns the button group to place on the top of the toolbar */
 	@Override

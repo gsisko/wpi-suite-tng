@@ -24,13 +24,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
-//import java.awt.Graphics;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
 
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -48,6 +44,7 @@ public class PieChartPanel extends JPanel {
 	private ChartPanel chartPanel;
 	private JFreeChart chart;
 
+	/** Default constructor for PieChartPanel*/
 	public PieChartPanel() {
 		
 		// This will create the dataset
@@ -60,30 +57,23 @@ public class PieChartPanel extends JPanel {
 		this.chartPanel = new ChartPanel(chart);
 		
 		// default size
-		chartPanel.setPreferredSize(new Dimension(500, 270));
+		chartPanel.setPreferredSize(new Dimension(500, 500));
 		
 		// Construct the layout
 		this.setLayout(new BorderLayout());
 		
 		//Add the chart to our layout
 		add(chartPanel, BorderLayout.CENTER);
-		
-		// add it to our application
-		// setContentPane(chartPanel);
-
-		// // super();
-		// this.chart = new PieChart("Sample Chart");
-		// // chart.pack(); //Resize Window to fit the size specified
-		// chart.setVisible(true);
 	}
-
+	
+	/** Creates the sample dataset */
 	private PieDataset createDataset() {
 		DefaultPieDataset result = new DefaultPieDataset();
 		result.setValue("Linux", 29);
 		result.setValue("Mac", 20);
 		result.setValue("Windows", 51);
+		result.setValue("DOS", 2);
 		return result;
-
 	}
 
 	/** Creates a chart */
@@ -92,14 +82,14 @@ public class PieChartPanel extends JPanel {
 		JFreeChart chart = ChartFactory.createPieChart3D(title, // chart title
 				dataset, // data
 				true, // include legend
-				true, false);
+				true, //Tooltips
+				false); //URLs
 
 		PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setStartAngle(290);
 		plot.setDirection(Rotation.CLOCKWISE);
-		plot.setForegroundAlpha(0.5f);
+		plot.setForegroundAlpha(0.8f);
 		return chart;
-
 	}
 
 	/** Function to refresh and redraw pie chart */
