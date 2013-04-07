@@ -119,6 +119,7 @@ public class IterationManagerTest {
 		
 		// This is the fun part- in here instantiateBacklogs gets called
 		IterationManager manager = new IterationManager(testMockDB);
+		manager.instantiateBacklog(testSession);
 		assertNotNull(manager.getEntity(testSession, "0")); // must find the backlog
 		assertNotNull(manager.getAll(  testSession ));
 	}
@@ -165,7 +166,7 @@ public class IterationManagerTest {
 	@Test
 	public void testGetAll() throws WPISuiteException {
 		Iteration[] gotten = manager.getAll(defaultSession);
-		assertEquals(3, gotten.length);
+		assertEquals(2, gotten.length);
 	}
 	
 	@Test
@@ -200,11 +201,11 @@ public class IterationManagerTest {
 	public void testDeleteAll() throws WPISuiteException {
 		Iteration anotherIteration = new Iteration("Name", new Date(600), new Date(9000));
 		manager.makeEntity(defaultSession, anotherIteration.toJSON());
-		assertEquals(3, db.retrieveAll(new Iteration(), testProject).size());
+		assertEquals(2, db.retrieveAll(new Iteration(), testProject).size());
 		manager.deleteAll(adminSession);
 		assertEquals(0, db.retrieveAll(new Iteration(), testProject).size());
 		// otherIteration should still be around
-		assertEquals(2, db.retrieveAll(new Iteration(), otherProject).size());
+		assertEquals(1, db.retrieveAll(new Iteration(), otherProject).size());
 	}
 	
 	
@@ -217,7 +218,7 @@ public class IterationManagerTest {
 	
 	@Test
 	public void testCount() throws WPISuiteException {
-		assertEquals(4, manager.Count());
+		assertEquals(2, manager.Count());
 	}
 	
 	@Test
