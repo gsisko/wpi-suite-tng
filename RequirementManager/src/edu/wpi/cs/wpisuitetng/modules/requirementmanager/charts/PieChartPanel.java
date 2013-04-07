@@ -61,10 +61,13 @@ public class PieChartPanel extends JPanel {
 		// default size
 		chartPanel.setPreferredSize(new Dimension(1300, 500));
 		
+		//Disable right clicking
+		//Be careful, this will re-enable the chart editor!
+		chartPanel.setPopupMenu(null);
+		
 		// Construct the layout
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-//		this.setBorder(BorderFactory.createLineBorder(5, 5, 5, 5));
 		
 		//Add the chart to our layout
 		add(chartPanel, BorderLayout.CENTER);
@@ -93,6 +96,7 @@ public class PieChartPanel extends JPanel {
 		plot.setStartAngle(290);
 		plot.setDirection(Rotation.CLOCKWISE);
 		plot.setForegroundAlpha(0.8f);
+		
 		return chart;
 	}
 
