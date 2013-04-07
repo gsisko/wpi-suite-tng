@@ -25,6 +25,7 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -116,6 +117,8 @@ public class PieChartPanel extends JPanel {
 		
 		this.dataset = data;
 		this.chart = createChart(dataset, "Status of Displayed Requirements");
+		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		this.chart.getPlot().setOutlineVisible(false);
 		this.chartPanel.setChart(this.chart);
 	}
 

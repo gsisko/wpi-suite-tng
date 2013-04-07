@@ -127,7 +127,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tabController.addTab("Charts", new ImageIcon(), new PieChartView(mainPanel), "Charts for Requirements");
+				tabController.addTab("Charts", new ImageIcon(), new PieChartView(mainPanel), "Charts for this project's requirements");
 			}
 		});
 	}
