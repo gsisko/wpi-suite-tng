@@ -1,8 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +24,11 @@ public class FilterTest {
     Filter estimateEquals;
     Filter releaseNumberEquals;
     Filter releaseNumberNoneEquals;
+    Filter statusEquals;
+    Filter typeEquals;
+    Filter priorityEquals;
+    Filter badInteger;
+    Filter typeOther;
     
     // Requirements
     Requirement testRequirement;
@@ -34,6 +39,9 @@ public class FilterTest {
 	testFilter = new Filter(FilterType.Description, OperatorType.Contains, "something", false);
 	testFilter2 = new Filter(FilterType.Id, OperatorType.GreaterThan, "2", false);
 
+	// Set up a variety of filters
+	// These are mainly designed for use in testing the passesFilter and
+	// various perform methods
 	doNotUse = new Filter();
 	doNotUse.setUseFilter(false);
 	nameEquals = new Filter(FilterType.Name, OperatorType.EqualTo, "a requirement", true);
@@ -44,14 +52,20 @@ public class FilterTest {
 	estimateEquals = new Filter(FilterType.Estimate, OperatorType.EqualTo, "7", true);
 	releaseNumberEquals = new Filter(FilterType.ReleaseNumber, OperatorType.EqualTo, "3", true);
 	releaseNumberNoneEquals = new Filter(FilterType.ReleaseNumber, OperatorType.EqualTo, "none", true);
+	statusEquals = new Filter(FilterType.Status, OperatorType.EqualTo, RequirementStatus.New, true);
+	typeEquals = new Filter(FilterType.Type, OperatorType.EqualTo, RequirementType.NoType, true);
+	priorityEquals = new Filter(FilterType.Priority, OperatorType.EqualTo, RequirementPriority.Medium, true);
+	badInteger = new Filter(FilterType.Id, OperatorType.EqualTo, "not a number", true);
+	typeOther = new Filter(FilterType.Other, OperatorType.EqualTo, "something", true);
 	
-	
-	
-	
+	// Setup a basic test requirement
 	testRequirement = new Requirement("A Requirement", "Some description", RequirementType.NoType, RequirementPriority.Medium, 3, 5);
 	testRequirement.setId(-1);
 	testRequirement.setActualEffort(10);
 	testRequirement.setEstimate(7);
+	testRequirement.setStatus(RequirementStatus.New);
+	testRequirement.setType(RequirementType.NoType);
+	testRequirement.setPriority(RequirementPriority.Medium);
     }
 
     @Test
@@ -204,11 +218,12 @@ public class FilterTest {
     
     
     /**
-     * The following test of the passesFilter method assumes that the
+     * This assumes that the
      * perform method works
      */
     @Test
     public void testPassesFilter() {
+    	// Tests that all perform methods can be called
     	assertTrue(doNotUse.passesFilter(testRequirement));
     	assertTrue(nameEquals.passesFilter(testRequirement));
     	assertTrue(descriptionContains.passesFilter(testRequirement));
@@ -218,5 +233,23 @@ public class FilterTest {
     	assertTrue(estimateEquals.passesFilter(testRequirement));
     	assertTrue(releaseNumberEquals.passesFilter(testRequirement));
     	assertFalse(releaseNumberNoneEquals.passesFilter(testRequirement));
+    	assertTrue(statusEquals.passesFilter(testRequirement));
+    	assertTrue(typeEquals.passesFilter(testRequirement));
+    	assertTrue(priorityEquals.passesFilter(testRequirement));
+    	assertFalse(badInteger.passesFilter(testRequirement));
+    	assertTrue(typeOther.passesFilter(testRequirement));
+    }
+    
+    @Test
+    public void testIdentify () {
+    	Filter tmpFilter = new Filter();
+    	nameEquals.setUniqueID(1);
+    	tmpFilter.setUniqueID(nameEquals.getUniqueID());
+    	assertTrue(nameEquals.identify(nameEquals));
+    	assertTrue(nameEquals.identify(tmpFilter));
+    	assertTrue(nameEquals.identify(new Integer(nameEquals.getUniqueID()).toString()));
+    	
+    	assertFalse(priorityEquals.identify(nameEquals));
+    	assertFalse(priorityEquals.identify(new Integer(nameEquals.getUniqueID()).toString()));
     }
 }

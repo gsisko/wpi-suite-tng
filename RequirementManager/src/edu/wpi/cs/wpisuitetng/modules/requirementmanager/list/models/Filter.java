@@ -30,6 +30,11 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** A filter is one set of constraints that a user can use to filter a list of requirements.
  * @author Team 5
@@ -203,11 +208,11 @@ public class Filter extends AbstractModel {
 
 				// The following three are different enums
 			case Status:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getStatus().toString().toLowerCase(), true);
+				return OperatorType.perform(this.comparator, RequirementStatus.toStatus(this.value), req.getStatus());
 			case Type:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getType().toString().toLowerCase(), true);
+				return OperatorType.perform(this.comparator, RequirementType.toType(this.value), req.getType());
 			case Priority:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getPriority().toString().toLowerCase(), true);
+				return OperatorType.perform(this.comparator, RequirementPriority.toPriority(this.value), req.getPriority());
 
 				// Default
 			default:
