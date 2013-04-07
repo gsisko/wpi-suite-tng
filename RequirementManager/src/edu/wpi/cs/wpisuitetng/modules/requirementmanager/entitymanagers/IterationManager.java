@@ -203,6 +203,9 @@ public class IterationManager implements EntityManager<Iteration> {
 	 * @return An array of all iterations in the Database	 
 	 */
 	public Iteration[] getAll(Session s)  {
+		// Assure that the current project has a back log before retrieving all. 
+		instantiateBacklogs();
+		
 		// Ask the database to retrieve all objects of the type Iteration.
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
 		// Passing the project makes it only get iterations from that project
@@ -288,7 +291,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	
 	
 	
-	/** Deletes a Iteration from the database (not advised)
+	/** Deletes a Iteration from the database (not advised). Backlogs cannot be deleted
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the iteration to delete

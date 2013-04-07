@@ -165,8 +165,7 @@ public class IterationManagerTest {
 	@Test
 	public void testGetAll() throws WPISuiteException {
 		Iteration[] gotten = manager.getAll(defaultSession);
-		assertEquals(2, gotten.length);
-		assertSame(existingIteration, gotten[0]);
+		assertEquals(3, gotten.length);
 	}
 	
 	@Test
