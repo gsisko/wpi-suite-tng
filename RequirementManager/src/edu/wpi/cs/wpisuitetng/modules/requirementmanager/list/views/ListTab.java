@@ -77,7 +77,7 @@ public class ListTab extends JPanel {
 	/** layout for the panel */
 	protected SpringLayout layout;
 
-	/** layout for the left panel */
+	/** layout for the whole panel */
 	protected JSplitPane splitPane;
 
 	/** The main tab controller */

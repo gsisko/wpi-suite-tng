@@ -25,12 +25,17 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
@@ -53,7 +58,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
  * 		-a JNumber text field for entering an estimate,
  * 		-a JNumber text field for entering an actual effort
  * 		-Associated labels for each component
- * -Layout managers for both the inner panel (a GridBagLayout) and this panel (a FlowLayout)
+ * -Layout managers for both the inner panel (a GridBagLayout) and this panel (a SpringLayout)
  * -A constraints variable to store the constraints for the inner GridBagLayout
  * 
  * This class also contains getters and setters for many of the components and variables listed above
@@ -68,7 +73,12 @@ public class RequirementTab extends JPanel {
 		EDIT//When Mode is this value, we are editing an existing requirement
 	}
 
-	
+	/** layout for the whole panel */
+	protected JSplitPane splitPane;
+	/** Panel containing requirement attribute panel  */
+	protected JPanel rightPanel;
+	/** Panel containing note tabs */
+	protected JScrollPane leftPanel;
 
 	//The variables to hold information about the current instance of the panel
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
@@ -79,11 +89,12 @@ public class RequirementTab extends JPanel {
 	//The inner panels
 	private RequirementAttributePanel attributePanel;//A JPanel to hold all the components. This allows for alignment of the components as a group
 	private RequirementTabPanel tabPanel; //Notes, etc
-	
-	//The layout manager
-	protected FlowLayout outerLayout;//The layout for the RequirementPanel (this holds the innerPanel)
 
-	
+	//The layout manager
+	protected SpringLayout layout; //The layout for the RequirementPanel (this holds the innerPanel)
+	protected ScrollPaneLayout leftLayout; //The layout for the LeftPanel (inner left panel)
+	protected SpringLayout rightLayout; //The layout for the RightPanel (inner right panel)
+
 	/**
 	 * The constructor for RequirementPanel;
 	 * Construct the panel, the components, and add the
@@ -100,18 +111,55 @@ public class RequirementTab extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-
-		//Create and set the layout manager for the this RequirementPanel
-		outerLayout = new FlowLayout();//Create the layout
-		this.setLayout(outerLayout);//Set the layout of this panel (this instance of a RequirementPanel)
-		outerLayout.setAlignment(FlowLayout.LEFT); //Set the alignment of the components of the outerLayout
-
+		
+		// Set the layout manager of this panel
+		this.layout = new SpringLayout();
+		this.setLayout(layout);
+		
 		//Instantiate the panels
+		splitPane = new JSplitPane();
+		
 		tabPanel = new RequirementTabPanel(this);
 		attributePanel = new RequirementAttributePanel(this,requirement, mode);//Construct the innerPanel
 		
-		addComponents();//Add the panels, enabling/disabling fields appropriately
+		leftPanel = new JScrollPane(attributePanel);
+		leftPanel.setMinimumSize(new Dimension (600, 500));
+		rightPanel = new JPanel();
+		rightPanel.setMinimumSize(new Dimension(250, 500));
+
+		this.splitPane.setOneTouchExpandable(false);
+		this.splitPane.setDividerLocation(650);
+		this.splitPane.setContinuousLayout(true);
+
+		// Construct the layout manager and add constraints
+		this.rightLayout = new SpringLayout();
+		rightPanel.setLayout(rightLayout);
+	/*	this.leftLayout = new ScrollPaneLayout();
+		leftPanel.setLayout(leftLayout);*/
 		
+		
+
+		// Constrain the tabPanel
+		rightLayout.putConstraint(SpringLayout.NORTH, tabPanel, 0, SpringLayout.NORTH, rightPanel);
+		rightLayout.putConstraint(SpringLayout.WEST, tabPanel, 10, SpringLayout.WEST, rightPanel);
+		rightLayout.putConstraint(SpringLayout.EAST, tabPanel, 0, SpringLayout.EAST, rightPanel);
+		rightLayout.putConstraint(SpringLayout.SOUTH, tabPanel, 0, SpringLayout.SOUTH, rightPanel);
+
+		/*// Constrain the attributePanel
+		leftLayout.putConstraint(SpringLayout.NORTH, attributePanel, 0, SpringLayout.NORTH, leftPanel);
+		leftLayout.putConstraint(SpringLayout.WEST, attributePanel, 0, SpringLayout.WEST, leftPanel);
+		leftLayout.putConstraint(SpringLayout.EAST, attributePanel, 0, SpringLayout.EAST, leftPanel);
+		leftLayout.putConstraint(SpringLayout.SOUTH, attributePanel, 0, SpringLayout.SOUTH, leftPanel);
+*/
+		// Constrain the splitPane
+		layout.putConstraint(SpringLayout.NORTH, splitPane, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, splitPane, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, splitPane, 0, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, splitPane, 0, SpringLayout.SOUTH, this);
+
+
+		addComponents();//Add the panels, enabling/disabling fields appropriately
+
 	}
 
 	/**
@@ -119,26 +167,28 @@ public class RequirementTab extends JPanel {
 	 * enabling/disabling fields as indicated by the mode variable
 	 */
 	protected void addComponents(){
-		
-		this.add(attributePanel);//Add the attributePanel to this panel
 
-		this.add(tabPanel);//Add the tabPanel to this panel
+		//leftPanel.add(attributePanel);//Add the attributePanel to this panel
+
+		rightPanel.add(tabPanel);//Add the tabPanel to this panel
 		if (mode == Mode.CREATE) {
 			//Enables the fields upon creation
 			setInputEnabled(inputEnabled);
-			
+
 			//Disables the notePanel upon creation
 			toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), false);
-			tabPanel.getNotePanel().getSaveButton().setEnabled(false);//TODO Is this necessary?
+			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 
 			tabPanel.getNotePanel().setEnabled(false);
-			
+
 			//Disables the appropriate fields in the attributePanel upon creation
 			attributePanel.toggleCreationDisable();
-			
-		}
-		
 
+		}
+
+		splitPane.setLeftComponent(leftPanel);
+		splitPane.setRightComponent(rightPanel);
+		this.add(splitPane);
 	}
 
 	/**
@@ -149,7 +199,7 @@ public class RequirementTab extends JPanel {
 	 */
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
-		
+
 		attributePanel.setInputEnabled(enabled);
 
 		// toggles note panel boxes
@@ -175,7 +225,7 @@ public class RequirementTab extends JPanel {
 	 */
 	protected void updateModel(Requirement requirement, Mode newMode){
 		mode = newMode;
-		
+
 		if (mode == Mode.EDIT)
 			setInputEnabled(true);
 
@@ -190,7 +240,7 @@ public class RequirementTab extends JPanel {
 		parent.refreshScrollPane();
 	}
 
-	
+
 	/**
 	 * Enables or disables a given JComponent and sets is color accordingly
 	 * 
@@ -208,7 +258,7 @@ public class RequirementTab extends JPanel {
 		}
 	}
 
-	
+
 	/**
 	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
 	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for the RequirementPanel.
@@ -288,7 +338,7 @@ public class RequirementTab extends JPanel {
 	public JTextArea getRequirementNote() {
 		return tabPanel.getNotePanel().getNoteMessage();
 	}
-	
+
 	public RequirementTabPanel getTabPanel() {
 		return tabPanel;
 	}
@@ -301,16 +351,16 @@ public class RequirementTab extends JPanel {
 	public Requirement getRequirement()
 	{
 		// get the fields from the UI
-    	String name = this.getRequirementName().getText();
+		String name = this.getRequirementName().getText();
 		String description = this.getRequirementDescription().getText();
 		int releaseNumber = Integer.parseInt((this.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (this.getRequirementReleaseNumber().getText()));
 		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
 		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
-		
+
 		return new Requirement(name, description, type, priority,  releaseNumber);
-	
+
 	}
-	
+
 	/**
 	 * This returns the "mode" of this panel (Mode.EDIT or Mode.CREATE)
 	 * @return the mode Mode
@@ -352,7 +402,7 @@ public class RequirementTab extends JPanel {
 	public RequirementView getParent() {
 		return parent;
 	}
-	
+
 	/**
 	 * @return the iterationBox
 	 */
