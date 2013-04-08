@@ -45,10 +45,12 @@ public class ListTabPanel extends JTabbedPane {
 	private ListTab parent;
 	private FilterListTab filterList;
 	private IterationListTab iterationList;
+	private boolean firstTime;
 
 	public ListTabPanel(ListTab view) {
 
 		this.parent = view;
+		this.firstTime = true;
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
@@ -70,12 +72,23 @@ public class ListTabPanel extends JTabbedPane {
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
-		if (getComponentAt(index) instanceof FilterListTab) {
-			parent.setMode(Mode.FILTER);
+		if (!firstTime) {
+			if (getComponentAt(index) instanceof FilterListTab) {
+				parent.setMode(Mode.FILTER);
+				filterList.refreshAll();
+				filterList.setCancelBtnToNew();
+				parent.getFilterBuilderPanel().resetFields();
+				parent.getFilterBuilderPanel().setInputEnabled(false);
+			}
+			else {
+				parent.setMode(Mode.ITERATION);
+				iterationList.refreshAll();
+				iterationList.setCancelBtnToNew();
+				parent.getIterationBuilderPanel().resetFields();
+				parent.getIterationBuilderPanel().setInputEnabled(false);
+			}
 		}
-		else {
-			parent.setMode(Mode.ITERATION);
-		}
+		else firstTime = false;
 	}
 
 	/**

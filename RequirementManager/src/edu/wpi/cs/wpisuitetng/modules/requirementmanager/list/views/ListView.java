@@ -91,6 +91,11 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		mainPanel = new ListTab(tabController, this);
 		
+		allFilters = new Filter[0];
+		allIterations = new Iteration[0];
+		allRequirements = new Requirement[0];
+		displayedRequirements = new Requirement[0];
+		
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();
 		this.setLayout(layout);

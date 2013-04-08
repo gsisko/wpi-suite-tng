@@ -25,17 +25,14 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -95,7 +92,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public FilterBuilderPanel(ListTab view) {
 		parent = view;
 		currentMode = Mode.CREATE;
-		
+
 		//Add a titled boarder to this panel
 		setBorder(BorderFactory.createTitledBorder("Filter Builder"));
 
@@ -144,9 +141,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//set the layout
 		setLayout(new GridBagLayout());
 		GridBagConstraints FilterBuilderConstraints = new GridBagConstraints();
-		
+
 		btnSave.setPreferredSize(new Dimension (100,30));
-		
+
 		//type
 		//Set the constraints for the "typeLabel" and add it to the view
 		FilterBuilderConstraints.fill = GridBagConstraints.HORIZONTAL;//This sets the constraints of this field so that the item will stretch horizontally to fill it's area
@@ -166,7 +163,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//Set the constraints for the "comparatorLabel" and add it to the view
 		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		FilterBuilderConstraints.insets = new Insets(10,10,10,0);
-	
+
 		FilterBuilderConstraints.gridx = 2;
 		FilterBuilderConstraints.gridy = 0;
 		add(comparatorLabel, FilterBuilderConstraints);//Actually add the "comparatorLabel" to the layout given the previous constraints
@@ -198,7 +195,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		FilterBuilderConstraints.ipadx=5;//pad this field horizontally by 5 units
 		add(valueBox, FilterBuilderConstraints);//Actually add the "valueBox" to the layout given the previous constraints
 		//end value
-		
+
 		//userfilter
 		//Set the constraints for the "userfilter"  and add it to the view
 		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
@@ -254,8 +251,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 				valueStrings=new String[]{"","High","Medium","Low"};
 			String[] IterationArr = {"Backlog"};
 			if(selected=="Iteration") {
-				IterationArr = this.getIterationNames();
-				valueStrings=IterationArr;
+				IterationArr = getIterationNames();
+				valueStrings = IterationArr;
 			}
 			DefaultComboBoxModel  valb = new DefaultComboBoxModel (valueStrings);
 			valueBox.setModel(valb);
@@ -344,7 +341,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	{
 		currentFilter = newFilter;
 	}
-	
+
 
 	/** Gets the model from the panel in the form of a JSON string
 	 *  that is ready to be sent as a message over the network
@@ -380,14 +377,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			newFilter.setValue(this.getFilterValue().getText());
 		else if (type == FilterType.toType("Iteration")) {
 			String chosen = this.getFilterValueBox().getSelectedItem().toString();
-			if (chosen.equals("Backlog")) {
-				newFilter.setValue("0");
-			} else {
-				ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
-				for (int i = 0; i < allIterations.size(); ++i) {
-					if (chosen.equals(allIterations.get(i).getName()))
-						newFilter.setValue(allIterations.get(i).getID());
-				}
+			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			for (int i = 0; i < allIterations.length; i++) {
+				if (chosen.equals(allIterations[i].getName()))
+					newFilter.setValue(allIterations[i].getID());
 			}
 		}
 		else
@@ -433,8 +426,15 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.getFilterNumValue().setText(filter.getValue());
 		enable(this.getFilterNumValue(), true);
 
-		//Value?
-		this.getFilterValueBox().setSelectedItem(filter.getValue());
+		//Value
+		if (filter.getType().toString().equals("Iteration")) {
+			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			for (Iteration i : allIterations) {
+				if (filter.getValue().equals(i.getID() + ""))
+					this.getFilterValueBox().setSelectedItem(i.getName());
+			}
+		}
+		else this.getFilterValueBox().setSelectedItem(filter.getValue());
 		enable(this.getFilterValueBox(), true);
 
 		//Active
@@ -522,7 +522,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		else
 			btnSave.setText("Save");
 
-			
+
 
 	}
 
@@ -561,7 +561,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		// Reset status field
 		statusBox.setSelectedIndex(0);
-		
+
 		//Reset buttons
 		btnSave.setText("Create");
 		this.revalidate();
@@ -612,14 +612,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			newFilter.setValue(this.getFilterValue().getText());
 		else if (type == FilterType.toType("Iteration")) {
 			String chosen = this.getFilterValueBox().getSelectedItem().toString();
-			if (chosen.equals("Backlog")) {
-				newFilter.setValue("0");
-			} else {
-				ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
-				for (int i = 0; i < allIterations.size(); ++i) {
-					if (chosen.equals(allIterations.get(i).getName()))
-						newFilter.setValue(allIterations.get(i).getName());
-				}
+			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			for (int i = 0; i < allIterations.length; i++) {
+				if (chosen.equals(allIterations[i].getName()))
+					newFilter.setValue(allIterations[i].getID() + "");
 			}
 		}
 		else
@@ -662,7 +658,14 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		numValue.setText(filter.getValue());
 
 		//Value box
-		valueBox.setSelectedItem(filter.getValue());
+		if (filter.getType().equals(FilterType.Iteration)) {
+			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			for (int i = 0; i < allIterations.length; i++) {
+				if (filter.getValue().equals(allIterations[i].getID() + ""))
+					valueBox.setSelectedItem(allIterations[i].getName());
+			}
+		}
+		else valueBox.setSelectedItem(filter.getValue());
 
 
 		//Active
@@ -671,21 +674,21 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		} else{
 			this.getStatus().setSelectedIndex(1);
 		}
-		
+
 		this.revalidate();
 		this.repaint();
-	}	
+	}
+
 	/**
 	 * Get a list of string iteration names
 	 */
 	public String[] getIterationNames(){
-		ArrayList<Iteration> allIterations = this.parent.getTabPanel().getIterationList().getIterations();
-		String[] names = new String[allIterations.size() + 1];
-		names[0] = "Backlog";
-		for (int i = 0; i < allIterations.size(); ++i) {
-			names[i+1] = (allIterations.get(i).getName());
+		Iteration[] allIterations = this.parent.getParent().getAllIterations();
+		String[] names = new String[allIterations.length];
+		for (int i = 0; i < allIterations.length; ++i) {
+			names[i] = (allIterations[i].getName());
 		}
-		
+
 		return names;
 	}
 

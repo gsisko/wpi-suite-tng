@@ -316,17 +316,22 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 		parent.getParent().setAllIterations(iterations);
 		
-		if (iterations.length > 0) {
+		Iteration[] displayedIterations = new Iteration[iterations.length-1];
+		for (int i = 0; i < displayedIterations.length; i++) {
+			displayedIterations[i] = iterations[i+1];
+		}
+		
+		if (displayedIterations.length > 0) {
 			// set the column names
 			String[] columnNames = {"Id", "Name", "StartDate", "EndDate"};
 
 			// put the data in the table
-			Object[][] entries = new Object[iterations.length][columnNames.length];
-			for (int i = 0; i < iterations.length; i++) {
-				entries[i][0] = iterations[i].getID();
-				entries[i][1] = iterations[i].getName();
-				entries[i][2] = iterations[i].getStartDate();
-				entries[i][3] = iterations[i].getEndDate();
+			Object[][] entries = new Object[displayedIterations.length][columnNames.length];
+			for (int i = 0; i < displayedIterations.length; i++) {
+				entries[i][0] = displayedIterations[i].getID();
+				entries[i][1] = displayedIterations[i].getName();
+				entries[i][2] = displayedIterations[i].getStartDate();
+				entries[i][3] = displayedIterations[i].getEndDate();
 
 			}
 

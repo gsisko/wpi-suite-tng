@@ -273,7 +273,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 		Filter[] filters = Filter.fromJSONArray(jsonString);
 		this.setLocalFilters(filters);
-		
+
 		parent.getParent().setAllFilters(filters);
 
 		// Add the list of filters to the FilterListPanel object
@@ -286,6 +286,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 			for (int i = 0; i < filters.length; i++) {
 				entries[i][0] = String.valueOf(filters[i].getUniqueID());
 				entries[i][1] = filters[i].getType().toString();
+
 				if (filters[i].getComparator().toString().equals("Contains")) {
 					entries[i][2] = "c";
 				} else if (filters[i].getComparator().toString().equals("DoesNotContain")) {
@@ -293,23 +294,22 @@ public class FilterListTab extends JPanel implements IListPanel{
 				} else {
 					entries[i][2] = filters[i].getComparator().toString();
 				}
-				String a = filters[i].getType().toString();
-				Iteration entry = new Iteration();
-				if(a=="Iteration"){
-					String n= filters[i].getValue();
-					if (n.equals("Backlog")) entries[i][3] = "Backlog";
-					else {
-						for (Iteration m:parent.getTabPanel().getIterationList().getIterations()){
-							if (n.equals(m.getName())){
-								entry = m;
-							}
 
+				String typeString = filters[i].getType().toString();
+				if (typeString == "Iteration") {
+					String strId = filters[i].getValue();
+					while (parent.getParent().getAllIterations().length == 0);
+					for (Iteration iter : parent.getParent().getAllIterations()) {
+						if (strId.equals(iter.getID() + "")) {
+							entries[i][3] = iter.getName();
 						}
-						entries[i][3] = entry.getName();
+
 					}
 				}
-				else{
-					entries[i][3] = filters[i].getValue();}
+				else {
+					entries[i][3] = filters[i].getValue();
+				}
+
 				if (filters[i].isUseFilter()) {
 					entries[i][4] = "yes";
 				} else {

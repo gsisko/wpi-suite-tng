@@ -308,16 +308,18 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		for (int i = 0; i < iters.size(); i++)
 		{
 			
-			if(this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
+			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
 			    continue;
 			
-			if (this.nameValue.getText().equals(iters.get(i).getName()))
+			if (!nameErrorFound && this.nameValue.getText().equals("Backlog")) {
+				error += "The name field of the iteration cannot be \"Backlog\".\n";
+				nameErrorFound = true;
+			}
+			
+			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()))
 			{
-				if (!nameErrorFound && Mode.EDIT != currentMode)
-				{
-					error += "The name field of the iteration cannot be the same as other iterations.\n";
-					nameErrorFound = true;
-				}
+				error += "The name field of the iteration cannot be the same as other iterations.\n";
+				nameErrorFound = true;
 			}
 
 			if(	((this.startDateChooser.getDate().before(iters.get(i).getEndDate()) 
