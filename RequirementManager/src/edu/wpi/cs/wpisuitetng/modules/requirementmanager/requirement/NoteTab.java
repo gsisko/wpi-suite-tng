@@ -75,16 +75,23 @@ public class NoteTab extends JPanel {
 		        super.getListCellRendererComponent(list, value, index, false, false);
 		        JPanel panel = new JPanel();
 		        JLabel title = new JLabel(((Note)value).toString());
-		        JTextArea content =  new JTextArea(((Note)value).getMessage());
+		        JTextArea content =  new JTextArea("", 1, 1);
+		        content.setLineWrap(true);
 		        content.setWrapStyleWord(true);
-		        //content.setPreferredSize(new Dimension(580, 100));
-		        //content.setMaximumSize(new Dimension(580, 500));
+		        content.setText(((Note)value).getMessage());
+		        
+		        content.setPreferredSize(new Dimension(580, 100));
+
 				panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 				title.setFont(title.getFont().deriveFont(9));
 				title.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray));
 				content.setFont(content.getFont().deriveFont(9));
 				content.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-				content.setMaximumSize(new Dimension(noteList.getWidth(),1000));
+
+				//content.setMaximumSize(new Dimension(noteList.getWidth(),1000));
+				//title.setMaximumSize(new Dimension(noteList.getWidth(),1000));
+				//panel.setMaximumSize(new Dimension(noteList.getWidth(),1000));
+				
 				panel.add(title);
 				panel.add(content);
 				panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0), BorderFactory.createLineBorder(Color.black, 1)), BorderFactory.createEmptyBorder(8, 8, 8, 8)));
