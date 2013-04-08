@@ -77,4 +77,10 @@ public interface IListPanel {
 
 	/** Refresh all the requirements    */
 	public void refreshRequirements();
+	
+	/** Sets the delete button to either activated or deactivated 
+	 * 
+	 * @param setActive True to activate and false to deactivate
+	 */
+	public void setDeleteEnabled(boolean setActive);
 }

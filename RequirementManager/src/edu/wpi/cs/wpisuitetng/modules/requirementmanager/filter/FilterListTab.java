@@ -361,6 +361,12 @@ public class FilterListTab extends JPanel implements IListPanel{
 		parent.getParent().getController().refreshData();
 	}
 
-
+	/** Sets the delete button to either activated or deactivated 
+	 * 
+	 * @param setActive True to activate and false to deactivate
+	 */
+	public void setDeleteEnabled(boolean setActive) {
+		btnDelete.setEnabled(setActive);		
+	}
 }
 

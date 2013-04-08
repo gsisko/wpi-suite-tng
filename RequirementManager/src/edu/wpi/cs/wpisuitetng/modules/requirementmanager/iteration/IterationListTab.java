@@ -376,6 +376,14 @@ public class IterationListTab extends JPanel implements IListPanel {
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
+
+	/** Sets the delete button to either activated or deactivated 
+	 * 
+	 * @param setActive True to activate and false to deactivate
+	 */
+	public void setDeleteEnabled(boolean setActive) {
+		btnDelete.setEnabled(setActive);		
+	}
 	
 }
 
