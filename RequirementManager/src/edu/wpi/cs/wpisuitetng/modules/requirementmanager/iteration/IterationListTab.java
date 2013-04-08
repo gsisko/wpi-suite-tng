@@ -43,6 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Delete
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
@@ -87,6 +88,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
+		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
 		resultsTable.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
 
 		    SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
@@ -112,6 +114,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 		btnCreate = new JButton ("New Iteration");
 		btnDelete = new JButton ("Delete");
+		setDeleteEnabled(false); // Initialize
 
 		btnCreate.setMaximumSize(new Dimension(120, 40));
 		btnCreate.setMinimumSize(new Dimension(120, 40));
@@ -277,7 +280,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 * 
 	 * @return An array of unique identifiers in the form of strings
 	 */
-	public String[] getUniqueIdentifiers() {
+	public String[] getSelectedUniqueIdentifiers() {
 		
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();

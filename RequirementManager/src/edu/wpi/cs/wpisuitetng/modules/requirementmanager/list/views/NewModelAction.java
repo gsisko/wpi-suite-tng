@@ -27,6 +27,11 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/** Watches the "New <Model>" button and toggles its settings as well
+ *  as the associated Builder's settings when the button is pressed.
+ *  
+ *  When pressed, the information in the filter builder panel
+ *  is reset and the fields are grayed out.          */
 public class NewModelAction implements ActionListener {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
@@ -34,8 +39,7 @@ public class NewModelAction implements ActionListener {
 	private final IBuilderPanel builderView;
 	
 	
-	/** When pressed, the information in the filter builder panel
-	 *  is reset and the fields are grayed out.
+	/** Constructor that takes the two panels to watch
 	 * 
 	 * @param theButton The button to watch
 	 * @param builder   The filter builder panel to do work on

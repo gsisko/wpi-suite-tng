@@ -68,7 +68,7 @@ public class DeleteModelController implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent buttonPress) {		
 		
-		String[] uniqueIdentifiers = listView.getUniqueIdentifiers();
+		String[] uniqueIdentifiers = listView.getSelectedUniqueIdentifiers();
 		
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < uniqueIdentifiers.length; i++){			

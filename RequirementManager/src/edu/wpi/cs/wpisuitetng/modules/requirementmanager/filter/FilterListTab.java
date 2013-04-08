@@ -40,6 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
@@ -87,7 +88,8 @@ public class FilterListTab extends JPanel implements IListPanel{
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
-
+		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
+		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
@@ -122,6 +124,8 @@ public class FilterListTab extends JPanel implements IListPanel{
 		btnCreate.addActionListener(new NewModelAction(this, parent.getFilterBuilderPanel()));
 
 		btnDelete.addActionListener(deleteController);
+		setDeleteEnabled(false); // Initialize
+
 	}
 
 	/**This method returns an ArrayList of active filters
@@ -200,7 +204,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 	@Override
-	public String[] getUniqueIdentifiers() {
+	public String[] getSelectedUniqueIdentifiers() {
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 

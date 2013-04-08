@@ -38,7 +38,7 @@ public interface IListPanel {
 	 * 
 	 * @return An array of unique identifiers in the form of strings
 	 */
-	public String[] getUniqueIdentifiers();
+	public String[] getSelectedUniqueIdentifiers();
 
 
 	/** If called  on a list view, sets the button to clear/cancel	 */
