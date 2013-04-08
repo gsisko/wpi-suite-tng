@@ -11,7 +11,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.controllers;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -34,11 +36,16 @@ public class TestRequirementControllers {
 
 	RetrieveAllRequirementsController controller;
 
+	Requirement requirementTester,reqTest;
+	
 	Filter testFilter, testOtherFilter;
 
 	MainTabPanel mainTabPanel;
 	ListView listView;
 	MainTabController tabController;
+	
+	RequirementView rView;
+	RequirementTab rTab, rTab2;
 
 	@Before
 	public void setup() throws Exception{
@@ -64,7 +71,18 @@ public class TestRequirementControllers {
 		Filter[] filterArray = {testFilter, testOtherFilter};
 		listView.setAllFilters(filterArray);
 
-		controller = new RetrieveAllRequirementsController(listView);//new RetrieveAllRequirementsController(rView);
+		controller = new RetrieveAllRequirementsController(listView);
+		
+		requirementTester = new Requirement();
+		requirementTester.setId(10);
+		requirementTester.setPriority(RequirementPriority.High);
+		requirementTester.setType(RequirementType.Epic);
+		    
+		reqTest = new Requirement("test", "test", RequirementType.Epic, RequirementPriority.High, 1);
+		reqTest.setType(RequirementType.NonFunctional);
+		requirementTester.setPriority(RequirementPriority.Low);
+		
+		rView = new RequirementView(tabController);
 	}
 
 	@Test
@@ -74,17 +92,24 @@ public class TestRequirementControllers {
 	    assertEquals(controller.getFilterPanel(), listView.getListTab().getTabPanel().getFilterList());
 	    
 	    controller.refreshData();
-	    Requirement requirementTester = new Requirement();
-	    requirementTester.setId(10);
-	    requirementTester.setPriority(RequirementPriority.High);
-	    requirementTester.setType(RequirementType.Epic);
-	    
-	    Requirement reqTest = new Requirement("test", "test", RequirementType.Epic, RequirementPriority.High, 1);
-	    reqTest.setType(RequirementType.NonFunctional);
-	    requirementTester.setPriority(RequirementPriority.Low);
+
 	    Requirement[] reqArray = {requirementTester, reqTest};
 	    
 	    //controller.errorReceivingData("Do I Work?");
 	    controller.receivedData(reqArray);
 	}
+	
+	@Test
+	public void testRequirementAttributePanel(){
+	    rTab = new RequirementTab(rView, reqTest, RequirementTab.Mode.CREATE);
+	    rTab2 = new RequirementTab(rView, reqTest, RequirementTab.Mode.EDIT);
+	    
+	    rTab2.setMode(RequirementTab.Mode.CREATE);
+	    assertEquals(RequirementTab.Mode.CREATE, rTab.getMode());
+	    assertEquals(RequirementTab.Mode.CREATE, rTab2.getMode());
+	    
+	    assertFalse((rTab.getRequirement().identify(requirementTester)).booleanValue());
+	    assertTrue((rTab2.getRequirement().identify(reqTest)).booleanValue());
+	}
+	
 }
