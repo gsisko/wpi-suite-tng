@@ -191,6 +191,13 @@ public class IterationManagerTest {
 		assertEquals(0, db.retrieve(Iteration.class, "id", "1").size());
 	}
 	
+	@Test 
+	public void testDeleteBacklog() throws WPISuiteException{
+		manager.instantiateBacklog(defaultSession);
+		assertFalse(manager.deleteEntity(defaultSession, "0"));		
+	}
+	
+	
 	@Test(expected=NotFoundException.class)
 	public void testDeleteMissing() throws WPISuiteException {
 		manager.deleteEntity(adminSession, "4534");
@@ -257,6 +264,10 @@ public class IterationManagerTest {
 		
 	}
 	
+	@Test(expected=WPISuiteException.class)
+	public void testUpdateNullSession() throws WPISuiteException{
+		manager.update(null, existingIteration.toJSON());
+	}
 	
 	@Test(expected=NotImplementedException.class)
 	public void testAdvancedGet() throws WPISuiteException {

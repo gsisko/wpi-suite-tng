@@ -233,6 +233,10 @@ public class RequirementManagerTest {
 		
 	}
 	
+	@Test(expected=WPISuiteException.class)
+	public void testUpdateNullSession() throws WPISuiteException{
+		manager.update(null, existingRequirement.toJSON());
+	}
 	
 	@Test(expected=NotImplementedException.class)
 	public void testAdvancedGet() throws WPISuiteException {

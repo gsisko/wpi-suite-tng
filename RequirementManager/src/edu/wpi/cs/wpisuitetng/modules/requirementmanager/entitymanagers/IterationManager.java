@@ -84,6 +84,7 @@ public class IterationManager implements EntityManager<Iteration> {
 				return; // There is a backlog already
 			else
 				System.err.println("There is more than one backlog!");
+				return;
 		// Get entity throws an exception when it can't find things
 		} catch (WPISuiteException wse){
 			Iteration model = new Iteration("Backlog", null, null);
