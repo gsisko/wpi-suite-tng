@@ -2,6 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -33,7 +35,8 @@ public class NotePanel extends JPanel{
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), noteTitle);
 		titleBorder.setTitleJustification(TitledBorder.DEFAULT_JUSTIFICATION);
 		titleBorder.setTitlePosition(TitledBorder.BOTTOM);
-		titleBorder.setTitleFont(content.getFont());
+		titleBorder.setTitleFont(content.getFont().deriveFont(Font.ITALIC));
+		titleBorder.setTitleColor(Color.gray);
 
 		setBorder(  BorderFactory.createCompoundBorder(	(BorderFactory.createEmptyBorder(5, 5, 5, 5)),
 														BorderFactory.createCompoundBorder(titleBorder,
