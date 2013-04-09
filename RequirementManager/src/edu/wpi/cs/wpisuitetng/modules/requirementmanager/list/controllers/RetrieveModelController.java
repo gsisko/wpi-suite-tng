@@ -77,7 +77,7 @@ public class RetrieveModelController extends MouseAdapter {
 		}
 	}
 
-	/** Called by {@link RetrieveFilterRequestObserver} when the response
+	/** Called by {@link RetrieveModelObserver} when the response
 	 *  is received from the server. The Builder fields are set up and 
 	 *  populated with the received model. The list panel button for 
 	 *  new/cancel is set to cancel mode.
