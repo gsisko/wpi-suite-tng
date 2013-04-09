@@ -41,8 +41,8 @@ public class NewModelAction implements ActionListener {
 	
 	/** Constructor that takes the two panels to watch
 	 * 
-	 * @param theButton The button to watch
-	 * @param builder   The filter builder panel to do work on
+	 * @param listView ILitPanel for this list/builder
+	 * @param builderView   IBuilderPanel for this list/builder
 	 */
 	public NewModelAction(IListPanel listView, IBuilderPanel builderView){
 		this.listView = listView;

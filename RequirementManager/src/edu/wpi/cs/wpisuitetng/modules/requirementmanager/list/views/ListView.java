@@ -84,7 +84,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/**
 	 * Construct the view
 	 * @param tabController The main tab controller
-	 * @param tab The Tab containing this view
 	 */
 	public ListView(final MainTabController tabController) {
 		this.tabController = tabController;

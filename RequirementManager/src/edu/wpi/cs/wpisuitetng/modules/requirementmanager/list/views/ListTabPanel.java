@@ -99,7 +99,7 @@ public class ListTabPanel extends JTabbedPane {
 	}
 
 	/**
-	 * @param listPanel the listPanel to set
+	 * @param filterList the FilterListTab to set
 	 */
 	public void setFilterList(FilterListTab filterList) {
 		this.filterList = filterList;
@@ -113,7 +113,7 @@ public class ListTabPanel extends JTabbedPane {
 	}
 
 	/**
-	 * @param listPanel the listPanel to set
+	 * @param iterationList the IterationListTab to set
 	 */
 	public void setIterationList(IterationListTab iterationList) {
 		this.iterationList = iterationList;

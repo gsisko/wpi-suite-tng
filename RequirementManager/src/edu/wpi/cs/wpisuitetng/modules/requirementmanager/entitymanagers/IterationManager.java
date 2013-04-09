@@ -162,7 +162,7 @@ public class IterationManager implements EntityManager<Iteration> {
 
 	/** Takes an Iteration and assigns a unique id if necessary
 	 * 
-	 * @param req The requirement that possibly needs a unique id
+	 * @param iter The iteration that possibly needs a unique id
 
 	 * @throws WPISuiteException "Count failed"
 	 */
@@ -211,7 +211,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *   in an array.	
 	 *  
 	 *  @param s  The current user session
-	 *  @param id Points to a specific iteration
+	 *  @param sid String representation of id of desired iteration
 	 *  
  	@return An array of Iterations  
 	 * @throws NotFoundException  "The Iteration with the specified id was not found:" + intId

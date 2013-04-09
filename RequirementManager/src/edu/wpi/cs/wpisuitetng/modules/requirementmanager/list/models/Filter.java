@@ -148,7 +148,7 @@ public class Filter extends AbstractModel {
 	/** Changes all fields in the current Filter to equal the fields of the filterUpdate
 	 * User and UniqueID are ignored as they should never be updated
 	 * 
-	 * @param reqUpdate Filter holding the updates
+	 * @param filterUpdate Filter holding the updates
 	 */
 	public void updateFilter(Filter filterUpdate){	
 		this.setType(filterUpdate.getType());
@@ -324,7 +324,7 @@ public class Filter extends AbstractModel {
 
 	/** Sets the value of the Filter when the input is Object
 	 * 
-	 * @param value the value to set
+	 * @param o The value to set
 	 */
 	public void setValue(Object o){
 		this.value = o.toString();		

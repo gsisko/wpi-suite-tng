@@ -399,7 +399,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	/** Takes a JSON string that holds an array of models and uploads them
 	 *  to the builder panel. Also sets the modes
 	 *  
-	 * @param jsonArray An array of models in JSON string form
+	 * @param jsonString An array of models in JSON string form
 	 */
 	public void translateAndDisplayModel(String jsonString) {
 		isBuilderActive = true;
@@ -636,7 +636,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	/** Takes a JSON string that holds an array of models and uploads them
 	 *  to the builder panel. 
 	 *  
-	 * @param jsonArray An array of models in JSON string form
+	 * @param jsonString An array of models in JSON string form
 	 */
 	public void displayModelFromJSONArray(String jsonString) {
 		// Translate the filter from a JSONArray	

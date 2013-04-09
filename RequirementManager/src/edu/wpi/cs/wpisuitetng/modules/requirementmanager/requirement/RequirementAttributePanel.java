@@ -589,7 +589,7 @@ public class RequirementAttributePanel extends JPanel {
 
 	/**
 	 * This sets the Mode "mode" of this panel
-	 * @param Mode m to set mode to (Mode.EDIT or Mode.CREATE)
+	 * @param m Mode to set mode to (Mode.EDIT or Mode.CREATE)
 	 */
 	public void setMode(Mode m) {
 		mode = m;
@@ -605,7 +605,7 @@ public class RequirementAttributePanel extends JPanel {
 
 	/**
 	 * This sets the Requirement "currentRequirement" 
-	 * @param Requirement currentRequirement the currentRequirement to set
+	 * @param currentRequirement What to set the current requirement to
 	 */
 	public void setCurrentRequirement(Requirement currentRequirement) {
 		this.currentRequirement = currentRequirement;

@@ -156,7 +156,7 @@ public class Iteration extends AbstractModel {
 	
 	/** Gets estimates from each associated requirement and sums up the total. 
 	 * 
-	 * @returns The sum of all the requirements estimates
+	 * @return The sum of all the requirements estimates
 	 */
 	public int getTotalEstimate(){
 		/* TODO: ways of getting the total estimate

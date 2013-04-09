@@ -226,7 +226,7 @@ public class MockData implements Data {
 
 	// The following were added for use when the projects included in the DB are significant
 	/** Adds a project to the DB
-	 *  @param Project
+	 *  @param toAdd
 	 */
 	public void addProject(Project toAdd){
 		projects.add(toAdd);

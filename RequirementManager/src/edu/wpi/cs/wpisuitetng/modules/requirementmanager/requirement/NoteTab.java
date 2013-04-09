@@ -47,9 +47,7 @@ public class NoteTab extends JPanel {
 	 * The constructor for NotePanel;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
-	 * @param view	The parent RequirementView that contains this panel
-	 * @param requirement	The requirement that is currently open for editing or creation.
-	 * @param editMode	The mode of the current panel. This is "CREATE" when we are creating a new requirement, and "EDIT" when we are editing an existing requirement.
+	 * @param reqPanelParent	The parent of this tab
 	 */
 	public NoteTab(RequirementTab reqPanelParent) {
 
@@ -201,8 +199,8 @@ public class NoteTab extends JPanel {
 	}
 
 	/**
-	 * This sets the Note "currentNote" 
-	 * @param Note currentNote the currentNote to set
+	 * This sets the current note
+	 * @param currentNote What to set the current note to
 	 */
 	public void setCurrentNote(Note currentNote) {
 		this.currentNote = currentNote;

@@ -66,7 +66,7 @@ public class FilterManager implements EntityManager<Filter> {
 	/**
 	 * Takes a filter and assigns a unique id if necessary
 	 * 
-	 * @param req  The filter that possibly needs a unique id
+	 * @param filter  The filter that possibly needs a unique id
 	 * @throws WPISuiteException
 	 */
 	private void assignUniqueID(Filter filter) throws WPISuiteException {

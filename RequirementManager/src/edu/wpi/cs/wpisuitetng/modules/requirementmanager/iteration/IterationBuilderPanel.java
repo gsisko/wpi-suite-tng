@@ -215,9 +215,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		currentIteration = newIteration;
 	}
 
-	/**
-	 * @return the grandpa
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
