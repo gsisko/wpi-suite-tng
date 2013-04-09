@@ -388,5 +388,35 @@ public class IterationListTab extends JPanel implements IListPanel {
 		btnDelete.setEnabled(setActive);		
 	}
 	
+	/** Checks if the selected items can ALL be deleted or not. An iteration may 
+	 *  not be deleted when it has sub-requirements, so that is the condition 
+	 *  checked for here
+	 *  
+	 * @return false if any item selected cannot be deleted.
+	 */
+	public boolean areSelectedItemsDeletable(){
+//		String[] iterationIDs = getSelectedUniqueIdentifiers();
+//		
+//		for (String id: iterationIDs){
+//			if (id.equqls(    a stored iteration  )))
+//			
+//		}
+//		
+//		
+//		Iteration anIteration = new Iteration();
+//		for (Iteration iter : parent.getParent().getAllIterations()) {				
+//			// Check to see if the filter references a currently valid Iteration
+//			if (iterationIDs[i].equals(iter.getID() + "") ){
+//				foundTheIter = true; // means that the filter is valid and we can continue
+//			}
+//		}
+//		
+//		
+//		// If this is true, then the iteration cannot be deleted
+//		( anIteration.getRequirementsContainted().size() > 0 )
+		
+		
+		return true;
+	}
 }
 

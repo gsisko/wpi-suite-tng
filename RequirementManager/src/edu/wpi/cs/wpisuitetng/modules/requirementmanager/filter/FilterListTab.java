@@ -411,5 +411,13 @@ public class FilterListTab extends JPanel implements IListPanel{
 		btnDelete.setEnabled(setActive);		
 	}
 	
+	/** Checks if the selected items can ALL be deleted or not. Currently, all 
+	 *  filters may be deleted, so only true is returned
+	 *  
+	 * @return false if any item selected cannot be deleted.
+	 */
+	public boolean areSelectedItemsDeletable(){
+		return true;
+	}	
 }
 

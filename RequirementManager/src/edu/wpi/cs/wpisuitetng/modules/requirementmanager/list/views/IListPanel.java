@@ -83,4 +83,9 @@ public interface IListPanel {
 	 * @param setActive True to activate and false to deactivate
 	 */
 	public void setDeleteEnabled(boolean setActive);
+	
+	/** Checks if the selected items can ALL be deleted or not
+	 * @return false if any item selected cannot be deleted.
+	 */
+	public boolean areSelectedItemsDeletable();
 }
