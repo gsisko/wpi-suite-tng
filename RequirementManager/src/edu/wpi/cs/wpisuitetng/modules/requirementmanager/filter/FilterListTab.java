@@ -39,6 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Delete
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
@@ -276,6 +277,29 @@ public class FilterListTab extends JPanel implements IListPanel{
 		this.getModel().fireTableStructureChanged();
 
 		Filter[] filters = Filter.fromJSONArray(jsonString);
+		
+		// Check for invalid filters- Cancel upload and refresh again if necessary
+		for (Filter filter: filters)
+		{
+			// Only filter out filters that have Iteration as their type
+			if (filter.getType() == FilterType.Iteration){
+				// Only filter out filters that reference deleted iterations
+				boolean foundTheIter = false;
+				for (Iteration iter : parent.getParent().getAllIterations()) {				
+					// Check to see if the filter references a currently valid Iteration
+					if (filter.getValue().equals(iter.getID() + "") ){
+						foundTheIter = true; // means that the filter is valid and we can continue
+					}
+				}
+				// Indicates an invalid filter if the iteration referenced was not found
+				if (!foundTheIter){  // Indicates an invalid filter
+					deleteController.performDeletion(Integer.toString(filter.getUniqueID()));
+					retrieveAllController.refreshData(); // Have to start over
+					return; // end early
+				}	
+			}
+		}
+		
 		this.setLocalFilters(filters);
 
 		parent.getParent().setAllFilters(filters);
@@ -307,7 +331,6 @@ public class FilterListTab extends JPanel implements IListPanel{
 						if (strId.equals(iter.getID() + "")) {
 							entries[i][3] = iter.getName();
 						}
-
 					}
 				}
 				else {
@@ -372,5 +395,6 @@ public class FilterListTab extends JPanel implements IListPanel{
 	public void setDeleteEnabled(boolean setActive) {
 		btnDelete.setEnabled(setActive);		
 	}
+	
 }
 
