@@ -282,7 +282,7 @@ public class IterationManager implements EntityManager<Iteration> {
 
 
 
-	/** Deletes a Iteration from the database (not advised). Backlogs cannot be deleted
+	/** Deletes a Iteration from the database (effectively hidden). Backlogs cannot be deleted
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the iteration to delete
@@ -295,15 +295,19 @@ public class IterationManager implements EntityManager<Iteration> {
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Iteration oldIteration = getEntity(s, id)[0];
+		System.out.println("Number of entities gotten with ID = " + id +": "+getEntity(s,id).length);
 		if (id.equals("0")){ // ID of 0 = backlog
 			return false;
 		}
 
+		// Set Project to null to a different user so that it is not pulled
+		// out by "getAll" calls... "effectively deleted"
+		oldIteration.setProject(null); 
 
-		if (this.db.delete(oldIteration) == oldIteration){
-			return true; // the deletion was successful
-		}	    
-		return false; // The deletion was unsuccessful
+		// Attempt to save. WPISuiteException may be thrown
+		db.save( oldIteration);
+
+		return true; // The deletion was successful
 	}
 
 
@@ -321,7 +325,15 @@ public class IterationManager implements EntityManager<Iteration> {
 
 	// Unimplemented Manager methods	
 	// Advanced Manager methods
-
+	
+	/**
+	 * Method advancedPut.
+	 * @param s Session
+	 * @param args String[]
+	  @return String
+	 * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
+	 */
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 		throw new NotImplementedException();

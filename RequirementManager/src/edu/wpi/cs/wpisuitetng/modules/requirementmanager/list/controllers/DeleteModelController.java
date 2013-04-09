@@ -85,6 +85,7 @@ public class DeleteModelController implements ActionListener {
 		builderView.resetFields();
 		builderView.setInputEnabled(false);
 			
+		listView.setDeleteEnabled(false);
 		listView.setCancelBtnToNew();
 	}
 

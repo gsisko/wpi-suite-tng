@@ -54,11 +54,27 @@ public class ActivateDeleteButton extends MouseAdapter{
 		listView.setDeleteEnabled(checkForHighlights());
 	}
 	
+	/** When a mouse move action is done on the table being watched, this 
+	 *  will be activated and set the Delete button to activated/deactivated 
+	 *  appropriately. This is to cover all the bases of mouse movement.
+	 */
+	public void mouseMoved(MouseEvent e){		
+		listView.setDeleteEnabled(checkForHighlights());
+	}
+	
+	/** When a mouse enter action is done on the table being watched, this 
+	 *  will be activated and set the Delete button to activated/deactivated 
+	 *  appropriately. This is to cover all the bases of mouse movement.
+	 */
+	public void mouseEntered(MouseEvent e){		
+		listView.setDeleteEnabled(checkForHighlights());
+	}
+	
 	/** When a mouse exit action is done on the table being watched, this 
 	 *  will be activated and set the Delete button to activated/deactivated 
 	 *  appropriately. This is to cover all the bases of mouse movement.
 	 */
-	public void mouseExited(MouseEvent e){		
+	public void mouseExit(MouseEvent e){		
 		listView.setDeleteEnabled(checkForHighlights());
 	}
 	
