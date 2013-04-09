@@ -41,7 +41,7 @@ public interface IListPanel {
 	public String[] getSelectedUniqueIdentifiers();
 
 
-	/** If called  on a list view, sets the button to clear/cancel	 */
+	/** Sets the New the button to clear/cancel	 */
 	public void setNewBtnToCancel();
 
 

@@ -204,7 +204,12 @@ public class FilterListTab extends JPanel implements IListPanel{
 		this.btnCreateIsCancel = btnCreateIsCancel;
 	}
 
-	@Override
+	/** Takes whatever model(s) is(are) stored in the the current panel,
+	 *  and returns the unique identifier(s) in an array. Generally
+	 *  pulls the highlighted identifiers from a table view.
+	 * 
+	 * @return An array of unique identifiers in the form of strings
+	 */
 	public String[] getSelectedUniqueIdentifiers() {
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
@@ -217,14 +222,14 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	@Override
+	/** Sets the New button to clear/cancel	 */
 	public void setNewBtnToCancel() {
 		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	@Override
+	/** Sets the "Cancel" button back to "New Filter" 	 */
 	public void setCancelBtnToNew() {
 		// Set the cancel button back to New Filter if it was in cancel mode 
 		this.getBtnCreate().setText("New Filter"); 
@@ -232,7 +237,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	}
 
-	@Override
+	/** Toggles between "New Model" and "Cancel" mode */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
 		if(btnCreateIsCancel)
@@ -242,14 +247,21 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 
-	@Override
+	/** Begins refresh process, starting with Filters
+	 * 
+	 * @return true on success, false on failure
+	 */
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
 		return true;
 	}
 
 
-	@Override
+	/** Gets the unique identifier of the list entry that was double clicked
+	 * 
+	 * @param me The mouse event that was triggered by a double click
+	 * @return The unique identifier, either name or ID number
+	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
 		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
@@ -265,7 +277,10 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return filterId;
 	}
 
-	@Override
+	/** Show the filters in the list view
+	 * 
+	 * @param jsonString An array of models in the form of a JSON string
+	 */
 	public void showRecievedModels(String jsonString) {
 		// Setup data structures
 		String[] emptyColumns = {};
@@ -292,16 +307,16 @@ public class FilterListTab extends JPanel implements IListPanel{
 					}
 				}
 				// Indicates an invalid filter if the iteration referenced was not found
-				if (!foundTheIter){  // Indicates an invalid filter
+				if (!foundTheIter){  
+					// Delete the filter. A retrieve all command will be sent after the deletion occurs
 					deleteController.performDeletion(Integer.toString(filter.getUniqueID()));
-					retrieveAllController.refreshData(); // Have to start over
 					return; // end early
 				}	
 			}
 		}
 		
+		// The new list of filters has passed basic validation, so it is saved
 		this.setLocalFilters(filters);
-
 		parent.getParent().setAllFilters(filters);
 
 		// Add the list of filters to the FilterListPanel object
@@ -383,7 +398,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		this.retrieveAllController = retrieveAllController;
 	}
 
-	@Override
+	/** Refresh all the requirements    */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
