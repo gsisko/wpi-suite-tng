@@ -74,11 +74,10 @@ public class Requirement extends AbstractModel {
 	// TODO: Remove this once the panels have been updated to handle Req's with an additional field
 	/**
 	 * Constructor for Requirement.
-	 * @param name String 
-	 * @param description String
-	 * @param releaseNumber int
-	 * @param priority RequirementPriority
-	 * @param estimate int
+	 * @param name The name of the requirement
+	 * @param description Description of the requirement
+	 * @param releaseNumber Release number of the requirement
+	 * @param priority Priority of the requirement(NONE, LOW, MEDIUM, HIGH)
 	 */
 	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber) {
 		this();
@@ -91,11 +90,10 @@ public class Requirement extends AbstractModel {
 	
 	/**
 	 *  Full Constructor for Requirement.
-	 * @param name String 
-	 * @param description String
-	 * @param releaseNumber int
-	 * @param priority RequirementPriority
-	 * @param estimate int
+	 * @param name Name of the requirement 
+	 * @param description Description of the requirement
+	 * @param releaseNumber Release number of the requirement
+	 * @param priority Priority of the requirement (NONE, LOW, MEDIUM, HIGH)
 	 * @param iterationID The id of the iteration that this Req is assigned to
 	 */
 	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber, int iterationID) {

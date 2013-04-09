@@ -206,7 +206,7 @@ public class Iteration extends AbstractModel {
 		this.name = name;
 	}
 	/**
-	 * @param name the name to set
+	 * @param ID the id to set
 	 */
 	public void setID(int ID) {
 		this.id = ID;
@@ -247,9 +247,9 @@ public class Iteration extends AbstractModel {
 	}
 
 	/**
-	 * @param requirementsAssigned the requirementsAssigned to set
+	 * @param requirementsContained the requirementsAssigned to set
 	 */
-	public void setRequirementsContainted(ArrayList<Integer> requirementsContainted) {
-		this.requirementsAssigned = requirementsContainted;
+	public void setRequirementsContainted(ArrayList<Integer> requirementsContained) {
+		this.requirementsAssigned = requirementsContained;
 	}
 }
