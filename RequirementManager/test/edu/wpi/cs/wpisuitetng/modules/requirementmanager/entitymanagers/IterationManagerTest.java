@@ -117,7 +117,7 @@ public class IterationManagerTest {
 	}
 
 	@Test   
-	public void testInstantiateBacklogFirst() throws NotFoundException, WPISuiteException{
+	public void testInstantiateBacklogForFirstTime() throws NotFoundException, WPISuiteException{
 		assertSame(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).size(), 0); // must find that there is no backlog yet
 		manager.instantiateBacklog(defaultSession); 
 		assertNotNull(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).get(0)); // must find the backlog
@@ -127,7 +127,7 @@ public class IterationManagerTest {
 	public void testInstantiateBackogTwice() throws WPISuiteException{
 		manager.instantiateBacklog(defaultSession); 
 		manager.instantiateBacklog(defaultSession); 
-		assertSame(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).size(), 1);
+		assertEquals(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).size(), 1);
 	}
 	
 	@Test
