@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -156,7 +157,7 @@ public class RetrieveAllRequirementsController {
 				entries[i][1] = isFiltered.get(i).getName();
 				entries[i][2] = isFiltered.get(i).getDescription();
 				if (isFiltered.get(i).getAssignedIteration() == 0) {
-					entries[i][3] = "Backlog";
+					entries[i][3] = getIterationName(isFiltered.get(i));
 				}
 				else entries[i][3] = "Hello World";
 				// Process "NoType" case
@@ -220,6 +221,15 @@ public class RetrieveAllRequirementsController {
 			
 		}
 		System.out.println("Existing requirements retrieved successfully.");
+	}
+
+	private String getIterationName(Requirement requirement) {
+		for (Iteration i : view.getAllIterations()) {
+			if (requirement.getAssignedIteration() == i.getID()) {
+				return i.getName();
+			}
+		}
+		return "Backlog";
 	}
 
 	/**
