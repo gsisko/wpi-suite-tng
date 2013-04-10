@@ -26,8 +26,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
@@ -554,15 +552,15 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			
 			//if oldStatus is Deleted, only can be changed to Open, InProgress, or Complete
 			if (oldStatus.equals("Deleted")) {
-				statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
+				statusStrings = new String[] { "Open", "Deleted" };
 				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
 				statusBox.setModel(compbox);
-				statusBox.setSelectedIndex(3);
+				statusBox.setSelectedIndex(1);
 			}
 			
 			//if oldStatus is Complete, only can be changed to InProgess or Deleted
 			if (oldStatus.equals("Complete")) {
-				statusStrings = new String[] { "InProgress", "Complete", "Deleted" };
+				statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
 				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
 				statusBox.setModel(compbox);
 				statusBox.setSelectedIndex(1);
@@ -570,7 +568,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			
 			//if oldStatus is New, only can be changed to Complete or Deleted
 			if (oldStatus.equals("New")) {
-				statusStrings = new String[] { "New", "Open", "Complete", "Deleted" };
+				statusStrings = new String[] { "New", "Deleted" };
 				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
 				statusBox.setModel(compbox);
 				statusBox.setSelectedIndex(0);
