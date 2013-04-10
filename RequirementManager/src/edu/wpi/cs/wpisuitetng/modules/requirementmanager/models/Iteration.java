@@ -43,6 +43,8 @@ public class Iteration extends AbstractModel {
 	private int id;
 	/** The requirements that are a part of this Requirement */
 	private ArrayList<Integer> requirementsAssigned;
+	/** The current running total estimate */
+	private int totalEstimate;
 	
 	/** Basic constructor for an Iteration */
 	public Iteration()
@@ -51,6 +53,7 @@ public class Iteration extends AbstractModel {
 		this.setStartDate(new Date());
 		this.setEndDate(new Date());
 		this.setID(-1);
+		this.totalEstimate = 0;
 		requirementsAssigned = new ArrayList<Integer>();
 	}
 	
@@ -67,6 +70,7 @@ public class Iteration extends AbstractModel {
 		this.setName(name);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		this.totalEstimate = 0;
 	}
 
 
@@ -149,7 +153,7 @@ public class Iteration extends AbstractModel {
 		this.setName(iterationUpdate.getName());
 		this.setStartDate(iterationUpdate.getStartDate());
 		this.setEndDate(iterationUpdate.getEndDate());
-		this.setRequirementsContainted(iterationUpdate.getRequirementsContainted());
+		this.setRequirementsContained(iterationUpdate.getRequirementsContained());
 		// id does not need to be set, as it cannot be changed anyways
 	}
 	
@@ -178,7 +182,9 @@ public class Iteration extends AbstractModel {
 		
 		*/
 		
-		return 0;
+		this.calculateTotalEstimate();
+		
+		return this.totalEstimate;
 	}
 	
 	
@@ -242,14 +248,22 @@ public class Iteration extends AbstractModel {
 	/**
 	 * @return the requirementsAssigned
 	 */
-	public ArrayList<Integer> getRequirementsContainted() {
+	public ArrayList<Integer> getRequirementsContained() {
 		return requirementsAssigned;
 	}
 
 	/**
 	 * @param requirementsContained the requirementsAssigned to set
 	 */
-	public void setRequirementsContainted(ArrayList<Integer> requirementsContained) {
+	public void setRequirementsContained(ArrayList<Integer> requirementsContained) {
 		this.requirementsAssigned = requirementsContained;
+	}
+	
+	/**
+	 * Ask the controller to retrieve the total estimate and give it to us.
+	 */
+	private void calculateTotalEstimate(){
+		//TODO
+		this.totalEstimate = 0;
 	}
 }
