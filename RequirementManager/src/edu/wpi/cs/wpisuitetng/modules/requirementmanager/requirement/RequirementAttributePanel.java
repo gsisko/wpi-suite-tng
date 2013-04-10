@@ -693,6 +693,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	@Override
 	public void focusLost(FocusEvent e) {
 		// Check if any fields have changed
+		if (this.mode == Mode.CREATE) {	// Slightly hacky but easier/simpler than doing a set of checks on each field
+			this.fieldsChanged = true;
+			return;
+		}
 		this.fieldsChanged = false;
 		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
 			this.fieldsChanged = true;
