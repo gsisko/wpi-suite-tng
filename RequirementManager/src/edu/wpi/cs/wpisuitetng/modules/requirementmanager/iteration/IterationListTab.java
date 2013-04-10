@@ -395,27 +395,24 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 * @return false if any item selected cannot be deleted.
 	 */
 	public boolean areSelectedItemsDeletable(){
-//		String[] iterationIDs = getSelectedUniqueIdentifiers();
-//		
-//		for (String id: iterationIDs){
-//			if (id.equqls(    a stored iteration  )))
-//			
-//		}
-//		
-//		
-//		Iteration anIteration = new Iteration();
-//		for (Iteration iter : parent.getParent().getAllIterations()) {				
-//			// Check to see if the filter references a currently valid Iteration
-//			if (iterationIDs[i].equals(iter.getID() + "") ){
-//				foundTheIter = true; // means that the filter is valid and we can continue
-//			}
-//		}
-//		
-//		
-//		// If this is true, then the iteration cannot be deleted
-//		( anIteration.getRequirementsContainted().size() > 0 )
+		// Gets the ID's of the selected Iterations
+		String[] iterationIDs = getSelectedUniqueIdentifiers();
 		
-		
+		// Go through all of the ID's
+		for (String id: iterationIDs){
+			// For the current ID, find the iteration whose ID is the current one
+			for (Iteration iter : parent.getParent().getAllIterations()) {				
+				// Check to see if the filter references a currently valid Iteration
+				if (id.equals(iter.getID() + "") ){
+					// If the selected Iteration has requirements assigned to it, it can't be deleted
+					if (iter.getRequirementsContained().size() > 0){
+						// This means the delete button will be deactivated
+						return false; 
+					}
+				}
+			}		
+		}	
+		// All selected iterations passed so the Delete button is turned on
 		return true;
 	}
 }
