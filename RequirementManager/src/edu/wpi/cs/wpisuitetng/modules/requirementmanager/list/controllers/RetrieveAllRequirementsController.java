@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -156,7 +157,7 @@ public class RetrieveAllRequirementsController {
 				entries[i][1] = isFiltered.get(i).getName();
 				entries[i][2] = isFiltered.get(i).getDescription();
 				if (isFiltered.get(i).getAssignedIteration() == 0) {
-					entries[i][3] = "Backlog";
+					entries[i][3] = getIterationName(isFiltered.get(i));
 				}
 				else entries[i][3] = "Hello World";
 				// Process "NoType" case
@@ -192,13 +193,17 @@ public class RetrieveAllRequirementsController {
 			    return;
 			}
 			
+			//TODO: Move into a reset columns function?
 			//Set default widths of all columns
 			//ID
 			resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
 			//Name
 			resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
-			//Description
-			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(200);
+			//Description -- "no more description displayed"
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMaxWidth(0);
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMinWidth(0);
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setWidth(0);
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(0);
 			//Iteration
 			resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
 			//Type
@@ -216,6 +221,15 @@ public class RetrieveAllRequirementsController {
 			
 		}
 		System.out.println("Existing requirements retrieved successfully.");
+	}
+
+	private String getIterationName(Requirement requirement) {
+		for (Iteration i : view.getAllIterations()) {
+			if (requirement.getAssignedIteration() == i.getID()) {
+				return i.getName();
+			}
+		}
+		return "Backlog";
 	}
 
 	/**

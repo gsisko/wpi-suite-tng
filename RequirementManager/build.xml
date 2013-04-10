@@ -70,6 +70,7 @@
 		<delete dir="build-test"/>
 		<delete file="${core-jar-dest}"/>
 		<delete file="${janeway-jar-dest}"/>
+		<delete dir="bin"/>
 	</target>
 
 	<!-- compile dependency is necessary since Core needs jars to run tests... hacky -->

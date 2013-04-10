@@ -43,15 +43,14 @@ public class Iteration extends AbstractModel {
 	private int id;
 	/** The requirements that are a part of this Requirement */
 	private ArrayList<Integer> requirementsAssigned;
+	/** The current running total estimate */
+	private int totalEstimate;
 	
 	/** Basic constructor for an Iteration */
 	public Iteration()
 	{
-		this.setName("");
-		this.setStartDate(new Date());
-		this.setEndDate(new Date());
-		this.setID(-1);
-		requirementsAssigned = new ArrayList<Integer>();
+		//Call the other constructor so we reuse code
+		this("", new Date(), new Date());
 	}
 	
 	/**
@@ -63,10 +62,16 @@ public class Iteration extends AbstractModel {
 	 */
 	public Iteration(String name, Date startDate, Date endDate)
 	{
-		this();
+		//Copy in pass parameters
 		this.setName(name);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		
+		//Initialize our other private variables
+		this.setID(-1);
+		this.totalEstimate = 0;
+		this.requirementsAssigned = new ArrayList<Integer>();
+
 	}
 
 
@@ -149,7 +154,7 @@ public class Iteration extends AbstractModel {
 		this.setName(iterationUpdate.getName());
 		this.setStartDate(iterationUpdate.getStartDate());
 		this.setEndDate(iterationUpdate.getEndDate());
-		this.setRequirementsContainted(iterationUpdate.getRequirementsContainted());
+		this.setRequirementsContained(iterationUpdate.getRequirementsContained());
 		// id does not need to be set, as it cannot be changed anyways
 	}
 	
@@ -177,14 +182,19 @@ public class Iteration extends AbstractModel {
 		- Keep track of a single local variable that tracks the total estimate			
 		
 		*/
-		
-		return 0;
+				
+		return this.totalEstimate;
 	}
 	
+	/**
+	 * Ask the controller to retrieve the total estimate and give it to us.
+	 */
+	public void setTotalEstimate(int newTotalEstimate){
+		this.totalEstimate = newTotalEstimate;
+	}	
 	
 	
-	
-// The following are Gettes and Setters
+// The following are Getters and Setters
 	/**
 	 * @return the name
 	 */
@@ -242,14 +252,16 @@ public class Iteration extends AbstractModel {
 	/**
 	 * @return the requirementsAssigned
 	 */
-	public ArrayList<Integer> getRequirementsContainted() {
+	public ArrayList<Integer> getRequirementsContained() {
 		return requirementsAssigned;
 	}
 
 	/**
 	 * @param requirementsContained the requirementsAssigned to set
 	 */
-	public void setRequirementsContainted(ArrayList<Integer> requirementsContained) {
+	public void setRequirementsContained(ArrayList<Integer> requirementsContained) {
 		this.requirementsAssigned = requirementsContained;
 	}
+	
+
 }

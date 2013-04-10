@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Welcome!</title>
+        <link href="CSS/PanelStyle.css" rel="stylesheet" type="text/css"/>
+        <script src="JavaScript/ScreenScripts.js"></script>
+        <script src="JavaScript/ChangeInformation.js"></script>
+        <script src="JavaScript/JQuery.js"></script>
+    </head>
+    <body onload="setUp(); SelectPage()" onresize="setUp()">
+        <div class="main">
+            <div class="navigationPanel basicBorder leftPanel">
+                <div class="textPanel">
+                    <div class="center navTitle">
+                        <a>Navigation Panel</a>
+                    </div>
+                    <br />
+                    <div class="NavSelectList scrollable">
+                        <!-- 
+                        <a class="mainButton" href="/index.html">Home</a>
+                        <br />
+                        -->
+
+                        <!--Follow the syntax below. The first a tag is the name of the group
+                        ul is the tag for making an unordered list
+                        li is the tag for making a list element. Follow this pattern
+                        in the href field, have it equal "#?page= ... " where ... is the name of your new page/function
+                        Have the onclick call your new function, they should have very similar name-->
+                        <a onclick="" href="#?page=LogingIn">How To Log In</a>
+                        <br/>
+                        <a onclick="" href="#?page=LogingIn">Overview of the Main Panel</a>
+                        <br/>
+                        <a onclick="">Requirements:</a>
+                        <ul>
+                            <li><a onclick="" href="#?page=overviewReqPage">Overview of Requirements Panel</a></li>
+                            <li><a onclick="MakeReqPage();" href="#?page=makeReqPage">Make a Requirement</a></li>
+                            <li><a onclick="" href="#?page=updateReqPage">Update a Requirement</a></li>
+                            <li><a onclick="" href="#?page=addingANote">Add a Note</a></li>
+                            <li><a onclick="" href="#?page=deleteReqPage">Delete a Requirement</a></li>
+                        </ul>
+                        <a onclick="">Filters:</a>
+                        <ul>
+                            <li><a onclick="" href="#?page=filterListPanel">Overview of the Filter List Panel</a></li>
+                            <li><a onclick="" href="#?page=filterBuilderPanel">Overview of Filter Builder Panel</a></li>
+                           	<li><a onclick="" href="#?page=createDeleteFilter">Creating and Deleting a Filter</a></li>
+                        </ul>
+                        <a onclick="">Iterations:</a>
+                        <ul>
+                            <li><a onclick="" href="#?page=iterationListPanel">Overview of Iteration List Panel</a></li>
+                            <li><a onclick="" href="#?page=iterationbuilderPanel">Overview of Iteration Builder Panel</a></li>
+                            <li><a onclick="" href="#?page=createDeleteIteration">Creating and Deleting an Iteration</a></li>
+                        </ul>
+                        <a onclick="">For Developers:</a>
+                        <ul>
+                            <li><a onclick="" href="#">javaDocs</a></li>
+                            <li><a onclick="" href="#">Class Hierarchy</a></li>
+                            <li><a onclick="" href="#">View and Panel Hierarchy</a></li>
+                            <li><a onclick="" href="#">Reference Materials</a></li>
+                            <li><a onclick="" href="#">Coding Standards</a></li>
+                        </ul>
+                        
+                        <a onclick="">Charts:</a>
+                        <ul>
+                            <li><a onclick=";" href="#?page=makeReqPage">Make a Chart</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="informationPanel rightPanel">
+                <div class="changeInstructionTab basicBorder">
+                    <div class="moveTabs center">
+                        <!--<a class="switchButton basicBorder leftPanel" onclick="SelectPageButton()">Previous</a>-->
+                        <a class="title">Welcome</a>
+                        <!--<a class="switchButton basicBorder rightPanel" onclick="SelectPageButton()">Next</a>-->
+                    </div>
+                </div>
+                <div class="instructionPanel basicBorder leftPanel">
+                    <div class="textPanel">
+                        <div class="instructionTitle center"></div>
+                        <br/>
+                        <div class="instructionText leftPanel scrollable">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>

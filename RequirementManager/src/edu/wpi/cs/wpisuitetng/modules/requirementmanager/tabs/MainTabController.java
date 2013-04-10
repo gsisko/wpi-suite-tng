@@ -184,7 +184,7 @@ public class MainTabController {
 	 * Changes the selected tab to the tab with the given index
 	 * @param tabIndex the index of the tab to select
 	 */
-	private void switchToTab(int tabIndex) {
+	public void switchToTab(int tabIndex) {
 		try {
 			view.setSelectedIndex(tabIndex);
 		}

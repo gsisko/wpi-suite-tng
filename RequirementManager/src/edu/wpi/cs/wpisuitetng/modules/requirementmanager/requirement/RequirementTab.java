@@ -416,6 +416,13 @@ public class RequirementTab extends JPanel {
 	public void setIterationBox(JComboBox iterationBox) {
 		attributePanel.setIterationBox(iterationBox);
 	}
+	
+	/**
+	 * get the iteration names in
+	 */
+	public void getIterationName(){
+		attributePanel.getIterationNamesCr();
+	}
 
 
 }

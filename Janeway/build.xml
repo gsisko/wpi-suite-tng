@@ -48,6 +48,7 @@
 	<target name="clean">
 		<delete dir="build"/>
 		<delete dir="build-test"/>
+		<delete dir="bin"/>
 	</target>
 
 	<target name="test" depends="compile-test">

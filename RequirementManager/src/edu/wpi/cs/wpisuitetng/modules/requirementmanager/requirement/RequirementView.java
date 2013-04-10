@@ -117,6 +117,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		this.add(mainPanelScrollPane, BorderLayout.CENTER);
 		controller = new SaveRequirementController(this);
 		mainPanel.getTabPanel().getNotePanel().setUp();
+		mainPanel.getIterationName();
 
 		// Instantiate the save button and add it to the button panel
 		saveButton = new JButton();
@@ -204,5 +205,6 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	public MainTabController getTabController() {
 		return tabController;
 	}
+	
 	
 }
