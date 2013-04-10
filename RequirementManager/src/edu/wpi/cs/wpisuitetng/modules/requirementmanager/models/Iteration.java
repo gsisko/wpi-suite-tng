@@ -49,12 +49,8 @@ public class Iteration extends AbstractModel {
 	/** Basic constructor for an Iteration */
 	public Iteration()
 	{
-		this.setName("");
-		this.setStartDate(new Date());
-		this.setEndDate(new Date());
-		this.setID(-1);
-		this.totalEstimate = 0;
-		requirementsAssigned = new ArrayList<Integer>();
+		//Call the other constructor so we reuse code
+		this("", new Date(), new Date());
 	}
 	
 	/**
@@ -66,11 +62,16 @@ public class Iteration extends AbstractModel {
 	 */
 	public Iteration(String name, Date startDate, Date endDate)
 	{
-		this();
+		//Copy in pass parameters
 		this.setName(name);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		
+		//Initialize our other private variables
+		this.setID(-1);
 		this.totalEstimate = 0;
+		this.requirementsAssigned = new ArrayList<Integer>();
+
 	}
 
 
@@ -185,10 +186,15 @@ public class Iteration extends AbstractModel {
 		return this.totalEstimate;
 	}
 	
+	/**
+	 * Ask the controller to retrieve the total estimate and give it to us.
+	 */
+	public void setTotalEstimate(int newTotalEstimate){
+		this.totalEstimate = newTotalEstimate;
+	}	
 	
 	
-	
-// The following are Gettes and Setters
+// The following are Getters and Setters
 	/**
 	 * @return the name
 	 */
@@ -257,10 +263,5 @@ public class Iteration extends AbstractModel {
 		this.requirementsAssigned = requirementsContained;
 	}
 	
-	/**
-	 * Ask the controller to retrieve the total estimate and give it to us.
-	 */
-	public void setTotalEstimate(int newTotalEstimate){
-		this.totalEstimate = newTotalEstimate;
-	}
+
 }
