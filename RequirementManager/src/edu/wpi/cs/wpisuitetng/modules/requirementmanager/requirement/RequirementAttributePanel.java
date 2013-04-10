@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -459,6 +460,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
 			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
 
+			String[] statusStrings = null;
+			
 			//Set the selected index of the typeBox to the correct value, based on the oldType
 			if (oldType.equals("Epic"))
 				typeBox.setSelectedIndex(1);
@@ -472,18 +475,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				typeBox.setSelectedIndex(5);
 			else// oldType = "NoType"
 				typeBox.setSelectedIndex(0);
-
-			//Set the selected index of the statusBox to the correct value, based on the oldStatus
-			if (oldStatus.equals("New"))
-				statusBox.setSelectedIndex(0);
-			else if (oldStatus.equals("InProgress"))
-				statusBox.setSelectedIndex(1);
-			else if (oldStatus.equals("Open"))
-				statusBox.setSelectedIndex(2);
-			else if (oldStatus.equals("Complete"))
-				statusBox.setSelectedIndex(3);
-			else // oldStatus = "Deleted"
-				statusBox.setSelectedIndex(4);
 
 
 			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
@@ -501,8 +492,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			if (oldStatus.equals("InProgress"))
 				toggleEnabled(txtEstimate, false);
 
-			//if the oldStatus is Completed, disable editing of all other fields
-			if (oldStatus.equals("Complete")){
+			//if the oldStatus is Completed or Deleted, disable editing of all other fields
+			if (oldStatus.equals("Complete") || oldStatus.equals("Deleted")){
 				toggleEnabled(txtName, false);
 				toggleEnabled(txtDescription, false);
 				toggleEnabled(typeBox, false);
@@ -511,6 +502,52 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				toggleEnabled(txtEstimate, false);
 				toggleEnabled(txtActualEffort, false);
 				toggleEnabled(iterationBox, false);
+			}
+			
+			/**
+			 * This section limits the status changes available to the user
+			 * in the JComboBox for status based on requirements
+			 *
+			 */
+			
+			//if oldStatus is OPEN, only go to Deleted or InProgress
+			if (oldStatus.equals("Open")) {
+				statusStrings = new String[] { "InProgress", "Open", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(1);
+			}
+			
+			//if oldStatus is InProgress, only change to Complete or Open
+			if (oldStatus.equals("InProgress")) {
+				statusStrings = new String[] { "InProgress", "Open", "Complete" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(0);
+			}
+			
+			//if oldStatus is Deleted, only can be changed to Open, InProgress, or Complete
+			if (oldStatus.equals("Deleted")) {
+				statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(3);
+			}
+			
+			//if oldStatus is Complete, only can be changed to InProgess or Deleted
+			if (oldStatus.equals("Complete")) {
+				statusStrings = new String[] { "InProgress", "Complete", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(1);
+			}
+			
+			//if oldStatus is New, only can be changed to Complete or Deleted
+			if (oldStatus.equals("New")) {
+				statusStrings = new String[] { "New", "Open", "Complete", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(0);
 			}
 		}
 	}
