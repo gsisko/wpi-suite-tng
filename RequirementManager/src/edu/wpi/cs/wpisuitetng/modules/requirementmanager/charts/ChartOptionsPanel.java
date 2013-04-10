@@ -2,6 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -64,7 +67,7 @@ public class ChartOptionsPanel extends JPanel{
 		filtersLabel = new JLabel("Active filters:");
 
 		//Create the strings for the boxes
-		String[] typeStrings = { "Pie Chart", "Bar Graph"};
+		String[] typeStrings = { "Pie Chart"};
 		String[] dataStrings = { "Requirement Status", "Requirement Iteration"};
 		String[] filtersStrings = { "Applied", "Not Applied"};
 
@@ -72,6 +75,21 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeBox = new JComboBox(typeStrings);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
+		
+		chartDataBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+            	parent.setDataTypeVisible((String) ((JComboBox)e.getSource()).getSelectedItem());
+            	parent.refreshData();
+
+            }
+        });  
+		
+		filtersOptionsBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+            	parent.setDataFiltered((String) ((JComboBox)e.getSource()).getSelectedItem());
+            	parent.refreshData();
+            }
+        });  
 		
 		//Set the initial selections for the boxes
 		chartTypeBox.setSelectedIndex(0);
