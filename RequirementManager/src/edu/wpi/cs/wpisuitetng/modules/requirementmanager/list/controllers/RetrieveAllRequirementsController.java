@@ -192,13 +192,17 @@ public class RetrieveAllRequirementsController {
 			    return;
 			}
 			
+			//TODO: Move into a reset columns function?
 			//Set default widths of all columns
 			//ID
 			resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
 			//Name
 			resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
-			//Description
-			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(200);
+			//Description -- "no more description displayed"
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMaxWidth(0);
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMinWidth(0);
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setWidth(0);
+			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(0);
 			//Iteration
 			resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
 			//Type

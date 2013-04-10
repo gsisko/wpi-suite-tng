@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Welcome!</title>
+        <link href="CSS/PanelStyle.css" rel="stylesheet" type="text/css"/>
+        <script src="JavaScript/ScreenScripts.js"></script>
+        <script src="JavaScript/ChangeInformation.js"></script>
+        <script src="JavaScript/JQuery.js"></script>
+    </head>
+    <body onload="setUp(); SelectPage()" onresize="setUp()">
+        <div class="main">
+            <div class="navigationPanel basicBorder leftPanel">
+                <div class="textPanel">
+                    <div class="center navTitle">
+                        <a>Navigation Panel</a>
+                    </div>
+                    <br />
+                    <div class="NavSelectList scrollable">
+                        <a class="mainButton" href="/index.html">Home</a>
+                        <br />
+
+                        <!--Follow the syntax below. The first a tag is the name of the group
+                        ul is the tag for making an unordered list
+                        li is the tag for making a list element. Follow this pattern
+                        in the href field, have it equal "#?page= ... " where ... is the name of your new page/function
+                        Have the onclick call your new function, they should have very similar name-->
+                        <a onclick="">Requirements:</a>
+                        <ul>
+                            <li><a onclick="MakeReqPage();" href="#?page=makeReqPage">Make a Requirement</a></li>
+                            <li><a onclick="" href="#?page=updateReqPage">Review a Requirement</a></li>
+                            <li><a onclick="" href="#?page=updateReqPage">Update a Requirement</a></li>
+                            <li><a onclick="" href="#?page=updateReqPage">Add a Note</a></li>
+                        </ul>
+                        <a onclick="">Iterations:</a>
+                        <ul>
+                            <li><a onclick="" href="#?page=makeReqPage">Make an Iteration</a></li>
+                            <li><a onclick="" href="#?page=updateReqPage">Update an Iteration</a></li>
+                        </ul>
+                        <a onclick="">Filters:</a>
+                        <ul>
+                            <li><a onclick="" href="#?page=makeReqPage">Make a Filter</a></li>
+                            <li><a onclick="" href="#?page=updateReqPage">Update a Filter</a></li>
+                        </ul>
+                        <a onclick="">Charts:</a>
+                        <ul>
+                            <li><a onclick=";" href="#?page=makeReqPage">Make a Chart</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="informationPanel rightPanel">
+                <div class="changeInstructionTab basicBorder">
+                    <div class="moveTabs center">
+                        <!--<a class="switchButton basicBorder leftPanel" onclick="SelectPageButton()">Previous</a>-->
+                        <a class="title">Welcome</a>
+                        <!--<a class="switchButton basicBorder rightPanel" onclick="SelectPageButton()">Next</a>-->
+                    </div>
+                </div>
+                <div class="instructionPanel basicBorder leftPanel">
+                    <div class="textPanel">
+                        <div class="instructionTitle center"></div>
+                        <br/>
+                        <div class="instructionText leftPanel scrollable">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>

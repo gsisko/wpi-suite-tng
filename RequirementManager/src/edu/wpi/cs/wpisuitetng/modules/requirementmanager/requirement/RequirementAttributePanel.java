@@ -5,8 +5,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -15,14 +20,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
-public class RequirementAttributePanel extends JPanel {
+public class RequirementAttributePanel extends JPanel implements ActionListener, FocusListener {
 
 	//The labels
 	private  JLabel nameLabel; //The label for the name text field ("txtName")
@@ -45,15 +54,20 @@ public class RequirementAttributePanel extends JPanel {
 	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
+	
 
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+	private boolean fieldsChanged;	// Have any fields been changed?
 
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
+	
+	String[] iterationArr = { "Backlog"};
+	String[] iterationStrings = iterationArr;
 
 	//The constraints
 	private GridBagConstraints attributePanelConstraints;//The constraints variable for the layout of the innerPanel
@@ -66,6 +80,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
+		fieldsChanged = false;
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -105,8 +120,17 @@ public class RequirementAttributePanel extends JPanel {
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
 		txtReleaseNumber.setAllowNegative(false);
+		txtReleaseNumber.setMaximumSize(new Dimension(30, 25));
+		txtReleaseNumber.setMinimumSize(new Dimension(30, 25));
+		txtReleaseNumber.setPreferredSize(new Dimension(30, 25));
 		txtEstimate.setAllowNegative(false);
+		txtEstimate.setMaximumSize(new Dimension(30, 25));
+		txtEstimate.setMinimumSize(new Dimension(30, 25));
+		txtEstimate.setPreferredSize(new Dimension(30, 25));
 		txtActualEffort.setAllowNegative(false);
+		txtActualEffort.setMaximumSize(new Dimension(30, 25));
+		txtActualEffort.setMinimumSize(new Dimension(30, 25));
+		txtActualEffort.setPreferredSize(new Dimension(30, 25));
 
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
@@ -116,7 +140,9 @@ public class RequirementAttributePanel extends JPanel {
 		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
 		String[] priorityStrings = { "", "High", "Medium", "Low"};
-		String[] iterationStrings = { "Backlog"};
+		
+		//iterationArr = getIterationNamesCr();
+		iterationStrings = iterationArr;
 
 		//Construct the boxes 
 		typeBox = new JComboBox(typeStrings);
@@ -124,35 +150,36 @@ public class RequirementAttributePanel extends JPanel {
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
 
-
-		if (mode == Mode.EDIT)//If we are editing an existing requirement
-		{
-			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
-
-			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
-				toggleEnabled(txtEstimate, false);
-		}
-		else//We are creating a new requirement
-		{
-			//Set the estimate and actual effort to 0 since this is a new requirement
-			txtEstimate.setText("0");
-			txtActualEffort.setText("0");
-
-			//Set the initial selections for the boxes
-			typeBox.setSelectedIndex(0);
-			statusBox.setSelectedIndex(0);
-			priorityBox.setSelectedIndex(0);
-			iterationBox.setSelectedIndex(0);
-
-			//Enables the fields upon creation
-			setInputEnabled(inputEnabled);
+		// Add action listners to the various fields
+		txtName.addFocusListener(this);
+		txtDescription.addFocusListener(this);
+		txtReleaseNumber.addFocusListener(this);
+		txtEstimate.addFocusListener(this);
+		txtActualEffort.addFocusListener(this);
+		typeBox.addFocusListener(this);
+		statusBox.addFocusListener(this);
+		priorityBox.addFocusListener(this);
+		iterationBox.addFocusListener(this);
 
 
-			//Set the following fields to be initially grayed out
-			toggleCreationDisable();
+		//Set the estimate and actual effort to 0 since this is a new requirement
+		txtEstimate.setText("0");
+		txtActualEffort.setText("0");
 
-		}
+		//Set the initial selections for the boxes
+		typeBox.setSelectedIndex(0);
+		statusBox.setSelectedIndex(0);
+		priorityBox.setSelectedIndex(0);
+		iterationBox.setSelectedIndex(0);
+
+		//Enables the fields upon creation
+		setInputEnabled(inputEnabled);
+
+
+		//Set the following fields to be initially grayed out
+		toggleCreationDisable();
+
+
 
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
@@ -331,6 +358,22 @@ public class RequirementAttributePanel extends JPanel {
 		//end Iteration
 
 	}
+	/*
+	 * Get iteration names of those created in the iteration panel 
+	 */
+	public void getIterationNamesCr() {
+		 SaveRequirementController save = this.parent.getParent().getController();
+		 Iteration[] allIterations;
+		 allIterations = ((ListView)save.getView().getParent().getTabController().getView().getComponentAt(0)).getAllIterations();
+		String[] names = new String[allIterations.length];
+		for (int i = 0; i < allIterations.length; ++i) {
+			names[i] = (allIterations[i].getName());
+		}
+
+		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
+		iterationBox.setModel(valb);
+		}
+
 
 	/**
 	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
@@ -352,7 +395,7 @@ public class RequirementAttributePanel extends JPanel {
 		toggleEnabled(iterationBox, enabled);
 
 	}
-	
+
 	/**
 	 * Sets the appropriate fields disabled upon creation
 	 * 
@@ -443,6 +486,8 @@ public class RequirementAttributePanel extends JPanel {
 			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
 			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
 
+			String[] statusStrings = null;
+			
 			//Set the selected index of the typeBox to the correct value, based on the oldType
 			if (oldType.equals("Epic"))
 				typeBox.setSelectedIndex(1);
@@ -457,18 +502,6 @@ public class RequirementAttributePanel extends JPanel {
 			else// oldType = "NoType"
 				typeBox.setSelectedIndex(0);
 
-			//Set the selected index of the statusBox to the correct value, based on the oldStatus
-			if (oldStatus.equals("New"))
-				statusBox.setSelectedIndex(0);
-			else if (oldStatus.equals("InProgress"))
-				statusBox.setSelectedIndex(1);
-			else if (oldStatus.equals("Open"))
-				statusBox.setSelectedIndex(2);
-			else if (oldStatus.equals("Complete"))
-				statusBox.setSelectedIndex(3);
-			else // oldStatus = "Deleted"
-				statusBox.setSelectedIndex(4);
-
 
 			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
 			if (oldPriority.equals("High"))
@@ -482,8 +515,66 @@ public class RequirementAttributePanel extends JPanel {
 
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
+			if (oldStatus.equals("InProgress"))
 				toggleEnabled(txtEstimate, false);
+
+			//if the oldStatus is Completed or Deleted, disable editing of all other fields
+			if (oldStatus.equals("Complete") || oldStatus.equals("Deleted")){
+				toggleEnabled(txtName, false);
+				toggleEnabled(txtDescription, false);
+				toggleEnabled(typeBox, false);
+				toggleEnabled(priorityBox, false);
+				toggleEnabled(txtReleaseNumber, false);
+				toggleEnabled(txtEstimate, false);
+				toggleEnabled(txtActualEffort, false);
+				toggleEnabled(iterationBox, false);
+			}
+			
+			/**
+			 * This section limits the status changes available to the user
+			 * in the JComboBox for status based on requirements
+			 *
+			 */
+			
+			//if oldStatus is OPEN, only go to Deleted or InProgress
+			if (oldStatus.equals("Open")) {
+				statusStrings = new String[] { "InProgress", "Open", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(1);
+			}
+			
+			//if oldStatus is InProgress, only change to Complete or Open
+			if (oldStatus.equals("InProgress")) {
+				statusStrings = new String[] { "InProgress", "Open", "Complete" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(0);
+			}
+			
+			//if oldStatus is Deleted, only can be changed to Open, InProgress, or Complete
+			if (oldStatus.equals("Deleted")) {
+				statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(3);
+			}
+			
+			//if oldStatus is Complete, only can be changed to InProgess or Deleted
+			if (oldStatus.equals("Complete")) {
+				statusStrings = new String[] { "InProgress", "Complete", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(1);
+			}
+			
+			//if oldStatus is New, only can be changed to Complete or Deleted
+			if (oldStatus.equals("New")) {
+				statusStrings = new String[] { "New", "Open", "Complete", "Deleted" };
+				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(compbox);
+				statusBox.setSelectedIndex(0);
+			}
 		}
 	}
 
@@ -618,7 +709,7 @@ public class RequirementAttributePanel extends JPanel {
 	public RequirementTab getParent() {
 		return parent;
 	}
-	
+
 	/**
 	 * @return the iterationBox
 	 */
@@ -634,4 +725,60 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 
+	/**
+	 * @return the fieldsChanged
+	 */
+	public boolean isFieldsChanged() {
+		return fieldsChanged;
+	}
+
+
+	/**
+	 * @param fieldsChanged the fieldsChanged to set
+	 */
+	public void setFieldsChanged(boolean fieldsChanged) {
+		this.fieldsChanged = fieldsChanged;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// Do nothing
+	}
+
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// Check if any fields have changed
+		if (this.mode == Mode.CREATE) {	// Slightly hacky but easier/simpler than doing a set of checks on each field
+			this.fieldsChanged = true;
+			return;
+		}
+		this.fieldsChanged = false;
+		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
+			this.fieldsChanged = true;
+		} if (!this.txtDescription.getText().equals(this.currentRequirement.getName())) {
+			this.fieldsChanged = true;
+		} if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
+			this.fieldsChanged = true;
+		} if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
+			this.fieldsChanged = true;
+		} if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
+			this.fieldsChanged = true;
+		} if (!this.typeBox.getSelectedItem().equals(this.currentRequirement.getType().toString())) {
+			this.fieldsChanged = true;
+		} if (!this.statusBox.getSelectedItem().equals(this.currentRequirement.getStatus().toString())) {
+			this.fieldsChanged = true;
+		} if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString())) {
+			this.fieldsChanged = true;
+		} if (!this.iterationBox.getSelectedItem().equals(this.currentRequirement.getAssignedIteration() + "")) {
+			this.fieldsChanged = true;
+		}
+	}
 }
