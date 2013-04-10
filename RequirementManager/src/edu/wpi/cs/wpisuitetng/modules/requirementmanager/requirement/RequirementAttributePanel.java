@@ -147,8 +147,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
-				toggleEnabled(txtEstimate, false);
+//			if ( (oldStatus.equals("Complete"))){
+//				toggleEnabled(txtEstimate, false);
+//				toggleEnabled(priorityBox, false);
+//			}
+//			
+//			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
+//				toggleEnabled(txtEstimate, false);
 		}
 		else//We are creating a new requirement
 		{
@@ -499,8 +504,20 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
+			if (oldStatus.equals("InProgress"))
 				toggleEnabled(txtEstimate, false);
+			
+			//if the oldStatus is Completed, disable editing of all other fields
+			if (oldStatus.equals("Complete")){
+				toggleEnabled(txtName, false);
+				toggleEnabled(txtDescription, false);
+				toggleEnabled(typeBox, false);
+				toggleEnabled(priorityBox, false);
+				toggleEnabled(txtReleaseNumber, false);
+				toggleEnabled(txtEstimate, false);
+				toggleEnabled(txtActualEffort, false);
+				toggleEnabled(iterationBox, false);
+			}
 		}
 	}
 
