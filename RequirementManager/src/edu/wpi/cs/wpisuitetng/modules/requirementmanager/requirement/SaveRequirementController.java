@@ -112,8 +112,9 @@ public class SaveRequirementController
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 
-			//If we changed the assigned iteration... no reason to spam the server otherwise
-			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration()){
+			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
+			//This should reduce the number of requests the server gets sent
+			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
 				//!!! Assuming Iteration will be set above !!!
 
 				/** Update oldIteration */
