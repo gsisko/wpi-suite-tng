@@ -46,6 +46,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.lowagie.text.Font;
 import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
@@ -112,6 +113,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnCreate.setEnabled(false);
 		startDateChooser.setEnabled(false);
 		endDateChooser.setEnabled(false);
+		
+		totalEstimate.setFont(totalEstimateLabel.getFont().deriveFont(Font.NORMAL));
 
 		//Add a titled boarder to this panel
 		setBorder(BorderFactory.createTitledBorder("Iteration Builder"));
