@@ -64,12 +64,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final JLabel endDateLabel;
 	private final JLabel nameLabel;
 	private final JLabel totalEstimateLabel;
+	private final JLabel totalEstimate;
 
 	//the fillable components
 	private JTextField nameValue;
 	private JDateChooser startDateChooser;
 	private JDateChooser endDateChooser;
-	private JTextField totalEstimate;
 
 	//button
 	private final JButton btnCreate;
@@ -106,7 +106,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		enable(nameValue, false);
 		startDateChooser = new JDateChooser(new Date());
 		endDateChooser = new JDateChooser(new Date());
-		totalEstimate = new JTextField("0");
+		totalEstimate = new JLabel("0");
 
 		// The action listener for these are below
 		btnCreate.setEnabled(false);
