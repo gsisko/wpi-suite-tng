@@ -63,11 +63,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final JLabel startDateLabel;
 	private final JLabel endDateLabel;
 	private final JLabel nameLabel;
+	private final JLabel totalEstimateLabel;
 
 	//the fillable components
 	private JTextField nameValue;
 	private JDateChooser startDateChooser;
 	private JDateChooser endDateChooser;
+	private JTextField totalEstimate;
 
 	//button
 	private final JButton btnCreate;
@@ -96,13 +98,15 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameLabel = new JLabel("Name:");
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
-		btnCreate = new JButton("Create");
+		totalEstimateLabel = new JLabel("Total Estimate:");
 
 		//construct the components
+		btnCreate = new JButton("Create");
 		nameValue = new JTextField();
 		enable(nameValue, false);
 		startDateChooser = new JDateChooser(new Date());
 		endDateChooser = new JDateChooser(new Date());
+		totalEstimate = new JTextField("0");
 
 		// The action listener for these are below
 		btnCreate.setEnabled(false);
@@ -120,20 +124,37 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateChooser.setPreferredSize(new Dimension (125,20));
 		endDateChooser.setPreferredSize(new Dimension (125,20));
 		btnCreate.setPreferredSize(new Dimension (75,30));
+		
+		//Total Estimate
+		//Set the constraints for the "totalEstimateLabel" and add it to the view
+		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
+		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
+		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
+		add(totalEstimateLabel, IterationBuilderConstraints);//Actually add the "totalEstimateLabel" to the layout given the previous constraints
+		//Set the constraints for the "totalEstimate" and add it to the view
+		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
+		IterationBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
+		IterationBuilderConstraints.ipadx= 30;//stretch this field horizontally by 30 units
+		IterationBuilderConstraints.gridx = 1;
+		IterationBuilderConstraints.gridy = 0;
+		add(totalEstimate, IterationBuilderConstraints);//Actually add the "totalEstimate" to the layout given the previous constraints
+
 
 
 		//Iteration Name
 		//Set the constraints for the "nameLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
+		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 30 units back to 0 units
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
-		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(nameLabel, IterationBuilderConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for the "nameValue" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
 		IterationBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
 		IterationBuilderConstraints.ipadx=80;//stretch this field horizontally by 80 units
-		IterationBuilderConstraints.gridx = 1;
+		IterationBuilderConstraints.gridx = 3;
 		IterationBuilderConstraints.gridy = 0;
 		add(nameValue, IterationBuilderConstraints);//Actually add the "nameValue" to the layout given the previous constraints
 
@@ -142,13 +163,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
 		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 80 units back to 0 units
-		IterationBuilderConstraints.gridx = 2;
+		IterationBuilderConstraints.gridx = 4;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateLabel, IterationBuilderConstraints);
 		//Set the constraints for the "startDateChooser" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,25);
-		IterationBuilderConstraints.gridx = 3;
+		IterationBuilderConstraints.gridx = 5;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateChooser, IterationBuilderConstraints);
 
@@ -156,13 +177,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Set the constraints for the "endDateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
-		IterationBuilderConstraints.gridx = 4;
+		IterationBuilderConstraints.gridx = 6;
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateLabel, IterationBuilderConstraints);
 		//Set the constraints for the "endDateChooser" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,40);
-		IterationBuilderConstraints.gridx = 5;
+		IterationBuilderConstraints.gridx = 7;
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateChooser, IterationBuilderConstraints);
 
@@ -170,7 +191,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Save button:
 		//Set the constraints for the "Create" button and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
-		IterationBuilderConstraints.gridx = 6;
+		IterationBuilderConstraints.gridx = 8;
 		IterationBuilderConstraints.gridy = 0;
 		add(btnCreate, IterationBuilderConstraints);//Actually add the "Create" button to the layout given the previous constraints
 
