@@ -111,8 +111,17 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
 		txtReleaseNumber.setAllowNegative(false);
+		txtReleaseNumber.setMaximumSize(new Dimension(30, 25));
+		txtReleaseNumber.setMinimumSize(new Dimension(30, 25));
+		txtReleaseNumber.setPreferredSize(new Dimension(30, 25));
 		txtEstimate.setAllowNegative(false);
+		txtEstimate.setMaximumSize(new Dimension(30, 25));
+		txtEstimate.setMinimumSize(new Dimension(30, 25));
+		txtEstimate.setPreferredSize(new Dimension(30, 25));
 		txtActualEffort.setAllowNegative(false);
+		txtActualEffort.setMaximumSize(new Dimension(30, 25));
+		txtActualEffort.setMinimumSize(new Dimension(30, 25));
+		txtActualEffort.setPreferredSize(new Dimension(30, 25));
 
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
@@ -129,7 +138,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		statusBox = new JComboBox(statusStrings);
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
-		
+
 		// Add action listners to the various fields
 		txtName.addFocusListener(this);
 		txtDescription.addFocusListener(this);
@@ -142,34 +151,24 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		iterationBox.addFocusListener(this);
 
 
-		if (mode == Mode.EDIT)//If we are editing an existing requirement
-		{
-			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
+		//Set the estimate and actual effort to 0 since this is a new requirement
+		txtEstimate.setText("0");
+		txtActualEffort.setText("0");
 
-			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
-				toggleEnabled(txtEstimate, false);
-		}
-		else//We are creating a new requirement
-		{
-			//Set the estimate and actual effort to 0 since this is a new requirement
-			txtEstimate.setText("0");
-			txtActualEffort.setText("0");
+		//Set the initial selections for the boxes
+		typeBox.setSelectedIndex(0);
+		statusBox.setSelectedIndex(0);
+		priorityBox.setSelectedIndex(0);
+		iterationBox.setSelectedIndex(0);
 
-			//Set the initial selections for the boxes
-			typeBox.setSelectedIndex(0);
-			statusBox.setSelectedIndex(0);
-			priorityBox.setSelectedIndex(0);
-			iterationBox.setSelectedIndex(0);
-
-			//Enables the fields upon creation
-			setInputEnabled(inputEnabled);
+		//Enables the fields upon creation
+		setInputEnabled(inputEnabled);
 
 
-			//Set the following fields to be initially grayed out
-			toggleCreationDisable();
+		//Set the following fields to be initially grayed out
+		toggleCreationDisable();
 
-		}
+
 
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
@@ -369,7 +368,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		toggleEnabled(iterationBox, enabled);
 
 	}
-	
+
 	/**
 	 * Sets the appropriate fields disabled upon creation
 	 * 
@@ -499,8 +498,20 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (   (oldStatus.equals("InProgress"))    ||    (oldStatus.equals("Complete"))   )
+			if (oldStatus.equals("InProgress"))
 				toggleEnabled(txtEstimate, false);
+
+			//if the oldStatus is Completed, disable editing of all other fields
+			if (oldStatus.equals("Complete")){
+				toggleEnabled(txtName, false);
+				toggleEnabled(txtDescription, false);
+				toggleEnabled(typeBox, false);
+				toggleEnabled(priorityBox, false);
+				toggleEnabled(txtReleaseNumber, false);
+				toggleEnabled(txtEstimate, false);
+				toggleEnabled(txtActualEffort, false);
+				toggleEnabled(iterationBox, false);
+			}
 		}
 	}
 
@@ -635,7 +646,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	public RequirementTab getParent() {
 		return parent;
 	}
-	
+
 	/**
 	 * @return the iterationBox
 	 */
@@ -669,7 +680,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -682,6 +693,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	@Override
 	public void focusLost(FocusEvent e) {
 		// Check if any fields have changed
+		if (this.mode == Mode.CREATE) {	// Slightly hacky but easier/simpler than doing a set of checks on each field
+			this.fieldsChanged = true;
+			return;
+		}
 		this.fieldsChanged = false;
 		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
 			this.fieldsChanged = true;
