@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -22,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
-public class RequirementAttributePanel extends JPanel {
+public class RequirementAttributePanel extends JPanel implements ActionListener, FocusListener {
 
 	//The labels
 	private  JLabel nameLabel; //The label for the name text field ("txtName")
@@ -50,6 +54,7 @@ public class RequirementAttributePanel extends JPanel {
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+	private boolean fieldsChanged;	// Have any fields been changed?
 
 
 	//The layout manager
@@ -66,6 +71,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
+		fieldsChanged = false;
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -123,6 +129,17 @@ public class RequirementAttributePanel extends JPanel {
 		statusBox = new JComboBox(statusStrings);
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
+		
+		// Add action listners to the various fields
+		txtName.addFocusListener(this);
+		txtDescription.addFocusListener(this);
+		txtReleaseNumber.addFocusListener(this);
+		txtEstimate.addFocusListener(this);
+		txtActualEffort.addFocusListener(this);
+		typeBox.addFocusListener(this);
+		statusBox.addFocusListener(this);
+		priorityBox.addFocusListener(this);
+		iterationBox.addFocusListener(this);
 
 
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
@@ -634,4 +651,56 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 
+	/**
+	 * @return the fieldsChanged
+	 */
+	public boolean isFieldsChanged() {
+		return fieldsChanged;
+	}
+
+
+	/**
+	 * @param fieldsChanged the fieldsChanged to set
+	 */
+	public void setFieldsChanged(boolean fieldsChanged) {
+		this.fieldsChanged = fieldsChanged;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// Do nothing
+	}
+
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// Check if any fields have changed
+		this.fieldsChanged = false;
+		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
+			this.fieldsChanged = true;
+		} if (!this.txtDescription.getText().equals(this.currentRequirement.getName())) {
+			this.fieldsChanged = true;
+		} if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
+			this.fieldsChanged = true;
+		} if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
+			this.fieldsChanged = true;
+		} if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
+			this.fieldsChanged = true;
+		} if (!this.typeBox.getSelectedItem().equals(this.currentRequirement.getType().toString())) {
+			this.fieldsChanged = true;
+		} if (!this.statusBox.getSelectedItem().equals(this.currentRequirement.getStatus().toString())) {
+			this.fieldsChanged = true;
+		} if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString())) {
+			this.fieldsChanged = true;
+		} if (!this.iterationBox.getSelectedItem().equals(this.currentRequirement.getAssignedIteration() + "")) {
+			this.fieldsChanged = true;
+		}
+	}
 }
