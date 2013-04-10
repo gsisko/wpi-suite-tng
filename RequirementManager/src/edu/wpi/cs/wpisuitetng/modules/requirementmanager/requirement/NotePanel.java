@@ -26,7 +26,7 @@ public class NotePanel extends JPanel{
 		
         content =  new JTextArea(message);
         
-        content.setWrapStyleWord(true);
+        content.setLineWrap(true);
         
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
