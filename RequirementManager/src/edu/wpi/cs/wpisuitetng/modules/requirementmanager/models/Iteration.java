@@ -181,9 +181,7 @@ public class Iteration extends AbstractModel {
 		- Keep track of a single local variable that tracks the total estimate			
 		
 		*/
-		
-		this.calculateTotalEstimate();
-		
+				
 		return this.totalEstimate;
 	}
 	
@@ -262,8 +260,7 @@ public class Iteration extends AbstractModel {
 	/**
 	 * Ask the controller to retrieve the total estimate and give it to us.
 	 */
-	private void calculateTotalEstimate(){
-		//TODO
-		this.totalEstimate = 0;
+	public void setTotalEstimate(int newTotalEstimate){
+		this.totalEstimate = newTotalEstimate;
 	}
 }

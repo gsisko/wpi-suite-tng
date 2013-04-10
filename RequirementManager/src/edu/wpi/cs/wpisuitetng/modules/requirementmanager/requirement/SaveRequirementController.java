@@ -115,12 +115,12 @@ public class SaveRequirementController
 			//If we changed the assigned iteration... no reason to spam the server otherwise
 			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration()){
 				//!!! Assuming Iteration will be set above !!!
-				
-				//Update oldIteration
+
+				/** Update oldIteration */
 				Iteration oldIteration;
 
 				//Convert oldIteration from JSON
-				final Request getOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.GET);
+				final Request getOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.GET);
 				getOldIterationRequest.addObserver(null); //TODO: Fix? Maybe? Does it matter?
 				getOldIterationRequest.send();
 				oldIteration = Iteration.fromJSON(getOldIterationRequest.getBody());
@@ -130,13 +130,16 @@ public class SaveRequirementController
 				requirementList.remove(oldRequirement.getId());
 				oldIteration.setRequirementsContained(requirementList);
 
+				//Update totalEstimate
+				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
+
 				//Save the oldIteration on the server
-				final Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
+				final Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.POST);
 				saveOldIterationRequest.setBody(oldIteration.toJSON());
 				saveOldIterationRequest.addObserver(null); //TODO: Fix? Maybe? Does it matter?
 				saveOldIterationRequest.send();
 
-				//Update updatedIteration
+				/** Update updatedIteration*/
 				Iteration updatedIteration;
 
 				//Convert updatedIteration from JSON
@@ -149,7 +152,9 @@ public class SaveRequirementController
 				ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
 				updatedRequirementList.add(updatedRequirement.getId());
 				updatedIteration.setRequirementsContained(updatedRequirementList);
-				//					updatedIteration.getRequirementsContained().add(updatedRequirement.getId()); 
+
+				//Update totalEstimate
+				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
 
 				//Save the updatedIteration on the server
 				final Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
