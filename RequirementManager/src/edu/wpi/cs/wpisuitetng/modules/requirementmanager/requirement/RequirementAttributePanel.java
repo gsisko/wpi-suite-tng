@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -15,10 +16,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
@@ -45,6 +50,7 @@ public class RequirementAttributePanel extends JPanel {
 	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
+	
 
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
@@ -54,6 +60,9 @@ public class RequirementAttributePanel extends JPanel {
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
+	
+	String[] iterationArr = { "Backlog"};
+	String[] iterationStrings = iterationArr;
 
 	//The constraints
 	private GridBagConstraints attributePanelConstraints;//The constraints variable for the layout of the innerPanel
@@ -116,7 +125,9 @@ public class RequirementAttributePanel extends JPanel {
 		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
 		String[] priorityStrings = { "", "High", "Medium", "Low"};
-		String[] iterationStrings = { "Backlog"};
+		
+		//iterationArr = getIterationNamesCr();
+		iterationStrings = iterationArr;
 
 		//Construct the boxes 
 		typeBox = new JComboBox(typeStrings);
@@ -331,6 +342,22 @@ public class RequirementAttributePanel extends JPanel {
 		//end Iteration
 
 	}
+	/*
+	 * Get iteration names of those created in the iteration panel 
+	 */
+	public void getIterationNamesCr() {
+		 SaveRequirementController save = this.parent.getParent().getController();
+		 Iteration[] allIterations;
+		 allIterations = ((ListView)save.getView().getParent().getTabController().getView().getComponentAt(0)).getAllIterations();
+		String[] names = new String[allIterations.length];
+		for (int i = 0; i < allIterations.length; ++i) {
+			names[i] = (allIterations[i].getName());
+		}
+
+		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
+		iterationBox.setModel(valb);
+		}
+
 
 	/**
 	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
