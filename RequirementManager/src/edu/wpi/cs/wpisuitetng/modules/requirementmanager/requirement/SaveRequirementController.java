@@ -90,7 +90,7 @@ public class SaveRequirementController
 			//Check to see if the status update is invalid because the user had tried to change the status from "InProgress" to "Deleted")
 			RequirementStatus oldStatus = oldRequirement.getStatus(); //grab the old status
 			RequirementStatus newStatus = RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()); //get the new status
-			if (   ( oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted) ) {//if user had tried to change the status from "InProgress" to "Deleted"...
+			if ((oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted)) {//if user had tried to change the status from "InProgress" to "Deleted"...
 				JOptionPane.showMessageDialog(null, "Cannot change status from InProgress to Deleted.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
 				return;//cancel the update
 			}
@@ -156,7 +156,11 @@ public class SaveRequirementController
 
 				//Update totalEstimate
 				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
-
+				
+				if (newStatus == RequirementStatus.Deleted) {//if user had tried to change the status to "Deleted"
+					updatedRequirement.setAssignedIteration(0);
+				}
+				
 				//Save the updatedIteration on the server
 				final Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
 				saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());

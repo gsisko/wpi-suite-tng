@@ -485,6 +485,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
 
 			String[] statusStrings = null;
+			String[] iterationStrings = null;
 			
 			//Set the selected index of the typeBox to the correct value, based on the oldType
 			if (oldType.equals("Epic"))
@@ -553,9 +554,15 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			//if oldStatus is Deleted, only can be changed to Open, InProgress, or Complete
 			if (oldStatus.equals("Deleted")) {
 				statusStrings = new String[] { "Open", "Deleted" };
-				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
-				statusBox.setModel(compbox);
+				DefaultComboBoxModel  newStatusBox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(newStatusBox);
 				statusBox.setSelectedIndex(1);
+				//set the iteration to Backlog
+				iterationStrings = new String[] { "Backlog" };
+				DefaultComboBoxModel  newIterationBox = new DefaultComboBoxModel (iterationStrings);
+				iterationBox.setModel(newIterationBox);
+				iterationBox.setSelectedIndex(0);
+				
 			}
 			
 			//if oldStatus is Complete, only can be changed to InProgess or Deleted
