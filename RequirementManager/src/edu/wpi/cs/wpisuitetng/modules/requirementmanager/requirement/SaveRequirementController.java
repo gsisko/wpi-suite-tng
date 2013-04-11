@@ -82,7 +82,7 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-
+		
 		else { // we are updating an existing requirement
 
 			Requirement oldRequirement = view.getCurrentRequirement();//grab the old requirement
@@ -112,59 +112,77 @@ public class SaveRequirementController
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 
+			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
+			if (newStatus == RequirementStatus.Deleted) {
+				updatedRequirement.setAssignedIteration(0);
+			}
+			
 			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
 			//This should reduce the number of requests the server gets sent
 			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
 				//!!! Assuming Iteration will be set above !!!
 
 				/** Update oldIteration */
-				Iteration oldIteration;
+				Iteration oldIteration = null;
 
 				//Convert oldIteration from JSON
-				final Request getOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.GET);
-				getOldIterationRequest.addObserver(null); //TODO: Fix? Maybe? Does it matter?
+				Request getOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.GET);
+				
+				//Create Observer for request...
+				RetrieveIterationObserver oldIterationObserver = new RetrieveIterationObserver();
+				
+				//Add observer and send our request
+				getOldIterationRequest.addObserver(oldIterationObserver); 
 				getOldIterationRequest.send();
-				oldIteration = Iteration.fromJSON(getOldIterationRequest.getBody());
+				
+				//Loop until we know that we received the request...
+				while (oldIteration == null){
+					oldIteration = oldIterationObserver.getIteration();
+				}
 
 				//Remove id from the list
 				ArrayList<Integer> requirementList = oldIteration.getRequirementsContained();
-				requirementList.remove(oldRequirement.getId());
+				if(requirementList.size() != 0){ //Only update if there are requirements saved...
+					requirementList.remove((Integer)oldRequirement.getId());
+				}
 				oldIteration.setRequirementsContained(requirementList);
 
 				//Update totalEstimate
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 
-				//Save the oldIteration on the server
-				final Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.POST);
+				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.POST);
 				saveOldIterationRequest.setBody(oldIteration.toJSON());
-				saveOldIterationRequest.addObserver(null); //TODO: Fix? Maybe? Does it matter?
 				saveOldIterationRequest.send();
 
 				/** Update updatedIteration*/
-				Iteration updatedIteration;
+				Iteration updatedIteration = null;
 
 				//Convert updatedIteration from JSON
-				final Request getUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.GET);
-				getUpdatedIterationRequest.addObserver(null); //TODO: Fix? Maybe? Does it matter?
+				Request getUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.GET);
+				
+				//Create Observer for request...
+				RetrieveIterationObserver newIterationObserver = new RetrieveIterationObserver();
+				getUpdatedIterationRequest.addObserver(newIterationObserver); //TODO: Fix? Maybe? Does it matter?
 				getUpdatedIterationRequest.send();
-				updatedIteration = Iteration.fromJSON(getUpdatedIterationRequest.getBody());
-
+				
+				//We know that the received iteration is not null due to the Synchronous request...
+				while (updatedIteration == null){
+					updatedIteration = newIterationObserver.getIteration();
+				}
+				
 				//Add id to the list
 				ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
-				updatedRequirementList.add(updatedRequirement.getId());
+				updatedRequirementList.add((Integer)updatedRequirement.getId());
 				updatedIteration.setRequirementsContained(updatedRequirementList);
 
 				//Update totalEstimate
 				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
 				
-				if (newStatus == RequirementStatus.Deleted) {//if user had tried to change the status to "Deleted"
-					updatedRequirement.setAssignedIteration(0);
-				}
-				
-				//Save the updatedIteration on the server
-				final Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
+				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
 				saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
-				saveUpdatedIterationRequest.addObserver(null); //TODO: Fix? Maybe? Does it matter?
+				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
 				saveUpdatedIterationRequest.send();
 			}
 
