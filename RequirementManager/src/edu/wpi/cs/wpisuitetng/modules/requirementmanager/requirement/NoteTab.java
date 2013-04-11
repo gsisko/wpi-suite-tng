@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 
 @SuppressWarnings({"serial"})
 public class NoteTab extends JPanel {
-	
+
 	//The fillable components
 	private  JTextArea txtMessage;//The message text field 
 	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
@@ -33,13 +33,16 @@ public class NoteTab extends JPanel {
 
 	//A boolean indicating if input is enabled on the form 
 	protected boolean inputEnabled;
-	
+
 	//The noteListModel. This holds the notes to be displayed in the "noteList" panel
 	private NoteListModel noteListModel;
-	
+
 	//The panel to hold all the NotePanels (containing all the notes) to display
 	private ListOfNotePanel noteList;
-	
+
+	//A scroll pane to hold the "noteList"
+	JScrollPane listScrollPane;
+
 	/**
 	 * The constructor for NotePanel;
 	 * Construct the panel, the components, and add the
@@ -52,7 +55,7 @@ public class NoteTab extends JPanel {
 
 		// Create and set the layout manager
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		
+
 		//Set an empty border for spacing
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
 
@@ -63,12 +66,12 @@ public class NoteTab extends JPanel {
 		for (int i = 0; i < notes.size(); i++) {
 			noteListModel.addMessage(notes.get(i));
 		}
-		
+
 		//Construct the noteList, using the previously defined empty model
 		noteList  = new ListOfNotePanel(noteListModel);
 
 		// Put the noteList in a scroll pane
-		JScrollPane listScrollPane = new JScrollPane(noteList);
+		listScrollPane = new JScrollPane(noteList);
 
 		// Construct the other components to be displayed
 		txtMessage = new JTextArea("", 1, 1);
@@ -81,20 +84,20 @@ public class NoteTab extends JPanel {
 		// Put txtMessage in a scroll pane
 		scrollMessage = new JScrollPane(txtMessage);
 		scrollMessage.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		
+
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));
 		scrollMessage.setPreferredSize(new Dimension(580, 100));
 		saveButton.setPreferredSize(new Dimension(120, 40));
-		
+
 		//Disable the txtMessage and saveButton if this is a new requirement
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
 			getNoteMessage().setEnabled(false);
 		}
-	
-		
+
+
 		// Add components
 		this.add(listScrollPane); //add the noteList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
@@ -102,9 +105,9 @@ public class NoteTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // adds the save button to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-		
+
 		saveButton.setAlignmentX(CENTER_ALIGNMENT); //Set the horizontal alignment of the save button to the center of this panel
-		
+
 
 	}
 
@@ -144,7 +147,7 @@ public class NoteTab extends JPanel {
 		JViewport viewport = scrollMessage.getViewport(); 
 		return (JTextArea) viewport.getView();
 	}
-	
+
 	/**
 	 * This returns the JButton saveButton
 	 * @return the saveButton JButton
@@ -186,7 +189,7 @@ public class NoteTab extends JPanel {
 	public NoteListModel getNoteListModel() {
 		return noteListModel;
 	}
-	
+
 	/**
 	 * This adds a new note to the noteListModel,
 	 * and then recreates and redisplays the noteList
@@ -194,10 +197,22 @@ public class NoteTab extends JPanel {
 	 * @param newNote the note to be added
 	 */
 	public void addNoteToList(Note newNote){
+		this.removeAll();
 		noteListModel.addMessage(newNote);
 		noteList  = new ListOfNotePanel(noteListModel);
-		this.revalidate();
-		this.repaint();
+		
+		listScrollPane = new JScrollPane(noteList);
+		
+		listScrollPane.setPreferredSize(new Dimension(580, 300));		
+
+		// Add components
+		this.add(listScrollPane); //add the noteList, in the listScrollPane, to the panel
+		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
+		this.add(scrollMessage); // add the txtMessage box (in the scroll pane)  to the panel
+		this.add(Box.createRigidArea(new Dimension(0,6)));
+		this.add(saveButton); // adds the save button to the panel
+		this.add(Box.createRigidArea(new Dimension(0,6)));
+
 	}
 
 }
