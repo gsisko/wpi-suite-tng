@@ -87,7 +87,8 @@ public class IterationManager implements EntityManager<Iteration> {
 				return;
 		// Get entity throws an exception when it can't find things
 		} catch (WPISuiteException wse){
-			Iteration model = new Iteration("Backlog", null, null);
+			// Make the backlog
+			Iteration model = new Iteration("", null, null);
 			model.setID(0);
 			model.setProject(currentProject);
 			// Save the backlog in the database if possible, otherwise throw an exception
