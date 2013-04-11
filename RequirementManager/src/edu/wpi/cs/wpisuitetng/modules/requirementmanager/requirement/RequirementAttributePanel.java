@@ -161,17 +161,17 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		priorityBox.addFocusListener(this);
 		iterationBox.addFocusListener(this);
 		warningLabel2 = new JLabel("Description cannot have more than 100 characters");
-		warningLabel = new JLabel("Text cannot have more than 100 characters");
+		warningLabel = new JLabel("Text cannot have more than 10 characters");
 		warningLabel.setEnabled(false);
 		warningLabel2.setEnabled(false);
 		txtName.getDocument().addDocumentListener(new DocumentListener(){
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if (txtName.getText().length()>=100){
+				if (txtName.getText().length()>=10){
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(15,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 					attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -190,10 +190,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if (txtName.getText().length()>=100){
+				if (txtName.getText().length()>=10){
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(15,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 					attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -211,10 +211,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if (txtName.getText().length()>=100){
+				if (txtName.getText().length()>=10){
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(15,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 					attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -239,8 +239,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			public void insertUpdate(DocumentEvent e) {
 				if (txtDescription.getText().length()>=100){
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(15,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 					attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
 					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -251,7 +251,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				else{
 					warningLabel2.setEnabled(false);
 					warningLabel2.setVisible(false);
-					if (txtName.getText().length()<=100){
+					if (txtName.getText().length()<=10){
 					parent.getParent().setsaveEnabled(true);}
 				}
 					
@@ -261,8 +261,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			public void removeUpdate(DocumentEvent e) {
 				if (txtDescription.getText().length()>=100){
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(15,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 					attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
 					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -273,7 +273,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				else{
 					warningLabel2.setEnabled(false);
 					warningLabel2.setVisible(false);
-					if (txtName.getText().length()<=100){
+					if (txtName.getText().length()<=10){
 					parent.getParent().setsaveEnabled(true);}
 				}
 			}
@@ -282,8 +282,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			public void changedUpdate(DocumentEvent e) {
 				if (txtDescription.getText().length()>=100){
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(15,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 					attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -294,7 +294,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				else{
 					warningLabel2.setEnabled(false);
 					warningLabel2.setVisible(false);
-					if (txtName.getText().length()<=100){
+					if (txtName.getText().length()<=10){
 					parent.getParent().setsaveEnabled(true);}
 				}
 				
