@@ -38,7 +38,6 @@ public class RequirementTabPanel extends JTabbedPane {
 	
 	private RequirementTab parent;
 	private NoteTab notePanel;
-	private NoteTabExperiment notePanel2;
 	
 	public RequirementTabPanel(RequirementTab view) {
 		
@@ -50,8 +49,6 @@ public class RequirementTabPanel extends JTabbedPane {
 		
 		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
-		notePanel2 = new NoteTabExperiment(parent);
-		addTab("Notes2", new ImageIcon(), notePanel2, "Notes for the current requirement");
 		
 		this.setPreferredSize(new Dimension(450, 500));
 	}
