@@ -339,7 +339,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
 			    continue;
 			
-			if (!nameErrorFound && this.nameValue.getText().equals("Backlog")) {
+			if (!nameErrorFound && this.nameValue.getText().toLowerCase().equals("backlog")) {
 				error += "The name field of the iteration cannot be \"Backlog\".\n";
 				nameErrorFound = true;
 			}
