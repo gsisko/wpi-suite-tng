@@ -155,6 +155,7 @@ public class Iteration extends AbstractModel {
 		this.setStartDate(iterationUpdate.getStartDate());
 		this.setEndDate(iterationUpdate.getEndDate());
 		this.setRequirementsContained(iterationUpdate.getRequirementsContained());
+		this.setTotalEstimate(iterationUpdate.getTotalEstimate());
 		// id does not need to be set, as it cannot be changed anyways
 	}
 	
