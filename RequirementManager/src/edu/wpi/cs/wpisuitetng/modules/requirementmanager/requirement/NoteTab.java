@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -57,6 +59,11 @@ public class NoteTab extends JPanel {
 		// Construct the noteListmodel
 		noteListModel = new NoteListModel();
 
+		ArrayList<Note> notes = parent.getCurrentRequirement().getNotes();
+		for (int i = 0; i < notes.size(); i++) {
+			noteListModel.addMessage(notes.get(i));
+		}
+		
 		//Construct the noteList, using the previously defined empty model
 		noteList  = new ListOfNotePanel(noteListModel);
 
