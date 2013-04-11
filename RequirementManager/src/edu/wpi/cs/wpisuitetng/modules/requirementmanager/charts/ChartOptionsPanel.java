@@ -73,6 +73,7 @@ public class ChartOptionsPanel extends JPanel{
 
 		//Construct the boxes 
 		chartTypeBox = new JComboBox(typeStrings);
+		chartTypeBox.setEnabled(false);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
 		
@@ -80,7 +81,6 @@ public class ChartOptionsPanel extends JPanel{
             public void actionPerformed(ActionEvent e){
             	parent.setDataTypeVisible((String) ((JComboBox)e.getSource()).getSelectedItem());
             	parent.refreshData();
-
             }
         });  
 		

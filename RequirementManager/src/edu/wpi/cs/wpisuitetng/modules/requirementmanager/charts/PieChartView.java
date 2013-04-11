@@ -91,7 +91,8 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		});
 
 		this.optionsPanel = new ChartOptionsPanel(piePanel, this);
-
+		optionsPanel.getChartTypeBox().setEnabled(false);
+		
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
 
