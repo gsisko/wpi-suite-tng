@@ -207,6 +207,7 @@ public class RequirementTab extends JPanel {
 		// toggles note panel boxes
 		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
 		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
+		
 	}
 
 	/**
@@ -423,7 +424,15 @@ public class RequirementTab extends JPanel {
 	 * get the iteration names in
 	 */
 	public void getIterationName(){
-		attributePanel.getIterationNamesCr();
+		attributePanel.fillIterationSelectionBox();
+	}
+	
+	/** Get the requirement attribute panel
+	 * 
+	 * @return a RequirementAttributePanel
+	 */
+	public RequirementAttributePanel getAttributePanel(){
+		return attributePanel;
 	}
 	
 	/** Gets the iterations for the current project.

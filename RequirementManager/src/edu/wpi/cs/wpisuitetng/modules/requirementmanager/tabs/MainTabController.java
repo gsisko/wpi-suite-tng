@@ -74,6 +74,10 @@ public class MainTabController {
 					if (tab instanceof PieChartView) {
 						((PieChartView)tab).refreshData();
 					}
+					
+					if (tab instanceof RequirementView){
+						((RequirementView) tab).getRequirementPanel().getAttributePanel().fillIterationSelectionBox();
+					}
 				}
 				else initialized = true;
 			}
