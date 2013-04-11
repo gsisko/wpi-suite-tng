@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,42 +49,50 @@ import com.toedter.calendar.JDateChooser;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-
-@SuppressWarnings({"serial","unused"})
+/** This is the builder panel for Iterations. It is located in the list view on the 
+ *  RequirementManager module above the list of requirements and right of the list 
+ *  of iterations. This builder will be switched to when the Iteration list view
+ *  tab is selected.  */
+@SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
-
-	//the labels
-	private final JLabel startDateLabel;
-	private final JLabel endDateLabel;
+	
+	/** The "Name" label, located before the Iteration name box*/
 	private final JLabel nameLabel;
+	/** The "Start Date" label, located before the first calendar */
+	private final JLabel startDateLabel;
+	/** The "End Date" label, located before the second calendar */
+	private final JLabel endDateLabel;
+	/** The "Total Estimate" label, located before the displayed total estimate */
 	private final JLabel totalEstimateLabel;
+	/** The total estimate for the current iteration is displayed here */
 	private final JLabel totalEstimate;
 
-	//the fillable components
+	/** The text box for filling in an Iteration's name */
 	private JTextField nameValue;
+	/** The calendar for choosing the start date of the current iteration */
 	private JDateChooser startDateChooser;
+	/** the calendar for choosing the end date of the current iteration */
 	private JDateChooser endDateChooser;
 
-	//button
-	private final JButton btnCreate;
-
-	private final ListTab parent;
-
+	/** EDIT or CREATE mode */
 	private Mode currentMode;
-
-	private String curType = "Id";
-
+	/** The current Iteration that is build built */
 	private Iteration currentIteration;
+	/** The status of the builder, active/inactive */
 	private boolean isBuilderActive;
 
+	/** The save/create button */
+	private final JButton btnCreate;
+	/** This controller is activated when the save button is pressed */
 	private SaveModelController saveController;
-
-	/**
-	 * Construct the panel
+	/** The "parent" that this builder lives in */
+	private final ListTab parent;
+	
+	/** Construct the panel and all of its components
+	 *
+	 * @param view The ListTab that this panel will live in
 	 */
 	public IterationBuilderPanel(ListTab view) {
 		parent = view;
@@ -194,12 +200,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 8;
 		IterationBuilderConstraints.gridy = 0;
 		add(btnCreate, IterationBuilderConstraints);//Actually add the "Create" button to the layout given the previous constraints
-
-
-	}
-
-	public void setUp() {
-		setupControllersAndListeners();
 	}
 
 	public JButton getButton()
@@ -236,12 +236,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		currentIteration = newIteration;
 	}
 
+	// TODO why is this here?
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}
 
-	@Override
+	/** Enables or disables all fields in the builder panel.
+	 * 
+	 * @param setTo True activates the fields and false deactivates them
+	 */
 	public void setInputEnabled(boolean setTo) {
 		isBuilderActive = setTo;
 		enable(this.nameValue, setTo);
@@ -254,7 +258,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 
 
-	@Override
+	/** Toggles between active and inactive modes mode */
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function
 		isBuilderActive = !isBuilderActive;
@@ -262,8 +266,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 
 
-
-	// New methods for the refactor.
+	/** Restore all fields to their initial values */
 	public void resetFields() {
 		this.nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
@@ -289,6 +292,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
+	/** Gets the model from the panel in the form of a JSON string
+	 *  that is ready to be sent as a message over the network
+	 * 
+	 * *NOTE: can be used for passing messages between views!
+	 * 
+	 * @return JSON string of the model to be sent, Returns null on failure
+	 */
 	public String convertCurrentModelToJSON(){
 		Iteration toSend = new Iteration();
 		
@@ -368,7 +378,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return true;
 	}
 
-
+	/** Takes a JSON string that holds an array of models and uploads them
+	 *  to the builder panel.
+	 *  
+	 * @param jsonArray An array of models in JSON string form
+	 */
 	public void displayModelFromJSONArray(String jsonArray) {
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
 		
@@ -381,7 +395,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		setInputEnabled(true);
 	}
 
-
+	/** Sets up the controllers and action listeners. This should be where all
+	 *  controllers and action listeners are initialized because the controllers
+	 *  require references that are not not fully initialized when the 
+	 *  constructor for this class is called.
+     */
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
 		btnCreate.addActionListener(saveController);
@@ -405,6 +423,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	}
 
+	/** Set the given box to the given enable status as well 
+	 *  set the box to the correct color
+	 * 
+	 * @param box   The box that needs enabling and colors
+	 * @param enabled  True to enable and False to disable
+	 */
 	public void enable(JTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);

@@ -50,44 +50,57 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
-/**
- * Panel to contain the filter builder for defect searching
- */
+/** This is the builder panel for Filters. It is located in the list view on the 
+ *  RequirementManager module above the list of requirements and right of the list 
+ *  of filters. This builder will be switched to when the Filter list view
+ *  tab is selected.  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
-	//the labels
+	/** The "Type" label. Located before the FilterType drop down menu */
 	private final JLabel typeLabel; 
-	private final JLabel comparatorLabel;
+	/** The "Operator" label. Located before the FilterOperator drop down menu */
+	private final JLabel operatorLabel;
+	/** The "Value" label. Located before the FilterValue box/drop down menu */
 	private final JLabel valueLabel;
 
-	//the fillable components
+	/** The filter type drop down menu. Set with all defined filter types */
 	private final JComboBox typeBox;
+	/** The filter operator drop down menu. Set with all defined filter operators applicable to the current type*/
 	private final JComboBox operatorBox;
-	private JTextField txtValue;
-	private JNumberTextField numValue;
-	private final JComboBox valueBox;
+	/** The filter status drop down menu. Options include "Active" and "Inactive" in a drop down menu*/
 	private final JComboBox statusBox;
 
-	//button
+	/** Regular text field that is active only for certain filter types*/
+	private JTextField txtValue;
+	/** Number text field that is active only for certain filter types*/
+	private JNumberTextField numValue;
+	/** Drop down menu that is active only for certain filter types and filled only with applicable options*/
+	private final JComboBox valueBox;
+
+	/** The save/create button */
 	private final JButton btnSave;
 
+	/** The "parent" that this panel lives in */
 	private final ListTab parent;
 
+	/** The filter that that is being edited or created currently  */
 	private Filter currentFilter;
 
 	/** EDIT or CREATE mode */
 	private Mode currentMode;
 
+	/** The current type of filter that is being built */
 	private String curType = "Id";
-
 	/** Keeps track of active/inactive state of builder */
 	private boolean isBuilderActive = false;
-
+	
+	/** This controller is activated when the save button is pressed */
 	private SaveModelController saveController;
 
-	/**
-	 * Construct the panel
+	/** Construct the panel and all of its components
+	 *
+	 * @param view The ListTab that this panel will live in
 	 */
 	public FilterBuilderPanel(ListTab view) {
 		parent = view;
@@ -98,7 +111,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		//construct the panels
 		typeLabel = new JLabel("Type:");
-		comparatorLabel = new JLabel("Operator:");
+		operatorLabel = new JLabel("Operator:");
 		valueLabel = new JLabel("Value:");
 		btnSave= new JButton("Create");
 
@@ -160,13 +173,13 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//end Type
 
 		//comparator
-		//Set the constraints for the "comparatorLabel" and add it to the view
+		//Set the constraints for the "operatorLabel" and add it to the view
 		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		FilterBuilderConstraints.insets = new Insets(10,10,10,0);
 
 		FilterBuilderConstraints.gridx = 2;
 		FilterBuilderConstraints.gridy = 0;
-		add(comparatorLabel, FilterBuilderConstraints);//Actually add the "comparatorLabel" to the layout given the previous constraints
+		add(operatorLabel, FilterBuilderConstraints);//Actually add the "operatorLabel" to the layout given the previous constraints
 		//Set the constraints for the "comparator"  and add it to the view
 		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_START;
 		FilterBuilderConstraints.insets = new Insets(10,10,10,25);
@@ -216,15 +229,14 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//end Save button
 
 		currentFilter = new Filter();
+		 setCurType("Id");
 	}
 
 	/** Watches the "Type" box for changes and sets up the "value" field
 	 *  to be a number box when numbers are expected, a drop down when the 
 	 *  options are finite (enumerators), and a string for the rest of the time.
 	 *  Also sets up the operator boxes in a similar fashion This reduces the
-	 *  possibility of user error.
-	 * 
-	 */
+	 *  possibility of user error.	 */
 	public void actionPerformed(ActionEvent e) {
 
 		JComboBox comboBox = (JComboBox) e.getSource();
@@ -342,60 +354,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		currentFilter = newFilter;
 	}
 
-
-	/** Gets the model from the panel in the form of a JSON string
-	 *  that is ready to be sent as a message over the network
-	 * 
-	 * *NOTE: can be used for passing messages between views!
-	 * 
-	 * @return JSON string of the model to be sent
-	 */
-	public String getModelMessage() {
-		String curtype = this.getFilterType().getSelectedItem().toString();
-		if (curtype != "Type" 
-				&& curtype != "Status" 
-				&& curtype != "Priority" 
-				&& curtype != "Iteration"
-				&& 	this.getFilterValue().getText().length() == 0   
-				&&  this.getFilterNumValue().getText().length() == 0) {
-
-
-			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
-
-		Filter newFilter = new Filter();
-
-		if (this.getCurrentMode() == Mode.EDIT) newFilter.setUniqueID(currentFilter.getUniqueID());
-		FilterType type = FilterType.toType(this.getFilterType().getSelectedItem().toString());
-		newFilter.setType(type);
-		newFilter.setComparator(OperatorType.toType(this.getFilterOperator().getSelectedItem().toString()));
-
-		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
-			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
-		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
-			newFilter.setValue(this.getFilterValue().getText());
-		else if (type == FilterType.toType("Iteration")) {
-			String chosen = this.getFilterValueBox().getSelectedItem().toString();
-			Iteration[] allIterations = this.parent.getParent().getAllIterations();
-			for (int i = 0; i < allIterations.length; i++) {
-				if (chosen.equals(allIterations[i].getName()))
-					newFilter.setValue(allIterations[i].getID());
-			}
-		}
-		else
-			newFilter.setValue(this.getFilterNumValue().getText());
-
-		if(this.getStatus().getSelectedIndex() == 1)
-			newFilter.setUseFilter(false);
-		else
-			newFilter.setUseFilter(true);
-
-		return newFilter.toJSON();
-
-	}
-
-
 	/** Takes a JSON string that holds an array of models and uploads them
 	 *  to the builder panel. Also sets the modes
 	 *  
@@ -449,7 +407,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.setCurrentFilter(filter);
 	}
 
-
+	/** Set the given box to the given enable status as well 
+	 *  set the box to the correct color
+	 * 
+	 * @param box   The box that needs enabling and colors
+	 * @param enabled  True to enable and False to disable
+	 */
 	public void enable(JComboBox box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
@@ -461,6 +424,12 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 	}
 
+	/** Set the given box to the given enable status as well 
+	 *  set the box to the correct color
+	 * 
+	 * @param box   The box that needs enabling and colors
+	 * @param enabled  True to enable and False to disable
+	 */
 	public void enable(JTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
@@ -471,7 +440,13 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			box.setBackground(new Color(238,238,238));
 		}
 	}
-
+	
+	/** Set the given box to the given enable status as well 
+	 *  set the box to the correct color
+	 * 
+	 * @param box   The box that needs enabling and colors
+	 * @param enabled  True to enable and False to disable
+	 */
 	public void enable(JNumberTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
@@ -483,21 +458,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 	}
 
-	/**
-	 * @return the curType
-	 */
-	public String getCurType() {
-		return curType;
-	}
 
-	/**
-	 * @param curType the curType to set
-	 */
-	public void setCurType(String curType) {
-		this.curType = curType;
-	}
-
-	// The following methods are required by the interface: IBuilderPanel
 	/** Sets up the controllers and action listeners. This should be where all
 	 *  controllers and action listeners are initialized because the controllers
 	 *  require references that are not not fully initialized when the 
@@ -521,9 +482,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			btnSave.setText("Create");
 		else
 			btnSave.setText("Save");
-
-
-
 	}
 
 
@@ -532,7 +490,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo){
-		// Record wether enabled/disabled
+		// Record whether enabled/disabled
 		isBuilderActive = setTo;
 
 		// Enable/Disable
@@ -547,6 +505,13 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.getButton().setEnabled(setTo);
 	}
 
+	/** Toggles between active and inactive modes mode */
+	public void toggleNewCancelMode() {
+		currentMode = Mode.CREATE; // default for this function
+		isBuilderActive = !isBuilderActive;
+		setInputEnabled(isBuilderActive);
+		enable(this.getStatus(),false);
+	}
 
 	/** Resets the values of the fields/drop downs in the builder panel  */
 	public void resetFields() {
@@ -567,16 +532,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.revalidate();
 		this.repaint();
 	}
-
-	/** Toggles between active and inactive modes mode */
-	public void toggleNewCancelMode() {
-		currentMode = Mode.CREATE; // default for this function
-		isBuilderActive = !isBuilderActive;
-		setInputEnabled(isBuilderActive);
-		enable(this.getStatus(),false);
-	}
-
-
+	
 	/** Gets the model from the panel in the form of a JSON string
 	 *  that is ready to be sent as a message over the network
 	 * 
@@ -585,9 +541,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 * @return JSON string of the model to be sent, null if a message cannot be made
 	 */
 	public String convertCurrentModelToJSON() {
-		String curtype = this.getFilterType().getSelectedItem().toString();
+		setCurType(this.getFilterType().getSelectedItem().toString());
 		// Check conditions that verify that the value field has something
-		if (curtype != "Type" && curtype != "Status" && curtype != "Priority" && curtype != "Iteration"
+		if (getCurType() != "Type" && getCurType() != "Status" && getCurType() != "Priority" && getCurType() != "Iteration"
 				&& 	this.getFilterValue().getText().length() == 0   
 				&&  this.getFilterNumValue().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -631,7 +587,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		return newFilter.toJSON();
 
 	}
-
 
 	/** Takes a JSON string that holds an array of models and uploads them
 	 *  to the builder panel. 
@@ -679,8 +634,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.repaint();
 	}
 
-	/**
-	 * Get a list of string iteration names
+	/*** Get a list of string iteration names
+	 * 
+	 * @return an array of strings that represent the names of the iterations
 	 */
 	public String[] getIterationNames(){
 		Iteration[] allIterations = this.parent.getParent().getAllIterations();
@@ -690,6 +646,20 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 
 		return names;
+	}
+
+	/** Gets the type of the current filter
+	 * @return the curType
+	 */
+	public String getCurType() {
+		return curType;
+	}
+
+	/** Sets the type of the current filter
+	 * @param curType the curType to set
+	 */
+	public void setCurType(String curType) {
+		this.curType = curType;
 	}
 
 
