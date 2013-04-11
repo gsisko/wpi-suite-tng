@@ -63,6 +63,8 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	private ChartOptionsPanel optionsPanel; 
 	
 	private boolean isFiltered;
+	@SuppressWarnings("unused")
+	private String chartType;
 
 	private ListTab view;
 
