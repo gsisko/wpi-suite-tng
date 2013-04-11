@@ -63,29 +63,7 @@ public class Requirement extends AbstractModel {
 	
 	/** Basic constructor for a requirement */
 	public Requirement(){
-		this.setEstimate(0);
-		this.setActualEffort(0);			// Initial actual effort set to zero
-		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
-		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
-		this.notes = new ArrayList<Note>();
-		this.setAssignedIteration(0);  // 0 is the ID of the backlog
-	}
-	
-	// TODO: Remove this once the panels have been updated to handle Req's with an additional field
-	/**
-	 * Constructor for Requirement.
-	 * @param name The name of the requirement
-	 * @param description Description of the requirement
-	 * @param releaseNumber Release number of the requirement
-	 * @param priority Priority of the requirement(NONE, LOW, MEDIUM, HIGH)
-	 */
-	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber) {
-		this();
-		this.setName(name);
-		this.setDescription(description);
-		this.setType(type);
-		this.setPriority(priority); // Initialize priority
-		this.setReleaseNumber(releaseNumber); // release number of current project
+		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, 0, 0);
 	}
 	
 	/**
@@ -97,13 +75,18 @@ public class Requirement extends AbstractModel {
 	 * @param iterationID The id of the iteration that this Req is assigned to
 	 */
 	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber, int iterationID) {
-		this();
 		this.setName(name);
 		this.setDescription(description);
 		this.setType(type);
 		this.setPriority(priority); // Initialize priority
 		this.setReleaseNumber(releaseNumber); // release number of current project
 		this.setAssignedIteration(iterationID);
+		
+		this.setEstimate(0);
+		this.setActualEffort(0);			// Initial actual effort set to zero
+		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
+		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		this.notes = new ArrayList<Note>();
 	}
 	
 	

@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 /** An action listener specifically made to watch an Iteration selection combo 
  *  box and on changes between any iteration and the backlog, change the status
@@ -37,7 +38,7 @@ public class IterationChangeListener implements ActionListener {
 
 	/** The panel with the Iteration drop down box to be watched */
 	RequirementAttributePanel raPanel;
-	
+
 	/** Basic constructor
 	 * 
 	 * @param raPanel The panel with the box to watch
@@ -48,19 +49,33 @@ public class IterationChangeListener implements ActionListener {
 
 	/** Watches the "Iteration" box for changes and sets up the "status" field
 	 *  of the requirement appropriately	 */
+	@SuppressWarnings("rawtypes")// This warning is necessary because of the current version of Java
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("The assigned iteration has been changed; the status will be changed accordingly.");
-		
-		@SuppressWarnings("rawtypes") // This warning is necessary because of the current version of Java
-		String selected = (String)  ((JComboBox)e.getSource()).getSelectedItem();
 
-		// Check to see if the selected item is the backlog, set status appropriately
-		if (selected.equals("")){
-			raPanel.getCurrentRequirement().setStatus(RequirementStatus.Open);
-			raPanel.updateStatusSettings("Open");
-		} else {
-			raPanel.getCurrentRequirement().setStatus(RequirementStatus.InProgress);
-			raPanel.updateStatusSettings("InProgress");
+		//		String selected = (String)  ((JComboBox)e.getSource()).getSelectedItem();
+		//		 		
+		//		// Check to see if the selected item is the backlog, set status appropriately
+		//		if (selected.equals("")){
+		//			raPanel.getCurrentRequirement().setStatus(RequirementStatus.Open);
+		//			raPanel.updateStatusSettings("Open");
+		//		} else {
+		//			raPanel.getCurrentRequirement().setStatus(RequirementStatus.InProgress);
+		//			raPanel.updateStatusSettings("InProgress");
+		//		}
+
+		// Index 0 is always the backlog
+
+		if (raPanel.getMode().equals(Mode.EDIT)){
+			if ( 0 == ((JComboBox)e.getSource()).getSelectedIndex()){
+				raPanel.getCurrentRequirement().setStatus(RequirementStatus.Open);
+				raPanel.updateStatusSettings("Open");
+			} else {
+				raPanel.getCurrentRequirement().setStatus(RequirementStatus.InProgress);
+				raPanel.updateStatusSettings("InProgress");
+			}
 		}
+
+
 	}
 }

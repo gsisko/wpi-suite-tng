@@ -838,8 +838,11 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		int releaseNumber = Integer.parseInt((this.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (this.getRequirementReleaseNumber().getText()));
 		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
 		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
-
-		return new Requirement(name, description, type, priority,  releaseNumber);
+		
+		
+		Requirement toReturn = new Requirement(name, description, type, priority,  releaseNumber, 0);
+		
+		return toReturn;
 
 	}
 

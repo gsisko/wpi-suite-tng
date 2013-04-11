@@ -39,7 +39,7 @@ public class NotesTest {
 	@Before
 	public void setUp() throws Exception{
 		//seting up new requirement
-		r1 = new Requirement("Tester Requirement", "Testing Description", RequirementType.Theme, RequirementPriority.NoPriority, 0);
+		r1 = new Requirement("Tester Requirement", "Testing Description", RequirementType.Theme, RequirementPriority.NoPriority, 0,0);
 		r1.setPriority(RequirementPriority.Medium);
 		r1.setReleaseNumber(8000);
 		r1.setEstimate(15);

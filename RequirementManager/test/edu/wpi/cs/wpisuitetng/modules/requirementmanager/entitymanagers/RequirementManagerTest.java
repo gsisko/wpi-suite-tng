@@ -65,7 +65,7 @@ public class RequirementManagerTest {
 		adminSession = new Session(admin, testProject, mockSsid);
 		
 		existingUser = new User("joe", "joe", "1234", 2);
-		existingRequirement = new Requirement("An existing requirement", "An existing requirement description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
+		existingRequirement = new Requirement("An existing requirement", "An existing requirement description", RequirementType.NoType, RequirementPriority.NoPriority, 0,0);
 		existingRequirement.setActualEffort(0);
 		existingRequirement.setEstimate(100);
 		existingRequirement.setType(RequirementType.Scenario);
@@ -74,13 +74,13 @@ public class RequirementManagerTest {
 		existingRequirement.setId(1);
 		existingRequirement.setReleaseNumber(1);
 		
-		otherRequirement = new Requirement("A requirement in a different project", "", RequirementType.NoType, RequirementPriority.NoPriority, 0);
+		otherRequirement = new Requirement("A requirement in a different project", "", RequirementType.NoType, RequirementPriority.NoPriority, 0,0);
 		
-		goodUpdatedRequirement = new Requirement("A changed title", "A changed description", RequirementType.UserStory, RequirementPriority.High, 0);
+		goodUpdatedRequirement = new Requirement("A changed title", "A changed description", RequirementType.UserStory, RequirementPriority.High, 0,0);
 		goodUpdatedRequirement.setStatus(RequirementStatus.Complete);
 		
 		defaultSession = new Session(existingUser, testProject, mockSsid);
-		newRequirement = new Requirement("A new requirement", "A description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
+		newRequirement = new Requirement("A new requirement", "A description", RequirementType.NoType, RequirementPriority.NoPriority, 0,0);
 		
 		db = new MockData(new HashSet<Object>());
 		db.save(existingRequirement, testProject);
@@ -147,7 +147,7 @@ public class RequirementManagerTest {
 	
 	@Test
 	public void testSave() throws WPISuiteException {
-		Requirement newRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
+		Requirement newRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, 0,0);
 		newRequirement.setProject(testProject);
 		manager.save(defaultSession, newRequirement);
 		assertSame(newRequirement, db.retrieve(Requirement.class, "id", 3).get(0));
@@ -174,7 +174,7 @@ public class RequirementManagerTest {
 	
 	@Test
 	public void testDeleteAll() throws WPISuiteException {
-		Requirement anotherRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, 0);
+		Requirement anotherRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, 0,0);
 		manager.makeEntity(defaultSession, anotherRequirement.toJSON());
 		assertEquals(2, db.retrieveAll(new Requirement(), testProject).size());
 		manager.deleteAll(adminSession);
