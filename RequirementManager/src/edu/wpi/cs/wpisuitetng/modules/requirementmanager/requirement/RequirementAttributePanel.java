@@ -168,7 +168,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if (txtName.getText().length()>=10){
+				if (txtName.getText().length()>=100){
 					System.out.println("aaa");
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
@@ -188,7 +188,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if (txtName.getText().length()>=10){
+				if (txtName.getText().length()>=100){
 					System.out.println("aaa");
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
@@ -207,7 +207,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if (txtName.getText().length()>=10){
+				if (txtName.getText().length()>=100){
 					System.out.println("aaa");
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
@@ -231,7 +231,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if (txtDescription.getText().length()>=10){
+				if (txtDescription.getText().length()>=100){
 					System.out.println("aaa");
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
@@ -251,7 +251,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if (txtDescription.getText().length()>=10){
+				if (txtDescription.getText().length()>=100){
 					System.out.println("aaa");
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
@@ -270,7 +270,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if (txtDescription.getText().length()>=10){
+				if (txtDescription.getText().length()>=100){
 					System.out.println("aaa");
 					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
