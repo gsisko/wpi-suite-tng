@@ -82,7 +82,7 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-		
+
 		else { // we are updating an existing requirement
 
 			Requirement oldRequirement = view.getCurrentRequirement();//grab the old requirement
@@ -112,11 +112,22 @@ public class SaveRequirementController
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 
+			// Setting the Iteration			
+			String selectedIteration = view.getIterationBox().getSelectedItem().toString();
+			for (Iteration iter: view.getAllIterations()){
+				// If it is the right Iteration, save it into the updated requirement
+				if (selectedIteration.equals(iter.getName())){
+					updatedRequirement.setAssignedIteration(iter.getID());
+				}
+			}
+
+			// Hello
+			
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
 			if (newStatus == RequirementStatus.Deleted) {
 				updatedRequirement.setAssignedIteration(0);
 			}
-			
+
 			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
 			//This should reduce the number of requests the server gets sent
 			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
@@ -127,14 +138,14 @@ public class SaveRequirementController
 
 				//Convert oldIteration from JSON
 				Request getOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.GET);
-				
+
 				//Create Observer for request...
 				RetrieveIterationObserver oldIterationObserver = new RetrieveIterationObserver();
-				
+
 				//Add observer and send our request
 				getOldIterationRequest.addObserver(oldIterationObserver); 
 				getOldIterationRequest.send();
-				
+
 				//Loop until we know that we received the request...
 				while (oldIteration == null){
 					oldIteration = oldIterationObserver.getIteration();
@@ -160,17 +171,17 @@ public class SaveRequirementController
 
 				//Convert updatedIteration from JSON
 				Request getUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.GET);
-				
+
 				//Create Observer for request...
 				RetrieveIterationObserver newIterationObserver = new RetrieveIterationObserver();
 				getUpdatedIterationRequest.addObserver(newIterationObserver); //TODO: Fix? Maybe? Does it matter?
 				getUpdatedIterationRequest.send();
-				
+
 				//We know that the received iteration is not null due to the Synchronous request...
 				while (updatedIteration == null){
 					updatedIteration = newIterationObserver.getIteration();
 				}
-				
+
 				//Add id to the list
 				ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
 				updatedRequirementList.add((Integer)updatedRequirement.getId());
@@ -178,7 +189,7 @@ public class SaveRequirementController
 
 				//Update totalEstimate
 				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
-				
+
 				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
 				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
 				saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
