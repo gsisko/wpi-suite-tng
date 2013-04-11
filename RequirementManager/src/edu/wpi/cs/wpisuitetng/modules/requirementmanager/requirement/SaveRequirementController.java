@@ -76,32 +76,6 @@ public class SaveRequirementController
 
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
-			/** Update updatedIteration*/
-			Iteration updatedIteration = null;
-
-			for (Iteration i : view.getAllIterations()) {
-				if (i.getID() == 0) {
-					updatedIteration = i;
-				}
-			}
-
-			//Add id to the list
-			ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
-			updatedRequirementList.add(0);
-			updatedIteration.setRequirementsContained(updatedRequirementList);
-
-			//Update totalEstimate
-			updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + view.getRequirement().getEstimate());
-
-			//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
-			Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
-			saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
-			saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
-			saveUpdatedIterationRequest.send();
-			
-			
-			
-			
 			// make a PUT http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 			request.setBody(view.getRequirement().toJSON()); // put the new message in the body of the request
@@ -148,7 +122,7 @@ public class SaveRequirementController
 			}
 
 			// Hello
-			
+
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
 			if (newStatus == RequirementStatus.Deleted) {
 				updatedRequirement.setAssignedIteration(0);
@@ -158,10 +132,10 @@ public class SaveRequirementController
 			//This should reduce the number of requests the server gets sent
 			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
 				//!!! Assuming Iteration will be set above !!!
-				
+
 				/** Update oldIteration */
 				Iteration oldIteration = null;
-				
+
 				for (Iteration i : view.getAllIterations()) {
 					if (oldRequirement.getAssignedIteration() == i.getID()) {
 						oldIteration = i;
@@ -185,7 +159,7 @@ public class SaveRequirementController
 
 				/** Update updatedIteration*/
 				Iteration updatedIteration = null;
-				
+
 				for (Iteration i : view.getAllIterations()) {
 					if (updatedRequirement.getAssignedIteration() == i.getID()) {
 						updatedIteration = i;
@@ -228,6 +202,38 @@ public class SaveRequirementController
 		// if success, set all of the UI fields appropriately for post-save actions
 		if (newReq != null) {
 			System.out.print("Requirement " + newReq.getId() + " saved successfully\n");
+
+			/** Update updatedIteration*/
+			Iteration currentIteration = null;
+
+			for (Iteration i : view.getAllIterations()) {
+				if (i.getID() == newReq.getAssignedIteration()) {
+					currentIteration = i;
+				}
+			}
+
+			boolean alreadyContained = false;
+			for (int i : currentIteration.getRequirementsContained()) {
+				if (newReq.getId() == i) {
+					alreadyContained = true;
+				}
+			}
+
+			if (!alreadyContained) {
+
+				//Add id to the list
+				ArrayList<Integer> updatedRequirementList = currentIteration.getRequirementsContained();
+				updatedRequirementList.add(newReq.getId());
+				currentIteration.setRequirementsContained(updatedRequirementList);
+
+				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+				saveUpdatedIterationRequest.setBody(currentIteration.toJSON());
+				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+				saveUpdatedIterationRequest.send();
+
+			}
+
 		}
 		else {
 			System.err.print("Undected error saving requirement\n");

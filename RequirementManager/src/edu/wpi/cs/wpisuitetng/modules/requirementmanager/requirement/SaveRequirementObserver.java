@@ -74,6 +74,7 @@ public class SaveRequirementObserver implements RequestObserver {
 						view.getRequirementPanel().updateModel(requirement);
 						view.setEditModeDescriptors(requirement);
 					}
+					view.getController().saveSuccess(requirement);
 				}
 			});
 		}
