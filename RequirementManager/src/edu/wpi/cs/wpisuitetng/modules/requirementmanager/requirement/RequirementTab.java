@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
@@ -423,6 +425,14 @@ public class RequirementTab extends JPanel {
 	public void getIterationName(){
 		attributePanel.getIterationNamesCr();
 	}
-
+	
+	/** Gets the iterations for the current project.
+	 * 
+	 * @return All of the iterations for the current project
+	 */
+	public Iteration[] getAllIterations(){
+		return ((ListView) this.getParent().getTabController().getView().getComponentAt(0)).getAllIterations();
+		
+	}
 
 }

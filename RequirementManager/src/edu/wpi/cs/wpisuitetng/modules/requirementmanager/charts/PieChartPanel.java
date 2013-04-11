@@ -131,7 +131,13 @@ public class PieChartPanel extends JPanel {
 			for (int i = 0; i < requirements.length; i++) {
 				if (iter.getID() == requirements[i].getAssignedIteration()) count++;
 			}
-			if (count > 0) data.setValue(iter.getName(), count);
+			if (count > 0) {
+				if (iter.getName().equals(""))
+					data.setValue("Backlog", count);
+				else
+					data.setValue(iter.getName(), count);
+			}
+					
 		}
 		
 		this.dataset = data;

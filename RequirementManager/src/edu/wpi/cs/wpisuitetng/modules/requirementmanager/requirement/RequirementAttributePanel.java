@@ -22,14 +22,11 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
@@ -57,7 +54,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	private  JNumberTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
-	
+
 
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
@@ -68,7 +65,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
-	
+
 	String[] iterationArr = { "Backlog"};
 	String[] iterationStrings = iterationArr;
 
@@ -143,7 +140,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
 		String[] statusStrings = { "New", "InProgress", "Open", "Complete", "Deleted" };
 		String[] priorityStrings = { "", "High", "Medium", "Low"};
-		
+
 		//iterationArr = getIterationNamesCr();
 		iterationStrings = iterationArr;
 
@@ -493,9 +490,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	 * Get iteration names of those created in the iteration panel 
 	 */
 	public void getIterationNamesCr() {
-		 SaveRequirementController save = this.parent.getParent().getController();
-		 Iteration[] allIterations;
-		 allIterations = ((ListView)save.getView().getParent().getTabController().getView().getComponentAt(0)).getAllIterations();
+		Iteration[] allIterations= this.getAllIterations();
+
 		String[] names = new String[allIterations.length];
 		for (int i = 0; i < allIterations.length; ++i) {
 			names[i] = (allIterations[i].getName());
@@ -503,7 +499,26 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
 		iterationBox.setModel(valb);
+		//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
+		Iteration[] allIter = getAllIterations(); 
+		// First find the name of the iteration by ID
+		for (int i = 0; i < allIter.length; i++){
+			// Figure out what position in the referenced iteration is at
+			if (allIter[i].getID() ==  currentRequirement.getAssignedIteration()){
+				// Set the index of the box to the current index, and all is well
+				iterationBox.setSelectedIndex(i);
+			}
 		}
+	}
+
+	/** Gets the iterations for the current project.
+	 * 
+	 * @return All of the iterations for the current project
+	 */
+	public Iteration[] getAllIterations(){
+		return parent.getAllIterations();	
+	}
+
 
 
 	/**
@@ -618,7 +633,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
 
 			String[] statusStrings = null;
-			
+			String[] iterationStrings = null;
+
 			//Set the selected index of the typeBox to the correct value, based on the oldType
 			if (oldType.equals("Epic"))
 				typeBox.setSelectedIndex(1);
@@ -644,6 +660,21 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			else // oldPriority = "NoPriority"
 				priorityBox.setSelectedIndex(0);
 
+			//TODO - does not work
+//			//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
+//			Iteration[] allIter = getAllIterations(); 
+//			// First find the name of the iteration by ID
+//			for (int i = 0; i < allIter.length; i++){
+//				// Figure out what position in the referenced iteration is at
+//				if (allIter[i].getID() ==  currentRequirement.getAssignedIteration()){
+//					// Set the index of the box to the current index, and all is well
+//					iterationBox.setSelectedIndex(i);
+//				}
+//			}
+
+
+
+
 
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			if (oldStatus.equals("InProgress"))
@@ -660,13 +691,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				toggleEnabled(txtActualEffort, false);
 				toggleEnabled(iterationBox, false);
 			}
-			
+
 			/**
 			 * This section limits the status changes available to the user
 			 * in the JComboBox for status based on requirements
 			 *
 			 */
-			
+
 			//if oldStatus is OPEN, only go to Deleted or InProgress
 			if (oldStatus.equals("Open")) {
 				statusStrings = new String[] { "InProgress", "Open", "Deleted" };
@@ -674,7 +705,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				statusBox.setModel(compbox);
 				statusBox.setSelectedIndex(1);
 			}
-			
+
 			//if oldStatus is InProgress, only change to Complete or Open
 			if (oldStatus.equals("InProgress")) {
 				statusStrings = new String[] { "InProgress", "Open", "Complete" };
@@ -682,26 +713,32 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				statusBox.setModel(compbox);
 				statusBox.setSelectedIndex(0);
 			}
-			
+
 			//if oldStatus is Deleted, only can be changed to Open, InProgress, or Complete
 			if (oldStatus.equals("Deleted")) {
-				statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
-				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
-				statusBox.setModel(compbox);
-				statusBox.setSelectedIndex(3);
+				statusStrings = new String[] { "Open", "Deleted" };
+				DefaultComboBoxModel  newStatusBox = new DefaultComboBoxModel (statusStrings);
+				statusBox.setModel(newStatusBox);
+				statusBox.setSelectedIndex(1);
+				//set the iteration to Backlog
+				iterationStrings = new String[] { "Backlog" };
+				DefaultComboBoxModel  newIterationBox = new DefaultComboBoxModel (iterationStrings);
+				iterationBox.setModel(newIterationBox);
+				iterationBox.setSelectedIndex(0);
+
 			}
-			
+
 			//if oldStatus is Complete, only can be changed to InProgess or Deleted
 			if (oldStatus.equals("Complete")) {
-				statusStrings = new String[] { "InProgress", "Complete", "Deleted" };
+				statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
 				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
 				statusBox.setModel(compbox);
 				statusBox.setSelectedIndex(1);
 			}
-			
+
 			//if oldStatus is New, only can be changed to Complete or Deleted
 			if (oldStatus.equals("New")) {
-				statusStrings = new String[] { "New", "Open", "Complete", "Deleted" };
+				statusStrings = new String[] { "New", "Deleted" };
 				DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
 				statusBox.setModel(compbox);
 				statusBox.setSelectedIndex(0);
