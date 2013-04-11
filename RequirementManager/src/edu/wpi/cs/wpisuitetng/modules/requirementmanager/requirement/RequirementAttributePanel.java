@@ -177,13 +177,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 					warningLabel.setEnabled(true);
 					warningLabel.setVisible(true);
-					parent.getParent().setsaveEnabled(false);
+		//			parent.getParent().setsaveEnabled(false);
 				}
 				else{
 					warningLabel.setEnabled(false);
 					warningLabel.setVisible(false);
-					if (txtDescription.getText().length()<=100){
-					parent.getParent().setsaveEnabled(true);}
+					if (txtDescription.getText().length()<=100){}
+			//		parent.getParent().setsaveEnabled(true);}
 				}
 					
 			}
@@ -199,13 +199,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 					warningLabel.setEnabled(true);
 					warningLabel.setVisible(true);
-					parent.getParent().setsaveEnabled(false);
+				//	parent.getParent().setsaveEnabled(false);
 				}
 				else{
 					warningLabel.setEnabled(false);
 					warningLabel.setVisible(false);
-					if (txtDescription.getText().length()<=100){
-					parent.getParent().setsaveEnabled(true);}
+					if (txtDescription.getText().length()<=100){}
+				//	parent.getParent().setsaveEnabled(true);}
 				}
 			}
 
@@ -220,13 +220,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 					warningLabel.setEnabled(true);
 					warningLabel.setVisible(true);
-					parent.getParent().setsaveEnabled(false);
+				//	parent.getParent().setsaveEnabled(false);
 				}
 				else{
 					warningLabel.setEnabled(false);
 					warningLabel.setVisible(false);
-					if (txtDescription.getText().length()<=100){
-					parent.getParent().setsaveEnabled(true);}
+					if (txtDescription.getText().length()<=100){}
+				//	parent.getParent().setsaveEnabled(true);}
 				}
 				
 			}
@@ -246,13 +246,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 					warningLabel2.setEnabled(true);
 					warningLabel2.setVisible(true);
-					parent.getParent().setsaveEnabled(false);
+				//	parent.getParent().setsaveEnabled(false);
 				}
 				else{
 					warningLabel2.setEnabled(false);
 					warningLabel2.setVisible(false);
-					if (txtName.getText().length()<=10){
-					parent.getParent().setsaveEnabled(true);}
+					if (txtName.getText().length()<=10){}
+					///parent.getParent().setsaveEnabled(true);}
 				}
 					
 			}
@@ -268,13 +268,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 					warningLabel2.setEnabled(true);
 					warningLabel2.setVisible(true);
-					parent.getParent().setsaveEnabled(false);
+				//	parent.getParent().setsaveEnabled(false);
 				}
 				else{
 					warningLabel2.setEnabled(false);
 					warningLabel2.setVisible(false);
-					if (txtName.getText().length()<=10){
-					parent.getParent().setsaveEnabled(true);}
+					if (txtName.getText().length()<=10){}
+				//	parent.getParent().setsaveEnabled(true);}
 				}
 			}
 
@@ -289,13 +289,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 					warningLabel2.setEnabled(true);
 					warningLabel2.setVisible(true);
-					parent.getParent().setsaveEnabled(false);
+					//parent.getParent().setsaveEnabled(false);
 				}
 				else{
 					warningLabel2.setEnabled(false);
 					warningLabel2.setVisible(false);
-					if (txtName.getText().length()<=10){
-					parent.getParent().setsaveEnabled(true);}
+					if (txtName.getText().length()<=10){}
+				//	parent.getParent().setsaveEnabled(true);}
 				}
 				
 			}
