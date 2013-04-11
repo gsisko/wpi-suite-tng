@@ -138,6 +138,11 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		saveButton.setEnabled(enabled);
 	}
 	
+	public void setsaveEnabled(boolean enabled) {
+
+		saveButton.setEnabled(enabled);
+	}
+	
 	/**
 	 * Returns whether or not input is enabled.
 	 * 
