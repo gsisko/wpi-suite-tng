@@ -87,8 +87,8 @@ public class RetrieveModelController extends MouseAdapter {
 	public void showModel(String jsonArray) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
 		builderView.displayModelFromJSONArray(jsonArray);
-		builderView.setInputEnabled(true);
 		builderView.setModeAndBtn(Mode.EDIT);
+		builderView.setInputEnabled(true);
 		
 		listView.setNewBtnToCancel();
 		System.out.println(modelName  + " retrieved and displayed successfully");

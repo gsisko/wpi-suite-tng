@@ -255,6 +255,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		if (!setTo){
 			this.nameValue.setText("");
 		}
+		if (this.currentMode == Mode.CREATE) {
+			this.totalEstimate.setVisible(false);
+			this.totalEstimateLabel.setVisible(false);
+		}
+		else {
+			this.totalEstimate.setVisible(setTo);
+			this.totalEstimateLabel.setVisible(setTo);
+		}
 	}
 
 
@@ -310,6 +318,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(this.startDateChooser.getDate());
 		toSend.setEndDate(this.endDateChooser.getDate());
+		toSend.setTotalEstimate(Integer.parseInt(this.totalEstimate.getText()));
 
 		System.out.println(toSend.toJSON());
 
@@ -391,6 +400,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.nameValue.setText(toDisplay.getName());
 		this.startDateChooser.setDate(toDisplay.getStartDate());
 		this.endDateChooser.setDate(toDisplay.getEndDate());
+		this.totalEstimate.setText(Integer.toString(toDisplay.getTotalEstimate()));
 
 		setInputEnabled(true);
 	}
