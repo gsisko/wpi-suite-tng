@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -51,14 +53,47 @@ public class ListOfNotePanel extends JPanel {
 		noteListModel.addMessage(message3);
 		noteListModel.addMessage(message4);
 		
+		int totalHeight = 0;
+		
 		for (int i = 0; i<noteListModel.getSize(); i++)
 		{
-			NotePanel panel = new NotePanel(noteListModel.getElementAt(i).toString(), noteListModel.getElementAt(i).getMessage());
+			String message = noteListModel.getElementAt(i).getMessage();
+			NotePanel panel = new NotePanel(noteListModel.getElementAt(i).toString(),message );
+			int maxnumlinesinmessage;
+			if (message.length() <=22)
+				maxnumlinesinmessage = 1;
+			else
+				maxnumlinesinmessage = (message.length() / 22 );
+			maxnumlinesinmessage+=2;
+			
+			String newLine = "\n";
+			int lastIndex = 0;
+			int count =0;
+
+			while(lastIndex != -1){
+
+			       lastIndex = message.indexOf(newLine,lastIndex);
+
+			       if( lastIndex != -1){
+			             count ++;
+			             lastIndex+=newLine.length();
+			      }
+			}
+			maxnumlinesinmessage += count;
+			
+			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			
+			totalHeight += (maxnumlinesinmessage * 20);
+			panel.setMaximumSize(new Dimension(((int)(dim.width) -600), (maxnumlinesinmessage * 20)));
+			panel.revalidate();
+			panel.repaint();
+			
 			this.add(panel);
 		}
 
-	
-		this.setPreferredSize(new Dimension(580, 300));
+		this.setBackground(Color.WHITE);
+		
+		this.setPreferredSize(new Dimension(50, totalHeight));
 		this.revalidate();
 		this.repaint();
 		
