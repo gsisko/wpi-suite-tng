@@ -156,6 +156,7 @@ public class RetrieveAllRequirementsController {
 				entries[i][0] = String.valueOf(isFiltered.get(i).getId());
 				entries[i][1] = isFiltered.get(i).getName();
 				entries[i][2] = isFiltered.get(i).getDescription();
+				
 //				if (isFiltered.get(i).getAssignedIteration() == 0) {
 //					entries[i][3] = getIterationName(isFiltered.get(i));
 //				}

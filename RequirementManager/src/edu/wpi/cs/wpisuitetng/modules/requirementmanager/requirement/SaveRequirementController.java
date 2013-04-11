@@ -76,6 +76,32 @@ public class SaveRequirementController
 
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
+			/** Update updatedIteration*/
+			Iteration updatedIteration = null;
+
+			for (Iteration i : view.getAllIterations()) {
+				if (i.getID() == 0) {
+					updatedIteration = i;
+				}
+			}
+
+			//Add id to the list
+			ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
+			updatedRequirementList.add(0);
+			updatedIteration.setRequirementsContained(updatedRequirementList);
+
+			//Update totalEstimate
+			updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + view.getRequirement().getEstimate());
+
+			//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+			saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
+			saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+			saveUpdatedIterationRequest.send();
+			
+			
+			
+			
 			// make a PUT http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 			request.setBody(view.getRequirement().toJSON()); // put the new message in the body of the request
@@ -132,23 +158,14 @@ public class SaveRequirementController
 			//This should reduce the number of requests the server gets sent
 			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
 				//!!! Assuming Iteration will be set above !!!
-
+				
 				/** Update oldIteration */
 				Iteration oldIteration = null;
-
-				//Convert oldIteration from JSON
-				Request getOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.GET);
-
-				//Create Observer for request...
-				RetrieveIterationObserver oldIterationObserver = new RetrieveIterationObserver();
-
-				//Add observer and send our request
-				getOldIterationRequest.addObserver(oldIterationObserver); 
-				getOldIterationRequest.send();
-
-				//Loop until we know that we received the request...
-				while (oldIteration == null){
-					oldIteration = oldIterationObserver.getIteration();
+				
+				for (Iteration i : view.getAllIterations()) {
+					if (oldRequirement.getAssignedIteration() == i.getID()) {
+						oldIteration = i;
+					}
 				}
 
 				//Remove id from the list
@@ -162,24 +179,17 @@ public class SaveRequirementController
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 
 				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
-				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + oldRequirement.getAssignedIteration() , HttpMethod.POST);
+				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 				saveOldIterationRequest.setBody(oldIteration.toJSON());
 				saveOldIterationRequest.send();
 
 				/** Update updatedIteration*/
 				Iteration updatedIteration = null;
-
-				//Convert updatedIteration from JSON
-				Request getUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.GET);
-
-				//Create Observer for request...
-				RetrieveIterationObserver newIterationObserver = new RetrieveIterationObserver();
-				getUpdatedIterationRequest.addObserver(newIterationObserver); //TODO: Fix? Maybe? Does it matter?
-				getUpdatedIterationRequest.send();
-
-				//We know that the received iteration is not null due to the Synchronous request...
-				while (updatedIteration == null){
-					updatedIteration = newIterationObserver.getIteration();
+				
+				for (Iteration i : view.getAllIterations()) {
+					if (updatedRequirement.getAssignedIteration() == i.getID()) {
+						updatedIteration = i;
+					}
 				}
 
 				//Add id to the list
@@ -191,9 +201,10 @@ public class SaveRequirementController
 				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
 
 				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
-				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration/" + updatedRequirement.getAssignedIteration() , HttpMethod.POST);
+				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 				saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
 				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+				saveUpdatedIterationRequest.clearAsynchronous();
 				saveUpdatedIterationRequest.send();
 			}
 
