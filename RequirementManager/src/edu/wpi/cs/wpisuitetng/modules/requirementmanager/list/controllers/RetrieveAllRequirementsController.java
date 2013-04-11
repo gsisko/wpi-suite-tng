@@ -159,6 +159,7 @@ public class RetrieveAllRequirementsController {
 					entries[i][3] = "Backlog";
 				}
 				else entries[i][3] = "Hello World";
+				
 				// Process "NoType" case
 				if (isFiltered.get(i).getType().toString().equals("NoType")){
 					entries[i][4] = "";					
