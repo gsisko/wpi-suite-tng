@@ -112,10 +112,14 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 		view.getParent().refreshData();
 		
 		Requirement[] requirements;
-		if(!isFiltered)
+		if(!isFiltered){
+			//TODO: make the bool in the PieChartPanel to be less redundant?
 			requirements = view.getParent().getAllRequirements();
-		else
+		}else{
 			requirements = view.getParent().getDisplayedRequirements();
+		}
+		iterationPiePanel.enableFilter(isFiltered);
+		statusPiePanel.enableFilter(isFiltered);
 		Iteration[] iterations = view.getParent().getAllIterations();
 		
 		//if(chartType == "Requirement Status")
