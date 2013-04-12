@@ -53,25 +53,17 @@ public class IterationChangeListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("The assigned iteration has been changed; the status will be changed accordingly.");
 
-		//		String selected = (String)  ((JComboBox)e.getSource()).getSelectedItem();
-		//		 		
-		//		// Check to see if the selected item is the backlog, set status appropriately
-		//		if (selected.equals("")){
-		//			raPanel.getCurrentRequirement().setStatus(RequirementStatus.Open);
-		//			raPanel.updateStatusSettings("Open");
-		//		} else {
-		//			raPanel.getCurrentRequirement().setStatus(RequirementStatus.InProgress);
-		//			raPanel.updateStatusSettings("InProgress");
-		//		}
-
-		// Index 0 is always the backlog
-
-		if (raPanel.getMode().equals(Mode.EDIT)){
+		if (raPanel.getMode().equals(Mode.EDIT) ){
 			if ( 0 == ((JComboBox)e.getSource()).getSelectedIndex()){
+				if ( raPanel.getCurrentRequirement().getStatus() == RequirementStatus.New){
+			//		raPanel.getCurrentRequirement().setStatus(RequirementStatus.Open);
+					raPanel.updateStatusSettings("New");
+					return;
+				}
 				raPanel.getCurrentRequirement().setStatus(RequirementStatus.Open);
 				raPanel.updateStatusSettings("Open");
 			} else {
-				raPanel.getCurrentRequirement().setStatus(RequirementStatus.InProgress);
+	//			raPanel.getCurrentRequirement().setStatus(RequirementStatus.InProgress);
 				raPanel.updateStatusSettings("InProgress");
 			}
 		}

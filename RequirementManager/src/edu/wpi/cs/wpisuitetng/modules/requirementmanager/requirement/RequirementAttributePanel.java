@@ -25,6 +25,7 @@ import javax.swing.event.DocumentListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
@@ -669,23 +670,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			else // oldPriority = "NoPriority"
 				priorityBox.setSelectedIndex(0);
 
-
-			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			if (oldStatus.equals("InProgress"))
-				toggleEnabled(txtEstimate, false);
-
-			//if the oldStatus is Completed or Deleted, disable editing of all other fields
-			if (oldStatus.equals("Complete") || oldStatus.equals("Deleted")){
-				toggleEnabled(txtName, false);
-				toggleEnabled(txtDescription, false);
-				toggleEnabled(typeBox, false);
-				toggleEnabled(priorityBox, false);
-				toggleEnabled(txtReleaseNumber, false);
-				toggleEnabled(txtEstimate, false);
-				toggleEnabled(txtActualEffort, false);
-				toggleEnabled(iterationBox, false);
-			}
-			
 			updateStatusSettings(oldStatus);
 		}
 	}
@@ -697,57 +681,57 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	 */
 	public void updateStatusSettings(String setStatus){
 		String[] statusStrings = null;
-		String[] iterationStrings = null;
-		//if oldStatus is OPEN, only go to Deleted or InProgress
-		if (setStatus.equals("Open")) {
-			statusStrings = new String[] { "InProgress", "Open", "Deleted" };
-			DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
-			statusBox.setModel(compbox);
-			statusBox.setSelectedIndex(1);
-		}
-
-		//if oldStatus is InProgress, only change to Complete or Open
-		if (setStatus.equals("InProgress")) {
-			statusStrings = new String[] { "InProgress", "Open", "Complete" };
-			DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
-			statusBox.setModel(compbox);
-			statusBox.setSelectedIndex(0);
-		}
-
-		//if oldStatus is Deleted, only can be changed to Open, InProgress, or Complete
-		if (setStatus.equals("Deleted")) {
-			statusStrings = new String[] { "Open", "Deleted" };
-			DefaultComboBoxModel  newStatusBox = new DefaultComboBoxModel (statusStrings);
-			statusBox.setModel(newStatusBox);
-			statusBox.setSelectedIndex(1);
-			//set the iteration to Backlog
-			iterationStrings = new String[] { "Backlog" };
-			DefaultComboBoxModel  newIterationBox = new DefaultComboBoxModel (iterationStrings);
-			iterationBox.setModel(newIterationBox);
-			iterationBox.setSelectedIndex(0);
-			currentRequirement.setAssignedIteration(0);
-			// TODO Make sure this updates Iterations!!
-		}
-
-		//if oldStatus is Complete, only can be changed to InProgess or Deleted
-		if (setStatus.equals("Complete")) {
-			statusStrings = new String[] { "InProgress", "Open", "Complete", "Deleted" };
-			DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
-			statusBox.setModel(compbox);
-			statusBox.setSelectedIndex(1);
-		}
-
-		//if oldStatus is New, only can be changed to Complete or Deleted
-		if (setStatus.equals("New")) {
+		DefaultComboBoxModel  compbox;
+		currentRequirement.setStatus(RequirementStatus.toStatus(setStatus));
+		switch (RequirementStatus.toStatus(setStatus)){
+		case Open:
+			statusStrings = new String[] {  "Open", "Deleted" };
+			break;
+			
+		case InProgress:
+			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
+			toggleEnabled(txtEstimate, false);
+			statusStrings = new String[] { "InProgress", "Deleted", "Complete" };
+			break;
+			
+		case Deleted:
+			toggleEnabled(txtName, false);
+			toggleEnabled(txtDescription, false);
+			toggleEnabled(typeBox, false);
+			toggleEnabled(priorityBox, false);
+			toggleEnabled(txtReleaseNumber, false);
+			toggleEnabled(txtEstimate, false);
+			toggleEnabled(txtActualEffort, false);
+			toggleEnabled(iterationBox, false);
+			statusStrings = new String[] { "Deleted" ,"Open"};
+			break;
+			
+		case Complete:
+			toggleEnabled(txtName, false);
+			toggleEnabled(txtDescription, false);
+			toggleEnabled(typeBox, false);
+			toggleEnabled(priorityBox, false);
+			toggleEnabled(txtReleaseNumber, false);
+			toggleEnabled(txtEstimate, false);
+			toggleEnabled(txtActualEffort, false);
+			toggleEnabled(iterationBox, false);			
+			statusStrings = new String[] { "Complete", "Open", "Deleted" };
+			break;
+			
+		case New:
 			statusStrings = new String[] { "New", "Deleted" };
-			DefaultComboBoxModel  compbox = new DefaultComboBoxModel (statusStrings);
-			statusBox.setModel(compbox);
-			statusBox.setSelectedIndex(0);
+			break;
+		
+		default:
+			System.err.println("An unknown status was entered for the Requirement. Problem!");
+			return;
 		}
+		// Sets the selected entry to the first, which will be correct for each.
+		compbox = new DefaultComboBoxModel (statusStrings);
+		statusBox.setModel(compbox);
+		statusBox.setSelectedIndex(0);
+
 	}
-	
-	
-	
 	
 	
 	

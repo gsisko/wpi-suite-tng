@@ -45,7 +45,7 @@ public class SaveRequirementObserver implements RequestObserver {
 		this.view = view;
 	}
 	
-	/*
+	/**
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
 	 * 
@@ -58,6 +58,8 @@ public class SaveRequirementObserver implements RequestObserver {
 		
 		// Parse the message out of the response body
 		final Requirement requirement = Requirement.fromJSON(response.getBody());
+		view.getRequirementPanel().setCurrentRequirement(requirement);
+		view.getRequirementPanel().updateModel(requirement);
 
 		// make sure the requirement isn't null
 		if (requirement != null) {

@@ -84,8 +84,11 @@ public class SaveRequirementController
 		}
 
 		else { // we are updating an existing requirement
-
-			Requirement oldRequirement = view.getCurrentRequirement();//grab the old requirement
+			// make a new requirement to story the updated data
+			Requirement updatedRequirement = new Requirement();
+			
+			//grab the old requirement
+			Requirement oldRequirement = view.getCurrentRequirement();
 
 			//Check to see if the status update is invalid because the user had tried to change the status from "InProgress" to "Deleted")
 			RequirementStatus oldStatus = oldRequirement.getStatus(); //grab the old status
@@ -93,10 +96,15 @@ public class SaveRequirementController
 			if ((oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted)) {//if user had tried to change the status from "InProgress" to "Deleted"...
 				JOptionPane.showMessageDialog(null, "Cannot change status from InProgress to Deleted.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
 				return;//cancel the update
+			} else if ((oldStatus == RequirementStatus.New) && (newStatus == RequirementStatus.Open)){
+				System.out.println("Got here.");
+				updatedRequirement.setStatus(RequirementStatus.New);
+			} else {
+				updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 			}
-
-			// make a new requirement to story the updated data
-			Requirement updatedRequirement = new Requirement(); 
+				
+				
+ 
 
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
@@ -106,7 +114,6 @@ public class SaveRequirementController
 			updatedRequirement.setDescription(view.getRequirementDescription().getText());
 			updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
 			updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "-1" : view.getRequirementReleaseNumber().getText()));
-			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 			updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
 			updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
