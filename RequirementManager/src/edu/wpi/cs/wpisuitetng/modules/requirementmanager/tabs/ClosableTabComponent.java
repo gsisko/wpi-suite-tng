@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -87,7 +88,11 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 		Component comp = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		
 		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
-			
+			if (JOptionPane.showOptionDialog(this, "You have unsaved changes to this requirement,  would you like to continue?","Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
+				if (index> -1) {
+					tabbedPane.remove(index);
+				}
+			}
 		} else if (index > -1) {
 			tabbedPane.remove(index);
 		}

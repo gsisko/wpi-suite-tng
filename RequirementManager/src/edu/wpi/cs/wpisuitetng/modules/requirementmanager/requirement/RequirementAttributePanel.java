@@ -926,7 +926,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	}
 	}
 	
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -950,7 +949,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		this.fieldsChanged = false;
 		
 		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
-			System.out.println("name changed");
 			txtName.setBackground(Color.YELLOW);
 			this.fieldsChanged = true;
 		} else {
@@ -1012,6 +1010,11 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	
 	public String getIterationNameById(int id)
 	{
+		Iteration[] allIterations = this.parent.getAllIterations();
+		for (int i = 0; i < allIterations.length; i++) {
+			if (allIterations[i].getID() == id) {
+				return allIterations[i].getName();
+			}
 		return "";
 	}
 }
