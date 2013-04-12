@@ -680,6 +680,7 @@ public class RequirementAttributePanel extends JPanel {
 
 			updateStatusSettings(oldStatus);
 		}
+		setFieldsChanged(false);
 	}
 
 	/**
