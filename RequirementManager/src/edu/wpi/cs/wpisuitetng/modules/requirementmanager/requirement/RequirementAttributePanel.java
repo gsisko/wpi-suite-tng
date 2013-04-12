@@ -28,6 +28,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -104,7 +106,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[20];
+		fieldsChanged = new boolean[9];
 		for (int i = 0; i < fieldsChanged.length; i++) {
 			fieldsChanged[i] = false;
 		}
@@ -248,17 +250,9 @@ public class RequirementAttributePanel extends JPanel {
 				}
 			}
 		});
-		typeBox.addMouseListener(new MouseListener() {
+		typeBox.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
 						!(typeBox.getSelectedItem().toString().equals("")						// Hack
 								&& currentRequirement.getType() == RequirementType.NoType)) {
@@ -268,17 +262,9 @@ public class RequirementAttributePanel extends JPanel {
 				}
 			}
 		});
-		statusBox.addMouseListener(new MouseListener() {
+		statusBox.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
 					changeField(statusBox, 6, true);
 				} else {
@@ -286,17 +272,9 @@ public class RequirementAttributePanel extends JPanel {
 				}
 			}
 		});
-		priorityBox.addMouseListener(new MouseListener() {
+		priorityBox.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
 						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
 								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
@@ -306,17 +284,9 @@ public class RequirementAttributePanel extends JPanel {
 				}
 			}
 		});
-		iterationBox.addMouseListener(new MouseListener() {
+		iterationBox.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getAssignedIteration()))) {
 					changeField(iterationBox, 8, true);
 				} else {
