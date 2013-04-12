@@ -249,7 +249,6 @@ public class SaveRequirementController
 		else {
 			System.err.print("Undected error saving requirement\n");
 		}
-		view.getParent().setSaveButtonEnable(true);
 	}
 
 	public RequirementTab getView() {
