@@ -122,6 +122,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 
 		// Instantiate the save button and add it to the button panel
 		saveButton = new JButton();
+		saveButton.setEnabled(false);
 		saveButton.setAction(new SaveChangesAction(controller));
 		buttonGroup.getContent().add(saveButton);
 		buttonGroup.setPreferredWidth(150);
@@ -140,8 +141,6 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void setInputEnabled(boolean enabled) {
 		inputEnabled = enabled;
-
-		saveButton.setEnabled(enabled);
 	}
 	
 	public void setsaveEnabled(boolean enabled) {

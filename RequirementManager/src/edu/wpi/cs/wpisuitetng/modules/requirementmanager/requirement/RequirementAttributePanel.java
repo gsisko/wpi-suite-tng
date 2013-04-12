@@ -931,7 +931,7 @@ public class RequirementAttributePanel extends JPanel {
 				else{
 					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(true);
+						saveButton.setEnabled(isFieldsChanged());
 					}
 				}
 
@@ -946,7 +946,7 @@ public class RequirementAttributePanel extends JPanel {
 				else{
 					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(true);
+						saveButton.setEnabled(isFieldsChanged());
 					}
 				}
 			}
@@ -960,7 +960,7 @@ public class RequirementAttributePanel extends JPanel {
 				else{
 					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(true);
+						saveButton.setEnabled(isFieldsChanged());
 					}
 				}
 
@@ -982,7 +982,7 @@ public class RequirementAttributePanel extends JPanel {
 				else{
 					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-						saveButton.setEnabled(true);
+						saveButton.setEnabled(isFieldsChanged());
 					}
 				}
 
@@ -997,7 +997,7 @@ public class RequirementAttributePanel extends JPanel {
 				else{
 					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-						saveButton.setEnabled(true);
+						saveButton.setEnabled(isFieldsChanged());
 					}
 				}
 			}
@@ -1011,7 +1011,7 @@ public class RequirementAttributePanel extends JPanel {
 				else{
 					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-						saveButton.setEnabled(true);
+						saveButton.setEnabled(isFieldsChanged());
 					}
 				}
 
@@ -1029,7 +1029,7 @@ public class RequirementAttributePanel extends JPanel {
 	{
 		warningLabel.setText(" ");
 		if (txtDescription.getText().length()>0){
-			saveButton.setEnabled(true);
+			saveButton.setEnabled(isFieldsChanged());
 		}
 
 	}
@@ -1039,9 +1039,10 @@ public class RequirementAttributePanel extends JPanel {
 	else{
 		warningLabel2.setText(" ");
 		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-			saveButton.setEnabled(true);}
+			saveButton.setEnabled(isFieldsChanged());
+		}
 	}
-	}
+}
 
 	private void setAllFieldsChanged(boolean b) {
 		for (int i = 0; i < fieldsChanged.length; i++) {
@@ -1071,5 +1072,7 @@ public class RequirementAttributePanel extends JPanel {
 			toggleEnabled(obj, obj.isEnabled());
 			fieldsChanged[i] = false;
 		}
+		if (saveButton != null)
+			saveButton.setEnabled(isFieldsChanged());
 	}
 }
