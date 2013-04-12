@@ -38,6 +38,13 @@ import javax.swing.JViewport;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
+/**
+ * This panel is added to the RequirementTabPanel and 
+ * contains all the gui components involving notes:
+ * -a panel to hold the list of notes
+ * -a text area for a user to input a new note
+ * -a save button to save the new note
+ */
 @SuppressWarnings({"serial"})
 public class NoteTab extends JPanel {
 
