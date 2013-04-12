@@ -1,3 +1,26 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Color;
@@ -13,6 +36,10 @@ import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+/**
+ * This is a panel to display an individual note
+ *
+ */
 @SuppressWarnings("serial")
 public class NotePanel extends JPanel{
 
@@ -60,13 +87,15 @@ public class NotePanel extends JPanel{
 		this.setMaximumSize(new Dimension(100000, this.getPreferredSize().height));
 		
 		//Add resize functionality to keep the maximum height current
-		final JPanel referenceToThis = this;
+		final JPanel referenceToThis = this; // a reference to this panel to use within the following constructor
+		//Construct and add a new component listener to listen for a resize event
 		this.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent e) { 
-				referenceToThis.setMaximumSize(new Dimension(100000, referenceToThis.getPreferredSize().height));
-				
+			public void componentResized(ComponentEvent e) { //on resize...
+				referenceToThis.setMaximumSize(new Dimension(100000, referenceToThis.getPreferredSize().height));//reset the maximum height appropriately 
+				referenceToThis.invalidate(); //send an invalidate to signal to the parent container that this panel must be repainted
 			}
 		});
+		//end resize functionality
 
 	}
 

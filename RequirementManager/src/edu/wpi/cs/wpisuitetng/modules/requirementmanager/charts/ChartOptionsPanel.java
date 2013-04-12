@@ -1,3 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2013 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *		Robert Dabrowski
+ *		Danielle LaRose
+ *		Edison Jimenez
+ *		Mike Calder
+ *		John Bosworth
+ *		Paula Rudy
+ *		Gabe Isko
+ *		Bangyan Zhang
+ *		Cassie Hudson
+ *		Robert Smieja
+ *		Alex Solomon
+ *		Brian Hetherman
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.Color;
@@ -9,7 +31,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
@@ -73,7 +94,6 @@ public class ChartOptionsPanel extends JPanel{
 
 		//Construct the boxes 
 		chartTypeBox = new JComboBox(typeStrings);
-		enable(chartTypeBox, false);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
 		
@@ -130,23 +150,6 @@ public class ChartOptionsPanel extends JPanel{
 	}
 
 	/**
-	 * Enables or disables a given JComponent and sets is color accordingly
-	 * 
-	 * @param box Box to be enabled / disabled
-	 * @param enabled True for enable, false for disable
-	 */
-	public void toggleEnabled(JComponent box, boolean enabled) {
-		if (enabled) {
-			box.setEnabled(true);
-			box.setBackground(Color.WHITE);
-		}
-		else {
-			box.setEnabled(false);
-			box.setBackground(new Color(238,238,238));
-		}
-	}
-
-	/**
 	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * 
@@ -155,9 +158,9 @@ public class ChartOptionsPanel extends JPanel{
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		toggleEnabled(chartTypeBox, enabled);
-		toggleEnabled(chartDataBox, enabled);
-		toggleEnabled(filtersOptionsBox, enabled);
+		enable(chartTypeBox, false);
+		enable(chartDataBox, enabled);
+		enable(filtersOptionsBox, enabled);
 
 	}
 

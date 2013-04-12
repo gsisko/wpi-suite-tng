@@ -40,6 +40,5 @@ function setUp()
 
         $(".instructionText").height(infoPaneHeight - 3 * $(".instructionTitle").height());
 
-        SelectPage();
     });
 }

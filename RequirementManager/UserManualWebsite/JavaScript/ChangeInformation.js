@@ -1,5 +1,8 @@
 function SelectPage(){
+	setUp();
+
     $(document).ready(function () {
+	
         var str = document.URL.split("=")[1];
         if (str == undefined)
             return;
@@ -20,7 +23,9 @@ function SelectPrevButton(){
     set up the else if like below
 */
 function changePage(str){
-    if (str.toString() == "makeReqPage")
+	if (str.toString() == "mainPanel")
+		MainPanel();
+    else if (str.toString() == "makeReqPage")
         MakeReqPage();
 
 }
@@ -32,6 +37,18 @@ function changePage(str){
     add images with the <img> tag (or <image> one of those) use escape sequences like normal strings an html tags as needed 
     try not to use <p> to keep me happy. Use <br /> for newline
 */
+
+function MainPanel() {
+    $(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">Basic Overview of the Main Panel</a>');
+        $(".instructionTitle").html('The Main Panel');
+		$(".instructionText").html(function(){
+            return '<a>Hello World</a>'
+        });
+    });
+}
+
 function MakeReqPage() {
     $(document).ready(function () {
         //change where next and previous values point, do in a function
