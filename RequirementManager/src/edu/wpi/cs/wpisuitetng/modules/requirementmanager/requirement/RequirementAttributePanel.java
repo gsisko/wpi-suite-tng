@@ -184,7 +184,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		statusBox.addFocusListener(this);
 		priorityBox.addFocusListener(this);
 		iterationBox.addFocusListener(this);
-		iterationBox.addActionListener(new IterationChangeListener(this));
+		iterationBox.addItemListener(new IterationChangeListener(this));
 
 		warningLabel2 = new JLabel("Description cannot be blank");
 		warningLabel = new JLabel("Name must be between 0 and 100 characters");
@@ -192,9 +192,9 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		warningLabel2.setForeground(Color.red);
 		warningLabel.setEnabled(false);
 		warningLabel2.setEnabled(false);
-		
-		
-		
+
+
+
 		//Set the estimate and actual effort to 0 since this is a new requirement
 		txtEstimate.setText("0");
 		txtActualEffort.setText("0");
@@ -391,7 +391,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		//end Iteration
 
 	}
-	
+
 	/** Gets the names of the current iterations and puts them into the Iteration
 	 *  selection combo box. Also sets the selected index appropriately.
 	 */
@@ -402,7 +402,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		} else {
 			iterationBox.setEnabled(true);
 		}
-		
+
 		Iteration[] allIterations = this.getAllIterations();
 
 		String[] names = new String[allIterations.length];
@@ -412,8 +412,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
 		iterationBox.setModel(valb);
-		iterationBox.addActionListener(new IterationChangeListener(this));
-		
+		iterationBox.addItemListener(new IterationChangeListener(this));
+
 		//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
 		// First find the name of the iteration by ID
 		for (int i = 0; i < allIterations.length; i++){
@@ -492,7 +492,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	protected void updateModel(Requirement requirement, Mode newMode){
 		mode = newMode;
 		currentRequirement = requirement;
-		
+
 		updateFields();
 		revalidate();
 
@@ -540,7 +540,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
 			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
 
-			
+
 
 			//Set the selected index of the typeBox to the correct value, based on the oldType
 			if (oldType.equals("Epic"))
@@ -579,18 +579,18 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	public void updateStatusSettings(String setStatus){
 		String[] statusStrings = null;
 		DefaultComboBoxModel  compbox;
-	//	currentRequirement.setStatus(RequirementStatus.toStatus(setStatus));
+		//	currentRequirement.setStatus(RequirementStatus.toStatus(setStatus));
 		switch (RequirementStatus.toStatus(setStatus)){
 		case Open:
 			statusStrings = new String[] {  "Open", "Deleted" };
 			break;
-			
+
 		case InProgress:
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			toggleEnabled(txtEstimate, false);
 			statusStrings = new String[] { "InProgress",  "Complete" };
 			break;
-			
+
 		case Deleted:
 			toggleEnabled(txtName, false);
 			toggleEnabled(txtDescription, false);
@@ -602,7 +602,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			toggleEnabled(iterationBox, false);
 			statusStrings = new String[] { "Deleted" ,"Open"};
 			break;
-			
+
 		case Complete:
 			toggleEnabled(txtName, false);
 			toggleEnabled(txtDescription, false);
@@ -614,11 +614,11 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			toggleEnabled(iterationBox, false);			
 			statusStrings = new String[] { "Complete", "Open", "Deleted" };
 			break;
-			
+
 		case New:
 			statusStrings = new String[] { "New", "Deleted" };
 			break;
-		
+
 		default:
 			System.err.println("An unknown status was entered for the Requirement. Problem!");
 			return;
@@ -629,9 +629,9 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		statusBox.setSelectedIndex(0);
 
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
 	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for the RequirementPanel.
@@ -719,10 +719,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		String releaseNumber = this.getRequirementReleaseNumber().getText();
 		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
 		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
-		
-		
+
+
 		Requirement toReturn = new Requirement(name, description, type, priority,  releaseNumber, 0);
-		
+
 		return toReturn;
 
 	}
@@ -848,7 +848,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	public void setSaveButton(JButton saveButton) {
 		this.saveButton = saveButton;
 	}
-	
+
 	public void txtNamecheck(){
 		txtName.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -872,7 +872,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 						saveButton.setEnabled(true);
 					}
 				}
-					
+
 			}
 
 			@Override
@@ -891,8 +891,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				else{
 					warningLabel.setEnabled(false);
 					warningLabel.setVisible(false);
+
 					if (txtDescription.getText().length()>0){
-					saveButton.setEnabled(true);}
+						saveButton.setEnabled(true);}
+
 				}
 			}
 
@@ -912,16 +914,18 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				else{
 					warningLabel.setEnabled(false);
 					warningLabel.setVisible(false);
+
 					if (txtDescription.getText().length()>0){
 					saveButton.setEnabled(true);}
+
 				}
-				
+
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	public void txtDescriptioncheck(){
 		txtDescription.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -943,8 +947,9 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					warningLabel2.setVisible(false);
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 					saveButton.setEnabled(true);}
+
 				}
-					
+
 			}
 
 			@Override
@@ -965,6 +970,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					warningLabel2.setVisible(false);
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 					saveButton.setEnabled(true);}
+
 				}
 			}
 
@@ -986,12 +992,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					warningLabel2.setVisible(false);
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 					saveButton.setEnabled(true);}
+
 				}
-				
+
 			}
-			
+
 		});
-		
+
 	}
 	public void setsavedisabled()
 	{	if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
