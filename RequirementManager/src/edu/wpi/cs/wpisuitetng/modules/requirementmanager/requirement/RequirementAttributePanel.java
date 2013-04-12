@@ -80,7 +80,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
 
-
 	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
@@ -119,7 +118,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 	}
 
-
 	/**
 	 * Adds the components to both the innerPanel and 
 	 * this instance of a RequirementPanel and places
@@ -137,8 +135,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		releaseNumLabel = new JLabel("ReleaseNumber:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
+		warningLabel = new JLabel("Name must be between 0 and 100 characters");
+		warningLabel2 = new JLabel("Description cannot be blank");
 
-		//Construct the misc components
+		//Construct the misc. components
 		txtName = new JTextField("");
 		txtDescription = new JTextArea("", 2, 2);
 		txtReleaseNumber = new JTextField("");
@@ -174,7 +174,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
 
-		// Add action listners to the various fields
+		// Add action listeners to the various fields
 		txtName.addFocusListener(this);
 		txtDescription.addFocusListener(this);
 		txtReleaseNumber.addFocusListener(this);
@@ -186,14 +186,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		iterationBox.addFocusListener(this);
 		iterationBox.addItemListener(new IterationChangeListener(this));
 
-		warningLabel2 = new JLabel("Description cannot be blank");
-		warningLabel = new JLabel("Name must be between 0 and 100 characters");
+		//Set the color for the warning labels
 		warningLabel.setForeground(Color.red);
 		warningLabel2.setForeground(Color.red);
-		warningLabel.setEnabled(false);
-		warningLabel2.setEnabled(false);
-
-
+		
+		//Set the sizes for the warning labels
+		warningLabel.setPreferredSize(new Dimension(410, 30));
+		warningLabel2.setPreferredSize(new Dimension(270, 30));
 
 		//Set the estimate and actual effort to 0 since this is a new requirement
 		txtEstimate.setText("0");
@@ -208,11 +207,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		//Enables the fields upon creation
 		setInputEnabled(inputEnabled);
 
-
 		//Set the following fields to be initially grayed out
 		toggleCreationDisable();
-
-
 
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
@@ -390,6 +386,17 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		add(iterationBox, attributePanelConstraints);
 		//end Iteration
 
+		//Warning labels
+		attributePanelConstraints.anchor = GridBagConstraints.CENTER;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+		attributePanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
+		attributePanelConstraints.gridwidth = 2; //This tells the layout that this component will be 2 cells wide
+		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
+		add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		attributePanelConstraints.gridx = 2; //set the x coord of the cell of the layout we are describing
+		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
+		add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		//end warning labels
+
 	}
 
 	/** Gets the names of the current iterations and puts them into the Iteration
@@ -432,8 +439,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	public Iteration[] getAllIterations(){
 		return parent.getAllIterations();	
 	}
-
-
 
 	/**
 	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
@@ -518,7 +523,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		}
 	}
 
-
 	/**
 	 * Updates the RequirementPanel's fields to match those in the current model (stored in "currentRequirement").
 	 */
@@ -540,8 +544,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
 			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
 
-
-
 			//Set the selected index of the typeBox to the correct value, based on the oldType
 			if (oldType.equals("Epic"))
 				typeBox.setSelectedIndex(1);
@@ -555,7 +557,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 				typeBox.setSelectedIndex(5);
 			else// oldType = "NoType"
 				typeBox.setSelectedIndex(0);
-
 
 			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
 			if (oldPriority.equals("High"))
@@ -629,8 +630,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		statusBox.setSelectedIndex(0);
 
 	}
-
-
 
 	/**
 	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
@@ -709,7 +708,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	 * Gets a requirement from the current text fields
 	 * TODO error check
 	 * 
-	 * @return Requiremnt made from the text fields
+	 * @return Requirement made from the text fields
 	 */
 	public Requirement getRequirement()
 	{
@@ -781,14 +780,12 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		this.iterationBox = iterationBox;
 	}
 
-
 	/**
 	 * @return the fieldsChanged
 	 */
 	public boolean isFieldsChanged() {
 		return fieldsChanged;
 	}
-
 
 	/**
 	 * @param fieldsChanged the fieldsChanged to set
@@ -797,11 +794,9 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		this.fieldsChanged = fieldsChanged;
 	}
 
-
 	public JButton getSaveButton() {
 		return saveButton;
 	}
-
 
 	public void setSaveButton(JButton saveButton) {
 		this.saveButton = saveButton;
@@ -813,20 +808,11 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-					attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
-					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-					warningLabel.setEnabled(true);
-					warningLabel.setVisible(true);
+					warningLabel.setText("Name must be between 0 and 100 characters");
 					saveButton.setEnabled(false);
 				}
 				else{
-					
-					warningLabel.setEnabled(false);
-					warningLabel.setVisible(false);
+					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
 						saveButton.setEnabled(true);
 					}
@@ -837,46 +823,28 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-					attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
-					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-					warningLabel.setEnabled(true);
-					warningLabel.setVisible(true);
+					warningLabel.setText("Name must be between 0 and 100 characters");
 					saveButton.setEnabled(false);
 				}
 				else{
-					warningLabel.setEnabled(false);
-					warningLabel.setVisible(false);
-
+					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(true);}
-
+						saveButton.setEnabled(true);
+					}
 				}
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-					attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
-					add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-					warningLabel.setEnabled(true);
-					warningLabel.setVisible(true);
+					warningLabel.setText("Name must be between 0 and 100 characters");
 					saveButton.setEnabled(false);
 				}
 				else{
-					warningLabel.setEnabled(false);
-					warningLabel.setVisible(false);
-
+					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
-					saveButton.setEnabled(true);}
-
+						saveButton.setEnabled(true);
+					}
 				}
 
 			}
@@ -891,22 +859,14 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if (txtDescription.getText().length()<1){
-					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-					attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
-					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-					warningLabel2.setEnabled(true);
-					warningLabel2.setVisible(true);
+					warningLabel2.setText("Description cannot be blank");
 					saveButton.setEnabled(false);
 				}
 				else{
-					warningLabel2.setEnabled(false);
-					warningLabel2.setVisible(false);
+					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-					saveButton.setEnabled(true);}
-
+						saveButton.setEnabled(true);
+					}
 				}
 
 			}
@@ -914,44 +874,28 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if (txtDescription.getText().length()<1){
-					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-					attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
-					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-					warningLabel2.setEnabled(true);
-					warningLabel2.setVisible(true);
+					warningLabel2.setText("Description cannot be blank");
 					saveButton.setEnabled(false);
 				}
 				else{
-					warningLabel2.setEnabled(false);
-					warningLabel2.setVisible(false);
+					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-					saveButton.setEnabled(true);}
-
+						saveButton.setEnabled(true);
+					}
 				}
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				if (txtDescription.getText().length()<1){
-					attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-					attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-					attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-					attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-					attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
-					add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-					warningLabel2.setEnabled(true);
-					warningLabel2.setVisible(true);
+					warningLabel2.setText("Description cannot be blank");
 					saveButton.setEnabled(false);
 				}
 				else{
-					warningLabel2.setEnabled(false);
-					warningLabel2.setVisible(false);
+					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-					saveButton.setEnabled(true);}
-
+						saveButton.setEnabled(true);
+					}
 				}
 
 			}
@@ -961,44 +905,25 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	}
 	public void setsavedisabled()
 	{	if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-		
-		warningLabel.setEnabled(true);
-		warningLabel.setVisible(true);
-		attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-		attributePanelConstraints.gridy = 5;//set the y coord of the cell of the layout we are describing
-		add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		warningLabel.setText("Name must be between 0 and 100 characters");
 		saveButton.setEnabled(false);
 	}	
 	else 
 	{
-		warningLabel.setEnabled(false);
-		warningLabel.setVisible(false);
+		warningLabel.setText(" ");
 		if (txtDescription.getText().length()>0){
 			saveButton.setEnabled(true);
 		}
 		
 	}
 	if (txtDescription.getText().length()<1){
-		
-		warningLabel2.setEnabled(true);
-		warningLabel2.setVisible(true);
-		attributePanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		attributePanelConstraints.insets = new Insets(0,0,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
-		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
-		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
-		add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		warningLabel2.setText("Description cannot be blank");
 		saveButton.setEnabled(false);}
 	else{
-		warningLabel2.setEnabled(false);
-		warningLabel2.setVisible(false);
+		warningLabel2.setText(" ");
 		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 		saveButton.setEnabled(true);}
 	}
-
 	}
 	
 	
