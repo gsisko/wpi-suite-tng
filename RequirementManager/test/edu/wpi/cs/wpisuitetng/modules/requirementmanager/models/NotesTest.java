@@ -39,9 +39,9 @@ public class NotesTest {
 	@Before
 	public void setUp() throws Exception{
 		//seting up new requirement
-		r1 = new Requirement("Tester Requirement", "Testing Description", RequirementType.Theme, RequirementPriority.NoPriority, 0,0);
+		r1 = new Requirement("Tester Requirement", "Testing Description", RequirementType.Theme, RequirementPriority.NoPriority, "0",0);
 		r1.setPriority(RequirementPriority.Medium);
-		r1.setReleaseNumber(8000);
+		r1.setReleaseNumber("8000");
 		r1.setEstimate(15);
 		r1.setActualEffort(18);
 		r1.setStatus(RequirementStatus.InProgress);
@@ -88,7 +88,7 @@ public class NotesTest {
 		assertEquals(newRequirement.getPriority(), RequirementPriority.Medium);
 		assertEquals(newRequirement.getDescription(), "Testing Description");
 		assertEquals(newRequirement.getType(), RequirementType.Theme);
-		assertEquals(newRequirement.getReleaseNumber(), 8000);
+		assertEquals(newRequirement.getReleaseNumber(), "8000");
 		assertEquals(newRequirement.getEstimate(), 15);
 		assertEquals(newRequirement.getActualEffort(), 18);
 		assertEquals(newRequirement.getStatus(), RequirementStatus.InProgress);

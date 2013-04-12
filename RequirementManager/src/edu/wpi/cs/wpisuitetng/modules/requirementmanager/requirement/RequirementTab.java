@@ -356,7 +356,7 @@ public class RequirementTab extends JPanel {
 		// get the fields from the UI
 		String name = this.getRequirementName().getText();
 		String description = this.getRequirementDescription().getText();
-		int releaseNumber = Integer.parseInt((this.getRequirementReleaseNumber().getText().equals("")) ? "-1" : (this.getRequirementReleaseNumber().getText()));
+		String releaseNumber = this.getRequirementReleaseNumber().getText();
 		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
 		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
 

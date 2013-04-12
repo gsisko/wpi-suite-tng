@@ -51,7 +51,7 @@ public class Requirement extends AbstractModel {
 	/** The priority set to the Requirement  */
 	private RequirementPriority priority;  
 	/** Must be a release number of the current project ***/
-	private int releaseNumber;    
+	private String releaseNumber;    
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
@@ -63,7 +63,7 @@ public class Requirement extends AbstractModel {
 	
 	/** Basic constructor for a requirement */
 	public Requirement(){
-		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, 0, 0);
+		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, "", 0);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class Requirement extends AbstractModel {
 	 * @param priority Priority of the requirement (NONE, LOW, MEDIUM, HIGH)
 	 * @param iterationID The id of the iteration that this Req is assigned to
 	 */
-	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber, int iterationID) {
+	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, String releaseNumber, int iterationID) {
 		this.setName(name);
 		this.setDescription(description);
 		this.setType(type);
@@ -270,14 +270,14 @@ public class Requirement extends AbstractModel {
 	/**
 	
 	 * @return the releaseNumber */
-	public int getReleaseNumber() {
+	public String getReleaseNumber() {
 		return releaseNumber;
 	}
 
 	/**
 	 * @param releaseNumber the releaseNumber to set
 	 */
-	public void setReleaseNumber(int releaseNumber) {
+	public void setReleaseNumber(String releaseNumber) {
 		this.releaseNumber = releaseNumber;
 	}
 

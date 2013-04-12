@@ -95,7 +95,7 @@ public class TestRequirementControllers {
 		requirementTester.setPriority(RequirementPriority.High);
 		requirementTester.setType(RequirementType.Epic);
 		    
-		reqTest = new Requirement("test", "test", RequirementType.Epic, RequirementPriority.High, 1,0);
+		reqTest = new Requirement("test", "test", RequirementType.Epic, RequirementPriority.High, "1",0);
 		reqTest.setType(RequirementType.NonFunctional);
 		requirementTester.setPriority(RequirementPriority.Low);
 		
