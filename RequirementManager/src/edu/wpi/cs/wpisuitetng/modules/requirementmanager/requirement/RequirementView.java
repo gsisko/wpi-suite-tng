@@ -217,5 +217,12 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		return tabController;
 	}
 	
+	/**
+	 * @return the tabController
+	 */
+	public void setSaveButtonEnable(boolean isEnabled) {
+		saveButton.setEnabled(isEnabled);
+	}
+	
 	
 }
