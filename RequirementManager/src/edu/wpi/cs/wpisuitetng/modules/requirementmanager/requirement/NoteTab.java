@@ -89,18 +89,11 @@ public class NoteTab extends JPanel {
 		scrollMessage.setPreferredSize(new Dimension(580, 100));
 		saveButton.setPreferredSize(new Dimension(120, 40));
 
-		//Disable the txtMessage, saveButton and listscrollpane if this is a new requirement
+		//Disable the txtMessage and saveButton if this is a new requirement
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
 			getNoteMessage().setEnabled(false);
-			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		}
-		else
-		{
-			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		}
 
 
@@ -133,16 +126,6 @@ public class NoteTab extends JPanel {
 	 */
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
-		if (enabled == false)
-		{
-			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		}
-		else
-		{
-			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		}
 		saveButton.setEnabled(enabled);
 		getNoteMessage().setEnabled(enabled);
 	}
