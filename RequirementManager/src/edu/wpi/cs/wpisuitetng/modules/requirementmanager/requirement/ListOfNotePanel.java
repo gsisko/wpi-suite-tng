@@ -43,7 +43,7 @@ public class ListOfNotePanel extends JPanel {
 		this.setBackground(Color.WHITE); //set the background color of this panel to white
 		
 
-		this.setPreferredSize(new Dimension(50, 10000)); //Set the preferred size of this panel 
+		this.setPreferredSize(new Dimension(325, 10000)); //Set the preferred size of this panel 
 
 	}
 	

@@ -83,18 +83,24 @@ public class NoteTab extends JPanel {
 
 		// Put txtMessage in a scroll pane
 		scrollMessage = new JScrollPane(txtMessage);
-		scrollMessage.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));
 		scrollMessage.setPreferredSize(new Dimension(580, 100));
 		saveButton.setPreferredSize(new Dimension(120, 40));
 
-		//Disable the txtMessage and saveButton if this is a new requirement
+		//Disable the txtMessage, saveButton and listscrollpane if this is a new requirement
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
 			getNoteMessage().setEnabled(false);
+			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		}
+		else
+		{
+			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		}
 
 
@@ -127,6 +133,16 @@ public class NoteTab extends JPanel {
 	 */
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
+		if (enabled == false)
+		{
+			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		}
+		else
+		{
+			listScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			listScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		}
 		saveButton.setEnabled(enabled);
 		getNoteMessage().setEnabled(enabled);
 	}
@@ -200,9 +216,9 @@ public class NoteTab extends JPanel {
 		this.removeAll();
 		noteListModel.addMessage(newNote);
 		noteList  = new ListOfNotePanel(noteListModel);
-		
+
 		listScrollPane = new JScrollPane(noteList);
-		
+
 		listScrollPane.setPreferredSize(new Dimension(580, 300));		
 
 		// Add components
