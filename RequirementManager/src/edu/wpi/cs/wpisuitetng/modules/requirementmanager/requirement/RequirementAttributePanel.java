@@ -53,7 +53,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	private  JComboBox statusBox;//The status combo box
 	private  JComboBox priorityBox;//The priority combo box
 	private  JComboBox iterationBox;//The iteration combo box
-	private  JNumberTextField txtReleaseNumber;//The release number text field
+	private  JTextField txtReleaseNumber;//The release number text field
 	private  JNumberTextField txtEstimate;//The estimate text field
 	private  JNumberTextField txtActualEffort;//The actual effort text field
 
@@ -118,10 +118,9 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		//Construct the misc components
 		txtName = new JTextField("");
 		txtDescription = new JTextArea("", 2, 2);
-		txtReleaseNumber = new JNumberTextField();
+		txtReleaseNumber = new JTextField("");
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
-		txtReleaseNumber.setAllowNegative(false);
 		txtReleaseNumber.setMaximumSize(new Dimension(30, 25));
 		txtReleaseNumber.setMinimumSize(new Dimension(30, 25));
 		txtReleaseNumber.setPreferredSize(new Dimension(30, 25));
