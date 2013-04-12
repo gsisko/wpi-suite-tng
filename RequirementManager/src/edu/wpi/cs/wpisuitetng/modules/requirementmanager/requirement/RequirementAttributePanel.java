@@ -1015,6 +1015,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			if (allIterations[i].getID() == id) {
 				return allIterations[i].getName();
 			}
+		}
 		return "";
 	}
 }
