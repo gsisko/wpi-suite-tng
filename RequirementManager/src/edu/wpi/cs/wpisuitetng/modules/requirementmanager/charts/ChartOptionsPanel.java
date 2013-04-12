@@ -73,7 +73,7 @@ public class ChartOptionsPanel extends JPanel{
 
 		//Construct the boxes 
 		chartTypeBox = new JComboBox(typeStrings);
-		chartTypeBox.setEnabled(false);
+		enable(chartTypeBox, false);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
 		
@@ -232,5 +232,22 @@ public class ChartOptionsPanel extends JPanel{
 	 */
 	public void setChart(PieChartPanel chart) {
 		this.chart = chart;
+	}
+	
+	/** Set the given box to enabled as well 
+	 *  set the box to the correct color
+	 * 
+	 * @param box   The box that needs enabling and colors
+	 * @param enabled  True to enable and False to disable
+	 */
+	public void enable(JComboBox box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(new Color(238,238,238));
+		}
 	}
 }
