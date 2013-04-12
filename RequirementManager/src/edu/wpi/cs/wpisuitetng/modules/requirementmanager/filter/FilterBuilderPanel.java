@@ -564,7 +564,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		// The selected type determines how the filter value should be obtained
 		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
 			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
-		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
+		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description") || type == FilterType.toType("ReleaseNumber"))
 			newFilter.setValue(this.getFilterValue().getText());
 		else if (type == FilterType.toType("Iteration")) {
 			String chosen = this.getFilterValueBox().getSelectedItem().toString();
