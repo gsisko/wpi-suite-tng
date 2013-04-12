@@ -97,7 +97,8 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		}
 		
 		// Instantiate the main create requirement panel
-		mainPanel = new RequirementTab(this, requirement, editMode);
+		RequirementTab requirementTab = new RequirementTab(this,requirement, editMode);
+		mainPanel = requirementTab;
 		this.setLayout(new BorderLayout());
 		mainPanelScrollPane = new JScrollPane(mainPanel);
 		mainPanelScrollPane.getVerticalScrollBar().setUnitIncrement(10);
@@ -124,6 +125,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		saveButton.setAction(new SaveChangesAction(controller));
 		buttonGroup.getContent().add(saveButton);
 		buttonGroup.setPreferredWidth(150);
+		
+		requirementTab.getAttributePanel().setSaveButton(saveButton);
+		requirementTab.getAttributePanel().txtNamecheck();
+		requirementTab.getAttributePanel().txtDescriptioncheck();
 	}
 	
 	/**
@@ -138,10 +143,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		saveButton.setEnabled(enabled);
 	}
 	
-//	public void setsaveEnabled(boolean enabled) {
-//
-//		saveButton.setEnabled(enabled);
-//	}
+	public void setsaveEnabled(boolean enabled) {
+
+		saveButton.setEnabled(enabled);
+	}
 	
 	/**
 	 * Returns whether or not input is enabled.
