@@ -281,7 +281,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		if(selected=="Type" ||selected=="Status"  ||selected=="Priority" || selected == "Iteration")
 			valueBox.setVisible(true);
-		else if(selected=="Name" ||selected=="Description")
+		else if(selected=="Name" ||selected=="Description"||selected =="ReleaseNumber")
 			txtValue.setVisible(true);
 		else // id, estimate, actual value, or release number
 			numValue.setVisible(true);
