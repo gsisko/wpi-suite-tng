@@ -121,8 +121,8 @@ public class PieChartPanel extends JPanel {
 		}
 		
 		this.dataset = data;
-		if (!isFiltered){
-			this.chart = createChart(dataset, "Status of Requirements");
+		if (isFiltered){
+			this.chart = createChart(dataset, "Status of Displayed Requirements");
 		} else {
 			this.chart = createChart(dataset, "Status of All Requirements");
 		}
@@ -149,8 +149,8 @@ public class PieChartPanel extends JPanel {
 		}
 		
 		this.dataset = data;
-		if (!isFiltered){
-			this.chart = createChart(dataset, "Iterations of Requirements");
+		if (isFiltered){
+			this.chart = createChart(dataset, "Iterations of Displayed Requirements");
 		} else {
 			this.chart = createChart(dataset, "Iterations of All Requirements");
 		}

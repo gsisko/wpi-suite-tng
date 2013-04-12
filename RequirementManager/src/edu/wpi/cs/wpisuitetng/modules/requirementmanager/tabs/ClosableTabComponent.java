@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
 
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
 /**
  * This provides a tab component with a close button to the left of the title.
@@ -75,9 +78,17 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		if (tabbedPane instanceof MainTabPanel) {
+			System.err.println("it's a MainTabPanel");
+		}
 		// close this tab when close button is clicked
 		final int index = tabbedPane.indexOfTabComponent(this);
-		if(index > -1) {
+		
+		Component comp = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+		
+		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
+			
+		} else if (index > -1) {
 			tabbedPane.remove(index);
 		}
 	}
