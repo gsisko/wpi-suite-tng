@@ -189,10 +189,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		//Set the color for the warning labels
 		warningLabel.setForeground(Color.red);
 		warningLabel2.setForeground(Color.red);
-		
+
 		//Set the sizes for the warning labels
-		warningLabel.setPreferredSize(new Dimension(410, 30));
-		warningLabel2.setPreferredSize(new Dimension(270, 30));
+		warningLabel.setPreferredSize(new Dimension(410, 20));
+		warningLabel2.setPreferredSize(new Dimension(270, 20));
 
 		//Set the estimate and actual effort to 0 since this is a new requirement
 		txtEstimate.setText("0");
@@ -249,19 +249,18 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.fill = GridBagConstraints.NONE;//This tells the layout to *not* stretch this field horizontally (or vertically, for that matter) to fit it's cell
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END; 
-		attributePanelConstraints.insets = new Insets(15,15,0,0);  //Set the top padding to 15 units of blank space, left padding to 15 units of space
+		attributePanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 		attributePanelConstraints.gridx = 0;
 		attributePanelConstraints.gridwidth = 1;//This tells the layout to reset the amount of cells the component will be wide, from the previous 3 cells wide down to the default of 1
-		attributePanelConstraints.gridy = 1;
+		attributePanelConstraints.gridy = 2;
 		add(descriptionLabel, attributePanelConstraints);
 		//Set the constraints for the "scrollPane" containing the "txtDescription" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.77;
 		attributePanelConstraints.fill = GridBagConstraints.HORIZONTAL;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		attributePanelConstraints.insets = new Insets(15,5,10,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space, right padding to 10 units
 		attributePanelConstraints.gridx = 1;
 		attributePanelConstraints.gridwidth = 3;
-		attributePanelConstraints.gridy = 1;
+		attributePanelConstraints.gridy = 2;
 		add(scrollPane, attributePanelConstraints);
 		//end Description
 
@@ -273,14 +272,14 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.insets = new Insets(15,15,0,0); 
 		attributePanelConstraints.gridx = 0;
 		attributePanelConstraints.gridwidth = 1;
-		attributePanelConstraints.gridy = 2;
+		attributePanelConstraints.gridy = 4;
 		add(typeLabel, attributePanelConstraints);
 		//Set the constraints for the "typeBox"  and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.insets = new Insets(15,5,10,0);
 		attributePanelConstraints.gridx = 1;
-		attributePanelConstraints.gridy = 2;
+		attributePanelConstraints.gridy = 4;
 		add(typeBox, attributePanelConstraints);
 		//end Type
 
@@ -290,14 +289,14 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		attributePanelConstraints.insets = new Insets(15,15,0,0);
 		attributePanelConstraints.gridx = 0;
-		attributePanelConstraints.gridy = 3;
+		attributePanelConstraints.gridy = 5;
 		add(priorityLabel, attributePanelConstraints);
 		//Set the constraints for the "priorityBox" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.insets = new Insets(15,5,10,0);
 		attributePanelConstraints.gridx = 1;
-		attributePanelConstraints.gridy = 3;
+		attributePanelConstraints.gridy = 5;
 		add(priorityBox, attributePanelConstraints);
 		//end Priority
 
@@ -307,7 +306,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		attributePanelConstraints.insets = new Insets(15,15,0,0);
 		attributePanelConstraints.gridx = 0;
-		attributePanelConstraints.gridy = 4;
+		attributePanelConstraints.gridy = 6;
 		add(releaseNumLabel, attributePanelConstraints);
 		//Set the constraints for the "txtReleaseNum" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
@@ -315,7 +314,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.insets = new Insets(15,5,10,0);
 		attributePanelConstraints.gridx = 1;
-		attributePanelConstraints.gridy = 4;
+		attributePanelConstraints.gridy = 6;
 		add(txtReleaseNumber, attributePanelConstraints);
 		//end Release number
 
@@ -327,13 +326,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.insets = new Insets(15,5,0,0);
 		attributePanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
 		attributePanelConstraints.gridx = 2;
-		attributePanelConstraints.gridy = 2;
+		attributePanelConstraints.gridy = 4;
 		add(statusLabel, attributePanelConstraints);
 		//Set the constraints for the "statusBox" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.gridx = 3;
-		attributePanelConstraints.gridy = 2;
+		attributePanelConstraints.gridy = 4;
 		add(statusBox, attributePanelConstraints);
 		//end Status
 
@@ -342,14 +341,14 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		attributePanelConstraints.gridx = 2;
-		attributePanelConstraints.gridy = 3;
+		attributePanelConstraints.gridy =5;
 		add(estimateLabel, attributePanelConstraints);
 		//Set the constraints for the "txtEstimate" and add it to the innerPanel
 		attributePanelConstraints.ipadx = 80;
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.gridx = 3;
-		attributePanelConstraints.gridy = 3;
+		attributePanelConstraints.gridy = 5;
 		add(txtEstimate, attributePanelConstraints);
 		//end Estimate
 
@@ -359,14 +358,14 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		attributePanelConstraints.gridx = 2;
-		attributePanelConstraints.gridy = 4;
+		attributePanelConstraints.gridy = 6;
 		add(actualEffortLabel, attributePanelConstraints);
 		//Set the constraints for the "txtActualEffort" and add it to the innerPanel
 		attributePanelConstraints.ipadx = 80;
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.gridx = 3;
-		attributePanelConstraints.gridy = 4;
+		attributePanelConstraints.gridy = 6;
 		add(txtActualEffort, attributePanelConstraints);
 		//end Actual effort
 
@@ -376,24 +375,25 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		attributePanelConstraints.gridx = 2;
-		attributePanelConstraints.gridy = 5;
+		attributePanelConstraints.gridy = 7;
 		add(iterationLabel, attributePanelConstraints);
 		//Set the constraints for the "iterationBox" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.gridx = 3;
-		attributePanelConstraints.gridy = 5;
+		attributePanelConstraints.gridy = 7;
 		add(iterationBox, attributePanelConstraints);
 		//end Iteration
 
 		//Warning labels
-		attributePanelConstraints.anchor = GridBagConstraints.CENTER;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		attributePanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
-		attributePanelConstraints.gridwidth = 2; //This tells the layout that this component will be 2 cells wide
-		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
+		attributePanelConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+		attributePanelConstraints.insets = new Insets(0,5,0,0);
+		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
+		attributePanelConstraints.gridwidth = 3; //This tells the layout that this component will be 2 cells wide
+		attributePanelConstraints.gridy = 1;//set the y coord of the cell of the layout we are describing
 		add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
-		attributePanelConstraints.gridx = 2; //set the x coord of the cell of the layout we are describing
-		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
+		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
+		attributePanelConstraints.gridy = 3;//set the y coord of the cell of the layout we are describing
 		add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//end warning labels
 
@@ -914,7 +914,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		if (txtDescription.getText().length()>0){
 			saveButton.setEnabled(true);
 		}
-		
+
 	}
 	if (txtDescription.getText().length()<1){
 		warningLabel2.setText("Description cannot be blank");
@@ -922,11 +922,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	else{
 		warningLabel2.setText(" ");
 		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-		saveButton.setEnabled(true);}
+			saveButton.setEnabled(true);}
 	}
 	}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -948,70 +947,74 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			return;
 		}
 		this.fieldsChanged = false;
-		
+
 		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
-			System.out.println("name changed");
-			txtName.setBackground(Color.YELLOW);
+			txtName.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(txtName, txtName.isEnabled());
 		}
 		if (!this.txtDescription.getText().equals(this.currentRequirement.getDescription())) {
-			this.txtDescription.setBackground(Color.YELLOW);
+			this.txtDescription.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtDescription, this.txtDescription.isEnabled());
 		}
 		if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
-			this.txtReleaseNumber.setBackground(Color.YELLOW);
+			this.txtReleaseNumber.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtReleaseNumber, this.txtReleaseNumber.isEnabled());
 		}
 		if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
-			this.txtEstimate.setBackground(Color.YELLOW);
+			this.txtEstimate.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtEstimate, this.txtEstimate.isEnabled());
 		}
 		if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
-			this.txtActualEffort.setBackground(Color.YELLOW);
+			this.txtActualEffort.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtActualEffort, this.txtActualEffort.isEnabled());
 		}
 		if (!(this.typeBox.getSelectedItem().toString().equals(this.currentRequirement.getType().toString())) &&
 				!(this.typeBox.getSelectedItem().toString().equals("")						// Hack
-				&& this.currentRequirement.getType() == RequirementType.NoType)) {			// Hack
-			this.typeBox.setBackground(Color.YELLOW);
+						&& this.currentRequirement.getType() == RequirementType.NoType)) {			// Hack
+			this.typeBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.typeBox, this.typeBox.isEnabled());
 		}
 		if (!(this.statusBox.getSelectedItem().toString().equals(this.currentRequirement.getStatus().toString()))) {
-			this.statusBox.setBackground(Color.YELLOW);
+			this.statusBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.statusBox, this.statusBox.isEnabled());
 		}
 		if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString()) &&
 				!(this.priorityBox.getSelectedItem().toString().equals("")						// Hack
-				&& this.currentRequirement.getPriority() == RequirementPriority.NoPriority)) {	// Hack
-			this.priorityBox.setBackground(Color.YELLOW);
+						&& this.currentRequirement.getPriority() == RequirementPriority.NoPriority)) {	// Hack
+			this.priorityBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.priorityBox, this.priorityBox.isEnabled());
 		}
 		if (!this.iterationBox.getSelectedItem().toString().equals(getIterationNameById(this.currentRequirement.getAssignedIteration()))) {
-			this.iterationBox.setBackground(Color.YELLOW);
+			this.iterationBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
-		} else {
 			toggleEnabled(this.iterationBox, this.iterationBox.isEnabled());
 		}
 	}
-	
+
 	public String getIterationNameById(int id)
 	{
+		Iteration[] allIterations = this.parent.getAllIterations();
+		for (int i = 0; i < allIterations.length; i++) {
+			if (allIterations[i].getID() == id) {
+				return allIterations[i].getName();
+			}
+		}
 		return "";
 	}
 }

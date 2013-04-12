@@ -51,7 +51,6 @@ public class SaveRequirementController
 
 	public void save() 
 	{
-		view.getParent().setSaveButtonEnable(false);
 		// check if any inputs are invalid, print an error message if one is
 		String error = "";
 		if (view.getRequirementName().getText().length() == 0) {
@@ -75,6 +74,7 @@ public class SaveRequirementController
 			return;
 		}
 
+		view.getParent().setSaveButtonEnable(false);
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
 			// make a PUT http request and let the observer get the response
@@ -249,7 +249,6 @@ public class SaveRequirementController
 		else {
 			System.err.print("Undected error saving requirement\n");
 		}
-		view.getParent().setSaveButtonEnable(true);
 	}
 
 	public RequirementTab getView() {
