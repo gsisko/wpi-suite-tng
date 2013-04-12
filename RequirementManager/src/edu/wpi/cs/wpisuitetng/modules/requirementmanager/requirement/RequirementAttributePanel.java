@@ -166,6 +166,8 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 		warningLabel2 = new JLabel("Description cannot have more than 100 characters");
 		warningLabel = new JLabel("Text cannot have more than 100 characters");
+		warningLabel.setForeground(Color.red);
+		warningLabel2.setForeground(Color.red);
 		warningLabel.setEnabled(false);
 		warningLabel2.setEnabled(false);
 		
