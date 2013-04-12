@@ -506,6 +506,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	 *  selection combo box. Also sets the selected index appropriately.
 	 */
 	public void fillIterationSelectionBox() {
+		// Iterations cannot be assigned when there is no estimate saved
+		if (currentRequirement.getEstimate() <= 0){
+			iterationBox.setModel(new DefaultComboBoxModel (new String[]{""}));
+			return; // we don't want any iterations to be displayed
+		}
+		
+		
 		Iteration[] allIterations = this.getAllIterations();
 
 		String[] names = new String[allIterations.length];
@@ -682,7 +689,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	public void updateStatusSettings(String setStatus){
 		String[] statusStrings = null;
 		DefaultComboBoxModel  compbox;
-		currentRequirement.setStatus(RequirementStatus.toStatus(setStatus));
+	//	currentRequirement.setStatus(RequirementStatus.toStatus(setStatus));
 		switch (RequirementStatus.toStatus(setStatus)){
 		case Open:
 			statusStrings = new String[] {  "Open", "Deleted" };
