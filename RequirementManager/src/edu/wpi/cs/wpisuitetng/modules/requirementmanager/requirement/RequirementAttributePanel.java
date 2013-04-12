@@ -28,10 +28,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -55,7 +55,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
-public class RequirementAttributePanel extends JPanel implements ActionListener, FocusListener {
+public class RequirementAttributePanel extends JPanel {
 
 	//The labels
 	private  JLabel nameLabel; //The label for the name text field ("txtName")
@@ -84,7 +84,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
-	private boolean fieldsChanged;	// Have any fields been changed?
+	private boolean[] fieldsChanged;	// Have any fields been changed?
 	private JButton saveButton;
 
 	//The layout manager
@@ -104,7 +104,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = false;
+		fieldsChanged = new boolean[20];
+		for (int i = 0; i < fieldsChanged.length; i++) {
+			fieldsChanged[i] = false;
+		}
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -175,15 +178,152 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		iterationBox = new JComboBox(iterationStrings);
 
 		// Add action listeners to the various fields
-		txtName.addFocusListener(this);
-		txtDescription.addFocusListener(this);
-		txtReleaseNumber.addFocusListener(this);
-		txtEstimate.addFocusListener(this);
-		txtActualEffort.addFocusListener(this);
-		typeBox.addFocusListener(this);
-		statusBox.addFocusListener(this);
-		priorityBox.addFocusListener(this);
-		iterationBox.addFocusListener(this);
+		txtName.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtName.getText().equals(currentRequirement.getName())) {
+					changeField(txtName, 0, true);
+				} else {
+					changeField(txtName, 0, false);
+				}
+			}
+		});
+		txtDescription.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtDescription.getText().equals(currentRequirement.getDescription())) {
+					changeField(txtDescription, 1, true);
+				} else {
+					changeField(txtDescription, 1, false);
+				}
+			}
+		});
+		txtReleaseNumber.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtReleaseNumber.getText().equals(currentRequirement.getReleaseNumber() + "")) {
+					changeField(txtReleaseNumber, 2, true);
+				} else {
+					changeField(txtReleaseNumber, 2, false);
+				}
+			}
+		});
+		txtEstimate.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtEstimate.getText().equals(currentRequirement.getEstimate() + "")) {
+					changeField(txtEstimate, 3, true);
+				} else {
+					changeField(txtEstimate, 3, false);
+				}
+			}
+		});
+		txtActualEffort.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtActualEffort.getText().equals(currentRequirement.getActualEffort() + "")) {
+					changeField(txtActualEffort, 4, true);
+				} else {
+					changeField(txtActualEffort, 4, false);
+				}
+			}
+		});
+		typeBox.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
+						!(typeBox.getSelectedItem().toString().equals("")						// Hack
+								&& currentRequirement.getType() == RequirementType.NoType)) {
+					changeField(typeBox, 5, true);
+				} else {
+					changeField(typeBox, 5, false);
+				}
+			}
+		});
+		statusBox.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
+					changeField(statusBox, 6, true);
+				} else {
+					changeField(statusBox, 6, false);
+				}
+			}
+		});
+		priorityBox.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
+						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
+								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
+					changeField(priorityBox, 7, true);
+				} else {
+					changeField(priorityBox, 7, false);
+				}
+			}
+		});
+		iterationBox.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getAssignedIteration()))) {
+					changeField(iterationBox, 8, true);
+				} else {
+					changeField(iterationBox, 8, false);
+				}
+			}
+		});
 		iterationBox.addItemListener(new IterationChangeListener(this));
 
 		//Set the color for the warning labels
@@ -784,14 +924,20 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	 * @return the fieldsChanged
 	 */
 	public boolean isFieldsChanged() {
-		return fieldsChanged;
+		for (int i = 0; i < this.fieldsChanged.length; i++){
+			if (fieldsChanged[i])
+				return true;
+		}
+		return false;
 	}
 
 	/**
 	 * @param fieldsChanged the fieldsChanged to set
 	 */
 	public void setFieldsChanged(boolean fieldsChanged) {
-		this.fieldsChanged = fieldsChanged;
+		for (int i = 0; i < this.fieldsChanged.length; ++i) {
+			this.fieldsChanged[i] = fieldsChanged;
+		}
 	}
 
 	public JButton getSaveButton() {
@@ -926,86 +1072,13 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	private void setAllFieldsChanged(boolean b) {
+		for (int i = 0; i < fieldsChanged.length; i++) {
+			fieldsChanged[i] = b;
+		}
 
 	}
 
-
-	@Override
-	public void focusGained(FocusEvent e) {
-		// Do nothing
-	}
-
-
-	@Override
-	public void focusLost(FocusEvent e) {
-		// Check if any fields have changed
-		if (this.mode == Mode.CREATE) {	// Slightly hacky but easier/simpler than doing a set of checks on each field
-			this.fieldsChanged = true;
-			return;
-		}
-		this.fieldsChanged = false;
-
-		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
-			txtName.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(txtName, txtName.isEnabled());
-		}
-		if (!this.txtDescription.getText().equals(this.currentRequirement.getDescription())) {
-			this.txtDescription.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.txtDescription, this.txtDescription.isEnabled());
-		}
-		if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
-			this.txtReleaseNumber.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.txtReleaseNumber, this.txtReleaseNumber.isEnabled());
-		}
-		if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
-			this.txtEstimate.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.txtEstimate, this.txtEstimate.isEnabled());
-		}
-		if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
-			this.txtActualEffort.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.txtActualEffort, this.txtActualEffort.isEnabled());
-		}
-		if (!(this.typeBox.getSelectedItem().toString().equals(this.currentRequirement.getType().toString())) &&
-				!(this.typeBox.getSelectedItem().toString().equals("")						// Hack
-						&& this.currentRequirement.getType() == RequirementType.NoType)) {			// Hack
-			this.typeBox.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.typeBox, this.typeBox.isEnabled());
-		}
-		if (!(this.statusBox.getSelectedItem().toString().equals(this.currentRequirement.getStatus().toString()))) {
-			this.statusBox.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.statusBox, this.statusBox.isEnabled());
-		}
-		if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString()) &&
-				!(this.priorityBox.getSelectedItem().toString().equals("")						// Hack
-						&& this.currentRequirement.getPriority() == RequirementPriority.NoPriority)) {	// Hack
-			this.priorityBox.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-		} else {
-			toggleEnabled(this.priorityBox, this.priorityBox.isEnabled());
-		}
-		if (!this.iterationBox.getSelectedItem().toString().equals(getIterationNameById(this.currentRequirement.getAssignedIteration()))) {
-			this.iterationBox.setBackground(new Color(248,253,188));
-			this.fieldsChanged = true;
-			toggleEnabled(this.iterationBox, this.iterationBox.isEnabled());
-		}
-	}
 
 	public String getIterationNameById(int id)
 	{
@@ -1016,5 +1089,16 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			}
 		}
 		return "";
+	}
+
+
+	private void changeField(JComponent obj, int i, boolean toSet) {
+		if (toSet) {
+			obj.setBackground(new Color(248,253,188));
+			fieldsChanged[i] = true;
+		} else {
+			toggleEnabled(obj, obj.isEnabled());
+			fieldsChanged[i] = false;
+		}
 	}
 }
