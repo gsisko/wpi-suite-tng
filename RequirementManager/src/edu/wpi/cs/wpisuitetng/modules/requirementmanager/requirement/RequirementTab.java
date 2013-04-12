@@ -125,9 +125,9 @@ public class RequirementTab extends JPanel {
 		attributePanel = new RequirementAttributePanel(this,requirement, mode);//Construct the innerPanel
 		
 		leftPanel = new JScrollPane(attributePanel);
-		leftPanel.setMinimumSize(new Dimension (600, 500));
+		leftPanel.setMinimumSize(new Dimension (605, 500));
 		rightPanel = new JPanel();
-		rightPanel.setMinimumSize(new Dimension(250, 500));
+		rightPanel.setMinimumSize(new Dimension(370, 500));
 
 		this.splitPane.setOneTouchExpandable(false);
 		this.splitPane.setDividerLocation(650);
