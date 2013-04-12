@@ -50,6 +50,7 @@ public class PieChartPanel extends JPanel {
 	private PieDataset dataset;
 	private ChartPanel chartPanel;
 	private JFreeChart chart;
+	private boolean isFiltered;
 
 	/** Default constructor for PieChartPanel*/
 	public PieChartPanel() {
@@ -76,6 +77,9 @@ public class PieChartPanel extends JPanel {
 		
 		//Add the chart to our layout
 		add(chartPanel, BorderLayout.CENTER);
+		
+		//Are we using filtered data?
+		this.isFiltered = true;
 	}
 	
 	/** Creates the sample dataset */
@@ -117,7 +121,11 @@ public class PieChartPanel extends JPanel {
 		}
 		
 		this.dataset = data;
-		this.chart = createChart(dataset, "Status of Displayed Requirements");
+		if (isFiltered){
+			this.chart = createChart(dataset, "Status of Displayed Requirements");
+		} else {
+			this.chart = createChart(dataset, "Status of All Requirements");
+		}
 		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
 		this.chart.getPlot().setOutlineVisible(false);
 		this.chartPanel.setChart(this.chart);
@@ -141,11 +149,18 @@ public class PieChartPanel extends JPanel {
 		}
 		
 		this.dataset = data;
-		this.chart = createChart(dataset, "Iterations of Displayed Requirements");
+		if (isFiltered){
+			this.chart = createChart(dataset, "Iterations of Displayed Requirements");
+		} else {
+			this.chart = createChart(dataset, "Iterations of All Requirements");
+		}
 		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
 		this.chart.getPlot().setOutlineVisible(false);
 		this.chartPanel.setChart(this.chart);
 	}
 
+	public void enableFilter(boolean isFiltered){
+		this.isFiltered = isFiltered;
+	}
 
 }

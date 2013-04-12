@@ -187,8 +187,10 @@ public class Filter extends AbstractModel {
 			case Name:
 				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
 			case Description:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);
-
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);		
+			case ReleaseNumber:
+				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getReleaseNumber().toLowerCase(), false);
+				
 				// The following five are Integers
 			case Id: 
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
@@ -197,14 +199,7 @@ public class Filter extends AbstractModel {
 			case ActualEffort:
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
 			case Estimate:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());		
-			case ReleaseNumber:
-
-				if (this.value.equals("none")){
-					return OperatorType.perform(this.comparator, -1, req.getReleaseNumber());				
-				}				
-
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getReleaseNumber());
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());	
 
 				// The following three are different enums
 			case Status:

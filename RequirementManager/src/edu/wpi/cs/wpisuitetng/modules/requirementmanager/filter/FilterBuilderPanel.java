@@ -247,9 +247,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		String[] valueStrings = null;
 
 		// Limit the options for comparators by the FilterType
-		if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
+		if(selected=="Id" ||selected=="Estimate" ||selected=="ActualEffort" )
 			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
-		else if(selected=="Name" ||selected=="Description" )
+		else if(selected=="Name" ||selected=="Description" ||selected=="ReleaseNumber")
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
 
 		// This section is for enumerators, which need specific operators and values
@@ -281,7 +281,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		if(selected=="Type" ||selected=="Status"  ||selected=="Priority" || selected == "Iteration")
 			valueBox.setVisible(true);
-		else if(selected=="Name" ||selected=="Description")
+		else if(selected=="Name" ||selected=="Description"||selected =="ReleaseNumber")
 			txtValue.setVisible(true);
 		else // id, estimate, actual value, or release number
 			numValue.setVisible(true);
@@ -564,7 +564,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		// The selected type determines how the filter value should be obtained
 		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
 			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
-		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description"))
+		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description") || type == FilterType.toType("ReleaseNumber"))
 			newFilter.setValue(this.getFilterValue().getText());
 		else if (type == FilterType.toType("Iteration")) {
 			String chosen = this.getFilterValueBox().getSelectedItem().toString();

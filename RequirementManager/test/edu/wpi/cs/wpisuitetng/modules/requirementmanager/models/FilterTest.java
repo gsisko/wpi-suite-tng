@@ -59,7 +59,7 @@ public class FilterTest {
 	typeOther = new Filter(FilterType.Other, OperatorType.EqualTo, "something", true);
 	
 	// Setup a basic test requirement
-	testRequirement = new Requirement("A Requirement", "Some description", RequirementType.NoType, RequirementPriority.Medium, 3, 5);
+	testRequirement = new Requirement("A Requirement", "Some description", RequirementType.NoType, RequirementPriority.Medium, "3", 5);
 	testRequirement.setId(-1);
 	testRequirement.setActualEffort(10);
 	testRequirement.setEstimate(7);

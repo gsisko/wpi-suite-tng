@@ -175,12 +175,7 @@ public class RetrieveAllRequirementsController {
 				} else {
 					entries[i][6] = isFiltered.get(i).getPriority().toString();
 				}
-				// Process invalid release number case
-				if (isFiltered.get(i).getReleaseNumber() == -1) {
-					entries[i][7] = "none";
-				} else {
-					entries[i][7] = String.valueOf(isFiltered.get(i).getReleaseNumber());
-				}
+				entries[i][7] = isFiltered.get(i).getReleaseNumber();
 				entries[i][8] = String.valueOf(isFiltered.get(i).getEstimate());
 				entries[i][9] = String.valueOf(isFiltered.get(i).getActualEffort());
 			}

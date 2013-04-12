@@ -113,7 +113,7 @@ public class SaveRequirementController
 			updatedRequirement.setName(view.getRequirementName().getText());
 			updatedRequirement.setDescription(view.getRequirementDescription().getText());
 			updatedRequirement.setType(RequirementType.toType(view.getRequirementType().getSelectedItem().toString()));
-			updatedRequirement.setReleaseNumber(Integer.parseInt((view.getRequirementReleaseNumber().getText().equals("")) ? "-1" : view.getRequirementReleaseNumber().getText()));
+			updatedRequirement.setReleaseNumber(view.getRequirementReleaseNumber().getText());
 			updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
 			updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
