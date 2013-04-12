@@ -51,6 +51,7 @@ public class SaveRequirementController
 
 	public void save() 
 	{
+		view.getParent().setSaveButtonEnable(false);
 		// check if any inputs are invalid, print an error message if one is
 		String error = "";
 		if (view.getRequirementName().getText().length() == 0) {
@@ -148,6 +149,10 @@ public class SaveRequirementController
 						oldIteration = i;
 					}
 				}
+				
+				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
+				//Update totalEstimate
+				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 
 				//Remove id from the list
 				ArrayList<Integer> requirementList = oldIteration.getRequirementsContained();
@@ -156,8 +161,7 @@ public class SaveRequirementController
 				}
 				oldIteration.setRequirementsContained(requirementList);
 
-				//Update totalEstimate
-				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
+				
 
 				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
 				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
@@ -245,6 +249,7 @@ public class SaveRequirementController
 		else {
 			System.err.print("Undected error saving requirement\n");
 		}
+		view.getParent().setSaveButtonEnable(true);
 	}
 
 	public RequirementTab getView() {
@@ -254,7 +259,6 @@ public class SaveRequirementController
 	 * Saves a new note to the Requirement
 	 */
 	public void saveNote() {
-
 		// check if any inputs are invalid, print an error message if one is
 		if (view.getTabPanel().getNotePanel().getNoteMessage().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Note must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
