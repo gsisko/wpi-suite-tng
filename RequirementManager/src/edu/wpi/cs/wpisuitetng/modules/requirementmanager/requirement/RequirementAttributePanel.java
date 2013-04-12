@@ -376,10 +376,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	public void fillIterationSelectionBox() {
 		// Iterations cannot be assigned when there is no estimate saved
 		if (currentRequirement.getEstimate() <= 0){
-			iterationBox.setModel(new DefaultComboBoxModel (new String[]{""}));
-			return; // we don't want any iterations to be displayed
+			iterationBox.setEnabled(false);
+		} else {
+			iterationBox.setEnabled(true);
 		}
-		
 		
 		Iteration[] allIterations = this.getAllIterations();
 
@@ -566,7 +566,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		case InProgress:
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
 			toggleEnabled(txtEstimate, false);
-			statusStrings = new String[] { "InProgress", "Deleted", "Complete" };
+			statusStrings = new String[] { "InProgress",  "Complete" };
 			break;
 			
 		case Deleted:
