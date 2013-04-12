@@ -44,6 +44,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
+/**
+ * Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
+ */
 @SuppressWarnings("serial")
 public class PieChartPanel extends JPanel {
 

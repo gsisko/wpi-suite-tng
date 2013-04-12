@@ -43,7 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarControll
 
 
 /**
- * A dummy module to demonstrate the Janeway client
+ * The Requirement Manager module added to the Janeway client.
  *
  */
 public class JanewayModule implements IJanewayModule {
