@@ -27,6 +27,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -104,7 +105,6 @@ public class SaveRequirementController
 				updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 			}
 				
-				
  
 
 			// give the new requirement the correct ID number
@@ -120,16 +120,28 @@ public class SaveRequirementController
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 
+			Iteration newIter = null;
 			// Setting the Iteration			
 			String selectedIteration = view.getIterationBox().getSelectedItem().toString();
 			for (Iteration iter: view.getAllIterations()){
 				// If it is the right Iteration, save it into the updated requirement
 				if (selectedIteration.equals(iter.getName())){
 					updatedRequirement.setAssignedIteration(iter.getID());
+					newIter = iter;
 				}
 			}
 
-			// Hello
+
+			
+			int oldIterID = oldRequirement.getAssignedIteration(); //grab the old status
+			int newIterID = updatedRequirement.getAssignedIteration();
+			if (newIterID != oldIterID) {
+				if (newIter.getEndDate().before(new Date()) && newIterID != 0) {
+					JOptionPane.showMessageDialog(null, "Cannot assign a requirement to an iteration that has already ended.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
+					return;//cancel the update
+				}
+					
+			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
 			if (newStatus == RequirementStatus.Deleted) {
