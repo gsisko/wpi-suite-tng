@@ -797,48 +797,6 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		this.fieldsChanged = fieldsChanged;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void focusGained(FocusEvent e) {
-		// Do nothing
-	}
-
-
-	@Override
-	public void focusLost(FocusEvent e) {
-		// Check if any fields have changed
-		if (this.mode == Mode.CREATE) {	// Slightly hacky but easier/simpler than doing a set of checks on each field
-			this.fieldsChanged = true;
-			return;
-		}
-		this.fieldsChanged = false;
-		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
-			this.fieldsChanged = true;
-		} if (!this.txtDescription.getText().equals(this.currentRequirement.getName())) {
-			this.fieldsChanged = true;
-		} if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
-			this.fieldsChanged = true;
-		} if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
-			this.fieldsChanged = true;
-		} if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
-			this.fieldsChanged = true;
-		} if (!this.typeBox.getSelectedItem().equals(this.currentRequirement.getType().toString())) {
-			this.fieldsChanged = true;
-		} if (!this.statusBox.getSelectedItem().equals(this.currentRequirement.getStatus().toString())) {
-			this.fieldsChanged = true;
-		} if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString())) {
-			this.fieldsChanged = true;
-		} if (!this.iterationBox.getSelectedItem().equals(this.currentRequirement.getAssignedIteration() + "")) {
-			this.fieldsChanged = true;
-		}
-	}
-
 
 	public JButton getSaveButton() {
 		return saveButton;
@@ -1041,5 +999,94 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		saveButton.setEnabled(true);}
 	}
 
+	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// Do nothing
+	}
+
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// Check if any fields have changed
+		if (this.mode == Mode.CREATE) {	// Slightly hacky but easier/simpler than doing a set of checks on each field
+			this.fieldsChanged = true;
+			return;
+		}
+		this.fieldsChanged = false;
+		
+		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
+			System.out.println("name changed");
+			txtName.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(txtName, txtName.isEnabled());
+		}
+		if (!this.txtDescription.getText().equals(this.currentRequirement.getDescription())) {
+			this.txtDescription.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.txtDescription, this.txtDescription.isEnabled());
+		}
+		if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
+			this.txtReleaseNumber.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.txtReleaseNumber, this.txtReleaseNumber.isEnabled());
+		}
+		if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
+			this.txtEstimate.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.txtEstimate, this.txtEstimate.isEnabled());
+		}
+		if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
+			this.txtActualEffort.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.txtActualEffort, this.txtActualEffort.isEnabled());
+		}
+		if (!(this.typeBox.getSelectedItem().toString().equals(this.currentRequirement.getType().toString())) &&
+				!(this.typeBox.getSelectedItem().toString().equals("")						// Hack
+				&& this.currentRequirement.getType() == RequirementType.NoType)) {			// Hack
+			this.typeBox.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.typeBox, this.typeBox.isEnabled());
+		}
+		if (!(this.statusBox.getSelectedItem().toString().equals(this.currentRequirement.getStatus().toString()))) {
+			this.statusBox.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.statusBox, this.statusBox.isEnabled());
+		}
+		if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString()) &&
+				!(this.priorityBox.getSelectedItem().toString().equals("")						// Hack
+				&& this.currentRequirement.getPriority() == RequirementPriority.NoPriority)) {	// Hack
+			this.priorityBox.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.priorityBox, this.priorityBox.isEnabled());
+		}
+		if (!this.iterationBox.getSelectedItem().toString().equals(getIterationNameById(this.currentRequirement.getAssignedIteration()))) {
+			this.iterationBox.setBackground(Color.YELLOW);
+			this.fieldsChanged = true;
+		} else {
+			toggleEnabled(this.iterationBox, this.iterationBox.isEnabled());
+		}
+	}
+	
+	public String getIterationNameById(int id)
+	{
+		return "";
 	}
 }
