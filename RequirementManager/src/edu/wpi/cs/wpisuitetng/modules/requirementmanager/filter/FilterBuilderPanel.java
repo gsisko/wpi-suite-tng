@@ -247,9 +247,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		String[] valueStrings = null;
 
 		// Limit the options for comparators by the FilterType
-		if(selected=="Id" ||selected=="ReleaseNumber" ||selected=="Estimate" ||selected=="ActualEffort" )
+		if(selected=="Id" ||selected=="Estimate" ||selected=="ActualEffort" )
 			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
-		else if(selected=="Name" ||selected=="Description" )
+		else if(selected=="Name" ||selected=="Description" ||selected=="ReleaseNumber")
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
 
 		// This section is for enumerators, which need specific operators and values
