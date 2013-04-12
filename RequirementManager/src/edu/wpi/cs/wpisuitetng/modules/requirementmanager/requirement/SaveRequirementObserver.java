@@ -68,7 +68,7 @@ public class SaveRequirementObserver implements RequestObserver {
 				public void run() {
 					NoteListModel noteListModel = view.getRequirementPanel().getTabPanel().getNotePanel().getNoteListModel();
 					if (noteListModel.getSize() < requirement.getNotes().size()) {
-						noteListModel.addMessage(requirement.getNotes().get(requirement.getNotes().size() - 1));
+						view.getRequirementPanel().getTabPanel().getNotePanel().addNoteToList(requirement.getNotes().get(requirement.getNotes().size() - 1));
 						view.getRequirementPanel().getRequirementNote().setText("");
 						view.getRequirementPanel().getCurrentRequirement().setNotes(requirement.getNotes());
 					}
