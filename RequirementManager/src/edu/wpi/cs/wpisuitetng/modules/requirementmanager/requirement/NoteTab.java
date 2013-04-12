@@ -24,6 +24,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -113,6 +115,22 @@ public class NoteTab extends JPanel {
 
 		// Put txtMessage in a scroll pane
 		scrollMessage = new JScrollPane(txtMessage);
+		
+		// Add key listener to txtMessage
+		txtMessage.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtMessage.getText().equals("")) {
+					parent.getAttributePanel().changeField(txtMessage, 9, true);
+				} else {
+					parent.getAttributePanel().changeField(txtMessage, 9, false);
+				}
+			}
+		});
 
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));

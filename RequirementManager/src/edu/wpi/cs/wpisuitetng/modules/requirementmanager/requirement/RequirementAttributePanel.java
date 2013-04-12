@@ -107,7 +107,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[9];
+		fieldsChanged = new boolean[10];
 		for (int i = 0; i < fieldsChanged.length; i++) {
 			fieldsChanged[i] = false;
 		}
@@ -1084,7 +1084,7 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 
-	private void changeField(JComponent obj, int i, boolean toSet) {
+	public void changeField(JComponent obj, int i, boolean toSet) {
 		if (toSet) {
 			obj.setBackground(new Color(248,253,188));
 			fieldsChanged[i] = true;
