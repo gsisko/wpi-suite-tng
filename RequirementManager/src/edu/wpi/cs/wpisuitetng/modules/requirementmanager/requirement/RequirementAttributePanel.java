@@ -189,7 +189,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		//Set the color for the warning labels
 		warningLabel.setForeground(Color.red);
 		warningLabel2.setForeground(Color.red);
-		
+
 		//Set the sizes for the warning labels
 		warningLabel.setPreferredSize(new Dimension(410, 20));
 		warningLabel2.setPreferredSize(new Dimension(270, 20));
@@ -914,7 +914,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		if (txtDescription.getText().length()>0){
 			saveButton.setEnabled(true);
 		}
-		
+
 	}
 	if (txtDescription.getText().length()<1){
 		warningLabel2.setText("Description cannot be blank");
@@ -922,10 +922,10 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 	else{
 		warningLabel2.setText(" ");
 		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-		saveButton.setEnabled(true);}
+			saveButton.setEnabled(true);}
 	}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -947,67 +947,66 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 			return;
 		}
 		this.fieldsChanged = false;
-		
+
 		if (!this.txtName.getText().equals(this.currentRequirement.getName())) {
-			txtName.setBackground(Color.YELLOW);
+			txtName.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(txtName, txtName.isEnabled());
 		}
 		if (!this.txtDescription.getText().equals(this.currentRequirement.getDescription())) {
-			this.txtDescription.setBackground(Color.YELLOW);
+			this.txtDescription.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtDescription, this.txtDescription.isEnabled());
 		}
 		if (!this.txtReleaseNumber.getText().equals(this.currentRequirement.getReleaseNumber() + "")) {
-			this.txtReleaseNumber.setBackground(Color.YELLOW);
+			this.txtReleaseNumber.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtReleaseNumber, this.txtReleaseNumber.isEnabled());
 		}
 		if (!this.txtEstimate.getText().equals(this.currentRequirement.getEstimate() + "")) {
-			this.txtEstimate.setBackground(Color.YELLOW);
+			this.txtEstimate.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtEstimate, this.txtEstimate.isEnabled());
 		}
 		if (!this.txtActualEffort.getText().equals(this.currentRequirement.getActualEffort() + "")) {
-			this.txtActualEffort.setBackground(Color.YELLOW);
+			this.txtActualEffort.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.txtActualEffort, this.txtActualEffort.isEnabled());
 		}
 		if (!(this.typeBox.getSelectedItem().toString().equals(this.currentRequirement.getType().toString())) &&
 				!(this.typeBox.getSelectedItem().toString().equals("")						// Hack
-				&& this.currentRequirement.getType() == RequirementType.NoType)) {			// Hack
-			this.typeBox.setBackground(Color.YELLOW);
+						&& this.currentRequirement.getType() == RequirementType.NoType)) {			// Hack
+			this.typeBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.typeBox, this.typeBox.isEnabled());
 		}
 		if (!(this.statusBox.getSelectedItem().toString().equals(this.currentRequirement.getStatus().toString()))) {
-			this.statusBox.setBackground(Color.YELLOW);
+			this.statusBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.statusBox, this.statusBox.isEnabled());
 		}
 		if (!this.priorityBox.getSelectedItem().equals(this.currentRequirement.getPriority().toString()) &&
 				!(this.priorityBox.getSelectedItem().toString().equals("")						// Hack
-				&& this.currentRequirement.getPriority() == RequirementPriority.NoPriority)) {	// Hack
-			this.priorityBox.setBackground(Color.YELLOW);
+						&& this.currentRequirement.getPriority() == RequirementPriority.NoPriority)) {	// Hack
+			this.priorityBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
 		} else {
 			toggleEnabled(this.priorityBox, this.priorityBox.isEnabled());
 		}
 		if (!this.iterationBox.getSelectedItem().toString().equals(getIterationNameById(this.currentRequirement.getAssignedIteration()))) {
-			this.iterationBox.setBackground(Color.YELLOW);
+			this.iterationBox.setBackground(new Color(248,253,188));
 			this.fieldsChanged = true;
-		} else {
 			toggleEnabled(this.iterationBox, this.iterationBox.isEnabled());
 		}
 	}
-	
+
 	public String getIterationNameById(int id)
 	{
 		Iteration[] allIterations = this.parent.getAllIterations();
