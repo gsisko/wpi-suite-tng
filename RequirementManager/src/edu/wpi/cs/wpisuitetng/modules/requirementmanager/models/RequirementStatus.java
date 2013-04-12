@@ -26,8 +26,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /**
  * Possible values for the status of a requirement.
- * @author Team 5
- * @version $Revision: 1.0 $
  */
 public enum RequirementStatus {
 	New,   // The initial status value of a requirement
@@ -36,7 +34,7 @@ public enum RequirementStatus {
 	Complete,  // A complete Requirement
 	Deleted;	// Any of these status's may lead to DELETED, but DELETED may move to any but NEW
 	// Need to ask Marty about this, but some of the project descriptions hint at this
-	
+
 
 	/** Converts a string to the proper RequirementStatus 
 	 * 
@@ -44,11 +42,34 @@ public enum RequirementStatus {
 	 * only the enums listed as RequirementStatus's
 	 * 
 	 * @param toConvert The string you want to convert
-	
+
 	 * @return  The proper RequirementStatus */
-    public static RequirementStatus toStatus(String toConvert){     
-       return valueOf(toConvert);
- 
-    }
-    
+	public static RequirementStatus toStatus(String toConvert){     
+		return valueOf(toConvert);
+	}
+
+	/** Takes the current status of a requirement and outputs an array of 
+	 *  strings the represent the possible statuses that the requirement
+	 *  can be switched to
+	 * 
+	 * @param currentStatus The current status of the requirement
+	 * @return The possible statuses that a requirement can be changed to.
+	 */
+	public String[] getAvailableStatuses(RequirementStatus currentStatus){
+		switch(currentStatus){
+		case New:
+			return new String[] { "New", "Deleted" };
+		case InProgress:
+			return new String[] { "InProgress", "Complete" };
+		case Open:
+			return new String[] { "Open", "Deleted" };
+		case Deleted:
+			return new String[] { "Deleted", "Open"};
+		case Complete:
+			return new String[] { "Complete", "Open", "Deleted" };
+		default:
+			System.err.println("An unknown status was entered for the Requirement. Problem!");
+			return null;
+		}
+	}
 }    
