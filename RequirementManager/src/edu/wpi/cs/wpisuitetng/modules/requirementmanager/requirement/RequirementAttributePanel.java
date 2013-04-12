@@ -532,7 +532,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
 		iterationBox.setModel(valb);
-		iterationBox.addItemListener(new IterationChangeListener(this));
+		//iterationBox.addItemListener(new IterationChangeListener(this));
 
 		//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
 		// First find the name of the iteration by ID
@@ -568,7 +568,10 @@ public class RequirementAttributePanel extends JPanel {
 		toggleEnabled(statusBox, enabled);
 		toggleEnabled(priorityBox, enabled);
 		toggleEnabled(txtReleaseNumber, enabled);
-		toggleEnabled(txtEstimate, enabled);
+		if (currentRequirement.getStatus() == RequirementStatus.InProgress)
+			toggleEnabled(txtEstimate, false);
+		else
+			toggleEnabled(txtEstimate, enabled);
 		toggleEnabled(txtActualEffort, enabled);
 		toggleEnabled(iterationBox, enabled);
 
@@ -702,7 +705,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		case InProgress:
 			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			toggleEnabled(txtEstimate, false);
+			//toggleEnabled(txtEstimate, false);
 			statusStrings = new String[] { "InProgress",  "Complete" };
 			break;
 
