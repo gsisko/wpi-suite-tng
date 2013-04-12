@@ -866,6 +866,7 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 					saveButton.setEnabled(false);
 				}
 				else{
+					
 					warningLabel.setEnabled(false);
 					warningLabel.setVisible(false);
 					if (txtDescription.getText().length()>0){
@@ -1013,6 +1014,15 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		saveButton.setEnabled(false);
 	}	
+	else 
+	{
+		warningLabel.setEnabled(false);
+		warningLabel.setVisible(false);
+		if (txtDescription.getText().length()>0){
+			saveButton.setEnabled(true);
+		}
+		
+	}
 	if (txtDescription.getText().length()<1){
 		
 		warningLabel2.setEnabled(true);
@@ -1024,7 +1034,12 @@ public class RequirementAttributePanel extends JPanel implements ActionListener,
 		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
 		add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		saveButton.setEnabled(false);}
-		
+	else{
+		warningLabel2.setEnabled(false);
+		warningLabel2.setVisible(false);
+		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
+		saveButton.setEnabled(true);}
+	}
 
 	}
 }
