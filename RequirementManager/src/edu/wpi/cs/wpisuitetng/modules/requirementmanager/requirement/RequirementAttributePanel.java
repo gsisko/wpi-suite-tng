@@ -88,6 +88,7 @@ public class RequirementAttributePanel extends JPanel {
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
 	private boolean[] fieldsChanged;	// Have any fields been changed?
 	private JButton saveButton;
+	private boolean keepDisabled;
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
@@ -110,6 +111,8 @@ public class RequirementAttributePanel extends JPanel {
 		for (int i = 0; i < fieldsChanged.length; i++) {
 			fieldsChanged[i] = false;
 		}
+		
+		keepDisabled = true;
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -927,11 +930,13 @@ public class RequirementAttributePanel extends JPanel {
 				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
 					warningLabel.setText("Name must be between 0 and 100 characters");
 					saveButton.setEnabled(false);
+					keepDisabled = true;
 				}
 				else{
 					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
 						saveButton.setEnabled(isFieldsChanged());
+						keepDisabled = false;
 					}
 				}
 
@@ -942,11 +947,13 @@ public class RequirementAttributePanel extends JPanel {
 				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
 					warningLabel.setText("Name must be between 0 and 100 characters");
 					saveButton.setEnabled(false);
+					keepDisabled = true;
 				}
 				else{
 					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
 						saveButton.setEnabled(isFieldsChanged());
+						keepDisabled = false;
 					}
 				}
 			}
@@ -956,11 +963,13 @@ public class RequirementAttributePanel extends JPanel {
 				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
 					warningLabel.setText("Name must be between 0 and 100 characters");
 					saveButton.setEnabled(false);
+					keepDisabled = true;
 				}
 				else{
 					warningLabel.setText(" ");
 					if (txtDescription.getText().length()>0){
 						saveButton.setEnabled(isFieldsChanged());
+						keepDisabled = false;
 					}
 				}
 
@@ -978,11 +987,13 @@ public class RequirementAttributePanel extends JPanel {
 				if (txtDescription.getText().length()<1){
 					warningLabel2.setText("Description cannot be blank");
 					saveButton.setEnabled(false);
+					keepDisabled = true;
 				}
 				else{
 					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 						saveButton.setEnabled(isFieldsChanged());
+						keepDisabled = false;
 					}
 				}
 
@@ -993,11 +1004,13 @@ public class RequirementAttributePanel extends JPanel {
 				if (txtDescription.getText().length()<1){
 					warningLabel2.setText("Description cannot be blank");
 					saveButton.setEnabled(false);
+					keepDisabled = true;
 				}
 				else{
 					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 						saveButton.setEnabled(isFieldsChanged());
+						keepDisabled = false;
 					}
 				}
 			}
@@ -1007,11 +1020,13 @@ public class RequirementAttributePanel extends JPanel {
 				if (txtDescription.getText().length()<1){
 					warningLabel2.setText("Description cannot be blank");
 					saveButton.setEnabled(false);
+					keepDisabled = true;
 				}
 				else{
 					warningLabel2.setText(" ");
 					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 						saveButton.setEnabled(isFieldsChanged());
+						keepDisabled = false;
 					}
 				}
 
@@ -1030,6 +1045,7 @@ public class RequirementAttributePanel extends JPanel {
 		warningLabel.setText(" ");
 		if (txtDescription.getText().length()>0){
 			saveButton.setEnabled(isFieldsChanged());
+			keepDisabled = false;
 		}
 
 	}
@@ -1040,6 +1056,7 @@ public class RequirementAttributePanel extends JPanel {
 		warningLabel2.setText(" ");
 		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 			saveButton.setEnabled(isFieldsChanged());
+			keepDisabled = false;
 		}
 	}
 }
@@ -1074,5 +1091,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 		if (saveButton != null)
 			saveButton.setEnabled(isFieldsChanged());
+		if (saveButton != null && keepDisabled)
+			saveButton.setEnabled(false);
 	}
 }
