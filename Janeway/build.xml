@@ -62,8 +62,17 @@
 			</batchtest>
 		</junit>
 	</target>
+	
+	<!--ADDED TO ENSURE LIBS ARE ADDED TO DIST!!!!!!!!-->
+	<target name="dist-libs">
+		<unzip dest="../Janeway/build" overwrite="true">
+			<fileset dir="../RequirementManager/lib/">
+				<include name="**/**/*.jar"/>
+			</fileset>
+		</unzip> 
+	</target>
 
-	<target name="dist" depends="compile">
+	<target name="dist" depends="compile, dist-libs">
 		<jar destfile="${dist}/janeway/janeway.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="edu.wpi.cs.wpisuitetng.janeway.Janeway"/>
