@@ -64,14 +64,13 @@ public class ChartOptionsPanel extends JPanel{
 
 	/**
 	 * Construct the panel and initialize necessary internal variables
-	 * @param pieChart A PieChartPanel that will have it's options set by this Panel
-	 * @param pieView The PieChartView that contains this panel
+	 * @param parentView The ChartView that contains this panel
 	 */
-	public ChartOptionsPanel(PieChartPanel pieChart, ChartView pieView){
+	public ChartOptionsPanel(ChartView parentView){
 		
-		this.pieChart = pieChart;//Set the pie chart
+//		this.pieChart = pieChart;//Set the pie chart
 		
-		this.parent = pieView; //Set the parent
+		this.parent = parentView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
 
@@ -225,17 +224,31 @@ public class ChartOptionsPanel extends JPanel{
 	}
 
 	/**
-	 * @return the chart
+	 * @return the PieChartPanel
 	 */
-	public PieChartPanel getChart() {
+	public PieChartPanel getPieChart() {
 		return pieChart;
 	}
 
 	/**
-	 * @param chart the chart to set
+	 * @param chart the PieChartPanel to set
 	 */
-	public void setChart(PieChartPanel chart) {
+	public void setPieChart(PieChartPanel chart) {
 		this.pieChart = chart;
+	}
+	
+	/**
+	 * @return the BarChartPanel
+	 */
+	public BarChartPanel getBarChart() {
+		return barChart;
+	}
+
+	/**
+	 * @param chart the BarChartPanel to set
+	 */
+	public void setBarChart(BarChartPanel chart) {
+		this.barChart = chart;
 	}
 	
 	/** Set the given box to enabled as well 

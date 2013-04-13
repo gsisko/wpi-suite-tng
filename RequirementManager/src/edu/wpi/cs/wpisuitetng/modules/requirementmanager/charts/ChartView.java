@@ -55,9 +55,18 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	
 	/** The panel containing the actual iteration pie chart */
 	private PieChartPanel iterationPiePanel;
+	
+	/** The panel containing the actual status bar chart */
+	private PieChartPanel statusBarPanel;
+	
+	/** The panel containing the actual iteration bar chart */
+	private PieChartPanel iterationBarPanel;
 
-	/** The panel containing the actual pie chart */
-	private PieChartPanel piePanel;
+//	/** The panel containing the actual pie chart */
+//	private PieChartPanel piePanel;
+//	
+//	/** The panel containing the actual bar chart */
+//	private BarChartPanel barPanel;
 
 	/** The panel containing various chart options on the left of the view */
 	private ChartOptionsPanel optionsPanel; 
@@ -90,19 +99,25 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			}
 		});
 
-		this.optionsPanel = new ChartOptionsPanel(piePanel, this);
-		optionsPanel.getChartTypeBox().setEnabled(false);
+		this.optionsPanel = new ChartOptionsPanel(this);
 		
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
 
-		//Add the panels to the layout
+		/** Add the panels to the layout */
+		//Pie Charts
 		this.add(iterationPiePanel, BorderLayout.CENTER);
 		iterationPiePanel.setVisible(false);
 		this.add(statusPiePanel, BorderLayout.CENTER);
-		statusPiePanel.setVisible(true);
+		statusPiePanel.setVisible(true); //This is the default panel, so it is visible at start
 		
-
+		//Bar Charts
+		this.add(iterationBarPanel, BorderLayout.CENTER);
+		iterationBarPanel.setVisible(false);
+		this.add(statusBarPanel, BorderLayout.CENTER);
+		statusBarPanel.setVisible(false);
+		
+		//Options
 		this.add(optionsPanel, BorderLayout.WEST);
 	}
 
@@ -118,8 +133,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		}else{
 			requirements = view.getParent().getDisplayedRequirements();
 		}
+		
+		//Pass the status of the filter to each chart
 		iterationPiePanel.enableFilter(isFiltered);
 		statusPiePanel.enableFilter(isFiltered);
+		iterationBarPanel.enableFilter(isFiltered);
+		statusBarPanel.enableFilter(isFiltered);
+		
 		Iteration[] iterations = view.getParent().getAllIterations();
 		
 		//if(chartType == "Requirement Status")
@@ -128,12 +148,9 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			iterationPiePanel.refreshIterationChart(requirements, iterations);
 	}
 
-	/** Returns the piePanel */
-	public PieChartPanel getPiePanel() {
-		return piePanel;
-	}
-	
-	/** Returns the piePanel */
+	/** Sets the type of data visible
+	 * @param dataType the type of data to make visible
+	 */
 	public void setDataTypeVisible(String dataType) {
 		if(dataType=="Requirement Status"){
 			this.remove(iterationPiePanel);
@@ -156,7 +173,9 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
         	isFiltered = false;
 	}
 
-	/** Returns the button group to place on the top of the toolbar */
+	/**
+	 * @return the button group to place on the top of the toolbar 
+	 */
 	@Override
 	public ToolbarGroupView getGroup() {
 		// TODO Auto-generated method stub
