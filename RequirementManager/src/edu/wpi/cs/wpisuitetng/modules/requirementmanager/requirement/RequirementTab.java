@@ -60,8 +60,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
  * 		-a JNumber text field for entering an estimate,
  * 		-a JNumber text field for entering an actual effort
  * 		-Associated labels for each component
- * -Layout managers for both the inner panel (a GridBagLayout) and this panel (a SpringLayout)
- * -A constraints variable to store the constraints for the inner GridBagLayout
+ * -Layout managers for both the attribute panel and this panel (a SpringLayout)
+ * -A constraints variable to store the constraints for the attribute panel SpringLayout
  * 
  * This class also contains getters and setters for many of the components and variables listed above
  *
@@ -88,14 +88,14 @@ public class RequirementTab extends JPanel {
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
 
-	//The inner panels
+	//The attribute and tab panels
 	private RequirementAttributePanel attributePanel;//A JPanel to hold all the components. This allows for alignment of the components as a group
 	private RequirementTabPanel tabPanel; //Notes, etc
 
 	//The layout manager
-	protected SpringLayout layout; //The layout for the RequirementPanel (this holds the innerPanel)
-	protected ScrollPaneLayout leftLayout; //The layout for the LeftPanel (inner left panel)
-	protected SpringLayout rightLayout; //The layout for the RightPanel (inner right panel)
+	protected SpringLayout layout; //The layout for the RequirementPanel (this holds the attributePanel)
+	protected ScrollPaneLayout leftLayout; //The layout for the LeftPanel (left attribute panel)
+	protected SpringLayout rightLayout; //The layout for the RightPanel (right tab panel)
 
 	/**
 	 * The constructor for RequirementPanel;
@@ -122,8 +122,9 @@ public class RequirementTab extends JPanel {
 		splitPane = new JSplitPane();
 		
 		tabPanel = new RequirementTabPanel(this);
-		attributePanel = new RequirementAttributePanel(this,requirement, mode);//Construct the innerPanel
+		attributePanel = new RequirementAttributePanel(this,requirement, mode);//Construct the attributePanel
 		
+		//Set the left and right panels with minimum sizes
 		leftPanel = new JScrollPane(attributePanel);
 		leftPanel.setMinimumSize(new Dimension (605, 500));
 		rightPanel = new JPanel();
@@ -133,13 +134,10 @@ public class RequirementTab extends JPanel {
 		this.splitPane.setDividerLocation(650);
 		this.splitPane.setContinuousLayout(true);
 
-		// Construct the layout manager and add constraints
+		// Construct the layout manager for the right
 		this.rightLayout = new SpringLayout();
 		rightPanel.setLayout(rightLayout);
-	/*	this.leftLayout = new ScrollPaneLayout();
-		leftPanel.setLayout(leftLayout);*/
-		
-		
+	
 
 		// Constrain the tabPanel
 		rightLayout.putConstraint(SpringLayout.NORTH, tabPanel, 0, SpringLayout.NORTH, rightPanel);
@@ -147,12 +145,6 @@ public class RequirementTab extends JPanel {
 		rightLayout.putConstraint(SpringLayout.EAST, tabPanel, 0, SpringLayout.EAST, rightPanel);
 		rightLayout.putConstraint(SpringLayout.SOUTH, tabPanel, 0, SpringLayout.SOUTH, rightPanel);
 
-		/*// Constrain the attributePanel
-		leftLayout.putConstraint(SpringLayout.NORTH, attributePanel, 0, SpringLayout.NORTH, leftPanel);
-		leftLayout.putConstraint(SpringLayout.WEST, attributePanel, 0, SpringLayout.WEST, leftPanel);
-		leftLayout.putConstraint(SpringLayout.EAST, attributePanel, 0, SpringLayout.EAST, leftPanel);
-		leftLayout.putConstraint(SpringLayout.SOUTH, attributePanel, 0, SpringLayout.SOUTH, leftPanel);
-*/
 		// Constrain the splitPane
 		layout.putConstraint(SpringLayout.NORTH, splitPane, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, splitPane, 0, SpringLayout.WEST, this);
@@ -170,8 +162,6 @@ public class RequirementTab extends JPanel {
 	 */
 	protected void addComponents(){
 
-		//leftPanel.add(attributePanel);//Add the attributePanel to this panel
-
 		rightPanel.add(tabPanel);//Add the tabPanel to this panel
 		if (mode == Mode.CREATE) {
 			//Enables the fields upon creation
@@ -188,6 +178,7 @@ public class RequirementTab extends JPanel {
 
 		}
 
+		// add the panels to the splitPane and add the splitPane to the page
 		splitPane.setLeftComponent(leftPanel);
 		splitPane.setRightComponent(rightPanel);
 		this.add(splitPane);
@@ -349,7 +340,7 @@ public class RequirementTab extends JPanel {
 	 * Gets a requirement from the current text fields
 	 * TODO error check
 	 * 
-	 * @return Requiremnt made from the text fields
+	 * @return Requirement made from the text fields
 	 */
 	public Requirement getRequirement()
 	{
