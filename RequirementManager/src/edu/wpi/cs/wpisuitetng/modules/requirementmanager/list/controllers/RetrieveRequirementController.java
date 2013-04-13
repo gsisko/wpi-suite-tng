@@ -31,7 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveRequirementRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ResultsPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -43,14 +43,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
-	protected ResultsPanel view;
+	protected RequirementListPanel view;
 
 	/**
 	 * Construct the controller
 	 * 
 	 * @param view the parent view 
 	 */
-	public RetrieveRequirementController(ResultsPanel view) {
+	public RetrieveRequirementController(RequirementListPanel view) {
 		this.view = view;
 	}
 

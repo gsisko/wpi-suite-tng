@@ -32,10 +32,11 @@ import javax.swing.Icon;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.PieChartView;
 
 /**
  * Controls the behavior of a given MainTabView.
@@ -44,13 +45,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class MainTabController {
 
-	private final MainTabView view;
+	private final MainTabPanel view;
 	private boolean initialized = false;
 
 	/**
 	 * @param view Create a controller that controls this MainTabView
 	 */
-	public MainTabController(final MainTabView view) {
+	public MainTabController(final MainTabPanel view) {
 		this.view = view;
 		this.view.addMouseListener(new MouseAdapter() {
 			@Override
@@ -65,9 +66,17 @@ public class MainTabController {
 				if (initialized)
 				{
 					Component tab = view.getComponentAt(view.getSelectedIndex());
-					if (tab instanceof ListRequirementsView) {
-						((ListRequirementsView)tab).getFilterController().refreshData();
-						((ListRequirementsView)tab).getIterationController().refreshData();
+					if (tab instanceof ListView) {
+						((ListView)tab).getFilterController().refreshData();
+						((ListView)tab).getIterationController().refreshData();
+					} 
+					
+					if (tab instanceof PieChartView) {
+						((PieChartView)tab).refreshData();
+					}
+					
+					if (tab instanceof RequirementView){
+						((RequirementView) tab).getRequirementPanel().getAttributePanel().fillIterationSelectionBox();
 					}
 				}
 				else initialized = true;
@@ -86,6 +95,11 @@ public class MainTabController {
 	 * @return				The created Tab
 	 */
 	public Tab addTab(String title, Icon icon, Component component, String tip) {
+		if(component instanceof PieChartView && view.indexOfTab("Charts") != -1) {
+			view.setSelectedIndex(view.indexOfTab("Charts"));
+			return null;
+		}
+		
 		view.addTab(title, icon, component, tip);
 		int index = view.getTabCount() - 1;
 		view.setSelectedIndex(index);
@@ -111,7 +125,7 @@ public class MainTabController {
 		}
 
 		Tab tab = addTab();
-		RequirementView view = new RequirementView(requirement, mode, tab);
+		RequirementView view = new RequirementView(requirement, mode, tab, this);
 		tab.setComponent(view);
 		view.requestFocus();
 		return tab;
@@ -174,7 +188,7 @@ public class MainTabController {
 	 * Changes the selected tab to the tab with the given index
 	 * @param tabIndex the index of the tab to select
 	 */
-	private void switchToTab(int tabIndex) {
+	public void switchToTab(int tabIndex) {
 		try {
 			view.setSelectedIndex(tabIndex);
 		}
@@ -195,5 +209,9 @@ public class MainTabController {
 				view.removeTabAt(clickedIndex);
 			}
 		}
+	}
+	
+	public MainTabPanel getView() {
+		return view;
 	}
 }

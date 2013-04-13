@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**This is the entity manager for the Iteration in the IterationManager module
@@ -48,10 +49,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 public class IterationManager implements EntityManager<Iteration> {
 	/** The database */
 	private Data db;
-	
+
 	/** This is for advanced logging and debugging of the server interactions */
 	private static final Logger logger = Logger.getLogger("Iteration manager logger");
-	
+
 	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. 
 	 * To make sure this happens, be sure to place add this entity 
@@ -63,11 +64,42 @@ public class IterationManager implements EntityManager<Iteration> {
 	 */	
 	public IterationManager(Data data) {
 		this.db = data;
-	
 	}
 
-	
+
+	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
+	 *  the current project. Makes one if necessary
+	 *  
+	 *  This is designed to be called by get all
+	 *  
+	 *  @param s The current session which contains the current project    
+	 */
+	public void instantiateBacklog(Session s){		
+		// Get the current project
+		Project currentProject = s.getProject();
 		
+		try{
+			Iteration[] iterations = getEntity( s, "0");
+			if (iterations.length == 1) 
+				return; // There is a backlog already
+			else
+				System.err.println("There is more than one backlog!");
+				return;
+		// Get entity throws an exception when it can't find things
+		} catch (WPISuiteException wse){
+			// Make the backlog
+			Iteration model = new Iteration("", null, null);
+			model.setID(0);
+			model.setProject(currentProject);
+			// Save the backlog in the database if possible, otherwise throw an exception
+			// We want the iteration to be associated with the project the user logged in to
+			if (!this.db.save(model,currentProject)) {
+				logger.log(Level.WARNING, "A backlog was not created properly.");
+			}
+		}	
+	}	
+
+
 	/** Takes an encoded Iteration(as a string) and converts it back to a 
 	 *  Iteration and saves it in the database
 	 *  
@@ -82,7 +114,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 */
 	public Iteration makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		
+
 		// Parse the iteration from JSON
 		final Iteration newIteration;
 		logger.log(Level.FINER, "Attempting new Iteration creation...");
@@ -92,25 +124,25 @@ public class IterationManager implements EntityManager<Iteration> {
 			logger.log(Level.WARNING, "Invalid Iteration entity creation string.");
 			throw new BadRequestException("The Iteration creation string had invalid formatting. Entity String: " + content);			
 		}
-		
+
 		// If the new iteration has an ID already, then it shouldn't be here
 		if (newIteration.getID() != -1){
 			throw new ConflictException("Cannot make a new entity that has an ID already.");
 		}
-				
+
 		// Assign a unique ID
 		assignUniqueID(newIteration);		
-		
+
 		// Saves the iteration in the database
 		this.save(s,newIteration); // An exception may be thrown here if we can't save it
-		
+
 		// Return the newly created iteration (this gets passed back to the client)
 		logger.log(Level.FINER, "Iteration creation success!");
 		return newIteration;
 	}
-		
-	
-	
+
+
+
 	/** Saves the given Iteration into the database if possible.
 	 * 
 	 *  @param s The current user session
@@ -125,25 +157,23 @@ public class IterationManager implements EntityManager<Iteration> {
 			throw new WPISuiteException("Unable to save Iteration.");
 		}
 
-//		model.setName(model.getName().replaceAll("\\s","_"));
-
 		logger.log(Level.FINE, "Iteration Saved :" + model);
 	}
-    
-    
-    /** Takes a Requirement and assigns a unique id if necessary
-     * 
-     * @param req The requirement that possibly needs a unique id
-    
-     * @throws WPISuiteException "Count failed"
-     */
-    public void assignUniqueID(Iteration iter) throws WPISuiteException{
-        if (iter.getID() == -1){// -1 is a flag that says a unique id is needed            
-        	iter.setID(Count() + 1); // Makes first Requirement have id = 1
-        }        
-    }
-	
-	
+
+
+	/** Takes an Iteration and assigns a unique id if necessary
+	 * 
+	 * @param iter The iteration that possibly needs a unique id
+
+	 * @throws WPISuiteException "Count failed"
+	 */
+	public void assignUniqueID(Iteration iter) throws WPISuiteException{
+		if (iter.getID() == -1){// -1 is a flag that says a unique id is needed            
+			iter.setID(Count() + 1); // Makes first Iteration for a have id = 1
+		}        
+	}
+
+
 	/** Returns the number of Iterations currently in the database. Disregards
 	 *  the current user session
 	 * 
@@ -157,41 +187,44 @@ public class IterationManager implements EntityManager<Iteration> {
 		return this.db.retrieveAll(new Iteration()).size();
 	}
 
-	
-	
+
+
 	/** Takes a session and returns an array of all the Iterations contained
 	 * 
 	 * @param s The current user session
 	 * @return An array of all iterations in the Database	 
 	 */
 	public Iteration[] getAll(Session s)  {
+		// Assure that the current project has a back log before retrieving all. 
+		instantiateBacklog(s);
+
 		// Ask the database to retrieve all objects of the type Iteration.
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
 		// Passing the project makes it only get iterations from that project
 		// Return the list of iterations as an array
 		return this.db.retrieveAll(new Iteration(), s.getProject()).toArray(new Iteration[0]);
 	}	
-	
-	
-	
-	
+
+
+
+
 	/**  For the current user session, Takes a specific id for a Iteration and returns it 
 	 *   in an array.	
 	 *  
 	 *  @param s  The current user session
-	 *  @param id Points to a specific iteration
+	 *  @param sid String representation of id of desired iteration
 	 *  
  	@return An array of Iterations  
- 	 * @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 * @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
 	 * @throws WPISuiteException  "There was a problem retrieving from the database." 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Iteration[] getEntity(Session s, String sid) throws NotFoundException, WPISuiteException {
-		
+
 		Iteration[] iterations = null;
 		int id = Integer.parseInt(sid);
-		
-		
+
+
 		// Try to retrieve the specific Iteration
 		try {
 			iterations = db.retrieve(Iteration.class, "id", id, s.getProject()).toArray(new Iteration[0]);
@@ -199,7 +232,7 @@ public class IterationManager implements EntityManager<Iteration> {
 			e.printStackTrace();
 			throw new WPISuiteException("There was a problem retrieving from the database." );
 		}
-		
+
 		// If a iteration was pulled, but has no content
 		if(iterations.length < 1 || iterations[0] == null) {
 			throw new NotFoundException("The Iteration with the specified name was not found:" + id);
@@ -223,7 +256,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		if(s == null){
 			throw new WPISuiteException("Null session.");
 		} 
-		
+
 		// Try to parse the message
 		final Iteration iterationUpdate;
 		logger.log(Level.FINER, "Attempting to update a Iteration...");
@@ -233,24 +266,24 @@ public class IterationManager implements EntityManager<Iteration> {
 			logger.log(Level.WARNING, "Invalid Iteration entity update string.");
 			throw new BadRequestException("The Iteration update string had invalid formatting. Entity String: " + content);			
 		}
-		
+
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Iteration oldIteration = getEntity(s, ((Integer)iterationUpdate.getID()).toString() )[0];
-		
+
 		// Copy new field values into old Iteration. This is because the "same" model must
 		// be saved back into the database
 		oldIteration.updateIteration(iterationUpdate);
-		
+
 		// Attempt to save. WPISuiteException may be thrown
 		this.save(s,oldIteration);
-				
+
 		return oldIteration;
-		
+
 	}
-	
-	
-	
-	/** Deletes a Iteration from the database (not advised)
+
+
+
+	/** Deletes a Iteration from the database (effectively hidden). Backlogs cannot be deleted
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the iteration to delete
@@ -263,15 +296,23 @@ public class IterationManager implements EntityManager<Iteration> {
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Iteration oldIteration = getEntity(s, id)[0];
-		
-	    if (this.db.delete(oldIteration) == oldIteration){
-	    	return true; // the deletion was successful
-	    }	    
-		return false; // The deletion was unsuccessful
-	}
-	
+		System.out.println("Number of entities gotten with ID = " + id +": "+getEntity(s,id).length);
+		if (id.equals("0")){ // ID of 0 = backlog
+			return false;
+		}
 
-	
+		// Set Project to null to a different user so that it is not pulled
+		// out by "getAll" calls... "effectively deleted"
+		oldIteration.setProject(null); 
+
+		// Attempt to save. WPISuiteException may be thrown
+		db.save( oldIteration);
+
+		return true; // The deletion was successful
+	}
+
+
+
 	/** Deletes ALL Iteration from the database (not advised)
 	 * 
 	 *  @param s The current user session
@@ -280,18 +321,26 @@ public class IterationManager implements EntityManager<Iteration> {
 	public void deleteAll(Session s)  {
 		this.db.deleteAll(new Iteration(), s.getProject());
 	}
+
+
+
+	// Unimplemented Manager methods	
+	// Advanced Manager methods
 	
-
-		
-// Unimplemented Manager methods	
-// Advanced Manager methods
-
+	/**
+	 * Method advancedPut.
+	 * @param s Session
+	 * @param args String[]
+	  @return String
+	 * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
+	 */
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 		throw new NotImplementedException();
 	}
-	
-	
+
+
 	/**
 	 * Method advancedPut.
 	 * @param s Session

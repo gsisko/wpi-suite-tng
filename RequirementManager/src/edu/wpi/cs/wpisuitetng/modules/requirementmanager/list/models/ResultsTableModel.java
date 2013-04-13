@@ -27,7 +27,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * A model to manage the data displayed in the {@link ResultsPanel}
+ * A model to manage the data displayed in the {@link RequirementListPanel}
  */
 @SuppressWarnings("serial")
 public class ResultsTableModel extends AbstractTableModel {
@@ -81,8 +81,8 @@ public class ResultsTableModel extends AbstractTableModel {
 
 	
 	/**
-	 * @param the row number of the value you wish to get
-	 * @param The column number of the value you wish to get
+	 * @param row The row number of the value you wish to get
+	 * @param col The column number of the value you wish to get
 	 * 
 	 * @return the value at the requested row and column
 	 */
@@ -92,9 +92,9 @@ public class ResultsTableModel extends AbstractTableModel {
 	}
 	
 	/**
-	 * @param the column number that you wish to get the name of
+	 * @param col The column number that you wish to get the name of
 	 * 
-	 * @return the name of the column you requested
+	 * @return The name of the column you requested
 	 */
 	@Override
 	public String getColumnName(int col) {
@@ -102,7 +102,7 @@ public class ResultsTableModel extends AbstractTableModel {
 	}
 
 	/**
-	 * @param the column number that you wish to get the class of
+	 * @param col The column number that you wish to get the class of
 	 * 
 	 * @return the class of the column number you requested
 	 */
@@ -112,8 +112,8 @@ public class ResultsTableModel extends AbstractTableModel {
 	}
 	
 	/**
-	 * @param the row number of the value you wish to know if it's editable
-	 * @param The column number of the value you wish to know if it's editable
+	 * @param row The row number of the value you wish to know if it's editable
+	 * @param col The column number of the value you wish to know if it's editable
 	 * 
 	 * @return false, none of the Results Table Model is editable
 	 */
@@ -132,7 +132,7 @@ public class ResultsTableModel extends AbstractTableModel {
 
 	/**
 	 * 
-	 * @return
+	 * @return The data
 	 */
 	public Object[][] getData() {
 		return data;

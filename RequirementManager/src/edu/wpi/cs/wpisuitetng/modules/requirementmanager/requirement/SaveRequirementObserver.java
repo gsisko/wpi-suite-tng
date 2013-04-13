@@ -45,7 +45,7 @@ public class SaveRequirementObserver implements RequestObserver {
 		this.view = view;
 	}
 	
-	/*
+	/**
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
 	 * 
@@ -58,6 +58,8 @@ public class SaveRequirementObserver implements RequestObserver {
 		
 		// Parse the message out of the response body
 		final Requirement requirement = Requirement.fromJSON(response.getBody());
+		view.getRequirementPanel().setCurrentRequirement(requirement);
+		view.getRequirementPanel().updateModel(requirement);
 
 		// make sure the requirement isn't null
 		if (requirement != null) {
@@ -66,7 +68,7 @@ public class SaveRequirementObserver implements RequestObserver {
 				public void run() {
 					NoteListModel noteListModel = view.getRequirementPanel().getTabPanel().getNotePanel().getNoteListModel();
 					if (noteListModel.getSize() < requirement.getNotes().size()) {
-						noteListModel.addMessage(requirement.getNotes().get(requirement.getNotes().size() - 1));
+						view.getRequirementPanel().getTabPanel().getNotePanel().addNoteToList(requirement.getNotes().get(requirement.getNotes().size() - 1));
 						view.getRequirementPanel().getRequirementNote().setText("");
 						view.getRequirementPanel().getCurrentRequirement().setNotes(requirement.getNotes());
 					}
@@ -74,6 +76,7 @@ public class SaveRequirementObserver implements RequestObserver {
 						view.getRequirementPanel().updateModel(requirement);
 						view.setEditModeDescriptors(requirement);
 					}
+					view.getController().saveSuccess(requirement);
 				}
 			});
 		}

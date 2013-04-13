@@ -41,7 +41,7 @@ public class DateTableCellRenderer extends DefaultTableCellRenderer {
 	protected SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy hh:mm a");
 
 	/**
-	 * @see java.swing.table.DefaultTableCellRenderer#setValue
+	 *  @see javax.swing.table.DefaultTableCellRenderer#setValue(Object)
 	 */
 	@Override
 	public void setValue(Object value) {

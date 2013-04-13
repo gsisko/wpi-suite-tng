@@ -36,10 +36,10 @@ import javax.swing.JTabbedPane;
 @SuppressWarnings("serial")
 public class RequirementTabPanel extends JTabbedPane {
 	
-	private RequirementPanel parent;
-	private NotePanel notePanel;
+	private RequirementTab parent;
+	private NoteTab notePanel;
 	
-	public RequirementTabPanel(RequirementPanel view) {
+	public RequirementTabPanel(RequirementTab view) {
 		
 		this.parent = view;
 		
@@ -47,7 +47,7 @@ public class RequirementTabPanel extends JTabbedPane {
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		//setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
 		
-		notePanel = new NotePanel(parent);
+		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 		
 		this.setPreferredSize(new Dimension(450, 500));
@@ -61,14 +61,14 @@ public class RequirementTabPanel extends JTabbedPane {
 	/**
 	 * @return the notePanel
 	 */
-	public NotePanel getNotePanel() {
+	public NoteTab getNotePanel() {
 		return notePanel;
 	}
 
 	/**
 	 * @param notePanel the notePanel to set
 	 */
-	public void setNotePanel(NotePanel notePanel) {
+	public void setNotePanel(NoteTab notePanel) {
 		this.notePanel = notePanel;
 	}
 	

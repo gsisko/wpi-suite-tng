@@ -77,7 +77,7 @@ public class RetrieveModelController extends MouseAdapter {
 		}
 	}
 
-	/** Called by {@link RetrieveFilterRequestObserver} when the response
+	/** Called by {@link RetrieveModelObserver} when the response
 	 *  is received from the server. The Builder fields are set up and 
 	 *  populated with the received model. The list panel button for 
 	 *  new/cancel is set to cancel mode.
@@ -87,8 +87,8 @@ public class RetrieveModelController extends MouseAdapter {
 	public void showModel(String jsonArray) {
 		// if a user has double-clicked on a filter, set UI fields appropriately
 		builderView.displayModelFromJSONArray(jsonArray);
-		builderView.setInputEnabled(true);
 		builderView.setModeAndBtn(Mode.EDIT);
+		builderView.setInputEnabled(true);
 		
 		listView.setNewBtnToCancel();
 		System.out.println(modelName  + " retrieved and displayed successfully");

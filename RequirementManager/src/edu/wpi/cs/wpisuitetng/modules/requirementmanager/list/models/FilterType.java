@@ -38,6 +38,7 @@ public enum FilterType {
 	ReleaseNumber,
 	Estimate,
 	ActualEffort,
+	Iteration,
 	Other;
 	
 	/** Converts a string to the proper FilterType
@@ -75,6 +76,8 @@ public enum FilterType {
 			return "Status";
 		case Type:
 			return "Type";
+		case Iteration:
+			return "Iteration";
 		default:
 			return "";
 		

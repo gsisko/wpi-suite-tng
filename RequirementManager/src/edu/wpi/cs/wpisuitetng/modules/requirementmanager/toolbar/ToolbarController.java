@@ -34,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 
 
 /**
@@ -72,8 +72,8 @@ public class ToolbarController extends DefaultToolbarController implements Chang
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// TODO: there has to be a cleaner way to do this
-		if(e.getSource() instanceof MainTabView) {
-			MainTabView view = (MainTabView) e.getSource();
+		if(e.getSource() instanceof MainTabPanel) {
+			MainTabPanel view = (MainTabPanel) e.getSource();
 			Component selectedComponent = view.getSelectedComponent();
 			if(selectedComponent instanceof IToolbarGroupProvider) {
 				IToolbarGroupProvider provider = (IToolbarGroupProvider) selectedComponent;

@@ -43,8 +43,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Delete
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
@@ -52,7 +53,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  * Panel to contain the list of Iterations that have been saved by the user
  */
 @SuppressWarnings("serial")
-public class IterationListPanel extends JPanel implements IListPanel {
+public class IterationListTab extends JPanel implements IListPanel {
 
 	/** The table of results */
 	protected JTable resultsTable;
@@ -69,16 +70,12 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
-	private final ListPanel parent;
-	int j;
-	int k;
-	int x;
-	int y;
+	private final ListTab parent;
 	
 	/**
 	 * Construct the panel
 	 */
-	public IterationListPanel(ListPanel view) {
+	public IterationListTab(ListTab view) {
 		parent = view;
 		this.setBtnCreateIsCancel(false);
 		// Set the layout manager
@@ -91,6 +88,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
+		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
 		resultsTable.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
 
 		    SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
@@ -116,6 +114,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 
 		btnCreate = new JButton ("New Iteration");
 		btnDelete = new JButton ("Delete");
+		setDeleteEnabled(false); // Initialize
 
 		btnCreate.setMaximumSize(new Dimension(120, 40));
 		btnCreate.setMinimumSize(new Dimension(120, 40));
@@ -140,6 +139,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
+		
 		
 	}
 
@@ -182,7 +182,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	/**
 	 * @return the parent
 	 */
-	public ListPanel getParent() {
+	public ListTab getParent() {
 		return parent;
 	}
 
@@ -280,7 +280,7 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	 * 
 	 * @return An array of unique identifiers in the form of strings
 	 */
-	public String[] getUniqueIdentifiers() {
+	public String[] getSelectedUniqueIdentifiers() {
 		
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
@@ -317,17 +317,24 @@ public class IterationListPanel extends JPanel implements IListPanel {
 		// Add the list of iterations to the IterationListPanel object
 		this.setLocalIterations(iterations);
 
-		if (iterations.length > 0) {
+		parent.getParent().setAllIterations(iterations);
+		
+		Iteration[] displayedIterations = new Iteration[iterations.length-1];
+		for (int i = 0; i < displayedIterations.length; i++) {
+			displayedIterations[i] = iterations[i+1];
+		}
+		
+		if (displayedIterations.length > 0) {
 			// set the column names
 			String[] columnNames = {"Id", "Name", "StartDate", "EndDate"};
 
 			// put the data in the table
-			Object[][] entries = new Object[iterations.length][columnNames.length];
-			for (int i = 0; i < iterations.length; i++) {
-				entries[i][0] = iterations[i].getID();
-				entries[i][1] = iterations[i].getName();
-				entries[i][2] = iterations[i].getStartDate();
-				entries[i][3] = iterations[i].getEndDate();
+			Object[][] entries = new Object[displayedIterations.length][columnNames.length];
+			for (int i = 0; i < displayedIterations.length; i++) {
+				entries[i][0] = displayedIterations[i].getID();
+				entries[i][1] = displayedIterations[i].getName();
+				entries[i][2] = displayedIterations[i].getStartDate();
+				entries[i][3] = displayedIterations[i].getEndDate();
 
 			}
 
@@ -335,9 +342,21 @@ public class IterationListPanel extends JPanel implements IListPanel {
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			
+			//Hide the Id column
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
+			
+			//Set preferred column widths
+			//Name
+			resultsTable.getColumnModel().getColumn(1).setPreferredWidth(75);
+			//StartDate
+			resultsTable.getColumnModel().getColumn(2).setPreferredWidth(80);
+			//EndDate
+			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			
+			
 			return; // end now
 		}
 	}
@@ -360,6 +379,41 @@ public class IterationListPanel extends JPanel implements IListPanel {
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
+
+	/** Sets the delete button to either activated or deactivated 
+	 * 
+	 * @param setActive True to activate and false to deactivate
+	 */
+	public void setDeleteEnabled(boolean setActive) {
+		btnDelete.setEnabled(setActive);		
+	}
 	
+	/** Checks if the selected items can ALL be deleted or not. An iteration may 
+	 *  not be deleted when it has sub-requirements, so that is the condition 
+	 *  checked for here
+	 *  
+	 * @return false if any item selected cannot be deleted.
+	 */
+	public boolean areSelectedItemsDeletable(){
+		// Gets the ID's of the selected Iterations
+		String[] iterationIDs = getSelectedUniqueIdentifiers();
+		
+		// Go through all of the ID's
+		for (String id: iterationIDs){
+			// For the current ID, find the iteration whose ID is the current one
+			for (Iteration iter : parent.getParent().getAllIterations()) {				
+				// Check to see if the filter references a currently valid Iteration
+				if (id.equals(iter.getID() + "") ){
+					// If the selected Iteration has requirements assigned to it, it can't be deleted
+					if (iter.getRequirementsContained().size() > 0){
+						// This means the delete button will be deactivated
+						return false; 
+					}
+				}
+			}		
+		}	
+		// All selected iterations passed so the Delete button is turned on
+		return true;
+	}
 }
 

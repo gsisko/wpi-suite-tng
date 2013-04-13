@@ -38,9 +38,7 @@ public class Note {
 	/**
 	 * Create a Note with given properties
 	 * 
-	 * @param user the User who created the Note
-	 * @param message the User wishes to post
-	 * @param date the timestamp of the posted Note
+	 * @param message The message the user wishes to post
 	 */
 	public Note(String message)
 	{
@@ -53,7 +51,7 @@ public class Note {
 		// Format the date-time stamp
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 				
-		return dateFormat.format(date) + ":    " + message + " (added by " + user.getName() + ")";
+		return "Note added by " + user.getName() +" on "+dateFormat.format(date) ;
 	}
 	
 	/**

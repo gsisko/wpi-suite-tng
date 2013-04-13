@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,47 +44,58 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.lowagie.text.Font;
 import com.toedter.calendar.JDateChooser;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTabView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-
-@SuppressWarnings({"serial","unused"})
+/** This is the builder panel for Iterations. It is located in the list view on the 
+ *  RequirementManager module above the list of requirements and right of the list 
+ *  of iterations. This builder will be switched to when the Iteration list view
+ *  tab is selected.  */
+@SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
-
-	//the labels
-	private final JLabel startDateLabel;
-	private final JLabel endDateLabel;
+	
+	/** The "Name" label, located before the Iteration name box*/
 	private final JLabel nameLabel;
+	/** The "Start Date" label, located before the first calendar */
+	private final JLabel startDateLabel;
+	/** The "End Date" label, located before the second calendar */
+	private final JLabel endDateLabel;
+	/** The "Total Estimate" label, located before the displayed total estimate */
+	private final JLabel totalEstimateLabel;
+	/** The total estimate for the current iteration is displayed here */
+	private final JLabel totalEstimate;
 
-	//the fillable components
+	/** The text box for filling in an Iteration's name */
 	private JTextField nameValue;
+	/** The calendar for choosing the start date of the current iteration */
 	private JDateChooser startDateChooser;
+	/** the calendar for choosing the end date of the current iteration */
 	private JDateChooser endDateChooser;
 
-	//button
-	private final JButton btnCreate;
-
-	private final ListPanel parent;
-
+	/** EDIT or CREATE mode */
 	private Mode currentMode;
-
-	private String curType = "Id";
-
+	/** The current Iteration that is build built */
 	private Iteration currentIteration;
+	/** The status of the builder, active/inactive */
 	private boolean isBuilderActive;
 
+	/** The save/create button */
+	private final JButton btnCreate;
+	/** This controller is activated when the save button is pressed */
 	private SaveModelController saveController;
-
-	/**
-	 * Construct the panel
+	/** The "parent" that this builder lives in */
+	private final ListTab parent;
+	
+	/** Construct the panel and all of its components
+	 *
+	 * @param view The ListTab that this panel will live in
 	 */
-	public IterationBuilderPanel(ListPanel view) {
+	public IterationBuilderPanel(ListTab view) {
 		parent = view;
 		currentMode = Mode.CREATE;
 		currentIteration = null;
@@ -96,18 +105,22 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameLabel = new JLabel("Name:");
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
-		btnCreate = new JButton("Create");
+		totalEstimateLabel = new JLabel("Total Estimate:");
 
 		//construct the components
+		btnCreate = new JButton("Create");
 		nameValue = new JTextField();
 		enable(nameValue, false);
 		startDateChooser = new JDateChooser(new Date());
 		endDateChooser = new JDateChooser(new Date());
+		totalEstimate = new JLabel("0");
 
 		// The action listener for these are below
 		btnCreate.setEnabled(false);
 		startDateChooser.setEnabled(false);
 		endDateChooser.setEnabled(false);
+		
+		totalEstimate.setFont(totalEstimateLabel.getFont().deriveFont(Font.NORMAL));
 
 		//Add a titled boarder to this panel
 		setBorder(BorderFactory.createTitledBorder("Iteration Builder"));
@@ -120,20 +133,37 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateChooser.setPreferredSize(new Dimension (125,20));
 		endDateChooser.setPreferredSize(new Dimension (125,20));
 		btnCreate.setPreferredSize(new Dimension (75,30));
+		
+		//Total Estimate
+		//Set the constraints for the "totalEstimateLabel" and add it to the view
+		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
+		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
+		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
+		add(totalEstimateLabel, IterationBuilderConstraints);//Actually add the "totalEstimateLabel" to the layout given the previous constraints
+		//Set the constraints for the "totalEstimate" and add it to the view
+		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
+		IterationBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
+		IterationBuilderConstraints.ipadx= 30;//stretch this field horizontally by 30 units
+		IterationBuilderConstraints.gridx = 1;
+		IterationBuilderConstraints.gridy = 0;
+		add(totalEstimate, IterationBuilderConstraints);//Actually add the "totalEstimate" to the layout given the previous constraints
+
 
 
 		//Iteration Name
 		//Set the constraints for the "nameLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
+		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 30 units back to 0 units
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
-		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(nameLabel, IterationBuilderConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for the "nameValue" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
 		IterationBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
 		IterationBuilderConstraints.ipadx=80;//stretch this field horizontally by 80 units
-		IterationBuilderConstraints.gridx = 1;
+		IterationBuilderConstraints.gridx = 3;
 		IterationBuilderConstraints.gridy = 0;
 		add(nameValue, IterationBuilderConstraints);//Actually add the "nameValue" to the layout given the previous constraints
 
@@ -142,13 +172,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
 		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 80 units back to 0 units
-		IterationBuilderConstraints.gridx = 2;
+		IterationBuilderConstraints.gridx = 4;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateLabel, IterationBuilderConstraints);
 		//Set the constraints for the "startDateChooser" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,25);
-		IterationBuilderConstraints.gridx = 3;
+		IterationBuilderConstraints.gridx = 5;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateChooser, IterationBuilderConstraints);
 
@@ -156,13 +186,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Set the constraints for the "endDateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
-		IterationBuilderConstraints.gridx = 4;
+		IterationBuilderConstraints.gridx = 6;
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateLabel, IterationBuilderConstraints);
 		//Set the constraints for the "endDateChooser" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;
 		IterationBuilderConstraints.insets = new Insets(10,10,10,40);
-		IterationBuilderConstraints.gridx = 5;
+		IterationBuilderConstraints.gridx = 7;
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateChooser, IterationBuilderConstraints);
 
@@ -170,15 +200,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Save button:
 		//Set the constraints for the "Create" button and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
-		IterationBuilderConstraints.gridx = 6;
+		IterationBuilderConstraints.gridx = 8;
 		IterationBuilderConstraints.gridy = 0;
 		add(btnCreate, IterationBuilderConstraints);//Actually add the "Create" button to the layout given the previous constraints
-
-
-	}
-
-	public void setUp() {
-		setupControllersAndListeners();
 	}
 
 	public JButton getButton()
@@ -215,15 +239,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		currentIteration = newIteration;
 	}
 
-	/**
-	 * @return the grandpa
-	 */
+	// TODO why is this here?
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}
 
-	@Override
+	/** Enables or disables all fields in the builder panel.
+	 * 
+	 * @param setTo True activates the fields and false deactivates them
+	 */
 	public void setInputEnabled(boolean setTo) {
 		isBuilderActive = setTo;
 		enable(this.nameValue, setTo);
@@ -233,10 +258,18 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		if (!setTo){
 			this.nameValue.setText("");
 		}
+		if (this.currentMode == Mode.CREATE) {
+			this.totalEstimate.setVisible(false);
+			this.totalEstimateLabel.setVisible(false);
+		}
+		else {
+			this.totalEstimate.setVisible(setTo);
+			this.totalEstimateLabel.setVisible(setTo);
+		}
 	}
 
 
-	@Override
+	/** Toggles between active and inactive modes mode */
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function
 		isBuilderActive = !isBuilderActive;
@@ -244,8 +277,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 
 
-
-	// New methods for the refactor.
+	/** Restore all fields to their initial values */
 	public void resetFields() {
 		this.nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
@@ -271,6 +303,13 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
+	/** Gets the model from the panel in the form of a JSON string
+	 *  that is ready to be sent as a message over the network
+	 * 
+	 * *NOTE: can be used for passing messages between views!
+	 * 
+	 * @return JSON string of the model to be sent, Returns null on failure
+	 */
 	public String convertCurrentModelToJSON(){
 		Iteration toSend = new Iteration();
 		
@@ -282,6 +321,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(this.startDateChooser.getDate());
 		toSend.setEndDate(this.endDateChooser.getDate());
+		toSend.setTotalEstimate(Integer.parseInt(this.totalEstimate.getText()));
 
 		System.out.println(toSend.toJSON());
 
@@ -308,16 +348,18 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		for (int i = 0; i < iters.size(); i++)
 		{
 			
-			if(this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
+			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
 			    continue;
 			
-			if (this.nameValue.getText().equals(iters.get(i).getName()))
+			if (!nameErrorFound && this.nameValue.getText().toLowerCase().equals("backlog")) {
+				error += "The name field of the iteration cannot be \"Backlog\".\n";
+				nameErrorFound = true;
+			}
+			
+			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()))
 			{
-				if (!nameErrorFound && Mode.EDIT != currentMode)
-				{
-					error += "The name field of the iteration cannot be the same as other iterations.\n";
-					nameErrorFound = true;
-				}
+				error += "The name field of the iteration cannot be the same as other iterations.\n";
+				nameErrorFound = true;
 			}
 
 			if(	((this.startDateChooser.getDate().before(iters.get(i).getEndDate()) 
@@ -348,7 +390,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return true;
 	}
 
-
+	/** Takes a JSON string that holds an array of models and uploads them
+	 *  to the builder panel.
+	 *  
+	 * @param jsonArray An array of models in JSON string form
+	 */
 	public void displayModelFromJSONArray(String jsonArray) {
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
 		
@@ -357,11 +403,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.nameValue.setText(toDisplay.getName());
 		this.startDateChooser.setDate(toDisplay.getStartDate());
 		this.endDateChooser.setDate(toDisplay.getEndDate());
+		this.totalEstimate.setText(Integer.toString(toDisplay.getTotalEstimate()));
 
 		setInputEnabled(true);
 	}
 
-
+	/** Sets up the controllers and action listeners. This should be where all
+	 *  controllers and action listeners are initialized because the controllers
+	 *  require references that are not not fully initialized when the 
+	 *  constructor for this class is called.
+     */
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
 		btnCreate.addActionListener(saveController);
@@ -385,6 +436,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	}
 
+	/** Set the given box to the given enable status as well 
+	 *  set the box to the correct color
+	 * 
+	 * @param box   The box that needs enabling and colors
+	 * @param enabled  True to enable and False to disable
+	 */
 	public void enable(JTextField box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);

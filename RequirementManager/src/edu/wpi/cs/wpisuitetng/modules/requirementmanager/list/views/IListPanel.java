@@ -38,10 +38,10 @@ public interface IListPanel {
 	 * 
 	 * @return An array of unique identifiers in the form of strings
 	 */
-	public String[] getUniqueIdentifiers();
+	public String[] getSelectedUniqueIdentifiers();
 
 
-	/** If called  on a list view, sets the button to clear/cancel	 */
+	/** Sets the New the button to clear/cancel	 */
 	public void setNewBtnToCancel();
 
 
@@ -77,4 +77,15 @@ public interface IListPanel {
 
 	/** Refresh all the requirements    */
 	public void refreshRequirements();
+	
+	/** Sets the delete button to either activated or deactivated 
+	 * 
+	 * @param setActive True to activate and false to deactivate
+	 */
+	public void setDeleteEnabled(boolean setActive);
+	
+	/** Checks if the selected items can ALL be deleted or not
+	 * @return false if any item selected cannot be deleted.
+	 */
+	public boolean areSelectedItemsDeletable();
 }

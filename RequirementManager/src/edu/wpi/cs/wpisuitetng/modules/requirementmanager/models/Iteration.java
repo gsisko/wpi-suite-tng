@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.Gson;
@@ -32,17 +33,24 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public class Iteration extends AbstractModel {   
+	/** The name of the iteration */
 	private String name;
+	/** The date that the iteration will start */
 	private Date startDate;
+	/** The date that the iteration will end */
 	private Date endDate;
-	private int LowercaseID;
-	// Basic constructor for empty iteration
+	/** The unique identifier of the iteration */
+	private int id;
+	/** The requirements that are a part of this Requirement */
+	private ArrayList<Integer> requirementsAssigned;
+	/** The current running total estimate */
+	private int totalEstimate;
+	
+	/** Basic constructor for an Iteration */
 	public Iteration()
 	{
-		this.setName("");
-		this.setStartDate(new Date());
-		this.setEndDate(new Date());
-		this.setID(-1);
+		//Call the other constructor so we reuse code
+		this("", new Date(), new Date());
 	}
 	
 	/**
@@ -54,67 +62,19 @@ public class Iteration extends AbstractModel {
 	 */
 	public Iteration(String name, Date startDate, Date endDate)
 	{
+		//Copy in pass parameters
 		this.setName(name);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		
+		//Initialize our other private variables
 		this.setID(-1);
+		this.totalEstimate = 0;
+		this.requirementsAssigned = new ArrayList<Integer>();
 
 	}
 
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/**
-	 * @return the name
-	 */
-	public int getID() {
-		return LowercaseID;
-	}
-	
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setID(int ID) {
-		this.LowercaseID = ID;
-	}
-	/**
-	 * @return the startDate
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the endDate
-	 */
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	/**
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
 
 	@Override
 	public void save() {
@@ -135,6 +95,7 @@ public class Iteration extends AbstractModel {
 		json = gson.toJson(this, Iteration.class);
 		return json;
 	}
+	
 	
 	/** Converts the given list of Iterations to a JSON string
 	 * 
@@ -193,7 +154,115 @@ public class Iteration extends AbstractModel {
 		this.setName(iterationUpdate.getName());
 		this.setStartDate(iterationUpdate.getStartDate());
 		this.setEndDate(iterationUpdate.getEndDate());
+		this.setRequirementsContained(iterationUpdate.getRequirementsContained());
+		this.setTotalEstimate(iterationUpdate.getTotalEstimate());
 		// id does not need to be set, as it cannot be changed anyways
 	}
 	
+	
+	/** Gets estimates from each associated requirement and sums up the total. 
+	 * 
+	 * @return The sum of all the requirements estimates
+	 */
+	public int getTotalEstimate(){
+		/* TODO: ways of getting the total estimate
+		  
+		Option A
+		- Send message from here to get all Req's, sort here to pick out proper ID's
+		and sum up the estimates of the remaining
+		- Local RetrieveAllRequirementsController will be necessary
+		Option B
+		- Send individual messages to get only the Req's we want
+		- More messages
+		- Local RetrieveRequirementController is needed
+		Option C
+		- Ask the current list panel for the requirements that are in this iteration
+		Option D 
+		- Have requirements tell the iteration when they are added/remove or 
+		their estimates are updated
+		- Keep track of a single local variable that tracks the total estimate			
+		
+		*/
+				
+		return this.totalEstimate;
+	}
+	
+	/**
+	 * Ask the controller to retrieve the total estimate and give it to us.
+	 */
+	public void setTotalEstimate(int newTotalEstimate){
+		this.totalEstimate = newTotalEstimate;
+	}	
+	
+	
+// The following are Getters and Setters
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public int getID() {
+		return id;
+	}
+	
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @param ID the id to set
+	 */
+	public void setID(int ID) {
+		this.id = ID;
+	}
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
+	 * @return the endDate
+	 */
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	
+	/**
+	 * @return the requirementsAssigned
+	 */
+	public ArrayList<Integer> getRequirementsContained() {
+		return requirementsAssigned;
+	}
+
+	/**
+	 * @param requirementsContained the requirementsAssigned to set
+	 */
+	public void setRequirementsContained(ArrayList<Integer> requirementsContained) {
+		this.requirementsAssigned = requirementsContained;
+	}
+	
+
 }

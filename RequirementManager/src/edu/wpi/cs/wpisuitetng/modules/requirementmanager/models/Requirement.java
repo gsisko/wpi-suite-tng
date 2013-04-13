@@ -51,16 +51,37 @@ public class Requirement extends AbstractModel {
 	/** The priority set to the Requirement  */
 	private RequirementPriority priority;  
 	/** Must be a release number of the current project ***/
-	private int releaseNumber;    
+	private String releaseNumber;    
 	/** An estimate of what this Requirement will take  */
 	private int estimate;         
 	/** The actual effort it took for this Requirement  */
 	private int actualEffort;
+	/** The iteration that this requirement is in */
+	private int assignedIteration;
 	/** This is the list of notes for this Requirement */
 	private ArrayList<Note> notes; 
 	
-	// blank constructor
+	/** Basic constructor for a requirement */
 	public Requirement(){
+		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, "", 0);
+	}
+	
+	/**
+	 *  Full Constructor for Requirement.
+	 * @param name Name of the requirement 
+	 * @param description Description of the requirement
+	 * @param releaseNumber Release number of the requirement
+	 * @param priority Priority of the requirement (NONE, LOW, MEDIUM, HIGH)
+	 * @param iterationID The id of the iteration that this Req is assigned to
+	 */
+	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, String releaseNumber, int iterationID) {
+		this.setName(name);
+		this.setDescription(description);
+		this.setType(type);
+		this.setPriority(priority); // Initialize priority
+		this.setReleaseNumber(releaseNumber); // release number of current project
+		this.setAssignedIteration(iterationID);
+		
 		this.setEstimate(0);
 		this.setActualEffort(0);			// Initial actual effort set to zero
 		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
@@ -68,28 +89,6 @@ public class Requirement extends AbstractModel {
 		this.notes = new ArrayList<Note>();
 	}
 	
-	
-	/**
-	 * Constructor for Requirement.
-	 * @param name String 
-	 * @param description String
-	 * @param releaseNumber int
-	 * @param priority RequirementPriority
-	 * @param estimate int
-	 */
-	public Requirement(String name, String description, RequirementType type, RequirementPriority priority, int releaseNumber) {
-		this();
-		this.setName(name);
-		this.setDescription(description);
-		this.setType(type);
-		this.setPriority(priority); // Initialize priority
-		this.setReleaseNumber(releaseNumber); // release number of current project
-	}
-	
-	
-	
-
-
 	
 	// The following functions come from the Model interface
 	/**
@@ -185,6 +184,8 @@ public class Requirement extends AbstractModel {
 		return builder.create().fromJson(json, Requirement[].class);
 	}
 	
+
+	// The following are getters and setters
 	/**
 	 * Method setProject.
 	 * @param project Project
@@ -193,8 +194,7 @@ public class Requirement extends AbstractModel {
 	public void setProject(Project project) {
 		super.setProject(project);
 	}
-
-	// The following are getters and setters
+	
 	
 	/**
 	
@@ -270,14 +270,14 @@ public class Requirement extends AbstractModel {
 	/**
 	
 	 * @return the releaseNumber */
-	public int getReleaseNumber() {
+	public String getReleaseNumber() {
 		return releaseNumber;
 	}
 
 	/**
 	 * @param releaseNumber the releaseNumber to set
 	 */
-	public void setReleaseNumber(int releaseNumber) {
+	public void setReleaseNumber(String releaseNumber) {
 		this.releaseNumber = releaseNumber;
 	}
 
@@ -314,15 +314,16 @@ public class Requirement extends AbstractModel {
 	 * @param reqUpdate Requirement holding the updates
 	 */
 	public void updateReq(Requirement reqUpdate) {
-		setReleaseNumber(reqUpdate.getReleaseNumber());
-		setStatus(reqUpdate.getStatus());
-		setPriority(reqUpdate.getPriority());
-		setName(reqUpdate.getName());
-		setDescription(reqUpdate.getDescription());
-		setEstimate(reqUpdate.getEstimate());
-		setActualEffort(reqUpdate.getActualEffort());
-		setType(reqUpdate.getType());
-		setNotes(reqUpdate.getNotes());
+		this.setReleaseNumber(reqUpdate.getReleaseNumber());
+		this.setStatus(reqUpdate.getStatus());
+		this.setPriority(reqUpdate.getPriority());
+		this.setName(reqUpdate.getName());
+		this.setDescription(reqUpdate.getDescription());
+		this.setEstimate(reqUpdate.getEstimate());
+		this.setActualEffort(reqUpdate.getActualEffort());
+		this.setType(reqUpdate.getType());
+		this.setNotes(reqUpdate.getNotes());
+		this.setAssignedIteration(reqUpdate.getAssignedIteration());
 	}
 
 
@@ -355,6 +356,22 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setNotes(ArrayList<Note> notes) {
 		this.notes = notes;
+	}
+
+
+	/**
+	 * @return the assignedIteration
+	 */
+	public int getAssignedIteration() {
+		return assignedIteration;
+	}
+
+
+	/**
+	 * @param assignedIteration the assignedIteration to set
+	 */
+	public void setAssignedIteration(int assignedIteration) {
+		this.assignedIteration = assignedIteration;
 	}
 
 }

@@ -71,7 +71,7 @@ public class RetrieveAllModelsController implements ActionListener{
 		request.send();
 	}
 
-	/** This method is called by the {@link RetrieveAllFiltersRequestObserver} when the
+	/** This method is called by the {@link RetrieveAllModelsObserver} when the
 	 *  response is received
 	 * 
 	 * @param jsonString an array of filters returned by the server
@@ -81,7 +81,7 @@ public class RetrieveAllModelsController implements ActionListener{
 		System.out.println("All " + modelName  + "s retrieved successfully.");
 	}
 
-	/** This method is called by the {@link RetrieveAllFiltersRequestObserver} when an
+	/** This method is called by the {@link RetrieveAllModelsObserver} when an
 	 *  error occurs retrieving the filters from the server.
 	 */
 	public void errorReceivingData(String error) {

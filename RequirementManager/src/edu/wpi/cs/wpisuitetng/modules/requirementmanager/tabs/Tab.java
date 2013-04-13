@@ -34,7 +34,7 @@ import javax.swing.Icon;
  */
 public class Tab {
 
-	private final MainTabView view;
+	private final MainTabPanel view;
 	private final Component tabComponent;
 
 	/**
@@ -43,7 +43,7 @@ public class Tab {
 	 * @param view The MainTabView this Tab belongs to
 	 * @param tabComponent The tabComponent for this Tab
 	 */
-	public Tab(MainTabView view, Component tabComponent) {
+	public Tab(MainTabPanel view, Component tabComponent) {
 		this.view = view;
 		this.tabComponent = tabComponent;
 	}

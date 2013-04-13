@@ -27,7 +27,9 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
@@ -37,16 +39,20 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Refres
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.*;
 
 /**
  * View that contains the entire requirement listing interface
  */
 @SuppressWarnings("serial")
-public class ListRequirementsView extends JPanel implements IToolbarGroupProvider {
+public class ListView extends JPanel implements IToolbarGroupProvider {
 	
 	/** Panel containing the list interface */
-	protected ListPanel mainPanel;
+	protected ListTab mainPanel;
 	
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
@@ -57,6 +63,9 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	/** The refresh button that reloads the results of the list/filter */
 	protected JButton btnRefresh;
 	
+	/** The display pie chart button that loads the pie chart tab */
+	protected JButton btnDisplayPieChart;
+
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
 	
@@ -66,15 +75,25 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	/** The main tab controller */
 	protected MainTabController tabController;
 	
+	/** The arrays of models stored in the database */
+	protected Filter[] allFilters;
+	protected Iteration[] allIterations;
+	protected Requirement[] allRequirements;
+	protected Requirement[] displayedRequirements;
+	
 	/**
 	 * Construct the view
 	 * @param tabController The main tab controller
-	 * @param tab The Tab containing this view
 	 */
-	public ListRequirementsView(MainTabController tabController) {
+	public ListView(final MainTabController tabController) {
 		this.tabController = tabController;
 		
-		mainPanel = new ListPanel(tabController, this);
+		mainPanel = new ListTab(tabController, this);
+		
+		allFilters = new Filter[0];
+		allIterations = new Iteration[0];
+		allRequirements = new Requirement[0];
+		displayedRequirements = new Requirement[0];
 		
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();
@@ -93,17 +112,17 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		iterationController = new RetrieveAllModelsController(mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
 		
 		// Add a listener for row clicks in the actual table
-		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListPanel().getResultsPanel()));
+		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
 		
 		
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("All Lists");
+		buttonGroup = new ToolbarGroupView("Options for Requirements");
 		
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(150);
+		buttonGroup.setPreferredWidth(250);
 		
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -113,6 +132,17 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 			}
 		});
 		
+		// Instantiate the refresh button
+		btnDisplayPieChart = new JButton("Display Charts");
+		buttonGroup.getContent().add(new JLabel(" "));
+		buttonGroup.getContent().add(btnDisplayPieChart);
+
+		btnDisplayPieChart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tabController.addTab("Charts", new ImageIcon(), new PieChartView(mainPanel), "Charts for this project's requirements");
+			}
+		});
 	}
 	
 	public void refreshData() {
@@ -133,7 +163,7 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 		return iterationController;
 	}
 	
-	public ListPanel getListPanel() {
+	public ListTab getListTab() {
 		return mainPanel;
 	}
 
@@ -141,4 +171,61 @@ public class ListRequirementsView extends JPanel implements IToolbarGroupProvide
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
 	}
+	
+	/**
+	 * @return the allFilters
+	 */
+	public Filter[] getAllFilters() {
+		return allFilters;
+	}
+
+	/**
+	 * @param allFilters the allFilters to set
+	 */
+	public void setAllFilters(Filter[] allFilters) {
+		this.allFilters = allFilters;
+	}
+
+	/**
+	 * @return the allIterations
+	 */
+	public Iteration[] getAllIterations() {
+		return allIterations;
+	}
+
+	/**
+	 * @param allIterations the allIterations to set
+	 */
+	public void setAllIterations(Iteration[] allIterations) {
+		this.allIterations = allIterations;
+	}
+
+	/**
+	 * @return the allRequirements
+	 */
+	public Requirement[] getAllRequirements() {
+		return allRequirements;
+	}
+
+	/**
+	 * @param allRequirements the allRequirements to set
+	 */
+	public void setAllRequirements(Requirement[] allRequirements) {
+		this.allRequirements = allRequirements;
+	}
+
+	/**
+	 * @return the displayedRequirements
+	 */
+	public Requirement[] getDisplayedRequirements() {
+		return displayedRequirements;
+	}
+
+	/**
+	 * @param displayedRequirements the displayedRequirements to set
+	 */
+	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
+		this.displayedRequirements = displayedRequirements;
+	}
+	
 }
