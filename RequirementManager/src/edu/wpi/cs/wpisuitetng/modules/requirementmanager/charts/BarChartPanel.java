@@ -40,18 +40,13 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.util.Rotation;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
 /**
  * Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
@@ -101,22 +96,18 @@ public class BarChartPanel extends JPanel {
 		String series1 = "";
 
 		// column keys...
-		String category1 = "Category 1";
-		String category2 = "Category 2";
-		String category3 = "Category 3";
-		String category4 = "Category 4";
-		String category5 = "Category 5";
+		String category1 = "Linux";
+		String category2 = "Mac";
+		String category3 = "Windows";
+		String category4 = "DOS";
 
+		//Add the actual data to the set and return it
 		DefaultCategoryDataset result = new DefaultCategoryDataset();
-		result.addValue(29, null, category1);
-		result.addValue(20, null, category2);
-		result.addValue(51, null, category3);
-		result.addValue(2, null, category4);
+		result.addValue(29, series1, category1);
+		result.addValue(20, series1, category2);
+		result.addValue(51, series1, category3);
+		result.addValue(2, series1, category4);
 		
-//		result.setValue("Linux", 29);
-//		result.setValue("Mac", 20);
-//		result.setValue("Windows", 51);
-//		result.setValue("DOS", 2);
 		return result;
 	}
 
@@ -171,8 +162,10 @@ public class BarChartPanel extends JPanel {
 //			}
 //			if (count > 0) data.setValue(rs.toString(), count);
 //		}
-//
-//		this.dataset = data;
+
+		CategoryDataset data = this.createDataset();
+		
+		this.dataset = data;
 		if (isFiltered){
 			this.chart = createChart(dataset, "Status of Displayed Requirements");
 		} else {
@@ -199,8 +192,10 @@ public class BarChartPanel extends JPanel {
 //			}
 //
 //		}
-//
-//		this.dataset = data;
+
+		CategoryDataset data = this.createDataset();
+		
+		this.dataset = data;
 		if (isFiltered){
 			this.chart = createChart(dataset, "Iterations of Displayed Requirements");
 		} else {
