@@ -25,12 +25,13 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /** Observer that waits for a single delete Model request to return
  *  from the server. It refreshes all list views applicable. */
-public class DeleteModelObserver implements RequestObserver {
+public class DeleteModelObserver implements RequestObserver,IObserver {
 	/** Controller that started this observer   	 */
 	private final DeleteModelController controller;
 	

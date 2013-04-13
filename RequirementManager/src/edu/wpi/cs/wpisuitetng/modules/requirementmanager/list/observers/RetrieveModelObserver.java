@@ -25,6 +25,7 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -33,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * An observer for a request to retrieve a requirement with the provided id
  */
-public class RetrieveModelObserver implements RequestObserver {
+public class RetrieveModelObserver implements RequestObserver, IObserver{
 	/** Controller that started this observer   	 */
 	private final RetrieveModelController controller;
 

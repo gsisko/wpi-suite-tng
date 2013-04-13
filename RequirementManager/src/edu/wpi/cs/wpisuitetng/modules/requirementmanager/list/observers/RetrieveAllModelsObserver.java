@@ -25,6 +25,7 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -33,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * An observer for a request to retrieve all requirements
  */
-public class RetrieveAllModelsObserver implements RequestObserver {
+public class RetrieveAllModelsObserver implements RequestObserver,IObserver{
 
 	/** The controller managing the request */
 	protected RetrieveAllModelsController controller;
