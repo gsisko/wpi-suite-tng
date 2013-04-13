@@ -42,10 +42,6 @@ import javax.swing.border.Border;
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
 	
-	/** Chart panel that will have it's options set by this panel */
-	private PieChartPanel pieChart;
-	private BarChartPanel barChart;
-
 	//The labels
 	private  JLabel chartTypeLabel; //The label for the chartTypeBox
 	private  JLabel chartDataLabel;//The label for the chartDataBox
@@ -67,9 +63,7 @@ public class ChartOptionsPanel extends JPanel{
 	 * @param parentView The ChartView that contains this panel
 	 */
 	public ChartOptionsPanel(ChartView parentView){
-		
-//		this.pieChart = pieChart;//Set the pie chart
-		
+				
 		this.parent = parentView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
@@ -96,6 +90,14 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeBox = new JComboBox(typeStrings);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
+		
+		//Add action listeners to the boxes so data is refreshed when a change is made
+		chartTypeBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+            	parent.setChartType((String) ((JComboBox)e.getSource()).getSelectedItem());
+            	parent.refreshData();
+            }
+        });  
 		
 		chartDataBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -144,9 +146,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.add(filtersOptionsBox);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
 
-
 		setInputEnabled(inputEnabled);
-
 	}
 
 	/**
@@ -161,9 +161,7 @@ public class ChartOptionsPanel extends JPanel{
 		enable(chartTypeBox, enabled);
 		enable(chartDataBox, enabled);
 		enable(filtersOptionsBox, enabled);
-
 	}
-
 
 	/**
 	 * @return the chartTypeBox
@@ -221,34 +219,6 @@ public class ChartOptionsPanel extends JPanel{
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
-	}
-
-	/**
-	 * @return the PieChartPanel
-	 */
-	public PieChartPanel getPieChart() {
-		return pieChart;
-	}
-
-	/**
-	 * @param chart the PieChartPanel to set
-	 */
-	public void setPieChart(PieChartPanel chart) {
-		this.pieChart = chart;
-	}
-	
-	/**
-	 * @return the BarChartPanel
-	 */
-	public BarChartPanel getBarChart() {
-		return barChart;
-	}
-
-	/**
-	 * @param chart the BarChartPanel to set
-	 */
-	public void setBarChart(BarChartPanel chart) {
-		this.barChart = chart;
 	}
 	
 	/** Set the given box to enabled as well 
