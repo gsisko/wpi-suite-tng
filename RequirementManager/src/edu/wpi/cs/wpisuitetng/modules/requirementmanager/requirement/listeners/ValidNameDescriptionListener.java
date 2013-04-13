@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -72,6 +72,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 	 *  to see if warnings should be put up, and does so.
 	 */
 	public void keyReleased(KeyEvent e) {
+		System.out.println("Name/Description: Key released");
 		fieldCheck();
 	}
 
@@ -103,19 +104,20 @@ public class ValidNameDescriptionListener implements KeyListener{
 		}
 
 		// If either are false, keep it disabled
-		keepDisabled = desBad | nameBad;
-		saveButton.setEnabled( !keepDisabled);	
+		keepDisabled = Boolean.valueOf(desBad | nameBad);
+		saveButton.setEnabled( !keepDisabled.booleanValue());	
 	}
 
 
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {
-		return;		
+		System.out.println("Name/Description: Key typed");
+	
 	}
 
 	/** This method is unused but required by the interface   */
 	public void keyPressed(KeyEvent e) {
-		return;
+		System.out.println("Name/Description: Key pressed");
 	}
 
 

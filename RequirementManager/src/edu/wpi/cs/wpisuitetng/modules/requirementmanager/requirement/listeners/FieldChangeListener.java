@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,6 +31,7 @@ import java.lang.reflect.Method;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
 
 /** This listener is used on text fields/boxes/areas and turns those
  *  boxes yellow when changes are detected.

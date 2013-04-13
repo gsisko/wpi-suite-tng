@@ -50,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.ValidNameDescriptionListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
 /** This panel holds the fields necessary for making a Requirement, as well as 
@@ -129,7 +130,6 @@ public class RequirementAttributePanel extends JPanel {
 
 		addComponents();//Add the components to the panel
 		updateFields();//Update the fields to those given in the currentRequirement, if necessary.
-		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, keepDisabled);
 
 	}
 
@@ -905,13 +905,12 @@ public class RequirementAttributePanel extends JPanel {
 	//TODO phase this method out
 	/** Sets up the listener on the name field    	 */
 	public void txtNamecheck(){
-		txtName.addKeyListener(nameAndDescriptionValidityListener);
+
 	}
 
 	//TODO phase this method out
 	/** Sets up the listener on the description field   */
 	public void txtDescriptioncheck(){
-		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
 	}
 
 
@@ -925,7 +924,7 @@ public class RequirementAttributePanel extends JPanel {
 			warningName.setText(" ");
 			if (txtDescription.getText().length()>0){
 				saveButton.setEnabled(isFieldsChanged());
-				keepDisabled = false;
+				keepDisabled = Boolean.valueOf(false);
 			}
 		}
 		if (txtDescription.getText().length()<1){
@@ -935,7 +934,7 @@ public class RequirementAttributePanel extends JPanel {
 			warningDescription.setText(" ");
 			if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 				saveButton.setEnabled(isFieldsChanged());
-				keepDisabled = false;
+				keepDisabled = Boolean.valueOf(false);
 			}
 		}
 	}
@@ -968,8 +967,18 @@ public class RequirementAttributePanel extends JPanel {
 			fieldsChanged[i] = false;
 		}
 		if (saveButton != null)
-			saveButton.setEnabled(isFieldsChanged());
-		if (saveButton != null && keepDisabled)
-			saveButton.setEnabled(false);
+			saveButton.setEnabled(isFieldsChanged() && !keepDisabled.booleanValue());
+//		if (saveButton != null && keepDisabled.booleanValue())
+//			saveButton.setEnabled(false);
+	}
+
+	/** Sets up the controllers and listeners for this panel
+	 * 
+	 */
+	public void setupControllersAndListeners() {
+		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, keepDisabled);
+		txtName.addKeyListener(nameAndDescriptionValidityListener);
+		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
+
 	}
 }
