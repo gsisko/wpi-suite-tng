@@ -309,7 +309,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 				// Indicates an invalid filter if the iteration referenced was not found
 				if (!foundTheIter){  
 					// Delete the filter. A retrieve all command will be sent after the deletion occurs
-					deleteController.performDeletion(Integer.toString(filter.getUniqueID()));
+					deleteController.perform(Integer.toString(filter.getUniqueID()));
 					return; // end early
 				}	
 			}

@@ -55,7 +55,7 @@ public enum RequirementStatus {
 	 * @param currentStatus The current status of the requirement
 	 * @return The possible statuses that a requirement can be changed to.
 	 */
-	public String[] getAvailableStatuses(RequirementStatus currentStatus){
+	public static String[] getAvailableStatuses(RequirementStatus currentStatus){
 		switch(currentStatus){
 		case New:
 			return new String[] { "New", "Deleted" };
@@ -69,7 +69,18 @@ public enum RequirementStatus {
 			return new String[] { "Complete", "Open", "Deleted" };
 		default:
 			System.err.println("An unknown status was entered for the Requirement. Problem!");
-			return null;
+			return new String[] {""};
 		}
+	}
+	
+	/** Takes the current status of a requirement and outputs an array of 
+	 *  strings the represent the possible statuses that the requirement
+	 *  can be switched to
+	 * 
+	 * @param currentStatus The current status of the requirement as a string
+	 * @return The possible statuses that a requirement can be changed to.
+	 */
+	public static String[] getAvailableStatuses(String currentStatus){
+		return getAvailableStatuses(RequirementStatus.toStatus(currentStatus));
 	}
 }    
