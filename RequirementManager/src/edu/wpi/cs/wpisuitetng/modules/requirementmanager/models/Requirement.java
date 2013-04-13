@@ -31,6 +31,7 @@ import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Requirement: Holds data that makes up a Requirement
  * 
@@ -38,28 +39,30 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
  * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {
-	/** Unique ID of the record- assigned by entity manager  */
+	/** Unique ID of the record- assigned by entity manager */
 	private int id;           
-	/** The name of the Requirement (100 chars)    	  */
+	/** The name of the Requirement (100 chars) */
 	private String name;         
-	/** A description of the Requirement     */
+	/** A description of the Requirement */
 	private String description;    
-	/** the type of the requirement **/
+	/** the type of the requirement */
 	private RequirementType type;
-	/** The status in the work flow- Default to NEW   */
+	/** The status in the work flow- Default to NEW */
 	private RequirementStatus status;     
-	/** The priority set to the Requirement  */
+	/** The priority set to the Requirement */
 	private RequirementPriority priority;  
-	/** Must be a release number of the current project ***/
+	/** Must be a release number of the current project */
 	private String releaseNumber;    
-	/** An estimate of what this Requirement will take  */
+	/** An estimate of what this Requirement will take */
 	private int estimate;         
-	/** The actual effort it took for this Requirement  */
+	/** The actual effort it took for this Requirement */
 	private int actualEffort;
 	/** The iteration that this requirement is in */
 	private int assignedIteration;
 	/** This is the list of notes for this Requirement */
 	private ArrayList<Note> notes; 
+	/** This is the list of users associated with this Requirement */
+	private ArrayList<User> users;
 	
 	/** Basic constructor for a requirement */
 	public Requirement(){
@@ -78,15 +81,16 @@ public class Requirement extends AbstractModel {
 		this.setName(name);
 		this.setDescription(description);
 		this.setType(type);
-		this.setPriority(priority); // Initialize priority
-		this.setReleaseNumber(releaseNumber); // release number of current project
+		this.setPriority(priority); 			// Initialize priority
+		this.setReleaseNumber(releaseNumber); 	// release number of current project
 		this.setAssignedIteration(iterationID);
 		
 		this.setEstimate(0);
-		this.setActualEffort(0);			// Initial actual effort set to zero
-		this.setStatus(RequirementStatus.New);		// Initial status should be set to NEW
-		this.setId(-1); // (-1) will be a flag to the server/database that this value needs to be set
+		this.setActualEffort(0);				// Initial actual effort set to zero
+		this.setStatus(RequirementStatus.New);	// Initial status should be set to NEW
+		this.setId(-1); 						// (-1) will be a flag to the server/database that this value needs to be set
 		this.notes = new ArrayList<Note>();
+		this.users = new ArrayList<User>();
 	}
 	
 	
@@ -323,6 +327,7 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(reqUpdate.getActualEffort());
 		this.setType(reqUpdate.getType());
 		this.setNotes(reqUpdate.getNotes());
+		this.setUsers(reqUpdate.getUsers());
 		this.setAssignedIteration(reqUpdate.getAssignedIteration());
 	}
 
@@ -358,6 +363,20 @@ public class Requirement extends AbstractModel {
 		this.notes = notes;
 	}
 
+	/**
+	 * @return the notes
+	 */
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+
+	/**
+	 * @param notes the notes to set
+	 */
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
 
 	/**
 	 * @return the assignedIteration
