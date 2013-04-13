@@ -54,8 +54,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatu
 /**
  * The class <code>FilterManagerTest</code> contains tests for the class {@link <code>FilterManager</code>}
  * 
- * @pattern JUnit Test Case
- * 
  * @author Team 5
  */
 public class FilterManagerTest {

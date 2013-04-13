@@ -7,7 +7,15 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Janeway"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Network"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WPISuite-Interfaces"/>
-	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/calendar/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/calendar/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/charts/gnujaxp.jar"/>
+	<classpathentry kind="lib" path="lib/charts/iText-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/charts/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/charts/jfreechart-1.0.14.jar"/>
+	<classpathentry kind="lib" path="lib/charts/jfreechart-1.0.14-experimental.jar"/>
+	<classpathentry kind="lib" path="lib/charts/jfreechart-1.0.14-swt.jar"/>
+	<classpathentry kind="lib" path="lib/charts/servlet.jar"/>
+	<classpathentry kind="lib" path="lib/charts/swtgraphics2d.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

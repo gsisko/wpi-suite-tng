@@ -39,17 +39,20 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Delete
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
  * Panel to contain the list of filters that have been saved by the user
  */
 @SuppressWarnings("serial")
-public class FilterListPanel extends JPanel implements IListPanel{
+public class FilterListTab extends JPanel implements IListPanel{
 
 	/** The table of results */
 	protected JTable resultsTable;
@@ -67,12 +70,12 @@ public class FilterListPanel extends JPanel implements IListPanel{
 	private RetrieveModelController retrieveController;
 	private RetrieveAllModelsController retrieveAllController;
 
-	private final ListPanel parent;
+	private final ListTab parent;
 	/**
 	 * Construct the panel
 	 */
 
-	public FilterListPanel(ListPanel view) {
+	public FilterListTab(ListTab view) {
 		parent = view;
 		this.setBtnCreateIsCancel(false);
 		// Set the layout manager
@@ -86,7 +89,8 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
-
+		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
+		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
@@ -121,6 +125,8 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		btnCreate.addActionListener(new NewModelAction(this, parent.getFilterBuilderPanel()));
 
 		btnDelete.addActionListener(deleteController);
+		setDeleteEnabled(false); // Initialize
+
 	}
 
 	/**This method returns an ArrayList of active filters
@@ -162,7 +168,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 	/**
 	 * @return the parent
 	 */
-	public ListPanel getParent() {
+	public ListTab getParent() {
 		return parent;
 	}
 
@@ -198,8 +204,13 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		this.btnCreateIsCancel = btnCreateIsCancel;
 	}
 
-	@Override
-	public String[] getUniqueIdentifiers() {
+	/** Takes whatever model(s) is(are) stored in the the current panel,
+	 *  and returns the unique identifier(s) in an array. Generally
+	 *  pulls the highlighted identifiers from a table view.
+	 * 
+	 * @return An array of unique identifiers in the form of strings
+	 */
+	public String[] getSelectedUniqueIdentifiers() {
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 
@@ -211,14 +222,14 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	@Override
+	/** Sets the New button to clear/cancel	 */
 	public void setNewBtnToCancel() {
 		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	@Override
+	/** Sets the "Cancel" button back to "New Filter" 	 */
 	public void setCancelBtnToNew() {
 		// Set the cancel button back to New Filter if it was in cancel mode 
 		this.getBtnCreate().setText("New Filter"); 
@@ -226,7 +237,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 
 	}
 
-	@Override
+	/** Toggles between "New Model" and "Cancel" mode */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
 		if(btnCreateIsCancel)
@@ -236,14 +247,21 @@ public class FilterListPanel extends JPanel implements IListPanel{
 	}
 
 
-	@Override
+	/** Begins refresh process, starting with Filters
+	 * 
+	 * @return true on success, false on failure
+	 */
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
 		return true;
 	}
 
 
-	@Override
+	/** Gets the unique identifier of the list entry that was double clicked
+	 * 
+	 * @param me The mouse event that was triggered by a double click
+	 * @return The unique identifier, either name or ID number
+	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
 		JTable filters = parent.getTabPanel().getFilterList().getResultsTable();
@@ -259,20 +277,47 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		return filterId;
 	}
 
-	@Override
+	/** Show the filters in the list view
+	 * 
+	 * @param jsonString An array of models in the form of a JSON string
+	 */
 	public void showRecievedModels(String jsonString) {
 		// Setup data structures
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		
+
 		// Fire blanks so that the old contents are removed
 		this.getModel().setColumnNames(emptyColumns);
 		this.getModel().setData(emptyData);
 		this.getModel().fireTableStructureChanged();
 
-		
 		Filter[] filters = Filter.fromJSONArray(jsonString);
+		
+		// Check for invalid filters- Cancel upload and refresh again if necessary
+		for (Filter filter: filters)
+		{
+			// Only filter out filters that have Iteration as their type
+			if (filter.getType() == FilterType.Iteration){
+				// Only filter out filters that reference deleted iterations
+				boolean foundTheIter = false;
+				for (Iteration iter : parent.getParent().getAllIterations()) {				
+					// Check to see if the filter references a currently valid Iteration
+					if (filter.getValue().equals(iter.getID() + "") ){
+						foundTheIter = true; // means that the filter is valid and we can continue
+					}
+				}
+				// Indicates an invalid filter if the iteration referenced was not found
+				if (!foundTheIter){  
+					// Delete the filter. A retrieve all command will be sent after the deletion occurs
+					deleteController.performDeletion(Integer.toString(filter.getUniqueID()));
+					return; // end early
+				}	
+			}
+		}
+		
+		// The new list of filters has passed basic validation, so it is saved
 		this.setLocalFilters(filters);
+		parent.getParent().setAllFilters(filters);
 
 		// Add the list of filters to the FilterListPanel object
 		if (filters.length > 0) {
@@ -284,6 +329,7 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			for (int i = 0; i < filters.length; i++) {
 				entries[i][0] = String.valueOf(filters[i].getUniqueID());
 				entries[i][1] = filters[i].getType().toString();
+
 				if (filters[i].getComparator().toString().equals("Contains")) {
 					entries[i][2] = "c";
 				} else if (filters[i].getComparator().toString().equals("DoesNotContain")) {
@@ -291,7 +337,21 @@ public class FilterListPanel extends JPanel implements IListPanel{
 				} else {
 					entries[i][2] = filters[i].getComparator().toString();
 				}
-				entries[i][3] = filters[i].getValue();
+
+				String typeString = filters[i].getType().toString();
+				if (typeString == "Iteration") {
+					String strId = filters[i].getValue();
+					while (parent.getParent().getAllIterations().length == 0);
+					for (Iteration iter : parent.getParent().getAllIterations()) {
+						if (strId.equals(iter.getID() + "")) {
+							entries[i][3] = iter.getName();
+						}
+					}
+				}
+				else {
+					entries[i][3] = filters[i].getValue();
+				}
+
 				if (filters[i].isUseFilter()) {
 					entries[i][4] = "yes";
 				} else {
@@ -303,13 +363,25 @@ public class FilterListPanel extends JPanel implements IListPanel{
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+
+			//Hide the Id column
 			resultsTable.getColumn("Id").setMinWidth(0);
 			resultsTable.getColumn("Id").setMaxWidth(0);
 			resultsTable.getColumn("Id").setWidth(0);
+
+			//Set preferred column widths
+			//Type
+			resultsTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+			//Op
+			resultsTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+			//Value
+			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			//Active
+			resultsTable.getColumnModel().getColumn(4).setPreferredWidth(75);
 		}
-		
+
 		refreshRequirements();
-		
+
 	}
 
 	/**
@@ -326,11 +398,26 @@ public class FilterListPanel extends JPanel implements IListPanel{
 		this.retrieveAllController = retrieveAllController;
 	}
 
-	@Override
+	/** Refresh all the requirements    */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
 
-
+	/** Sets the delete button to either activated or deactivated 
+	 * 
+	 * @param setActive True to activate and false to deactivate
+	 */
+	public void setDeleteEnabled(boolean setActive) {
+		btnDelete.setEnabled(setActive);		
+	}
+	
+	/** Checks if the selected items can ALL be deleted or not. Currently, all 
+	 *  filters may be deleted, so only true is returned
+	 *  
+	 * @return false if any item selected cannot be deleted.
+	 */
+	public boolean areSelectedItemsDeletable(){
+		return true;
+	}	
 }
 

@@ -44,8 +44,8 @@ public class DeleteModelController implements ActionListener {
 	private final IBuilderPanel builderView;
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-	
-	
+
+
 	/** Constructs a controller with an action listener that can, on a button
 	 *  press, delete the highlighted items in a list view.
 	 * 
@@ -67,25 +67,31 @@ public class DeleteModelController implements ActionListener {
 	 * @param buttonPress The input that triggers the controller 
 	 */
 	public void actionPerformed(ActionEvent buttonPress) {		
-		
-		String[] uniqueIdentifiers = listView.getUniqueIdentifiers();
-		
+
+		String[] uniqueIdentifiers = listView.getSelectedUniqueIdentifiers();
+
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < uniqueIdentifiers.length; i++){			
-			// Create and send a request for the Model with the given ID
-			// Send message for each Model ID for deletion
-			Request request;
-			request = Network.getInstance().makeRequest("requirementmanager/" + modelName + "/" + uniqueIdentifiers[i], HttpMethod.DELETE);
-			request.addObserver(new DeleteModelObserver(this));
-			request.send();
+			performDeletion(uniqueIdentifiers[i]);
 		}
-		
+
 		// Remove anything in the builder panel whenever the delete button is pressed and also
 		// set the "Cancel" button back to new
 		builderView.resetFields();
 		builderView.setInputEnabled(false);
-			
+
+		listView.setDeleteEnabled(false);
 		listView.setCancelBtnToNew();
+	}
+
+	public void performDeletion(String uniqueIdentifier){
+		// Create and send a request for the Model with the given ID
+		// Send message for each Model ID for deletion
+		Request request;
+		request = Network.getInstance().makeRequest("requirementmanager/" + modelName + "/" + uniqueIdentifier, HttpMethod.DELETE);
+		request.addObserver(new DeleteModelObserver(this));
+		request.send();
+
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
@@ -97,7 +103,7 @@ public class DeleteModelController implements ActionListener {
 			System.err.println("Fail: cannot refresh views after deleting a" + modelName);
 		}
 	}
-	
+
 	/** Gets the model name in this controller
 	 * @return the name that is being played with in this controller
 	 */

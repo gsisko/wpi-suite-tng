@@ -36,8 +36,9 @@ import javax.swing.SwingUtilities;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementPanel.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.DummyTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
 /**
@@ -48,17 +49,18 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 
 	private ToolbarGroupView buttonGroup;
 	private JButton saveButton;
-	private RequirementPanel mainPanel;
+	private RequirementTab mainPanel;
 	private SaveRequirementController controller;
 	final JScrollPane mainPanelScrollPane;
 	private Tab containingTab;
 	private boolean inputEnabled = true;
+	private MainTabController tabController;
 
 	/**
 	 * Constructs a new CreateRequirementView where the user can enter the data for a new requirement.
 	 */
-	public RequirementView() {
-		this(new Requirement(), Mode.CREATE, null);
+	public RequirementView(MainTabController tabController) {
+		this(new Requirement(), Mode.CREATE, null, tabController);
 	}
 
 	/**
@@ -68,7 +70,9 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 * @param editMode	The editMode for editing the Requirement
 	 * @param tab		The Tab holding this RequirementView (can be null)
 	 */
-	public RequirementView(Requirement requirement, Mode editMode, Tab tab) {
+	public RequirementView(Requirement requirement, Mode editMode, Tab tab, MainTabController tabController) {
+		this.tabController = tabController;
+		
 		containingTab = tab;
 		if(containingTab == null) {
 			containingTab = new DummyTab();
@@ -93,7 +97,8 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		}
 		
 		// Instantiate the main create requirement panel
-		mainPanel = new RequirementPanel(this, requirement, editMode);
+		RequirementTab requirementTab = new RequirementTab(this,requirement, editMode);
+		mainPanel = requirementTab;
 		this.setLayout(new BorderLayout());
 		mainPanelScrollPane = new JScrollPane(mainPanel);
 		mainPanelScrollPane.getVerticalScrollBar().setUnitIncrement(10);
@@ -113,12 +118,19 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		this.add(mainPanelScrollPane, BorderLayout.CENTER);
 		controller = new SaveRequirementController(this);
 		mainPanel.getTabPanel().getNotePanel().setUp();
+		mainPanel.getIterationName();
 
 		// Instantiate the save button and add it to the button panel
 		saveButton = new JButton();
+		saveButton.setEnabled(false);
 		saveButton.setAction(new SaveChangesAction(controller));
 		buttonGroup.getContent().add(saveButton);
 		buttonGroup.setPreferredWidth(150);
+		
+		requirementTab.getAttributePanel().setSaveButton(saveButton);
+		requirementTab.getAttributePanel().txtNamecheck();
+		requirementTab.getAttributePanel().txtDescriptioncheck();
+		requirementTab.getAttributePanel().setsavedisabled();
 	}
 	
 	/**
@@ -129,6 +141,9 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void setInputEnabled(boolean enabled) {
 		inputEnabled = enabled;
+	}
+	
+	public void setsaveEnabled(boolean enabled) {
 
 		saveButton.setEnabled(enabled);
 	}
@@ -147,7 +162,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 * 
 	 * @return the main panel with the data fields
 	 */
-	public RequirementPanel getRequirementPanel() {
+	public RequirementTab getRequirementPanel() {
 		return mainPanel;
 	}
 	
@@ -193,5 +208,20 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	public SaveRequirementController getController() {
 		return controller;
 	}
+
+	/**
+	 * @return the tabController
+	 */
+	public MainTabController getTabController() {
+		return tabController;
+	}
+	
+	/**
+	 * @return the tabController
+	 */
+	public void setSaveButtonEnable(boolean isEnabled) {
+		saveButton.setEnabled(isEnabled);
+	}
+	
 	
 }

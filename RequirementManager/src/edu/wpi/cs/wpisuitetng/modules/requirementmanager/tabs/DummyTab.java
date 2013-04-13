@@ -44,7 +44,7 @@ public class DummyTab extends Tab {
 	 * @param view ignored
 	 * @param tabComponent ignored
 	 */
-	public DummyTab(MainTabView view, Component tabComponent) {
+	public DummyTab(MainTabPanel view, Component tabComponent) {
 		super(null, null);
 	}
 	

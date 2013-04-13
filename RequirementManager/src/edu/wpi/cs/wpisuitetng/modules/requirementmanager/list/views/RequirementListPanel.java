@@ -39,7 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
  * Panel to hold the results of a list for requirements
  */
 @SuppressWarnings("serial")
-public class ResultsPanel extends JPanel {
+public class RequirementListPanel extends JPanel {
 	
 	/** The table of results */
 	protected JTable resultsTable;
@@ -54,7 +54,7 @@ public class ResultsPanel extends JPanel {
 	 * Construct the panel
 	 * @param tabController The main tab controller
 	 */
-	public ResultsPanel(MainTabController tabController) {
+	public RequirementListPanel(MainTabController tabController) {
 		this.tabController = tabController;
 		
 		// Set the layout

@@ -23,11 +23,12 @@
 				debuglevel="lines,vars,source">
 			<classpath refid="classpath"/>
 		</javac>
-		<!-- temp hackaround-->
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/bin" overwrite="true"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/bin" overwrite="true"/> 
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/build" overwrite="true"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build" overwrite="true"/> 
+			<!-- temp hackaround-->
+		<unzip dest="../Janeway/bin">
+			<fileset dir="../RequirementManager/lib/">
+				<include name="**/**/*.jar"/>
+			</fileset>
+		</unzip>  
 	</target>
 
 	<target name="compile-test" depends="compile">
@@ -37,13 +38,17 @@
 			<classpath refid="test-classpath"/>
 		</javac>
 		<!-- temp hackaround-->
-		<unzip src="../RequirementManager/lib/jgoodies-looks-2.4.1.jar" dest="../Janeway/build-test" overwrite="true"/>
-		<unzip src="../RequirementManager/lib/jcalendar-1.4.jar" dest="../Janeway/build-test" overwrite="true"/> 
+		<unzip dest="../Janeway/bin">
+			<fileset dir="../RequirementManager/lib/">
+				<include name="**/**/*.jar"/>
+			</fileset>
+		</unzip> 
 	</target>
 
 	<target name="clean">
 		<delete dir="build"/>
 		<delete dir="build-test"/>
+		<delete dir="bin"/>
 	</target>
 
 	<target name="test" depends="compile-test">

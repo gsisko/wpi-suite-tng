@@ -1,0 +1,84 @@
+html
+{
+    width: auto;
+}
+
+body
+{
+    width: auto;
+    margin: 0px;
+}
+
+div
+{
+}
+
+.main
+{
+    width: 100%;
+    height: auto;
+}
+
+.leftPanel
+{
+    float: left;
+}
+
+.rightPanel
+{
+    float: right;
+}
+
+.basicBorder
+{
+    border-style: solid;
+    border-width: 1px;
+    
+    border-radius: 15px;
+    
+}
+
+div.moveTabs
+{
+    height: auto;
+}
+
+.switchButton
+{
+    padding-left: 3px;
+    padding-right: 3px;
+    background-color:  #a8a8a8;
+    
+}
+
+.center
+{
+    text-align: center;
+}
+
+.changeInstructionTab
+{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #d1d1d1;
+}
+
+.instructionText{
+	width: 100%;
+}
+
+.instructionPanel
+{
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.scrollable
+{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.instructionTitle{
+	font-size: x-large;
+}

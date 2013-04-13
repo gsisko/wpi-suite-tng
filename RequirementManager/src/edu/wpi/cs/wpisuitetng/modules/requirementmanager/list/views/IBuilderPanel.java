@@ -31,7 +31,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
  * 
  */
 public interface IBuilderPanel {
-	// enum to say whether or not you are creating
+	// Enum to say whether or not you are creating
 	public enum Mode {
 		CREATE,
 		EDIT

@@ -31,23 +31,23 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListRequirementsView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
  * It starts out showing the single Dashboard tab.
  */
 @SuppressWarnings("serial")
-public class MainTabView extends JTabbedPane {
+public class MainTabPanel extends JTabbedPane {
 	
 	private MainTabController mainTabController;
 	
-	public MainTabView() {
+	public MainTabPanel() {
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
 		mainTabController = new MainTabController(this);
-		addTab("List Requirements", new ImageIcon(), new ListRequirementsView(mainTabController),
+		addTab("List Requirements", new ImageIcon(), new ListView(mainTabController),
 		       "List of all requirements for this project");
 	}
 	
@@ -59,7 +59,7 @@ public class MainTabView extends JTabbedPane {
 	public void insertTab(String title, Icon icon, Component component, String tip, int index) {
 		super.insertTab(title, icon, component, tip, index);
 		// the Dashboard tab cannot be closed
-		if(!(component instanceof ListRequirementsView)) {
+		if(!(component instanceof ListView)) {
 			setTabComponentAt(index, new ClosableTabComponent(this));
 		}
 	}
