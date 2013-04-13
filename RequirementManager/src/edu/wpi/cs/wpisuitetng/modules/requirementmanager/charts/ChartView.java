@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,18 +86,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.statusBarPanel = new BarChartPanel();
 		this.iterationBarPanel = new BarChartPanel();
 
-		//Make each panel transparent to show the panels under it, so setVisibility works
-		this.statusPiePanel.setOpaque(false);
-		this.iterationPiePanel.setOpaque(false);
-		this.statusBarPanel.setOpaque(false);
-		this.iterationBarPanel.setOpaque(false);
-		
-		//Also make the background black with no alpha
-		this.statusPiePanel.setBackground(new Color(0,0,0,0)); 
-		this.iterationPiePanel.setBackground(new Color(0,0,0,0)); 
-		this.statusBarPanel.setBackground(new Color(0,0,0,0)); 
-		this.iterationBarPanel.setBackground(new Color(0,0,0,0)); 
-		
 		//Toolbar and buttons on the top
 		this.buttonGroup = new ToolbarGroupView("All Charts");
 		this.btnRefresh = new JButton("Refresh");
@@ -132,11 +119,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Bar Charts
 		this.add(iterationBarPanel, BorderLayout.CENTER);
 		this.add(statusBarPanel, BorderLayout.CENTER);
-		
+
 		//Options
 		this.add(optionsPanel, BorderLayout.WEST);
 
-		
 		//Set initial visibility and initial data
 		this.refreshData();
 	}
@@ -169,9 +155,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		statusBarPanel.refreshStatusChart(requirements);
 		iterationPiePanel.refreshIterationChart(requirements, iterations);
 		iterationBarPanel.refreshIterationChart(requirements, iterations);
-
-		//Refresh visibility
-		this.refreshChartVisibility();
 	}
 
 	/** Sets the type of chart to use
@@ -179,7 +162,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	 */
 	public void setChartType(String chartType) {
 		this.chartType = chartType;
-
+		//So it starts displaying immediately without a delay
+		this.refreshChartVisibility();
 	}
 
 	/** Sets the type of data visible
@@ -187,7 +171,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	 */
 	public void setDataTypeVisible(String dataType) {
 		this.chartDataType = dataType;
-
+		//So it starts displaying immediately without a delay
+		this.refreshChartVisibility();
 	}
 
 	/** Sets whether the data is filtered
@@ -210,28 +195,28 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** Sets visibility of charts based on chartDataType and chartType */
 	private void refreshChartVisibility(){
-		//Set everything to not visible then turn on the one we want
-		statusPiePanel.setVisible(false);
-		iterationPiePanel.setVisible(false);
-		statusBarPanel.setVisible(false);
-		iterationBarPanel.setVisible(false);
+		//Remove all charts then add the one we want
+		this.remove(statusPiePanel);
+		this.remove(iterationPiePanel);
+		this.remove(statusBarPanel);
+		this.remove(iterationBarPanel);
 
 		//Pie Chart
-		if (this.chartType == "Pie Chart"){
+		if (this.chartType.equals("Pie Chart")){
 			if(this.chartDataType =="Requirement Status"){
-				statusPiePanel.setVisible(true);
+				this.add(statusPiePanel);
 			}
 			else if(this.chartDataType == "Requirement Iteration"){
-				iterationPiePanel.setVisible(true);
+				this.add(iterationPiePanel);
 			}
 
-			//BarChart	
-		} else if (this.chartType == "Bar Chart"){
+		//BarChart	
+		} else if (this.chartType.equals("Bar Chart")){
 			if(this.chartDataType =="Requirement Status"){
-				statusBarPanel.setVisible(true);
+				this.add(statusBarPanel);
 			}
 			else if(this.chartDataType == "Requirement Iteration"){
-				iterationBarPanel.setVisible(true);
+				this.add(iterationBarPanel);
 			}
 		}
 
