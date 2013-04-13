@@ -42,7 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 
 @SuppressWarnings("serial")
-public class PieChartView extends JPanel implements IToolbarGroupProvider{
+public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** The panel containing buttons for the tool bar */
 	protected ToolbarGroupView buttonGroup;
@@ -72,7 +72,7 @@ public class PieChartView extends JPanel implements IToolbarGroupProvider{
 	 * Construct the view and initialize necessary internal variables
 	 * @param view A ListTab that this view will be used in
 	 */
-	public PieChartView(ListTab view) {
+	public ChartView(ListTab view) {
 		this.statusPiePanel = new PieChartPanel();
 		this.iterationPiePanel = new PieChartPanel();
 		this.buttonGroup = new ToolbarGroupView("All Charts");

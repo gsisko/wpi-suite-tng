@@ -43,7 +43,8 @@ import javax.swing.border.Border;
 public class ChartOptionsPanel extends JPanel{
 	
 	/** Chart panel that will have it's options set by this panel */
-	private PieChartPanel chart;
+	private PieChartPanel pieChart;
+	private BarChartPanel barChart;
 
 	//The labels
 	private  JLabel chartTypeLabel; //The label for the chartTypeBox
@@ -58,19 +59,19 @@ public class ChartOptionsPanel extends JPanel{
 	//The layout manager
 	protected BoxLayout layout; //The layout for this panel
 
-	private PieChartView parent; //Stores the PieChartView that contains the panel
+	private ChartView parent; //Stores the PieChartView that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 
 	/**
 	 * Construct the panel and initialize necessary internal variables
-	 * @param chart A PieChartPanel that will have it's options set by this Panel
-	 * @param parentView The PieChartView that contains this panel
+	 * @param pieChart A PieChartPanel that will have it's options set by this Panel
+	 * @param pieView The PieChartView that contains this panel
 	 */
-	public ChartOptionsPanel(PieChartPanel chart, PieChartView parentView){
+	public ChartOptionsPanel(PieChartPanel pieChart, ChartView pieView){
 		
-		this.chart = chart;//Set the chart
+		this.pieChart = pieChart;//Set the pie chart
 		
-		parent = parentView; //Set the parent
+		this.parent = pieView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
 
@@ -88,7 +89,7 @@ public class ChartOptionsPanel extends JPanel{
 		filtersLabel = new JLabel("Active filters:");
 
 		//Create the strings for the boxes
-		String[] typeStrings = { "Pie Chart"};
+		String[] typeStrings = { "Pie Chart", "Bar Chart"};
 		String[] dataStrings = { "Requirement Status", "Requirement Iteration"};
 		String[] filtersStrings = { "Applied", "Not Applied"};
 
@@ -158,7 +159,7 @@ public class ChartOptionsPanel extends JPanel{
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		enable(chartTypeBox, false);
+		enable(chartTypeBox, enabled);
 		enable(chartDataBox, enabled);
 		enable(filtersOptionsBox, enabled);
 
@@ -210,7 +211,7 @@ public class ChartOptionsPanel extends JPanel{
 	/**
 	 * @return the parent
 	 */
-	public PieChartView getParent() {
+	public ChartView getParent() {
 		return parent;
 	}
 	
@@ -227,14 +228,14 @@ public class ChartOptionsPanel extends JPanel{
 	 * @return the chart
 	 */
 	public PieChartPanel getChart() {
-		return chart;
+		return pieChart;
 	}
 
 	/**
 	 * @param chart the chart to set
 	 */
 	public void setChart(PieChartPanel chart) {
-		this.chart = chart;
+		this.pieChart = chart;
 	}
 	
 	/** Set the given box to enabled as well 

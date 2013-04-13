@@ -36,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.PieChartView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.ChartView;
 
 /**
  * Controls the behavior of a given MainTabView.
@@ -71,8 +71,8 @@ public class MainTabController {
 						((ListView)tab).getIterationController().refreshData();
 					} 
 					
-					if (tab instanceof PieChartView) {
-						((PieChartView)tab).refreshData();
+					if (tab instanceof ChartView) {
+						((ChartView)tab).refreshData();
 					}
 					
 					if (tab instanceof RequirementView){
@@ -95,7 +95,7 @@ public class MainTabController {
 	 * @return				The created Tab
 	 */
 	public Tab addTab(String title, Icon icon, Component component, String tip) {
-		if(component instanceof PieChartView && view.indexOfTab("Charts") != -1) {
+		if(component instanceof ChartView && view.indexOfTab("Charts") != -1) {
 			view.setSelectedIndex(view.indexOfTab("Charts"));
 			return null;
 		}
