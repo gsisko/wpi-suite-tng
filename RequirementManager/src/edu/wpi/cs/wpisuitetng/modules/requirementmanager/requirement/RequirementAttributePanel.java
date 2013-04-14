@@ -30,10 +30,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -45,8 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -54,8 +48,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.FieldChangeListener;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.ValidNameDescriptionListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
+/** This panel holds the fields necessary for making a Requirement, as well as 
+ *  the controllers necessary for saving, retrieving, viewing etc.
+ */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class RequirementAttributePanel extends JPanel {
 
@@ -69,8 +68,8 @@ public class RequirementAttributePanel extends JPanel {
 	private  JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
 	private  JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
 	private  JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
-	private  JLabel warningLabel;
-	private  JLabel warningLabel2;
+	private  JLabel warningName;
+	private  JLabel warningDescription;
 	//The fillable components
 	private  JTextField txtName;//The name text field 
 	private  JTextArea txtDescription;//The description text area
@@ -88,7 +87,14 @@ public class RequirementAttributePanel extends JPanel {
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
 	private boolean[] fieldsChanged;	// Have any fields been changed?
 	private JButton saveButton;
-	private boolean keepDisabled;
+	private Boolean validNameOrDescription;
+
+
+	// Listeners
+	ValidNameDescriptionListener nameAndDescriptionValidityListener;
+
+
+
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
@@ -111,8 +117,8 @@ public class RequirementAttributePanel extends JPanel {
 		for (int i = 0; i < fieldsChanged.length; i++) {
 			fieldsChanged[i] = false;
 		}
-		
-		keepDisabled = true;
+
+		validNameOrDescription = new Boolean(true);
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -143,8 +149,8 @@ public class RequirementAttributePanel extends JPanel {
 		releaseNumLabel = new JLabel("ReleaseNumber:");
 		estimateLabel = new JLabel("Estimate:");
 		actualEffortLabel = new JLabel("ActualEffort:");
-		warningLabel = new JLabel("Name must be between 0 and 100 characters");
-		warningLabel2 = new JLabel("Description cannot be blank");
+		warningName = new JLabel("Name must be between 0 and 100 characters");
+		warningDescription = new JLabel("Description cannot be blank");
 
 		//Construct the misc. components
 		txtName = new JTextField("");
@@ -182,130 +188,13 @@ public class RequirementAttributePanel extends JPanel {
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
 
-		// Add action listeners to the various fields
-		txtName.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtName.getText().equals(currentRequirement.getName())) {
-					changeField(txtName, 0, true);
-				} else {
-					changeField(txtName, 0, false);
-				}
-			}
-		});
-		txtDescription.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtDescription.getText().equals(currentRequirement.getDescription())) {
-					changeField(txtDescription, 1, true);
-				} else {
-					changeField(txtDescription, 1, false);
-				}
-			}
-		});
-		txtReleaseNumber.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtReleaseNumber.getText().equals(currentRequirement.getReleaseNumber() + "")) {
-					changeField(txtReleaseNumber, 2, true);
-				} else {
-					changeField(txtReleaseNumber, 2, false);
-				}
-			}
-		});
-		txtEstimate.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtEstimate.getText().equals(currentRequirement.getEstimate() + "")) {
-					changeField(txtEstimate, 3, true);
-				} else {
-					changeField(txtEstimate, 3, false);
-				}
-			}
-		});
-		txtActualEffort.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtActualEffort.getText().equals(currentRequirement.getActualEffort() + "")) {
-					changeField(txtActualEffort, 4, true);
-				} else {
-					changeField(txtActualEffort, 4, false);
-				}
-			}
-		});
-		typeBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
-						!(typeBox.getSelectedItem().toString().equals("")						// Hack
-								&& currentRequirement.getType() == RequirementType.NoType)) {
-					changeField(typeBox, 5, true);
-				} else {
-					changeField(typeBox, 5, false);
-				}
-			}
-		});
-		statusBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
-					changeField(statusBox, 6, true);
-				} else {
-					changeField(statusBox, 6, false);
-				}
-			}
-		});
-		priorityBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
-						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
-								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
-					changeField(priorityBox, 7, true);
-				} else {
-					changeField(priorityBox, 7, false);
-				}
-			}
-		});
-		iterationBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getIteration()))) {
-					changeField(iterationBox, 8, true);
-				} else {
-					changeField(iterationBox, 8, false);
-				}
-			}
-		});
-		iterationBox.addItemListener(new IterationChangeListener(this));
-
 		//Set the color for the warning labels
-		warningLabel.setForeground(Color.red);
-		warningLabel2.setForeground(Color.red);
+		warningName.setForeground(Color.red);
+		warningDescription.setForeground(Color.red);
 
 		//Set the sizes for the warning labels
-		warningLabel.setPreferredSize(new Dimension(410, 20));
-		warningLabel2.setPreferredSize(new Dimension(270, 20));
+		warningName.setPreferredSize(new Dimension(410, 20));
+		warningDescription.setPreferredSize(new Dimension(270, 20));
 
 		//Set the estimate and actual effort to 0 since this is a new requirement
 		txtEstimate.setText("0");
@@ -504,11 +393,14 @@ public class RequirementAttributePanel extends JPanel {
 		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 		attributePanelConstraints.gridwidth = 3; //This tells the layout that this component will be 2 cells wide
 		attributePanelConstraints.gridy = 1;//set the y coord of the cell of the layout we are describing
-		add(warningLabel, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		add(warningName, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 		attributePanelConstraints.gridy = 3;//set the y coord of the cell of the layout we are describing
-		add(warningLabel2, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		add(warningDescription, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//end warning labels
+
+
+
 
 	}
 
@@ -695,33 +587,9 @@ public class RequirementAttributePanel extends JPanel {
 	 *
 	 */
 	public void updateStatusSettings(String setStatus){
-		String[] statusStrings = null;
-		DefaultComboBoxModel  compbox;
-		//	currentRequirement.setStatus(RequirementStatus.toStatus(setStatus));
-		switch (RequirementStatus.toStatus(setStatus)){
-		case Open:
-			statusStrings = new String[] {  "Open", "Deleted" };
-			break;
 
-		case InProgress:
-			//if the oldStatus is InProgress or Completed, disable editing of the Estimate
-			//toggleEnabled(txtEstimate, false);
-			statusStrings = new String[] { "InProgress",  "Complete" };
-			break;
-
-		case Deleted:
-			toggleEnabled(txtName, false);
-			toggleEnabled(txtDescription, false);
-			toggleEnabled(typeBox, false);
-			toggleEnabled(priorityBox, false);
-			toggleEnabled(txtReleaseNumber, false);
-			toggleEnabled(txtEstimate, false);
-			toggleEnabled(txtActualEffort, false);
-			toggleEnabled(iterationBox, false);
-			statusStrings = new String[] { "Deleted" ,"Open"};
-			break;
-
-		case Complete:
+		// Can't edit these fields when the Req has certain statuses
+		if (setStatus.equals("Deleted") || setStatus.equals("Complete")){
 			toggleEnabled(txtName, false);
 			toggleEnabled(txtDescription, false);
 			toggleEnabled(typeBox, false);
@@ -730,19 +598,9 @@ public class RequirementAttributePanel extends JPanel {
 			toggleEnabled(txtEstimate, false);
 			toggleEnabled(txtActualEffort, false);
 			toggleEnabled(iterationBox, false);			
-			statusStrings = new String[] { "Complete", "Open", "Deleted" };
-			break;
-
-		case New:
-			statusStrings = new String[] { "New", "Deleted" };
-			break;
-
-		default:
-			System.err.println("An unknown status was entered for the Requirement. Problem!");
-			return;
 		}
 		// Sets the selected entry to the first, which will be correct for each.
-		compbox = new DefaultComboBoxModel (statusStrings);
+		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses( setStatus));
 		statusBox.setModel(compbox);
 		statusBox.setSelectedIndex(0);
 
@@ -925,151 +783,44 @@ public class RequirementAttributePanel extends JPanel {
 		this.saveButton = saveButton;
 	}
 
+
+	//TODO phase this method out
+	/** Sets up the listener on the name field    	 */
 	public void txtNamecheck(){
-		txtName.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-					warningLabel.setText("Name must be between 0 and 100 characters");
-					saveButton.setEnabled(false);
-					keepDisabled = true;
-				}
-				else{
-					warningLabel.setText(" ");
-					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(isFieldsChanged());
-						keepDisabled = false;
-					}
-				}
-
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-					warningLabel.setText("Name must be between 0 and 100 characters");
-					saveButton.setEnabled(false);
-					keepDisabled = true;
-				}
-				else{
-					warningLabel.setText(" ");
-					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(isFieldsChanged());
-						keepDisabled = false;
-					}
-				}
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-					warningLabel.setText("Name must be between 0 and 100 characters");
-					saveButton.setEnabled(false);
-					keepDisabled = true;
-				}
-				else{
-					warningLabel.setText(" ");
-					if (txtDescription.getText().length()>0){
-						saveButton.setEnabled(isFieldsChanged());
-						keepDisabled = false;
-					}
-				}
-
-			}
-
-		});
 
 	}
 
+	//TODO phase this method out
+	/** Sets up the listener on the description field   */
 	public void txtDescriptioncheck(){
-		txtDescription.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				if (txtDescription.getText().length()<1){
-					warningLabel2.setText("Description cannot be blank");
-					saveButton.setEnabled(false);
-					keepDisabled = true;
-				}
-				else{
-					warningLabel2.setText(" ");
-					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-						saveButton.setEnabled(isFieldsChanged());
-						keepDisabled = false;
-					}
-				}
-
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				if (txtDescription.getText().length()<1){
-					warningLabel2.setText("Description cannot be blank");
-					saveButton.setEnabled(false);
-					keepDisabled = true;
-				}
-				else{
-					warningLabel2.setText(" ");
-					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-						saveButton.setEnabled(isFieldsChanged());
-						keepDisabled = false;
-					}
-				}
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				if (txtDescription.getText().length()<1){
-					warningLabel2.setText("Description cannot be blank");
-					saveButton.setEnabled(false);
-					keepDisabled = true;
-				}
-				else{
-					warningLabel2.setText(" ");
-					if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-						saveButton.setEnabled(isFieldsChanged());
-						keepDisabled = false;
-					}
-				}
-
-			}
-
-		});
-
 	}
+
+
+
 	public void setsavedisabled()
-	{	if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-		warningLabel.setText("Name must be between 0 and 100 characters");
-		saveButton.setEnabled(false);
-	}	
-	else 
-	{
-		warningLabel.setText(" ");
-		if (txtDescription.getText().length()>0){
-			saveButton.setEnabled(isFieldsChanged());
-			keepDisabled = false;
+	{	
+		if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
+			warningName.setText("Name must be between 0 and 100 characters");
+			saveButton.setEnabled(false);
+		}	else {
+			warningName.setText(" ");
+			if (txtDescription.getText().length()>0){
+				saveButton.setEnabled(isFieldsChanged());
+				//		validNameOrDescription = Boolean.valueOf(false);
+			}
 		}
-
-	}
-	if (txtDescription.getText().length()<1){
-		warningLabel2.setText("Description cannot be blank");
-		saveButton.setEnabled(false);}
-	else{
-		warningLabel2.setText(" ");
-		if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-			saveButton.setEnabled(isFieldsChanged());
-			keepDisabled = false;
+		if (txtDescription.getText().length()<1){
+			warningDescription.setText("Description cannot be blank");
+			saveButton.setEnabled(false);
+		} else {
+			warningDescription.setText(" ");
+			if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
+				saveButton.setEnabled(isFieldsChanged());
+				//		validNameOrDescription = Boolean.valueOf(false);
+			}
 		}
 	}
-}
 
-	private void setAllFieldsChanged(boolean b) {
-		for (int i = 0; i < fieldsChanged.length; i++) {
-			fieldsChanged[i] = b;
-		}
-
-	}
 
 
 	public String getIterationNameById(int id)
@@ -1083,7 +834,12 @@ public class RequirementAttributePanel extends JPanel {
 		return "";
 	}
 
-
+	/** Takes a JComponent and sets its color if its values were changed
+	 * 
+	 * @param obj The component that is being watched
+	 * @param i   The index in the boolean array that indicates changes
+	 * @param toSet True or false for activation
+	 */
 	public void changeField(JComponent obj, int i, boolean toSet) {
 		if (toSet) {
 			obj.setBackground(new Color(248,253,188));
@@ -1092,9 +848,74 @@ public class RequirementAttributePanel extends JPanel {
 			toggleEnabled(obj, obj.isEnabled());
 			fieldsChanged[i] = false;
 		}
-		if (saveButton != null)
-			saveButton.setEnabled(isFieldsChanged());
-		if (saveButton != null && keepDisabled)
-			saveButton.setEnabled(false);
+
+		if (saveButton != null && nameAndDescriptionValidityListener != null){
+			// TODO WTF IS GOING ON WITH validNameOrDescription!!!?!?!?
+			saveButton.setEnabled(isFieldsChanged() & nameAndDescriptionValidityListener.isValidNameAndDes());
+		}
+		//		if (saveButton != null && validNameOrDescription.booleanValue())
+		//			saveButton.setEnabled(false);
+	}
+
+	/** Sets up the controllers and listeners for this panel
+	 * 
+	 */
+	public void setupControllersAndListeners() {
+		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, validNameOrDescription);
+		txtName.addKeyListener(nameAndDescriptionValidityListener);
+		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
+		
+		
+		// Add action listeners to the various fields
+		txtName.addKeyListener(new FieldChangeListener(this, txtName, currentRequirement,"Name",0));
+		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, currentRequirement,"Description",1));
+		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, currentRequirement,"ReleaseNumber",2));
+		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, currentRequirement,"Estimate",3));
+		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, currentRequirement,"Estimate",4));
+		typeBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
+						!(typeBox.getSelectedItem().toString().equals("")						// Hack
+								&& currentRequirement.getType() == RequirementType.NoType)) {
+					changeField(typeBox, 5, true);
+				} else {
+					changeField(typeBox, 5, false);
+				}
+			}
+		});
+		statusBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
+					changeField(statusBox, 6, true);
+				} else {
+					changeField(statusBox, 6, false);
+				}
+			}
+		});
+		priorityBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
+						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
+								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
+					changeField(priorityBox, 7, true);
+				} else {
+					changeField(priorityBox, 7, false);
+				}
+			}
+		});
+		iterationBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getIteration()))) {
+					changeField(iterationBox, 8, true);
+				} else {
+					changeField(iterationBox, 8, false);
+				}
+			}
+		});
+		iterationBox.addItemListener(new IterationChangeListener(this));
 	}
 }

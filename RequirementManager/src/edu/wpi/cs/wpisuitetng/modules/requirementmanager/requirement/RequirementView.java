@@ -131,6 +131,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		requirementTab.getAttributePanel().txtNamecheck();
 		requirementTab.getAttributePanel().txtDescriptioncheck();
 		requirementTab.getAttributePanel().setsavedisabled();
+		requirementTab.getAttributePanel().setupControllersAndListeners();
 	}
 	
 	/**
