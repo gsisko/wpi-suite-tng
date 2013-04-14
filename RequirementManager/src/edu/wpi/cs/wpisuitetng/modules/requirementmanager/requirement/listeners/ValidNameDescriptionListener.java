@@ -56,23 +56,8 @@ public class ValidNameDescriptionListener implements KeyListener{
 	Boolean validNameAndDescription;
 
 	/**	 This is the basic constructor constructor. It takes every reference that it needs in order to perform all of its actions
-	 * 
-	 * @param txtName         The name text box to watch 
-	 * @param txtDescription  The description text box to watch
-	 * @param warningLabel    The warning label to set when the name is not appropriately filled
-	 * @param warningLabel2   The warning label to set when the description is not appropriately filled
-	 * @param saveButton      The save button in the tool bar to set enabled/disabled
-	 * @param validNameAndDescription    The state that the save button should be kept in
-	 */
-	public ValidNameDescriptionListener(JTextField txtName, JTextArea txtDescription, JLabel warningLabel, JLabel warningLabel2,JButton saveButton, Boolean keepDisabled ){
-		this.txtName = txtName;
-		this.txtDescription = txtDescription;
-		this.warningName = warningLabel;
-		this.warningDescription = warningLabel2;
-		this.saveButton = saveButton;
-		this.validNameAndDescription = keepDisabled;
-	}
-
+	* @param thePanel The panel with the two fields that this listener is watching
+	*/
 	public ValidNameDescriptionListener(RequirementAttributePanel thePanel){
 		this.thePanel = thePanel;
 	}
@@ -82,7 +67,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 	 */
 	public void keyReleased(KeyEvent e) {
 	//	System.out.println("Name/Description: Key released");
-		thePanel.areNameAndDescriptionValid();
+		thePanel.setSaveButtonWhenNameAndDescriptionAreValid();
 	}
 
 	/** This method is unused but required by the interface   */

@@ -66,6 +66,7 @@ public class BoxChangeListener implements PopupMenuListener{
 		this.toWatch = toWatch;
 		this.fieldToCheck = fieldToCheck;
 		this.indexOfBoolean =  indexOfBoolean;
+		
 		// Get the getter method for the requirement
 		Method[] allMethods = (Requirement.class).getMethods();
 		for(Method m: allMethods){//Cycles through all of the methods in the requirement Class

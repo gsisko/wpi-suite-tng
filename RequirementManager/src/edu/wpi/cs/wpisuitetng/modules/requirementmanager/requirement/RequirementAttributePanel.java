@@ -115,9 +115,7 @@ public class RequirementAttributePanel extends JPanel {
 		// Indicate that input is enabled
 		inputEnabled = true;
 		fieldsChanged = new boolean[10];
-		for (int i = 0; i < fieldsChanged.length; i++) {
-			fieldsChanged[i] = false;
-		}
+		setFieldsChanged(false);
 
 		validNameAndDescription = new Boolean(true);
 
@@ -129,7 +127,7 @@ public class RequirementAttributePanel extends JPanel {
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 30)); 
 
 		addComponents();//Add the components to the panel
-		updateFields();//Update the fields to those given in the currentRequirement, if necessary.
+		populateFields();//Update the fields to those given in the currentRequirement, if necessary.
 
 	}
 
@@ -405,207 +403,9 @@ public class RequirementAttributePanel extends JPanel {
 
 	}
 
-	/** Gets the names of the current iterations and puts them into the Iteration
-	 *  selection combo box. Also sets the selected index appropriately.
-	 */
-	public void fillIterationSelectionBox() {
-		// Iterations cannot be assigned when there is no estimate saved
-		if (currentRequirement.getEstimate() <= 0){
-			iterationBox.setEnabled(false);
-		} else {
-			iterationBox.setEnabled(true);
-		}
 
-		Iteration[] allIterations = this.getAllIterations();
 
-		String[] names = new String[allIterations.length];
-		for (int i = 0; i < allIterations.length; ++i) {
-			names[i] = (allIterations[i].getName());
-		}
 
-		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
-		iterationBox.setModel(valb);
-		//iterationBox.addItemListener(new IterationChangeListener(this));
-
-		//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
-		// First find the name of the iteration by ID
-		for (int i = 0; i < allIterations.length; i++){
-			// Figure out what position in the referenced iteration is at
-			if (allIterations[i].getID() ==  currentRequirement.getIteration()){
-				// Set the index of the box to the current index, and all is well
-				iterationBox.setSelectedIndex(i);
-			}
-		}
-	}
-
-	/** Gets the iterations for the current project.
-	 * 
-	 * @return All of the iterations for the current project
-	 */
-	public Iteration[] getAllIterations(){
-		return parent.getAllIterations();	
-	}
-
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
-	 * JComponent#setEnabled because setEnabled does not affect its children.
-	 * 
-	 * @param enabled Whether or not input is enabled.
-	 */
-	protected void setInputEnabled(boolean enabled){
-		inputEnabled = enabled;
-
-		toggleEnabled(txtName, enabled);
-		toggleEnabled(txtDescription, enabled);
-		toggleEnabled(typeBox, enabled);
-		toggleEnabled(statusBox, enabled);
-		toggleEnabled(priorityBox, enabled);
-		toggleEnabled(txtReleaseNumber, enabled);
-		if (currentRequirement.getStatus() == RequirementStatus.InProgress)
-			toggleEnabled(txtEstimate, false);
-		else
-			toggleEnabled(txtEstimate, enabled);
-		toggleEnabled(txtActualEffort, enabled);
-		toggleEnabled(iterationBox, enabled);
-
-		// Time to refresh this box if we are enabling all the boxes
-		if (enabled){
-			fillIterationSelectionBox();
-		}
-	}
-
-	/**
-	 * Sets the appropriate fields disabled upon creation
-	 * 
-	 */
-	protected void toggleCreationDisable(){
-		//Set the following fields to be initially grayed out
-		toggleEnabled(txtEstimate, false);
-		toggleEnabled(txtActualEffort, false);
-		toggleEnabled(statusBox, false);
-		toggleEnabled(iterationBox, false);
-
-	}
-
-	/**
-	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement and sets the 
-	 * RequirementPanel's "mode" to {@link Mode#EDIT}.
-	 * 
-	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
-	 */
-	protected void updateModel(Requirement requirement) {
-		updateModel(requirement, Mode.EDIT);
-	}
-
-	/**
-	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement.
-	 * 
-	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
-	 * @param newMode		The new "mode"
-	 */
-	protected void updateModel(Requirement requirement, Mode newMode){
-		mode = newMode;
-		currentRequirement = requirement;
-
-		updateFields();
-		revalidate();
-
-		layout.invalidateLayout(this);
-		layout.layoutContainer(this);
-		repaint();
-	}
-
-	/**
-	 * Enables or disables a given JComponent and sets is color accordingly
-	 * 
-	 * @param box Box to be enabled / disabled
-	 * @param enabled True for enable, false for disable
-	 */
-	public void toggleEnabled(JComponent box, boolean enabled) {
-		if (enabled) {
-			box.setEnabled(true);
-			box.setBackground(Color.WHITE);
-		}
-		else {
-			box.setEnabled(false);
-			box.setBackground(new Color(238,238,238));
-		}
-	}
-
-	/**
-	 * Updates the RequirementPanel's fields to match those in the current model (stored in "currentRequirement").
-	 */
-	private void updateFields(){
-
-		if (mode == Mode.EDIT)//If we are editing an existing requirement
-		{
-			//Enable all fields
-			setInputEnabled(true);
-
-			//Set the fields to the values passed in with "requirement"
-			txtName.setText(currentRequirement.getName());
-			txtDescription.setText(currentRequirement.getDescription());
-			txtReleaseNumber.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
-			txtEstimate.setText( String.valueOf(currentRequirement.getEstimate()) );
-			txtActualEffort.setText(String.valueOf(currentRequirement.getActualEffort()) );
-
-			String oldType = (currentRequirement.getType()).toString();//grab the string version of the type passed in with "requirement"
-			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
-			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
-
-			//Set the selected index of the typeBox to the correct value, based on the oldType
-			if (oldType.equals("Epic"))
-				typeBox.setSelectedIndex(1);
-			else if (oldType.equals("Theme"))
-				typeBox.setSelectedIndex(2);
-			else if (oldType.equals("UserStory"))
-				typeBox.setSelectedIndex(3);
-			else if (oldType.equals("NonFunctional"))
-				typeBox.setSelectedIndex(4);
-			else if (oldType.equals("Scenario"))
-				typeBox.setSelectedIndex(5);
-			else// oldType = "NoType"
-				typeBox.setSelectedIndex(0);
-
-			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
-			if (oldPriority.equals("High"))
-				priorityBox.setSelectedIndex(1);
-			else if (oldPriority.equals("Medium"))
-				priorityBox.setSelectedIndex(2);
-			else if (oldPriority.equals("Low"))
-				priorityBox.setSelectedIndex(3);
-			else // oldPriority = "NoPriority"
-				priorityBox.setSelectedIndex(0);
-
-			updateStatusSettings(oldStatus);
-		}
-		setFieldsChanged(false);
-	}
-
-	/**
-	 * This section limits the status changes available to the user
-	 * in the JComboBox for status based on requirements
-	 *
-	 */
-	public void updateStatusSettings(String setStatus){
-
-		// Can't edit these fields when the Req has certain statuses
-		if (setStatus.equals("Deleted") || setStatus.equals("Complete")){
-			toggleEnabled(txtName, false);
-			toggleEnabled(txtDescription, false);
-			toggleEnabled(typeBox, false);
-			toggleEnabled(priorityBox, false);
-			toggleEnabled(txtReleaseNumber, false);
-			toggleEnabled(txtEstimate, false);
-			toggleEnabled(txtActualEffort, false);
-			toggleEnabled(iterationBox, false);			
-		}
-		// Sets the selected entry to the first, which will be correct for each.
-		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses( setStatus));
-		statusBox.setModel(compbox);
-		statusBox.setSelectedIndex(0);
-
-	}
 
 	/**
 	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
@@ -678,28 +478,6 @@ public class RequirementAttributePanel extends JPanel {
 	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
-	}
-
-	/**
-	 * Gets a requirement from the current text fields
-	 * TODO error check
-	 * 
-	 * @return Requirement made from the text fields
-	 */
-	public Requirement getRequirement()
-	{
-		// get the fields from the UI
-		String name = this.getRequirementName().getText();
-		String description = this.getRequirementDescription().getText();
-		String releaseNumber = this.getRequirementReleaseNumber().getText();
-		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
-		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
-
-
-		Requirement toReturn = new Requirement(name, description, type, priority,  releaseNumber, 0);
-
-		return toReturn;
-
 	}
 
 	/**
@@ -776,63 +554,12 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	public JButton getSaveButton() {
-		return saveButton;
-	}
-
+	/** Setter for the saveButton
+	 *  
+	 * @param saveButton The button that should be referenced as the save button. Located in tool bar
+	 */
 	public void setSaveButton(JButton saveButton) {
 		this.saveButton = saveButton;
-	}
-
-
-	//TODO phase this method out
-	/** Sets up the listener on the name field    	 */
-	public void txtNamecheck(){
-
-	}
-
-	//TODO phase this method out
-	/** Sets up the listener on the description field   */
-	public void txtDescriptioncheck(){
-	}
-
-
-
-	public void setsavedisabled()
-	{	
-		if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-			warningName.setText("Name must be between 0 and 100 characters");
-			saveButton.setEnabled(false);
-		}	else {
-			warningName.setText(" ");
-			if (txtDescription.getText().length()>0){
-				saveButton.setEnabled(isFieldsChanged());
-				//		validNameAndDescription = Boolean.valueOf(false);
-			}
-		}
-		if (txtDescription.getText().length()<1){
-			warningDescription.setText("Description cannot be blank");
-			saveButton.setEnabled(false);
-		} else {
-			warningDescription.setText(" ");
-			if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
-				saveButton.setEnabled(isFieldsChanged());
-				//		validNameAndDescription = Boolean.valueOf(false);
-			}
-		}
-	}
-
-
-
-	public String getIterationNameById(int id)
-	{
-		Iteration[] allIterations = this.parent.getAllIterations();
-		for (int i = 0; i < allIterations.length; i++) {
-			if (allIterations[i].getID() == id) {
-				return allIterations[i].getName();
-			}
-		}
-		return "";
 	}
 
 	/** Takes a JComponent and sets its color if its values were changed
@@ -851,24 +578,18 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		if (saveButton != null && nameAndDescriptionValidityListener != null){
-			// TODO WTF IS GOING ON WITH validNameAndDescription!!!?!?!?
-			saveButton.setEnabled(isFieldsChanged() && areNameAndDescriptionValid());
+			saveButton.setEnabled(isFieldsChanged() && setSaveButtonWhenNameAndDescriptionAreValid());
 		}
-		//		if (saveButton != null && validNameAndDescription.booleanValue())
-		//			saveButton.setEnabled(false);
 	}
 
-	/** Sets up the controllers and listeners for this panel
-	 * 
-	 */
+	/** Sets up the controllers and listeners for this panel	 */
 	public void setupControllersAndListeners() {
-	//	nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, validNameAndDescription);
+		// Add a listener to check the Name and Description boxes for validity
 		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(this);
 		txtName.addKeyListener(nameAndDescriptionValidityListener);
 		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
 
-
-		// Add action listeners to the various fields
+		// Add change listeners that turn fields yellow when changed
 		txtName.addKeyListener(new FieldChangeListener(this, txtName, "Name",0));
 		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, "Description",1));
 		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, "ReleaseNumber",2));
@@ -879,13 +600,16 @@ public class RequirementAttributePanel extends JPanel {
 		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,  "Priority",7 ));
 		iterationBox.addPopupMenuListener(new BoxChangeListener(this, iterationBox,  "Iteration",8 ));
 
+		// Add a listener to the iteration box that changes the Req's status when the iteration is changed
 		iterationBox.addPopupMenuListener(new IterationChangeListener(this));
 	}
 
 	/** Checks the name and description fields for changes and sets the warning labels and 
-	 *  save button status appropriately             
+	 *  save button status appropriately            
+	 *  
+	 *   @return True if the name and description fields are valid, false otherwise
 	 */
-	public boolean areNameAndDescriptionValid(){
+	public boolean setSaveButtonWhenNameAndDescriptionAreValid(){
 		// Initialize flags
 		boolean nameGood = true;
 		boolean desGood = true;
@@ -914,6 +638,226 @@ public class RequirementAttributePanel extends JPanel {
 		return validNameAndDescription;
 	}	
 
+	/**
+	 * Gets a requirement from the current text fields
+	 * TODO error check
+	 * 
+	 * @return Requirement made from the text fields
+	 */
+	public Requirement getRequirement()
+	{
+		// get the fields from the UI
+		String name = this.getRequirementName().getText();
+		String description = this.getRequirementDescription().getText();
+		String releaseNumber = this.getRequirementReleaseNumber().getText();
+		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
+		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
+
+
+		Requirement toReturn = new Requirement(name, description, type, priority,  releaseNumber, 0);
+
+		return toReturn;
+
+	}
+	
+
+	/**
+	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	 * JComponent#setEnabled because setEnabled does not affect its children.
+	 * 
+	 * @param enabled Whether or not input is enabled.
+	 */
+	protected void setInputEnabled(boolean enabled){
+		inputEnabled = enabled;
+
+		toggleEnabled(txtName, enabled);
+		toggleEnabled(txtDescription, enabled);
+		toggleEnabled(typeBox, enabled);
+		toggleEnabled(statusBox, enabled);
+		toggleEnabled(priorityBox, enabled);
+		toggleEnabled(txtReleaseNumber, enabled);
+		if (currentRequirement.getStatus() == RequirementStatus.InProgress)
+			toggleEnabled(txtEstimate, false);
+		else
+			toggleEnabled(txtEstimate, enabled);
+		toggleEnabled(txtActualEffort, enabled);
+		toggleEnabled(iterationBox, enabled);
+
+		// Time to refresh this box if we are enabling all the boxes
+		if (enabled){
+			fillIterationSelectionBox();
+		}
+	}
+
+	/**
+	 * Sets the appropriate fields disabled upon creation
+	 * 
+	 */
+	protected void toggleCreationDisable(){
+		//Set the following fields to be initially grayed out
+		toggleEnabled(txtEstimate, false);
+		toggleEnabled(txtActualEffort, false);
+		toggleEnabled(statusBox, false);
+		toggleEnabled(iterationBox, false);
+
+	}
+
+	/**
+	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement and sets the 
+	 * RequirementPanel's "mode" to {@link Mode#EDIT}.
+	 * 
+	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
+	 */
+	protected void updateModel(Requirement requirement) {
+		updateModel(requirement, Mode.EDIT);
+	}
+
+	/**
+	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement.
+	 * 
+	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
+	 * @param newMode		The new "mode"
+	 */
+	protected void updateModel(Requirement requirement, Mode newMode){
+		mode = newMode;
+		currentRequirement = requirement;
+
+		populateFields();
+		
+		
+		// TODO: better comments here
+		revalidate();
+		layout.invalidateLayout(this);
+		layout.layoutContainer(this);
+		repaint();
+	}
+
+	/**
+	 * Enables or disables a given JComponent and sets is color accordingly
+	 * 
+	 * @param box Box to be enabled / disabled
+	 * @param enabled True for enable, false for disable
+	 */
+	public void toggleEnabled(JComponent box, boolean enabled) {
+		if (enabled) {
+			box.setEnabled(true);
+			box.setBackground(Color.WHITE);
+		}
+		else {
+			box.setEnabled(false);
+			box.setBackground(new Color(238,238,238));
+		}
+	}
+
+	/**
+	 * Updates the RequirementPanel's fields to match those in the current model (stored in "currentRequirement").
+	 */
+	private void populateFields(){
+
+		if (mode == Mode.EDIT)//If we are editing an existing requirement
+		{
+			//Enable all fields
+//			setInputEnabled(true);
+
+			//Set the fields to the values passed in with "requirement"
+			txtName.setText(currentRequirement.getName());
+			txtDescription.setText(currentRequirement.getDescription());
+			txtReleaseNumber.setText( String.valueOf(currentRequirement.getReleaseNumber()) );
+			txtEstimate.setText( String.valueOf(currentRequirement.getEstimate()) );
+			txtActualEffort.setText(String.valueOf(currentRequirement.getActualEffort()) );
+
+			String oldType = (currentRequirement.getType()).toString();//grab the string version of the type passed in with "requirement"
+			String oldStatus = (currentRequirement.getStatus()).toString();//grab the string version of the status passed in with "requirement"
+			String oldPriority = (currentRequirement.getPriority()).toString();//grab the string version of the priority passed in with "requirement"
+
+			//Set the selected index of the typeBox to the correct value, based on the oldType
+			if (oldType.equals("Epic"))
+				typeBox.setSelectedIndex(1);
+			else if (oldType.equals("Theme"))
+				typeBox.setSelectedIndex(2);
+			else if (oldType.equals("UserStory"))
+				typeBox.setSelectedIndex(3);
+			else if (oldType.equals("NonFunctional"))
+				typeBox.setSelectedIndex(4);
+			else if (oldType.equals("Scenario"))
+				typeBox.setSelectedIndex(5);
+			else// oldType = "NoType"
+				typeBox.setSelectedIndex(0);
+
+			//Set the selected index of the priorityBox to the correct value, based on the oldPriority
+			if (oldPriority.equals("High"))
+				priorityBox.setSelectedIndex(1);
+			else if (oldPriority.equals("Medium"))
+				priorityBox.setSelectedIndex(2);
+			else if (oldPriority.equals("Low"))
+				priorityBox.setSelectedIndex(3);
+			else // oldPriority = "NoPriority"
+				priorityBox.setSelectedIndex(0);
+
+			updateStatusSettings(oldStatus);
+		}
+		
+		// Set the status of the fields to unchanged because they just got populated
+		setFieldsChanged(false);
+	}
+
+	/**
+	 * This section limits the status changes available to the user
+	 * in the JComboBox for status based on requirements
+	 *
+	 */
+	public void updateStatusSettings(String setStatus){
+
+		// Can't edit these fields when the Req has certain statuses
+		if (setStatus.equals("Deleted") || setStatus.equals("Complete")){
+			toggleEnabled(txtName, false);
+			toggleEnabled(txtDescription, false);
+			toggleEnabled(typeBox, false);
+			toggleEnabled(priorityBox, false);
+			toggleEnabled(txtReleaseNumber, false);
+			toggleEnabled(txtEstimate, false);
+			toggleEnabled(txtActualEffort, false);
+			toggleEnabled(iterationBox, false);			
+		}
+		// Sets the selected entry to the first, which will be correct for each.
+		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses( setStatus));
+		statusBox.setModel(compbox);
+		statusBox.setSelectedIndex(0);
+
+	}
+	
+	/** Gets the names of the current iterations and puts them into the Iteration
+	 *  selection combo box. Also sets the selected index appropriately.
+	 */
+	public void fillIterationSelectionBox() {
+		// Iterations cannot be assigned when there is no estimate saved
+		if (currentRequirement.getEstimate() <= 0){
+			iterationBox.setEnabled(false);
+		} else {
+			iterationBox.setEnabled(true);
+		}
+
+		Iteration[] allIterations = parent.getAllIterations();
+
+		String[] names = new String[allIterations.length];
+		for (int i = 0; i < allIterations.length; ++i) {
+			names[i] = (allIterations[i].getName());
+		}
+
+		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
+		iterationBox.setModel(valb);
+
+		//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
+		// First find the name of the iteration by ID
+		for (int i = 0; i < allIterations.length; i++){
+			// Figure out what position in the referenced iteration is at
+			if (allIterations[i].getID() ==  currentRequirement.getIteration()){
+				// Set the index of the box to the current index, and all is well
+				iterationBox.setSelectedIndex(i);
+			}
+		}
+	}
+	
 	/** When the selected value in the iteration box is changed, this method is 
 	 * called by the listener watching the box. Under certain circumstances,
 	 * this method changes the Requirement's status.
@@ -930,7 +874,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Only valid in EDIT mode
 		if (this.getMode().equals(Mode.EDIT) ){
-			RequirementStatus currentStatus = this.getCurrentRequirement().getStatus(); 			
+			RequirementStatus currentStatus = currentRequirement.getStatus(); 			
 			
 			// You can't change the status while Deleted or Complete anyways, so this is a check.
 			if ( currentStatus == RequirementStatus.Complete 	|| currentStatus == RequirementStatus.Deleted ){
@@ -944,11 +888,11 @@ public class RequirementAttributePanel extends JPanel {
 					this.updateStatusSettings("New");
 					return;
 				}
-				this.getCurrentRequirement().setStatus(RequirementStatus.Open);
 				this.updateStatusSettings("Open");
 			} else {
 				this.updateStatusSettings("InProgress");
 			}
 		}
 	}
+
 }
