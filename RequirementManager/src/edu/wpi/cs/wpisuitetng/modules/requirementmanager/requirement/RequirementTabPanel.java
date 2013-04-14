@@ -35,23 +35,26 @@ import javax.swing.JTabbedPane;
  */
 @SuppressWarnings("serial")
 public class RequirementTabPanel extends JTabbedPane {
-	
+
 	private RequirementTab parent;
 	private NoteTab notePanel;
-	
+	private HistoryTab historyPanel;
+
 	public RequirementTabPanel(RequirementTab view) {
-		
+
 		this.parent = view;
-		
+
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		
+
 		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
-		
+		historyPanel = new HistoryTab(parent);
+		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
+
 		this.setPreferredSize(new Dimension(450, 500));
 	}
-	
+
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
@@ -70,5 +73,19 @@ public class RequirementTabPanel extends JTabbedPane {
 	public void setNotePanel(NoteTab notePanel) {
 		this.notePanel = notePanel;
 	}
-	
+
+	/**
+	 * @return the historyPanel
+	 */
+	public HistoryTab getHistoryPanel() {
+		return historyPanel;
+	}
+
+	/**
+	 * @param historyPanel the historyPanel to set
+	 */
+	public void setHistoryPanel(HistoryTab historyPanel) {
+		this.historyPanel = historyPanel;
+	}
+
 }
