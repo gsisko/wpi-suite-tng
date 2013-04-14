@@ -848,12 +848,10 @@ public class RequirementAttributePanel extends JPanel {
 			toggleEnabled(obj, obj.isEnabled());
 			fieldsChanged[i] = false;
 		}
-		if (nameAndDescriptionValidityListener != null){
-			nameAndDescriptionValidityListener.fieldCheck();
-		}
-		if (saveButton != null){
+
+		if (saveButton != null && nameAndDescriptionValidityListener != null){
 			// TODO WTF IS GOING ON WITH validNameOrDescription!!!?!?!?
-			saveButton.setEnabled(isFieldsChanged() && validNameOrDescription.booleanValue());
+			saveButton.setEnabled(isFieldsChanged() & nameAndDescriptionValidityListener.isValidNameAndDes());
 		}
 		//		if (saveButton != null && validNameOrDescription.booleanValue())
 		//			saveButton.setEnabled(false);
@@ -869,7 +867,7 @@ public class RequirementAttributePanel extends JPanel {
 		
 		
 		// Add action listeners to the various fields
-		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtName, currentRequirement,"Name",0));
+		txtName.addKeyListener(new FieldChangeListener(this, txtName, currentRequirement,"Name",0));
 		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, currentRequirement,"Description",1));
 		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, currentRequirement,"ReleaseNumber",2));
 		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, currentRequirement,"Estimate",3));

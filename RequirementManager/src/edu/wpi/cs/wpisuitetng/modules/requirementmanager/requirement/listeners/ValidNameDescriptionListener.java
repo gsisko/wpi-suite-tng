@@ -72,7 +72,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 	 *  to see if warnings should be put up, and does so.
 	 */
 	public void keyReleased(KeyEvent e) {
-		System.out.println("Name/Description: Key released");
+	//	System.out.println("Name/Description: Key released");
 		fieldCheck();
 	}
 
@@ -111,16 +111,23 @@ public class ValidNameDescriptionListener implements KeyListener{
 
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {
-		System.out.println("Name/Description: Key typed");
-	
+//		System.out.println("Name/Description: Key typed");
 	}
 
 	/** This method is unused but required by the interface   */
 	public void keyPressed(KeyEvent e) {
-		System.out.println("Name/Description: Key pressed");
+//		System.out.println("Name/Description: Key pressed");
 	}
 
-
+	// TODO This is a temporary hack...
+	/** Returns whether or not both the name and description fields are valid.
+	 * 
+	 * @return whether or not both name and description are valid
+	 */
+	public boolean isValidNameAndDes(){
+		fieldCheck();
+		return validNameAndDescription.booleanValue();
+	}
 
 
 }
