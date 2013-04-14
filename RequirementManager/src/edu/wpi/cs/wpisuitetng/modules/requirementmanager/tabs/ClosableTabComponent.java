@@ -79,9 +79,6 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (tabbedPane instanceof MainTabPanel) {
-			System.err.println("it's a MainTabPanel");
-		}
 		// close this tab when close button is clicked
 		final int index = tabbedPane.indexOfTabComponent(this);
 		

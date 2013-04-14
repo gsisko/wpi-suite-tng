@@ -28,12 +28,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
-public class Note {
+public class Note extends RequirementEvent {
 	private String message;
-	private User user; 
-	private Date date;
 	
 	/**
 	 * Create a Note with given properties
@@ -42,6 +42,7 @@ public class Note {
 	 */
 	public Note(String message)
 	{
+		this.type = EventType.NOTE;
 		this.setMessage(message);
 		this.setUser(new User("","","",-1));
 		this.date = new Date();
@@ -68,33 +69,32 @@ public class Note {
 		this.message = message;
 	}
 
-	/**
-	 * @return the user
-	 */
-	public User getUser() {
-		return user;
-	}
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
+	@Override
+	public String toJSON() {
+		String json;
+		Gson gson = new Gson();
+		json = gson.toJson(this, Note.class);
+		return json;
 	}
 	
+	/**
+	 * Converts the given JSON string into a Note
+	 * @param json JSON string containing a serialized Note
+	 * @return a Note deserialized from the given JSON string
+	 */
+	public static Note fromJson(String json) {
+		Gson parser = new Gson();
+		return parser.fromJson(json, Note.class);
+	}
+	
+	@Override
+	public String getBodyString() {
+		return this.getMessage();
+	}
+	
+	@Override
+	public String getLabelString() {
+		return "Note added by " + this.getUser().getName() + " on " + this.getDate().toString();
+	}
 	
 }
