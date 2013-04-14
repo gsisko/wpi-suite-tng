@@ -222,7 +222,7 @@ public class RetrieveAllRequirementsController {
 
 	private String getIterationName(Requirement requirement) {
 		for (Iteration i : view.getAllIterations()) {
-			if (requirement.getAssignedIteration() == i.getID()) {
+			if (requirement.getIteration() == i.getID()) {
 				return i.getName();
 			}
 		}

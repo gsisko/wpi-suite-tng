@@ -45,7 +45,6 @@ public class RequirementTabPanel extends JTabbedPane {
 		
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-		//setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); //TODO: Do we need?
 		
 		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");

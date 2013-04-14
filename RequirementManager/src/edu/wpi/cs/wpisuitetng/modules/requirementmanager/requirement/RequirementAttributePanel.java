@@ -30,8 +30,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -189,8 +187,6 @@ public class RequirementAttributePanel extends JPanel {
 		statusBox = new JComboBox(statusStrings);
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
-
-
 
 		//Set the color for the warning labels
 		warningName.setForeground(Color.red);
@@ -434,7 +430,7 @@ public class RequirementAttributePanel extends JPanel {
 		// First find the name of the iteration by ID
 		for (int i = 0; i < allIterations.length; i++){
 			// Figure out what position in the referenced iteration is at
-			if (allIterations[i].getID() ==  currentRequirement.getAssignedIteration()){
+			if (allIterations[i].getID() ==  currentRequirement.getIteration()){
 				// Set the index of the box to the current index, and all is well
 				iterationBox.setSelectedIndex(i);
 			}
@@ -915,7 +911,7 @@ public class RequirementAttributePanel extends JPanel {
 		iterationBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getAssignedIteration()))) {
+				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getIteration()))) {
 					changeField(iterationBox, 8, true);
 				} else {
 					changeField(iterationBox, 8, false);

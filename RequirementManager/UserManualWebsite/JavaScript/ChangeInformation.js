@@ -124,17 +124,8 @@ function FilterListPanel(){
         $(".moveTabs").html('<a class="title">Overview of the Filter List Panel</a>');
 		$(".instructionTitle").html('<a>The Filter List Panel</a>');
         $(".instructionText").html(function(){
-			var str = '<img width="500" src="images/filterBuilderPanel.png"/>';
-			str += '<br /><a>The Filter Builder Panel is used to create filters for the list of requirements. You are able to filter requirements by:</a>';
-			str += '<ul><li>ID - Unique identification number for the requirement</li>';
-			str += '<li>Name - Name of requirement</li>';
-			str += '<li>Iteration - Iteration name of the requirement</li>';
-			str += '<li>Status - Status of the requirement (New, In Progress, Open, Complete, Deleted)</li>';
-			str += '<li>Priority - Priority of the requirement (No Priority, High, Medium, Low)</li>';
-			str += '<li>Release Number - Release string or number of the requirement</li>';
-			str += '<li>Estimate - Amount of work required for the requirement</li>';
-			str += '<li>Actual Effort - Total effort that the requirement took</li></ul>';
-			str += '<br /><a>The Operator dropdown box displays different operands to display by. The Value box is where you enter the information you want to filter by. The Active dropdown box determines whether the filter is active or not. The "Save" button saves the filter and adds it to the Filter List.</a>';
+			var str = '<img height="300" src="images/filterlistPanel.png"/>';
+			str += '<br /><a>The Filter List Panel displays all the filters that the user has created. Filters are saved to the user, not to the project. The columns display the filter type, operator, value, and whether it is active. If a filter is not active, it turns grey; otherwise, the active filter is white.</a>';
 			return str;
         });
     });
@@ -147,7 +138,16 @@ function FilterBuilderPanel(){
 		$(".instructionTitle").html('<a>The Filter Builder Panel</a>');
         $(".instructionText").html(function(){
 			var str = '<img width="500" src="images/filterBuilderPanel.png" />';
-			str += '<br /><a>The Filter List Panel displays all the filters that the user has created. Filters are saved to the user, not to the project. The columns display the filter type, operator, value, and whether it is active. If a filter is not active, it turns grey; otherwise, the active filter is white.</a>';
+			str += '<br /><a>The Filter Builder Panel is used to create filters for the list of requirements. You are able to filter requirements by:</a>';
+			str += '<ul><li>ID - Unique identification number for the requirement</li>';
+			str += '<li>Name - Name of requirement</li>';
+			str += '<li>Iteration - Iteration name of the requirement</li>';
+			str += '<li>Status - Status of the requirement (New, In Progress, Open, Complete, Deleted)</li>';
+			str += '<li>Priority - Priority of the requirement (No Priority, High, Medium, Low)</li>';
+			str += '<li>Release Number - Release string or number of the requirement</li>';
+			str += '<li>Estimate - Amount of work required for the requirement</li>';
+			str += '<li>Actual Effort - Total effort that the requirement took</li></ul>';
+			str += '<br /><a>The Operator dropdown box displays different operands to display by. The Value box is where you enter the information you want to filter by. The Active dropdown box determines whether the filter is active or not. The "Save" button saves the filter and adds it to the Filter List.</a>';
 			return str;
         });
     });

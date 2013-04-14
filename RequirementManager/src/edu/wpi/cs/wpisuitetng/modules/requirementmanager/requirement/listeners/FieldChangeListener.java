@@ -28,7 +28,6 @@ import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
