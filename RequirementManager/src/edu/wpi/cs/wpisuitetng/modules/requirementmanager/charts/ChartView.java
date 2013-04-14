@@ -111,19 +111,26 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
 
-		/** Add the panels to the layout */
-		//Pie Charts
-		this.add(iterationPiePanel, BorderLayout.CENTER);
-		this.add(statusPiePanel, BorderLayout.CENTER);
-
+		/** Initial setup */
 		//Bar Charts
 		this.add(iterationBarPanel, BorderLayout.CENTER);
 		this.add(statusBarPanel, BorderLayout.CENTER);
-
+		
+		//Pie Charts
+		this.add(iterationPiePanel, BorderLayout.CENTER);
+		this.add(statusPiePanel, BorderLayout.CENTER);
+		
+		//Visibility for all charts
+		this.iterationBarPanel.setVisible(true);
+		this.statusBarPanel.setVisible(true);
+		this.iterationPiePanel.setVisible(true);
+		this.statusPiePanel.setVisible(true);
+	
 		//Options
 		this.add(optionsPanel, BorderLayout.WEST);
+		this.optionsPanel.setVisible(true);
 
-		//Set initial visibility and initial data
+		//Initial visibility and data
 		this.refreshData();
 	}
 
@@ -196,30 +203,34 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	/** Sets visibility of charts based on chartDataType and chartType */
 	private void refreshChartVisibility(){
 		//Remove all charts then add the one we want
-		this.remove(statusPiePanel);
-		this.remove(iterationPiePanel);
-		this.remove(statusBarPanel);
-		this.remove(iterationBarPanel);
+		this.iterationBarPanel.setVisible(false);
+		this.statusBarPanel.setVisible(false);
+		this.iterationPiePanel.setVisible(false);
+		this.statusPiePanel.setVisible(false);
 
 		//Pie Chart
 		if (this.chartType.equals("Pie Chart")){
 			if(this.chartDataType =="Requirement Status"){
-				this.add(statusPiePanel);
+				this.add(statusPiePanel, BorderLayout.CENTER);
+				this.statusPiePanel.setVisible(true);
 			}
 			else if(this.chartDataType == "Requirement Iteration"){
-				this.add(iterationPiePanel);
+				this.add(iterationPiePanel, BorderLayout.CENTER);
+				this.iterationPiePanel.setVisible(true);
 			}
 
 		//BarChart	
 		} else if (this.chartType.equals("Bar Chart")){
 			if(this.chartDataType =="Requirement Status"){
-				this.add(statusBarPanel);
+				this.add(statusBarPanel, BorderLayout.CENTER);
+				this.statusBarPanel.setVisible(true);
 			}
 			else if(this.chartDataType == "Requirement Iteration"){
-				this.add(iterationBarPanel);
+				this.add(iterationBarPanel, BorderLayout.CENTER);
+				this.iterationBarPanel.setVisible(true);
 			}
 		}
-
+		
 		//Always repaint!
 		this.repaint();
 	}
