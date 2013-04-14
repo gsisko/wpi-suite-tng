@@ -23,29 +23,28 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.swing.JComboBox;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
 
-/** This listener is used on text fields/areas and turns those
+/** This listener is used on combo boxes and turns those
  *  boxes yellow when changes are detected.
  * 
  */
 @SuppressWarnings("rawtypes")
-public class BoxChangeListener implements KeyListener{
+public class BoxChangeListener implements PopupMenuListener{
 
-	/** The panel with the field being watched */
+	/** The panel with the box being watched */
 	private RequirementAttributePanel thePanel;
-	/** The field to watch */
+	/** The box to watch */
 	private JComboBox toWatch;
-	/** The old values to compare against */
-	private Requirement reference;
-	/** The field of the reference to watch */
+	/** The box of the reference to watch */
 	private String fieldToCheck ;
 
 	/** Index in the array of booleans*/
@@ -56,16 +55,15 @@ public class BoxChangeListener implements KeyListener{
 
 	/** Constructor that takes all the references it needs
 	 * 
-	 * @param thePanel
-	 * @param toWatch
-	 * @param reference
-	 * @param fieldToCheck
+	 * @param thePanel       The panel with the box being watched
+	 * @param toWatch        The box to watch
+	 * @param fieldToCheck   The box of the reference to watch
+	 * @param indexOfBoolean The index in the boolean array of the current item being watched
 	 */
 	public BoxChangeListener(RequirementAttributePanel thePanel,JComboBox toWatch, 
-			Requirement reference, String fieldToCheck, int indexOfBoolean ){
+			String fieldToCheck, int indexOfBoolean ){
 		this.thePanel = thePanel;
 		this.toWatch = toWatch;
-		this.reference = reference;
 		this.fieldToCheck = fieldToCheck;
 		this.indexOfBoolean =  indexOfBoolean;
 		// Get the getter method for the requirement
@@ -75,8 +73,6 @@ public class BoxChangeListener implements KeyListener{
 				getOldFieldValue = m; //saves the method called "get" + aFieldName
 			}
 		}
-
-
 	}
 
 	/** Checks the field for changes and sets it to yellow on changes or white otherwise */
@@ -86,7 +82,7 @@ public class BoxChangeListener implements KeyListener{
 		System.out.print("Checking: " + fieldToCheck);
 		// Since the invoke stuff can throw exceptions, we check and print here as necessary
 		try {
-			oldValue = getOldFieldValue.invoke(reference);
+			oldValue = getOldFieldValue.invoke(thePanel.getCurrentRequirement());
 		} catch (IllegalArgumentException iae) {
 			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;
@@ -109,23 +105,24 @@ public class BoxChangeListener implements KeyListener{
 		}
 	}
 
+	/** This method is unused but required by the interface   */
+	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+		return;
+	}
 
 	/** This is called when the user types then releases the key. If
 	 *  changes are made, the box is turned yellow. 
 	 */
-	public void keyReleased(KeyEvent e) {
-		checkForChanges();		
+	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+		System.out.println("  Popup: becoming invisible");
+		checkForChanges();			
 	}
 
-
-	/** This method is unused but required by the interface   */
-	public void keyTyped(KeyEvent e) {		
-		return;
-	}
-
-
-	/** This method is unused but required by the interface    */
-	public void keyPressed(KeyEvent e) {
-		return;
+	/** This is called when the user types then releases the key. If
+	 *  changes are made, the box is turned yellow. 
+	 */
+	public void popupMenuCanceled(PopupMenuEvent e) {
+		System.out.println("  Popup: canceled");
+		checkForChanges();			
 	}
 }

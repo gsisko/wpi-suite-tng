@@ -43,8 +43,6 @@ public class FieldChangeListener implements KeyListener{
 	private RequirementAttributePanel thePanel;
 	/** The field to watch */
 	private JTextComponent toWatch;
-	/** The old values to compare against */
-	private Requirement reference;
 	/** The field of the reference to watch */
 	private String fieldToCheck ;
 
@@ -62,12 +60,12 @@ public class FieldChangeListener implements KeyListener{
 	 * @param fieldToCheck
 	 */
 	public FieldChangeListener(RequirementAttributePanel thePanel,JTextComponent toWatch, 
-			Requirement reference, String fieldToCheck, int indexOfBoolean ){
+			 String fieldToCheck, int indexOfBoolean ){
 		this.thePanel = thePanel;
 		this.toWatch = toWatch;
-		this.reference = reference;
 		this.fieldToCheck = fieldToCheck;
 		this.indexOfBoolean =  indexOfBoolean;
+		
 		// Get the getter method for the requirement
 		Method[] allMethods = (Requirement.class).getMethods();
 		for(Method m: allMethods){//Cycles through all of the methods in the requirement Class
@@ -75,26 +73,24 @@ public class FieldChangeListener implements KeyListener{
 				getOldFieldValue = m; //saves the method called "get" + aFieldName
 			}
 		}
-
-
 	}
 
 	/** Checks the field for changes and sets it to yellow on changes or white otherwise */
 	private void checkForChanges(){
 		// The value to compare against
 		Object oldValue;
-	//	System.out.print("Checking: " + fieldToCheck);
+		System.out.print("Checking: " + fieldToCheck);
 		// Since the invoke stuff can throw exceptions, we check and print here as necessary
 		try {
-			oldValue = getOldFieldValue.invoke(reference);
+			oldValue = getOldFieldValue.invoke(thePanel.getCurrentRequirement());
 		} catch (IllegalArgumentException iae) {
-	//		System.err.println("FieldChangeListener problem: "+ fieldToCheck);
+			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;
 		} catch (IllegalAccessException iae2) {
-	//		System.err.println("FieldChangeListener problem: "+ fieldToCheck);
+			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;
 		} catch (InvocationTargetException ite) {
-	//		System.err.println("FieldChangeListener problem: "+ fieldToCheck);
+			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;         
 		}
 
@@ -102,10 +98,10 @@ public class FieldChangeListener implements KeyListener{
 		// Check the old value and set the box yellow as necessary
 		if (!toWatch.getText().equals(oldValue + "")) {
 			thePanel.changeField(toWatch, 4, true);
-//			System.out.println("  Result: activate");
+			System.out.println("  Result: activate");
 		} else {
 			System.out.println("  Result: deactivate");
-	//		thePanel.changeField(toWatch, 4, false);
+			thePanel.changeField(toWatch, 4, false);
 		}
 	}
 

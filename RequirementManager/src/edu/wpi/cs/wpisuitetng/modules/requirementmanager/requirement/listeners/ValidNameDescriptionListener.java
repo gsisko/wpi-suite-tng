@@ -31,12 +31,17 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
+
 /** This is a change listener that watches a name text field and a
  *  description text area. It is specifically made to be used in the
  *  RequirementAttributePanel and to take the two fields mentioned 
  *  previously.     */
 public class ValidNameDescriptionListener implements KeyListener{
 
+	/** The panel with the name and description fields being watched */
+	RequirementAttributePanel thePanel;
+	
 	/** The name text box to watch 	 */
 	JTextField txtName;
 	/** The description text box to watch 	 */
@@ -68,46 +73,17 @@ public class ValidNameDescriptionListener implements KeyListener{
 		this.validNameAndDescription = keepDisabled;
 	}
 
+	public ValidNameDescriptionListener(RequirementAttributePanel thePanel){
+		this.thePanel = thePanel;
+	}
+	
 	/** Activates when changes are made to the text fields and checks them
 	 *  to see if warnings should be put up, and does so.
 	 */
 	public void keyReleased(KeyEvent e) {
 	//	System.out.println("Name/Description: Key released");
-		fieldCheck();
+		thePanel.areNameAndDescriptionValid();
 	}
-
-	/** Checks the fields for changes and sets the warning labels and 
-	 *  save button status appropriately             
-	 */
-	public void fieldCheck(){
-		// Initialize flags
-		boolean nameGood = true;
-		boolean desGood = true;
-
-		// Check the name box
-		if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
-			warningName.setText("Name must be between 0 and 100 characters");
-			nameGood = false;
-		} else {
-			// reset the warning if necessary
-			warningName.setText("");
-		}
-
-		// Check the description box
-		if (txtDescription.getText().length() < 1){
-			warningDescription.setText("Description cannot be blank");
-			desGood = false;
-		} else {
-			// reset the warning if necessary
-			warningDescription.setText("");
-
-		}
-
-		// If either are false, keep it disabled
-		validNameAndDescription = Boolean.valueOf(desGood & nameGood);
-		saveButton.setEnabled( validNameAndDescription.booleanValue());	
-	}
-
 
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {
@@ -118,16 +94,4 @@ public class ValidNameDescriptionListener implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 //		System.out.println("Name/Description: Key pressed");
 	}
-
-	// TODO This is a temporary hack...
-	/** Returns whether or not both the name and description fields are valid.
-	 * 
-	 * @return whether or not both name and description are valid
-	 */
-	public boolean isValidNameAndDes(){
-		fieldCheck();
-		return validNameAndDescription.booleanValue();
-	}
-
-
 }

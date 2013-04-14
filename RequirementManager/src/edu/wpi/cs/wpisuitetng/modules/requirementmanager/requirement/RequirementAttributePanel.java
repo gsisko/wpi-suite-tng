@@ -28,8 +28,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -41,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.PopupMenuEvent;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -48,6 +47,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.BoxChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.FieldChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.IterationChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.ValidNameDescriptionListener;
@@ -88,7 +88,7 @@ public class RequirementAttributePanel extends JPanel {
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
 	private boolean[] fieldsChanged;	// Have any fields been changed?
 	private JButton saveButton;
-	private Boolean validNameOrDescription;
+	private Boolean validNameAndDescription;
 
 
 	// Listeners
@@ -119,7 +119,7 @@ public class RequirementAttributePanel extends JPanel {
 			fieldsChanged[i] = false;
 		}
 
-		validNameOrDescription = new Boolean(true);
+		validNameAndDescription = new Boolean(true);
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -807,7 +807,7 @@ public class RequirementAttributePanel extends JPanel {
 			warningName.setText(" ");
 			if (txtDescription.getText().length()>0){
 				saveButton.setEnabled(isFieldsChanged());
-				//		validNameOrDescription = Boolean.valueOf(false);
+				//		validNameAndDescription = Boolean.valueOf(false);
 			}
 		}
 		if (txtDescription.getText().length()<1){
@@ -817,7 +817,7 @@ public class RequirementAttributePanel extends JPanel {
 			warningDescription.setText(" ");
 			if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 				saveButton.setEnabled(isFieldsChanged());
-				//		validNameOrDescription = Boolean.valueOf(false);
+				//		validNameAndDescription = Boolean.valueOf(false);
 			}
 		}
 	}
@@ -851,10 +851,10 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		if (saveButton != null && nameAndDescriptionValidityListener != null){
-			// TODO WTF IS GOING ON WITH validNameOrDescription!!!?!?!?
-			saveButton.setEnabled(isFieldsChanged() & nameAndDescriptionValidityListener.isValidNameAndDes());
+			// TODO WTF IS GOING ON WITH validNameAndDescription!!!?!?!?
+			saveButton.setEnabled(isFieldsChanged() && areNameAndDescriptionValid());
 		}
-		//		if (saveButton != null && validNameOrDescription.booleanValue())
+		//		if (saveButton != null && validNameAndDescription.booleanValue())
 		//			saveButton.setEnabled(false);
 	}
 
@@ -862,61 +862,93 @@ public class RequirementAttributePanel extends JPanel {
 	 * 
 	 */
 	public void setupControllersAndListeners() {
-		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, validNameOrDescription);
+	//	nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, validNameAndDescription);
+		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(this);
 		txtName.addKeyListener(nameAndDescriptionValidityListener);
 		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
-		
-		
+
+
 		// Add action listeners to the various fields
-		txtName.addKeyListener(new FieldChangeListener(this, txtName, currentRequirement,"Name",0));
-		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, currentRequirement,"Description",1));
-		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, currentRequirement,"ReleaseNumber",2));
-		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, currentRequirement,"Estimate",3));
-		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, currentRequirement,"Estimate",4));
-		typeBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
-						!(typeBox.getSelectedItem().toString().equals("")						// Hack
-								&& currentRequirement.getType() == RequirementType.NoType)) {
-					changeField(typeBox, 5, true);
-				} else {
-					changeField(typeBox, 5, false);
-				}
+		txtName.addKeyListener(new FieldChangeListener(this, txtName, "Name",0));
+		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, "Description",1));
+		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, "ReleaseNumber",2));
+		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, "Estimate",3));
+		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, "Estimate",4));
+		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
+		statusBox.addPopupMenuListener(new BoxChangeListener(this, statusBox,  "Status",6 ));
+		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,  "Priority",7 ));
+		iterationBox.addPopupMenuListener(new BoxChangeListener(this, iterationBox,  "Iteration",8 ));
+
+		iterationBox.addPopupMenuListener(new IterationChangeListener(this));
+	}
+
+	/** Checks the name and description fields for changes and sets the warning labels and 
+	 *  save button status appropriately             
+	 */
+	public boolean areNameAndDescriptionValid(){
+		// Initialize flags
+		boolean nameGood = true;
+		boolean desGood = true;
+
+		// Check the name box
+		if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
+			warningName.setText("Name must be between 0 and 100 characters");
+			nameGood = false;
+		} else {
+			// reset the warning if necessary
+			warningName.setText("");
+		}
+
+		// Check the description box
+		if (txtDescription.getText().length() < 1){
+			warningDescription.setText("Description cannot be blank");
+			desGood = false;
+		} else {
+			// reset the warning if necessary
+			warningDescription.setText("");
+		}
+
+		// If either are false, keep it disabled
+		validNameAndDescription = Boolean.valueOf(desGood && nameGood);
+		saveButton.setEnabled( validNameAndDescription.booleanValue());	
+		return validNameAndDescription;
+	}	
+
+	/** When the selected value in the iteration box is changed, this method is 
+	 * called by the listener watching the box. Under certain circumstances,
+	 * this method changes the Requirement's status.
+	 * 
+	 * If not Complete or Deleted, check the following:
+	 * 
+	 * If changed to Backlog -> Open
+	 * If changed to Iteration -> InProgress
+	 * 
+	 * @param e details about the event
+	 */
+	public void changeStatusWithIteration(PopupMenuEvent e){
+		System.out.println("The assigned iteration has been changed; the status will be changed accordingly.");
+
+		// Only valid in EDIT mode
+		if (this.getMode().equals(Mode.EDIT) ){
+			RequirementStatus currentStatus = this.getCurrentRequirement().getStatus(); 			
+			
+			// You can't change the status while Deleted or Complete anyways, so this is a check.
+			if ( currentStatus == RequirementStatus.Complete 	|| currentStatus == RequirementStatus.Deleted ){
+				return;
 			}
-		});
-		statusBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
-					changeField(statusBox, 6, true);
-				} else {
-					changeField(statusBox, 6, false);
+
+			// If changed to the backlog, set the status to Open
+			if ( 0 == ((JComboBox) e.getSource()).getSelectedIndex()){
+				// Special case: if the old status was New (and obviously isn't now
+				if ( this.getCurrentRequirement().getStatus() == RequirementStatus.New){
+					this.updateStatusSettings("New");
+					return;
 				}
+				this.getCurrentRequirement().setStatus(RequirementStatus.Open);
+				this.updateStatusSettings("Open");
+			} else {
+				this.updateStatusSettings("InProgress");
 			}
-		});
-		priorityBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
-						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
-								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
-					changeField(priorityBox, 7, true);
-				} else {
-					changeField(priorityBox, 7, false);
-				}
-			}
-		});
-		iterationBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getIteration()))) {
-					changeField(iterationBox, 8, true);
-				} else {
-					changeField(iterationBox, 8, false);
-				}
-			}
-		});
-		iterationBox.addItemListener(new IterationChangeListener(this));
+		}
 	}
 }
