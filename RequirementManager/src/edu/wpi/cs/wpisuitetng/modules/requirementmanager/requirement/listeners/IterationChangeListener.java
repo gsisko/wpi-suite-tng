@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -29,6 +29,7 @@ import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 /** An action listener specifically made to watch an Iteration selection combo 

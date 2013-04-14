@@ -49,6 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatu
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.FieldChangeListener;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.IterationChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.ValidNameDescriptionListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
