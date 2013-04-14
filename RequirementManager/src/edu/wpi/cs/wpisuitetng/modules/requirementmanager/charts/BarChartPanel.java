@@ -47,6 +47,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
 /**
  * Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
@@ -93,20 +94,20 @@ public class BarChartPanel extends JPanel {
 	private CategoryDataset createDataset() {
 
 		// row keys...
-		String series1 = "";
-
+		String series1 = "Linux";
+		String series2 = "Mac";
+		String series3 = "Windows";
+		String series4 = "DOS";
+		
 		// column keys...
-		String category1 = "Linux";
-		String category2 = "Mac";
-		String category3 = "Windows";
-		String category4 = "DOS";
+		String category1 = "";
 
 		//Add the actual data to the set and return it
 		DefaultCategoryDataset result = new DefaultCategoryDataset();
 		result.addValue(29, series1, category1);
-		result.addValue(20, series1, category2);
-		result.addValue(51, series1, category3);
-		result.addValue(2, series1, category4);
+		result.addValue(20, series2, category1);
+		result.addValue(51, series3, category1);
+		result.addValue(2, series4, category1);
 		
 		return result;
 	}
@@ -154,16 +155,14 @@ public class BarChartPanel extends JPanel {
 
 	/** Function to refresh and redraw pie chart with Status */
 	public void refreshStatusChart(Requirement[] requirements) {
-//		DefaultCategoryDataset data = new DefaultCategoryDataset();
-//		for (RequirementStatus rs : RequirementStatus.values()) {
-//			int count = 0;
-//			for (int i = 0; i < requirements.length; i++) {
-//				if (rs == requirements[i].getStatus()) count++;
-//			}
-//			if (count > 0) data.setValue(rs.toString(), count);
-//		}
-
-		CategoryDataset data = this.createDataset();
+		DefaultCategoryDataset data = new DefaultCategoryDataset();
+		for (RequirementStatus rs : RequirementStatus.values()) {
+			int count = 0;
+			for (int i = 0; i < requirements.length; i++) {
+				if (rs == requirements[i].getStatus()) count++;
+			}
+			if (count > 0) data.addValue(count, rs.toString(), "");
+		}
 		
 		this.dataset = data;
 		if (isFiltered){
@@ -178,22 +177,20 @@ public class BarChartPanel extends JPanel {
 
 	/** Function to refresh and redraw pie chart with Iterations */
 	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
-//		DefaultCategoryDataset data = new DefaultCategoryDataset();
-//		for (Iteration iter : iterations) {
-//			int count = 0;
-//			for (int i = 0; i < requirements.length; i++) {
-//				if (iter.getID() == requirements[i].getAssignedIteration()) count++;
-//			}
-//			if (count > 0) {
-//				if (iter.getName().equals(""))
-//					data.setValue("Backlog", count);
-//				else
-//					data.setValue(iter.getName(), count);
-//			}
-//
-//		}
+		DefaultCategoryDataset data = new DefaultCategoryDataset();
+		for (Iteration iter : iterations) {
+			int count = 0;
+			for (int i = 0; i < requirements.length; i++) {
+				if (iter.getID() == requirements[i].getAssignedIteration()) count++;
+			}
+			if (count > 0) {
+				if (iter.getName().equals(""))
+					data.addValue(count, "Backlog", "");
+				else
+					data.setValue(count, iter.getName(), "");
+			}
 
-		CategoryDataset data = this.createDataset();
+		}
 		
 		this.dataset = data;
 		if (isFiltered){
