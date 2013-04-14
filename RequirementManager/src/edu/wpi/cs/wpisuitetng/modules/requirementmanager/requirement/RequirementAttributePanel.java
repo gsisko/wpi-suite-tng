@@ -50,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.FieldChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners.ValidNameDescriptionListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 
@@ -86,9 +87,9 @@ public class RequirementAttributePanel extends JPanel {
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
-	private Boolean[] fieldsChanged;	// Have any fields been changed?
+	private boolean[] fieldsChanged;	// Have any fields been changed?
 	private JButton saveButton;
-	private Boolean keepDisabled;
+	private Boolean validNameOrDescription;
 
 
 	// Listeners
@@ -114,12 +115,12 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new Boolean[10];
+		fieldsChanged = new boolean[10];
 		for (int i = 0; i < fieldsChanged.length; i++) {
 			fieldsChanged[i] = false;
 		}
 
-		keepDisabled = new Boolean(true);
+		validNameOrDescription = new Boolean(true);
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -189,122 +190,7 @@ public class RequirementAttributePanel extends JPanel {
 		priorityBox = new JComboBox(priorityStrings);
 		iterationBox = new JComboBox(iterationStrings);
 
-		// Add action listeners to the various fields
-		txtName.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtName.getText().equals(currentRequirement.getName())) {
-					changeField(txtName, 0, true);
-				} else {
-					changeField(txtName, 0, false);
-				}
-			}
-		});
-		txtDescription.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtDescription.getText().equals(currentRequirement.getDescription())) {
-					changeField(txtDescription, 1, true);
-				} else {
-					changeField(txtDescription, 1, false);
-				}
-			}
-		});
-		txtReleaseNumber.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtReleaseNumber.getText().equals(currentRequirement.getReleaseNumber() + "")) {
-					changeField(txtReleaseNumber, 2, true);
-				} else {
-					changeField(txtReleaseNumber, 2, false);
-				}
-			}
-		});
-		txtEstimate.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtEstimate.getText().equals(currentRequirement.getEstimate() + "")) {
-					changeField(txtEstimate, 3, true);
-				} else {
-					changeField(txtEstimate, 3, false);
-				}
-			}
-		});
-		txtActualEffort.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!txtActualEffort.getText().equals(currentRequirement.getActualEffort() + "")) {
-					changeField(txtActualEffort, 4, true);
-				} else {
-					changeField(txtActualEffort, 4, false);
-				}
-			}
-		});
-		typeBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
-						!(typeBox.getSelectedItem().toString().equals("")						// Hack
-								&& currentRequirement.getType() == RequirementType.NoType)) {
-					changeField(typeBox, 5, true);
-				} else {
-					changeField(typeBox, 5, false);
-				}
-			}
-		});
-		statusBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
-					changeField(statusBox, 6, true);
-				} else {
-					changeField(statusBox, 6, false);
-				}
-			}
-		});
-		priorityBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
-						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
-								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
-					changeField(priorityBox, 7, true);
-				} else {
-					changeField(priorityBox, 7, false);
-				}
-			}
-		});
-		iterationBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getAssignedIteration()))) {
-					changeField(iterationBox, 8, true);
-				} else {
-					changeField(iterationBox, 8, false);
-				}
-			}
-		});
-		iterationBox.addItemListener(new IterationChangeListener(this));
+
 
 		//Set the color for the warning labels
 		warningName.setForeground(Color.red);
@@ -924,7 +810,7 @@ public class RequirementAttributePanel extends JPanel {
 			warningName.setText(" ");
 			if (txtDescription.getText().length()>0){
 				saveButton.setEnabled(isFieldsChanged());
-				keepDisabled = Boolean.valueOf(false);
+				//		validNameOrDescription = Boolean.valueOf(false);
 			}
 		}
 		if (txtDescription.getText().length()<1){
@@ -934,7 +820,7 @@ public class RequirementAttributePanel extends JPanel {
 			warningDescription.setText(" ");
 			if ((txtName.getText().length()<=100)||(txtName.getText().length()>0)){
 				saveButton.setEnabled(isFieldsChanged());
-				keepDisabled = Boolean.valueOf(false);
+				//		validNameOrDescription = Boolean.valueOf(false);
 			}
 		}
 	}
@@ -966,19 +852,76 @@ public class RequirementAttributePanel extends JPanel {
 			toggleEnabled(obj, obj.isEnabled());
 			fieldsChanged[i] = false;
 		}
-		if (saveButton != null)
-			saveButton.setEnabled(isFieldsChanged() && !keepDisabled.booleanValue());
-//		if (saveButton != null && keepDisabled.booleanValue())
-//			saveButton.setEnabled(false);
+		if (nameAndDescriptionValidityListener != null){
+			nameAndDescriptionValidityListener.fieldCheck();
+		}
+		if (saveButton != null){
+			// TODO WTF IS GOING ON WITH validNameOrDescription!!!?!?!?
+			saveButton.setEnabled(isFieldsChanged() && validNameOrDescription.booleanValue());
+		}
+		//		if (saveButton != null && validNameOrDescription.booleanValue())
+		//			saveButton.setEnabled(false);
 	}
 
 	/** Sets up the controllers and listeners for this panel
 	 * 
 	 */
 	public void setupControllersAndListeners() {
-		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, keepDisabled);
+		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(txtName, txtDescription, warningName, warningDescription, saveButton, validNameOrDescription);
 		txtName.addKeyListener(nameAndDescriptionValidityListener);
 		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
-
+		
+		
+		// Add action listeners to the various fields
+		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtName, currentRequirement,"Name",0));
+		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, currentRequirement,"Description",1));
+		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, currentRequirement,"ReleaseNumber",2));
+		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, currentRequirement,"Estimate",3));
+		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, currentRequirement,"Estimate",4));
+		typeBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!(typeBox.getSelectedItem().toString().equals(currentRequirement.getType().toString())) &&
+						!(typeBox.getSelectedItem().toString().equals("")						// Hack
+								&& currentRequirement.getType() == RequirementType.NoType)) {
+					changeField(typeBox, 5, true);
+				} else {
+					changeField(typeBox, 5, false);
+				}
+			}
+		});
+		statusBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!(statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus().toString()))) {
+					changeField(statusBox, 6, true);
+				} else {
+					changeField(statusBox, 6, false);
+				}
+			}
+		});
+		priorityBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!priorityBox.getSelectedItem().equals(currentRequirement.getPriority().toString()) &&
+						!(priorityBox.getSelectedItem().toString().equals("")						// Hack
+								&& currentRequirement.getPriority() == RequirementPriority.NoPriority)) {
+					changeField(priorityBox, 7, true);
+				} else {
+					changeField(priorityBox, 7, false);
+				}
+			}
+		});
+		iterationBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!iterationBox.getSelectedItem().toString().equals(getIterationNameById(currentRequirement.getAssignedIteration()))) {
+					changeField(iterationBox, 8, true);
+				} else {
+					changeField(iterationBox, 8, false);
+				}
+			}
+		});
+		iterationBox.addItemListener(new IterationChangeListener(this));
 	}
 }

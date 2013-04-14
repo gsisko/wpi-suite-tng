@@ -48,7 +48,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 	/** The save button in the tool bar to set enabled/disabled */
 	JButton saveButton;
 	/** The state that the save button should be kept in */
-	Boolean keepDisabled;
+	Boolean validNameAndDescription;
 
 	/**	 This is the basic constructor constructor. It takes every reference that it needs in order to perform all of its actions
 	 * 
@@ -57,7 +57,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 	 * @param warningLabel    The warning label to set when the name is not appropriately filled
 	 * @param warningLabel2   The warning label to set when the description is not appropriately filled
 	 * @param saveButton      The save button in the tool bar to set enabled/disabled
-	 * @param keepDisabled    The state that the save button should be kept in
+	 * @param validNameAndDescription    The state that the save button should be kept in
 	 */
 	public ValidNameDescriptionListener(JTextField txtName, JTextArea txtDescription, JLabel warningLabel, JLabel warningLabel2,JButton saveButton, Boolean keepDisabled ){
 		this.txtName = txtName;
@@ -65,7 +65,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 		this.warningName = warningLabel;
 		this.warningDescription = warningLabel2;
 		this.saveButton = saveButton;
-		this.keepDisabled = keepDisabled;
+		this.validNameAndDescription = keepDisabled;
 	}
 
 	/** Activates when changes are made to the text fields and checks them
@@ -79,15 +79,15 @@ public class ValidNameDescriptionListener implements KeyListener{
 	/** Checks the fields for changes and sets the warning labels and 
 	 *  save button status appropriately             
 	 */
-	private void fieldCheck(){
+	public void fieldCheck(){
 		// Initialize flags
-		boolean nameBad = false;
-		boolean desBad = false;
+		boolean nameGood = true;
+		boolean desGood = true;
 
 		// Check the name box
 		if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
 			warningName.setText("Name must be between 0 and 100 characters");
-			nameBad = true;
+			nameGood = false;
 		} else {
 			// reset the warning if necessary
 			warningName.setText("");
@@ -96,7 +96,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 		// Check the description box
 		if (txtDescription.getText().length() < 1){
 			warningDescription.setText("Description cannot be blank");
-			desBad = true;
+			desGood = false;
 		} else {
 			// reset the warning if necessary
 			warningDescription.setText("");
@@ -104,8 +104,8 @@ public class ValidNameDescriptionListener implements KeyListener{
 		}
 
 		// If either are false, keep it disabled
-		keepDisabled = Boolean.valueOf(desBad | nameBad);
-		saveButton.setEnabled( !keepDisabled.booleanValue());	
+		validNameAndDescription = Boolean.valueOf(desGood & nameGood);
+		saveButton.setEnabled( validNameAndDescription.booleanValue());	
 	}
 
 
