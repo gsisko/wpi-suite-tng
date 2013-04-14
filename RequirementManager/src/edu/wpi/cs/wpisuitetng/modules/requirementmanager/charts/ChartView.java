@@ -38,7 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
- * View that contains the pie chart 
+ * View that contains the charts
  */
 
 @SuppressWarnings("serial")

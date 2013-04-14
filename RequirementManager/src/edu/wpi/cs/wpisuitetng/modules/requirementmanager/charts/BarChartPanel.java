@@ -50,7 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
 /**
- * Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
+ * Panel that contains the bar chart specified by the user in the ChartOptionsPanel.
  */
 @SuppressWarnings("serial")
 public class BarChartPanel extends JPanel {
@@ -94,7 +94,9 @@ public class BarChartPanel extends JPanel {
 		this.isFiltered = true;
 	}
 
-	/** Creates the sample dataset */
+	/** Creates the sample dataset 
+	 * @return a sample set of data for a bar chart
+	 */
 	private CategoryDataset createDataset() {
 
 		// row keys...
@@ -116,7 +118,11 @@ public class BarChartPanel extends JPanel {
 		return result;
 	}
 
-	/** Creates a chart */
+	/** Creates a chart using specified data and title
+	 * @param dataset set of data to use to make the bar chart
+	 * @param title title of the chart
+	 * @return JFreeChart object containing the chart with the title and data
+	 */
 	private JFreeChart createChart(CategoryDataset dataset, String title) {
 
 		JFreeChart chart = ChartFactory.createBarChart3D(title, //chart title
@@ -134,7 +140,7 @@ public class BarChartPanel extends JPanel {
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
-		// disable bar outlines...
+		// disable bar outlines and other cosmetic tweaks
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		renderer.setMaximumBarWidth(.35); // set maximum width to 35% of chart
@@ -168,7 +174,9 @@ public class BarChartPanel extends JPanel {
 		return chart;
 	}
 
-	/** Function to refresh and redraw pie chart with Status */
+	/** Function to refresh and redraw bar chart with Status of requirements
+	 * @param requirements array of requirements to use to generate chart
+	 */
 	public void refreshStatusChart(Requirement[] requirements) {
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		for (RequirementStatus rs : RequirementStatus.values()) {
@@ -190,7 +198,10 @@ public class BarChartPanel extends JPanel {
 		this.chartPanel.setChart(this.chart);
 	}
 
-	/** Function to refresh and redraw pie chart with Iterations */
+	/** Function to refresh and redraw bar chart with Iterations 
+	 * @param requirements array of requirements to use to generate chart
+	 * @param iterations array of iterations to use to generate chart
+	 */
 	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		for (Iteration iter : iterations) {
@@ -219,6 +230,9 @@ public class BarChartPanel extends JPanel {
 		
 	}
 
+	/** Function to togglee whether to use active filters to get chart information 
+	 * @param isFiltered boolean representing if filters should be used
+	 */
 	public void enableFilter(boolean isFiltered){
 		this.isFiltered = isFiltered;
 	}

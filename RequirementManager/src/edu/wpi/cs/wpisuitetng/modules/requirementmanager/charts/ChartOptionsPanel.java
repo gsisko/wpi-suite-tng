@@ -205,7 +205,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.filtersOptionsBox = filtersOptionsBox;
 	}
 
-	/**
+	/** Method to get the parent of this panel
 	 * @return the parent
 	 */
 	public ChartView getParent() {
@@ -214,18 +214,16 @@ public class ChartOptionsPanel extends JPanel{
 	
 	
 	/**
-	 * Returns a boolean representing whether or not input is enabled for this panel.
-	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for this panel.
+	 * Method to get whether input is enabled for this panel
+	 * @return A boolean representing whether or not input is enabled for this panel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
 	
-	/** Set the given box to enabled as well 
-	 *  set the box to the correct color
-	 * 
-	 * @param box   The box that needs enabling and colors
-	 * @param enabled  True to enable and False to disable
+	/** Set the given box to enabled and to the correct color
+	 * @param box Which box to enable
+	 * @param enabled True to enable and False to disable
 	 */
 	public void enable(JComboBox box, boolean enabled) {
 		if (enabled) {

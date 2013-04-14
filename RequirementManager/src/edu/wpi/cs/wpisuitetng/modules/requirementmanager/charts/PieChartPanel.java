@@ -57,35 +57,38 @@ public class PieChartPanel extends JPanel {
 
 	/** Default constructor for PieChartPanel*/
 	public PieChartPanel() {
-		
+
 		// This will create the dataset
 		this.dataset = createDataset();
-		
+
 		// based on the dataset we create the chart
 		this.chart = createChart(dataset, "Sample Chart: Favorite OS");
-		
+
 		// we put the chart into a panel
 		this.chartPanel = new ChartPanel(chart);
-		
+
 		// default size
 		chartPanel.setPreferredSize(new Dimension(1300, 500));
-		
+
 		//Disable right clicking
 		//Be careful, this will re-enable the chart editor!
 		chartPanel.setPopupMenu(null);
-		
+
 		// Construct the layout
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		
+
 		//Add the chart to our layout
 		add(chartPanel, BorderLayout.CENTER);
-		
+
 		//Are we using filtered data?
 		this.isFiltered = true;
 	}
-	
-	/** Creates the sample dataset */
+
+
+	/** Creates the sample dataset 
+	 * @return a sample set of data for a bar chart
+	 */
 	private PieDataset createDataset() {
 		DefaultPieDataset result = new DefaultPieDataset();
 		result.setValue("Linux", 29);
@@ -95,7 +98,11 @@ public class PieChartPanel extends JPanel {
 		return result;
 	}
 
-	/** Creates a chart */
+	/** Creates a chart using specified data and title
+	 * @param dataset set of data to use to make the bar chart
+	 * @param title title of the chart
+	 * @return JFreeChart object containing the chart with the title and data
+	 */
 	private JFreeChart createChart(PieDataset dataset, String title) {
 
 		JFreeChart chart = ChartFactory.createPieChart3D(title, // chart title
@@ -108,11 +115,13 @@ public class PieChartPanel extends JPanel {
 		plot.setStartAngle(290);
 		plot.setDirection(Rotation.CLOCKWISE);
 		plot.setForegroundAlpha(0.8f);
-		
+
 		return chart;
 	}
 
-	/** Function to refresh and redraw pie chart with Status */
+	/** Function to refresh and redraw pie chart with Status of requirements
+	 * @param requirements array of requirements to use to generate chart
+	 */
 	public void refreshStatusChart(Requirement[] requirements) {
 		DefaultPieDataset data = new DefaultPieDataset();
 		for (RequirementStatus rs : RequirementStatus.values()) {
@@ -122,7 +131,7 @@ public class PieChartPanel extends JPanel {
 			}
 			if (count > 0) data.setValue(rs.toString(), count);
 		}
-		
+
 		this.dataset = data;
 		if (isFiltered){
 			this.chart = createChart(dataset, "Status of Displayed Requirements");
@@ -133,37 +142,39 @@ public class PieChartPanel extends JPanel {
 		this.chart.getPlot().setOutlineVisible(false);
 		this.chartPanel.setChart(this.chart);
 	}
-	
-	/** Function to refresh and redraw pie chart with Iterations */
-	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
-		DefaultPieDataset data = new DefaultPieDataset();
-		for (Iteration iter : iterations) {
-			int count = 0;
-			for (int i = 0; i < requirements.length; i++) {
-				if (iter.getID() == requirements[i].getAssignedIteration()) count++;
-			}
-			if (count > 0) {
-				if (iter.getName().equals(""))
-					data.setValue("Backlog", count);
-				else
-					data.setValue(iter.getName(), count);
-			}
-					
-		}
-		
-		this.dataset = data;
-		if (isFiltered){
-			this.chart = createChart(dataset, "Iterations of Displayed Requirements");
-		} else {
-			this.chart = createChart(dataset, "Iterations of All Requirements");
-		}
-		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-		this.chart.getPlot().setOutlineVisible(false);
-		this.chartPanel.setChart(this.chart);
-	}
 
-	public void enableFilter(boolean isFiltered){
-		this.isFiltered = isFiltered;
-	}
+	/** Function to refresh and redraw bar chart with Iterations 
+	 * @param requirements array of requirements to use to generate chart
+	 * @param iterations array of iterations to use to generate chart
+	 */	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
+		 DefaultPieDataset data = new DefaultPieDataset();
+		 for (Iteration iter : iterations) {
+			 int count = 0;
+			 for (int i = 0; i < requirements.length; i++) {
+				 if (iter.getID() == requirements[i].getAssignedIteration()) count++;
+			 }
+			 if (count > 0) {
+				 if (iter.getName().equals(""))
+					 data.setValue("Backlog", count);
+				 else
+					 data.setValue(iter.getName(), count);
+			 }
+
+		 }
+
+		 this.dataset = data;
+		 if (isFiltered){
+			 this.chart = createChart(dataset, "Iterations of Displayed Requirements");
+		 } else {
+			 this.chart = createChart(dataset, "Iterations of All Requirements");
+		 }
+		 this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		 this.chart.getPlot().setOutlineVisible(false);
+		 this.chartPanel.setChart(this.chart);
+	 }
+
+	 public void enableFilter(boolean isFiltered){
+		 this.isFiltered = isFiltered;
+	 }
 
 }
