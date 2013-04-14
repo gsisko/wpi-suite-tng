@@ -42,9 +42,6 @@ import javax.swing.border.Border;
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
 	
-	/** Chart panel that will have it's options set by this panel */
-	private PieChartPanel chart;
-
 	//The labels
 	private  JLabel chartTypeLabel; //The label for the chartTypeBox
 	private  JLabel chartDataLabel;//The label for the chartDataBox
@@ -58,19 +55,16 @@ public class ChartOptionsPanel extends JPanel{
 	//The layout manager
 	protected BoxLayout layout; //The layout for this panel
 
-	private PieChartView parent; //Stores the PieChartView that contains the panel
+	private ChartView parent; //Stores the PieChartView that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 
 	/**
 	 * Construct the panel and initialize necessary internal variables
-	 * @param chart A PieChartPanel that will have it's options set by this Panel
-	 * @param parentView The PieChartView that contains this panel
+	 * @param parentView The ChartView that contains this panel
 	 */
-	public ChartOptionsPanel(PieChartPanel chart, PieChartView parentView){
-		
-		this.chart = chart;//Set the chart
-		
-		parent = parentView; //Set the parent
+	public ChartOptionsPanel(ChartView parentView){
+				
+		this.parent = parentView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
 
@@ -88,7 +82,7 @@ public class ChartOptionsPanel extends JPanel{
 		filtersLabel = new JLabel("Active filters:");
 
 		//Create the strings for the boxes
-		String[] typeStrings = { "Pie Chart"};
+		String[] typeStrings = { "Pie Chart", "Bar Chart"};
 		String[] dataStrings = { "Requirement Status", "Requirement Iteration"};
 		String[] filtersStrings = { "Applied", "Not Applied"};
 
@@ -96,6 +90,14 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeBox = new JComboBox(typeStrings);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
+		
+		//Add action listeners to the boxes so data is refreshed when a change is made
+		chartTypeBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+            	parent.setChartType((String) ((JComboBox)e.getSource()).getSelectedItem());
+            	parent.refreshData();
+            }
+        });  
 		
 		chartDataBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -144,9 +146,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.add(filtersOptionsBox);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
 
-
 		setInputEnabled(inputEnabled);
-
 	}
 
 	/**
@@ -158,12 +158,10 @@ public class ChartOptionsPanel extends JPanel{
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		enable(chartTypeBox, false);
+		enable(chartTypeBox, enabled);
 		enable(chartDataBox, enabled);
 		enable(filtersOptionsBox, enabled);
-
 	}
-
 
 	/**
 	 * @return the chartTypeBox
@@ -210,7 +208,7 @@ public class ChartOptionsPanel extends JPanel{
 	/**
 	 * @return the parent
 	 */
-	public PieChartView getParent() {
+	public ChartView getParent() {
 		return parent;
 	}
 	
@@ -221,20 +219,6 @@ public class ChartOptionsPanel extends JPanel{
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
-	}
-
-	/**
-	 * @return the chart
-	 */
-	public PieChartPanel getChart() {
-		return chart;
-	}
-
-	/**
-	 * @param chart the chart to set
-	 */
-	public void setChart(PieChartPanel chart) {
-		this.chart = chart;
 	}
 	
 	/** Set the given box to enabled as well 
