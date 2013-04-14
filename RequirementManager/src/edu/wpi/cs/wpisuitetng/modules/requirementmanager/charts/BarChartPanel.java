@@ -60,7 +60,7 @@ public class BarChartPanel extends JPanel {
 	private JFreeChart chart;
 	private boolean isFiltered;
 
-	/** Default constructor for PieChartPanel*/
+	/** Default constructor for BarChartPanel*/
 	public BarChartPanel() {
 
 		// This will create the dataset
@@ -79,6 +79,10 @@ public class BarChartPanel extends JPanel {
 		//Be careful, this will re-enable the chart editor!
 		chartPanel.setPopupMenu(null);
 
+		//Disable click+drag to zoom
+		this.chartPanel.setDomainZoomable(false);
+		this.chartPanel.setRangeZoomable(false);
+		
 		// Construct the layout
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -133,18 +137,29 @@ public class BarChartPanel extends JPanel {
 		// disable bar outlines...
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
+		renderer.setMaximumBarWidth(.35); // set maximum width to 35% of chart
 
 		// set up gradient paints for series...
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.red, 
 				0.0f, 0.0f, new Color(0, 0, 64));
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.blue, 
 				0.0f, 0.0f, new Color(0, 64, 0));
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.green, 
 				0.0f, 0.0f, new Color(64, 0, 0));
+		GradientPaint gp3 = new GradientPaint(0.0f, 0.0f, Color.yellow, 
+				0.0f, 0.0f, new Color(0, 0, 64));
+		GradientPaint gp4 = new GradientPaint(0.0f, 0.0f, Color.orange, 
+				0.0f, 0.0f, new Color(0, 64, 0));
+		GradientPaint gp5 = new GradientPaint(0.0f, 0.0f, Color.cyan, 
+				0.0f, 0.0f, new Color(64, 0, 0));
+		
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
-
+		renderer.setSeriesPaint(3, gp3);
+		renderer.setSeriesPaint(4, gp4);
+		renderer.setSeriesPaint(5, gp5);		
+		
 		CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setCategoryLabelPositions(
 				CategoryLabelPositions.createUpRotationLabelPositions(
@@ -201,6 +216,7 @@ public class BarChartPanel extends JPanel {
 		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
 		this.chart.getPlot().setOutlineVisible(false);
 		this.chartPanel.setChart(this.chart);
+		
 	}
 
 	public void enableFilter(boolean isFiltered){
