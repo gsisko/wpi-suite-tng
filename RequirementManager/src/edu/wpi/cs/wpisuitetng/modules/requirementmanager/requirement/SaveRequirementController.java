@@ -126,15 +126,15 @@ public class SaveRequirementController
 			for (Iteration iter: view.getAllIterations()){
 				// If it is the right Iteration, save it into the updated requirement
 				if (selectedIteration.equals(iter.getName())){
-					updatedRequirement.setAssignedIteration(iter.getID());
+					updatedRequirement.setIteration(iter.getID());
 					newIter = iter;
 				}
 			}
 
 
 			
-			int oldIterID = oldRequirement.getAssignedIteration(); //grab the old status
-			int newIterID = updatedRequirement.getAssignedIteration();
+			int oldIterID = oldRequirement.getIteration(); //grab the old status
+			int newIterID = updatedRequirement.getIteration();
 			if (newIterID != oldIterID) {
 				if (newIter.getEndDate().before(new Date()) && newIterID != 0) {
 					JOptionPane.showMessageDialog(null, "Cannot assign a requirement to an iteration that has already ended.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
@@ -145,19 +145,19 @@ public class SaveRequirementController
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
 			if (newStatus == RequirementStatus.Deleted) {
-				updatedRequirement.setAssignedIteration(0);
+				updatedRequirement.setIteration(0);
 			}
 
 			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
 			//This should reduce the number of requests the server gets sent
-			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
+			if (updatedRequirement.getIteration() != oldRequirement.getIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
 				//!!! Assuming Iteration will be set above !!!
 
 				/** Update oldIteration */
 				Iteration oldIteration = null;
 
 				for (Iteration i : view.getAllIterations()) {
-					if (oldRequirement.getAssignedIteration() == i.getID()) {
+					if (oldRequirement.getIteration() == i.getID()) {
 						oldIteration = i;
 					}
 				}
@@ -184,7 +184,7 @@ public class SaveRequirementController
 				Iteration updatedIteration = null;
 
 				for (Iteration i : view.getAllIterations()) {
-					if (updatedRequirement.getAssignedIteration() == i.getID()) {
+					if (updatedRequirement.getIteration() == i.getID()) {
 						updatedIteration = i;
 					}
 				}
@@ -230,7 +230,7 @@ public class SaveRequirementController
 			Iteration currentIteration = null;
 
 			for (Iteration i : view.getAllIterations()) {
-				if (i.getID() == newReq.getAssignedIteration()) {
+				if (i.getID() == newReq.getIteration()) {
 					currentIteration = i;
 				}
 			}

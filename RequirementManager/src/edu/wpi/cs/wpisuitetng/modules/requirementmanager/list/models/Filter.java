@@ -195,7 +195,7 @@ public class Filter extends AbstractModel {
 			case Id: 
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
 			case Iteration:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getAssignedIteration());
+				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getIteration());
 			case ActualEffort:
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
 			case Estimate:

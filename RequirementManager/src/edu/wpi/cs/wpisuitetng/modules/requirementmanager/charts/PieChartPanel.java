@@ -151,7 +151,7 @@ public class PieChartPanel extends JPanel {
 		 for (Iteration iter : iterations) {
 			 int count = 0;
 			 for (int i = 0; i < requirements.length; i++) {
-				 if (iter.getID() == requirements[i].getAssignedIteration()) count++;
+				 if (iter.getID() == requirements[i].getIteration()) count++;
 			 }
 			 if (count > 0) {
 				 if (iter.getName().equals(""))

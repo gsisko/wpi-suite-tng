@@ -58,11 +58,13 @@ public class Requirement extends AbstractModel {
 	/** The actual effort it took for this Requirement */
 	private int actualEffort;
 	/** The iteration that this requirement is in */
-	private int assignedIteration;
+	private int iteration;
 	/** This is the list of notes for this Requirement */
 	private ArrayList<Note> notes; 
 	/** This is the list of users associated with this Requirement */
 	private ArrayList<User> users;
+	/** This is the history log for the Requirement */
+	private ArrayList<RequirementEvent> events;
 	
 	/** Basic constructor for a requirement */
 	public Requirement(){
@@ -83,7 +85,7 @@ public class Requirement extends AbstractModel {
 		this.setType(type);
 		this.setPriority(priority); 			// Initialize priority
 		this.setReleaseNumber(releaseNumber); 	// release number of current project
-		this.setAssignedIteration(iterationID);
+		this.setIteration(iterationID);
 		
 		this.setEstimate(0);
 		this.setActualEffort(0);				// Initial actual effort set to zero
@@ -91,6 +93,7 @@ public class Requirement extends AbstractModel {
 		this.setId(-1); 						// (-1) will be a flag to the server/database that this value needs to be set
 		this.notes = new ArrayList<Note>();
 		this.users = new ArrayList<User>();
+		this.events = new ArrayList<RequirementEvent>();
 	}
 	
 	
@@ -176,6 +179,7 @@ public class Requirement extends AbstractModel {
 	 * @return The Requirement given by json */
 	public static Requirement fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
+		addGsonDependencies(builder);
 		return builder.create().fromJson(json, Requirement.class);
 	}
 	
@@ -185,7 +189,16 @@ public class Requirement extends AbstractModel {
 	 * @return The Requirement array given by json */
 	public static Requirement[] fromJSONArray(String json) {
 		GsonBuilder builder = new GsonBuilder();
+		addGsonDependencies(builder);
 		return builder.create().fromJson(json, Requirement[].class);
+	}
+	
+	/**
+	 * Add dependencies necessary for Gson to interact with this class
+	 * @param builder Builder to modify
+	 */
+	public static void addGsonDependencies(GsonBuilder builder) {
+		RequirementEvent.addGsonDependencies(builder);
 	}
 	
 
@@ -328,7 +341,8 @@ public class Requirement extends AbstractModel {
 		this.setType(reqUpdate.getType());
 		this.setNotes(reqUpdate.getNotes());
 		this.setUsers(reqUpdate.getUsers());
-		this.setAssignedIteration(reqUpdate.getAssignedIteration());
+		this.setEvents(reqUpdate.getEvents());
+		this.setIteration(reqUpdate.getIteration());
 	}
 
 
@@ -381,16 +395,30 @@ public class Requirement extends AbstractModel {
 	/**
 	 * @return the assignedIteration
 	 */
-	public int getAssignedIteration() {
-		return assignedIteration;
+	public int getIteration() {
+		return iteration;
 	}
 
 
 	/**
 	 * @param assignedIteration the assignedIteration to set
 	 */
-	public void setAssignedIteration(int assignedIteration) {
-		this.assignedIteration = assignedIteration;
+	public void setIteration(int assignedIteration) {
+		this.iteration = assignedIteration;
+	}
+
+	/**
+	 * @return the events
+	 */
+	public ArrayList<RequirementEvent> getEvents() {
+		return events;
+	}
+
+	/**
+	 * @param events the events to set
+	 */
+	public void setEvents(ArrayList<RequirementEvent> events) {
+		this.events = events;
 	}
 
 }
