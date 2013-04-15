@@ -40,6 +40,8 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
@@ -277,6 +279,18 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 			// copy values to old requirement and fill in our changeset appropriately
 			updateMapper.map(reqUpdate, oldReq, callback);
+			
+			if (changeset.getChanges().containsKey("iteration")) {
+				int oldId = (Integer)changeset.getChanges().get("iteration").getOldValue();
+				int newId = (Integer)changeset.getChanges().get("iteration").getNewValue();
+				String oldName = ((Iteration) db.retrieve(Iteration.class, "id", oldId, s.getProject()).get(0)).getName();
+				String newName = ((Iteration) db.retrieve(Iteration.class, "id", newId, s.getProject()).get(0)).getName();
+				if (oldName.equals("")) oldName = "Backlog";
+				if (newName.equals("")) newName = "Backlog";
+				changeset.getChanges().remove("iteration");
+				changeset.getChanges().put("iteration", new FieldChange<String>(oldName, newName));
+			}
+			
 			reqUpdate.getEvents().add(changeset);
 		}
 

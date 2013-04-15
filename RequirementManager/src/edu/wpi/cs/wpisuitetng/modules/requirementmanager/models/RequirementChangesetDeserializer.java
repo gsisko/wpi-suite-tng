@@ -99,11 +99,11 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				Integer newActualEffort = context.deserialize(actualEffortObj.get("newValue"), Integer.class);
 				changesMap.put("actualEffort", new FieldChange<Integer>(oldActualEffort, newActualEffort));
 			}
-			if (changes.has("assignedIteration")) {
-				JsonObject assignedIterationObj = changes.get("assignedIteration").getAsJsonObject();
-				Integer oldAssignedIteration = context.deserialize(assignedIterationObj.get("oldValue"), Integer.class);
-				Integer newAssignedIteration = context.deserialize(assignedIterationObj.get("newValue"), Integer.class);
-				changesMap.put("assignedIteration", new FieldChange<Integer>(oldAssignedIteration, newAssignedIteration));
+			if (changes.has("iteration")) {
+				JsonObject iterationObj = changes.get("iteration").getAsJsonObject();
+				String oldIteration = context.deserialize(iterationObj.get("oldValue"), String.class);
+				String newIteration = context.deserialize(iterationObj.get("newValue"), String.class);
+				changesMap.put("iteration", new FieldChange<String>(oldIteration, newIteration));
 			}
 			
 			// reconstruct the RequirementChangeset
