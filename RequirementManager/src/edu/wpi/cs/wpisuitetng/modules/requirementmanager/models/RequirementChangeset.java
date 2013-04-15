@@ -27,9 +27,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.gson.Gson;
 

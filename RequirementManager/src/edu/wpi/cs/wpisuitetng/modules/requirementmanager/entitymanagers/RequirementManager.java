@@ -43,6 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.UserChange;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
  * 
@@ -260,10 +261,14 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 			reqUpdate.getEvents().add(lastNote);
 		}
-		//else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) {
+		else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) { // if the update is a user assignment change
+			UserChange userChange = new UserChange(oldReq, reqUpdate);
+			userChange.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
+			userChange.setDate(new Date());
 			
-		//}
-		else {
+			reqUpdate.getEvents().add(userChange);
+		}
+		else { // this update is a changeset
 			RequirementChangeset changeset = new RequirementChangeset();
 			// core should make sure the session user exists
 			changeset.setUser((User) db.retrieve(User.class, "username", s.getUsername()).get(0));
