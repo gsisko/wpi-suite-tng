@@ -44,16 +44,6 @@ public class IterationChangeListener implements PopupMenuListener {
 		this.raPanel = raPanel;
 	}
 
-
-
-
-	@Override
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	/** Watches the "Iteration" box for changes and sets up the "status" field
 	 *  of the requirement appropriately	 */
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -66,5 +56,12 @@ public class IterationChangeListener implements PopupMenuListener {
 	 *  of the requirement appropriately	 */
 	public void popupMenuCanceled(PopupMenuEvent e) {
 		raPanel.changeStatusWithIteration( e);
+	}
+	
+
+	@Override
+	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

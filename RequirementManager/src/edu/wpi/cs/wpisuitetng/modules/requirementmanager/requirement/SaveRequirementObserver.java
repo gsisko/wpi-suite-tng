@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -59,7 +60,7 @@ public class SaveRequirementObserver implements RequestObserver {
 		// Parse the message out of the response body
 		final Requirement requirement = Requirement.fromJSON(response.getBody());
 		view.getRequirementPanel().setCurrentRequirement(requirement);
-		view.getRequirementPanel().updateModel(requirement);
+		view.getRequirementPanel().updateModel(requirement, Mode.EDIT);
 
 		// make sure the requirement isn't null
 		if (requirement != null) {
@@ -75,7 +76,7 @@ public class SaveRequirementObserver implements RequestObserver {
 						view.getRequirementPanel().getCurrentRequirement().setNotes(requirement.getNotes());
 					}
 					else {
-						view.getRequirementPanel().updateModel(requirement);
+						view.getRequirementPanel().updateModel(requirement,Mode.EDIT);
 						view.setEditModeDescriptors(requirement);
 					}
 					view.getController().saveSuccess(requirement);

@@ -209,7 +209,7 @@ public class RequirementAttributePanel extends JPanel {
 		setInputEnabled(inputEnabled);
 
 		//Set the following fields to be initially grayed out
-		toggleCreationDisable();
+		disableFieldsOnCreation();
 
 		//Set up the description scroll pane
 		JScrollPane scrollPane = new JScrollPane(txtDescription);// Put the txtDescription in a scroll pane
@@ -693,24 +693,17 @@ public class RequirementAttributePanel extends JPanel {
 	 * Sets the appropriate fields disabled upon creation
 	 * 
 	 */
-	protected void toggleCreationDisable(){
-		//Set the following fields to be initially grayed out
-		toggleEnabled(txtEstimate, false);
-		toggleEnabled(txtActualEffort, false);
-		toggleEnabled(statusBox, false);
-		toggleEnabled(iterationBox, false);
+	protected void disableFieldsOnCreation(){
 
+		if (mode == Mode.CREATE) {
+			//Set the following fields to be initially grayed out
+			toggleEnabled(txtEstimate, false);
+			toggleEnabled(txtActualEffort, false);
+			toggleEnabled(statusBox, false);
+			toggleEnabled(iterationBox, false);
+		}
 	}
 
-	/**
-	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement and sets the 
-	 * RequirementPanel's "mode" to {@link Mode#EDIT}.
-	 * 
-	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
-	 */
-	protected void updateModel(Requirement requirement) {
-		updateModel(requirement, Mode.EDIT);
-	}
 
 	/**
 	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement.
@@ -718,7 +711,7 @@ public class RequirementAttributePanel extends JPanel {
 	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
 	 * @param newMode		The new "mode"
 	 */
-	protected void updateModel(Requirement requirement, Mode newMode){
+	public void updateModel(Requirement requirement, Mode newMode){
 		mode = newMode;
 		currentRequirement = requirement;
 
@@ -888,8 +881,10 @@ public class RequirementAttributePanel extends JPanel {
 					this.updateStatusSettings("New");
 					return;
 				}
+				txtEstimate.setEnabled(true);
 				this.updateStatusSettings("Open");
 			} else {
+				txtEstimate.setEnabled(false);
 				this.updateStatusSettings("InProgress");
 			}
 		}

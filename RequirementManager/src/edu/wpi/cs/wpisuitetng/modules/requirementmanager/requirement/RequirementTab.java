@@ -174,7 +174,7 @@ public class RequirementTab extends JPanel {
 			tabPanel.getNotePanel().setEnabled(false);
 
 			//Disables the appropriate fields in the attributePanel upon creation
-			attributePanel.toggleCreationDisable();
+			attributePanel.disableFieldsOnCreation();
 
 		}
 
@@ -199,16 +199,6 @@ public class RequirementTab extends JPanel {
 		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
 		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
 		
-	}
-
-	/**
-	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement and sets the 
-	 * RequirementPanel's "mode" to {@link Mode#EDIT}.
-	 * 
-	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
-	 */
-	protected void updateModel(Requirement requirement) {
-		updateModel(requirement, Mode.EDIT);
 	}
 
 	/**

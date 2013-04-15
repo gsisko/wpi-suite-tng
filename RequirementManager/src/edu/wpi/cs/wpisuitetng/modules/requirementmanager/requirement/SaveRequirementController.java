@@ -52,28 +52,7 @@ public class SaveRequirementController
 
 	public void save() 
 	{
-		// check if any inputs are invalid, print an error message if one is
-		String error = "";
-		if (view.getRequirementName().getText().length() == 0) {
-			error += "Name must be non-blank.\n";
-		}
-		if (view.getRequirementName().getText().length() > 100) {
-			error += "Name cannot be greater than 100 characters.\n";
-		}
-		if (view.getRequirementDescription().getText().length() == 0) {
-			error += "Description must be non-blank.\n";
-		}
-		if (view.getRequirementEstimate().getText().length() == 0) {
-			error += "Estimate must be non-blank.\n";
-		}
-		if (view.getRequirementActualEffort().getText().length() == 0) {
-			error += "ActualEffort must be non-blank.\n";
-		}
-		//TODO this should change to eliminate popups, maybe put error checking in the panel itself?
-		if (!error.equals("")) {
-			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+
 
 		view.getParent().setSaveButtonEnable(false);
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
@@ -92,18 +71,9 @@ public class SaveRequirementController
 			//grab the old requirement
 			Requirement oldRequirement = view.getCurrentRequirement();
 
-			//Check to see if the status update is invalid because the user had tried to change the status from "InProgress" to "Deleted")
-			RequirementStatus oldStatus = oldRequirement.getStatus(); //grab the old status
-			RequirementStatus newStatus = RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()); //get the new status
-			if ((oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted)) {//if user had tried to change the status from "InProgress" to "Deleted"...
-				JOptionPane.showMessageDialog(null, "Cannot change status from InProgress to Deleted.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
-				return;//cancel the update
-			} else if ((oldStatus == RequirementStatus.New) && (newStatus == RequirementStatus.Open)){
-				System.out.println("Got here.");
-				updatedRequirement.setStatus(RequirementStatus.New);
-			} else {
-				updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
-			}
+
+			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
+			
 				
  
 
@@ -145,7 +115,7 @@ public class SaveRequirementController
 			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
-			if (newStatus == RequirementStatus.Deleted) {
+			if (updatedRequirement.getStatus() == RequirementStatus.Deleted) {
 				updatedRequirement.setIteration(0);
 			}
 

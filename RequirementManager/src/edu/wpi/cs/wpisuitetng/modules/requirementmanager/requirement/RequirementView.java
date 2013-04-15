@@ -89,13 +89,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 			setEditModeDescriptors(requirement);
 		}
 		
-		// If this is a new requirement, set the creator
-		if (editMode == Mode.CREATE) {
-			// commented out because requirement does not need to set the creator
-			// change in future?
-			//requirement.setCreator(new User("", ConfigManager.getConfig().getUserName(), "", -1));
-		}
-		
+
 		// Instantiate the main create requirement panel
 		RequirementTab requirementTab = new RequirementTab(this,requirement, editMode);
 		mainPanel = requirementTab;
