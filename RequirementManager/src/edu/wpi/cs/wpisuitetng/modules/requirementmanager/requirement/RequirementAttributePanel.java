@@ -28,6 +28,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -596,10 +598,31 @@ public class RequirementAttributePanel extends JPanel {
 		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, "Estimate",3));
 		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, "Estimate",4));
 		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
-		statusBox.addPopupMenuListener(new BoxChangeListener(this, statusBox,  "Status",6 ));
 		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,  "Priority",7 ));
 		iterationBox.addPopupMenuListener(new BoxChangeListener(this, iterationBox,  "Iteration",8 ));
 
+	//	statusBox.addPopupMenuListener(new BoxChangeListener(this, statusBox,  "Status",6 ));
+		statusBox.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Status Box: Changed!");
+				
+				
+				// Check the old value and set the box yellow as necessary
+				if (!statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus() + "")) {
+					changeField(statusBox, 6, true);
+					System.out.println("  Result: activate");
+				} else {
+					System.out.println("  Result: deactivate");
+					changeField(statusBox, 6, false);
+				}
+			}
+		
+		});
+		
+		
+		
 		// Add a listener to the iteration box that changes the Req's status when the iteration is changed
 		iterationBox.addPopupMenuListener(new IterationChangeListener(this));
 	}
@@ -634,7 +657,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// If either are false, keep it disabled
 		validNameAndDescription = Boolean.valueOf(desGood && nameGood);
-		saveButton.setEnabled( validNameAndDescription.booleanValue());	
+		saveButton.setEnabled( validNameAndDescription.booleanValue() && isFieldsChanged());	
 		return validNameAndDescription;
 	}	
 
