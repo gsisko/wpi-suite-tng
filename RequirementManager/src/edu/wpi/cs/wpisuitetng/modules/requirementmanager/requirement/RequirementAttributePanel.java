@@ -573,7 +573,7 @@ public class RequirementAttributePanel extends JPanel {
 			obj.setBackground(new Color(248,253,188));
 			fieldsChanged[i] = true;
 		} else {
-			toggleEnabled(obj, obj.isEnabled());
+			toggleComponentEnabled(obj, obj.isEnabled());
 			fieldsChanged[i] = false;
 		}
 
@@ -670,18 +670,18 @@ public class RequirementAttributePanel extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		toggleEnabled(txtName, enabled);
-		toggleEnabled(txtDescription, enabled);
-		toggleEnabled(typeBox, enabled);
-		toggleEnabled(statusBox, enabled);
-		toggleEnabled(priorityBox, enabled);
-		toggleEnabled(txtReleaseNumber, enabled);
+		toggleComponentEnabled(txtName, enabled);
+		toggleComponentEnabled(txtDescription, enabled);
+		toggleComponentEnabled(typeBox, enabled);
+		toggleComponentEnabled(statusBox, enabled);
+		toggleComponentEnabled(priorityBox, enabled);
+		toggleComponentEnabled(txtReleaseNumber, enabled);
 		if (currentRequirement.getStatus() == RequirementStatus.InProgress)
-			toggleEnabled(txtEstimate, false);
+			toggleComponentEnabled(txtEstimate, false);
 		else
-			toggleEnabled(txtEstimate, enabled);
-		toggleEnabled(txtActualEffort, enabled);
-		toggleEnabled(iterationBox, enabled);
+			toggleComponentEnabled(txtEstimate, enabled);
+		toggleComponentEnabled(txtActualEffort, enabled);
+		toggleComponentEnabled(iterationBox, enabled);
 
 		// Time to refresh this box if we are enabling all the boxes
 		if (enabled){
@@ -697,10 +697,10 @@ public class RequirementAttributePanel extends JPanel {
 
 		if (mode == Mode.CREATE) {
 			//Set the following fields to be initially grayed out
-			toggleEnabled(txtEstimate, false);
-			toggleEnabled(txtActualEffort, false);
-			toggleEnabled(statusBox, false);
-			toggleEnabled(iterationBox, false);
+			toggleComponentEnabled(txtEstimate, false);
+			toggleComponentEnabled(txtActualEffort, false);
+			toggleComponentEnabled(statusBox, false);
+			toggleComponentEnabled(iterationBox, false);
 		}
 	}
 
@@ -731,7 +731,7 @@ public class RequirementAttributePanel extends JPanel {
 	 * @param box Box to be enabled / disabled
 	 * @param enabled True for enable, false for disable
 	 */
-	public void toggleEnabled(JComponent box, boolean enabled) {
+	public void toggleComponentEnabled(JComponent box, boolean enabled) {
 		if (enabled) {
 			box.setEnabled(true);
 			box.setBackground(Color.WHITE);
@@ -797,20 +797,21 @@ public class RequirementAttributePanel extends JPanel {
 	/**
 	 * This section limits the status changes available to the user
 	 * in the JComboBox for status based on requirements
-	 *
+	 * 
+	 * @param setStatus the status to set the boxes to
 	 */
 	public void updateStatusSettings(String setStatus){
 
 		// Can't edit these fields when the Req has certain statuses
 		if (setStatus.equals("Deleted") || setStatus.equals("Complete")){
-			toggleEnabled(txtName, false);
-			toggleEnabled(txtDescription, false);
-			toggleEnabled(typeBox, false);
-			toggleEnabled(priorityBox, false);
-			toggleEnabled(txtReleaseNumber, false);
-			toggleEnabled(txtEstimate, false);
-			toggleEnabled(txtActualEffort, false);
-			toggleEnabled(iterationBox, false);			
+			toggleComponentEnabled(txtName, false);
+			toggleComponentEnabled(txtDescription, false);
+			toggleComponentEnabled(typeBox, false);
+			toggleComponentEnabled(priorityBox, false);
+			toggleComponentEnabled(txtReleaseNumber, false);
+			toggleComponentEnabled(txtEstimate, false);
+			toggleComponentEnabled(txtActualEffort, false);
+			toggleComponentEnabled(iterationBox, false);			
 		}
 		// Sets the selected entry to the first, which will be correct for each.
 		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses( setStatus));
@@ -881,10 +882,9 @@ public class RequirementAttributePanel extends JPanel {
 					this.updateStatusSettings("New");
 					return;
 				}
-				txtEstimate.setEnabled(true);
 				this.updateStatusSettings("Open");
 			} else {
-				txtEstimate.setEnabled(false);
+				txtEstimate.setEnabled(false); // It will get re-enabled after saving
 				this.updateStatusSettings("InProgress");
 			}
 		}
