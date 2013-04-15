@@ -315,10 +315,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toSend = new Iteration();
 		
 		if (this.getCurrentMode() == Mode.EDIT) toSend.setID(currentIteration.getID());
-
-		// Trim the start and end dates
-//		this.startDateChooser.setDate(new Date(trim(startDateChooser.getDate()).getTime() + 1));
-//		this.endDateChooser.setDate(new Date(trim(endDateChooser.getDate()).getTime() + 1));
 		
 		if(!isIterationValid())
 			return null;
