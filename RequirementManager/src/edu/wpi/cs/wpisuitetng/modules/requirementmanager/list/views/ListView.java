@@ -114,7 +114,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		// Add a listener for row clicks in the actual table
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
 		
-		
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("Options for Requirements");
 		
@@ -122,25 +121,13 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(250);
-		
+		buttonGroup.setPreferredWidth((int)btnRefresh.getPreferredSize().getWidth() + 80);
+
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				filterController.refreshData();
 				iterationController.refreshData();
-			}
-		});
-		
-		// Instantiate the refresh button
-		btnDisplayPieChart = new JButton("Display Charts");
-		buttonGroup.getContent().add(new JLabel(" "));
-		buttonGroup.getContent().add(btnDisplayPieChart);
-
-		btnDisplayPieChart.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
 			}
 		});
 	}
