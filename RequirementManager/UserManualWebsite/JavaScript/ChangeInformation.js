@@ -23,8 +23,8 @@ function SelectPrevButton(){
     set up the else if like below
 */
 function changePage(str){
-	if (str.toString() == "mainPanel")
-		MainPanel();
+	if (str.toString() == "requirementOverview")
+		RequirementOverview();
     else if (str.toString() == "makeReqPage")
         MakeReqPage();
 		
@@ -52,22 +52,23 @@ function changePage(str){
     try not to use <p> to keep me happy. Use <br /> for newline
 */
 
-function MainPanel() {
-    $(document).ready(function () {
-        //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">Basic Overview of the Main Panel</a>');
-        $(".instructionTitle").html('<a>The Main Panel</a>');
-		$(".instructionText").html(function(){
-            return '<a>Hello World</a>'
-        });
-    });
+function RequirementOverview(){
+	$(document).ready(function (){
+		$(".moveTabs").html('<a class="title">Overview of the Requirement Panel</a>');
+		$(".instructionTitle").html('<a>The Requirement Panel</a>');
+		$(".instructionText").html(function (){
+			var str = '<img width="500" src="images/mainPanel.png"/><br />';
+			str += 'The above image show the requirement manager in full. This section of the user manual will focus on the creation and managing of requirements.'
+			return str;
+		});
+	});
 }
 
 function MakeReqPage() {
     $(document).ready(function () {
         //change where next and previous values point, do in a function
         $(".moveTabs").html('<a class="title">How to Create a Requirement</a>');
-		$(".instructionTitle").html('<a>The Main Panel</a>');
+		$(".instructionTitle").html('<a>The Requirement Builder Panel</a>');
         $(".instructionText").html(function(){
             return '<a>Hello World</a>'
         });

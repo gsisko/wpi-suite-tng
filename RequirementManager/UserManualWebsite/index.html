@@ -9,7 +9,7 @@
         <script src="JavaScript/ChangeInformation.js"></script>
         <script src="JavaScript/JQuery.js"></script>
     </head>
-    <body onload="SelectPage()" onresize="setUp()">
+    <body onload="SelectPage()" onunload="" onresize="setUp()">
         <div class="main">
             <div class="navigationPanel basicBorder leftPanel">
                 <div class="textPanel">
@@ -27,12 +27,9 @@
                         in the href field, have it equal "#?page= ... " where ... is the name of your new page/function
                         Have the onclick call your new function, they should have very similar name-->
                         
-						
-                        <a onclick="changePage('mainPanel')" href="#?page=mainPanel">Overview of the Main Panel</a>
-                        <br/>
                         <a onclick="">Requirements:</a>
                         <ul>
-                            <li><a onclick="changePage('overviewReqPage')" href="#?page=overviewReqPage">Overview of Requirements Panel</a></li>
+                            <li><a onclick="changePage('requirementOverview')" href="#?page=requirementOverview">Overview of Requirements Panel</a></li>
                             <li><a onclick="changePage('makeReqPage')" href="#?page=makeReqPage">Make a Requirement</a></li>
                             <li><a onclick="changePage('updateReqPage')" href="#?page=updateReqPage">Update a Requirement</a></li>
                             <li><a onclick="changePage('addingANote')" href="#?page=addingANote">Add a Note</a></li>
