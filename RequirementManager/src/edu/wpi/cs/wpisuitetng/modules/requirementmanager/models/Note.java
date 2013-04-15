@@ -94,7 +94,8 @@ public class Note extends RequirementEvent {
 	
 	@Override
 	public String getLabelString() {
-		return "Note added by " + this.getUser().getName() + " on " + this.getDate().toString();
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
+		return "Note added by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
 	}
 	
 }

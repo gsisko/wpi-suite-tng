@@ -66,6 +66,8 @@ public class SaveRequirementObserver implements RequestObserver {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+					view.getRequirementPanel().getTabPanel().getHistoryPanel().refreshEventsList();
+					
 					NoteListModel noteListModel = view.getRequirementPanel().getTabPanel().getNotePanel().getNoteListModel();
 					if (noteListModel.getSize() < requirement.getNotes().size()) {
 						view.getRequirementPanel().getTabPanel().getNotePanel().addNoteToList(requirement.getNotes().get(requirement.getNotes().size() - 1));

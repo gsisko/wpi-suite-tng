@@ -76,7 +76,17 @@ public class HistoryTab extends JPanel {
 		return eventList;
 	}
 
-	
+	public void refreshEventsList() {
+		this.removeAll();
+		eventList  = new ListOfEventPanel(parent.getCurrentRequirement());
+
+		listScrollPane = new JScrollPane(eventList);
+
+		listScrollPane.setPreferredSize(new Dimension(580, 300));		
+
+		// Add components
+		this.add(listScrollPane); //add the noteList, in the listScrollPane, to the panel
+	}
 
 	public void addEventToList(RequirementEvent newEvent){
 		this.removeAll();

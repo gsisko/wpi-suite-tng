@@ -260,9 +260,9 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 			reqUpdate.getEvents().add(lastNote);
 		}
-		else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) {
+		//else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) {
 			
-		}
+		//}
 		else {
 			RequirementChangeset changeset = new RequirementChangeset();
 			// core should make sure the session user exists

@@ -119,6 +119,7 @@ public class SaveRequirementController
 			updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 			updatedRequirement.setNotes(oldRequirement.getNotes());
+			updatedRequirement.setEvents(oldRequirement.getEvents());
 
 			Iteration newIter = null;
 			// Setting the Iteration			

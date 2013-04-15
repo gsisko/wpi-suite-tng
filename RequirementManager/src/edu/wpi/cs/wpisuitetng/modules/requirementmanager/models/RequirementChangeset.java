@@ -24,6 +24,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,7 +91,7 @@ public class RequirementChangeset extends RequirementEvent {
 		boolean first = true;
 
 		for (String fieldName : changes.keySet()) {
-			if (!first) content += '\r';
+			if (!first) content += '\n';
 			first = false;
 
 			// Get the old and new field objects from the FieldChange
@@ -97,7 +99,7 @@ public class RequirementChangeset extends RequirementEvent {
 			Object newValue = changes.get(fieldName).getNewValue();
 			
 			// Add the field name to the content label
-			content += "changed " + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+			content += fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1) + " changed";
 
 			if (oldValue.toString().length() > 0) {
 				content += " FROM ";
@@ -112,7 +114,8 @@ public class RequirementChangeset extends RequirementEvent {
 	
 	@Override
 	public String getLabelString() {
-		return "changes made by " + this.getUser().getName() + " on " + this.getDate().toString();
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
+		return "Changes made by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
 	}
 
 }

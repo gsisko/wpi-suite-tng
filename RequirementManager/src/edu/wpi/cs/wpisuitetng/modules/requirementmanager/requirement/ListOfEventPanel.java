@@ -58,7 +58,7 @@ public class ListOfEventPanel extends JPanel {
 		double totalHeight=0; //This stores a running total of the heights of the note panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
 		
 		//For each note in the noteListModel....
-		for (int i = 0; i<events.size(); i++)
+		for (int i = events.size()-1; i>=0; i--)
 		{
 			String message = events.get(i).getBodyString(); //grab the message portion of the note
 			EventPanel panel = new EventPanel(events.get(i).getLabelString(),message); //create a new NotePanel to hold the note
