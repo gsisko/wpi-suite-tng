@@ -76,12 +76,12 @@ public class ToolbarView extends DefaultToolbarView {
 		// Construct the create requirement button
 		createRequirement = new JButton();
 		createRequirement.setAction(new CreateRequirementAction(tabController));
-		createRequirement.setPreferredSize(new Dimension(120, 40));
+//		createRequirement.setPreferredSize(new Dimension(120, 40));
 		
 		// Construct the list field
-		listField = new JPlaceholderTextField("Lookup by ID", 15);
+		listField = new JPlaceholderTextField("Lookup Requirement by ID", 15);
 		listField.addActionListener(new LookupRequirementController(tabController, listField, this));
-		listField.setPreferredSize(new Dimension(120, 40));
+//		listField.setPreferredSize(new Dimension(120, 40));
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
@@ -95,31 +95,27 @@ public class ToolbarView extends DefaultToolbarView {
 				tabController.addTab("Charts", new ImageIcon(), new ChartView(((ListView) tabController.getView().getTabComponentAt(0)).getListTab()), "Charts for this project's requirements");
 			}
 		});
-		btnDisplayPieChart.setPreferredSize(new Dimension(120, 40));
+		btnDisplayPieChart.setPreferredSize(new Dimension(120, 30));
 		
 		content.add(btnDisplayPieChart);
 
 		// Configure the layout of the buttons on the content panel
-		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content);
-		layout.putConstraint(SpringLayout.WEST, createRequirement, 15, SpringLayout.WEST, content);
-		layout.putConstraint(SpringLayout.SOUTH, createRequirement, (int)listField.getPreferredSize().height+15 , SpringLayout.SOUTH, content);
-		layout.putConstraint(SpringLayout.EAST, createRequirement, (int)15+15+btnDisplayPieChart.getPreferredSize().width, SpringLayout.EAST, content);
-		
-		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 5, SpringLayout.NORTH, content);
-		layout.putConstraint(SpringLayout.EAST, btnDisplayPieChart, 15, SpringLayout.EAST, content);
-		layout.putConstraint(SpringLayout.WEST, btnDisplayPieChart, 5, SpringLayout.WEST, content);
-		layout.putConstraint(SpringLayout.SOUTH, btnDisplayPieChart, (int)15+listField.getHeight(), SpringLayout.SOUTH, content);
+		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content); //Create Requirement button to top of panel
+		layout.putConstraint(SpringLayout.WEST, createRequirement, 5, SpringLayout.WEST, content); //Create Requirement button to left of panel
+		layout.putConstraint(SpringLayout.WEST, btnDisplayPieChart, 10, SpringLayout.EAST, createRequirement); //Display Charts next to Create Requirement
+		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 5, SpringLayout.NORTH, content); //Display Chart to top of panel
+//		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 0, SpringLayout.NORTH, createRequirement); //Align top of Display Charts and Create Requirement
+		layout.putConstraint(SpringLayout.SOUTH, createRequirement, 0, SpringLayout.SOUTH, btnDisplayPieChart); //Align bot of Create Requirements and Display Charts
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, createRequirement, 0, SpringLayout.VERTICAL_CENTER, btnDisplayPieChart); //Align center of Create Requirements and Display Charts
+		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 5, SpringLayout.EAST, createRequirement); //Align Lookup ID to right side of Create Requirements
 
-		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement);
-		layout.putConstraint(SpringLayout.EAST, listField, 7, SpringLayout.EAST, content);
-		layout.putConstraint(SpringLayout.WEST, listField, 15, SpringLayout.WEST, btnDisplayPieChart);
-		layout.putConstraint(SpringLayout.SOUTH, listField, 15, SpringLayout.NORTH, content);
 		
 		// Construct a new toolbar group to be added to the end of the toolbar
 		toolbarGroup = new ToolbarGroupView("Home", content);
 		
 		// Calculate the width of the toolbar
-		Double toolbarGroupWidth = createRequirement.getPreferredSize().getWidth() + btnDisplayPieChart.getPreferredSize().getWidth()+ 80;
+		Double toolbarGroupWidth = createRequirement.getPreferredSize().getWidth() + btnDisplayPieChart.getPreferredSize().getWidth()+ 40;
 		toolbarGroup.setPreferredWidth(toolbarGroupWidth.intValue());
 		addGroup(toolbarGroup);
 	}
