@@ -25,18 +25,14 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.swing.BorderFactory;
@@ -45,15 +41,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This is a panel to display an individual note
@@ -88,19 +79,12 @@ public class AttachmentPanel extends JPanel{
             public void actionPerformed(ActionEvent e)
             {
             	JFileChooser fc = new JFileChooser();
-
+            	fc.setSelectedFile(new File(attachment.getFileName()));
                 int returnVal = fc.showDialog(null,"Download Attachment");
 
                 //Process the results.
                 if (returnVal == JFileChooser.APPROVE_OPTION && !(fc.getSelectedFile().exists())) {
                 	
-                	//Requirement currentRequirement = view.getCurrentRequirement();
-                	
-
-                	//OutputStream source = null;
-                	//FileOutputStream destination = null;
-        			
-                	//InputStream source = new FileInputStream(fc.getSelectedFile());
                 	File newFile = new File(fc.getSelectedFile().getAbsolutePath());
                 	
                 	OutputStream destination;
