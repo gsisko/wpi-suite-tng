@@ -58,7 +58,7 @@ function RequirementOverview(){
 		$(".instructionTitle").html('<a>The Requirement Panel</a>');
 		$(".instructionText").html(function (){
 			var str = '<img width="500" src="images/mainPanel.png"/><br />';
-			str += 'The above image show the requirement manager in full. This section of the user manual will focus on the creation and managing of requirements.'
+			str += 'The above image show the requirement manager in full. This section of the user manual will focus on the creation and management of requirements. Further sections will focus on the rest of the sections, including Filters and Iterations'
 			return str;
 		});
 	});
@@ -70,7 +70,8 @@ function MakeReqPage() {
         $(".moveTabs").html('<a class="title">How to Create a Requirement</a>');
 		$(".instructionTitle").html('<a>The Requirement Builder Panel</a>');
         $(".instructionText").html(function(){
-            return '<a>Hello World</a>'
+        	var str = '';
+            return str;
         });
     });
 }
