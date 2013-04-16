@@ -23,15 +23,15 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.listeners;
 
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
 
 /** An action listener specifically made to watch an Iteration selection combo 
  *  box and on changes between any iteration and the backlog, change the status
  *  of the requirement appropriately.            */
-public class IterationChangeListener implements PopupMenuListener {
+public class IterationChangeListener implements ItemListener {
 
 	/** The panel with the Iteration drop down box to be watched */
 	RequirementAttributePanel raPanel;
@@ -44,25 +44,32 @@ public class IterationChangeListener implements PopupMenuListener {
 		this.raPanel = raPanel;
 	}
 
-	/** Watches the "Iteration" box for changes and sets up the "status" field
-	 *  of the requirement appropriately	 */
-	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		raPanel.changeStatusWithIteration( e);
-		raPanel.checkIterationChange();
-	}
-
-
-	/** Watches the "Iteration" box for changes and sets up the "status" field
-	 *  of the requirement appropriately	 */
-	public void popupMenuCanceled(PopupMenuEvent e) {
-		raPanel.changeStatusWithIteration( e);
-		raPanel.checkIterationChange();
-	}
-	
+//	/** Watches the "Iteration" box for changes and sets up the "status" field
+//	 *  of the requirement appropriately	 */
+//	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+//		raPanel.changeStatusWithIteration( e);
+//		raPanel.checkIterationChange();
+//	}
+//
+//
+//	/** Watches the "Iteration" box for changes and sets up the "status" field
+//	 *  of the requirement appropriately	 */
+//	public void popupMenuCanceled(PopupMenuEvent e) {
+//		raPanel.changeStatusWithIteration( e);
+//		raPanel.checkIterationChange();
+//	}
+//	
+//
+//	@Override
+//	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
+	public void itemStateChanged(ItemEvent e) {
+		raPanel.changeStatusWithIteration( e);
+		raPanel.checkIterationChange();
 		
 	}
 }
