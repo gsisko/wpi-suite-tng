@@ -30,7 +30,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
@@ -56,7 +55,7 @@ public class ToolbarView extends DefaultToolbarView {
 	private MainTabController tabController;
 	
 	/** Panel containing the list interface */
-//	protected ListTab mainPanel;
+	protected ListTab mainPanel;
 	
 	/**
 	 * Create a ToolbarView.
@@ -65,7 +64,7 @@ public class ToolbarView extends DefaultToolbarView {
 	public ToolbarView(final MainTabController tabController) {
 		this.tabController = tabController;
 		
-//		mainPanel = new ListTab(tabController, this);
+		mainPanel = ((ListView) tabController.getView().getTabComponentAt(0)).getListTab();
 
 		// Construct the content panel
 		JPanel content = new JPanel();
@@ -76,12 +75,10 @@ public class ToolbarView extends DefaultToolbarView {
 		// Construct the create requirement button
 		createRequirement = new JButton();
 		createRequirement.setAction(new CreateRequirementAction(tabController));
-//		createRequirement.setPreferredSize(new Dimension(120, 40));
 		
 		// Construct the list field
 		listField = new JPlaceholderTextField("Lookup Requirement by ID", 15);
 		listField.addActionListener(new LookupRequirementController(tabController, listField, this));
-//		listField.setPreferredSize(new Dimension(120, 40));
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
@@ -92,7 +89,7 @@ public class ToolbarView extends DefaultToolbarView {
 		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tabController.addTab("Charts", new ImageIcon(), new ChartView(((ListView) tabController.getView().getTabComponentAt(0)).getListTab()), "Charts for this project's requirements");
+				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
 			}
 		});
 		btnDisplayPieChart.setPreferredSize(new Dimension(120, 30));
@@ -104,7 +101,6 @@ public class ToolbarView extends DefaultToolbarView {
 		layout.putConstraint(SpringLayout.WEST, createRequirement, 5, SpringLayout.WEST, content); //Create Requirement button to left of panel
 		layout.putConstraint(SpringLayout.WEST, btnDisplayPieChart, 10, SpringLayout.EAST, createRequirement); //Display Charts next to Create Requirement
 		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 5, SpringLayout.NORTH, content); //Display Chart to top of panel
-//		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 0, SpringLayout.NORTH, createRequirement); //Align top of Display Charts and Create Requirement
 		layout.putConstraint(SpringLayout.SOUTH, createRequirement, 0, SpringLayout.SOUTH, btnDisplayPieChart); //Align bot of Create Requirements and Display Charts
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, createRequirement, 0, SpringLayout.VERTICAL_CENTER, btnDisplayPieChart); //Align center of Create Requirements and Display Charts
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
