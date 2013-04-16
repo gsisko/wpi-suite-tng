@@ -65,6 +65,8 @@ public class Requirement extends AbstractModel {
 	private ArrayList<User> users;
 	/** This is the history log for the Requirement */
 	private ArrayList<RequirementEvent> events;
+	/** This is the list of attachments associated with this Requirement */
+	private ArrayList<Attachment> attachments;	
 	
 	/** Basic constructor for a requirement */
 	public Requirement(){
@@ -94,6 +96,7 @@ public class Requirement extends AbstractModel {
 		this.notes = new ArrayList<Note>();
 		this.users = new ArrayList<User>();
 		this.events = new ArrayList<RequirementEvent>();
+		this.attachments = new ArrayList<Attachment>();
 	}
 	
 	
@@ -343,6 +346,7 @@ public class Requirement extends AbstractModel {
 		this.setUsers(reqUpdate.getUsers());
 		this.setEvents(reqUpdate.getEvents());
 		this.setIteration(reqUpdate.getIteration());
+		this.setAttachments(reqUpdate.getAttachments());
 	}
 
 
@@ -419,6 +423,20 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setEvents(ArrayList<RequirementEvent> events) {
 		this.events = events;
+	}
+	
+	/**
+	 * @return the attachment
+	 */
+	public ArrayList<Attachment> getAttachments() {
+		return attachments;
+	}
+
+	/**
+	 * @param attachment the attachment to set
+	 */
+	public void setAttachments(ArrayList<Attachment> attachment) {
+		this.attachments = attachment;
 	}
 
 }

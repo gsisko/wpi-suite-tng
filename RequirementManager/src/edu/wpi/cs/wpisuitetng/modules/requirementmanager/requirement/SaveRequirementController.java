@@ -26,11 +26,18 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -281,6 +288,57 @@ public class SaveRequirementController
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		request.send();
 	}
+	
+	public void saveAttachment() throws IOException {
+		JFileChooser fc = new JFileChooser();
 
+        int returnVal = fc.showDialog(null,"Add Attachment");
+
+        //Process the results.
+        if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists()) {
+        	
+        	Requirement currentRequirement = view.getCurrentRequirement();
+        	
+
+        	InputStream source = null;
+        	//FileOutputStream destination = null;
+			
+			//InputStream source = new FileInputStream(fc.getSelectedFile());
+        	ByteArrayOutputStream destination = null;
+			
+			try {
+				source = new FileInputStream(fc.getSelectedFile());// = new InputStream().getChannel();
+				
+				byte[] buffer = new byte[4096];
+				destination = new ByteArrayOutputStream();
+		        
+		        int read = 0;
+		        while ( (read = source.read(buffer)) != -1 ) {
+		        	destination.write(buffer, 0, read);
+		        }
+		        
+		        
+			}
+			finally {
+		        if(source != null) {
+		            source.close();
+		        }
+		        if(destination != null) {
+		            destination.close();
+		        }
+		    }
+			
+			Attachment newFile = new Attachment(fc.getSelectedFile().getName(), 
+					destination.size(), destination.toByteArray());
+        	currentRequirement.getAttachments().add(newFile);
+        	System.out.println(fc.getSelectedFile().toString());
+        	
+        	// make a POST http request and let the observer get the response
+    	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+    	    request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+    	    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+    	    request.send();
+        }
+        fc.setSelectedFile(null);
+	}
 }
-

@@ -41,7 +41,8 @@ public abstract class RequirementEvent extends AbstractModel {
 		CREATION,
 		CHANGESET,
 		NOTE,
-		USER
+		USER,
+		ATTACHMENT
 	};
 	
 	protected Date date = new Date();

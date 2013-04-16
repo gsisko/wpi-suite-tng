@@ -79,6 +79,15 @@ public class SaveRequirementObserver implements RequestObserver {
 						view.getRequirementPanel().updateModel(requirement,Mode.EDIT);
 						view.setEditModeDescriptors(requirement);
 					}
+					AttachmentListModel attachmentListModel = view.getRequirementPanel().getTabPanel().getAttachmentPanel().getAttachmentListModel();
+					if (attachmentListModel.getSize() < requirement.getAttachments().size()) {
+						view.getRequirementPanel().getTabPanel().getAttachmentPanel().addAttachmentToList(requirement.getAttachments().get(requirement.getAttachments().size() - 1));
+						view.getRequirementPanel().getCurrentRequirement().setAttachments(requirement.getAttachments());
+					}
+					else {
+						view.getRequirementPanel().updateModel(requirement,Mode.EDIT);
+						view.setEditModeDescriptors(requirement);
+					}
 					view.getController().saveSuccess(requirement);
 				}
 			});
