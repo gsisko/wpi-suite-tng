@@ -30,6 +30,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -585,6 +587,7 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 	/** Sets up the controllers and listeners for this panel	 */
+	/** Sets up the controllers and listeners for this panel   */
 	public void setupControllersAndListeners() {
 		// Add a listener to check the Name and Description boxes for validity
 		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(this);
@@ -599,14 +602,13 @@ public class RequirementAttributePanel extends JPanel {
 		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, "ActualEffort",4));
 		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
 		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,  "Priority",7 ));
-
-		statusBox.addActionListener(new ActionListener(){
+		statusBox.addItemListener(new ItemListener(){
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void itemStateChanged(ItemEvent e) {
 				System.out.println("Status Box: Changed!");
-				
-				
+
+
 				// Check the old value and set the box yellow as necessary
 				if (!statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus() + "")) {
 					changeField(statusBox, 6, true);
@@ -615,16 +617,23 @@ public class RequirementAttributePanel extends JPanel {
 					System.out.println("  Result: deactivate");
 					changeField(statusBox, 6, false);
 				}
+				// Only valid in EDIT mode
+				if (mode.equals(Mode.EDIT) ){
+					// Check to see if the status changed to "Open"
+					if (statusBox.getSelectedItem().toString().equals("Open")){
+						// Change the selected iteration to backlog
+						iterationBox.setSelectedIndex(0);
+					}
+				}
 			}
-		
-		});
-		
-		
-		
-		// Add a listener to the iteration box that changes the Req's status when the iteration is changed
-		iterationBox.addPopupMenuListener(new IterationChangeListener(this));
-	}
 
+		});
+
+
+
+		// Add a listener to the iteration box that changes the Req's status when the iteration is changed
+		iterationBox.addItemListener(new IterationChangeListener(this));
+	}
 	/** Checks the name and description fields for changes and sets the warning labels and 
 	 *  save button status appropriately            
 	 *  
@@ -680,7 +689,7 @@ public class RequirementAttributePanel extends JPanel {
 		return toReturn;
 
 	}
-	
+
 
 	/**
 	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
@@ -737,8 +746,8 @@ public class RequirementAttributePanel extends JPanel {
 		currentRequirement = requirement;
 
 		populateFields();
-		
-		
+
+
 		// TODO: better comments here
 		revalidate();
 		layout.invalidateLayout(this);
@@ -771,7 +780,7 @@ public class RequirementAttributePanel extends JPanel {
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
 		{
 			//Enable all fields
-//			setInputEnabled(true);
+			//			setInputEnabled(true);
 
 			//Set the fields to the values passed in with "requirement"
 			txtName.setText(currentRequirement.getName());
@@ -810,7 +819,7 @@ public class RequirementAttributePanel extends JPanel {
 
 			updateStatusSettings(oldStatus);
 		}
-		
+
 		// Set the status of the fields to unchanged because they just got populated
 		setFieldsChanged(false);
 	}
@@ -840,7 +849,7 @@ public class RequirementAttributePanel extends JPanel {
 		statusBox.setSelectedIndex(0);
 
 	}
-	
+
 	/** Gets the names of the current iterations and puts them into the Iteration
 	 *  selection combo box. Also sets the selected index appropriately.
 	 */
@@ -872,7 +881,7 @@ public class RequirementAttributePanel extends JPanel {
 			}
 		}
 	}
-	
+
 	/** When the selected value in the iteration box is changed, this method is 
 	 * called by the listener watching the box. Under certain circumstances,
 	 * this method changes the Requirement's status.
@@ -884,13 +893,13 @@ public class RequirementAttributePanel extends JPanel {
 	 * 
 	 * @param e details about the event
 	 */
-	public void changeStatusWithIteration(PopupMenuEvent e){
+	public void changeStatusWithIteration(ItemEvent e){
 		System.out.println("The assigned iteration has been changed; the status will be changed accordingly.");
 
 		// Only valid in EDIT mode
 		if (this.getMode().equals(Mode.EDIT) ){
 			RequirementStatus currentStatus = currentRequirement.getStatus(); 			
-			
+
 			// You can't change the status while Deleted or Complete anyways, so this is a check.
 			if ( currentStatus == RequirementStatus.Complete 	|| currentStatus == RequirementStatus.Deleted ){
 				return;
@@ -903,14 +912,23 @@ public class RequirementAttributePanel extends JPanel {
 					this.updateStatusSettings("New");
 					return;
 				}
+				changeField(statusBox, 6, true); // Note that the status changed
 				this.updateStatusSettings("Open");
 			} else {
 				txtEstimate.setEnabled(false); // It will get re-enabled after saving
 				this.updateStatusSettings("InProgress");
 			}
+			// hack to make the status box change colors
+			if (! this.getCurrentRequirement().getStatus().toString().equals(statusBox.getSelectedItem().toString())){
+				System.out.println("Status was changed with the iteration.");
+				changeField(statusBox, 6, true); // Note that the status changed
+			} else {
+				System.out.println("The status was not changed by the iteration.");
+				changeField(statusBox, 6, false); // Note that the status changed
+			}     
 		}
 	}
-	
+
 	/** Checks the Iteration box for changes and yellows that box appropriately
 	 * 
 	 */
@@ -924,8 +942,8 @@ public class RequirementAttributePanel extends JPanel {
 				oldValue = (allIterations[i].getName());
 			}
 		}
-		
-		
+
+
 		// Check the old value and set the box yellow as necessary
 		if (!iterationBox.getSelectedItem().toString().equals(oldValue + "")) {
 			this.changeField(iterationBox, 8, true);
