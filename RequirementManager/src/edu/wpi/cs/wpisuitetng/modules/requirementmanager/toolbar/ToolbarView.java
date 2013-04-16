@@ -64,8 +64,7 @@ public class ToolbarView extends DefaultToolbarView {
 	public ToolbarView(final MainTabController tabController) {
 		this.tabController = tabController;
 		
-//		mainPanel = ((ListView) tabController.getView().getTabComponentAt(0)).getListTab();
-		mainPanel = null;
+		mainPanel = ((ListView) tabController.getView().getComponentAt(0)).getListTab();
 		
 		// Construct the content panel
 		JPanel content = new JPanel();
@@ -81,20 +80,19 @@ public class ToolbarView extends DefaultToolbarView {
 		listField = new JPlaceholderTextField("Lookup Requirement by ID", 15);
 		listField.addActionListener(new LookupRequirementController(tabController, listField, this));
 		
-		// Add buttons to the content panel
-		content.add(createRequirement);
-		content.add(listField);
-		
 		// Instantiate the charts button
 		btnDisplayPieChart = new JButton("Display Charts");
 		btnDisplayPieChart.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {				
 				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
 			}
 		});
 		btnDisplayPieChart.setPreferredSize(new Dimension(120, 30));
 		
+		// Add buttons to the content panel
+		content.add(createRequirement);
+		content.add(listField);
 		content.add(btnDisplayPieChart);
 
 		// Configure the layout of the buttons on the content panel
