@@ -64,8 +64,9 @@ public class ToolbarView extends DefaultToolbarView {
 	public ToolbarView(final MainTabController tabController) {
 		this.tabController = tabController;
 		
-		mainPanel = ((ListView) tabController.getView().getTabComponentAt(0)).getListTab();
-
+//		mainPanel = ((ListView) tabController.getView().getTabComponentAt(0)).getListTab();
+		mainPanel = null;
+		
 		// Construct the content panel
 		JPanel content = new JPanel();
 		SpringLayout layout  = new SpringLayout();
