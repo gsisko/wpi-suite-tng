@@ -48,7 +48,7 @@ public class IterationChangeListener implements PopupMenuListener {
 	 *  of the requirement appropriately	 */
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 		raPanel.changeStatusWithIteration( e);
-		
+		raPanel.checkIterationChange();
 	}
 
 
@@ -56,6 +56,7 @@ public class IterationChangeListener implements PopupMenuListener {
 	 *  of the requirement appropriately	 */
 	public void popupMenuCanceled(PopupMenuEvent e) {
 		raPanel.changeStatusWithIteration( e);
+		raPanel.checkIterationChange();
 	}
 	
 

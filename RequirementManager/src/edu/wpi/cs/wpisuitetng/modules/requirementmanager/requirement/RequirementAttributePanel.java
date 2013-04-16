@@ -596,12 +596,10 @@ public class RequirementAttributePanel extends JPanel {
 		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, "Description",1));
 		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, "ReleaseNumber",2));
 		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, "Estimate",3));
-		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, "Estimate",4));
+		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, "ActualEffort",4));
 		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
 		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,  "Priority",7 ));
-		iterationBox.addPopupMenuListener(new BoxChangeListener(this, iterationBox,  "Iteration",8 ));
 
-	//	statusBox.addPopupMenuListener(new BoxChangeListener(this, statusBox,  "Status",6 ));
 		statusBox.addActionListener(new ActionListener(){
 
 			@Override
@@ -910,6 +908,31 @@ public class RequirementAttributePanel extends JPanel {
 				txtEstimate.setEnabled(false); // It will get re-enabled after saving
 				this.updateStatusSettings("InProgress");
 			}
+		}
+	}
+	
+	/** Checks the Iteration box for changes and yellows that box appropriately
+	 * 
+	 */
+	public void checkIterationChange() {
+		// Get the name of the iteration that this Requirement used to be assigned to
+		Iteration[] allIterations = parent.getAllIterations();
+
+		String oldValue = "";
+		for (int i = 0; i < allIterations.length; ++i) {
+			if (currentRequirement.getIteration() == allIterations[i].getID()){
+				oldValue = (allIterations[i].getName());
+			}
+		}
+		
+		
+		// Check the old value and set the box yellow as necessary
+		if (!iterationBox.getSelectedItem().toString().equals(oldValue + "")) {
+			this.changeField(iterationBox, 8, true);
+			System.out.println("  Result: activate");
+		} else {
+			System.out.println("  Result: deactivate");
+			this.changeField(iterationBox, 8, false);
 		}
 	}
 

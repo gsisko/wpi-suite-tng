@@ -52,6 +52,28 @@ public class SaveRequirementController
 
 	public void save() 
 	{
+		// check if any inputs are invalid, print an error message if one is
+		String error = "";
+		if (view.getRequirementName().getText().length() == 0) {
+			error += "Name must be non-blank.\n";
+		}
+		if (view.getRequirementName().getText().length() > 100) {
+			error += "Name cannot be greater than 100 characters.\n";
+		}
+		if (view.getRequirementDescription().getText().length() == 0) {
+			error += "Description must be non-blank.\n";
+		}
+		if (view.getRequirementEstimate().getText().length() == 0) {
+			error += "Estimate must be non-blank.\n";
+		}
+		if (view.getRequirementActualEffort().getText().length() == 0) {
+			error += "ActualEffort must be non-blank.\n";
+		}
+		//TODO this should change to eliminate popups, maybe put error checking in the panel itself?
+		if (!error.equals("")) {
+			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
 
 		view.getParent().setSaveButtonEnable(false);
@@ -67,15 +89,15 @@ public class SaveRequirementController
 		else { // we are updating an existing requirement
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
-			
+
 			//grab the old requirement
 			Requirement oldRequirement = view.getCurrentRequirement();
 
 
 			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
-			
-				
- 
+
+
+
 
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
@@ -103,7 +125,7 @@ public class SaveRequirementController
 			}
 
 
-			
+
 			int oldIterID = oldRequirement.getIteration(); //grab the old status
 			int newIterID = updatedRequirement.getIteration();
 			if (newIterID != oldIterID) {
@@ -111,7 +133,7 @@ public class SaveRequirementController
 					JOptionPane.showMessageDialog(null, "Cannot assign a requirement to an iteration that has already ended.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
 					return;//cancel the update
 				}
-					
+
 			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
@@ -132,7 +154,7 @@ public class SaveRequirementController
 						oldIteration = i;
 					}
 				}
-				
+
 				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 				//Update totalEstimate
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
@@ -144,7 +166,7 @@ public class SaveRequirementController
 				}
 				oldIteration.setRequirementsContained(requirementList);
 
-				
+
 
 				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
 				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
