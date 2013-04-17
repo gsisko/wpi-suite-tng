@@ -161,9 +161,9 @@ public class RequirementAttributePanel extends JPanel {
 		txtReleaseNumber = new JTextField("");
 		txtEstimate = new JNumberTextField();
 		txtActualEffort = new JNumberTextField();
-		txtReleaseNumber.setMaximumSize(new Dimension(30, 25));
-		txtReleaseNumber.setMinimumSize(new Dimension(30, 25));
-		txtReleaseNumber.setPreferredSize(new Dimension(30, 25));
+		txtReleaseNumber.setMaximumSize(new Dimension(34, 25));
+		txtReleaseNumber.setMinimumSize(new Dimension(34, 25));
+		txtReleaseNumber.setPreferredSize(new Dimension(34, 25));
 		txtEstimate.setAllowNegative(false);
 		txtEstimate.setMaximumSize(new Dimension(30, 25));
 		txtEstimate.setMinimumSize(new Dimension(30, 25));
@@ -172,6 +172,9 @@ public class RequirementAttributePanel extends JPanel {
 		txtActualEffort.setMaximumSize(new Dimension(30, 25));
 		txtActualEffort.setMinimumSize(new Dimension(30, 25));
 		txtActualEffort.setPreferredSize(new Dimension(30, 25));
+		
+		//Set the character limit for the release number
+		txtReleaseNumber.setDocument(new JTextFieldLimit(12));
 
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
