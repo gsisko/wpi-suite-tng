@@ -67,7 +67,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				JsonObject typeObj = changes.get("type").getAsJsonObject();
 				RequirementType oldType = context.deserialize(typeObj.get("oldValue"), RequirementType.class);
 				RequirementType newType = context.deserialize(typeObj.get("newValue"), RequirementType.class);
-				changesMap.put("type", new FieldChange<String>(RequirementType.toBlankString(oldType), RequirementType.toBlankString(newType)));
+				changesMap.put("type", new FieldChange<RequirementType>(oldType, newType));
 			}
 			if (changes.has("status")) {
 				JsonObject statusObj = changes.get("status").getAsJsonObject();
@@ -79,7 +79,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 				JsonObject priorityObj = changes.get("priority").getAsJsonObject();
 				RequirementPriority oldPriority = context.deserialize(priorityObj.get("oldValue"), RequirementPriority.class);
 				RequirementPriority newPriority = context.deserialize(priorityObj.get("newValue"), RequirementPriority.class);
-				changesMap.put("priority", new FieldChange<String>(RequirementPriority.toBlankString(oldPriority), RequirementPriority.toBlankString(newPriority)));
+				changesMap.put("priority", new FieldChange<RequirementPriority>(oldPriority, newPriority));
 			}
 			if (changes.has("releaseNumber")) {
 				JsonObject releaseNumberObj = changes.get("releaseNumber").getAsJsonObject();
