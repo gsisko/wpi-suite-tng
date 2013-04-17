@@ -40,6 +40,7 @@ public class RequirementTabPanel extends JTabbedPane {
 	private NoteTab notePanel;
 	private AttachmentTab attachmentPanel;
 	private HistoryTab historyPanel;
+	private UserChooserTab userChooserPanel;
 
 	public RequirementTabPanel(RequirementTab view) {
 
@@ -54,6 +55,8 @@ public class RequirementTabPanel extends JTabbedPane {
 		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
 		attachmentPanel = new AttachmentTab(parent);
 		addTab("Attachments", new ImageIcon(), attachmentPanel, "Attachments for the current requirement");
+		userChooserPanel = new UserChooserTab(parent); 
+		addTab("Users", new ImageIcon(), userChooserPanel, "Users assigned to the current requirement");
 
 		this.setPreferredSize(new Dimension(450, 500));
 	}
