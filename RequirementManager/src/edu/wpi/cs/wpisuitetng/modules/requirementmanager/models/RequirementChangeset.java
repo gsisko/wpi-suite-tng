@@ -100,9 +100,9 @@ public class RequirementChangeset extends RequirementEvent {
 			content += fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1) + " changed";
 
 			content += " from \"";
-			content += oldValue;
+			content += oldValue.toString();
 			content += "\" to \"";
-			content += newValue;
+			content += newValue.toString();
 			content += "\"";
 		}
 

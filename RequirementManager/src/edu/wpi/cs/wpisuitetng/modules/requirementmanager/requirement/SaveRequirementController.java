@@ -167,7 +167,6 @@ public class SaveRequirementController
 					}
 				}
 
-				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 				//Update totalEstimate
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 
@@ -300,7 +299,7 @@ public class SaveRequirementController
         int returnVal = fc.showDialog(null,"Add Attachment");
 
         //Process the results.
-        if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists()) {
+        if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 20971520) {
         	
         	Requirement currentRequirement = view.getCurrentRequirement();
         	InputStream source = null;
@@ -353,6 +352,9 @@ public class SaveRequirementController
     	    request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
     	    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
     	    request.send();
+        }
+        else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 20971520){
+        	JOptionPane.showMessageDialog(null, "File size must be 20 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         fc.setSelectedFile(null);
 	}
