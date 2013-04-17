@@ -37,7 +37,11 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllAttachmentPartsObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllModelsObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAllAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -51,6 +55,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class SaveRequirementController
 {
 	private final RequirementTab view;
+	private Attachment currentAttachment;
+	private boolean partSaveSuccess;
 
 	public SaveRequirementController(RequirementView view) 
 	{
@@ -304,34 +310,68 @@ public class SaveRequirementController
         	//FileOutputStream destination = null;
 			
 			//InputStream source = new FileInputStream(fc.getSelectedFile());
-        	ByteArrayOutputStream destination = null;
+        	ArrayList<ByteArrayOutputStream> destinations = new ArrayList<ByteArrayOutputStream>();
 			
 			try {
 				source = new FileInputStream(fc.getSelectedFile());// = new InputStream().getChannel();
 				
-				byte[] buffer = new byte[4096];
-				destination = new ByteArrayOutputStream();
+				byte[] buffer = new byte[32768];
+				
 		        
 		        int read = 0;
 		        while ( (read = source.read(buffer)) != -1 ) {
-		        	destination.write(buffer, 0, read);
+		        	ByteArrayOutputStream newDestination = new ByteArrayOutputStream();
+		        	newDestination.write(buffer, 0, read);
+		        	destinations.add(newDestination);
 		        }
-		        
-		        
 			}
 			finally {
 		        if(source != null) {
 		            source.close();
 		        }
-		        if(destination != null) {
-		            destination.close();
-		        }
+		        for(ByteArrayOutputStream destination : destinations){
+		        	if(destination != null) {
+		        		destination.close();
+		        	}
+		        }   
 		    }
 			
-			Attachment newFile = new Attachment(fc.getSelectedFile().getName(), 
-					destination.size(), destination.toByteArray());
-        	currentRequirement.getAttachments().add(newFile);
-        	System.out.println(fc.getSelectedFile().toString());
+			//byte[] byteArray = destination.toByteArray();
+			//int numofparts = byteArray.length / 32768;
+			//if(byteArray.length / 32768 != 0) numofparts++;
+			
+			currentAttachment = new Attachment(fc.getSelectedFile().getName(), (int) fc.getSelectedFile().length());
+			
+			ArrayList<AttachmentPart> parts = new ArrayList<AttachmentPart>();
+			for(ByteArrayOutputStream destination : destinations){
+				partSaveSuccess = false;
+	        	AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray());
+	        	parts.add(part);
+	        	
+	        	final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
+	    	    request.setBody(part.toJSON()); // put the new message in the body of the request
+	    	    request.addObserver(new SaveAllAttachmentPartsObserver(this)); // add an observer to process the response
+	    	    request.send();
+	    	    
+	    	    while(!partSaveSuccess);
+	        }
+			
+			//int a = 0;
+			//while (a < 10000000) a++;
+			/*partSaveSuccess = false;
+			Request getrequest;
+			getrequest = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.GET);
+			getrequest.addObserver(new RetrieveAllAttachmentPartsObserver(this));
+			getrequest.send();
+			
+			
+			while(!partSaveSuccess);*/
+	    		
+	    	//while (currentAttachment.getAttachmentPartIds().size() < parts.size());
+			//Attachment newFile = new Attachment(fc.getSelectedFile().getName(), 
+					//destination.size(), destination.toByteArray());
+        	currentRequirement.getAttachments().add(currentAttachment);
+        	//System.out.println(fc.getSelectedFile().toString());
         	
         	// make a POST http request and let the observer get the response
     	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
@@ -340,5 +380,24 @@ public class SaveRequirementController
     	    request.send();
         }
         fc.setSelectedFile(null);
+	}
+
+	/**
+	 * @return the currentAttachment
+	 */
+	public Attachment getCurrentAttachment() {
+		return currentAttachment;
+	}
+
+	/**
+	 * @param currentAttachment the currentAttachment to set
+	 */
+	public void setCurrentAttachment(Attachment currentAttachment) {
+		this.currentAttachment = currentAttachment;
+	}
+
+	public void setPartSaveSuccess(boolean b, int id) {
+		this.partSaveSuccess = b;
+		this.currentAttachment.getAttachmentPartIds().add(id);
 	}
 }

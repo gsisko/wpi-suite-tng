@@ -26,6 +26,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.Gson;
@@ -38,22 +39,22 @@ public class Attachment extends RequirementEvent {
 	
 	private String fileName;
 	private int fileSize;
-	private byte[] attachmentByteArrays;
+	private ArrayList<Integer> attachmentPartIds;
 	
 	/**
 	 * Create a Note with given properties
 	 * 
 	 * @param message The message the user wishes to post
 	 */
-	public Attachment(String fileName, int fileSize, byte[] file)
+	public Attachment(String fileName, int fileSize)
 	{
 		this.type = EventType.ATTACHMENT;
 		this.setUser(new User("","","",-1));
 		this.date = new Date();
 		
-		this.setFileName(fileName);
-		this.setFileSize(fileSize);
-		this.setAttachmentByteArrays(file);	
+		this.fileName = fileName;
+		this.fileSize=fileSize;
+		this.attachmentPartIds = new ArrayList<Integer>();	
 	}
 
 	public String toString() {
@@ -119,20 +120,6 @@ public class Attachment extends RequirementEvent {
 		this.fileSize = fileSize;
 	}
 
-	/**
-	 * @return the attachmentByteArrays
-	 */
-	public byte[] getAttachmentByteArrays() {
-		return attachmentByteArrays;
-	}
-
-	/**
-	 * @param attachmentByteArrays the attachmentByteArrays to set
-	 */
-	public void setAttachmentByteArrays(byte[] attachmentByteArrays) {
-		this.attachmentByteArrays = attachmentByteArrays;
-	}
-
 	@Override
 	public String toJSON() {
 		String json;
@@ -149,6 +136,20 @@ public class Attachment extends RequirementEvent {
 	@Override
 	public String getLabelString() {	
 		return "Attachment added by " + user.getName() +" on "+ this.getDate().toString();
+	}
+
+	/**
+	 * @return the attachmentPartIds
+	 */
+	public ArrayList<Integer> getAttachmentPartIds() {
+		return attachmentPartIds;
+	}
+
+	/**
+	 * @param attachmentPartIds the attachmentPartIds to set
+	 */
+	public void setAttachmentPartIds(ArrayList<Integer> attachmentPartIds) {
+		this.attachmentPartIds = attachmentPartIds;
 	}
 	
 	

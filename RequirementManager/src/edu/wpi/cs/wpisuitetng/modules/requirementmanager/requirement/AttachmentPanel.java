@@ -74,7 +74,7 @@ public class AttachmentPanel extends JPanel{
 
 		download =  new JButton(attachment.getFileName()); //Create and set the "content"
 		
-		download.addActionListener(new ActionListener() {
+		/*download.addActionListener(new ActionListener() {
 			 
             public void actionPerformed(ActionEvent e)
             {
@@ -117,7 +117,7 @@ public class AttachmentPanel extends JPanel{
                 }
                 fc.setSelectedFile(null);
             }
-        }); 
+        }); */
 		
 		//content.setLineWrap(true); //Make the content wrap long lines
 
