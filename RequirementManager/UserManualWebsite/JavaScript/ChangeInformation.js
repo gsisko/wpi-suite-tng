@@ -31,6 +31,8 @@ function changePage(str){
         UpdateReqPage();
 	else if (str.toString() == "addingANote")
         AddingANote();
+	else if (str.toString() == "deleteReqPage")
+        DeleteReqPage();
 	
 		
 	else if (str.toString() == "filterListPanel")
@@ -111,8 +113,23 @@ function AddingANote() {
         	var str = '<img width="750" src="images/requirementBuilderWithNotes.png"/><br />';
         	str += '<a>The panel for adding notes is displayed directly next to where requirements are edited. Requirements yet to be created cannot have notes, therefore the notes panel is disabled on creation of notes.</a><br />';
         	str += '<br /><a>To add a new note to the Notes panel, type the desired texted into the text field marked with the red arrow. When the note is comprised as desired, click the "Add Note" button to add the note to the Panel.</a>';
-        	str += '<img width="750" src="images/addedNote.png"/><br />';
+        	str += '<br /><img width="750" src="images/addedNote.png"/><br />';
         	str += '<a>Upon clicking the "Add Note" button, your note will appear in the Notes panel with your name and the time at which the note was added.</a>';
+        	return str;
+        });
+    });
+}
+
+function DeleteReqPage() {
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Update a Requirement</a>');
+		$(".instructionTitle").html('<a>The Requirement Builder Panel With Notes</a>');
+        $(".instructionText").html(function(){
+        	var str = '<a>To delete a requirement begin by opening up the requirement you wish to delete as if you were going to edit it.</a><br />';
+        	str += '<img height = "500" src = "images/deleteRequirementPanel.png" /><br />';
+        	str += '<a>To change a requirement to deleted select "Deleted" from the Status drop down menu and save changes. You cannot set the status to "Deleted" if the requirement is currently set to status "inProgress", and must first save the status to "Open" or "Completed" before being able to set the status to "Deleted". </a> <br />';
+        	str += '<br /><a>The deleted requirement will still be viewable from the List Requirements tab, but can be made invisible by activating a Filter where status != "Deleted". Move to the next section on Filters for more information.</a>';
         	return str;
         });
     });
