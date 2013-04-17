@@ -62,7 +62,10 @@ public class RetrieveAllRequirementsController {
 	protected String[] columnOrder;
 
 	/**Initialize to keep track of table column width */
-	protected int[] columnWidth;
+	protected ArrayList<Integer> columnWidth  = new ArrayList<Integer>();
+
+	/** boolean to designate if there is existing data in the list */
+	protected boolean hasPreviousData;
 
 	/**
 	 * Constructs a new RetrieveAllRequirementsController
@@ -95,16 +98,34 @@ public class RetrieveAllRequirementsController {
 	 */
 	public void receivedData(Requirement[] requirements) {
 
-		//boolean for initial load
-		boolean defaultTable = true;
+		// if requirements exist
+		if (requirements.length > 0) {
+			hasPreviousData = true;
+		} else {
+			hasPreviousData = false;
+		}
+
+		// if the box is not selected (user doesn't want default), and
+		// if there is previous data, and
+		// if there are rows in the table
+		// get the column widths
+		if ((view.getCheckBoxDefault().isSelected() == false) 
+				&& hasPreviousData 
+				&& (resultsPanel.getResultsTable().getRowCount() != 0)){
+			columnWidth = getTableWidth();
+		}
+
 
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
 		ArrayList<Filter> filters = filterPanel.getActiveFilters();
-		
+
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
-		
+
+		//Array of column widths
+		//ArrayList<Integer> columnWidth = new ArrayList<Integer>(8);
+
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
@@ -148,6 +169,8 @@ public class RetrieveAllRequirementsController {
 		isFiltered.toArray(displayedRequirements);
 		view.setDisplayedRequirements(displayedRequirements);
 
+
+
 		// Transferring Phase
 		// Put the requirements that passed the filters
 		if (isFiltered.size() > 0){
@@ -160,20 +183,22 @@ public class RetrieveAllRequirementsController {
 			// fill the table
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
+
 			try{
 				resultsPanel.getModel().fireTableStructureChanged();
+
 			}
 			catch(NullPointerException e){
 				return;
 			}
 
-			if (defaultTable == true || view.getCheckBoxDefault().isSelected() == true) {
+			// if the box is checked, use defaults, else set custom
+			if (view.getCheckBoxDefault().isSelected() == true){
 				defaultColumnWidths();
-			} 
-			/*else {
-				getTableState(defaultTable);
-				setTableState(defaultTable);
-			}*/
+			} else{
+				setTableWidth(columnWidth);
+			}
+
 
 		}
 		System.out.println("Existing requirements retrieved successfully.");
@@ -250,14 +275,14 @@ public class RetrieveAllRequirementsController {
 	 *A getter to get the current state of the table 
 	 * TODO
 	 */
-	public void getTableState(boolean defaultTable){
+	public void getTableState(){
 		String[] columnOrder = {};
 		int[] columnWidth = {};
 		//String[] getSort = {};
 
 		//get column arrangement
 		for (int i = 0; i < 9; i++){
-			columnOrder[i] = (String) resultsPanel.getResultsTable().getColumnModel().getColumn(i).getIdentifier();
+			columnOrder[i] = resultsPanel.getResultsTable().getColumnModel().getColumn(i).getIdentifier().toString();
 			columnWidth[i] = resultsPanel.getResultsTable().getColumnModel().getColumn(i).getWidth();
 			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
 
@@ -265,45 +290,92 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/**
+	 *A getter to get the current state of the table 
+	 * TODO
+	 */
+	public ArrayList<Integer> getTableWidth(){
+
+		int column0Width = 0;
+		int column1Width = 0;
+		int column2Width = 0;
+		int column3Width = 0;
+		int column4Width = 0;
+		int column5Width = 0;
+		int column6Width = 0;
+		int column7Width = 0;
+		int column8Width = 0;
+
+		//get widths
+		column0Width = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getWidth();
+		System.out.println("col 0 " + column0Width);
+		column1Width = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getWidth();
+		System.out.println("col 1 " + column1Width);
+		column2Width = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getWidth();
+		System.out.println("col 2 " + column2Width);
+		column3Width = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getWidth();
+		System.out.println("col 3 " + column3Width);
+		column4Width = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getWidth();
+		System.out.println("col 4 " + column4Width);
+		column5Width = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getWidth();
+		System.out.println("col 5 " + column5Width);
+		column6Width = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getWidth();
+		System.out.println("col 6 " + column6Width);
+		column7Width = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getWidth();
+		System.out.println("col 7 " + column7Width);
+		column8Width = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getWidth();
+		System.out.println("col 8 " + column8Width);
+
+		columnWidth.add(column0Width);
+		columnWidth.add(column1Width);
+		columnWidth.add(column2Width);
+		columnWidth.add(column3Width);
+		columnWidth.add(column4Width);
+		columnWidth.add(column5Width);
+		columnWidth.add(column6Width);
+		columnWidth.add(column7Width);
+		columnWidth.add(column8Width);
+
+		System.out.println(columnWidth);
+		return columnWidth;
+		
+	}
+
+
+	/**
 	 *A setter to set the state of the table 
 	 */
-	public void setTableState(boolean defaultTable){
-		//set column arrangement
+	public void setTableWidth(ArrayList<Integer> columnWidth){
+		/*//set column arrangement
 		for (int i = 0; i < 9; i++){
 			resultsPanel.getResultsTable().getColumnModel().getColumn(i).setIdentifier(columnOrder[i]);
 			//resultsPanel.getResultsTable().getColumnModel().getColumn(i).setPreferredWidth(columnWidth[i]);
 			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
 		}
+		 */
+		customColumnWidths(columnWidth);
 	}
-	
+
 	/**
 	 * Set custom widths of all columns
 	 */
-	public void customColumnWidths(int[] ColumWidth){
-		//ID
-		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
-		//Name
-		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
-		//Description -- "no more description displayed"
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMaxWidth(0);
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMinWidth(0);
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setWidth(0);
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(0);
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setResizable(false);
-		//Iteration
-		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
-		//Type
-		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(110);
-		//Status
-		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(100);
-		//Priority
-		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(80);
-		//ReleaseNumber
-		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(150);
-		//Estimate
-		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(90);
-		//ActualEffort
-		resultsPanel.getResultsTable().getColumnModel().getColumn(9).setPreferredWidth(110);
+	public void customColumnWidths(ArrayList<Integer> columnWidth){
+		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(columnWidth.get(0));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(columnWidth.get(1));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(columnWidth.get(2));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(columnWidth.get(3));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(columnWidth.get(4));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(columnWidth.get(5));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(columnWidth.get(6));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(columnWidth.get(7));
+		
+		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
 	}
 
 	/**
