@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
@@ -134,11 +133,18 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		});
 		
 		// Instantiate the defaultColumnWidths checkbox
-		checkBoxDefault = new JCheckBox("Default View");
+		checkBoxDefault = new JCheckBox("Default View", true);
 		buttonGroup.getContent().add(checkBoxDefault);
-		buttonGroup.getContent().add(new JLabel("                           "));
 	}
 	
+	public JCheckBox getCheckBoxDefault() {
+		return checkBoxDefault;
+	}
+
+	public void setCheckBoxDefault(JCheckBox checkBoxDefault) {
+		this.checkBoxDefault = checkBoxDefault;
+	}
+
 	public void refreshData() {
 		// Load initial data
 		filterController.refreshData();

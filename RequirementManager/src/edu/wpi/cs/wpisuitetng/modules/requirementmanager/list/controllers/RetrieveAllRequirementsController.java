@@ -46,21 +46,24 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class RetrieveAllRequirementsController {
 
-	/** The search requirements view */
-	//protected ListPanel view;
-
 	/** The panel where the results will display*/
 	protected RequirementListPanel resultsPanel;
 
 	/** The panel that contains all the filters*/
 	protected FilterListTab filterPanel;
-	
+
 	/** The panel that contains all of the lists */
 	protected ListView view;
 
 	/** The requirements data retrieved from the server */
 	protected Requirement[] data = null;
-	
+
+	/**Initialize to keep track of table column order */
+	protected String[] columnOrder;
+
+	/**Initialize to keep track of table column width */
+	protected int[] columnWidth;
+
 	/**
 	 * Constructs a new RetrieveAllRequirementsController
 	 * 
@@ -92,17 +95,20 @@ public class RetrieveAllRequirementsController {
 	 */
 	public void receivedData(Requirement[] requirements) {
 
+		//boolean for initial load
+		boolean defaultTable = true;
+
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
 		ArrayList<Filter> filters = filterPanel.getActiveFilters();
-
+		
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
-
+		
 		// empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
-		
+
 		resultsPanel.getModel().setColumnNames(emptyColumns);
 		resultsPanel.getModel().setData(emptyData);
 		resultsPanel.getModel().fireTableStructureChanged();
@@ -117,7 +123,6 @@ public class RetrieveAllRequirementsController {
 			if(filters != null && filters.size() > 0){
 
 				for (int i = 0; i < requirements.length; i++) {
-					//if (requirements[i].getStatus() == Deleted) numOfFiltered++;
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
 					for(int x = 0; x < filters.size(); x++){
 						Filter currentFilter = filters.get(x); //get current filter
@@ -138,67 +143,143 @@ public class RetrieveAllRequirementsController {
 				}
 			}
 		}	
-		
+
 		Requirement[] displayedRequirements = new Requirement[isFiltered.size()];
 		isFiltered.toArray(displayedRequirements);
 		view.setDisplayedRequirements(displayedRequirements);
-		
+
 		// Transferring Phase
 		// Put the requirements that passed the filters
 		if (isFiltered.size() > 0){
 			// set the column names
-			String[] columnNames = {"ID", "Name", "Description", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
-
-			// put the data in the table
+			String[] columnNames = {"ID", "Name", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
 			Object[][] entries = new Object[isFiltered.size() ][columnNames.length];
-			for (int i = 0; i < isFiltered.size(); i++) {				
-				//if value at the index i is true, then the filters were all passed
-				entries[i][0] = String.valueOf(isFiltered.get(i).getId());
-				entries[i][1] = isFiltered.get(i).getName();
-				entries[i][2] = isFiltered.get(i).getDescription();
-				
-//				if (isFiltered.get(i).getAssignedIteration() == 0) {
-//					entries[i][3] = getIterationName(isFiltered.get(i));
-//				}
-//				else entries[i][3] = "Hello World";
-				entries[i][3] = getIterationName(isFiltered.get(i));
-				// Process "NoType" case
-				if (isFiltered.get(i).getType().toString().equals("NoType")){
-					entries[i][4] = "";					
-				} else {
-					entries[i][4] = isFiltered.get(i).getType().toString();;
-				}				
-				entries[i][5] = isFiltered.get(i).getStatus().toString();
-				// Process "NoPriority" case
-				if (isFiltered.get(i).getPriority().toString().equals("NoPriority")){
-					entries[i][6] = "";					
-				} else {
-					entries[i][6] = isFiltered.get(i).getPriority().toString();
-				}
-				entries[i][7] = isFiltered.get(i).getReleaseNumber();
-				entries[i][8] = String.valueOf(isFiltered.get(i).getEstimate());
-				entries[i][9] = String.valueOf(isFiltered.get(i).getActualEffort());
-			}
+
+			setColumnEntries(columnNames, entries, isFiltered);
 
 			// fill the table
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
 			try{
-			resultsPanel.getModel().fireTableStructureChanged();
+				resultsPanel.getModel().fireTableStructureChanged();
 			}
 			catch(NullPointerException e){
-			    return;
+				return;
 			}
-			
 
-			defaultColumnWidths();
-			
+			if (defaultTable == true || view.getCheckBoxDefault().isSelected() == true) {
+				defaultColumnWidths();
+			} 
+			/*else {
+				getTableState(defaultTable);
+				setTableState(defaultTable);
+			}*/
+
 		}
 		System.out.println("Existing requirements retrieved successfully.");
 	}
-	
+	/**
+	 * put the data in the table
+	 */
+	public void setColumnEntries(String[] columnNames, Object[][] entries, ArrayList<Requirement> isFiltered) {
+
+		for (int i = 0; i < isFiltered.size(); i++) {				
+			//if value at the index i is true, then the filters were all passed
+			entries[i][0] = String.valueOf(isFiltered.get(i).getId());
+			entries[i][1] = isFiltered.get(i).getName();
+			entries[i][2] = getIterationName(isFiltered.get(i));
+			// Process "NoType" case
+			if (isFiltered.get(i).getType().toString().equals("NoType")){
+				entries[i][3] = "";					
+			} else {
+				entries[i][3] = isFiltered.get(i).getType().toString();;
+			}				
+			entries[i][4] = isFiltered.get(i).getStatus().toString();
+			// Process "NoPriority" case
+			if (isFiltered.get(i).getPriority().toString().equals("NoPriority")){
+				entries[i][5] = "";					
+			} else {
+				entries[i][5] = isFiltered.get(i).getPriority().toString();
+			}
+			entries[i][6] = isFiltered.get(i).getReleaseNumber();
+			entries[i][7] = String.valueOf(isFiltered.get(i).getEstimate());
+			entries[i][8] = String.valueOf(isFiltered.get(i).getActualEffort());
+
+		}
+	}
+
+	/**
+	 * Set default widths of all columns
+	 */
 	public void defaultColumnWidths(){
-		//Set default widths of all columns
+		//ID
+		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
+		//Name
+		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
+		//Iteration
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(110);
+		//Type
+		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
+		//Status
+		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(100);
+		//Priority
+		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(80);
+		//ReleaseNumber
+		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(150);
+		//Estimate
+		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(90);
+		//ActualEffort
+		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(110);
+	}
+
+	/**
+	 * Get the name of the iteration
+	 * @param requirement the current requirement
+	 * @return
+	 */
+	private String getIterationName(Requirement requirement) {
+		for (Iteration i : view.getAllIterations()) {
+			if (requirement.getIteration() == i.getID()) {
+				return i.getName();
+			}
+		}
+		return "";
+	}
+
+	/**
+	 *A getter to get the current state of the table 
+	 * TODO
+	 */
+	public void getTableState(boolean defaultTable){
+		String[] columnOrder = {};
+		int[] columnWidth = {};
+		//String[] getSort = {};
+
+		//get column arrangement
+		for (int i = 0; i < 9; i++){
+			columnOrder[i] = (String) resultsPanel.getResultsTable().getColumnModel().getColumn(i).getIdentifier();
+			columnWidth[i] = resultsPanel.getResultsTable().getColumnModel().getColumn(i).getWidth();
+			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
+
+		}
+	}
+
+	/**
+	 *A setter to set the state of the table 
+	 */
+	public void setTableState(boolean defaultTable){
+		//set column arrangement
+		for (int i = 0; i < 9; i++){
+			resultsPanel.getResultsTable().getColumnModel().getColumn(i).setIdentifier(columnOrder[i]);
+			//resultsPanel.getResultsTable().getColumnModel().getColumn(i).setPreferredWidth(columnWidth[i]);
+			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
+		}
+	}
+	
+	/**
+	 * Set custom widths of all columns
+	 */
+	public void customColumnWidths(int[] ColumWidth){
 		//ID
 		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
 		//Name
@@ -225,15 +306,6 @@ public class RetrieveAllRequirementsController {
 		resultsPanel.getResultsTable().getColumnModel().getColumn(9).setPreferredWidth(110);
 	}
 
-	private String getIterationName(Requirement requirement) {
-		for (Iteration i : view.getAllIterations()) {
-			if (requirement.getIteration() == i.getID()) {
-				return i.getName();
-			}
-		}
-		return "";
-	}
-
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
 	 * error occurs retrieving the requirements from the server.
@@ -248,19 +320,15 @@ public class RetrieveAllRequirementsController {
 	 * @return resultsPanel
 	 */
 	public RequirementListPanel getResultsPanel(){
-	    return resultsPanel;
+		return resultsPanel;
 	}
-	
+
 	/**A getter for use in tests
 	 * 
 	 * @return the filterPanel
 	 */
 	public FilterListTab getFilterPanel(){
-	    return filterPanel;
+		return filterPanel;
 	}
 
 }
-
-
-
-
