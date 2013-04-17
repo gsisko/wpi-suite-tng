@@ -39,6 +39,8 @@ public class RequirementTabPanel extends JTabbedPane {
 	private RequirementTab parent;
 	private NoteTab notePanel;
 	private HistoryTab historyPanel;
+	private SubRequirementTab subRequirementPanel;
+	private RetrieveRequirmentsIntoSubController subtabcontroller;
 
 	public RequirementTabPanel(RequirementTab view) {
 
@@ -51,7 +53,9 @@ public class RequirementTabPanel extends JTabbedPane {
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 		historyPanel = new HistoryTab(parent);
 		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
-
+		setSubRequirementPanel(new SubRequirementTab(parent,subtabcontroller));
+		addTab("SubRequirement", new ImageIcon(), subRequirementPanel, "SubRequirements for the current requirement");
+		
 		this.setPreferredSize(new Dimension(450, 500));
 	}
 
@@ -86,6 +90,14 @@ public class RequirementTabPanel extends JTabbedPane {
 	 */
 	public void setHistoryPanel(HistoryTab historyPanel) {
 		this.historyPanel = historyPanel;
+	}
+
+	public SubRequirementTab getSubRequirementPanel() {
+		return subRequirementPanel;
+	}
+
+	public void setSubRequirementPanel(SubRequirementTab subRequirementPanel) {
+		this.subRequirementPanel = subRequirementPanel;
 	}
 
 }

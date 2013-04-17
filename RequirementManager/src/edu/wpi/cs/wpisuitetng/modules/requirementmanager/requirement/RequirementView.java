@@ -55,6 +55,8 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	private Tab containingTab;
 	private boolean inputEnabled = true;
 	private MainTabController tabController;
+	protected Requirement[] subRequirements;
+	protected Requirement[] displayedRequirements;
 
 	/**
 	 * Constructs a new CreateRequirementView where the user can enter the data for a new requirement.
@@ -215,6 +217,13 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	public void setSaveButtonEnable(boolean isEnabled) {
 		saveButton.setEnabled(isEnabled);
 	}
-	
+
+	public void setSubRequirements(Requirement[] requirements) {
+		this.subRequirements = requirements;
+		
+	}
+	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
+		this.displayedRequirements = displayedRequirements;
+	}
 	
 }

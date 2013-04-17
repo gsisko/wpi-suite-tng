@@ -66,6 +66,8 @@ public class Requirement extends AbstractModel {
 	/** This is the history log for the Requirement */
 	private ArrayList<RequirementEvent> events;
 	
+	private ArrayList<Requirement> subrequirement;
+	
 	/** Basic constructor for a requirement */
 	public Requirement(){
 		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, "", 0);
@@ -94,6 +96,7 @@ public class Requirement extends AbstractModel {
 		this.notes = new ArrayList<Note>();
 		this.users = new ArrayList<User>();
 		this.events = new ArrayList<RequirementEvent>();
+		this.subrequirement = new ArrayList<Requirement>();
 	}
 	
 	
@@ -419,6 +422,14 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setEvents(ArrayList<RequirementEvent> events) {
 		this.events = events;
+	}
+
+	public ArrayList<Requirement> getSubrequirement() {
+		return subrequirement;
+	}
+
+	public void setSubrequirement(ArrayList<Requirement> subrequirement) {
+		this.subrequirement = subrequirement;
 	}
 
 }
