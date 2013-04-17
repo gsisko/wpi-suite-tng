@@ -57,7 +57,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.UserChange;
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
-
+	/** An IterationManager: For code reuse */
+	private IterationManager iterationManager;	
+	
 	/** The ModelMapper */
 	ModelMapper updateMapper;
 
@@ -77,6 +79,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		this.db = data;
 		updateMapper = new ModelMapper();
 		updateMapper.getBlacklist().add("project"); // never allow project changing
+		iterationManager = new IterationManager(db);
 	}
 
 
@@ -222,7 +225,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 	}
 
 
-	/**  Updates a Requirement already in the database
+	/**  Updates a Requirement already in the database. Also updates an Iteration when the estimate
+	 *   or assigned iteration is changed in a Requirement.
 	 *   
 	 *  @param s The current user session
 	 *  @param content The requirement to be update + the updates
@@ -294,7 +298,40 @@ public class RequirementManager implements EntityManager<Requirement> {
 			
 			reqUpdate.getEvents().add(changeset);
 		}
+		
+		// This is to update the Iteration that a requirement is assigned to, if the assigned iteration was changed
+		// The total estimate of the backlog will be skewed
+		if (oldReq.getIteration() != reqUpdate.getIteration()){
+			// Update the old iteration
+			Iteration oldIter = iterationManager.getEntity(s, oldReq.getIteration() + "")[0];
+			oldIter.setTotalEstimate(oldIter.getTotalEstimate() - oldReq.getEstimate()); // total estimate
+			// Special case for backlog: keeps the total estimate from dropping below zero
+			if (oldIter.getID() == 0 && oldIter.getTotalEstimate() < 0){ 
+				oldIter.setTotalEstimate(0);
+			}
 
+			//Remove id from the list
+			ArrayList<Integer> oldList = oldIter.getRequirementsContained();
+			if (oldList.size() == 1){ // if there is only one entry, it must be the current req, so we make a new list
+				oldList = new ArrayList<Integer>();
+			} else if(oldList.size() != 0){ //Only update if there are requirements saved...
+				oldList.remove((Integer)oldReq.getId());
+			}
+			
+			oldIter.setRequirementsContained(oldList);
+			iterationManager.save(s, oldIter);
+			
+			// Update the new iteration
+			Iteration newIter = iterationManager.getEntity(s, reqUpdate.getIteration() + "")[0];
+			newIter.setTotalEstimate(newIter.getTotalEstimate() + reqUpdate.getEstimate()+1);  // total estimate
+			ArrayList<Integer> newList = newIter.getRequirementsContained();
+			if (!newList.add((Integer)reqUpdate.getId())){ // Add the requirement to the iteration
+				logger.log(Level.FINER, "The requirement wasn added iteration");
+			}
+			newIter.setRequirementsContained(newList);
+			iterationManager.save(s, newIter);
+		}
+		
 		// Copy new field values into old Requirement. This is because the "same" model must
 		// be saved back into the database
 		oldReq.updateReq(reqUpdate);
@@ -346,7 +383,14 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 	// Unimplemented Manager methods	
 	// Advanced Manager methods
-
+	/**
+	 * Method advancedGet. Unused.
+	 * @param s Session
+	 * @param args String[]
+	  @return String
+	 * @throws WPISuiteException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
+	 */
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 		throw new NotImplementedException();
@@ -354,7 +398,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 
 	/**
-	 * Method advancedPut.
+	 * Method advancedPut. Unused.
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
@@ -368,7 +412,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	}
 
 	/**
-	 * Method advancedPost.
+	 * Method advancedPost. Unused.
 	 * @param s Session
 	 * @param string String
 	 * @param content String

@@ -28,7 +28,6 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requ
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllModelsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
@@ -108,9 +106,6 @@ public class SaveRequirementController
 
 			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 
-
-
-
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
 
@@ -153,62 +148,62 @@ public class SaveRequirementController
 				updatedRequirement.setIteration(0);
 			}
 
-			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
-			//This should reduce the number of requests the server gets sent
-			if (updatedRequirement.getIteration() != oldRequirement.getIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
-				//!!! Assuming Iteration will be set above !!!
-
-				/** Update oldIteration */
-				Iteration oldIteration = null;
-
-				for (Iteration i : view.getAllIterations()) {
-					if (oldRequirement.getIteration() == i.getID()) {
-						oldIteration = i;
-					}
-				}
-
-				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
-				//Update totalEstimate
-				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
-
-				//Remove id from the list
-				ArrayList<Integer> requirementList = oldIteration.getRequirementsContained();
-				if(requirementList.size() != 0){ //Only update if there are requirements saved...
-					requirementList.remove((Integer)oldRequirement.getId());
-				}
-				oldIteration.setRequirementsContained(requirementList);
-
-
-
-				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
-				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
-				saveOldIterationRequest.setBody(oldIteration.toJSON());
-				saveOldIterationRequest.send();
-
-				/** Update updatedIteration*/
-				Iteration updatedIteration = null;
-
-				for (Iteration i : view.getAllIterations()) {
-					if (updatedRequirement.getIteration() == i.getID()) {
-						updatedIteration = i;
-					}
-				}
-
-				//Add id to the list
-				ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
-				updatedRequirementList.add((Integer)updatedRequirement.getId());
-				updatedIteration.setRequirementsContained(updatedRequirementList);
-
-				//Update totalEstimate
-				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
-
-				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
-				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
-				saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
-				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
-				saveUpdatedIterationRequest.clearAsynchronous();
-				saveUpdatedIterationRequest.send();
-			}
+//			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
+//			//This should reduce the number of requests the server gets sent
+//			if (updatedRequirement.getIteration() != oldRequirement.getIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
+//				//!!! Assuming Iteration will be set above !!!
+//
+//				/** Update oldIteration */
+//				Iteration oldIteration = null;
+//
+//				for (Iteration i : view.getAllIterations()) {
+//					if (oldRequirement.getIteration() == i.getID()) {
+//						oldIteration = i;
+//					}
+//				}
+//
+//				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
+//				//Update totalEstimate
+//				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
+//
+//				//Remove id from the list
+//				ArrayList<Integer> requirementList = oldIteration.getRequirementsContained();
+//				if(requirementList.size() != 0){ //Only update if there are requirements saved...
+//					requirementList.remove((Integer)oldRequirement.getId());
+//				}
+//				oldIteration.setRequirementsContained(requirementList);
+//
+//
+//
+//				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+//				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+//				saveOldIterationRequest.setBody(oldIteration.toJSON());
+//				saveOldIterationRequest.send();
+//
+//				/** Update updatedIteration*/
+//				Iteration updatedIteration = null;
+//
+//				for (Iteration i : view.getAllIterations()) {
+//					if (updatedRequirement.getIteration() == i.getID()) {
+//						updatedIteration = i;
+//					}
+//				}
+//
+//				//Add id to the list
+//				ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
+//				updatedRequirementList.add((Integer)updatedRequirement.getId());
+//				updatedIteration.setRequirementsContained(updatedRequirementList);
+//
+//				//Update totalEstimate
+//				updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedRequirement.getEstimate());
+//
+//				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+//				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+//				saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
+//				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+//				saveUpdatedIterationRequest.clearAsynchronous();
+//				saveUpdatedIterationRequest.send();
+//			}
 
 			// make a POST http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
