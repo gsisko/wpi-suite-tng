@@ -88,7 +88,7 @@ public class ToolbarView extends DefaultToolbarView {
 				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
 			}
 		});
-		btnDisplayPieChart.setPreferredSize(new Dimension(120, 30));
+		btnDisplayPieChart.setPreferredSize(new Dimension(120, 25));
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
@@ -99,9 +99,8 @@ public class ToolbarView extends DefaultToolbarView {
 		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content); //Create Requirement button to top of panel
 		layout.putConstraint(SpringLayout.WEST, createRequirement, 5, SpringLayout.WEST, content); //Create Requirement button to left of panel
 		layout.putConstraint(SpringLayout.WEST, btnDisplayPieChart, 10, SpringLayout.EAST, createRequirement); //Display Charts next to Create Requirement
-		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 5, SpringLayout.NORTH, content); //Display Chart to top of panel
-		layout.putConstraint(SpringLayout.SOUTH, createRequirement, 0, SpringLayout.SOUTH, btnDisplayPieChart); //Align bot of Create Requirements and Display Charts
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, createRequirement, 0, SpringLayout.VERTICAL_CENTER, btnDisplayPieChart); //Align center of Create Requirements and Display Charts
+		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 0, SpringLayout.NORTH, createRequirement); //Display Chart to top of panel
+		layout.putConstraint(SpringLayout.SOUTH, btnDisplayPieChart, 0, SpringLayout.SOUTH, createRequirement); //Align bot of Create Requirements and Display Charts
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 5, SpringLayout.EAST, createRequirement); //Align Lookup ID to right side of Create Requirements
 
