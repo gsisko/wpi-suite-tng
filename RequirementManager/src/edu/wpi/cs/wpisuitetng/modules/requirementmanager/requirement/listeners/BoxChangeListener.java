@@ -80,7 +80,7 @@ public class BoxChangeListener implements PopupMenuListener{
 	private void checkForChanges(){
 		// The value to compare against
 		Object oldValue;
-		System.out.print("Checking: " + fieldToCheck);
+	//	System.out.print("Checking: " + fieldToCheck); //Debug Statement
 		// Since the invoke stuff can throw exceptions, we check and print here as necessary
 		try {
 			oldValue = getOldFieldValue.invoke(thePanel.getCurrentRequirement());
@@ -103,9 +103,9 @@ public class BoxChangeListener implements PopupMenuListener{
 		// Check the old value and set the box yellow as necessary
 		if (!toWatch.getSelectedItem().toString().equals(oldValue + "")) {
 			thePanel.changeField(toWatch, indexOfBoolean, true);
-			System.out.println("  Result: activate");
+		//	System.out.println("  Result: activate");   //Debug Statement
 		} else {
-			System.out.println("  Result: deactivate");
+		//	System.out.println("  Result: deactivate"); //Debug Statement
 			thePanel.changeField(toWatch, indexOfBoolean, false);
 		}
 	}
@@ -119,7 +119,7 @@ public class BoxChangeListener implements PopupMenuListener{
 	 *  changes are made, the box is turned yellow. 
 	 */
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		System.out.println("  Popup: becoming invisible");
+	 //	System.out.println("  Popup: becoming invisible"); //Debug Statement
 		checkForChanges();			
 	}
 
@@ -127,7 +127,7 @@ public class BoxChangeListener implements PopupMenuListener{
 	 *  changes are made, the box is turned yellow. 
 	 */
 	public void popupMenuCanceled(PopupMenuEvent e) {
-		System.out.println("  Popup: canceled");
+	//	System.out.println("  Popup: canceled"); //Debug Statement
 		checkForChanges();			
 	}
 }
