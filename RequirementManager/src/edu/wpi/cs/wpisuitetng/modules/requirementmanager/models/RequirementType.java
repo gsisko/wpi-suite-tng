@@ -53,4 +53,13 @@ public enum RequirementType {
     	else
     		return valueOf(toConvert);
 	}
+	
+	/** Same as toString, but returns blank for NoType */
+    public static String toBlankString(RequirementType toConvert){
+    	if (toConvert.equals(NoType))
+    		return "";
+    	else
+    		return toConvert.toString();
+    }
+	
 }

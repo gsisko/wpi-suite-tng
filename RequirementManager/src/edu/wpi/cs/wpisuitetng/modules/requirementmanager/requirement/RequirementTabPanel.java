@@ -38,9 +38,14 @@ public class RequirementTabPanel extends JTabbedPane {
 
 	private RequirementTab parent;
 	private NoteTab notePanel;
+	private AttachmentTab attachmentPanel;
 	private HistoryTab historyPanel;
+
 	private SubRequirementTab subRequirementPanel;
 	private RetrieveRequirmentsIntoSubController subtabcontroller;
+
+	private UserChooserTab userChooserPanel;
+
 
 	public RequirementTabPanel(RequirementTab view) {
 
@@ -53,9 +58,15 @@ public class RequirementTabPanel extends JTabbedPane {
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 		historyPanel = new HistoryTab(parent);
 		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
+
 		setSubRequirementPanel(new SubRequirementTab(parent,subtabcontroller));
 		addTab("SubRequirement", new ImageIcon(), subRequirementPanel, "SubRequirements for the current requirement");
-		
+
+		attachmentPanel = new AttachmentTab(parent);
+		addTab("Attachments", new ImageIcon(), attachmentPanel, "Attachments for the current requirement");
+		userChooserPanel = new UserChooserTab(parent); 
+		addTab("Users", new ImageIcon(), userChooserPanel, "Users assigned to the current requirement");
+
 		this.setPreferredSize(new Dimension(450, 500));
 	}
 
@@ -92,6 +103,7 @@ public class RequirementTabPanel extends JTabbedPane {
 		this.historyPanel = historyPanel;
 	}
 
+
 	public SubRequirementTab getSubRequirementPanel() {
 		return subRequirementPanel;
 	}
@@ -100,4 +112,12 @@ public class RequirementTabPanel extends JTabbedPane {
 		this.subRequirementPanel = subRequirementPanel;
 	}
 
+
+	public AttachmentTab getAttachmentPanel() {
+		return attachmentPanel;
+	}
+
+	public void setAttachmentPanel(AttachmentTab attachmentPanel) {
+		this.attachmentPanel = attachmentPanel;
+	}
 }

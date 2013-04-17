@@ -23,10 +23,17 @@ function SelectPrevButton(){
     set up the else if like below
 */
 function changePage(str){
-	if (str.toString() == "mainPanel")
-		MainPanel();
-    else if (str.toString() == "makeReqPage")
+	if (str.toString() == "requirementOverview")
+		RequirementOverview();
+	else if (str.toString() == "makeReqPage")
         MakeReqPage();
+	else if (str.toString() == "updateReqPage")
+        UpdateReqPage();
+	else if (str.toString() == "addingANote")
+        AddingANote();
+	else if (str.toString() == "deleteReqPage")
+        DeleteReqPage();
+	
 		
 	else if (str.toString() == "filterListPanel")
 		FilterListPanel();
@@ -52,28 +59,81 @@ function changePage(str){
     try not to use <p> to keep me happy. Use <br /> for newline
 */
 
-function MainPanel() {
-    $(document).ready(function () {
-        //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">Basic Overview of the Main Panel</a>');
-        $(".instructionTitle").html('<a>The Main Panel</a>');
-		$(".instructionText").html(function(){
-            return '<a>Hello World</a>'
-        });
-    });
+function RequirementOverview(){
+	$(document).ready(function (){
+		$(".moveTabs").html('<a class="title">Overview of the Requirement Panel</a>');
+		$(".instructionTitle").html('<a>The Requirement Manager Tab</a>');
+		$(".instructionText").html(function (){
+			var str = '<img width="750" src="images/mainPanel.png"/><br />';
+			str += 'The above image show the requirement manager in full. This section of the user manual will focus on the creation and management of requirements. Further sections will focus on the rest of our requirement manager, including Filters and Iterations'
+			return str;
+		});
+	});
 }
 
 function MakeReqPage() {
     $(document).ready(function () {
         //change where next and previous values point, do in a function
         $(".moveTabs").html('<a class="title">How to Create a Requirement</a>');
-		$(".instructionTitle").html('<a>The Main Panel</a>');
+		$(".instructionTitle").html('<a>The Requirement Builder Panel for Creation</a>');
         $(".instructionText").html(function(){
-            return '<a>Hello World</a>'
+        	var str = '<img width="500" src="images/topPanel.png"/><br />';
+        	str += '<a>To begin the process of making a requirement simply click the "Create Requirement" button in the top left of the full display. The button is highlighted above</a><br />';
+        	str += '<img width = "500" src="images/requirementBuilder.png" alt="The Requirement Builder Panel" /><br />';
+        	str += '<a>The above image displays the requirement builder panel. The two fields marked in red, name and description, are required and provide textual warnings when not properly entered. The optional requirements, type, prority and relase number, are marked in orange. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement. The fields marked in black, status, estimate, actual effort, and iteration, are fields that are disabled at the creation of the requirement.</a>';
+        	str += '<br /><br /><a> The minimum that is required to successfully create a requirement is to give the requirement a name and description then click the "Save Changes" button at the top of the window.</a>';
+            return str;
         });
     });
 }
 
+function UpdateReqPage(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Create a Requirement</a>');
+		$(".instructionTitle").html('<a>The Requirement Builder Panel</a>');
+        $(".instructionText").html(function(){
+        	var str = '<img width="750" src="images/requirementListPanel.png"/><br />';
+        	str += 'From the "List Requirements" tab, double click on the desired requirement you wish to edit. This will bring you to a screen identical to that of creating a requirement, though different areas are enabled or disabled.</a><br/>';
+        	str += '<img width = "500" src="images/editRequirementPanel.png"/><br />';
+        	str += '<a>As the above images shows, any fields previously entered are preserved, in this case that is only the name and description. While other fields have changed from disabled to optional, those are: status, estimate, and actual Effort. Iteration is still disabled as iterations can only be set for requirements that have an estimate value set.</a><br/>';
+        	str += '<img width="500" src = "images/editedRequirementPanel.png"/><br />';
+        	str += '<a>When a value has changed, such as editing the description of the requirement, the box of said field will become yellowed to indicate there is an unsaved change. To cancel unsaved changes click the "x" button at the top of the current requirement tab. If you wish instead to save the changes then click the "Save Changes" button instead.</a>';
+        	return str;
+        });
+    });
+}
+
+function AddingANote() {
+    $(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Update a Requirement</a>');
+		$(".instructionTitle").html('<a>The Requirement Builder Panel With Notes</a>');
+        $(".instructionText").html(function(){
+        	var str = '<img width="750" src="images/requirementBuilderWithNotes.png"/><br />';
+        	str += '<a>The panel for adding notes is displayed directly next to where requirements are edited. Requirements yet to be created cannot have notes, therefore the notes panel is disabled on creation of notes.</a><br />';
+        	str += '<br /><a>To add a new note to the Notes panel, type the desired texted into the text field marked with the red arrow. When the note is comprised as desired, click the "Add Note" button to add the note to the Panel.</a>';
+        	str += '<br /><img width="750" src="images/addedNote.png"/><br />';
+        	str += '<a>Upon clicking the "Add Note" button, your note will appear in the Notes panel with your name and the time at which the note was added.</a>';
+        	return str;
+        });
+    });
+}
+
+function DeleteReqPage() {
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Update a Requirement</a>');
+		$(".instructionTitle").html('<a>The Requirement Builder Panel With Notes</a>');
+        $(".instructionText").html(function(){
+        	var str = '<a>To delete a requirement begin by opening up the requirement you wish to delete as if you were going to edit it.</a><br />';
+        	str += '<img height = "500" src = "images/deleteRequirementPanel.png" /><br />';
+        	str += '<a>To change a requirement to deleted select "Deleted" from the Status drop down menu and save changes. You cannot set the status to "Deleted" if the requirement is currently set to status "inProgress", and must first save the status to "Open" or "Completed" before being able to set the status to "Deleted". </a> <br />';
+        	str += '<br /><a>The deleted requirement will still be viewable from the List Requirements tab, but can be made invisible by activating a Filter where status != "Deleted". Move to the next section on Filters for more information.</a>';
+        	return str;
+        });
+    });
+}
 
 function IterationListPanel() {
     $(document).ready(function () {

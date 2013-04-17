@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -111,8 +112,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnCreate = new JButton("Create");
 		nameValue = new JTextField();
 		enable(nameValue, false);
-		startDateChooser = new JDateChooser(new Date());
-		endDateChooser = new JDateChooser(new Date());
+		startDateChooser = new JDateChooser(trim(new Date()));
+		endDateChooser = new JDateChooser(trim(new Date()));
 		totalEstimate = new JLabel("0");
 
 		// The action listener for these are below
@@ -314,7 +315,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toSend = new Iteration();
 		
 		if (this.getCurrentMode() == Mode.EDIT) toSend.setID(currentIteration.getID());
-
+		
 		if(!isIterationValid())
 			return null;
 
@@ -451,5 +452,23 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			box.setEnabled(false);
 			box.setBackground(new Color(238,238,238));
 		}
+	}
+	
+	/**
+	 * Trims a date by setting the time to 1 millisecond after midnight on the given day
+	 * 
+	 * @param date The Date to trim
+	 * @return The trimmed date.
+	 */
+	public static Date trim(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		cal.add(Calendar.MILLISECOND, 1);
+	    return cal.getTime();
 	}
 }

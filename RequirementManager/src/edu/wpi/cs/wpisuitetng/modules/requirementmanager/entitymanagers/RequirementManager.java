@@ -40,9 +40,12 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementCreation;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.UserChange;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
@@ -103,11 +106,11 @@ public class RequirementManager implements EntityManager<Requirement> {
 			throw new BadRequestException("The Requirement creation string had invalid formatting. Entity String: " + content);			
 		}
 
-		//		// Check to see if the requirement exists in the database already - check by ID only
-		//		if(getEntity(s,((Integer) newRequirement.getId()).toString())[0] != null){ //indicates it exists already
-		//			logger.log(Level.WARNING, "ID Conflict Exception during Requirement creation.");
-		//			throw new ConflictException("A Requirement with the given ID already exists. Entity String: " + content); 
-		//		}
+		// Adds the creation event for this requirement to its history log
+		RequirementCreation creation = new RequirementCreation(newRequirement);
+		creation.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
+		creation.setDate(new Date());
+		newRequirement.getEvents().add(creation);
 
 		// Saves the requirement in the database
 		this.save(s,newRequirement); // An exception may be thrown here if we can't save it
@@ -277,6 +280,18 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 			// copy values to old requirement and fill in our changeset appropriately
 			updateMapper.map(reqUpdate, oldReq, callback);
+			
+			if (changeset.getChanges().containsKey("iteration")) {
+				int oldId = (Integer)changeset.getChanges().get("iteration").getOldValue();
+				int newId = (Integer)changeset.getChanges().get("iteration").getNewValue();
+				String oldName = ((Iteration) db.retrieve(Iteration.class, "id", oldId, s.getProject()).get(0)).getName();
+				String newName = ((Iteration) db.retrieve(Iteration.class, "id", newId, s.getProject()).get(0)).getName();
+				if (oldName.equals("")) oldName = "Backlog";
+				if (newName.equals("")) newName = "Backlog";
+				changeset.getChanges().remove("iteration");
+				changeset.getChanges().put("iteration", new FieldChange<String>(oldName, newName));
+			}
+			
 			reqUpdate.getEvents().add(changeset);
 		}
 

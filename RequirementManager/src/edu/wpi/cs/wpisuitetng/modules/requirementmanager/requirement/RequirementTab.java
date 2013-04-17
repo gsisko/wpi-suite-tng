@@ -198,6 +198,8 @@ public class RequirementTab extends JPanel {
 		// toggles note panel boxes
 		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
 		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
+
+		tabPanel.getAttachmentPanel().getSaveButton().setEnabled(enabled);
 		
 	}
 

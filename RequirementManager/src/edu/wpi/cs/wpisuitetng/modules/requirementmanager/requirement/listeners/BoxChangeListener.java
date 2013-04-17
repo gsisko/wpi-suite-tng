@@ -94,15 +94,19 @@ public class BoxChangeListener implements PopupMenuListener{
 			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;         
 		}
-
+		oldValue = oldValue.toString();
+		// Special cases
+		if (oldValue.equals("NoType") || oldValue.toString().equals("NoPriority") ){
+			oldValue = "";
+		}
 
 		// Check the old value and set the box yellow as necessary
 		if (!toWatch.getSelectedItem().toString().equals(oldValue + "")) {
-			thePanel.changeField(toWatch, 4, true);
+			thePanel.changeField(toWatch, indexOfBoolean, true);
 			System.out.println("  Result: activate");
 		} else {
 			System.out.println("  Result: deactivate");
-			thePanel.changeField(toWatch, 4, false);
+			thePanel.changeField(toWatch, indexOfBoolean, false);
 		}
 	}
 

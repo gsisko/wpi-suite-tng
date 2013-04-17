@@ -97,11 +97,11 @@ public class FieldChangeListener implements KeyListener{
 
 		// Check the old value and set the box yellow as necessary
 		if (!toWatch.getText().equals(oldValue + "")) {
-			thePanel.changeField(toWatch, 4, true);
+			thePanel.changeField(toWatch, indexOfBoolean, true);
 			System.out.println("  Result: activate");
 		} else {
 			System.out.println("  Result: deactivate");
-			thePanel.changeField(toWatch, 4, false);
+			thePanel.changeField(toWatch, indexOfBoolean, false);
 		}
 	}
 

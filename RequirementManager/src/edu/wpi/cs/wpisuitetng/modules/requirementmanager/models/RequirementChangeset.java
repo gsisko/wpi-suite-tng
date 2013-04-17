@@ -95,21 +95,20 @@ public class RequirementChangeset extends RequirementEvent {
 			// Get the old and new field objects from the FieldChange
 			Object oldValue = changes.get(fieldName).getOldValue();
 			Object newValue = changes.get(fieldName).getNewValue();
-			
+
 			// Add the field name to the content label
 			content += fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1) + " changed";
 
-			if (oldValue.toString().length() > 0) {
-				content += " FROM ";
-				content += oldValue;
-			}
-			content += " TO ";
+			content += " from \"";
+			content += oldValue;
+			content += "\" to \"";
 			content += newValue;
+			content += "\"";
 		}
 
 		return content;
 	}
-	
+
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");

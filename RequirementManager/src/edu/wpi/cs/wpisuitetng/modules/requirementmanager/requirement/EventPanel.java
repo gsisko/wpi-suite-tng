@@ -67,7 +67,8 @@ public class EventPanel extends JPanel{
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));//create and set the layout for this panel
 
 		content.setFont(content.getFont().deriveFont(9)); //set the font of the content to size 9
-
+		content.setEditable(false);
+	
 		//Create and set the titled border of this panel, using the title
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), eventTitle); //First create a titled and (lowerd) etched border, using the provided title
 		titleBorder.setTitleJustification(TitledBorder.DEFAULT_JUSTIFICATION);//set the justification of the title to default (left justified)

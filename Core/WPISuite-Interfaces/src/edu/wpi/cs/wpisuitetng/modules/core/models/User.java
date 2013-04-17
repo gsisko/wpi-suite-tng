@@ -174,12 +174,11 @@ public class User extends AbstractModel
 	/* Built-in overrides/overloads */
 	
 	/**
-	 * Override of toString() to return a JSON string for now.
-	 * 	May override in the future.
+	 * Override of toString() to return the user's Name.
 	 */
 	public String toString()
 	{
-		return this.toJSON();
+		return this.getName();
 	}
 
 	@Override

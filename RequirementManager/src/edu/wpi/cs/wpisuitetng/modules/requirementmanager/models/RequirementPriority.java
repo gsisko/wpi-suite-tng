@@ -50,6 +50,14 @@ public enum RequirementPriority {
     		return valueOf("NoPriority");
     	else
     		return valueOf(toConvert);
-    	}
+    }
+    
+    /** Same as toString, but returns blank for NoPriority */
+    public static String toBlankString(RequirementPriority toConvert){
+    	if (toConvert.equals(NoPriority))
+    		return "";
+    	else
+    		return toConvert.toString();
+    }
 
 }

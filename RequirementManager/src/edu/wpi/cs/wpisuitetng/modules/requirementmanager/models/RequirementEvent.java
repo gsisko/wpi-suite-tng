@@ -38,9 +38,11 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 public abstract class RequirementEvent extends AbstractModel {
 	
 	public enum EventType {
+		CREATION,
 		CHANGESET,
 		NOTE,
-		USER
+		USER,
+		ATTACHMENT
 	};
 	
 	protected Date date = new Date();

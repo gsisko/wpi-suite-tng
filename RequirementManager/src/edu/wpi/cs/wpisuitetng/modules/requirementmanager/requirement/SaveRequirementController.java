@@ -26,11 +26,18 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -52,6 +59,28 @@ public class SaveRequirementController
 
 	public void save() 
 	{
+		// check if any inputs are invalid, print an error message if one is
+		String error = "";
+		if (view.getRequirementName().getText().length() == 0) {
+			error += "Name must be non-blank.\n";
+		}
+		if (view.getRequirementName().getText().length() > 100) {
+			error += "Name cannot be greater than 100 characters.\n";
+		}
+		if (view.getRequirementDescription().getText().length() == 0) {
+			error += "Description must be non-blank.\n";
+		}
+		if (view.getRequirementEstimate().getText().length() == 0) {
+			error += "Estimate must be non-blank.\n";
+		}
+		if (view.getRequirementActualEffort().getText().length() == 0) {
+			error += "ActualEffort must be non-blank.\n";
+		}
+		//TODO this should change to eliminate popups, maybe put error checking in the panel itself?
+		if (!error.equals("")) {
+			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
 
 		view.getParent().setSaveButtonEnable(false);
@@ -67,15 +96,15 @@ public class SaveRequirementController
 		else { // we are updating an existing requirement
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
-			
+
 			//grab the old requirement
 			Requirement oldRequirement = view.getCurrentRequirement();
 
 
 			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
-			
-				
- 
+
+
+
 
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
@@ -103,7 +132,7 @@ public class SaveRequirementController
 			}
 
 
-			
+
 			int oldIterID = oldRequirement.getIteration(); //grab the old status
 			int newIterID = updatedRequirement.getIteration();
 			if (newIterID != oldIterID) {
@@ -111,7 +140,7 @@ public class SaveRequirementController
 					JOptionPane.showMessageDialog(null, "Cannot assign a requirement to an iteration that has already ended.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
 					return;//cancel the update
 				}
-					
+
 			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
@@ -132,7 +161,7 @@ public class SaveRequirementController
 						oldIteration = i;
 					}
 				}
-				
+
 				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 				//Update totalEstimate
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
@@ -144,7 +173,7 @@ public class SaveRequirementController
 				}
 				oldIteration.setRequirementsContained(requirementList);
 
-				
+
 
 				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
 				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
@@ -259,6 +288,57 @@ public class SaveRequirementController
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		request.send();
 	}
+	
+	public void saveAttachment() throws IOException {
+		JFileChooser fc = new JFileChooser();
 
+        int returnVal = fc.showDialog(null,"Add Attachment");
+
+        //Process the results.
+        if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists()) {
+        	
+        	Requirement currentRequirement = view.getCurrentRequirement();
+        	
+
+        	InputStream source = null;
+        	//FileOutputStream destination = null;
+			
+			//InputStream source = new FileInputStream(fc.getSelectedFile());
+        	ByteArrayOutputStream destination = null;
+			
+			try {
+				source = new FileInputStream(fc.getSelectedFile());// = new InputStream().getChannel();
+				
+				byte[] buffer = new byte[4096];
+				destination = new ByteArrayOutputStream();
+		        
+		        int read = 0;
+		        while ( (read = source.read(buffer)) != -1 ) {
+		        	destination.write(buffer, 0, read);
+		        }
+		        
+		        
+			}
+			finally {
+		        if(source != null) {
+		            source.close();
+		        }
+		        if(destination != null) {
+		            destination.close();
+		        }
+		    }
+			
+			Attachment newFile = new Attachment(fc.getSelectedFile().getName(), 
+					destination.size(), destination.toByteArray());
+        	currentRequirement.getAttachments().add(newFile);
+        	System.out.println(fc.getSelectedFile().toString());
+        	
+        	// make a POST http request and let the observer get the response
+    	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+    	    request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+    	    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+    	    request.send();
+        }
+        fc.setSelectedFile(null);
+	}
 }
-

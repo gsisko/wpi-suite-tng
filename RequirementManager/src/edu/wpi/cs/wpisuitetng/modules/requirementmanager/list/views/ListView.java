@@ -27,8 +27,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -43,7 +43,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.*;
 
 /**
  * View that contains the entire requirement listing interface
@@ -65,6 +64,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	
 	/** The display pie chart button that loads the pie chart tab */
 	protected JButton btnDisplayPieChart;
+	
+	/** The check box for Default Column Widths */
+	protected JCheckBox checkBoxDefault;
 
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
@@ -114,7 +116,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		// Add a listener for row clicks in the actual table
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
 		
-		
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("Options for Requirements");
 		
@@ -122,8 +123,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth(250);
-		
+		buttonGroup.setPreferredWidth((int)btnRefresh.getPreferredSize().getWidth() + 80);
+
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -132,17 +133,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			}
 		});
 		
-		// Instantiate the refresh button
-		btnDisplayPieChart = new JButton("Display Charts");
-		buttonGroup.getContent().add(new JLabel(" "));
-		buttonGroup.getContent().add(btnDisplayPieChart);
-
-		btnDisplayPieChart.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
-			}
-		});
+		// Instantiate the defaultColumnWidths checkbox
+		checkBoxDefault = new JCheckBox("Default View");
+		buttonGroup.getContent().add(checkBoxDefault);
+		buttonGroup.getContent().add(new JLabel("                           "));
 	}
 	
 	public void refreshData() {

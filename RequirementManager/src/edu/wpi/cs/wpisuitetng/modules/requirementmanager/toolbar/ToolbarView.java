@@ -24,6 +24,11 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
 
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -31,6 +36,9 @@ import javax.swing.SpringLayout;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.ChartView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
@@ -41,15 +49,23 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 public class ToolbarView extends DefaultToolbarView {
 
 	private JButton createRequirement;
+	private JButton btnDisplayPieChart;
 	private JPlaceholderTextField listField;
 	private ToolbarGroupView toolbarGroup;
+	private MainTabController tabController;
+	
+	/** Panel containing the list interface */
+	protected ListTab mainPanel;
 	
 	/**
 	 * Create a ToolbarView.
 	 * @param tabController The MainTabController this view should open tabs with
 	 */
-	public ToolbarView(MainTabController tabController) {
-
+	public ToolbarView(final MainTabController tabController) {
+		this.tabController = tabController;
+		
+		mainPanel = ((ListView) tabController.getView().getComponentAt(0)).getListTab();
+		
 		// Construct the content panel
 		JPanel content = new JPanel();
 		SpringLayout layout  = new SpringLayout();
@@ -61,24 +77,40 @@ public class ToolbarView extends DefaultToolbarView {
 		createRequirement.setAction(new CreateRequirementAction(tabController));
 		
 		// Construct the list field
-		listField = new JPlaceholderTextField("Lookup by ID", 15);
+		listField = new JPlaceholderTextField("Lookup Requirement by ID", 15);
 		listField.addActionListener(new LookupRequirementController(tabController, listField, this));
 		
-		// Configure the layout of the buttons on the content panel
-		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content);
-		layout.putConstraint(SpringLayout.WEST, createRequirement, 15, SpringLayout.WEST, content);
-		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement);
-		layout.putConstraint(SpringLayout.EAST, listField, 7, SpringLayout.EAST, createRequirement);
+		// Instantiate the charts button
+		btnDisplayPieChart = new JButton("Display Charts");
+		btnDisplayPieChart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
+			}
+		});
+		btnDisplayPieChart.setPreferredSize(new Dimension(120, 30));
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
 		content.add(listField);
+		content.add(btnDisplayPieChart);
+
+		// Configure the layout of the buttons on the content panel
+		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content); //Create Requirement button to top of panel
+		layout.putConstraint(SpringLayout.WEST, createRequirement, 5, SpringLayout.WEST, content); //Create Requirement button to left of panel
+		layout.putConstraint(SpringLayout.WEST, btnDisplayPieChart, 10, SpringLayout.EAST, createRequirement); //Display Charts next to Create Requirement
+		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 5, SpringLayout.NORTH, content); //Display Chart to top of panel
+		layout.putConstraint(SpringLayout.SOUTH, createRequirement, 0, SpringLayout.SOUTH, btnDisplayPieChart); //Align bot of Create Requirements and Display Charts
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, createRequirement, 0, SpringLayout.VERTICAL_CENTER, btnDisplayPieChart); //Align center of Create Requirements and Display Charts
+		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 5, SpringLayout.EAST, createRequirement); //Align Lookup ID to right side of Create Requirements
+
 		
 		// Construct a new toolbar group to be added to the end of the toolbar
 		toolbarGroup = new ToolbarGroupView("Home", content);
 		
 		// Calculate the width of the toolbar
-		Double toolbarGroupWidth = createRequirement.getPreferredSize().getWidth() + 40;
+		Double toolbarGroupWidth = createRequirement.getPreferredSize().getWidth() + btnDisplayPieChart.getPreferredSize().getWidth()+ 40;
 		toolbarGroup.setPreferredWidth(toolbarGroupWidth.intValue());
 		addGroup(toolbarGroup);
 	}

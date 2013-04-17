@@ -190,34 +190,39 @@ public class RetrieveAllRequirementsController {
 			    return;
 			}
 			
-			//TODO: Move into a reset columns function?
-			//Set default widths of all columns
-			//ID
-			resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
-			//Name
-			resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
-			//Description -- "no more description displayed"
-			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMaxWidth(0);
-			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMinWidth(0);
-			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setWidth(0);
-			resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(0);
-			//Iteration
-			resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
-			//Type
-			resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(110);
-			//Status
-			resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(100);
-			//Priority
-			resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(80);
-			//ReleaseNumber
-			resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(150);
-			//Estimate
-			resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(90);
-			//ActualEffort
-			resultsPanel.getResultsTable().getColumnModel().getColumn(9).setPreferredWidth(110);
+
+			defaultColumnWidths();
 			
 		}
 		System.out.println("Existing requirements retrieved successfully.");
+	}
+	
+	public void defaultColumnWidths(){
+		//Set default widths of all columns
+		//ID
+		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
+		//Name
+		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
+		//Description -- "no more description displayed"
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMaxWidth(0);
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setMinWidth(0);
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setWidth(0);
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(0);
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setResizable(false);
+		//Iteration
+		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
+		//Type
+		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(110);
+		//Status
+		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(100);
+		//Priority
+		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(80);
+		//ReleaseNumber
+		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(150);
+		//Estimate
+		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(90);
+		//ActualEffort
+		resultsPanel.getResultsTable().getColumnModel().getColumn(9).setPreferredWidth(110);
 	}
 
 	private String getIterationName(Requirement requirement) {
