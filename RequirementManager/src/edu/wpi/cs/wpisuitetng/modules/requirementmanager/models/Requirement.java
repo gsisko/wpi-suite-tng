@@ -385,7 +385,7 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the notes
+	 * @return users assigned to this requirement
 	 */
 	public ArrayList<User> getUsers() {
 		return users;
@@ -393,7 +393,7 @@ public class Requirement extends AbstractModel {
 
 
 	/**
-	 * @param notes the notes to set
+	 * @param users ArrayList of users to assign to this requirement
 	 */
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
