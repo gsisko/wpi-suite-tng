@@ -55,12 +55,24 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** The panel containing the actual iteration pie chart */
 	private PieChartPanel iterationPiePanel;
+	
+	/** The panel containing the actual status pie chart */
+	private PieChartPanel requirementCountPiePanel;
+
+	/** The panel containing the actual iteration pie chart */
+	private PieChartPanel requirementEstimatePiePanel;
 
 	/** The panel containing the actual status bar chart */
 	private BarChartPanel statusBarPanel;
 
 	/** The panel containing the actual iteration bar chart */
 	private BarChartPanel iterationBarPanel;
+	
+	/** The panel containing the actual requirement count bar chart */
+	private BarChartPanel requirementCountBarPanel;
+	
+	/** The panel containing the actual iteration bar chart */
+	private BarChartPanel requirementEstimateBarPanel;
 
 	/** The panel containing various chart options on the left of the view */
 	private ChartOptionsPanel optionsPanel; 
@@ -83,8 +95,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Charts
 		this.statusPiePanel = new PieChartPanel();
 		this.iterationPiePanel = new PieChartPanel();
+		this.requirementCountPiePanel = new PieChartPanel();
+		this.requirementEstimatePiePanel = new PieChartPanel();
+		
 		this.statusBarPanel = new BarChartPanel();
 		this.iterationBarPanel = new BarChartPanel();
+		this.requirementCountBarPanel = new BarChartPanel();
+		this.requirementEstimateBarPanel = new BarChartPanel();
 
 		//Toolbar and buttons on the top
 		this.buttonGroup = new ToolbarGroupView("All Charts");
@@ -121,11 +138,15 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.add(statusPiePanel, BorderLayout.CENTER);
 		
 		//Visibility for all charts
+		this.requirementCountBarPanel.setVisible(true);
+		this.requirementEstimateBarPanel.setVisible(true);
 		this.iterationBarPanel.setVisible(true);
 		this.statusBarPanel.setVisible(true);
+		this.requirementCountPiePanel.setVisible(true);
+		this.requirementEstimatePiePanel.setVisible(true);
 		this.iterationPiePanel.setVisible(true);
 		this.statusPiePanel.setVisible(true);
-	
+		
 		//Options
 		this.add(optionsPanel, BorderLayout.WEST);
 		this.optionsPanel.setVisible(true);
@@ -154,12 +175,20 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Pass the status of the filter to each chart
 		iterationPiePanel.enableFilter(isFiltered);
 		statusPiePanel.enableFilter(isFiltered);
+		requirementCountPiePanel.enableFilter(isFiltered);
+		requirementEstimatePiePanel.enableFilter(isFiltered);
 		iterationBarPanel.enableFilter(isFiltered);
 		statusBarPanel.enableFilter(isFiltered);
-
+		requirementCountBarPanel.enableFilter(isFiltered);
+		requirementEstimateBarPanel.enableFilter(isFiltered);
+		
 		//Refresh the chart data
 		statusPiePanel.refreshStatusChart(requirements);
 		statusBarPanel.refreshStatusChart(requirements);
+		requirementCountPiePanel.refreshAssignedUsersCountChart(requirements);
+		requirementCountBarPanel.refreshAssignedUsersCountChart(requirements);
+		requirementEstimatePiePanel.refreshAssignedUsersEstimateChart(requirements);
+		requirementEstimateBarPanel.refreshAssignedUsersEstimateChart(requirements);
 		iterationPiePanel.refreshIterationChart(requirements, iterations);
 		iterationBarPanel.refreshIterationChart(requirements, iterations);
 	}
@@ -205,8 +234,12 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Remove all charts then add the one we want
 		this.iterationBarPanel.setVisible(false);
 		this.statusBarPanel.setVisible(false);
+		this.requirementCountBarPanel.setVisible(false);
+		this.requirementEstimateBarPanel.setVisible(false);
 		this.iterationPiePanel.setVisible(false);
 		this.statusPiePanel.setVisible(false);
+		this.requirementCountPiePanel.setVisible(false);
+		this.requirementEstimatePiePanel.setVisible(false);
 
 		//Pie Chart
 		if (this.chartType.equals("Pie Chart")){
@@ -217,6 +250,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			else if(this.chartDataType == "Requirement Iteration"){
 				this.add(iterationPiePanel, BorderLayout.CENTER);
 				this.iterationPiePanel.setVisible(true);
+			}
+			else if(this.chartDataType =="Number of Users Assigned To Requirements"){
+				this.add(this.requirementCountPiePanel, BorderLayout.CENTER);
+				this.requirementCountPiePanel.setVisible(true);
+			} else if (this.chartDataType == "Total Estimate for Each User"){
+				this.add(this.requirementEstimatePiePanel, BorderLayout.CENTER);
+				this.requirementEstimatePiePanel.setVisible(true);
 			}
 
 		//BarChart	
@@ -229,6 +269,14 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				this.add(iterationBarPanel, BorderLayout.CENTER);
 				this.iterationBarPanel.setVisible(true);
 			}
+			else if(this.chartDataType == "Number of Users Assigned To Requirements"){
+				this.add(this.requirementCountBarPanel, BorderLayout.CENTER);
+				this.requirementCountBarPanel.setVisible(true);
+			} else if (this.chartDataType == "Total Estimate for Each User"){
+				this.add(this.requirementEstimateBarPanel, BorderLayout.CENTER);
+				this.requirementEstimateBarPanel.setVisible(true);
+			}
+
 		}
 		
 		//Always repaint!

@@ -180,7 +180,7 @@ public class PieChartPanel extends JPanel {
 		/** Function to refresh and redraw bar chart with Assigned Users 
 		 * @param requirements array of requirements to use to obtain the assigned users for the chart
 		 */
-		public void refreshAssignedUsersChart(Requirement[] requirements) {
+		public void refreshAssignedUsersCountChart(Requirement[] requirements) {
 			DefaultPieDataset data = new DefaultPieDataset();
 			
 			//ArrayList to contain all users assigned to iterations

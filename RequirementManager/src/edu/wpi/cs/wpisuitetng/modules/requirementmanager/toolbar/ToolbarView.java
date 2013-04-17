@@ -88,7 +88,7 @@ public class ToolbarView extends DefaultToolbarView {
 				tabController.addTab("Charts", new ImageIcon(), new ChartView(mainPanel), "Charts for this project's requirements");
 			}
 		});
-		btnDisplayPieChart.setPreferredSize(new Dimension(120, 25));
+		btnDisplayPieChart.setPreferredSize(new Dimension(130, 25));
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
