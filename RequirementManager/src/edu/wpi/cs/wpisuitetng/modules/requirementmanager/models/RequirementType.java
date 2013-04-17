@@ -56,10 +56,21 @@ public enum RequirementType {
 	
 	/** Same as toString, but returns blank for NoType */
     public static String toBlankString(RequirementType toConvert){
-    	if (toConvert.equals(NoType))
+    	return toConvert.toString();
+    }
+    
+    
+    /**
+     * Overrides the default toString method
+     * 
+     * @return String representing this enum.  NoType will be displayed as an empty string
+     */
+    @Override
+    public String toString() {
+    	if (this.equals(NoType))
     		return "";
     	else
-    		return toConvert.toString();
+    		return super.toString();
     }
 	
 }
