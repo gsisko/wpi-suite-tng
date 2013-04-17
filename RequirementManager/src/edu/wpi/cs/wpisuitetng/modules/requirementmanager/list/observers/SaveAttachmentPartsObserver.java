@@ -36,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * An observer for a request to retrieve all requirements
  */
-public class RetrieveAllAttachmentPartsObserver implements RequestObserver,IObserver{
+public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 
 	/** The controller managing the request */
 	protected SaveRequirementController controller;
@@ -45,33 +45,19 @@ public class RetrieveAllAttachmentPartsObserver implements RequestObserver,IObse
 	 * Construct the observer
 	 * @param controller
 	 */
-	public RetrieveAllAttachmentPartsObserver(SaveRequirementController controller) {
+	public SaveAttachmentPartsObserver(SaveRequirementController controller) {
 		this.controller = controller;
 	}
 
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// cast observable to request
 		Request request = (Request) iReq;
 
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart[] attatchmentParts = AttachmentPart.fromJsonArray(response.getBody());
-		
-		Attachment attachment = controller.getCurrentAttachment();
-		
-		int numofparts = attachment.getFileSize() / 32768;
-		if(attachment.getFileSize() / 32768 != 0) numofparts++;
-		
-		int lastAttachmentId = attatchmentParts[attatchmentParts.length - 1].getId();
-		
-		for(int i = lastAttachmentId-numofparts; i < lastAttachmentId; i++ ){
-			attachment.getAttachmentPartIds().add(i+1);
-		}
-		
-		controller.setCurrentAttachment(attachment);
-		//controller.setPartSaveSuccess(true);
+		AttachmentPart attatchmentPart = AttachmentPart.fromJson(response.getBody());
+		controller.setPartSaveSuccess(true,attatchmentPart.getId());
 	}
 
 	@Override
