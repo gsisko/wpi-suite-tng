@@ -152,14 +152,22 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.optionsPanel.setVisible(true);
 
 		//Initial visibility and data
-		this.refreshData();
+		this.reloadData();
+		this.refreshChartVisibility();
 	}
 
 	/** Refresh and reload data in the pie chart */
 	public void refreshData() {
-		// Load initial data
+		//Ask parent to refresh data
 		view.getParent().refreshData();
 
+		//Request data from parent
+		this.reloadData();
+	}
+
+	/** Function to reload data from "List Requirements" tab without refreshing **/
+	private void reloadData(){
+		
 		//Grab requirements
 		Requirement[] requirements;
 		if(!isFiltered){
@@ -192,7 +200,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		iterationPiePanel.refreshIterationChart(requirements, iterations);
 		iterationBarPanel.refreshIterationChart(requirements, iterations);
 	}
-
+	
 	/** Sets the type of chart to use
 	 * @param chartType the type of chart to use
 	 */
