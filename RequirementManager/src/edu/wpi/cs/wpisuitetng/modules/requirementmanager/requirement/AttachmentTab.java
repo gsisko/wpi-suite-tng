@@ -93,6 +93,7 @@ public class AttachmentTab extends JPanel {
 			attachmentListModel.addFile(attachments.get(i));
 		}
 
+		attachmentList  = new ListOfAttachmentPanel(attachmentListModel);
 
 		// Put the listbox in a scroll pane
 		listScrollPane = new JScrollPane(attachmentList);
