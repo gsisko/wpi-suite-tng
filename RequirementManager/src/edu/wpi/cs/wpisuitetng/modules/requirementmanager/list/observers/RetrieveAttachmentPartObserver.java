@@ -59,9 +59,9 @@ public class RetrieveAttachmentPartObserver implements RequestObserver,IObserver
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart attatchmentPart = AttachmentPart.fromJsonArray(response.getBody())[0];
+		AttachmentPart attachmentPart = AttachmentPart.fromJsonArray(response.getBody())[0];
 		
-		action.getPartSuccess(true,attatchmentPart.getAttachmentPartByteArray());
+		action.getPartSuccess(attachmentPart);
 	}
 
 	@Override

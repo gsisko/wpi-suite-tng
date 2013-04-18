@@ -56,8 +56,8 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart attatchmentPart = AttachmentPart.fromJson(response.getBody());
-		controller.setPartSaveSuccess(true,attatchmentPart.getId());
+		AttachmentPart attachmentPart = AttachmentPart.fromJson(response.getBody());
+		controller.addAttachmentPartId(attachmentPart.getId());
 	}
 
 	@Override
@@ -68,6 +68,8 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
+		Request request = (Request) iReq;
+		request.send();
 		// an error occurred
 		//controller.errorReceivingData("Unable to complete request: " + exception.getMessage());
 	}
