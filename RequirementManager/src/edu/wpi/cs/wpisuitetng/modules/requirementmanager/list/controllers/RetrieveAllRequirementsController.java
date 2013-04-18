@@ -64,6 +64,9 @@ public class RetrieveAllRequirementsController {
 	/**Initialize to keep track of table column width */
 	protected ArrayList<Integer> columnWidth  = new ArrayList<Integer>();
 
+	/**Initialize to keep track of table column width */
+	protected ArrayList<String> columnHeader  = new ArrayList<String>();
+
 	/** boolean to designate if there is existing data in the list */
 	protected boolean hasPreviousData;
 
@@ -111,10 +114,10 @@ public class RetrieveAllRequirementsController {
 		// get the column widths
 		if ((view.getCheckBoxDefault().isSelected() == false) 
 				&& hasPreviousData 
-				&& (resultsPanel.getResultsTable().getRowCount() != 0)){
+				&& (resultsPanel.getResultsTable().getRowCount() != 0)) {
+			columnHeader = getTableName();
 			columnWidth = getTableWidth();
 		}
-
 
 		//Array of all the user's filters that are used 
 		//(could also be list of all filters and use could be checked here) 
@@ -122,9 +125,6 @@ public class RetrieveAllRequirementsController {
 
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
-
-		//Array of column widths
-		//ArrayList<Integer> columnWidth = new ArrayList<Integer>(8);
 
 		// empty the table
 		String[] emptyColumns = {};
@@ -141,7 +141,7 @@ public class RetrieveAllRequirementsController {
 			// save the data
 			this.data = requirements;
 
-			if(filters != null && filters.size() > 0){
+			if(filters != null && filters.size() > 0) {
 
 				for (int i = 0; i < requirements.length; i++) {
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
@@ -153,7 +153,7 @@ public class RetrieveAllRequirementsController {
 							x=filters.size();
 						}
 					}
-					if(passAllFilters){
+					if(passAllFilters) {
 						isFiltered.add(requirements[i]);
 					}
 				}
@@ -169,11 +169,9 @@ public class RetrieveAllRequirementsController {
 		isFiltered.toArray(displayedRequirements);
 		view.setDisplayedRequirements(displayedRequirements);
 
-
-
 		// Transferring Phase
 		// Put the requirements that passed the filters
-		if (isFiltered.size() > 0){
+		if (isFiltered.size() > 0) {
 			// set the column names
 			String[] columnNames = {"ID", "Name", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
 			Object[][] entries = new Object[isFiltered.size() ][columnNames.length];
@@ -186,25 +184,52 @@ public class RetrieveAllRequirementsController {
 
 			try{
 				resultsPanel.getModel().fireTableStructureChanged();
-
 			}
 			catch(NullPointerException e){
 				return;
 			}
 
 			// if the box is checked, use defaults, else set custom
-			if (view.getCheckBoxDefault().isSelected() == true){
+			if (view.getCheckBoxDefault().isSelected() == true) {
 				defaultColumnWidths();
-			} else{
+			} else {
+				setTableName(columnHeader);
 				setTableWidth(columnWidth);
 			}
-
 
 		}
 		System.out.println("Existing requirements retrieved successfully.");
 	}
+
 	/**
-	 * put the data in the table
+	 * Set default widths of all columns
+	 */
+	public void defaultColumnWidths(){
+		//ID
+		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
+		//Name
+		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
+		//Iteration
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(110);
+		//Type
+		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
+		//Status
+		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(100);
+		//Priority
+		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(80);
+		//ReleaseNumber
+		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(150);
+		//Estimate
+		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(90);
+		//ActualEffort
+		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(110);
+	}
+
+	/**
+	 * put the data in the table using default view
+	 * @param columnNames the name of each column name
+	 * @param enteries each cell of the table
+	 * @param isFiltered requirement that passed the filter
 	 */
 	public void setColumnEntries(String[] columnNames, Object[][] entries, ArrayList<Requirement> isFiltered) {
 
@@ -234,27 +259,145 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/**
-	 * Set default widths of all columns
+	 *A getter to get the current width of the table 
+	 * @return columnWidth return the ArrayList of column Widths
 	 */
-	public void defaultColumnWidths(){
-		//ID
-		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(50);
-		//Name
-		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(150);
-		//Iteration
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(110);
-		//Type
-		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(110);
-		//Status
-		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(100);
-		//Priority
-		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(80);
-		//ReleaseNumber
-		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(150);
-		//Estimate
-		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(90);
-		//ActualEffort
-		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(110);
+	public ArrayList<Integer> getTableWidth(){
+		columnWidth  = new ArrayList<Integer>();
+
+		int column0Width = 0;
+		int column1Width = 0;
+		int column2Width = 0;
+		int column3Width = 0;
+		int column4Width = 0;
+		int column5Width = 0;
+		int column6Width = 0;
+		int column7Width = 0;
+		int column8Width = 0;
+
+		//get widths
+		column0Width = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getWidth();
+		column1Width = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getWidth();
+		column2Width = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getWidth();
+		column3Width = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getWidth();
+		column4Width = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getWidth();
+		column5Width = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getWidth();
+		column6Width = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getWidth();
+		column7Width = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getWidth();
+		column8Width = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getWidth();
+
+		columnWidth.add(column0Width);
+		columnWidth.add(column1Width);
+		columnWidth.add(column2Width);
+		columnWidth.add(column3Width);
+		columnWidth.add(column4Width);
+		columnWidth.add(column5Width);
+		columnWidth.add(column6Width);
+		columnWidth.add(column7Width);
+		columnWidth.add(column8Width);
+
+		return columnWidth;
+	}
+
+	/**
+	 * Set custom widths of all columns
+	 * @param columnWidth the ArrayList of columnWidths
+	 */
+	public void setTableWidth(ArrayList<Integer> columnWidth){
+		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(columnWidth.get(0));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(columnWidth.get(1));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(columnWidth.get(2));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(columnWidth.get(3));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(columnWidth.get(4));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(columnWidth.get(5));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(columnWidth.get(6));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(columnWidth.get(7));
+		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
+	}
+
+	/**
+	 *A getter to get the current column headers of the table 
+	 * @return columnHeader the ArrayList of headers for the table
+	 * TODO
+	 */
+	public ArrayList<String> getTableName(){
+		columnHeader  = new ArrayList<String>();
+
+		String column0Header = "";
+		String column1Header = "";
+		String column2Header = "";
+		String column3Header = "";
+		String column4Header = "";
+		String column5Header = "";
+		String column6Header = "";
+		String column7Header = "";
+		String column8Header = "";
+
+		//get Headers
+		column0Header = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getHeaderValue().toString();
+		System.out.println("col 0: " + column0Header);
+		column1Header = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getHeaderValue().toString();
+		System.out.println("col 1: " + column1Header);
+		column2Header = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getHeaderValue().toString();
+		System.out.println("col 2: " + column2Header);
+		column3Header = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getHeaderValue().toString();
+		System.out.println("col 3: " + column3Header);
+		column4Header = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getHeaderValue().toString();
+		System.out.println("col 4: " + column4Header);
+		column5Header = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getHeaderValue().toString();
+		System.out.println("col 5: " + column5Header);
+		column6Header = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getHeaderValue().toString();
+		System.out.println("col 6: " + column6Header);
+		column7Header = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getHeaderValue().toString();
+		System.out.println("col 7: " + column7Header);
+		column8Header = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getHeaderValue().toString();
+		System.out.println("col 8: " + column8Header);
+		
+		columnHeader.add(column0Header);
+		columnHeader.add(column1Header);
+		columnHeader.add(column2Header);
+		columnHeader.add(column3Header);
+		columnHeader.add(column4Header);
+		columnHeader.add(column5Header);
+		columnHeader.add(column6Header);
+		columnHeader.add(column7Header);
+		columnHeader.add(column8Header);
+		
+		System.out.println(columnHeader);
+
+		return columnHeader;
+	}
+
+	/**
+	 * put the data in the table using default view
+	 * @param columnNames the names of each column of the table
+	 * @param entries each cell of the table
+	 */
+	public void setTableName(ArrayList<String> columnNames) {
+		int nameSize = columnNames.size();
+		int headerSize = resultsPanel.getResultsTable().getColumnCount();
+		String headerJ = "";
+
+		for (int i = 0; i < nameSize; i++) {
+			for (int j = 0; j < headerSize; j++) {
+				headerJ = resultsPanel.getResultsTable().getColumnModel().getColumn(j).getHeaderValue().toString();
+				if (columnNames.get(i).equals(headerJ)) {
+					System.out.println("col name: " + columnNames.get(i));
+					System.out.println("col entry: " + headerJ);
+					resultsPanel.getResultsTable().moveColumn(j, i);
+					j = headerSize; // used to break out of inner for loop
+				}
+			}
+		}
+	}
+
+	/**
+	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
+	 * error occurs retrieving the requirements from the server.
+	 */
+	public void errorReceivingData(String error) {
+		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
+				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
@@ -269,121 +412,6 @@ public class RetrieveAllRequirementsController {
 			}
 		}
 		return "";
-	}
-
-	/**
-	 *A getter to get the current state of the table 
-	 * TODO
-	 */
-	public void getTableState(){
-		String[] columnOrder = {};
-		//String[] getSort = {};
-
-		//get column arrangement
-		for (int i = 0; i < 9; i++){
-			columnOrder[i] = resultsPanel.getResultsTable().getColumnModel().getColumn(i).getIdentifier().toString();
-			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
-
-		}
-	}
-
-	/**
-	 *A getter to get the current state of the table 
-	 * TODO
-	 */
-	public ArrayList<Integer> getTableWidth(){
-		columnWidth  = new ArrayList<Integer>();
-		
-		int column0Width = 0;
-		int column1Width = 0;
-		int column2Width = 0;
-		int column3Width = 0;
-		int column4Width = 0;
-		int column5Width = 0;
-		int column6Width = 0;
-		int column7Width = 0;
-		int column8Width = 0;
-
-		//get widths
-		column0Width = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getWidth();
-		System.out.println("col 0 " + column0Width);
-		column1Width = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getWidth();
-		System.out.println("col 1 " + column1Width);
-		column2Width = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getWidth();
-		System.out.println("col 2 " + column2Width);
-		column3Width = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getWidth();
-		System.out.println("col 3 " + column3Width);
-		column4Width = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getWidth();
-		System.out.println("col 4 " + column4Width);
-		column5Width = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getWidth();
-		System.out.println("col 5 " + column5Width);
-		column6Width = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getWidth();
-		System.out.println("col 6 " + column6Width);
-		column7Width = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getWidth();
-		System.out.println("col 7 " + column7Width);
-		column8Width = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getWidth();
-		System.out.println("col 8 " + column8Width);
-
-		columnWidth.add(column0Width);
-		columnWidth.add(column1Width);
-		columnWidth.add(column2Width);
-		columnWidth.add(column3Width);
-		columnWidth.add(column4Width);
-		columnWidth.add(column5Width);
-		columnWidth.add(column6Width);
-		columnWidth.add(column7Width);
-		columnWidth.add(column8Width);
-
-		System.out.println(columnWidth);
-		return columnWidth;
-		
-	}
-
-
-	/**
-	 *A setter to set the state of the table 
-	 */
-	public void setTableWidth(ArrayList<Integer> columnWidth){
-		/*//set column arrangement
-		for (int i = 0; i < 9; i++){
-			resultsPanel.getResultsTable().getColumnModel().getColumn(i).setIdentifier(columnOrder[i]);
-			//resultsPanel.getResultsTable().getColumnModel().getColumn(i).setPreferredWidth(columnWidth[i]);
-			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
-		}
-		 */
-		customColumnWidths(columnWidth);
-	}
-
-	/**
-	 * Set custom widths of all columns
-	 */
-	public void customColumnWidths(ArrayList<Integer> columnWidth){
-		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(columnWidth.get(0));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(columnWidth.get(1));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(columnWidth.get(2));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(columnWidth.get(3));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(columnWidth.get(4));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(columnWidth.get(5));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(columnWidth.get(6));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(columnWidth.get(7));
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
-	}
-
-	/**
-	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
-	 * error occurs retrieving the requirements from the server.
-	 */
-	public void errorReceivingData(String error) {
-		JOptionPane.showMessageDialog(resultsPanel, "An error occurred retrieving requirements from the server. " + error, 
-				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**A getter required for testing
