@@ -129,7 +129,7 @@ public class ChartOptionsPanel extends JPanel{
 		
 		//Set the sizing of the boxes
 		chartTypeBox.setMaximumSize(new Dimension(120, 25));
-		chartDataBox.setMaximumSize(new Dimension(175, 25));
+		chartDataBox.setMaximumSize(chartDataBox.getPreferredSize());
 		filtersOptionsBox.setMaximumSize(new Dimension(120, 25));
 		
 		//Add the components with spacing in between them

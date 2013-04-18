@@ -122,7 +122,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
 		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth((int)btnRefresh.getPreferredSize().getWidth() + 80);
+		buttonGroup.setPreferredWidth((int)buttonGroup.getPreferredSize().getWidth());
 
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override

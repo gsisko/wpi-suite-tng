@@ -67,7 +67,7 @@ public class UserChooserTab extends JPanel {
 	private JButton addSelectedUserButton;//The button to trigger the assignment of a selected user to this requirement from the "unassignedList"
 	private JButton removeSelectedUserButton;//The button to trigger the unassignment of a selected user to this requirement from the "assignedList"
 
-	
+
 	/**
 	 * The constructor for UserChooserTab;
 	 * Construct the panel, the components, and add the
@@ -117,7 +117,7 @@ public class UserChooserTab extends JPanel {
 		//Find the maximum preferred width and height of the two lists
 		double maxPrefHeight= 0;//Used to store the maximum preferred height
 		double maxPrefWidth = 0;//Used to store the maximum preferred width
-		
+
 		if ((unassignedUserListModel.getSize() == 0) && (assignedUserListModel.getSize() == 0)) //If both lists are empty
 		{
 			//Set the maximum preferred width and height to a default
@@ -142,7 +142,7 @@ public class UserChooserTab extends JPanel {
 				maxPrefHeight = unassignedScroll.getPreferredSize().getHeight();//Use the preferred height of the unassigned list
 			else//The assigned list has a greater preferred height
 				maxPrefHeight = assignedScroll.getPreferredSize().getHeight();//So use the preferred height of the assigned list
-			
+
 			if (unassignedScroll.getPreferredSize().getWidth()>= assignedScroll.getPreferredSize().getWidth())//If the unassigned list has a equal or greater preferred width to the assigned list
 				maxPrefWidth = unassignedScroll.getPreferredSize().getWidth();//Use the preferred width of the unassigned list
 			else//The assigned list has a greater preferred width
@@ -151,15 +151,15 @@ public class UserChooserTab extends JPanel {
 		//Add 10 to each value to account for the border
 		maxPrefHeight += 10;
 		maxPrefWidth += 10;
-		
+
 		//Set the preferred size of both of the scroll panes holding the lists to the same value (the maximum of the preferred widths and heights of the lists)
 		unassignedScroll.setPreferredSize(new Dimension((int)maxPrefWidth,(int)maxPrefHeight));
 		assignedScroll.setPreferredSize(new Dimension((int)maxPrefWidth,(int)maxPrefHeight));
-		
+
 		//Create the buttons
 		addSelectedUserButton = new JButton("Add User ->");
 		removeSelectedUserButton= new JButton("<- Remove User");
-		
+
 		//Create and set the titled borders for the lists
 		//create the titled border for the list of assigned users
 		TitledBorder assignedUsersTitleBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Assigned Users");
@@ -169,80 +169,120 @@ public class UserChooserTab extends JPanel {
 		TitledBorder unassignedUsersTitleBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Unassigned Users"); 
 		unassignedUsersTitleBorder.setTitleFont(assignedUsersTitleBorder.getTitleFont());//Use the same font as the "assignedUsersTitleBorder"
 		unassignedUsersTitleBorder.setTitleColor(Color.gray);//set the color of the title to grey
-		
+
 		//add an inner border padding of 5 units all around to each titled border, and set the appropriate border to the corresponding scroll pane
 		assignedScroll.setBorder(BorderFactory.createCompoundBorder(assignedUsersTitleBorder, (BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  );
 		unassignedScroll.setBorder(BorderFactory.createCompoundBorder(unassignedUsersTitleBorder, (BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  );
-		
+
 		//Set the background of both of the scroll panes to white
 		assignedScroll.setBackground(Color.WHITE);
 		unassignedScroll.setBackground(Color.WHITE);
-		
+
 		//Create and add an action listener to the "addSelectedUserButton"
 		addSelectedUserButton.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  if(!(unassignedList.isSelectionEmpty()))//if a user is selected in the unassigned user list at the time the button is pushed...
-			  {
-				  int index = unassignedList.getSelectedIndex();//Grab the index of the selected user in the unassigned user list
-				  System.out.println("You have pushed the addSelectedUserButton!\n You have selected: "+ unassignedUserListModel.getElementAt(index));//Print a message containing the selected user to the console
+			public void actionPerformed(ActionEvent e)
+			{
+				if(!(unassignedList.isSelectionEmpty()))//if a user is selected in the unassigned user list at the time the button is pushed...
+				{
+					int oldIndicies[] = assignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the assigned user list (in increasing order). This will be used to restore the selection(s) later if needed.
+					
+					int indices[] = unassignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the unassigned user list (in increasing order)
 
-				  assignedUserListModel.addUser(unassignedUserListModel.getUserAt(index));//add the appropriate user from the unassignedUserListModel to the assignedUserListModel
-				  unassignedUserListModel.removeElementAt(index);//remove the appropriate user from the unassignedUserListModel
-				  
-				  //Revalidate and repaint both lists to ensure the change shows on the GUI
-				  unassignedList.revalidate();
-				  unassignedList.repaint();
-				  assignedList.revalidate();
-				  assignedList.repaint();
-			  }
-			  else//No users were selected in the unassigned user list at the time the button was pushed
-				  System.out.println("You have pushed the addSelectedUserButton!\n No users are selected in the unassigned user list.\n");//Print a message to the console
-			 
-			  
-		  }
+					System.out.println("You have pushed the addSelectedUserButton!\n You have selected "+indices.length+  " user(s), starting at: "+ unassignedUserListModel.getElementAt(indices[0]));//Print a message containing the selected user(s) to the console
+
+					for (int i = 0; i<indices.length; i++ )//For each index in the array "indices"
+					{
+						int nextIndex = indices[i];//Grab the index stored at the index "i" in "indices"
+						assignedUserListModel.addUser(unassignedUserListModel.getUserAt(nextIndex - i));//add the appropriate user from the unassignedUserListModel to the assignedUserListModel, taking care to account for previously removed users
+						unassignedUserListModel.removeElementAt(nextIndex - i);//remove the appropriate user from the unassignedUserListModel, taking care to account for previously removed users
+					}
+
+					unassignedList.clearSelection();//Clear the selection in the unassignedList. This helps prevent errors, as the selected indices are only stored by swing upon mouse clicks
+
+					//This section prevents an error whereby if the top user in the assignedList was selected at the time a user was added to the list, that new user will be selected too
+					if( (!(assignedList.isSelectionEmpty())) && (assignedList.getMinSelectionIndex() == 0))//if a user is selected in the assigned user list at the time the button was pushed and the first selected index in the assigned user list is zero
+					{
+						//Alter the old array of selected indices in the assignedList to account for the newly added users
+						for (int i =0; i< oldIndicies.length; i++)
+						{
+							oldIndicies[i]+=indices.length;
+						}
+						assignedList.setSelectedIndices(oldIndicies);//Restore the old selection(s) appropriately
+					}
+
+					//Revalidate and repaint both lists to ensure the change shows on the GUI
+					unassignedList.revalidate();
+					unassignedList.repaint();
+					assignedList.revalidate();
+					assignedList.repaint();
+				}
+				else//No users were selected in the unassigned user list at the time the button was pushed
+					System.out.println("You have pushed the addSelectedUserButton!\n No users are selected in the unassigned user list.\n");//Print a message to the console
+
+
+			}
 		});
-		
+
 		//Create and add an action listener to the "removeSelectedUserButton"
 		removeSelectedUserButton.addActionListener(new ActionListener()
 		{
-			  public void actionPerformed(ActionEvent e)
-			  {
-				  if(!(assignedList.isSelectionEmpty()))//if a user is selected in the assigned user list at the time the button is pushed...
-				  {
-					  int index = assignedList.getSelectedIndex();//Grab the index of the selected user in the assigned user list
-					  System.out.println("You have pushed the removeSelectedUserButton!\n You have selected: "+ assignedUserListModel.getElementAt(index));//Print a message containing the selected user to the console
+			public void actionPerformed(ActionEvent e)
+			{
+				if(!(assignedList.isSelectionEmpty()))//if a user is selected in the assigned user list at the time the button is pushed...
+				{
+					int oldIndicies[] = unassignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the unassigned user list (in increasing order). This will be used to restore the selection(s) later if needed.
+					int indices[] = assignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the assigned user list (in increasing order)
 
-					  unassignedUserListModel.addUser(assignedUserListModel.getUserAt(index));//add the appropriate user from the assignedUserListModel to the unassignedUserListModel
-					  assignedUserListModel.removeElementAt(index);//remove the appropriate user from the assignedUserListModel
+					System.out.println("You have pushed the removeSelectedUserButton!\n You have selected "+indices.length+  " user(s), starting at: "+ assignedUserListModel.getElementAt(indices[0]));//Print a message containing the selected user(s) to the console
+
+					for (int i = 0; i<indices.length; i++ )//For each index in the array "indices"
+					{
+						int nextIndex = indices[i];//Grab the index stored at the index "i" in "indices"
+						unassignedUserListModel.addUser(assignedUserListModel.getUserAt(nextIndex - i));//add the appropriate user from the assignedUserListModel to the unassignedUserListModel, taking care to account for previously removed users
+						assignedUserListModel.removeElementAt(nextIndex - i);//remove the appropriate user from the assignedUserListModel, taking care to account for previously removed users
+					}
+
+					assignedList.clearSelection();//Clear the selection in the assignedList. This helps prevent errors, as the selected indices are only stored by swing upon mouse clicks
+
+					//This section prevents an error whereby if the top user in the unassignedList was selected at the time a user was added to the list, that new user will be selected too
+					if( (!(unassignedList.isSelectionEmpty())) && (unassignedList.getMinSelectionIndex() == 0))//if a user is selected in the unassigned user list at the time the button was pushed and the first selected index in the assigned user list is zero
+					{
+						//Alter the old array of selected indices in the assignedList to account for the newly added users
+						for (int i =0; i< oldIndicies.length; i++)
+						{
+							oldIndicies[i]+=indices.length;
+						}
+						unassignedList.setSelectedIndices(oldIndicies);//Restore the old selection(s) appropriately
+					}
+					
 					//Revalidate and repaint both lists to ensure the change shows on the GUI
-					  unassignedList.revalidate();
-					  unassignedList.repaint();
-					  assignedList.revalidate();
-					  assignedList.repaint();
-				  }
-				  else//No users were selected in the assigned user list at the time the button was pushed
-					  System.out.println("You have pushed the removeSelectedUserButton!\n No users are selected in the assigned user list.\n");//Print a message to the console
-				 
-			  }
+					unassignedList.revalidate();
+					unassignedList.repaint();
+					assignedList.revalidate();
+					assignedList.repaint();
+				}
+				else//No users were selected in the assigned user list at the time the button was pushed
+					System.out.println("You have pushed the removeSelectedUserButton!\n No users are selected in the assigned user list.\n");//Print a message to the console
+
+			}
 		});
-		
+
 		//Create the buttonPanel using a grid layout with 2 rows, 1 column, 0 horizontal spacing, and 6 units of vertical spacing between the components
 		//This is a small inner panel to hold the buttons
 		JPanel buttonPanel = new JPanel(new GridLayout(2,1,0,6));
 		//Set the border of the buttonPanel to an empty boarder for spacing purposes
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
-		
+
 		//add the buttons to the buttonPanel
 		buttonPanel.add(addSelectedUserButton);
 		buttonPanel.add(removeSelectedUserButton);
-		
+
 		//set the maximum size of the buttonPanel. This is especially important because a grid layout will stretch it's components to fill whatever space it can
 		buttonPanel.setMaximumSize(new Dimension(140, 66));
-		
+
 		//End button panel
-		
+
 
 		//Add the components to this panel
 		this.add(Box.createHorizontalGlue());//Add a horizontal glue component to keep the lists in the center of the panel
@@ -252,7 +292,7 @@ public class UserChooserTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(15,0)));//Add a rigid area for spacing
 		this.add(assignedScroll);//Add the list of assigned users, in the "assignedScroll" scroll pane to this panel
 		this.add(Box.createHorizontalGlue());//Add a horizontal glue component to keep the lists in the center of the panel
-		
+
 
 	}
 
