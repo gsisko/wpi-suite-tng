@@ -277,13 +277,11 @@ public class RetrieveAllRequirementsController {
 	 */
 	public void getTableState(){
 		String[] columnOrder = {};
-		int[] columnWidth = {};
 		//String[] getSort = {};
 
 		//get column arrangement
 		for (int i = 0; i < 9; i++){
 			columnOrder[i] = resultsPanel.getResultsTable().getColumnModel().getColumn(i).getIdentifier().toString();
-			columnWidth[i] = resultsPanel.getResultsTable().getColumnModel().getColumn(i).getWidth();
 			//getSort[i] = (String) resultsPanel.getResultsTable().getRowSorter().getSortKeys().get(0);
 
 		}
@@ -294,7 +292,8 @@ public class RetrieveAllRequirementsController {
 	 * TODO
 	 */
 	public ArrayList<Integer> getTableWidth(){
-
+		columnWidth  = new ArrayList<Integer>();
+		
 		int column0Width = 0;
 		int column1Width = 0;
 		int column2Width = 0;
