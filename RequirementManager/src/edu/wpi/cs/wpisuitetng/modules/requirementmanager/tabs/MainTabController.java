@@ -179,9 +179,7 @@ public class MainTabController {
 		try {
 			view.removeTabAt(view.getSelectedIndex());
 		}
-		catch (IndexOutOfBoundsException e) {
-			// do nothing, tried to close tab that does not exist
-		}
+		catch (IndexOutOfBoundsException ignored) {}
 	}
 
 	/**
@@ -192,9 +190,7 @@ public class MainTabController {
 		try {
 			view.setSelectedIndex(tabIndex);
 		}
-		catch (IndexOutOfBoundsException e) {
-			// an invalid tab was requested, do nothing
-		}
+		catch (IndexOutOfBoundsException ignored) {}
 	}
 
 	/**
