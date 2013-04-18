@@ -1,3 +1,4 @@
+// $codepro.audit.disable emptyCatchClause
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
  *

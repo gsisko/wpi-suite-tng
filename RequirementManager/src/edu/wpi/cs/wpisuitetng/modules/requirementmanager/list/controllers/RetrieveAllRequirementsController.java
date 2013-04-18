@@ -242,7 +242,7 @@ public class RetrieveAllRequirementsController {
 			if (isFiltered.get(i).getType().toString().equals("NoType")){
 				entries[i][3] = "";					
 			} else {
-				entries[i][3] = isFiltered.get(i).getType().toString();;
+				entries[i][3] = isFiltered.get(i).getType().toString();
 			}				
 			entries[i][4] = isFiltered.get(i).getStatus().toString();
 			// Process "NoPriority" case
