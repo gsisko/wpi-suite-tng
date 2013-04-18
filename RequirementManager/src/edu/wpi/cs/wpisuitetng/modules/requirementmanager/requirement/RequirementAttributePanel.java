@@ -28,10 +28,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -43,7 +43,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.PopupMenuEvent;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -588,8 +587,6 @@ public class RequirementAttributePanel extends JPanel {
 			saveButton.setEnabled(isFieldsChanged() && setSaveButtonWhenNameAndDescriptionAreValid());
 		}
 	}
-
-	/** Sets up the controllers and listeners for this panel	 */
 	/** Sets up the controllers and listeners for this panel   */
 	public void setupControllersAndListeners() {
 		// Add a listener to check the Name and Description boxes for validity
@@ -598,13 +595,33 @@ public class RequirementAttributePanel extends JPanel {
 		txtDescription.addKeyListener(nameAndDescriptionValidityListener);
 
 		// Add change listeners that turn fields yellow when changed
-		txtName.addKeyListener(new FieldChangeListener(this, txtName, "Name",0));
-		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription, "Description",1));
+		txtName.addKeyListener(new FieldChangeListener(this, txtName,    "Name",0));
+		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription,     "Description",1));
 		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, "ReleaseNumber",2));
 		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, "Estimate",3));
-		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort, "ActualEffort",4));
+		txtEstimate.addKeyListener(new KeyListener(){
+
+			/** Unused */
+			public void keyTyped(KeyEvent e) {	}
+			
+			/** Unused */
+			public void keyPressed(KeyEvent e) {	}
+
+			/** When an estimate is entered and is 0 or nonexistent, the iteration box is disabled
+			 *  so that the user cannot assign the requirement to an iteration without first filling
+			 *  out a valid estimate. 
+			 */
+			public void keyReleased(KeyEvent e) {
+				if (txtEstimate.getText().equals("") || Integer.parseInt(txtEstimate.getText()) == 0  ){
+					iterationBox.setEnabled(false);
+				} else {
+					iterationBox.setEnabled(true);
+				}
+			}
+		});
+		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort,    "ActualEffort",4));
 		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
-		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,  "Priority",7 ));
+		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,      "Priority",7 ));
 		statusBox.addItemListener(new ItemListener(){
 
 			@Override
@@ -917,8 +934,9 @@ public class RequirementAttributePanel extends JPanel {
 				}
 				changeField(statusBox, 6, true); // Note that the status changed
 				this.updateStatusSettings("Open");
+				txtEstimate.setEnabled(true);
 			} else {
-				txtEstimate.setEnabled(false); // It will get re-enabled after saving
+				txtEstimate.setEnabled(false); 
 				this.updateStatusSettings("InProgress");
 			}
 			// hack to make the status box change colors
