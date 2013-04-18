@@ -93,8 +93,7 @@ public class FieldChangeListener implements KeyListener{
 			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;         
 		}
-
-
+		
 		// Check the old value and set the box yellow as necessary
 		if (!toWatch.getText().equals(oldValue + "")) {
 			thePanel.changeField(toWatch, indexOfBoolean, true);

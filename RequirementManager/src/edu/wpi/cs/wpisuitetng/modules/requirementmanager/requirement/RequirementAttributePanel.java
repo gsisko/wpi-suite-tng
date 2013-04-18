@@ -598,9 +598,7 @@ public class RequirementAttributePanel extends JPanel {
 		txtName.addKeyListener(new FieldChangeListener(this, txtName,    "Name",0));
 		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription,     "Description",1));
 		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, "ReleaseNumber",2));
-		txtEstimate.addKeyListener(new FieldChangeListener(this, txtEstimate, "Estimate",3));
 		txtEstimate.addKeyListener(new KeyListener(){
-
 			/** Unused */
 			public void keyTyped(KeyEvent e) {	}
 			
@@ -612,21 +610,50 @@ public class RequirementAttributePanel extends JPanel {
 			 *  out a valid estimate. 
 			 */
 			public void keyReleased(KeyEvent e) {
+				// When estimate is invalid, deactivate the iteration box
 				if (txtEstimate.getText().equals("") || Integer.parseInt(txtEstimate.getText()) == 0  ){
 					iterationBox.setEnabled(false);
 				} else {
 					iterationBox.setEnabled(true);
 				}
+							
+				// Check the old value and set the box yellow as necessary
+				if (txtEstimate.getText().equals("")){
+					changeField(txtEstimate, 3, true);
+				} else if (Integer.parseInt(txtEstimate.getText()) != currentRequirement.getEstimate()) {
+					changeField(txtEstimate, 3, true);
+				} else {
+					changeField(txtEstimate, 3, false);
+				}		
 			}
 		});
-		txtActualEffort.addKeyListener(new FieldChangeListener(this, txtActualEffort,    "ActualEffort",4));
+		txtActualEffort.addKeyListener(new KeyListener(){
+			/** Unused */
+			public void keyTyped(KeyEvent e) {  }
+
+			/** Unused */
+			public void keyPressed(KeyEvent e) {	}
+
+			/** Checks the actual effort box for changes and turns it yellow when changes are made */
+			public void keyReleased(KeyEvent e) {
+				// Check the old value and set the box yellow as necessary
+				if (txtActualEffort.getText().equals("")){
+					changeField(txtActualEffort, 4, true);
+				} else if (Integer.parseInt(txtActualEffort.getText()) != currentRequirement.getActualEffort()) {
+					changeField(txtActualEffort, 4, true);
+				} else {
+					changeField(txtActualEffort, 4, false);
+				}			
+			}	
+		});
+		
 		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
 		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,      "Priority",7 ));
 		statusBox.addItemListener(new ItemListener(){
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println("Status Box: Changed!");
+		//		System.out.println("Status Box: Changed!");
 
 
 				// Check the old value and set the box yellow as necessary
