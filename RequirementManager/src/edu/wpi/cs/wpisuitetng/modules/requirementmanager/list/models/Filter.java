@@ -163,7 +163,7 @@ public class Filter extends AbstractModel {
 	 * 
 	 * @return Whether the two Filters are equal or not
 	 */
-	public boolean equals(Filter toCompareTo){
+	public boolean equals(Filter toCompareTo){ // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
 		if (this.getType() != toCompareTo.getType()) return false;
 		if (this.getComparator() != toCompareTo.getComparator()) return false;	
 		if (!this.getValue().equals(toCompareTo.getValue())  ) return false;		
