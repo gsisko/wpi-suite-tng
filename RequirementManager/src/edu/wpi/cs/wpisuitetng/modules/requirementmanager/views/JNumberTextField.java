@@ -191,7 +191,7 @@ public class JNumberTextField extends JTextField
 
 	class JNumberFieldFilter extends PlainDocument
     {
-        public JNumberFieldFilter()
+        private JNumberFieldFilter()
         {
             super();
         }
