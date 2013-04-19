@@ -32,8 +32,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
  * 
  * NOTE: If filtering by a field that is an "enum", only use EqualTo or NotEqualTo
  * 
- * @author Team 5
- *
  */
 public enum OperatorType {
 	GreaterThan,

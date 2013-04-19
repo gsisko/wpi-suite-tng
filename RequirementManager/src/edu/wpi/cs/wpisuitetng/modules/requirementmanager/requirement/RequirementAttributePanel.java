@@ -32,6 +32,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -171,7 +173,7 @@ public class RequirementAttributePanel extends JPanel {
 		txtActualEffort.setMaximumSize(new Dimension(30, 25));
 		txtActualEffort.setMinimumSize(new Dimension(30, 25));
 		txtActualEffort.setPreferredSize(new Dimension(30, 25));
-		
+
 		//Set the character limit for the release number
 		txtReleaseNumber.setDocument(new JTextFieldLimit(12));
 
@@ -601,7 +603,7 @@ public class RequirementAttributePanel extends JPanel {
 		txtEstimate.addKeyListener(new KeyListener(){
 			/** Unused */
 			public void keyTyped(KeyEvent e) {	}
-			
+
 			/** Unused */
 			public void keyPressed(KeyEvent e) {	}
 
@@ -616,7 +618,7 @@ public class RequirementAttributePanel extends JPanel {
 				} else {
 					iterationBox.setEnabled(true);
 				}
-							
+
 				// Check the old value and set the box yellow as necessary
 				if (txtEstimate.getText().equals("")){
 					changeField(txtEstimate, 3, true);
@@ -646,14 +648,14 @@ public class RequirementAttributePanel extends JPanel {
 				}			
 			}	
 		});
-		
+
 		typeBox.addPopupMenuListener(new BoxChangeListener(this, typeBox,  "Type",5 ));
 		priorityBox.addPopupMenuListener(new BoxChangeListener(this, priorityBox,      "Priority",7 ));
 		statusBox.addItemListener(new ItemListener(){
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-		//		System.out.println("Status Box: Changed!");
+				//		System.out.println("Status Box: Changed!");
 
 
 				// Check the old value and set the box yellow as necessary
@@ -897,33 +899,47 @@ public class RequirementAttributePanel extends JPanel {
 
 	}
 
-	/** Gets the names of the current iterations and puts them into the Iteration
-	 *  selection combo box. Also sets the selected index appropriately.
+	/** 
+	 *  Gets the names of the current iterations 
+	 *  and puts them into the Iteration selection combo box
+	 *  if the iteration in question has a end date that is 
+	 *  NOT before this date, OR has an id number of 0 (the backlog).  
+	 *  Also sets the selected index appropriately.
 	 */
 	public void fillIterationSelectionBox() {
-		// Iterations cannot be assigned when there is no estimate saved
+		// Iterations cannot be assigned when there is no estimate saved, so enable/disable the iteration box appropriately
 		if (currentRequirement.getEstimate() <= 0){
 			iterationBox.setEnabled(false);
 		} else {
 			iterationBox.setEnabled(true);
 		}
 
-		Iteration[] allIterations = parent.getAllIterations();
+		Iteration[] allIterations = parent.getAllIterations(); //Grab all the iterations in an array
 
-		String[] names = new String[allIterations.length];
-		for (int i = 0; i < allIterations.length; ++i) {
-			names[i] = (allIterations[i].getName());
+		ArrayList<Iteration> iterationsToDisplay = new ArrayList<Iteration>();//This will hold all the iterations that we will display
+
+		for (int i = 0; i < allIterations.length; ++i) //For all the iterations in the "allIterations" array
+		{
+			//If the iteration at this index (i) has a end date that is NOT before this date, OR has an id number of 0 (the backlog)
+			if ( (!(allIterations[i].getEndDate().before(new Date()))) || (allIterations[i].getID() == 0)  )
+				iterationsToDisplay.add(allIterations[i]);//add it to the list of iterations to display 
 		}
 
-		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);
-		iterationBox.setModel(valb);
+		//Create and fill an array of the iteration names to display, to be used to create the combo box model
+		String[] names = new String[iterationsToDisplay.size()];
+		for (int i = 0; i < iterationsToDisplay.size(); ++i) {
+			names[i] = iterationsToDisplay.get(i).getName();
+		}
 
-		//Set the selected index of the iteartionBox to the correct value, based on the oldPriority
+		DefaultComboBoxModel  valb = new DefaultComboBoxModel (names);//Create the new combo box model
+		iterationBox.setModel(valb);//Give the iteration box the new model to use
+
+		//Set the selected index of the itertionBox to the correct value, based on the oldPriority
 		// First find the name of the iteration by ID
-		for (int i = 0; i < allIterations.length; i++){
+		for (int i = 0; i < iterationsToDisplay.size(); i++){
 			// Figure out what position in the referenced iteration is at
-			if (allIterations[i].getID() ==  currentRequirement.getIteration()){
-				// Set the index of the box to the current index, and all is well
+			if (iterationsToDisplay.get(i).getID() ==  currentRequirement.getIteration()){
+				// Set the index of the box to the current index
 				iterationBox.setSelectedIndex(i);
 			}
 		}

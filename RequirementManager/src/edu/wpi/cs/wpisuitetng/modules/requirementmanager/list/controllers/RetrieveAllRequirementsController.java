@@ -254,7 +254,6 @@ public class RetrieveAllRequirementsController {
 			entries[i][6] = isFiltered.get(i).getReleaseNumber();
 			entries[i][7] = String.valueOf(isFiltered.get(i).getEstimate());
 			entries[i][8] = String.valueOf(isFiltered.get(i).getActualEffort());
-
 		}
 	}
 
@@ -318,7 +317,6 @@ public class RetrieveAllRequirementsController {
 	/**
 	 *A getter to get the current column headers of the table 
 	 * @return columnHeader the ArrayList of headers for the table
-	 * TODO
 	 */
 	public ArrayList<String> getTableName(){
 		columnHeader  = new ArrayList<String>();
@@ -335,23 +333,14 @@ public class RetrieveAllRequirementsController {
 
 		//get Headers
 		column0Header = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getHeaderValue().toString();
-		System.out.println("col 0: " + column0Header);
 		column1Header = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getHeaderValue().toString();
-		System.out.println("col 1: " + column1Header);
 		column2Header = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getHeaderValue().toString();
-		System.out.println("col 2: " + column2Header);
 		column3Header = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getHeaderValue().toString();
-		System.out.println("col 3: " + column3Header);
 		column4Header = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getHeaderValue().toString();
-		System.out.println("col 4: " + column4Header);
 		column5Header = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getHeaderValue().toString();
-		System.out.println("col 5: " + column5Header);
 		column6Header = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getHeaderValue().toString();
-		System.out.println("col 6: " + column6Header);
 		column7Header = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getHeaderValue().toString();
-		System.out.println("col 7: " + column7Header);
 		column8Header = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getHeaderValue().toString();
-		System.out.println("col 8: " + column8Header);
 		
 		columnHeader.add(column0Header);
 		columnHeader.add(column1Header);
@@ -363,8 +352,6 @@ public class RetrieveAllRequirementsController {
 		columnHeader.add(column7Header);
 		columnHeader.add(column8Header);
 		
-		System.out.println(columnHeader);
-
 		return columnHeader;
 	}
 

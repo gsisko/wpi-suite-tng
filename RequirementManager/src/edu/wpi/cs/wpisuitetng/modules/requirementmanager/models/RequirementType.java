@@ -26,8 +26,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /** this enum provides the requirement types for requirements. 
  * 
- * @author Team 5
- *
  */
 public enum RequirementType {
 	Epic,

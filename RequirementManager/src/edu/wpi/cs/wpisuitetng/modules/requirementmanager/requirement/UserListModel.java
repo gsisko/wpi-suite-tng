@@ -12,7 +12,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 public class UserListModel extends AbstractListModel {
 	
 	
-	private List<User> users;
+	private ArrayList<User> users;
 	
 
 	public UserListModel() {

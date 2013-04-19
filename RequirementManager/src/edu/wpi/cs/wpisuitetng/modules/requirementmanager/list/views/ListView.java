@@ -133,7 +133,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		});
 		
 		// Instantiate the defaultColumnWidths checkbox
-		checkBoxDefault = new JCheckBox("Default View", true);
+		checkBoxDefault = new JCheckBox("Default Table Settings", true);
 		buttonGroup.getContent().add(checkBoxDefault);
 	}
 	
