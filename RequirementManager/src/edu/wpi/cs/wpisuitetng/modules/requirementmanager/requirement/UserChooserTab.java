@@ -40,6 +40,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This panel is added to the RequirementTabPanel and 
@@ -67,6 +70,8 @@ public class UserChooserTab extends JPanel {
 	private JButton addSelectedUserButton;//The button to trigger the assignment of a selected user to this requirement from the "unassignedList"
 	private JButton removeSelectedUserButton;//The button to trigger the unassignment of a selected user to this requirement from the "assignedList"
 
+	private ArrayList<User> users;
+	
 
 	/**
 	 * The constructor for UserChooserTab;
@@ -74,7 +79,7 @@ public class UserChooserTab extends JPanel {
 	 * components to the panel.
 	 * @param reqTabParent	The RequirementTab parent of this tab
 	 */
-	public UserChooserTab(RequirementTab reqTabParent) {
+	public UserChooserTab(final RequirementTab reqTabParent) {
 
 		parent = reqTabParent; //Set the RequirementPanel that contains this instance of this panel
 
@@ -93,21 +98,28 @@ public class UserChooserTab extends JPanel {
 		assignedList = new JList(assignedUserListModel);
 
 		//Dummy list of users
-		ArrayList<User> users = new ArrayList<User>();
-
-		users.add(new User("userA1", "userA", "aaa", 1));
-		users.add(new User("userB2", "userB", "bbb", 2));
-		users.add(new User("userC4", "userC", "ccc", 4));
-		users.add(new User("userD5", "userD", "ddd", 5));
-		users.add(new User("userE6", "userE", "eee", 6));
-		users.add(new User("userF7", "userF", "fff", 7));
-		users.add(new User("userG8", "userG", "ggg", 8));
-		users.add(new User("userH09", "userH", "hhh", 9));
-		//end dummy list of users
+		users = new ArrayList<User>();
+		
+		Request request;
+		request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
+		request.addObserver(new RetrieveAllUsersObserver(this));
+		request.send();
+		
+		while (users.size() == 0) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		//Add the users to the unassignedUserListModel
 		for (int i = 0; i < users.size(); i++) {
-			unassignedUserListModel.addUser(users.get(i));
+			if (reqTabParent.getCurrentRequirement().getUsers().contains(users.get(i)))
+				assignedUserListModel.addUser(users.get(i));
+			else
+				unassignedUserListModel.addUser(users.get(i));
 		}
 
 		//Create the scrollpanes to hold their corresponding lists
@@ -157,8 +169,8 @@ public class UserChooserTab extends JPanel {
 		assignedScroll.setPreferredSize(new Dimension((int)maxPrefWidth,(int)maxPrefHeight));
 
 		//Create the buttons
-		addSelectedUserButton = new JButton("Add User ->");
-		removeSelectedUserButton= new JButton("<- Remove User");
+		addSelectedUserButton = new JButton("Add Users ->");
+		removeSelectedUserButton= new JButton("<- Remove Users");
 
 		//Create and set the titled borders for the lists
 		//create the titled border for the list of assigned users
@@ -216,6 +228,8 @@ public class UserChooserTab extends JPanel {
 					unassignedList.repaint();
 					assignedList.revalidate();
 					assignedList.repaint();
+					
+					reqTabParent.getParent().getController().saveUsers();
 				}
 				else//No users were selected in the unassigned user list at the time the button was pushed
 					System.out.println("You have pushed the addSelectedUserButton!\n No users are selected in the unassigned user list.\n");//Print a message to the console
@@ -261,6 +275,8 @@ public class UserChooserTab extends JPanel {
 					unassignedList.repaint();
 					assignedList.revalidate();
 					assignedList.repaint();
+					
+					reqTabParent.getParent().getController().saveUsers();
 				}
 				else//No users were selected in the assigned user list at the time the button was pushed
 					System.out.println("You have pushed the removeSelectedUserButton!\n No users are selected in the assigned user list.\n");//Print a message to the console
@@ -386,6 +402,20 @@ public class UserChooserTab extends JPanel {
 	 */
 	public RequirementTab getReqTabParent() {
 		return parent;
+	}
+
+	/**
+	 * @return the users
+	 */
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param users the users to set
+	 */
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
 	}
 
 }

@@ -244,6 +244,11 @@ public class User extends AbstractModel
 		
 		return gson.fromJson(json, User.class);
 	}
+	
+	public static User[] fromJSONArray(String json) {
+		GsonBuilder builder = new GsonBuilder();
+		return builder.create().fromJson(json, User[].class);
+	}
 
 	@Override
 	public Project getProject() {

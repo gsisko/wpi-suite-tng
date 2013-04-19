@@ -36,6 +36,7 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
@@ -366,6 +367,23 @@ public class SaveRequirementController
 			JOptionPane.showMessageDialog(null, "File size must be 20 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		fc.setSelectedFile(null);
+	}
+	
+	public void saveUsers() {
+		
+		Requirement currentRequirement = view.getCurrentRequirement();
+		ArrayList<User> assignedUsers = new ArrayList<User>();
+		UserListModel assignedUserListModel = view.getTabPanel().getUserChooserPanel().getAssignedUserListModel();
+		
+		for (int i = 0; i < assignedUserListModel.getSize(); i++) {
+			assignedUsers.add(assignedUserListModel.getUserAt(i));
+		}
+		currentRequirement.setUsers(assignedUsers);
+		
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
 	}
 
 	/**

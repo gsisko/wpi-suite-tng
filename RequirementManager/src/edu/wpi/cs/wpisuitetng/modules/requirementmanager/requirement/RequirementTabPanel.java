@@ -121,4 +121,18 @@ public class RequirementTabPanel extends JTabbedPane {
 	public void setAttachmentPanel(AttachmentTab attachmentPanel) {
 		this.attachmentPanel = attachmentPanel;
 	}
+
+	/**
+	 * @return the userChooserPanel
+	 */
+	public UserChooserTab getUserChooserPanel() {
+		return userChooserPanel;
+	}
+
+	/**
+	 * @param userChooserPanel the userChooserPanel to set
+	 */
+	public void setUserChooserPanel(UserChooserTab userChooserPanel) {
+		this.userChooserPanel = userChooserPanel;
+	}
 }

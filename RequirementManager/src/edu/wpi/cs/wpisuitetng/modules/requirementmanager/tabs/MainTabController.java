@@ -70,6 +70,14 @@ public class MainTabController {
 					if (tab instanceof ListView) {
 						((ListView)tab).getFilterController().refreshData();
 						((ListView)tab).getIterationController().refreshData();
+						
+						((ListView)tab).getListTab().getTabPanel().getFilterList().setCancelBtnToNew();
+						((ListView)tab).getListTab().getFilterBuilderPanel().resetFields();
+						((ListView)tab).getListTab().getFilterBuilderPanel().setInputEnabled(false);
+						
+						((ListView)tab).getListTab().getTabPanel().getIterationList().setCancelBtnToNew();
+						((ListView)tab).getListTab().getIterationBuilderPanel().resetFields();
+						((ListView)tab).getListTab().getIterationBuilderPanel().setInputEnabled(false);
 					} 
 					
 					if (tab instanceof ChartView) {
