@@ -24,9 +24,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -93,6 +97,21 @@ public class ToolbarView extends DefaultToolbarView {
 		
 		//Create the help button
 		helpButton = new JButton("User Manual");
+		helpButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+            		try {
+            		    String uri = new java.io.File( "." ).getCanonicalPath();
+            		    uri += "\\RequirementManagerUserManualWebsite\\index.html";
+            		    File file = new File(uri);
+            		    URI userManualURI = file.toURI();
+            		    System.out.println("current uri: " + uri);
+            		    Desktop.getDesktop().browse(userManualURI);
+            		} catch (IOException e1){
+            		    // TODO Auto-generated catch block
+            		    e1.printStackTrace();
+            		}
+    		}
+		});
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
