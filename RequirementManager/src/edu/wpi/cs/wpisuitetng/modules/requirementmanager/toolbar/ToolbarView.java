@@ -53,6 +53,7 @@ public class ToolbarView extends DefaultToolbarView {
 	private JPlaceholderTextField listField;
 	private ToolbarGroupView toolbarGroup;
 	private MainTabController tabController;
+	private JButton helpButton;
 	
 	/** Panel containing the list interface */
 	protected ListTab mainPanel;
@@ -90,10 +91,14 @@ public class ToolbarView extends DefaultToolbarView {
 		});
 		btnDisplayPieChart.setPreferredSize(new Dimension(140, 25));
 		
+		//Create the help button
+		helpButton = new JButton("?");
+		
 		// Add buttons to the content panel
 		content.add(createRequirement);
 		content.add(listField);
 		content.add(btnDisplayPieChart);
+		content.add(helpButton);
 
 		// Configure the layout of the buttons on the content panel
 		layout.putConstraint(SpringLayout.NORTH, createRequirement, 5, SpringLayout.NORTH, content); //Create Requirement button to top of panel
@@ -101,6 +106,8 @@ public class ToolbarView extends DefaultToolbarView {
 		layout.putConstraint(SpringLayout.WEST, btnDisplayPieChart, 10, SpringLayout.EAST, createRequirement); //Display Charts next to Create Requirement
 		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 0, SpringLayout.NORTH, createRequirement); //Display Chart to top of panel
 		layout.putConstraint(SpringLayout.SOUTH, btnDisplayPieChart, 0, SpringLayout.SOUTH, createRequirement); //Align bot of Create Requirements and Display Charts
+		layout.putConstraint(SpringLayout.NORTH, helpButton, 12, SpringLayout.SOUTH, createRequirement); //Align Help button to bottom of Create Requirements
+		layout.putConstraint(SpringLayout.WEST, helpButton, 35, SpringLayout.WEST, content); //Align Help button to left of panel
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 5, SpringLayout.EAST, createRequirement); //Align Lookup ID to right side of Create Requirements
 
