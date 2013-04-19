@@ -223,9 +223,9 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	 * @param filterStatus the status of the filter, "Applied" or "Not Applied"
 	 */
 	public void setDataFiltered(String filterStatus) {
-		if(filterStatus == "Applied")
+		if(filterStatus.equals("Applied"))
 			isFiltered = true;
-		else if(filterStatus == "Not Applied")
+		else if(filterStatus.equals("Not Applied"))
 			isFiltered = false;
 	}
 
@@ -251,36 +251,36 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 		//Pie Chart
 		if (this.chartType.equals("Pie Chart")){
-			if(this.chartDataType =="Requirement Status"){
+			if(this.chartDataType.equals("Requirement Status")){
 				this.add(statusPiePanel, BorderLayout.CENTER);
 				this.statusPiePanel.setVisible(true);
 			}
-			else if(this.chartDataType == "Requirement Iteration"){
+			else if(this.chartDataType.equals("Requirement Iteration")){
 				this.add(iterationPiePanel, BorderLayout.CENTER);
 				this.iterationPiePanel.setVisible(true);
 			}
-			else if(this.chartDataType =="Number of Users Assigned To Requirements"){
+			else if(this.chartDataType.equals("Number of Users Assigned To Requirements")){
 				this.add(this.requirementCountPiePanel, BorderLayout.CENTER);
 				this.requirementCountPiePanel.setVisible(true);
-			} else if (this.chartDataType == "Total Estimate for Each User"){
+			} else if (this.chartDataType.equals("Total Estimate for Each User")){
 				this.add(this.requirementEstimatePiePanel, BorderLayout.CENTER);
 				this.requirementEstimatePiePanel.setVisible(true);
 			}
 
 		//BarChart	
 		} else if (this.chartType.equals("Bar Chart")){
-			if(this.chartDataType =="Requirement Status"){
+			if(this.chartDataType.equals("Requirement Status")){
 				this.add(statusBarPanel, BorderLayout.CENTER);
 				this.statusBarPanel.setVisible(true);
 			}
-			else if(this.chartDataType == "Requirement Iteration"){
+			else if(this.chartDataType.equals("Requirement Iteration")){
 				this.add(iterationBarPanel, BorderLayout.CENTER);
 				this.iterationBarPanel.setVisible(true);
 			}
-			else if(this.chartDataType == "Number of Users Assigned To Requirements"){
+			else if(this.chartDataType.equals("Number of Users Assigned To Requirements")){
 				this.add(this.requirementCountBarPanel, BorderLayout.CENTER);
 				this.requirementCountBarPanel.setVisible(true);
-			} else if (this.chartDataType == "Total Estimate for Each User"){
+			} else if (this.chartDataType.equals("Total Estimate for Each User")){
 				this.add(this.requirementEstimateBarPanel, BorderLayout.CENTER);
 				this.requirementEstimateBarPanel.setVisible(true);
 			}
