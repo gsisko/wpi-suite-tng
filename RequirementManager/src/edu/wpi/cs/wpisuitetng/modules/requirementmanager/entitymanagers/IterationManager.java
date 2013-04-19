@@ -42,8 +42,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**This is the entity manager for the Iteration in the IterationManager module
  * 
- * @author Team 5
- *
  * @version $Revision: 1.0 $
  */
 public class IterationManager implements EntityManager<Iteration> {

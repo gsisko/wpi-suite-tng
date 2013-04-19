@@ -36,7 +36,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /** Requirement: Holds data that makes up a Requirement
  * 
- * @author Team 5
  * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {

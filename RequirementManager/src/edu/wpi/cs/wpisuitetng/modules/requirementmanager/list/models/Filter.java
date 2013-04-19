@@ -35,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** A filter is one set of constraints that a user can use to filter a list of requirements.
- * @author Team 5
  *
  */
 public class Filter extends AbstractModel {
