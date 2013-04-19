@@ -115,12 +115,10 @@ public class FieldChangeListener implements KeyListener{
 
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {		
-		return;
 	}
 
 
 	/** This method is unused but required by the interface    */
 	public void keyPressed(KeyEvent e) {
-		return;
 	}
 }

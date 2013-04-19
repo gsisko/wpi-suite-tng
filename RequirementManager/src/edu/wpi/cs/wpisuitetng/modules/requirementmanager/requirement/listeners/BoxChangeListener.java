@@ -112,7 +112,6 @@ public class BoxChangeListener implements PopupMenuListener{
 
 	/** This method is unused but required by the interface   */
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		return;
 	}
 
 	/** This is called when the user types then releases the key. If
