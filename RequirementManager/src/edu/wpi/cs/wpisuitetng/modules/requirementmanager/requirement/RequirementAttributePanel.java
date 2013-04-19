@@ -969,7 +969,7 @@ public class RequirementAttributePanel extends JPanel {
 			}
 
 			// If changed to the backlog, set the status to Open
-			if ( 0 == ((JComboBox) e.getSource()).getSelectedIndex()){
+			if ( ((JComboBox) e.getSource()).getSelectedIndex() == 0){
 				// Special case: if the old status was New (and obviously isn't now
 				if ( this.getCurrentRequirement().getStatus() == RequirementStatus.New){
 					this.updateStatusSettings("New");
