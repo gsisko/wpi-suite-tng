@@ -468,7 +468,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MILLISECOND, 1);
+		cal.add(Calendar.DAY_OF_YEAR, 1); //Set it a day forward
+		cal.add(Calendar.MILLISECOND, -1); //Go a day backward so we reach the last millisecond of the day
+		
 	    return cal.getTime();
 	}
 }

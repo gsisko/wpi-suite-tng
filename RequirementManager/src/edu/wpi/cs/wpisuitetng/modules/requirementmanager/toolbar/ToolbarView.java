@@ -92,7 +92,7 @@ public class ToolbarView extends DefaultToolbarView {
 		btnDisplayPieChart.setPreferredSize(new Dimension(140, 25));
 		
 		//Create the help button
-		helpButton = new JButton("?");
+		helpButton = new JButton("User Manual");
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
@@ -107,11 +107,10 @@ public class ToolbarView extends DefaultToolbarView {
 		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 0, SpringLayout.NORTH, createRequirement); //Display Chart to top of panel
 		layout.putConstraint(SpringLayout.SOUTH, btnDisplayPieChart, 0, SpringLayout.SOUTH, createRequirement); //Align bot of Create Requirements and Display Charts
 		layout.putConstraint(SpringLayout.NORTH, helpButton, 12, SpringLayout.SOUTH, createRequirement); //Align Help button to bottom of Create Requirements
-		layout.putConstraint(SpringLayout.WEST, helpButton, 35, SpringLayout.WEST, content); //Align Help button to left of panel
+		layout.putConstraint(SpringLayout.EAST, helpButton, 0, SpringLayout.EAST, btnDisplayPieChart); //Align Help button to left of panel
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
-		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 5, SpringLayout.EAST, createRequirement); //Align Lookup ID to right side of Create Requirements
+		layout.putConstraint(SpringLayout.WEST, listField, 0, SpringLayout.WEST, createRequirement); //Align Lookup ID to right side of Create Requirements
 
-		
 		// Construct a new toolbar group to be added to the end of the toolbar
 		toolbarGroup = new ToolbarGroupView("Home", content);
 		
