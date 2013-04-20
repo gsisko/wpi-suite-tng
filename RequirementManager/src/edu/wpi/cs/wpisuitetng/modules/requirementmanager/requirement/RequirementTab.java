@@ -173,7 +173,6 @@ public class RequirementTab extends JPanel {
 			//Disables the notePanel upon creation
 			toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), false);
 			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
-
 			tabPanel.getNotePanel().setEnabled(false);
 
 			//Disables the appropriate fields in the attributePanel upon creation

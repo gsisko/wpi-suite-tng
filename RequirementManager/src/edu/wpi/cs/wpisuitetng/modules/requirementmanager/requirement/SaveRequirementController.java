@@ -262,7 +262,15 @@ public class SaveRequirementController
 				saveUpdatedIterationRequest.send();
 
 			}
-
+			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {		// Disable the note panel if the requirement has been deleted
+				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
+				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
+				view.getTabPanel().getNotePanel().setEnabled(false);
+			} else {
+				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
+				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
+				view.getTabPanel().getNotePanel().setEnabled(true);
+			}
 		}
 		else {
 			System.err.print("Undected error saving requirement\n");
