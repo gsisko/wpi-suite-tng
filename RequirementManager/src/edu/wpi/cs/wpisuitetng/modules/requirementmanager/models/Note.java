@@ -30,10 +30,13 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
+/** The model that stores a single note. The user name is set
+ *  within the RequirementManager.    */
 public class Note extends RequirementEvent {
-	private String message;
+	/** The note itself */
+	private String message;	
 	
 	/**
 	 * Create a Note with given properties
@@ -44,15 +47,18 @@ public class Note extends RequirementEvent {
 	{
 		this.type = EventType.NOTE;
 		this.setMessage(message);
-		this.setUser(new User("","","",-1));
 		this.date = new Date();
 	}
 
+	/** Converts the entirety of the message to a formatted string and returns it
+	 * 
+	 * @return a string version of the whole note
+	 */
 	public String toString() {
 		// Format the date-time stamp
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 				
-		return "Note added by " + user.getName() +" on "+dateFormat.format(date) ;
+		return "Note added by " + userName +" on "+dateFormat.format(date) ;
 	}
 	
 	/**
@@ -69,7 +75,9 @@ public class Note extends RequirementEvent {
 		this.message = message;
 	}
 
-	@Override
+	/** Converts the note to a JSON string and returns it 
+	 * @return a JSON string of the note
+	 */
 	public String toJSON() {
 		String json;
 		Gson gson = new Gson();
@@ -87,15 +95,19 @@ public class Note extends RequirementEvent {
 		return parser.fromJson(json, Note.class);
 	}
 	
-	@Override
+	/** Gets the body of the note and returns it
+	 * @return the body of the note
+	 */
 	public String getBodyString() {
 		return this.getMessage();
 	}
 	
-	@Override
+	/** Gets the label of the note and returns it
+	 * @return the label of the note
+	 */
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		return "Note added by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
+		return "Note added by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 	
 }

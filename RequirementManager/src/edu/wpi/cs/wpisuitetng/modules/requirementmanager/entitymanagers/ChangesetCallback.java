@@ -30,8 +30,8 @@ import java.util.Set;
 
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.ModelMapper.MapCallback;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.FieldChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementChangeset;
 
 /**
  * Responsible for filling in a changeset after being passed to

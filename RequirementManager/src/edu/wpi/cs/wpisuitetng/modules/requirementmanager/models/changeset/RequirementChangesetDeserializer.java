@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -35,6 +35,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /**
  * Custom JSON deserializer for the RequirementChangeset class
@@ -110,7 +113,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 			RequirementChangeset retVal = new RequirementChangeset();
 			retVal.setChanges(changesMap);
 			retVal.setDate((Date)(context.deserialize(changeSet.get("date"), Date.class)));
-			retVal.setUser((User)(context.deserialize(changeSet.get("user"), User.class)));
+			retVal.setUser((String)(context.deserialize(changeSet.get("userName"), String.class)));
 			
 			// return the RequirementChangeset
 			return retVal;

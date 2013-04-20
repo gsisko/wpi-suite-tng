@@ -39,14 +39,13 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementCreation;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.UserChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.FieldChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementChangeset;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementCreation;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.UserChange;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
  *
@@ -106,7 +105,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 		// Adds the creation event for this requirement to its history log
 		RequirementCreation creation = new RequirementCreation(newRequirement);
-		creation.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
+		creation.setUser(s.getUser());
 		creation.setDate(new Date());
 		newRequirement.getEvents().add(creation);
 
@@ -245,7 +244,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 			logger.log(Level.WARNING, "Invalid Requirement entity update string.");
 			throw new BadRequestException("The Requirement update string had invalid formatting. Entity String: " + content);			
 		}
-
+		// Pull out the name of the current user
+		String currentUser = s.getUser().getName();
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Requirement oldReq = getEntity(s, Integer.toString(  reqUpdate.getId()  )  )[0];
 
@@ -253,18 +253,18 @@ public class RequirementManager implements EntityManager<Requirement> {
 		if (reqUpdate.getNotes().size() > oldReq.getNotes().size())
 		{
 			ArrayList<Note> notes = reqUpdate.getNotes();
-			Note lastNote = notes.get(notes.size() - 1);
-			User lastUser = lastNote.getUser();
-			if (lastUser.getIdNum() == -1)
+			Note lastNote = notes.get(notes.size() -  1);
+			
+			if (lastNote.getUser() == "")
 			{
-				lastNote.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
+				lastNote.setUser(currentUser);
 			}
 
 			reqUpdate.getEvents().add(lastNote);
 		}
 		else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) { // if the update is a user assignment change
 			UserChange userChange = new UserChange(oldReq, reqUpdate);
-			userChange.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
+			userChange.setUser(s.getUser());
 			userChange.setDate(new Date());
 			
 			reqUpdate.getEvents().add(userChange);
@@ -272,7 +272,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		else { // this update is a changeset
 			RequirementChangeset changeset = new RequirementChangeset();
 			// core should make sure the session user exists
-			changeset.setUser((User) db.retrieve(User.class, "username", s.getUsername()).get(0));
+			changeset.setUser(currentUser);
 			changeset.setDate(new Date());
 			ChangesetCallback callback = new ChangesetCallback(changeset);
 

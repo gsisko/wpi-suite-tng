@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,7 +58,7 @@ public class RequirementChangeset extends RequirementEvent {
 	 */
 	public RequirementChangeset(User user) {
 		this();
-		this.user = user;
+		this.userName = user.getName();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class RequirementChangeset extends RequirementEvent {
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		return "Changes made by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
+		return "Changes made by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 
 }

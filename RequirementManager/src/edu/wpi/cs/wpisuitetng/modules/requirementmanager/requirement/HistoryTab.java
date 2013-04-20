@@ -28,7 +28,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEvent;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 
 @SuppressWarnings({"serial"})

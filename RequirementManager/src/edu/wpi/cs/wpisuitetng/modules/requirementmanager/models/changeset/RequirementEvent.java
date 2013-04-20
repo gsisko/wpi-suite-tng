@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.util.Date;
 
@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  */
 public abstract class RequirementEvent extends AbstractModel {
 	
+	/** The types of possible events */
 	public enum EventType {
 		CREATION,
 		CHANGESET,
@@ -45,12 +46,12 @@ public abstract class RequirementEvent extends AbstractModel {
 		ATTACHMENT
 	};
 	
+	/** The date that this event was made */
 	protected Date date = new Date();
-	protected User user = new User("", "", "", -1);
-	
-	/**
-	 * The type of event this is.  Subclasses must specify this in order to be deserialized properly.
-	 */
+	/** The user that caused this event */
+	protected String userName = "";	
+
+	/** The type of event this is.  Subclasses must specify this in order to be deserialized properly.	 */
 	protected EventType type;
 	
 	/**
@@ -66,20 +67,27 @@ public abstract class RequirementEvent extends AbstractModel {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+		
 	/**
 	 * @return The User responsible for this event
 	 */
-	public User getUser() {
-		return user;
+	public String getUser() {
+		return userName;
 	}
 	
 	/**
-	 * @param user The User responsible for the event to set
+	 * @param userName The User responsible for the event to set
 	 */
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser( String userName) {
+		this.userName = userName;
 	}
+	
+	/**
+	 * @param userName The User responsible for the event to set
+	 */
+	public void setUser( User user) {
+		this.userName = user.getName();
+	}	
 	
 	/**
 	 * Given a builder, add anything to it that's necessary for Gson to interact with this class.
