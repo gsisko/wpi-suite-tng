@@ -71,7 +71,7 @@ public class UserChooserTab extends JPanel {
 	private JButton removeSelectedUserButton;//The button to trigger the unassignment of a selected user to this requirement from the "assignedList"
 
 	private ArrayList<User> users;
-	
+
 
 	/**
 	 * The constructor for UserChooserTab;
@@ -99,24 +99,28 @@ public class UserChooserTab extends JPanel {
 
 		//Dummy list of users
 		users = new ArrayList<User>();
-		
+
 		Request request;
 		request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
 		request.addObserver(new RetrieveAllUsersObserver(this));
 		request.send();
-		
-		while (users.size() == 0) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	}
+	//		Hurts the tests!!
 
+	//		while (users.size() == 0) {
+	//			try {
+	//				Thread.sleep(500);
+	//			} catch (InterruptedException e) {
+	//				// TODO Auto-generated catch block
+	//				e.printStackTrace();
+	//			}
+	//		}
+
+	/** the hackaround to avoid using a while loop */
+	public void resumeInitialization(){
 		//Add the users to the unassignedUserListModel
 		for (int i = 0; i < users.size(); i++) {
-			if (reqTabParent.getCurrentRequirement().getUsers().contains(users.get(i)))
+			if (parent.getCurrentRequirement().getUsers().contains(users.get(i)))
 				assignedUserListModel.addUser(users.get(i));
 			else
 				unassignedUserListModel.addUser(users.get(i));
@@ -198,7 +202,7 @@ public class UserChooserTab extends JPanel {
 				if(!(unassignedList.isSelectionEmpty()))//if a user is selected in the unassigned user list at the time the button is pushed...
 				{
 					int oldIndicies[] = assignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the assigned user list (in increasing order). This will be used to restore the selection(s) later if needed.
-					
+
 					int indices[] = unassignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the unassigned user list (in increasing order)
 
 					System.out.println("You have pushed the addSelectedUserButton!\n You have selected "+indices.length+  " user(s), starting at: "+ unassignedUserListModel.getElementAt(indices[0]));//Print a message containing the selected user(s) to the console
@@ -228,8 +232,8 @@ public class UserChooserTab extends JPanel {
 					unassignedList.repaint();
 					assignedList.revalidate();
 					assignedList.repaint();
-					
-					reqTabParent.getParent().getController().saveUsers();
+
+					parent.getParent().getController().saveUsers();
 				}
 				else//No users were selected in the unassigned user list at the time the button was pushed
 					System.out.println("You have pushed the addSelectedUserButton!\n No users are selected in the unassigned user list.\n");//Print a message to the console
@@ -269,14 +273,14 @@ public class UserChooserTab extends JPanel {
 						}
 						unassignedList.setSelectedIndices(oldIndicies);//Restore the old selection(s) appropriately
 					}
-					
+
 					//Revalidate and repaint both lists to ensure the change shows on the GUI
 					unassignedList.revalidate();
 					unassignedList.repaint();
 					assignedList.revalidate();
 					assignedList.repaint();
-					
-					reqTabParent.getParent().getController().saveUsers();
+
+					parent.getParent().getController().saveUsers();
 				}
 				else//No users were selected in the assigned user list at the time the button was pushed
 					System.out.println("You have pushed the removeSelectedUserButton!\n No users are selected in the assigned user list.\n");//Print a message to the console

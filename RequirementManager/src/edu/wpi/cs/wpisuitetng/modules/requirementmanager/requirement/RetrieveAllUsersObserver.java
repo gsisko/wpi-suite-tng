@@ -28,8 +28,6 @@ import java.util.ArrayList;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -67,6 +65,7 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 		}
 		
 		userChooser.setUsers(userList);
+		userChooser.resumeInitialization();
 	}
 
 	@Override
