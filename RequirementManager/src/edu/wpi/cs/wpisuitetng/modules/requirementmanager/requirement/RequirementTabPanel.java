@@ -58,8 +58,11 @@ public class RequirementTabPanel extends JTabbedPane {
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 		historyPanel = new HistoryTab(parent);
 		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
-
-		setSubRequirementPanel(new SubRequirementTab(parent,subtabcontroller));
+		subtabcontroller = new RetrieveRequirmentsIntoSubController(this.parent.getParent());
+		subtabcontroller.setSubtab();
+		subtabcontroller.refreshData();
+		subRequirementPanel= new SubRequirementTab(parent);
+		//subRequirementPanel
 		addTab("SubRequirement", new ImageIcon(), subRequirementPanel, "SubRequirements for the current requirement");
 
 		attachmentPanel = new AttachmentTab(parent);
@@ -74,7 +77,11 @@ public class RequirementTabPanel extends JTabbedPane {
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
 	}
-
+	
+	public void settab(){
+		subtabcontroller.setSubtab();
+	}
+	
 	/**
 	 * @return the notePanel
 	 */

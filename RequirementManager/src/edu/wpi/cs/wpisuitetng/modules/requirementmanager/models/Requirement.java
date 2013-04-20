@@ -70,6 +70,7 @@ public class Requirement extends AbstractModel {
 	
 	private ArrayList<Requirement> subrequirement;
 	
+	
 	/** Basic constructor for a requirement */
 	public Requirement(){
 		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, "", 0);

@@ -50,9 +50,10 @@ public class RetrieveRequirmentsIntoSubController {
 	protected SubRequirementTab subtab;
 
 	/** The requirements data retrieved from the server */
-	protected Requirement[] data = null;
+	protected Requirement[] data;
 
 	private RequirementView view;
+
 
 
 	/**
@@ -62,7 +63,7 @@ public class RetrieveRequirmentsIntoSubController {
 	 */
 	public RetrieveRequirmentsIntoSubController(RequirementView view) {
 		this.view = view;
-		this.subtab = view.getRequirementTabPanel().getSubRequirementPanel();
+		//this.subtab = view.getRequirementTabPanel().getSubRequirementPanel();
 	}
 
 	/**
@@ -84,24 +85,26 @@ public class RetrieveRequirmentsIntoSubController {
 	 * @param requirements an array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
+		
 
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isSub = new ArrayList<Requirement>();
 		
-		isSub = this.subtab.getParent().getCurrentRequirement().getSubrequirement();
-
+		//isSub = this.subtab.getParent().getCurrentRequirement().getSubrequirement();
+		isSub.add(new Requirement());
 		// empty the table
-		String[] emptyColumns = {};
-		Object[][] emptyData = {};
-
-		subtab.getModel().setColumnNames(emptyColumns);
-		subtab.getModel().setData(emptyData);
-		subtab.getModel().fireTableStructureChanged();
+//		String[] emptyColumns = {};
+//		Object[][] emptyData = {};
+//		String[] columnNames = {"ID", "Name", "Description", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
+//		subtab.getModel().setColumnNames(columnNames);
+//		subtab.getModel().setData(emptyData);
+//		subtab.getModel().fireTableStructureChanged();
 
 		view.setSubRequirements(requirements);
 
 		if (requirements.length > 0) {
 			// save the data
+		
 			this.data = requirements;
 
 		}	
@@ -119,7 +122,8 @@ public class RetrieveRequirmentsIntoSubController {
 			entries[i][0] = String.valueOf(isSub.get(i).getId());
 			entries[i][1] = isSub.get(i).getName();
 			entries[i][2] = isSub.get(i).getDescription();
-			entries[i][3] = getIterationName(isSub.get(i));
+			//entries[i][3] = getIterationName(isSub.get(i));
+			entries[i][3] = "sss";
 			// Process "NoType" case
 			if (isSub.get(i).getType().toString().equals("NoType")){
 				entries[i][4] = "";					
@@ -178,6 +182,7 @@ public class RetrieveRequirmentsIntoSubController {
 
 
 	private String getIterationName(Requirement requirement) {
+		
 		for (Iteration i : subtab.getParent().getAllIterations()) {
 			if (requirement.getIteration() == i.getID()) {
 				return i.getName();
@@ -185,7 +190,16 @@ public class RetrieveRequirmentsIntoSubController {
 		}
 		return "";
 	}
-
+	
+	/**set subtab
+	 * 
+	 */
+	
+	public void setSubtab()
+	{
+		//this.subtab = view.getRequirementTabPanel().getSubRequirementPanel();
+		this.subtab = new SubRequirementTab(view.getRequirementPanel());
+	}
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
 	 * error occurs retrieving the requirements from the server.

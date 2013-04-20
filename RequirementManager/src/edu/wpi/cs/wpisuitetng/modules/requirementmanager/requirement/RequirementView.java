@@ -55,7 +55,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	private Tab containingTab;
 	private boolean inputEnabled = true;
 	private MainTabController tabController;
-	protected Requirement[] subRequirements;
+	protected Requirement[] subRequirements = {new Requirement()};
 	protected Requirement[] displayedRequirements;
 
 	/**
@@ -63,6 +63,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public RequirementView(MainTabController tabController) {
 		this(new Requirement(), Mode.CREATE, null, tabController);
+		
 	}
 
 	/**
@@ -220,6 +221,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	}
 
 	public void setSubRequirements(Requirement[] requirements) {
+	
 		this.subRequirements = requirements;
 		
 	}

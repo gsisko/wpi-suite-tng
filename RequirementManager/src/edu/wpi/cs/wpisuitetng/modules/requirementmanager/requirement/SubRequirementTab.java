@@ -55,10 +55,10 @@ public class SubRequirementTab extends JPanel {
 	
 	protected JTable subtable;
 	
-	protected final RetrieveRequirmentsIntoSubController subController;
+	//protected final RetrieveRequirmentsIntoSubController subController;
 	
-	public SubRequirementTab(RequirementTab rparent, RetrieveRequirmentsIntoSubController subController){
-		this.subController=subController;
+	public SubRequirementTab(RequirementTab rparent){
+		//this.subController=subController;
 		setParent(rparent);
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
@@ -72,6 +72,7 @@ public class SubRequirementTab extends JPanel {
 		JScrollPane subScrollPane = new JScrollPane(subtable);
 		
 		this.add(subScrollPane, BorderLayout.CENTER);
+		//this.subController.refreshData();
 		
 	}
 
