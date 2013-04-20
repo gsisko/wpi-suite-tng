@@ -100,8 +100,13 @@ public class ToolbarView extends DefaultToolbarView {
 		helpButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
             		try {
+            			// Builds the uri using the default file-separator for the system
+            			String separator = System.getProperty("file.separator");
             		    String uri = new java.io.File( "." ).getCanonicalPath();
-            		    uri += "\\RequirementManagerUserManualWebsite\\index.html";
+            		    uri += separator;
+            		    uri += "RequirementManagerUserManualWebsite";
+            		    uri += separator;
+            		    uri += "index.html";
             		    File file = new File(uri);
             		    URI userManualURI = file.toURI();
             		    System.out.println("current uri: " + uri);
