@@ -278,44 +278,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 			
 			reqUpdate.getEvents().add(changeset);
 		}
-		
-		// This is to update the Iteration that a requirement is assigned to, if the assigned iteration was changed
-		// The total estimate of the backlog will be skewed
-		if (oldReq.getIteration() != reqUpdate.getIteration()){
-			IterationManager iterationManager = new IterationManager(db);
-			// Update the old iteration
-			Iteration oldIter = iterationManager.getEntity(s, oldReq.getIteration() + "")[0];
-			oldIter.setTotalEstimate(oldIter.getTotalEstimate() - oldReq.getEstimate()); // total estimate
-			// Special case for backlog: keeps the total estimate from dropping below zero
-			if (oldIter.getID() == 0 && oldIter.getTotalEstimate() < 0){ 
-				oldIter.setTotalEstimate(0);
-			}
-
-			//Remove id from the list
-			ArrayList<Integer> oldList = oldIter.getRequirementsContained();
-			if (oldList.size() == 1){ // if there is only one entry, it must be the current req, so we make a new list
-				oldList = new ArrayList<Integer>();
-			} else if(oldList.size() != 0){ //Only update if there are requirements saved...
-				oldList.remove((Integer)oldReq.getId());
-			}
-
-			oldIter.setRequirementsContained(oldList);
-			iterationManager.save(s, oldIter);
-
-			// Update the new iteration
-			Iteration newIter = iterationManager.getEntity(s, reqUpdate.getIteration() + "")[0];
-			newIter.setTotalEstimate(newIter.getTotalEstimate() + reqUpdate.getEstimate()+1);  // total estimate
-			ArrayList<Integer> newList = newIter.getRequirementsContained();
-			if (!newList.add((Integer)reqUpdate.getId())){ // Add the requirement to the iteration
-				logger.log(Level.FINER, "The requirement wasn added iteration");
-			}
-			newIter.setRequirementsContained(newList);
-			iterationManager.save(s, newIter);
-		}
-		
-		
-		
-		
 
 		// Copy new field values into old Requirement. This is because the "same" model must
 		// be saved back into the database

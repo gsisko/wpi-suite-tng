@@ -22,14 +22,12 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
-
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 
 /**
  * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.

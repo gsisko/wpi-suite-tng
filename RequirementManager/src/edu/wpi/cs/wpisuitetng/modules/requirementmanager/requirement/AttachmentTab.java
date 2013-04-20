@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 /**

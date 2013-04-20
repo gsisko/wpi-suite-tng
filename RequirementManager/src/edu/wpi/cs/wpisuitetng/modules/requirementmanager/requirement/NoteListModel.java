@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.util.ArrayList;
 import java.util.Iterator;

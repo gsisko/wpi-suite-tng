@@ -21,7 +21,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -32,15 +32,14 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-
 /**
  * This panel is used to create and store a list of NotePanels (one for each note in the NoteListModel).
  */
 @SuppressWarnings("serial")
-public class ListOfNotePanel extends JPanel {
+public class ListOfAttachmentPanel extends JPanel {
 	
 	//The list of stored notes to be displayed, passed in as a NoteListModel
-	private NoteListModel noteListModel;
+	private AttachmentListModel attachmentListModel;
 	
 
 	/**
@@ -50,7 +49,7 @@ public class ListOfNotePanel extends JPanel {
 	 * and adds each to this panel.
 	 * @param newModel The NoteListModel containing the stored notes to be displayed
 	 */
-	public ListOfNotePanel(NoteListModel newModel) {
+	public ListOfAttachmentPanel(AttachmentListModel newModel) {
 		
 		// Create and set the layout manager for this panel
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -59,15 +58,15 @@ public class ListOfNotePanel extends JPanel {
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
 
 		//Set the noteListModel to the NoteListModel passed in as "newModel"
-		noteListModel = newModel;
+		attachmentListModel = newModel;
 		
 		double totalHeight=0; //This stores a running total of the heights of the note panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
 		
 		//For each note in the noteListModel....
-		for (int i = 0; i<noteListModel.getSize(); i++)
+		for (int i = 0; i<attachmentListModel.getSize(); i++)
 		{
-			String message = noteListModel.getElementAt(i).getMessage(); //grab the message portion of the note
-			NotePanel panel = new NotePanel(noteListModel.getElementAt(i).toString(),message); //create a new NotePanel to hold the note
+			//String message = attachmentListModel.getElementAt(i).getFileName(); //grab the message portion of the note
+			AttachmentPanel panel = new AttachmentPanel(attachmentListModel.getElementAt(i)); //create a new NotePanel to hold the note
 			totalHeight += panel.getSize().getHeight();//add this panel's height to the running total
 			this.add(panel);//actually add this notePanel to this ListOfNotePanel
 		}

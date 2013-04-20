@@ -29,8 +29,6 @@ import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment.AttachmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note.NoteListModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
