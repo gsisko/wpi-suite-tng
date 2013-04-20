@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 /**
  * Model that holds and old and new value for some field.

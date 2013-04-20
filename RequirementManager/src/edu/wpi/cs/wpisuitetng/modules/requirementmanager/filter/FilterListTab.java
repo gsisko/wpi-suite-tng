@@ -339,9 +339,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 				}
 
 				String typeString = filters[i].getType().toString();
-				if (typeString == "Iteration") {
+				if (typeString.equals("Iteration")) {
 					String strId = filters[i].getValue();
-					while (parent.getParent().getAllIterations().length == 0);
+					while (parent.getParent().getAllIterations().length == 0)
 					for (Iteration iter : parent.getParent().getAllIterations()) {
 						if (strId.equals(iter.getID() + "")) {
 							entries[i][3] = iter.getName();

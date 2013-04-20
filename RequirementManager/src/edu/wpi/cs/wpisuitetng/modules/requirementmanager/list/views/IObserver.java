@@ -33,13 +33,13 @@ public interface IObserver {
 	/** Upon success, tell the controller to trigger a refresh 
 	 * @param iReq The request response from the server 
 	 */
-	public void responseSuccess(IRequest iReq);
+	void responseSuccess(IRequest iReq);
 	/**  Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
-	public void responseError(IRequest iReq) ;
+	void responseError(IRequest iReq) ;
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
-	public void fail(IRequest iReq, Exception exception);
+	void fail(IRequest iReq, Exception exception);
 }

@@ -44,29 +44,10 @@ public class IterationChangeListener implements ItemListener {
 		this.raPanel = raPanel;
 	}
 
-//	/** Watches the "Iteration" box for changes and sets up the "status" field
-//	 *  of the requirement appropriately	 */
-//	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-//		raPanel.changeStatusWithIteration( e);
-//		raPanel.checkIterationChange();
-//	}
-//
-//
-//	/** Watches the "Iteration" box for changes and sets up the "status" field
-//	 *  of the requirement appropriately	 */
-//	public void popupMenuCanceled(PopupMenuEvent e) {
-//		raPanel.changeStatusWithIteration( e);
-//		raPanel.checkIterationChange();
-//	}
-//	
-//
-//	@Override
-//	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-	@Override
+	/** When the selected item changes, this is called and the change in 
+	 *  iteration is checked to see if it was the original and whether 
+	 *  or not the status should change. 
+	 */
 	public void itemStateChanged(ItemEvent e) {
 		raPanel.changeStatusWithIteration( e);
 		raPanel.checkIterationChange();

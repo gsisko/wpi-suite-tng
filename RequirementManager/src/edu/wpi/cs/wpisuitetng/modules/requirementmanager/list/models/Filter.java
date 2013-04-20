@@ -30,14 +30,11 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** A filter is one set of constraints that a user can use to filter a list of requirements.
- * @author Team 5
  *
  */
 public class Filter extends AbstractModel {
@@ -165,7 +162,7 @@ public class Filter extends AbstractModel {
 	 * 
 	 * @return Whether the two Filters are equal or not
 	 */
-	public boolean equals(Filter toCompareTo){
+	public boolean equals(Filter toCompareTo){ // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
 		if (this.getType() != toCompareTo.getType()) return false;
 		if (this.getComparator() != toCompareTo.getComparator()) return false;	
 		if (!this.getValue().equals(toCompareTo.getValue())  ) return false;		

@@ -59,7 +59,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  *  tab is selected.  */
 @SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
-	
+
 	/** The "Name" label, located before the Iteration name box*/
 	private final JLabel nameLabel;
 	/** The "Start Date" label, located before the first calendar */
@@ -91,7 +91,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private SaveModelController saveController;
 	/** The "parent" that this builder lives in */
 	private final ListTab parent;
-	
+
 	/** Construct the panel and all of its components
 	 *
 	 * @param view The ListTab that this panel will live in
@@ -120,7 +120,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnCreate.setEnabled(false);
 		startDateChooser.setEnabled(false);
 		endDateChooser.setEnabled(false);
-		
+
 		totalEstimate.setFont(totalEstimateLabel.getFont().deriveFont(Font.NORMAL));
 
 		//Add a titled boarder to this panel
@@ -134,7 +134,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateChooser.setPreferredSize(new Dimension (125,20));
 		endDateChooser.setPreferredSize(new Dimension (125,20));
 		btnCreate.setPreferredSize(new Dimension (75,30));
-		
+
 		//Total Estimate
 		//Set the constraints for the "totalEstimateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
@@ -283,10 +283,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
 		endDateChooser.setDate(new Date());
-		
+
 		btnCreate.setText("Create");
 	}
-	
+
 	/** Sets the mode of the builder panel to the given mode. ALSO changes
 	 *  the text in the button 
 	 *  Mode.CREATE or Mode.EDIT
@@ -313,15 +313,15 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 */
 	public String convertCurrentModelToJSON(){
 		Iteration toSend = new Iteration();
-		
+
 		if (this.getCurrentMode() == Mode.EDIT) toSend.setID(currentIteration.getID());
-		
+
 		if(!isIterationValid())
 			return null;
 
 		toSend.setName(this.nameValue.getText());
-		toSend.setStartDate(this.startDateChooser.getDate());
-		toSend.setEndDate(this.endDateChooser.getDate());
+		toSend.setStartDate(trim(this.startDateChooser.getDate()));
+		toSend.setEndDate(trim(this.endDateChooser.getDate()));
 		toSend.setTotalEstimate(Integer.parseInt(this.totalEstimate.getText()));
 
 		System.out.println(toSend.toJSON());
@@ -345,50 +345,65 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		boolean nameErrorFound = false;
 		boolean dateErrorFound = false;
-		
+
 		for (int i = 0; i < iters.size(); i++)
 		{
-			
+			Date newStart = trim(this.startDateChooser.getDate());
+			Date newEnd = trim(this.endDateChooser.getDate());
+			Date oldStart = trim(iters.get(i).getStartDate());
+			Date oldEnd = trim(iters.get(i).getEndDate());
+			boolean errorOnThis = false;
+
 			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
-			    continue;
-			
+				continue;
+
 			if (!nameErrorFound && this.nameValue.getText().toLowerCase().equals("backlog")) {
 				error += "The name field of the iteration cannot be \"Backlog\".\n";
 				nameErrorFound = true;
 			}
-			
-			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()))
+
+			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()) && !this.nameValue.getText().equals(""))
 			{
 				error += "The name field of the iteration cannot be the same as other iterations.\n";
 				nameErrorFound = true;
 			}
 
-			if(	((this.startDateChooser.getDate().before(iters.get(i).getEndDate()) 
-					&& this.startDateChooser.getDate().after(iters.get(i).getStartDate()))
-				|| (this.endDateChooser.getDate().before(iters.get(i).getEndDate()) 
-					&& this.endDateChooser.getDate().after(iters.get(i).getStartDate())))
-				|| (iters.get(i).getStartDate().after(this.startDateChooser.getDate()) 
-					&& iters.get(i).getStartDate().before(this.endDateChooser.getDate())) 
-				|| (iters.get(i).getEndDate().after(this.startDateChooser.getDate())
-					&& iters.get(i).getEndDate().before(this.endDateChooser.getDate()))
-				|| (this.startDateChooser.getDate().equals(iters.get(i).getStartDate())
-					&& this.endDateChooser.getDate().equals(iters.get(i).getEndDate())))
-			{
-				if (!dateErrorFound)
-				{
-					error += "The start date and end date of the iteration cannot fall within another iteration's dates.\n";
-					dateErrorFound = true;
+			if (newStart.equals(newEnd) && oldStart.equals(oldEnd)) {				// Both are 1 day iterations
+				if (newStart.equals(oldStart))										// They fall on the same day
+					errorOnThis = true;	
+			} else if (!(newStart.equals(newEnd) || oldStart.equals(oldEnd))) {		// Neither is a one-day iteration
+				if (newStart.equals(oldStart) ||									// Same start date
+						newEnd.equals(oldEnd) ||									// Same end date
+						(newStart.before(oldStart) && oldStart.before(newEnd)) ||	// Overlap where new date starts first
+						(oldStart.before(newStart) && newStart.before(oldEnd))) {	// Overlap where old date starts first
+					errorOnThis = true;
 				}
+			}
+			if (errorOnThis && !dateErrorFound)
+			{
+				error += "The start date and end date of the iteration cannot fall within another iteration's dates.\n";
+				dateErrorFound = true;
 			}
 		}
 
-		
-	    if (error.length() > 0) {
-	    	JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-	    	return false;
-	    }
-		
+
+		if (error.length() > 0) {
+			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
 		return true;
+	}
+
+	/** Checks if there is an overlap between a one day iteration and a multi-day iteration
+	 * 
+	 * @param oneDay
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	private boolean oneDayOverlap(Date oneDay, Date start, Date end) {
+		return !oneDay.equals(start);
 	}
 
 	/** Takes a JSON string that holds an array of models and uploads them
@@ -398,7 +413,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 */
 	public void displayModelFromJSONArray(String jsonArray) {
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
-		
+
 		currentIteration = toDisplay;
 
 		this.nameValue.setText(toDisplay.getName());
@@ -413,7 +428,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 *  controllers and action listeners are initialized because the controllers
 	 *  require references that are not not fully initialized when the 
 	 *  constructor for this class is called.
-     */
+	 */
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
 		btnCreate.addActionListener(saveController);
@@ -453,7 +468,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			box.setBackground(new Color(238,238,238));
 		}
 	}
-	
+
 	/**
 	 * Trims a date by setting the time to 1 millisecond after midnight on the given day
 	 * 
@@ -468,7 +483,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MILLISECOND, 1);
-	    return cal.getTime();
+		cal.add(Calendar.DAY_OF_YEAR, 1); //Set it a day forward
+		cal.add(Calendar.MILLISECOND, -1); //Go a day backward so we reach the last millisecond of the day
+
+		return cal.getTime();
 	}
 }

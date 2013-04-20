@@ -36,17 +36,19 @@ public class AttachmentPart extends AbstractModel {
 	private int id;
 	private int partSize;
 	private byte[] attachmentPartByteArray;
+	private int partNumber;
 	
 	/**
 	 * Create a Note with given properties
 	 * 
 	 * @param message The message the user wishes to post
 	 */
-	public AttachmentPart(int partSize, byte[] filePart)
+	public AttachmentPart(int partSize, byte[] filePart, int partNumber)
 	{
 		this.id = -1;
 		this.partSize = partSize;
-		this.attachmentPartByteArray = filePart;	
+		this.attachmentPartByteArray = filePart;
+		this.partNumber = partNumber;
 	}
 
 	@Override
@@ -125,6 +127,20 @@ public class AttachmentPart extends AbstractModel {
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return the partNumber
+	 */
+	public int getPartNumber() {
+		return partNumber;
+	}
+
+	/**
+	 * @param partNumber the partNumber to set
+	 */
+	public void setPartNumber(int partNumber) {
+		this.partNumber = partNumber;
 	}
 
 	

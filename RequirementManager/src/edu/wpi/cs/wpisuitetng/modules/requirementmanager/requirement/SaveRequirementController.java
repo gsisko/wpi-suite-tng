@@ -28,7 +28,6 @@ import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requ
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllModelsObserver;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
@@ -55,7 +54,6 @@ public class SaveRequirementController
 {
 	private final RequirementTab view;
 	private Attachment currentAttachment;
-	private boolean partSaveSuccess;
 
 	public SaveRequirementController(RequirementView view) 
 	{
@@ -99,6 +97,10 @@ public class SaveRequirementController
 		}
 
 		else { // we are updating an existing requirement
+			
+			//If there is an unsaved note in the note tab, add the note to the requirement
+			if (!(view.getRequirementNote().getText().compareTo("") == 0))
+				saveNote();
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
 
@@ -167,7 +169,6 @@ public class SaveRequirementController
 					}
 				}
 
-				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 				//Update totalEstimate
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 
@@ -293,68 +294,100 @@ public class SaveRequirementController
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		request.send();
 	}
-	
+
 	public void saveAttachment() throws IOException {
 		JFileChooser fc = new JFileChooser();
 
-        int returnVal = fc.showDialog(null,"Add Attachment");
+		int returnVal = fc.showDialog(null,"Add Attachment");
 
-        //Process the results.
-        if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists()) {
-        	
-        	Requirement currentRequirement = view.getCurrentRequirement();
-        	InputStream source = null;
-        	ArrayList<ByteArrayOutputStream> destinations = new ArrayList<ByteArrayOutputStream>();
-			
+		//Process the results.
+		if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 20971520) {
+
+			Requirement currentRequirement = view.getCurrentRequirement();
+			InputStream source = null;
+			ArrayList<ByteArrayOutputStream> destinations = new ArrayList<ByteArrayOutputStream>();
+
 			try {
 				source = new FileInputStream(fc.getSelectedFile());// = new InputStream().getChannel();
-				
+
 				byte[] buffer = new byte[32768];
-				
-		        
-		        int read = 0;
-		        while ( (read = source.read(buffer)) != -1 ) {
-		        	ByteArrayOutputStream newDestination = new ByteArrayOutputStream();
-		        	newDestination.write(buffer, 0, read);
-		        	destinations.add(newDestination);
-		        }
+
+
+				int read = 0;
+				while ( (read = source.read(buffer)) != -1 ) {
+					ByteArrayOutputStream newDestination = new ByteArrayOutputStream();
+					newDestination.write(buffer, 0, read);
+					destinations.add(newDestination);
+				}
 			}
 			finally {
-		        if(source != null) {
-		            source.close();
-		        }
-		        for(ByteArrayOutputStream destination : destinations){
-		        	if(destination != null) {
-		        		destination.close();
-		        	}
-		        }   
-		    }
-			
+				if(source != null) {
+					source.close();
+				}
+				for(ByteArrayOutputStream destination : destinations){
+					if(destination != null) {
+						destination.close();
+					}
+				}   
+			}
+
 			currentAttachment = new Attachment(fc.getSelectedFile().getName(), (int) fc.getSelectedFile().length());
-			
+
+			int n = 0;
 			ArrayList<AttachmentPart> parts = new ArrayList<AttachmentPart>();
 			for(ByteArrayOutputStream destination : destinations){
-				partSaveSuccess = false;
-	        	AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray());
-	        	parts.add(part);
-	        	
-	        	final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
-	    	    request.setBody(part.toJSON()); // put the new message in the body of the request
-	    	    request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
-	    	    request.send();
-	    	    
-	    	    while(!partSaveSuccess);
-	        }
+				AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray(), n);
+				parts.add(part);
 
-        	currentRequirement.getAttachments().add(currentAttachment);
-        	
-        	// make a POST http request and let the observer get the response
-    	    final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
-    	    request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
-    	    request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
-    	    request.send();
-        }
-        fc.setSelectedFile(null);
+				final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
+				request.setBody(part.toJSON()); // put the new message in the body of the request
+				request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
+				request.send();
+				
+				n++;
+			}
+
+			boolean finished = false;
+			while(!finished) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (currentAttachment.getAttachmentPartIds().size() == destinations.size())
+					finished = true;
+			}
+
+			currentRequirement.getAttachments().add(currentAttachment);
+
+			// make a POST http request and let the observer get the response
+			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+			request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+			request.send();
+		}
+		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 20971520){
+			JOptionPane.showMessageDialog(null, "File size must be 20 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		fc.setSelectedFile(null);
+	}
+	
+	public void saveUsers() {
+		
+		Requirement currentRequirement = view.getCurrentRequirement();
+		ArrayList<User> assignedUsers = new ArrayList<User>();
+		UserListModel assignedUserListModel = view.getTabPanel().getUserChooserPanel().getAssignedUserListModel();
+		
+		for (int i = 0; i < assignedUserListModel.getSize(); i++) {
+			assignedUsers.add(assignedUserListModel.getUserAt(i));
+		}
+		currentRequirement.setUsers(assignedUsers);
+		
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
 	}
 
 	/**
@@ -371,8 +404,7 @@ public class SaveRequirementController
 		this.currentAttachment = currentAttachment;
 	}
 
-	public void setPartSaveSuccess(boolean b, int id) {
-		this.partSaveSuccess = b;
+	public synchronized void addAttachmentPartId(int id) {
 		this.currentAttachment.getAttachmentPartIds().add(id);
 	}
 }

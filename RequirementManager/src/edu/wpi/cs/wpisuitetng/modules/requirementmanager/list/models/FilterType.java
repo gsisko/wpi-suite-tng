@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
 
 /**	Possible values for the type of filter.
- * @author Team 5
  *
  */
 public enum FilterType {

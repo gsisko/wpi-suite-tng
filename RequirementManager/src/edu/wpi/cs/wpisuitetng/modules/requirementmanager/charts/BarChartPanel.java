@@ -236,8 +236,7 @@ public class BarChartPanel extends JPanel {
 	/** Function to refresh and redraw bar chart with Assigned Users 
 	 * @param requirements array of requirements to use to obtain the assigned users for the chart
 	 */
-	public void refreshAssignedUsersChart(Requirement[] requirements) {
-//		requirements[0].getUsers();
+	public void refreshAssignedUsersCountChart(Requirement[] requirements) {
 		DefaultCategoryDataset data = new DefaultCategoryDataset();
 		
 		//ArrayList to contain all users assigned to iterations
@@ -269,6 +268,48 @@ public class BarChartPanel extends JPanel {
 			this.chart = createChart(dataset, "Number of Users Assigned for Displayed Requirements");
 		} else {
 			this.chart = createChart(dataset, "Number of Users Assigned for All Requirements");
+		}
+		
+		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		this.chart.getPlot().setOutlineVisible(false);
+		this.chartPanel.setChart(this.chart);
+	}
+	
+	/** Function to refresh and redraw bar chart with Assigned Users 
+	 * @param requirements array of requirements to use to obtain the assigned users for the chart
+	 */
+	public void refreshAssignedUsersEstimateChart(Requirement[] requirements) {
+		DefaultCategoryDataset data = new DefaultCategoryDataset();
+		
+		//ArrayList to contain all users assigned to iterations
+		ArrayList<User> allUsers = new ArrayList<User>();
+		
+		//HashMap that contains how many times each user has been assigned
+		HashMap<User, Integer> estimateCountMap = new HashMap<User, Integer>();
+		
+		for (int i = 0; i < requirements.length; i++){
+			allUsers.addAll(requirements[i].getUsers()); //Combine all users into a giant list
+			
+			//Add one if the user appears in the list
+			for(User user : requirements[i].getUsers()){
+				if (estimateCountMap.get(user) == null){ //Check if user has an entry
+					estimateCountMap.put(user, requirements[i].getEstimate());  //If not this is the first entry
+				} else {
+					estimateCountMap.put(user, estimateCountMap.get(user) + requirements[i].getEstimate()); //Otherwise increment the count by one
+				}
+			}
+		}
+		
+		//Add data to the chart after we have gone through each requirement for each user
+		for(int i = 0; i < allUsers.size(); i++){
+			data.addValue(estimateCountMap.get(allUsers.get(i)), allUsers.get(i).getName() , "");	
+		}
+		
+		this.dataset = data;
+		if (isFiltered){	
+			this.chart = createChart(dataset, "Estimate for Users of Displayed Requirements");
+		} else {
+			this.chart = createChart(dataset, "Estimate for Users of All Requirements");
 		}
 		
 		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));

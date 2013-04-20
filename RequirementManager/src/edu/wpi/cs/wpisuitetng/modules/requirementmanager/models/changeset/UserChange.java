@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -7,16 +7,19 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class UserChange extends RequirementEvent {
 	
 	ArrayList<User> oldUsers;
 	ArrayList<User> newUsers;
 	
-	public UserChange(Requirement oldReq, Requirement newReq) {
+	public UserChange(Requirement oldReq, Requirement newReq, String userName) {
 		this.type = EventType.USER;
 		oldUsers = oldReq.getUsers();
 		newUsers = newReq.getUsers();
+		this.userName = userName;
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class UserChange extends RequirementEvent {
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		return "User changes made by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
+		return "User changes made by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 
 }

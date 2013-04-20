@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 /**
@@ -93,6 +94,7 @@ public class AttachmentTab extends JPanel {
 			attachmentListModel.addFile(attachments.get(i));
 		}
 
+		attachmentList  = new ListOfAttachmentPanel(attachmentListModel);
 
 		// Put the listbox in a scroll pane
 		listScrollPane = new JScrollPane(attachmentList);

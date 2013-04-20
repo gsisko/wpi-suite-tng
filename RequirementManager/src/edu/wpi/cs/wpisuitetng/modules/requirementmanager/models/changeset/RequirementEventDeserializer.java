@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.lang.reflect.Type;
 
@@ -32,8 +32,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEvent.EventType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent.EventType;
 
 /**
  * Responsible for deserializing a RequirementEvent.

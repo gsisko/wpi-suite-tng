@@ -21,7 +21,7 @@
  *		Alex Solomon
  *		Brian Hetherman
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note;
 
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -38,6 +38,7 @@ import javax.swing.JTextArea;
 import javax.swing.JViewport;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 /**

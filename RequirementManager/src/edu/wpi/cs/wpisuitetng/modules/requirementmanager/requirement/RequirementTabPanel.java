@@ -1,3 +1,4 @@
+// $codepro.audit.disable unnecessaryOverride
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
  *
@@ -28,6 +29,9 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment.AttachmentTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note.NoteTab;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
@@ -126,5 +130,19 @@ public class RequirementTabPanel extends JTabbedPane {
 
 	public void setAttachmentPanel(AttachmentTab attachmentPanel) {
 		this.attachmentPanel = attachmentPanel;
+	}
+
+	/**
+	 * @return the userChooserPanel
+	 */
+	public UserChooserTab getUserChooserPanel() {
+		return userChooserPanel;
+	}
+
+	/**
+	 * @param userChooserPanel the userChooserPanel to set
+	 */
+	public void setUserChooserPanel(UserChooserTab userChooserPanel) {
+		this.userChooserPanel = userChooserPanel;
 	}
 }

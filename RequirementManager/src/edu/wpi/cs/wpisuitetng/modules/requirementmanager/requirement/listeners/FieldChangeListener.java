@@ -79,7 +79,7 @@ public class FieldChangeListener implements KeyListener{
 	private void checkForChanges(){
 		// The value to compare against
 		Object oldValue;
-		System.out.print("Checking: " + fieldToCheck);
+//		System.out.print("Checking: " + fieldToCheck);  //Debug Statement
 		// Since the invoke stuff can throw exceptions, we check and print here as necessary
 		try {
 			oldValue = getOldFieldValue.invoke(thePanel.getCurrentRequirement());
@@ -93,14 +93,13 @@ public class FieldChangeListener implements KeyListener{
 			System.err.println("FieldChangeListener problem: "+ fieldToCheck);
 			return;         
 		}
-
-
+		
 		// Check the old value and set the box yellow as necessary
 		if (!toWatch.getText().equals(oldValue + "")) {
 			thePanel.changeField(toWatch, indexOfBoolean, true);
-			System.out.println("  Result: activate");
+	//		System.out.println("  Result: activate");   //Debug Statement
 		} else {
-			System.out.println("  Result: deactivate");
+	//		System.out.println("  Result: deactivate"); //Debug Statement
 			thePanel.changeField(toWatch, indexOfBoolean, false);
 		}
 	}
@@ -116,12 +115,10 @@ public class FieldChangeListener implements KeyListener{
 
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {		
-		return;
 	}
 
 
 	/** This method is unused but required by the interface    */
 	public void keyPressed(KeyEvent e) {
-		return;
 	}
 }

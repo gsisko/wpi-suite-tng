@@ -1,9 +1,14 @@
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 public class RequirementCreation extends RequirementEvent {
 
@@ -14,13 +19,14 @@ public class RequirementCreation extends RequirementEvent {
 	private String reqReleaseNumber;
 	
 
-	public RequirementCreation(Requirement requirement) {
+	public RequirementCreation(Requirement requirement, String theCreator) {
 		this.type = EventType.CREATION;
 		this.reqName = requirement.getName();
 		this.reqDescription = requirement.getDescription();
 		this.reqType = RequirementType.toBlankString(requirement.getType());
 		this.reqPriority = RequirementPriority.toBlankString(requirement.getPriority());
 		this.reqReleaseNumber = requirement.getReleaseNumber();
+		this.userName = theCreator;
 	}
 	
 	@Override
@@ -47,7 +53,7 @@ public class RequirementCreation extends RequirementEvent {
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		return "Requirement created by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
+		return "Requirement created by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 
 }

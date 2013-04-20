@@ -1,3 +1,4 @@
+// $codepro.audit.disable emptyCatchClause
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
  *
@@ -69,6 +70,14 @@ public class MainTabController {
 					if (tab instanceof ListView) {
 						((ListView)tab).getFilterController().refreshData();
 						((ListView)tab).getIterationController().refreshData();
+						
+						((ListView)tab).getListTab().getTabPanel().getFilterList().setCancelBtnToNew();
+						((ListView)tab).getListTab().getFilterBuilderPanel().resetFields();
+						((ListView)tab).getListTab().getFilterBuilderPanel().setInputEnabled(false);
+						
+						((ListView)tab).getListTab().getTabPanel().getIterationList().setCancelBtnToNew();
+						((ListView)tab).getListTab().getIterationBuilderPanel().resetFields();
+						((ListView)tab).getListTab().getIterationBuilderPanel().setInputEnabled(false);
 					} 
 					
 					if (tab instanceof ChartView) {
@@ -179,9 +188,7 @@ public class MainTabController {
 		try {
 			view.removeTabAt(view.getSelectedIndex());
 		}
-		catch (IndexOutOfBoundsException e) {
-			// do nothing, tried to close tab that does not exist
-		}
+		catch (IndexOutOfBoundsException ignored) {}
 	}
 
 	/**
@@ -192,9 +199,7 @@ public class MainTabController {
 		try {
 			view.setSelectedIndex(tabIndex);
 		}
-		catch (IndexOutOfBoundsException e) {
-			// an invalid tab was requested, do nothing
-		}
+		catch (IndexOutOfBoundsException ignored) {}
 	}
 
 	/**

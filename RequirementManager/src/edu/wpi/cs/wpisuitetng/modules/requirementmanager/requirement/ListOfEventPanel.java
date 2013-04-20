@@ -35,7 +35,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEvent;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 
 @SuppressWarnings("serial")

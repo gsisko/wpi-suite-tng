@@ -83,7 +83,7 @@ public class ChartOptionsPanel extends JPanel{
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
-		String[] dataStrings = { "Requirement Status", "Requirement Iteration"};
+		String[] dataStrings = { "Requirement Status", "Requirement Iteration", "Number of Users Assigned To Requirements", "Total Estimate for Each User"};
 		String[] filtersStrings = { "Applied", "Not Applied"};
 
 		//Construct the boxes 
@@ -129,7 +129,7 @@ public class ChartOptionsPanel extends JPanel{
 		
 		//Set the sizing of the boxes
 		chartTypeBox.setMaximumSize(new Dimension(120, 25));
-		chartDataBox.setMaximumSize(new Dimension(175, 25));
+		chartDataBox.setMaximumSize(chartDataBox.getPreferredSize());
 		filtersOptionsBox.setMaximumSize(new Dimension(120, 25));
 		
 		//Add the components with spacing in between them

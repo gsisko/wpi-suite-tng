@@ -76,7 +76,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Filter lets the db know what type of object to
 		// retrieve
-		return this.db.retrieveAll(new AttachmentPart(0, null)).size();
+		return this.db.retrieveAll(new AttachmentPart(0, null, 0)).size();
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 	}
 	
 	@Override
-	public AttachmentPart makeEntity(Session s, String content) throws WPISuiteException {
+	public synchronized AttachmentPart makeEntity(Session s, String content) throws WPISuiteException {
 		// Parse the requirement from JSON
 		final AttachmentPart newAttachmentPart;
 
@@ -135,7 +135,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 
 	@Override
 	public AttachmentPart[] getAll(Session s) throws NotImplementedException {
-		List<AttachmentPart> attachmentPartList = this.db.retrieveAll((new AttachmentPart(0, null)));
+		List<AttachmentPart> attachmentPartList = this.db.retrieveAll((new AttachmentPart(0, null, 0)));
 		return attachmentPartList.toArray(new AttachmentPart[attachmentPartList.size()]);
 	}
 

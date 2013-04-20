@@ -22,11 +22,12 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
+import java.util.ArrayList;
+
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -35,17 +36,17 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * An observer for a request to retrieve all requirements
  */
-public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
+public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
-	/** The controller managing the request */
-	protected SaveRequirementController controller;
+	/** The user chooser managing the request */
+	protected UserChooserTab userChooser;
 
 	/**
 	 * Construct the observer
 	 * @param controller
 	 */
-	public SaveAttachmentPartsObserver(SaveRequirementController controller) {
-		this.controller = controller;
+	public RetrieveAllUsersObserver(UserChooserTab userChooser) {
+		this.userChooser = userChooser;
 	}
 
 	@Override
@@ -55,8 +56,16 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart attachmentPart = AttachmentPart.fromJson(response.getBody());
-		controller.addAttachmentPartId(attachmentPart.getId());
+		User[] users = User.fromJSONArray(response.getBody());
+		
+		ArrayList<User> userList = new ArrayList<User>();
+		
+		for (int i = 0; i < users.length; i++) {
+			userList.add(users[i]);
+		}
+		
+		userChooser.setUsers(userList);
+		userChooser.resumeInitialization();
 	}
 
 	@Override
@@ -67,8 +76,6 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Request request = (Request) iReq;
-		request.send();
 		// an error occurred
 		//controller.errorReceivingData("Unable to complete request: " + exception.getMessage());
 	}

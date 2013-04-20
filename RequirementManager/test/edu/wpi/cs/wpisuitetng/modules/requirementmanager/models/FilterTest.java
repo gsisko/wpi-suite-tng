@@ -270,9 +270,9 @@ public class FilterTest {
     	tmpFilter.setUniqueID(nameEquals.getUniqueID());
     	assertTrue(nameEquals.identify(nameEquals));
     	assertTrue(nameEquals.identify(tmpFilter));
-    	assertTrue(nameEquals.identify(new Integer(nameEquals.getUniqueID()).toString()));
+    	assertTrue(nameEquals.identify(Integer.toString(nameEquals.getUniqueID())));
     	
     	assertFalse(priorityEquals.identify(nameEquals));
-    	assertFalse(priorityEquals.identify(new Integer(nameEquals.getUniqueID()).toString()));
+    	assertFalse(priorityEquals.identify(Integer.toString(nameEquals.getUniqueID())));
     }
 }

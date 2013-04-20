@@ -128,7 +128,7 @@ public class RetrieveRequirmentsIntoSubController {
 			if (isSub.get(i).getType().toString().equals("NoType")){
 				entries[i][4] = "";					
 			} else {
-				entries[i][4] = isSub.get(i).getType().toString();;
+				entries[i][4] = isSub.get(i).getType().toString();
 			}				
 			entries[i][5] = isSub.get(i).getStatus().toString();
 			// Process "NoPriority" case

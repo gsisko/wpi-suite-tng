@@ -24,27 +24,19 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
+
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JViewport;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.SubRequirementTabModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+
 
 @SuppressWarnings("serial")
 public class SubRequirementTab extends JPanel {

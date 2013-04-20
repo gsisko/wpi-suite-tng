@@ -2,7 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.AbstractListModel;
 
@@ -12,7 +11,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 public class UserListModel extends AbstractListModel {
 	
 	
-	private List<User> users;
+	private ArrayList<User> users;
 	
 
 	public UserListModel() {

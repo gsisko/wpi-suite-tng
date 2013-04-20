@@ -22,7 +22,7 @@
  *		Brian Hetherman
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,8 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
-
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /**
  * Persistent Model that holds information about a set of changes to a Requirement.
@@ -44,22 +42,15 @@ public class RequirementChangeset extends RequirementEvent {
 
 	/**
 	 * Construct a RequirementChangeset with default properties.
-	 */
-	public RequirementChangeset() {
-		type = EventType.CHANGESET;
-		changes = new HashMap<String, FieldChange<?>>();
-	}
-
-	/**
-	 * Construct a RequirementChangeset with the given properties.
-	 * Other properties are the same as in the default constructor.
 	 * 
 	 * @param user the User responsible for this change
 	 */
-	public RequirementChangeset(User user) {
-		this();
-		this.user = user;
+	public RequirementChangeset(String user) {
+		type = EventType.CHANGESET;
+		changes = new HashMap<String, FieldChange<?>>();
+		this.userName = user;
 	}
+
 
 	/**
 	 * @return the map of field names to changes (Assignee -> (Bob, Joe))
@@ -100,9 +91,9 @@ public class RequirementChangeset extends RequirementEvent {
 			content += fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1) + " changed";
 
 			content += " from \"";
-			content += oldValue;
+			content += oldValue.toString();
 			content += "\" to \"";
-			content += newValue;
+			content += newValue.toString();
 			content += "\"";
 		}
 
@@ -112,7 +103,7 @@ public class RequirementChangeset extends RequirementEvent {
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		return "Changes made by " + this.getUser().getName() + " on " + dateFormat.format(this.getDate());
+		return "Changes made by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 
 }

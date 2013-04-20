@@ -24,6 +24,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,8 +43,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**This is the entity manager for the Iteration in the IterationManager module
  * 
- * @author Team 5
- *
  * @version $Revision: 1.0 $
  */
 public class IterationManager implements EntityManager<Iteration> {
@@ -69,6 +68,7 @@ public class IterationManager implements EntityManager<Iteration> {
 
 	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
 	 *  the current project. Makes one if necessary
+	 *  Backlog has start and end date of 1ms after the epoch
 	 *  
 	 *  This is designed to be called by get all
 	 *  
@@ -88,7 +88,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		// Get entity throws an exception when it can't find things
 		} catch (WPISuiteException wse){
 			// Make the backlog
-			Iteration model = new Iteration("", null, null);
+			Iteration model = new Iteration("", new Date(1), new Date(1));
 			model.setID(0);
 			model.setProject(currentProject);
 			// Save the backlog in the database if possible, otherwise throw an exception

@@ -247,22 +247,22 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		String[] valueStrings = null;
 
 		// Limit the options for comparators by the FilterType
-		if(selected=="Id" ||selected=="Estimate" ||selected=="ActualEffort" )
+		if(selected.equals("Id") ||selected.equals("Estimate") ||selected.equals("ActualEffort") )
 			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
-		else if(selected=="Name" ||selected=="Description" ||selected=="ReleaseNumber")
+		else if(selected.equals("Name") ||selected.equals("Description") ||selected.equals("ReleaseNumber"))
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
 
 		// This section is for enumerators, which need specific operators and values
-		else if(selected=="Type" ||selected=="Status"  ||selected=="Priority"||selected=="Iteration"){
+		else if(selected.equals("Type") ||selected.equals("Status")  ||selected.equals("Priority")||selected.equals("Iteration")){
 			comparatorStrings = new String[]{"=","!="};
-			if(selected=="Type" )
+			if(selected.equals("Type") )
 				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
-			if(selected=="Status" )
+			if(selected.equals("Status") )
 				valueStrings=new String[]{"New","InProgress","Open","Complete","Deleted"};
-			if(selected=="Priority")
+			if(selected.equals("Priority"))
 				valueStrings=new String[]{"","High","Medium","Low"};
 			String[] IterationArr = {"Backlog"};
-			if(selected=="Iteration") {
+			if(selected.equals("Iteration")) {
 				IterationArr = getIterationNames();
 				valueStrings = IterationArr;
 			}
@@ -279,9 +279,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		numValue.setVisible(false);
 		valueBox.setVisible(false);
 
-		if(selected=="Type" ||selected=="Status"  ||selected=="Priority" || selected == "Iteration")
+		if(selected.equals("Type") ||selected.equals("Status")  ||selected.equals("Priority") || selected.equals("Iteration"))
 			valueBox.setVisible(true);
-		else if(selected=="Name" ||selected=="Description"||selected =="ReleaseNumber")
+		else if(selected.equals("Name") ||selected.equals("Description")||selected.equals("ReleaseNumber"))
 			txtValue.setVisible(true);
 		else // id, estimate, actual value, or release number
 			numValue.setVisible(true);
@@ -543,7 +543,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public String convertCurrentModelToJSON() {
 		setCurType(this.getFilterType().getSelectedItem().toString());
 		// Check conditions that verify that the value field has something
-		if (getCurType() != "Type" && getCurType() != "Status" && getCurType() != "Priority" && getCurType() != "Iteration"
+		if (!getCurType().equals("Type") && !getCurType().equals("Status") && !getCurType().equals("Priority") && !getCurType().equals("Iteration")
 				&& 	this.getFilterValue().getText().length() == 0   
 				&&  this.getFilterNumValue().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);

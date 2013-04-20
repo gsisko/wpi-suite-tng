@@ -38,7 +38,7 @@ public interface IBuilderPanel {
 	}
 	
 	/** Restore all fields to their initial values */
-	public void resetFields();
+	void resetFields();
 
 	/** Sets the mode of the builder panel to the given mode. ALSO changes
 	 *  the text in the button 
@@ -46,20 +46,20 @@ public interface IBuilderPanel {
 	 * 
 	 * @param mode The mode that the builder panel should be in
 	 */
-	public void setModeAndBtn(Mode mode);
+	void setModeAndBtn(Mode mode);
 
 	/** Return the current "mode" of the panel. Can be either
 	 *  Mode.EDIT or Mode.Create
 	 * 
 	 *  @return The current mode
 	 */
-	public Mode getCurrentMode();
+	Mode getCurrentMode();
 
 	/** Enables or disables all fields in the builder panel.
 	 * 
 	 * @param setTo True activates the fields and false deactivates them
 	 */
-	public void setInputEnabled(boolean setTo);
+	void setInputEnabled(boolean setTo);
 
 
 	/** Gets the model from the panel in the form of a JSON string
@@ -69,7 +69,7 @@ public interface IBuilderPanel {
 	 * 
 	 * @return JSON string of the model to be sent, Returns null on failure
 	 */
-	public String convertCurrentModelToJSON();
+	String convertCurrentModelToJSON();
 
 
 	/** Takes a JSON string that holds an array of models and uploads them
@@ -77,11 +77,11 @@ public interface IBuilderPanel {
 	 *  
 	 * @param jsonArray An array of models in JSON string form
 	 */
-	public void displayModelFromJSONArray(String jsonArray);
+	void displayModelFromJSONArray(String jsonArray);
 
 
 	/** Toggles between active and inactive modes mode */
-	public void toggleNewCancelMode();
+	void toggleNewCancelMode();
 
 
 	/** Sets up the controllers and action listeners. This should be where all
@@ -89,7 +89,7 @@ public interface IBuilderPanel {
 	 *  require references that are not not fully initialized when the 
 	 *  constructor for this class is called.
      */
-	public void setupControllersAndListeners();
+	void setupControllersAndListeners();
  
 
 

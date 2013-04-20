@@ -26,7 +26,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
 /**
  * Possible values for the priority of a requirement. 
- * @author Team 5
  * @version $Revision: 1.0 $
  */
 public enum RequirementPriority {
@@ -54,10 +53,20 @@ public enum RequirementPriority {
     
     /** Same as toString, but returns blank for NoPriority */
     public static String toBlankString(RequirementPriority toConvert){
-    	if (toConvert.equals(NoPriority))
+    	return toConvert.toString();
+    }
+    
+    /**
+     * Overrides the default toString method
+     * 
+     * @return String representing this enum.  NoPriority will be displayed as an empty string
+     */
+    @Override
+    public String toString() {
+    	if (this.equals(NoPriority))
     		return "";
     	else
-    		return toConvert.toString();
+    		return super.toString();
     }
 
 }

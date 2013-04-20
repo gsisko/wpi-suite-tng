@@ -60,7 +60,7 @@ public enum RequirementStatus {
 		case New:
 			return new String[] { "New", "Deleted" };
 		case InProgress:
-			return new String[] { "InProgress", "Open", "Complete" };
+			return new String[] { "InProgress", "Open", "Deleted", "Complete" };
 		case Open:
 			return new String[] { "Open", "Deleted" };
 		case Deleted:

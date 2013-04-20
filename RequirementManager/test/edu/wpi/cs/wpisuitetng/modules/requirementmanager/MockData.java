@@ -1,3 +1,4 @@
+// $codepro.audit.disable unnecessaryCast
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
  *

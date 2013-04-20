@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,18 +38,15 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.FieldChange;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementChangeset;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementCreation;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.UserChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.FieldChange;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementChangeset;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementCreation;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.UserChange;
 
 /**This is the entity manager for the Requirement in the RequirementManager module
- * 
- * @author Team 5
  *
  * @version $Revision: 1.0 $
  */
@@ -107,9 +103,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		}
 
 		// Adds the creation event for this requirement to its history log
-		RequirementCreation creation = new RequirementCreation(newRequirement);
-		creation.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
-		creation.setDate(new Date());
+		RequirementCreation creation = new RequirementCreation(newRequirement, s.getUser().getName());
 		newRequirement.getEvents().add(creation);
 
 		// Saves the requirement in the database
@@ -247,7 +241,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 			logger.log(Level.WARNING, "Invalid Requirement entity update string.");
 			throw new BadRequestException("The Requirement update string had invalid formatting. Entity String: " + content);			
 		}
-
+		// Pull out the name of the current user
+		String currentUser = s.getUser().getName();
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Requirement oldReq = getEntity(s, Integer.toString(  reqUpdate.getId()  )  )[0];
 
@@ -255,27 +250,16 @@ public class RequirementManager implements EntityManager<Requirement> {
 		if (reqUpdate.getNotes().size() > oldReq.getNotes().size())
 		{
 			ArrayList<Note> notes = reqUpdate.getNotes();
-			Note lastNote = notes.get(notes.size() - 1);
-			User lastUser = lastNote.getUser();
-			if (lastUser.getIdNum() == -1)
-			{
-				lastNote.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
-			}
-
+			Note lastNote = notes.get(notes.size() -  1);
+			lastNote.setUser(currentUser);
 			reqUpdate.getEvents().add(lastNote);
 		}
 		else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) { // if the update is a user assignment change
-			UserChange userChange = new UserChange(oldReq, reqUpdate);
-			userChange.setUser((User)db.retrieve(User.class, "username", s.getUsername()).get(0));
-			userChange.setDate(new Date());
-			
+			UserChange userChange = new UserChange(oldReq, reqUpdate, currentUser);
 			reqUpdate.getEvents().add(userChange);
 		}
 		else { // this update is a changeset
-			RequirementChangeset changeset = new RequirementChangeset();
-			// core should make sure the session user exists
-			changeset.setUser((User) db.retrieve(User.class, "username", s.getUsername()).get(0));
-			changeset.setDate(new Date());
+			RequirementChangeset changeset = new RequirementChangeset(currentUser);
 			ChangesetCallback callback = new ChangesetCallback(changeset);
 
 			// copy values to old requirement and fill in our changeset appropriately
@@ -295,6 +279,44 @@ public class RequirementManager implements EntityManager<Requirement> {
 			reqUpdate.getEvents().add(changeset);
 		}
 
+//		// This is to update the Iteration that a requirement is assigned to, if the assigned iteration was changed
+//		// The total estimate of the backlog will be skewed
+//		if (oldReq.getIteration() != reqUpdate.getIteration()){
+//			IterationManager iterationManager = new IterationManager(db);
+//			// Update the old iteration
+//			Iteration oldIter = iterationManager.getEntity(s, oldReq.getIteration() + "")[0];
+//			oldIter.setTotalEstimate(oldIter.getTotalEstimate() - oldReq.getEstimate()); // total estimate
+//			// Special case for backlog: keeps the total estimate from dropping below zero
+//			if (oldIter.getID() == 0 && oldIter.getTotalEstimate() < 0){ 
+//				oldIter.setTotalEstimate(0);
+//			}
+//
+//			//Remove id from the list
+//			ArrayList<Integer> oldList = oldIter.getRequirementsContained();
+//			if (oldList.size() == 1){ // if there is only one entry, it must be the current req, so we make a new list
+//				oldList = new ArrayList<Integer>();
+//			} else if(oldList.size() != 0){ //Only update if there are requirements saved...
+//				oldList.remove((Integer)oldReq.getId());
+//			}
+//
+//			oldIter.setRequirementsContained(oldList);
+//			iterationManager.save(s, oldIter);
+//
+//			// Update the new iteration
+//			Iteration newIter = iterationManager.getEntity(s, reqUpdate.getIteration() + "")[0];
+//			newIter.setTotalEstimate(newIter.getTotalEstimate() + reqUpdate.getEstimate()+1);  // total estimate
+//			ArrayList<Integer> newList = newIter.getRequirementsContained();
+//			if (!newList.add((Integer)reqUpdate.getId())){ // Add the requirement to the iteration
+//				logger.log(Level.FINER, "The requirement wasn added iteration");
+//			}
+//			newIter.setRequirementsContained(newList);
+//			iterationManager.save(s, newIter);
+//		}
+		
+		
+		
+		
+		
 		// Copy new field values into old Requirement. This is because the "same" model must
 		// be saved back into the database
 		oldReq.updateReq(reqUpdate);

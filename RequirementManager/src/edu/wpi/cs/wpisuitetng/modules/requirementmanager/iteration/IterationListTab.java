@@ -320,9 +320,10 @@ public class IterationListTab extends JPanel implements IListPanel {
 		parent.getParent().setAllIterations(iterations);
 		
 		Iteration[] displayedIterations = new Iteration[iterations.length-1];
-		for (int i = 0; i < displayedIterations.length; i++) {
-			displayedIterations[i] = iterations[i+1];
-		}
+//		for (int i = 0; i < displayedIterations.length; i++) {
+//			displayedIterations[i] = iterations[i+1];
+//		}
+		System.arraycopy(iterations, 1, displayedIterations, 0, iterations.length - 1);
 		
 		if (displayedIterations.length > 0) {
 			// set the column names

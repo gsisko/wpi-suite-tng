@@ -24,7 +24,11 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
+import java.awt.event.ActionListener;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.AttachmentReconstructionAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -35,17 +39,17 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * An observer for a request to retrieve all requirements
  */
-public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
+public class RetrieveAttachmentPartObserver implements RequestObserver,IObserver{
 
 	/** The controller managing the request */
-	protected SaveRequirementController controller;
+	protected AttachmentReconstructionAction action;
 
 	/**
 	 * Construct the observer
 	 * @param controller
 	 */
-	public SaveAttachmentPartsObserver(SaveRequirementController controller) {
-		this.controller = controller;
+	public RetrieveAttachmentPartObserver(AttachmentReconstructionAction action) {
+		this.action = action;
 	}
 
 	@Override
@@ -55,8 +59,9 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart attachmentPart = AttachmentPart.fromJson(response.getBody());
-		controller.addAttachmentPartId(attachmentPart.getId());
+		AttachmentPart attachmentPart = AttachmentPart.fromJsonArray(response.getBody())[0];
+		
+		action.getPartSuccess(attachmentPart);
 	}
 
 	@Override
@@ -67,8 +72,6 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Request request = (Request) iReq;
-		request.send();
 		// an error occurred
 		//controller.errorReceivingData("Unable to complete request: " + exception.getMessage());
 	}

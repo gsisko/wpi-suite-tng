@@ -128,7 +128,7 @@ public class JNumberTextField extends JTextField
 
     public float getFloat()
     {
-        return ( new Float( getText() ) ).floatValue();
+        return Float.parseFloat(getText());
     }
 
     public void setFloat(float value)
@@ -138,7 +138,7 @@ public class JNumberTextField extends JTextField
 
     public double getDouble()
     {
-        return ( new Double( getText() ) ).doubleValue();
+        return Double.parseDouble(getText());
     }
 
     public void setDouble(double value)
@@ -191,7 +191,7 @@ public class JNumberTextField extends JTextField
 
 	class JNumberFieldFilter extends PlainDocument
     {
-        public JNumberFieldFilter()
+        private JNumberFieldFilter()
         {
             super();
         }

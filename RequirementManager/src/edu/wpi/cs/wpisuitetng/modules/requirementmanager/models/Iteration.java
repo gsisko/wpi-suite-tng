@@ -136,7 +136,7 @@ public class Iteration extends AbstractModel {
 	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
-		if(o instanceof Iteration && name == ((Iteration) o).getName()) {
+		if(o instanceof Iteration && name.equals(((Iteration) o).getName())) {
 			returnValue = true;
 		}	
 		if(o instanceof String && name.equals(o)) {

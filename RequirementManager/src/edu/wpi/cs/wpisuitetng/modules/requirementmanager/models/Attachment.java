@@ -31,7 +31,7 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 public class Attachment extends RequirementEvent {
 	//private User user; 
@@ -49,7 +49,6 @@ public class Attachment extends RequirementEvent {
 	public Attachment(String fileName, int fileSize)
 	{
 		this.type = EventType.ATTACHMENT;
-		this.setUser(new User("","","",-1));
 		this.date = new Date();
 		
 		this.fileName = fileName;
@@ -61,7 +60,7 @@ public class Attachment extends RequirementEvent {
 		// Format the date-time stamp
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 				
-		return "Attachment added by " + user.getName() +" on "+dateFormat.format(date) ;
+		return "Attachment added by " + userName +" on "+dateFormat.format(date) ;
 	}
 	
 	/**
@@ -76,34 +75,6 @@ public class Attachment extends RequirementEvent {
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-
-	/**
-	 * @return the user
-	 */
-	public User getUser() {
-		return user;
-	}
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	/**
@@ -135,7 +106,7 @@ public class Attachment extends RequirementEvent {
 
 	@Override
 	public String getLabelString() {	
-		return "Attachment added by " + user.getName() +" on "+ this.getDate().toString();
+		return "Attachment added by " + userName +" on "+ this.getDate().toString();
 	}
 
 	/**

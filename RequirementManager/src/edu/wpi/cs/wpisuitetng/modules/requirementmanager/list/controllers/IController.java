@@ -33,21 +33,21 @@ public interface IController {
 	 * provide action listener or other ways to check whether a certain action is performed
 	 * @param ActionEvent 
 	 */
-	public void perform();
+	void perform();
 	
 	/**
 	 * takes a string and checks whether the action is performed successfully
 	 */
-	public void success(String JSONString);
+	void success(String JSONString);
 	
 	/**
 	 * perform certain actions if the intended actions failed
 	 */
-	public void fail();
+	void fail();
 	
 	/**
 	 * gives an error 
 	 */
-	public void error(String error);
+	void error(String error);
 	
 }
