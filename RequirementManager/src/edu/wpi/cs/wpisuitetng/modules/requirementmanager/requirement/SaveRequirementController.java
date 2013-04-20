@@ -97,6 +97,10 @@ public class SaveRequirementController
 		}
 
 		else { // we are updating an existing requirement
+			
+			//If there is an unsaved note in the note tab, add the note to the requirement
+			if (!(view.getRequirementNote().getText().compareTo("") == 0))
+				saveNote();
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
 
