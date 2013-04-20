@@ -112,7 +112,7 @@ public class RetrieveAllRequirementsController {
 		// if there is previous data, and
 		// if there are rows in the table
 		// get the column widths
-		if ((!(view.getCheckBoxDefault().isSelected())) 
+		if ((!(view.getCheckBoxStatus())) 
 				&& hasPreviousData 
 				&& (resultsPanel.getResultsTable().getRowCount() != 0)) {
 			columnHeader = getTableName();
@@ -190,7 +190,7 @@ public class RetrieveAllRequirementsController {
 			}
 
 			// if the box is checked, use defaults, else set custom
-			if (view.getCheckBoxDefault().isSelected()) {
+			if (view.getCheckBoxStatus()) {
 				defaultColumnWidths();
 			} else {
 				setTableName(columnHeader);

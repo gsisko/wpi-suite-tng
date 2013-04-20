@@ -26,11 +26,15 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
@@ -66,6 +70,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	
 	/** The check box for Default Column Widths */
 	protected JCheckBox checkBoxDefault;
+	
+	/** Boolean to represent state of the check box */
+	protected boolean checkBoxStatus;
 
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
@@ -134,16 +141,29 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		// Instantiate the defaultColumnWidths checkbox
 		checkBoxDefault = new JCheckBox("Default Table Settings", true);
+		this.checkBoxStatus = true;
+		//Save the state of the checkbox every time it changes, workaround for reseting views when tabs are changed
+		checkBoxDefault.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				
+				checkBoxStatus = checkBoxDefault.isSelected();
+			}
+        });
 		buttonGroup.getContent().add(checkBoxDefault);
 	}
 	
-	public JCheckBox getCheckBoxDefault() {
-		return checkBoxDefault;
+	public boolean getCheckBoxStatus() {
+		return this.checkBoxStatus;
+	}
+	
+	protected void setCheckBoxStatus(boolean checkBoxStatus) {
+		this.checkBoxStatus = checkBoxStatus;
 	}
 
-	public void setCheckBoxDefault(JCheckBox checkBoxDefault) {
-		this.checkBoxDefault = checkBoxDefault;
-	}
+//	public void setCheckBoxDefault(JCheckBox checkBoxDefault) {
+//		this.checkBoxDefault = checkBoxDefault;
+//	}
 
 	public void refreshData() {
 		// Load initial data
