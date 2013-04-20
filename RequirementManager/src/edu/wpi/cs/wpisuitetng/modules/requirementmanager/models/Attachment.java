@@ -31,7 +31,6 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 public class Attachment extends RequirementEvent {
@@ -50,7 +49,6 @@ public class Attachment extends RequirementEvent {
 	public Attachment(String fileName, int fileSize)
 	{
 		this.type = EventType.ATTACHMENT;
-		this.setUser(new User("","","",-1));
 		this.date = new Date();
 		
 		this.fileName = fileName;
@@ -77,20 +75,6 @@ public class Attachment extends RequirementEvent {
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	/**

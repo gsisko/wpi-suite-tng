@@ -25,7 +25,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -104,9 +103,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		}
 
 		// Adds the creation event for this requirement to its history log
-		RequirementCreation creation = new RequirementCreation(newRequirement);
-		creation.setUser(s.getUser());
-		creation.setDate(new Date());
+		RequirementCreation creation = new RequirementCreation(newRequirement, s.getUser().getName());
 		newRequirement.getEvents().add(creation);
 
 		// Saves the requirement in the database
@@ -254,26 +251,15 @@ public class RequirementManager implements EntityManager<Requirement> {
 		{
 			ArrayList<Note> notes = reqUpdate.getNotes();
 			Note lastNote = notes.get(notes.size() -  1);
-			
-			if (lastNote.getUser() == "")
-			{
-				lastNote.setUser(currentUser);
-			}
-
+			lastNote.setUser(currentUser);
 			reqUpdate.getEvents().add(lastNote);
 		}
 		else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) { // if the update is a user assignment change
-			UserChange userChange = new UserChange(oldReq, reqUpdate);
-			userChange.setUser(s.getUser());
-			userChange.setDate(new Date());
-			
+			UserChange userChange = new UserChange(oldReq, reqUpdate, currentUser);
 			reqUpdate.getEvents().add(userChange);
 		}
 		else { // this update is a changeset
-			RequirementChangeset changeset = new RequirementChangeset();
-			// core should make sure the session user exists
-			changeset.setUser(currentUser);
-			changeset.setDate(new Date());
+			RequirementChangeset changeset = new RequirementChangeset(currentUser);
 			ChangesetCallback callback = new ChangesetCallback(changeset);
 
 			// copy values to old requirement and fill in our changeset appropriately

@@ -19,13 +19,14 @@ public class RequirementCreation extends RequirementEvent {
 	private String reqReleaseNumber;
 	
 
-	public RequirementCreation(Requirement requirement) {
+	public RequirementCreation(Requirement requirement, String theCreator) {
 		this.type = EventType.CREATION;
 		this.reqName = requirement.getName();
 		this.reqDescription = requirement.getDescription();
 		this.reqType = RequirementType.toBlankString(requirement.getType());
 		this.reqPriority = RequirementPriority.toBlankString(requirement.getPriority());
 		this.reqReleaseNumber = requirement.getReleaseNumber();
+		this.userName = theCreator;
 	}
 	
 	@Override

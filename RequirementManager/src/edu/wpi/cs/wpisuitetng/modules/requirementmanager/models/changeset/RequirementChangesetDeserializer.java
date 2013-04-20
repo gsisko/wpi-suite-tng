@@ -34,7 +34,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
@@ -110,10 +109,9 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 			}
 			
 			// reconstruct the RequirementChangeset
-			RequirementChangeset retVal = new RequirementChangeset();
+			RequirementChangeset retVal = new RequirementChangeset((String)(context.deserialize(changeSet.get("userName"), String.class)));
 			retVal.setChanges(changesMap);
 			retVal.setDate((Date)(context.deserialize(changeSet.get("date"), Date.class)));
-			retVal.setUser((String)(context.deserialize(changeSet.get("userName"), String.class)));
 			
 			// return the RequirementChangeset
 			return retVal;

@@ -31,8 +31,6 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
 /**
  * Persistent Model that holds information about a set of changes to a Requirement.
  * Every time a Requirement is changed by a user, a RequirementChangeset should be created
@@ -44,22 +42,15 @@ public class RequirementChangeset extends RequirementEvent {
 
 	/**
 	 * Construct a RequirementChangeset with default properties.
-	 */
-	public RequirementChangeset() {
-		type = EventType.CHANGESET;
-		changes = new HashMap<String, FieldChange<?>>();
-	}
-
-	/**
-	 * Construct a RequirementChangeset with the given properties.
-	 * Other properties are the same as in the default constructor.
 	 * 
 	 * @param user the User responsible for this change
 	 */
-	public RequirementChangeset(User user) {
-		this();
-		this.userName = user.getName();
+	public RequirementChangeset(String user) {
+		type = EventType.CHANGESET;
+		changes = new HashMap<String, FieldChange<?>>();
+		this.userName = user;
 	}
+
 
 	/**
 	 * @return the map of field names to changes (Assignee -> (Bob, Joe))
