@@ -30,6 +30,9 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment.AttachmentTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note.NoteTab;
+
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
  * It starts out showing the single Dashboard tab.
