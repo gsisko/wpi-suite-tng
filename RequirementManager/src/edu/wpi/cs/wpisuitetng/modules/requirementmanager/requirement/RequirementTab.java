@@ -41,6 +41,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /**
@@ -178,6 +179,11 @@ public class RequirementTab extends JPanel {
 			//Disables the appropriate fields in the attributePanel upon creation
 			attributePanel.disableFieldsOnCreation();
 
+		}
+		if (this.currentRequirement.getStatus() == RequirementStatus.Deleted) {
+			this.toggleEnabled(this.tabPanel.getNotePanel().getNoteMessage(), false);
+			this.tabPanel.getNotePanel().getSaveButton().setEnabled(false);
+			this.tabPanel.getNotePanel().setEnabled(false);
 		}
 
 		// add the panels to the splitPane and add the splitPane to the page
