@@ -673,15 +673,6 @@ public class RequirementAttributePanel extends JPanel {
 						// Change the selected iteration to backlog
 						iterationBox.setSelectedIndex(0);
 					}
-					if (statusBox.getSelectedItem().toString().equals("Deleted")) {	// Disable the notes panel if requirement has been deleted
-						parent.toggleEnabled(parent.getTabPanel().getNotePanel().getNoteMessage(), false);
-						parent.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
-						parent.getTabPanel().getNotePanel().setEnabled(false);
-					} else {
-						parent.toggleEnabled(parent.getTabPanel().getNotePanel().getNoteMessage(), true);
-						parent.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
-						parent.getTabPanel().getNotePanel().setEnabled(true);
-					}
 				}
 			}
 
