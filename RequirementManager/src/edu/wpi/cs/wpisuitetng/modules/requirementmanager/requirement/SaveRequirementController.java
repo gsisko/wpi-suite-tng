@@ -103,6 +103,11 @@ public class SaveRequirementController
 			//If there is an unsaved note in the note tab, add the note to the requirement
 			if (!(view.getRequirementNote().getText().compareTo("") == 0))
 				saveNote();
+			
+			//If there is an unsaved note in the note tab, add the note to the requirement
+			if (!(view.getRequirementAcceptanceTest().getText().compareTo("") == 0))
+				saveAcceptanceTest();
+			
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
 
@@ -305,6 +310,29 @@ public class SaveRequirementController
 		request.send();
 	}
 
+	/**
+	 * Saves an acceptance test to the Requirement
+	 */
+	public void saveAcceptanceTest() {
+		// check if any inputs are invalid, print an error message if one is
+		if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestMessage().getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "Note must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		Requirement currentRequirement = view.getCurrentRequirement();
+
+		String NoteContent = view.getRequirementNote().getText();
+		view.getRequirementNote().setText("");
+		currentRequirement.getNotes().add(new Note(NoteContent));
+
+		// make a POST http request and let the observer get the response
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
+	}
+	
 	public void saveAttachment() throws IOException {
 		JFileChooser fc = new JFileChooser();
 

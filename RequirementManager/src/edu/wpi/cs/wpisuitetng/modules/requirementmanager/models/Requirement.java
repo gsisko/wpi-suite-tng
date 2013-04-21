@@ -62,6 +62,8 @@ public class Requirement extends AbstractModel {
 	private int iteration;
 	/** This is the list of notes for this Requirement */
 	private ArrayList<Note> notes; 
+	/** This is the list of acceptance tests for this Requirement */
+	private ArrayList<AcceptanceTest> acceptanceTests;
 	/** This is the list of users associated with this Requirement */
 	private ArrayList<User> users;
 	/** This is the history log for the Requirement */
@@ -385,6 +387,23 @@ public class Requirement extends AbstractModel {
 	public void setNotes(ArrayList<Note> notes) {
 		this.notes = notes;
 	}
+	
+
+	/**
+	 * @return the acceptance tests
+	 */
+	public ArrayList<AcceptanceTest> getAcceptanceTests() {
+		return acceptanceTests;
+	}
+
+
+	/**
+	 * @param notes the notes to set
+	 */
+	public void setAcceptancetests(ArrayList<AcceptanceTest> acceptanceTests) {
+		this.acceptanceTests = acceptanceTests;
+	}
+
 
 	/**
 	 * @return users assigned to this requirement
@@ -451,5 +470,4 @@ public class Requirement extends AbstractModel {
 	public void setSubrequirement(ArrayList<Requirement> subrequirement) {
 		this.subrequirement = subrequirement;
 	}
-
 }

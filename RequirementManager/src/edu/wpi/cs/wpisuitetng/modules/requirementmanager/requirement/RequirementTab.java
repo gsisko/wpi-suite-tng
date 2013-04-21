@@ -326,13 +326,21 @@ public class RequirementTab extends JPanel {
 		return attributePanel.getRequirementActualEffort();
 	}
 	/**
-	 * This returns the JTextArea "txtNote"
+	 * This returns the JTextArea "txtNote" from the Note
 	 * @return the txtNote JTextArea
 	 */
 	public JTextArea getRequirementNote() {
 		return tabPanel.getNotePanel().getNoteMessage();
 	}
 
+	/**
+	 * This returns the JTextArea "txtNote" from the Acceptance Test
+	 * @return the txtNote JTextArea
+	 */
+	public JTextArea getRequirementAcceptanceTest() {
+		return tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage();
+	}
+	
 	public RequirementTabPanel getTabPanel() {
 		return tabPanel;
 	}

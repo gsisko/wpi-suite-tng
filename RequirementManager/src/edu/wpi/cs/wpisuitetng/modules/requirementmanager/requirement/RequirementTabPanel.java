@@ -109,6 +109,20 @@ public class RequirementTabPanel extends JTabbedPane {
 	}
 
 	/**
+	 * @return the acceptanceTestPanel
+	 */
+	public AcceptanceTestTab getAcceptanceTestPanel() {
+		return acceptanceTestPanel;
+	}
+
+	/**
+	 * @param acceptanceTestPanel the acceptanceTestPanel to set
+	 */
+	public void setAcceptanceTestPanel(AcceptanceTestTab acceptanceTestPanel) {
+		this.acceptanceTestPanel = acceptanceTestPanel;
+	}
+	
+	/**
 	 * @return the historyPanel
 	 */
 	public HistoryTab getHistoryPanel() {

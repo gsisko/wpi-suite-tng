@@ -37,16 +37,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
 /**
  * This panel is added to the RequirementTabPanel and 
- * contains all the gui components involving notes:
- * -a panel to hold the list of notes
- * -a text area for a user to input a new note
- * -a save button to save the new note
+ * contains all the GUI components involving acceptance tests:
+ * -a panel to hold the list of acceptance tests
+ * -a text area for a user to input a new acceptance test
+ * -a save button to save the new acceptance test
  */
 @SuppressWarnings({"serial"})
 public class AcceptanceTestTab extends JPanel {
@@ -59,7 +59,7 @@ public class AcceptanceTestTab extends JPanel {
 	private JButton saveButton;
 
 	//The variables to hold information about the current instance of the panel
-	private Note currentNote;//Stores the note currently open for editing or creation
+	private AcceptanceTest currentAcceptanceTest;//Stores the acceptance test currently open for editing or creation
 
 	// The parent 
 	private RequirementTab parent; //Stores the RequirementPanel that contains the panel
@@ -67,17 +67,17 @@ public class AcceptanceTestTab extends JPanel {
 	//A boolean indicating if input is enabled on the form 
 	protected boolean inputEnabled;
 
-	//The noteListModel. This holds the notes to be displayed in the "noteList" panel
+	//The acceptanceTestListModel. This holds the acceptance tests to be displayed in the "acceptanceTestList" panel
 	private AcceptanceTestListModel acceptanceTestListModel;
 
-	//The panel to hold all the NotePanels (containing all the notes) to display
-	private ListOfAcceptanceTestPanel noteList;
+	//The panel to hold all the AccpetanceTestPanels (containing all the acceptance tests) to display
+	private ListOfAcceptanceTestPanel acceptanceTestList;
 
-	//A scroll pane to hold the "noteList"
+	//A scroll pane to hold the "accpetanceTestList"
 	JScrollPane listScrollPane;
 
 	/**
-	 * The constructor for NotePanel;
+	 * The constructor for AcceptanceTestPanel;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
 	 * @param reqPanelParent	The parent of this tab
@@ -92,23 +92,23 @@ public class AcceptanceTestTab extends JPanel {
 		//Set an empty border for spacing
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
 
-		// Construct the noteListmodel
+		// Construct the acceptanceTestListModel
 		acceptanceTestListModel = new AcceptanceTestListModel();
 
-		ArrayList<Note> notes = parent.getCurrentRequirement().getNotes();
-		for (int i = 0; i < notes.size(); i++) {
-			acceptanceTestListModel.addMessage(notes.get(i));
+		ArrayList<AcceptanceTest> acceptanceTests = parent.getCurrentRequirement().getAcceptanceTests();
+		for (int i = 0; i < acceptanceTests.size(); i++) {
+			acceptanceTestListModel.addMessage(acceptanceTests.get(i));
 		}
 
-		//Construct the noteList, using the previously defined empty model
-		noteList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);
+		//Construct the acceptanceTestList, using the previously defined empty model
+		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);
 
-		// Put the noteList in a scroll pane
-		listScrollPane = new JScrollPane(noteList);
+		// Put the acceptanceTestList in a scroll pane
+		listScrollPane = new JScrollPane(acceptanceTestList);
 
 		// Construct the other components to be displayed
 		txtMessage = new JTextArea("", 1, 1);
-		saveButton = new JButton("Add Note");
+		saveButton = new JButton("Add Acceptance Test");
 
 		// Set the txtMessage component to wrap
 		txtMessage.setLineWrap(true);
@@ -142,12 +142,12 @@ public class AcceptanceTestTab extends JPanel {
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
-			getNoteMessage().setEnabled(false);
+			getAcceptanceTestMessage().setEnabled(false);
 		}
 
 
 		// Add components
-		this.add(listScrollPane); //add the noteList, in the listScrollPane, to the panel
+		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
 		this.add(scrollMessage); // add the txtMessage box (in the scroll pane)  to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
@@ -176,12 +176,12 @@ public class AcceptanceTestTab extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 		saveButton.setEnabled(enabled);
-		getNoteMessage().setEnabled(enabled);
+		getAcceptanceTestMessage().setEnabled(enabled);
 	}
 
 	/**
-	 * Returns a boolean representing whether or not input is enabled for the NotePanel.
-	 * @return inputEnabled A boolean representing whether or not input is enabled for the NotePanel.
+	 * Returns a boolean representing whether or not input is enabled for the AcceptanceTestPanel.
+	 * @return inputEnabled A boolean representing whether or not input is enabled for the AcceptanceTestPanel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
@@ -191,7 +191,7 @@ public class AcceptanceTestTab extends JPanel {
 	 * This returns the JTextArea "txtMessage"
 	 * @return the txtMessage JTextArea
 	 */
-	public JTextArea getNoteMessage() {
+	public JTextArea getAcceptanceTestMessage() {
 		JViewport viewport = scrollMessage.getViewport(); 
 		return (JTextArea) viewport.getView();
 	}
@@ -205,56 +205,56 @@ public class AcceptanceTestTab extends JPanel {
 	}
 
 	/**
-	 * This returns the Note "currentNote" 
-	 * @return the currentNote Note
+	 * This returns the AcceptanceTest "currentAcceptanceTest" 
+	 * @return the currentAcceptanceTest AcceptanceTest
 	 */
-	public Note getCurrentNote() {
-		return currentNote;
+	public AcceptanceTest getCurrentAcceptanceTest() {
+		return currentAcceptanceTest;
 	}
 
 	/**
-	 * This sets the current note
-	 * @param currentNote What to set the current note to
+	 * This sets the current acceptance test
+	 * @param acceptanceTest What to set the current acceptance test to
 	 */
-	public void setCurrentNote(Note currentNote) {
-		this.currentNote = currentNote;
+	public void setCurrentAcceptanceTest(AcceptanceTest acceptanceTest) {
+		this.currentAcceptanceTest = acceptanceTest;
 	}
 
 	/**
-	 * This returns the ListOfNotePanel that displays the stored notes,
-	 * each in their own notePanel.
-	 * @return the noteList ListOfNotePanel
+	 * This returns the ListOfAcceptanceTestPanel that displays the stored acceptance tests,
+	 * each in their own acceptanceTestPanel.
+	 * @return the acceptanceTestList ListOfAcceptanceTestPanel
 	 */
-	public ListOfAcceptanceTestPanel getNoteList() {
-		return noteList;
+	public ListOfAcceptanceTestPanel getAcceptanceTestList() {
+		return acceptanceTestList;
 	}
 	/**
-	 * This returns the NoteListModel "noteListModel",
-	 * which stores the saved notes that are associated with the
+	 * This returns the AcceptanceTestListModel "acceptanceTestListModel",
+	 * which stores the saved acceptance tests that are associated with the
 	 * current requirement being displayed
-	 * @return the noteListModel NoteListModel
+	 * @return the acceptanceTestListModel AcceptanceTestListModel
 	 */
-	public AcceptanceTestListModel getNoteListModel() {
+	public AcceptanceTestListModel getAcceptanceTestListModel() {
 		return acceptanceTestListModel;
 	}
 
 	/**
-	 * This adds a new note to the noteListModel,
-	 * and then recreates and redisplays the noteList
+	 * This adds a new acceptance test to the acceptanceTestListModel,
+	 * and then recreates and redisplays the acceptanceTestList
 	 * panel.
-	 * @param newNote the note to be added
+	 * @param newAcceptanceTest the acceptance test to be added
 	 */
-	public void addNoteToList(Note newNote){
+	public void addAcceptanceTestToList(AcceptanceTest newAcceptanceTest){
 		this.removeAll();
-		acceptanceTestListModel.addMessage(newNote);
-		noteList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);
+		acceptanceTestListModel.addMessage(newAcceptanceTest);
+		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);
 
-		listScrollPane = new JScrollPane(noteList);
+		listScrollPane = new JScrollPane(acceptanceTestList);
 
 		listScrollPane.setPreferredSize(new Dimension(580, 300));		
 
 		// Add components
-		this.add(listScrollPane); //add the noteList, in the listScrollPane, to the panel
+		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
 		this.add(scrollMessage); // add the txtMessage box (in the scroll pane)  to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));

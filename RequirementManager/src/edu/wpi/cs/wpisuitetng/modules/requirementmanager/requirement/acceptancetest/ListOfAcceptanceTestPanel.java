@@ -33,21 +33,21 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
- * This panel is used to create and store a list of NotePanels (one for each note in the NoteListModel).
+ * This panel is used to create and store a list of AcceptanceTestPanels (one for each acceptance test in the AcceptanceTestListModel).
  */
 @SuppressWarnings("serial")
 public class ListOfAcceptanceTestPanel extends JPanel {
 	
-	//The list of stored notes to be displayed, passed in as a NoteListModel
+	//The list of stored acceptance tests to be displayed, passed in as a AcceptanceTestListModel
 	private AcceptanceTestListModel acceptanceTestListModel;
 	
 
 	/**
 	 * The constructor for this panel.
-	 * This takes a NoteListModel ("newModel"),
-	 * constructs a NotePanel for each note within that model,
+	 * This takes a AcceptanceTestListModel ("newModel"),
+	 * constructs an AcceptanceTestPanel for each acceptanceTest within that model,
 	 * and adds each to this panel.
-	 * @param newModel The NoteListModel containing the stored notes to be displayed
+	 * @param newModel The AcceptanceListModel containing the stored acceptance tests to be displayed
 	 */
 	public ListOfAcceptanceTestPanel(AcceptanceTestListModel newModel) {
 		
@@ -57,18 +57,18 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 		//Create and set an empty border for spacing purposes
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
 
-		//Set the noteListModel to the NoteListModel passed in as "newModel"
+		//Set the acceptanceTestListModel to the AcceptanceListModel passed in as "newModel"
 		acceptanceTestListModel = newModel;
 		
-		double totalHeight=0; //This stores a running total of the heights of the note panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
+		double totalHeight=0; //This stores a running total of the heights of the acceptance test panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
 		
-		//For each note in the noteListModel....
+		//For each acceptance test in the AcceptanceListModel....
 		for (int i = 0; i<acceptanceTestListModel.getSize(); i++)
 		{
-			String message = acceptanceTestListModel.getElementAt(i).getMessage(); //grab the message portion of the note
-			AcceptanceTestPanel panel = new AcceptanceTestPanel(acceptanceTestListModel.getElementAt(i).toString(),message); //create a new NotePanel to hold the note
+			String message = acceptanceTestListModel.getElementAt(i).getMessage(); //grab the message portion of the acceptance test
+			AcceptanceTestPanel panel = new AcceptanceTestPanel(acceptanceTestListModel.getElementAt(i).toString(),message); //create a new AcceptanceTestPanel to hold the acceptance test
 			totalHeight += panel.getSize().getHeight();//add this panel's height to the running total
-			this.add(panel);//actually add this notePanel to this ListOfNotePanel
+			this.add(panel);//actually add this acceptanceTestPanel to this ListOfAcceptanceTestPanel
 		}
 
 		this.setBackground(Color.WHITE); //set the background color of this panel to white
@@ -81,7 +81,7 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 		//Construct and add a new component listener to listen for a resize event
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {  //on resize...
-				double newTotalHeight=0;//This stores the new running total of the heights of the note panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
+				double newTotalHeight=0;//This stores the new running total of the heights of the acceptance test panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
 				for (Component c : referenceToThis.getComponents()) {//For each component in this panel
 					newTotalHeight += c.getMaximumSize().getHeight();//add that panel's height to the running total
 				}

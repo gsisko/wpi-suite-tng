@@ -43,7 +43,8 @@ public abstract class RequirementEvent extends AbstractModel {
 		CHANGESET,
 		NOTE,
 		USER,
-		ATTACHMENT
+		ATTACHMENT,
+		ACCEPTANCETEST
 	};
 	
 	/** The date that this event was made */

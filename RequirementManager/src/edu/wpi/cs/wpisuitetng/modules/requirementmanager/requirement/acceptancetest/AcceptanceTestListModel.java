@@ -29,19 +29,19 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class AcceptanceTestListModel extends AbstractListModel {
 	
 	/** The list of messages on the board */
-	private List<Note> notes;
+	private List<AcceptanceTest> acceptanceTests;
 	
 	/**
 	 * Constructs a new board with no messages.
 	 */
 	public AcceptanceTestListModel() {
-		notes = new ArrayList<Note>();
+		acceptanceTests = new ArrayList<AcceptanceTest>();
 	}
 
 	/**
@@ -49,37 +49,37 @@ public class AcceptanceTestListModel extends AbstractListModel {
 	 * 
 	 * @param newMessage the new message to add
 	 */
-	public void addMessage(Note newMessage) {
+	public void addMessage(AcceptanceTest newMessage) {
 		// Add the message
-		notes.add(newMessage);
+		acceptanceTests.add(newMessage);
 		
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
 	}
 	
 	/**
-	 * Adds the given array of messages to the board
+	 * Adds the given array of tests to the board
 	 * 
-	 * @param notes the array of messages to add
+	 * @param acceptanceTests the array of tests to add
 	 */
-	public void addMessages(Note[] notes) {
-		for (int i = 0; i < notes.length; i++) {
-			this.notes.add(notes[i]);
+	public void addMessages(AcceptanceTest[] acceptanceTests) {
+		for (int i = 0; i < acceptanceTests.length; i++) {
+			this.acceptanceTests.add(acceptanceTests[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
 	/**
-	 * Removes all messages from this model
+	 * Removes all tests from this model
 	 * 
 	 * NOTE: One cannot simply construct a new instance of
 	 * the model, because other classes in this module have
-	 * references to it. Hence, we manually remove each message
+	 * references to it. Hence, we manually remove each test
 	 * from the model.
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		Iterator<Note> iterator = notes.iterator();
+		Iterator<AcceptanceTest> iterator = acceptanceTests.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -88,25 +88,25 @@ public class AcceptanceTestListModel extends AbstractListModel {
 	}
 	
 	/* 
-	 * Returns the message at the given index. This method is called
+	 * Returns the test at the given index. This method is called
 	 * internally by the JList in BoardPanel. Note this method returns
 	 * elements in reverse order, so newest messages are returned first.
 	 * 
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
-	public Note getElementAt(int index) {
-		return notes.get(notes.size() - 1 - index);
+	public AcceptanceTest getElementAt(int index) {
+		return acceptanceTests.get(acceptanceTests.size() - 1 - index);
 	}
 
 	/*
-	 * Returns the number of messages in the model. Also used internally
+	 * Returns the number of tests in the model. Also used internally
 	 * by the JList in BoardPanel.
 	 * 
 	 * @see javax.swing.ListModel#getSize()
 	 */
 	@Override
 	public int getSize() {
-		return notes.size();
+		return acceptanceTests.size();
 	}
 }
