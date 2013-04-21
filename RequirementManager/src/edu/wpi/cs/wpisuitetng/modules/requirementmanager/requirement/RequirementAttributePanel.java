@@ -200,8 +200,8 @@ public class RequirementAttributePanel extends JPanel {
 		warningDescription.setForeground(Color.red);
 
 		//Set the sizes for the warning labels
-		warningName.setPreferredSize(new Dimension(410, 20));
-		warningDescription.setPreferredSize(new Dimension(270, 20));
+		warningName.setPreferredSize(new Dimension(410, 10));
+		warningDescription.setPreferredSize(new Dimension(270, 10));
 
 		//Set the estimate and actual effort to 0 since this is a new requirement
 		txtEstimate.setText("0");
