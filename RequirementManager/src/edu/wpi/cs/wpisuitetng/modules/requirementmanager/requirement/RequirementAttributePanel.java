@@ -614,9 +614,9 @@ public class RequirementAttributePanel extends JPanel {
 			public void keyReleased(KeyEvent e) {
 				// When estimate is invalid, deactivate the iteration box
 				if (txtEstimate.getText().equals("") || Integer.parseInt(txtEstimate.getText()) == 0  ){
-					iterationBox.setEnabled(false);
+					toggleComponentEnabled(iterationBox, false);
 				} else {
-					iterationBox.setEnabled(true);
+					toggleComponentEnabled(iterationBox, true);
 				}
 
 				// Check the old value and set the box yellow as necessary
@@ -905,9 +905,9 @@ public class RequirementAttributePanel extends JPanel {
 	public void fillIterationSelectionBox() {
 		// Iterations cannot be assigned when there is no estimate saved, so enable/disable the iteration box appropriately
 		if (currentRequirement.getEstimate() <= 0){
-			iterationBox.setEnabled(false);
+			toggleComponentEnabled(iterationBox, false);
 		} else {
-			iterationBox.setEnabled(true);
+			toggleComponentEnabled(iterationBox, true);
 		}
 
 		Iteration[] allIterations = parent.getAllIterations(); //Grab all the iterations in an array
@@ -973,9 +973,9 @@ public class RequirementAttributePanel extends JPanel {
 				}
 				changeField(statusBox, 6, true); // Note that the status changed
 				this.updateStatusSettings("Open");
-				txtEstimate.setEnabled(true);
+				toggleComponentEnabled(txtEstimate, true);
 			} else {
-				txtEstimate.setEnabled(false); 
+				toggleComponentEnabled(txtEstimate, false); 
 				this.updateStatusSettings("InProgress");
 			}
 			// hack to make the status box change colors
