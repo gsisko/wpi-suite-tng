@@ -5,8 +5,6 @@ import java.util.Iterator;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
 @SuppressWarnings({"serial","rawtypes"})
 public class UserListModel extends AbstractListModel {
 	

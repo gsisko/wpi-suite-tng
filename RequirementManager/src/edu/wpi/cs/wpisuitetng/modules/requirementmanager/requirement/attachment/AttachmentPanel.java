@@ -25,35 +25,19 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAttachmentPartObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveModelObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.AttachmentReconstructionAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This is a panel to display an individual note
@@ -76,7 +60,7 @@ public class AttachmentPanel extends JPanel{
 	 * @param message A string containing the actual body of the note to be displayed in this panel
 	 */
 	public AttachmentPanel(final Attachment attachment){
-		this.attachment = attachment;
+		this.setAttachment(attachment);
 		this.setBackground(Color.white);//Set the background color of this panel to white
 		this.setOpaque(true);//Set this panel to Opaque (means the background is painted)
 
@@ -136,6 +120,22 @@ public class AttachmentPanel extends JPanel{
 	 */
 	public JButton getButton() {
 		return download;
+	}
+
+
+	/**
+	 * @return the attachment
+	 */
+	public Attachment getAttachment() {
+		return attachment;
+	}
+
+
+	/**
+	 * @param attachment the attachment to set
+	 */
+	public void setAttachment(Attachment attachment) {
+		this.attachment = attachment;
 	}
 
 }

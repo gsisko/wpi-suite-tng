@@ -67,7 +67,7 @@ public class ToolbarView extends DefaultToolbarView {
 	 * @param tabController The MainTabController this view should open tabs with
 	 */
 	public ToolbarView(final MainTabController tabController) {
-		this.tabController = tabController;
+		this.setTabController(tabController);
 		
 		mainPanel = ((ListView) tabController.getView().getComponentAt(0)).getListTab();
 		
@@ -145,6 +145,20 @@ public class ToolbarView extends DefaultToolbarView {
 	
 	public ToolbarGroupView getToolbarGroup() {
 		return toolbarGroup;
+	}
+
+	/**
+	 * @return the tabController
+	 */
+	public MainTabController getTabController() {
+		return tabController;
+	}
+
+	/**
+	 * @param tabController the tabController to set
+	 */
+	public void setTabController(MainTabController tabController) {
+		this.tabController = tabController;
 	}
 
 }

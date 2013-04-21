@@ -101,6 +101,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
+		setDeleteEnabled(false); // Initialize
 
 		btnCreate.setMaximumSize(new Dimension(120, 40));
 		btnCreate.setMinimumSize(new Dimension(120, 40));
@@ -381,7 +382,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		}
 
 		refreshRequirements();
-
+		setDeleteEnabled(false);
 	}
 
 	/**

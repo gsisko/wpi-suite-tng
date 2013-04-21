@@ -28,11 +28,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAllRequirementsRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.RequirementListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -179,6 +175,7 @@ public class RetrieveRequirmentsIntoSubController {
 	}
 
 
+	@SuppressWarnings("unused")
 	private String getIterationName(Requirement requirement) {
 
 		for (Iteration i : subtab.getParent().getAllIterations()) {
