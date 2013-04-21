@@ -1009,5 +1009,9 @@ public class RequirementAttributePanel extends JPanel {
 	public void setSaving(boolean isSaving) {
 		this.fieldsChanged[10] = isSaving;
 	}
+	
+	public boolean isSaving () {
+		return this.fieldsChanged[10];
+	}
 
 }
