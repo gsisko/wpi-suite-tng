@@ -296,7 +296,6 @@ public class IterationManager implements EntityManager<Iteration> {
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Iteration oldIteration = getEntity(s, id)[0];
-		System.out.println("Number of entities gotten with ID = " + id +": "+getEntity(s,id).length);
 		if (id.equals("0")){ // ID of 0 = backlog
 			return false;
 		}

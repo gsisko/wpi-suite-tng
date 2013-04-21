@@ -70,11 +70,11 @@ public class RetrieveRequirmentsIntoSubController {
 	 * Sends a request for all of the requirements
 	 */
 	public void refreshData() {		
-			final RequestObserver requestObserver = new RetrieveRequirementsIntoSubObserver(this);
-				Request request;
-				request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET);
-				request.addObserver(requestObserver);
-				request.send();
+		final RequestObserver requestObserver = new RetrieveRequirementsIntoSubObserver(this);
+		Request request;
+		request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET);
+		request.addObserver(requestObserver);
+		request.send();
 	}
 
 	/**
@@ -85,26 +85,26 @@ public class RetrieveRequirmentsIntoSubController {
 	 * @param requirements an array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
-		
+
 
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isSub = new ArrayList<Requirement>();
-		
+
 		//isSub = this.subtab.getParent().getCurrentRequirement().getSubrequirement();
 		isSub.add(new Requirement());
 		// empty the table
-//		String[] emptyColumns = {};
-//		Object[][] emptyData = {};
-//		String[] columnNames = {"ID", "Name", "Description", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
-//		subtab.getModel().setColumnNames(columnNames);
-//		subtab.getModel().setData(emptyData);
-//		subtab.getModel().fireTableStructureChanged();
+		//		String[] emptyColumns = {};
+		//		Object[][] emptyData = {};
+		//		String[] columnNames = {"ID", "Name", "Description", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
+		//		subtab.getModel().setColumnNames(columnNames);
+		//		subtab.getModel().setData(emptyData);
+		//		subtab.getModel().fireTableStructureChanged();
 
 		view.setSubRequirements(requirements);
 
 		if (requirements.length > 0) {
 			// save the data
-		
+
 			this.data = requirements;
 
 		}	
@@ -176,13 +176,11 @@ public class RetrieveRequirmentsIntoSubController {
 		subtab.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(90);
 		//ActualEffort
 		subtab.getResultsTable().getColumnModel().getColumn(9).setPreferredWidth(110);
-
-
-		System.out.println("Existing sub requirements retrieved successfully.");}
+	}
 
 
 	private String getIterationName(Requirement requirement) {
-		
+
 		for (Iteration i : subtab.getParent().getAllIterations()) {
 			if (requirement.getIteration() == i.getID()) {
 				return i.getName();
@@ -190,11 +188,11 @@ public class RetrieveRequirmentsIntoSubController {
 		}
 		return "";
 	}
-	
+
 	/**set subtab
 	 * 
 	 */
-	
+
 	public void setSubtab()
 	{
 		//this.subtab = view.getRequirementTabPanel().getSubRequirementPanel();

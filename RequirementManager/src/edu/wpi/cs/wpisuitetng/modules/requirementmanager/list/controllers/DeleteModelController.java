@@ -93,7 +93,6 @@ public class DeleteModelController implements ActionListener {
 	 */
 	public void success(String JSONString)
 	{
-		System.out.println(modelName+ " deletion successful");
 	}
 	
 	/**
@@ -124,8 +123,7 @@ public class DeleteModelController implements ActionListener {
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
 	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. */
-	public void refreshListViews() {
-		System.out.println(modelName  + " deleted successfully");
+	public void refreshListViews() {;
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
 			System.err.println("Fail: cannot refresh views after deleting a" + modelName);

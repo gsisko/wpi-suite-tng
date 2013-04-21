@@ -96,8 +96,6 @@ public class SaveModelController implements ActionListener
 		
 		listView.setCancelBtnToNew();
 		listView.refreshAll();
-		
-		System.out.println(modelName  + " saved successfully");
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.

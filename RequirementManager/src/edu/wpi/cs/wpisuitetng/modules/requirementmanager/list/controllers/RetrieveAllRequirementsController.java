@@ -198,7 +198,6 @@ public class RetrieveAllRequirementsController {
 			}
 
 		}
-		System.out.println("Existing requirements retrieved successfully.");
 	}
 
 	/**

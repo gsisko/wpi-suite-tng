@@ -78,7 +78,6 @@ public class RetrieveAllModelsController implements ActionListener{
 	 */
 	public void receivedData(String jsonString) {
 		listView.showRecievedModels(jsonString);
-		System.out.println("All " + modelName  + "s retrieved successfully.");
 	}
 
 	/** This method is called by the {@link RetrieveAllModelsObserver} when an

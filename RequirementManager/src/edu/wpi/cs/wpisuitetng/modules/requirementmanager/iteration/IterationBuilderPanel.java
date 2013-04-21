@@ -324,8 +324,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		toSend.setEndDate(trim(this.endDateChooser.getDate()));
 		toSend.setTotalEstimate(Integer.parseInt(this.totalEstimate.getText()));
 
-		System.out.println(toSend.toJSON());
-
 		return toSend.toJSON();
 	}
 

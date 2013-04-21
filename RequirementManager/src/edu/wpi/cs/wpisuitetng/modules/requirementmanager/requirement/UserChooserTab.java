@@ -205,8 +205,6 @@ public class UserChooserTab extends JPanel {
 
 					int indices[] = unassignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the unassigned user list (in increasing order)
 
-					System.out.println("You have pushed the addSelectedUserButton!\n You have selected "+indices.length+  " user(s), starting at: "+ unassignedUserListModel.getElementAt(indices[0]));//Print a message containing the selected user(s) to the console
-
 					for (int i = 0; i<indices.length; i++ )//For each index in the array "indices"
 					{
 						int nextIndex = indices[i];//Grab the index stored at the index "i" in "indices"
@@ -235,10 +233,7 @@ public class UserChooserTab extends JPanel {
 
 					parent.getParent().getController().saveUsers();
 				}
-				else//No users were selected in the unassigned user list at the time the button was pushed
-					System.out.println("You have pushed the addSelectedUserButton!\n No users are selected in the unassigned user list.\n");//Print a message to the console
-
-
+				else{}//No users were selected in the unassigned user list at the time the button was pushed
 			}
 		});
 
@@ -251,8 +246,6 @@ public class UserChooserTab extends JPanel {
 				{
 					int oldIndicies[] = unassignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the unassigned user list (in increasing order). This will be used to restore the selection(s) later if needed.
 					int indices[] = assignedList.getSelectedIndices();//Grab an array of the selected users' indexes in the assigned user list (in increasing order)
-
-					System.out.println("You have pushed the removeSelectedUserButton!\n You have selected "+indices.length+  " user(s), starting at: "+ assignedUserListModel.getElementAt(indices[0]));//Print a message containing the selected user(s) to the console
 
 					for (int i = 0; i<indices.length; i++ )//For each index in the array "indices"
 					{
@@ -282,9 +275,7 @@ public class UserChooserTab extends JPanel {
 
 					parent.getParent().getController().saveUsers();
 				}
-				else//No users were selected in the assigned user list at the time the button was pushed
-					System.out.println("You have pushed the removeSelectedUserButton!\n No users are selected in the assigned user list.\n");//Print a message to the console
-
+				else{}//No users were selected in the assigned user list at the time the button was pushed
 			}
 		});
 

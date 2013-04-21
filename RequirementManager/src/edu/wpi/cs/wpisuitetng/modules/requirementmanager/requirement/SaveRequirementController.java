@@ -232,8 +232,6 @@ public class SaveRequirementController
 	public void saveSuccess(Requirement newReq) {
 		// if success, set all of the UI fields appropriately for post-save actions
 		if (newReq != null) {
-			System.out.print("Requirement " + newReq.getId() + " saved successfully\n");
-
 			/** Update updatedIteration*/
 			Iteration currentIteration = null;
 

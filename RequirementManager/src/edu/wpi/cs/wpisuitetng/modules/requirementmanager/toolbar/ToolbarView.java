@@ -109,7 +109,6 @@ public class ToolbarView extends DefaultToolbarView {
             		    uri += "index.html";
             		    File file = new File(uri);
             		    URI userManualURI = file.toURI();
-            		    System.out.println("current uri: " + uri);
             		    Desktop.getDesktop().browse(userManualURI);
             		} catch (IOException e1){
             		    // TODO Auto-generated catch block
