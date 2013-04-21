@@ -183,16 +183,16 @@ public class PieChartPanel extends JPanel {
 			DefaultPieDataset data = new DefaultPieDataset();
 			
 			//ArrayList to contain all users assigned to iterations
-			ArrayList<User> allUsers = new ArrayList<User>();
+			ArrayList<String> allUsers = new ArrayList<String>();
 			
 			//HashMap that contains how many times each user has been assigned
-			HashMap<User, Integer> requirementCountMap = new HashMap<User, Integer>();
+			HashMap<String, Integer> requirementCountMap = new HashMap<String, Integer>();
 			
 			for (int i = 0; i < requirements.length; i++){
-				allUsers.addAll(requirements[i].getUsers()); //Combine all users into a giant list
+				allUsers.addAll(requirements[i].getUserNames()); //Combine all users into a giant list
 				
 				//Add one if the user appears in the list
-				for(User user : requirements[i].getUsers()){
+				for(String user : requirements[i].getUserNames()){
 					if (requirementCountMap.get(user) == null){ //Check if user has an entry
 						requirementCountMap.put(user, 1);  //If not this is the first entry
 					} else {
@@ -203,7 +203,7 @@ public class PieChartPanel extends JPanel {
 			
 			//Add data to the chart after we have gone through each requirement for each user
 			for(int i = 0; i < allUsers.size(); i++){
-				data.setValue(allUsers.get(i).getName(), requirementCountMap.get(allUsers.get(i)));
+				data.setValue(allUsers.get(i), requirementCountMap.get(allUsers.get(i)));
 			}
 			
 			this.dataset = data;
@@ -225,16 +225,16 @@ public class PieChartPanel extends JPanel {
 			DefaultPieDataset data = new DefaultPieDataset();
 			
 			//ArrayList to contain all users assigned to iterations
-			ArrayList<User> allUsers = new ArrayList<User>();
+			ArrayList<String> allUsers = new ArrayList<String>();
 			
 			//HashMap that contains how many times each user has been assigned
-			HashMap<User, Integer> estimateCountMap = new HashMap<User, Integer>();
+			HashMap<String, Integer> estimateCountMap = new HashMap<String, Integer>();
 			
 			for (int i = 0; i < requirements.length; i++){
-				allUsers.addAll(requirements[i].getUsers()); //Combine all users into a giant list
+				allUsers.addAll(requirements[i].getUserNames()); //Combine all users into a giant list
 				
 				//Add one if the user appears in the list
-				for(User user : requirements[i].getUsers()){
+				for(String user : requirements[i].getUserNames()){
 					if (estimateCountMap.get(user) == null){ //Check if user has an entry
 						estimateCountMap.put(user, requirements[i].getEstimate());  //If not this is the first entry
 					} else {
@@ -245,7 +245,7 @@ public class PieChartPanel extends JPanel {
 			
 			//Add data to the chart after we have gone through each requirement for each user
 			for(int i = 0; i < allUsers.size(); i++){
-				data.setValue(allUsers.get(i).getName(), estimateCountMap.get(allUsers.get(i)));
+				data.setValue(allUsers.get(i), estimateCountMap.get(allUsers.get(i)));
 			}
 			
 			this.dataset = data;

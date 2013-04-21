@@ -120,10 +120,10 @@ public class UserChooserTab extends JPanel {
 	public void resumeInitialization(){
 		//Add the users to the unassignedUserListModel
 		for (int i = 0; i < users.size(); i++) {
-			if (parent.getCurrentRequirement().getUsers().contains(users.get(i)))
-				assignedUserListModel.addUser(users.get(i));
+			if (parent.getCurrentRequirement().getUserNames().contains(users.get(i).getName()))
+				assignedUserListModel.addUser(users.get(i).getName());
 			else
-				unassignedUserListModel.addUser(users.get(i));
+				unassignedUserListModel.addUser(users.get(i).getName());
 		}
 
 		//Create the scrollpanes to hold their corresponding lists

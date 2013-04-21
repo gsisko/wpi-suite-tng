@@ -12,13 +12,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class UserChange extends RequirementEvent {
 	
-	ArrayList<User> oldUsers;
-	ArrayList<User> newUsers;
+	ArrayList<String> oldUsers;
+	ArrayList<String> newUsers;
 	
 	public UserChange(Requirement oldReq, Requirement newReq, String userName) {
 		this.type = EventType.USER;
-		oldUsers = oldReq.getUsers();
-		newUsers = newReq.getUsers();
+		oldUsers = oldReq.getUserNames();
+		newUsers = newReq.getUserNames();
 		this.userName = userName;
 	}
 
@@ -36,22 +36,22 @@ public class UserChange extends RequirementEvent {
 		boolean first = true;
 		
 		if (newUsers.size() > oldUsers.size()) {
-			for (User u : newUsers) {
+			for (String u : newUsers) {
 				if (!oldUsers.contains(u)) {
 					if (!first) content += '\n';
 					else first = false;
 					
-					content += u.getName() + "is now assigned to this requirement";
+					content += u + " is now assigned to this requirement";
 				}
 			}
 		}
 		else {
-			for (User u : oldUsers) {
+			for (String u : oldUsers) {
 				if (!newUsers.contains(u)) {
 					if (!first) content += '\n';
 					else first = false;
 					
-					content += u.getName() + "is no longer assigned to this requirement";
+					content += u + " is no longer assigned to this requirement";
 				}
 			}
 		}

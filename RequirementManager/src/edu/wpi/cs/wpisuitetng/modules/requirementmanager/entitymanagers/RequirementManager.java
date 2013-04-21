@@ -254,7 +254,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 			lastNote.setUser(currentUser);
 			reqUpdate.getEvents().add(lastNote);
 		}
-		else if (reqUpdate.getUsers().size() != oldReq.getUsers().size()) { // if the update is a user assignment change
+		else if (reqUpdate.getUserNames().size() != oldReq.getUserNames().size()) { // if the update is a user assignment change
 			UserChange userChange = new UserChange(oldReq, reqUpdate, currentUser);
 			reqUpdate.getEvents().add(userChange);
 		}

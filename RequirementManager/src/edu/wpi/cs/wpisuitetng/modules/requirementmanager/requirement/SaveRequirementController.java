@@ -386,13 +386,13 @@ public class SaveRequirementController
 	public void saveUsers() {
 		
 		Requirement currentRequirement = view.getCurrentRequirement();
-		ArrayList<User> assignedUsers = new ArrayList<User>();
+		ArrayList<String> assignedUsers = new ArrayList<String>();
 		UserListModel assignedUserListModel = view.getTabPanel().getUserChooserPanel().getAssignedUserListModel();
 		
 		for (int i = 0; i < assignedUserListModel.getSize(); i++) {
 			assignedUsers.add(assignedUserListModel.getUserAt(i));
 		}
-		currentRequirement.setUsers(assignedUsers);
+		currentRequirement.setUserNames(assignedUsers);
 		
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
