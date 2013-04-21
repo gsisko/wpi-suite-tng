@@ -60,13 +60,13 @@ public enum RequirementStatus {
 		case New:
 			return new String[] {"New", "Deleted"};
 		case InProgress:
-			return new String[] {"InProgress", "Open", "Deleted", "Complete"};
+			return new String[] {"Open", "InProgress", "Complete", "Deleted"};
 		case Open:
 			return new String[] {"Open", "Deleted"};
 		case Deleted:
 			return new String[] {"Open", "Deleted"};
 		case Complete:
-			return new String[] {"InProgress", "Open", "Deleted", "Complete"};
+			return new String[] {"Open", "InProgress", "Complete", "Deleted"};
 		default:
 			System.err.println("An unknown status was entered for the Requirement. Problem!");
 			return new String[] {""};

@@ -668,7 +668,7 @@ public class RequirementAttributePanel extends JPanel {
 				}
 				// Only valid in EDIT mode
 				if (mode.equals(Mode.EDIT) ){
-					
+
 				}
 			}
 
@@ -987,6 +987,9 @@ public class RequirementAttributePanel extends JPanel {
 				changeField(statusBox, 6, false); // Note that the status changed
 			}     
 		}
+
+		this.revalidate();
+		this.repaint();
 	}
 
 	/** Checks the Iteration box for changes and yellows that box appropriately
@@ -1012,6 +1015,10 @@ public class RequirementAttributePanel extends JPanel {
 			System.out.println("  Result: deactivate");
 			this.changeField(iterationBox, 8, false);
 		}
+	}
+
+	public void setSaving(boolean isSaving) {
+		this.fieldsChanged[10] = isSaving;
 	}
 
 }
