@@ -27,6 +27,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.RowSorter.SortKey;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
@@ -66,6 +67,9 @@ public class RetrieveAllRequirementsController {
 
 	/**Initialize to keep track of table column width */
 	protected ArrayList<String> columnHeader  = new ArrayList<String>();
+	
+	/**Initialize to keep track of table column sort */
+	protected java.util.List<? extends SortKey> columnSort;
 
 	/** boolean to designate if there is existing data in the list */
 	protected boolean hasPreviousData;
@@ -117,6 +121,7 @@ public class RetrieveAllRequirementsController {
 				&& (resultsPanel.getResultsTable().getRowCount() != 0)) {
 			columnHeader = getTableName();
 			columnWidth = getTableWidth();
+			columnSort = getTableSort();
 		}
 
 		//Array of all the user's filters that are used 
@@ -195,6 +200,7 @@ public class RetrieveAllRequirementsController {
 			} else {
 				setTableName(columnHeader);
 				setTableWidth(columnWidth);
+				setTableSort(columnSort);
 			}
 
 		}
@@ -375,6 +381,27 @@ public class RetrieveAllRequirementsController {
 		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(columnWidth.get(7));
 		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
 	}
+	
+	/**
+	 *A getter to get the current sorts of the table 
+	 * @return columnSort return the ArrayList of column Sorts
+	 */
+	public java.util.List<? extends SortKey> getTableSort(){
+		//get Sorts
+		columnSort = resultsPanel.getResultsTable().getRowSorter().getSortKeys();
+		
+		return columnSort;
+	}
+
+	/**
+	 * Set custom Sorts of all columns
+	 * @param columnSort the ArrayList of columnSorts
+	 */
+	public void setTableSort(java.util.List<? extends SortKey> columnSort){
+		
+		resultsPanel.getResultsTable().getRowSorter().setSortKeys(columnSort);
+	}
+
 
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
