@@ -58,15 +58,15 @@ public enum RequirementStatus {
 	public static String[] getAvailableStatuses(RequirementStatus currentStatus){
 		switch(currentStatus){
 		case New:
-			return new String[] { "New", "Deleted" };
+			return new String[] {"New", "Deleted"};
 		case InProgress:
-			return new String[] { "InProgress", "Open", "Deleted", "Complete" };
+			return new String[] {"InProgress", "Open", "Deleted", "Complete"};
 		case Open:
-			return new String[] { "Open", "Deleted" };
+			return new String[] {"Open", "Deleted"};
 		case Deleted:
-			return new String[] { "Deleted", "Open"};
+			return new String[] {"Open", "Deleted"};
 		case Complete:
-			return new String[] { "Complete", "Open", "Deleted" };
+			return new String[] {"InProgress", "Open", "Deleted", "Complete"};
 		default:
 			System.err.println("An unknown status was entered for the Requirement. Problem!");
 			return new String[] {""};

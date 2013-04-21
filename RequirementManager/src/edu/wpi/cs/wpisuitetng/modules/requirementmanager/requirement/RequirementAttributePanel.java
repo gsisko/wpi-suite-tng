@@ -668,11 +668,7 @@ public class RequirementAttributePanel extends JPanel {
 				}
 				// Only valid in EDIT mode
 				if (mode.equals(Mode.EDIT) ){
-					// Check to see if the status changed to "Open"
-					if (statusBox.getSelectedItem().toString().equals("Open")){
-						// Change the selected iteration to backlog
-						iterationBox.setSelectedIndex(0);
-					}
+					
 				}
 			}
 

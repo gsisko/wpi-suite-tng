@@ -151,7 +151,7 @@ public class SaveRequirementController
 			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
-			if (updatedRequirement.getStatus() == RequirementStatus.Deleted) {
+			if (updatedRequirement.getStatus() == RequirementStatus.Deleted || updatedRequirement.getStatus() == RequirementStatus.Open) {
 				updatedRequirement.setIteration(0);
 			}
 
