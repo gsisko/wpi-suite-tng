@@ -37,6 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
@@ -307,15 +308,15 @@ public class SaveRequirementController
 	public void saveAcceptanceTest() {
 		// check if any inputs are invalid, print an error message if one is
 		if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestMessage().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Note must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Acceptance Test message must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		Requirement currentRequirement = view.getCurrentRequirement();
 
-		String NoteContent = view.getRequirementNote().getText();
-		view.getRequirementNote().setText("");
-		currentRequirement.getNotes().add(new Note(NoteContent));
+		String acceptanceTestMessage = view.getRequirementAcceptanceTest().getText();
+		view.getRequirementAcceptanceTest().setText("");
+		currentRequirement.getAcceptanceTests().add(new AcceptanceTest(acceptanceTestMessage));
 
 		// make a POST http request and let the observer get the response
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update

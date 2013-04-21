@@ -66,8 +66,6 @@ public class AcceptanceTestPanel extends JPanel{
 	 * @param message A string containing the actual body of the acceptance test to be displayed in this panel
 	 */
 
-
-
 	public AcceptanceTestPanel(String testName, String testDescription){
 		this.setBackground(Color.white);//Set the background color of this panel to white
 		this.setOpaque(true);//Set this panel to Opaque (means the background is painted)
