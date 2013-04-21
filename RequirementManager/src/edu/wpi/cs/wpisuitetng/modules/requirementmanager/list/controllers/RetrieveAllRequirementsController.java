@@ -258,6 +258,68 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/**
+	 *A getter to get the current column headers of the table 
+	 * @return columnHeader the ArrayList of headers for the table
+	 */
+	public ArrayList<String> getTableName(){
+		columnHeader  = new ArrayList<String>();
+
+		String column0Header = "";
+		String column1Header = "";
+		String column2Header = "";
+		String column3Header = "";
+		String column4Header = "";
+		String column5Header = "";
+		String column6Header = "";
+		String column7Header = "";
+		String column8Header = "";
+
+		//get Headers
+		column0Header = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getHeaderValue().toString();
+		column1Header = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getHeaderValue().toString();
+		column2Header = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getHeaderValue().toString();
+		column3Header = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getHeaderValue().toString();
+		column4Header = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getHeaderValue().toString();
+		column5Header = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getHeaderValue().toString();
+		column6Header = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getHeaderValue().toString();
+		column7Header = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getHeaderValue().toString();
+		column8Header = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getHeaderValue().toString();
+
+		columnHeader.add(column0Header);
+		columnHeader.add(column1Header);
+		columnHeader.add(column2Header);
+		columnHeader.add(column3Header);
+		columnHeader.add(column4Header);
+		columnHeader.add(column5Header);
+		columnHeader.add(column6Header);
+		columnHeader.add(column7Header);
+		columnHeader.add(column8Header);
+
+		return columnHeader;
+	}
+
+	/**
+	 * put the data in the table using default view
+	 * @param columnNames the names of each column of the table
+	 * @param entries each cell of the table
+	 */
+	public void setTableName(ArrayList<String> columnNames) {
+		int nameSize = columnNames.size();
+		int headerSize = resultsPanel.getResultsTable().getColumnCount();
+		String headerJ = "";
+
+		for (int i = 0; i < nameSize; i++) {
+			for (int j = 0; j < headerSize; j++) {
+				headerJ = resultsPanel.getResultsTable().getColumnModel().getColumn(j).getHeaderValue().toString();
+				if (columnNames.get(i).equals(headerJ)) {
+					resultsPanel.getResultsTable().moveColumn(j, i);
+					j = headerSize; // used to break out of inner for loop
+				}
+			}
+		}
+	}
+
+	/**
 	 *A getter to get the current width of the table 
 	 * @return columnWidth return the ArrayList of column Widths
 	 */
@@ -294,7 +356,7 @@ public class RetrieveAllRequirementsController {
 		columnWidth.add(column6Width);
 		columnWidth.add(column7Width);
 		columnWidth.add(column8Width);
-
+		
 		return columnWidth;
 	}
 
@@ -303,6 +365,7 @@ public class RetrieveAllRequirementsController {
 	 * @param columnWidth the ArrayList of columnWidths
 	 */
 	public void setTableWidth(ArrayList<Integer> columnWidth){
+		
 		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(columnWidth.get(0));
 		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(columnWidth.get(1));
 		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(columnWidth.get(2));
@@ -312,70 +375,6 @@ public class RetrieveAllRequirementsController {
 		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(columnWidth.get(6));
 		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(columnWidth.get(7));
 		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
-	}
-
-	/**
-	 *A getter to get the current column headers of the table 
-	 * @return columnHeader the ArrayList of headers for the table
-	 */
-	public ArrayList<String> getTableName(){
-		columnHeader  = new ArrayList<String>();
-
-		String column0Header = "";
-		String column1Header = "";
-		String column2Header = "";
-		String column3Header = "";
-		String column4Header = "";
-		String column5Header = "";
-		String column6Header = "";
-		String column7Header = "";
-		String column8Header = "";
-
-		//get Headers
-		column0Header = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getHeaderValue().toString();
-		column1Header = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getHeaderValue().toString();
-		column2Header = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getHeaderValue().toString();
-		column3Header = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getHeaderValue().toString();
-		column4Header = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getHeaderValue().toString();
-		column5Header = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getHeaderValue().toString();
-		column6Header = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getHeaderValue().toString();
-		column7Header = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getHeaderValue().toString();
-		column8Header = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getHeaderValue().toString();
-		
-		columnHeader.add(column0Header);
-		columnHeader.add(column1Header);
-		columnHeader.add(column2Header);
-		columnHeader.add(column3Header);
-		columnHeader.add(column4Header);
-		columnHeader.add(column5Header);
-		columnHeader.add(column6Header);
-		columnHeader.add(column7Header);
-		columnHeader.add(column8Header);
-		
-		return columnHeader;
-	}
-
-	/**
-	 * put the data in the table using default view
-	 * @param columnNames the names of each column of the table
-	 * @param entries each cell of the table
-	 */
-	public void setTableName(ArrayList<String> columnNames) {
-		int nameSize = columnNames.size();
-		int headerSize = resultsPanel.getResultsTable().getColumnCount();
-		String headerJ = "";
-
-		for (int i = 0; i < nameSize; i++) {
-			for (int j = 0; j < headerSize; j++) {
-				headerJ = resultsPanel.getResultsTable().getColumnModel().getColumn(j).getHeaderValue().toString();
-				if (columnNames.get(i).equals(headerJ)) {
-					System.out.println("col name: " + columnNames.get(i));
-					System.out.println("col entry: " + headerJ);
-					resultsPanel.getResultsTable().moveColumn(j, i);
-					j = headerSize; // used to break out of inner for loop
-				}
-			}
-		}
 	}
 
 	/**

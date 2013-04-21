@@ -81,7 +81,7 @@ public class MainTabController {
 					} 
 					
 					if (tab instanceof ChartView) {
-						((ChartView)tab).refreshData();
+						((ChartView)tab).reloadData();
 					}
 					
 					if (tab instanceof RequirementView){

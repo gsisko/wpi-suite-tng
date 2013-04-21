@@ -95,21 +95,18 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
             	parent.setChartType((String) ((JComboBox)e.getSource()).getSelectedItem());
-            	parent.refreshData();
             }
         });  
 		
 		chartDataBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
             	parent.setDataTypeVisible((String) ((JComboBox)e.getSource()).getSelectedItem());
-            	parent.refreshData();
             }
         });  
 		
 		filtersOptionsBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
             	parent.setDataFiltered((String) ((JComboBox)e.getSource()).getSelectedItem());
-            	parent.refreshData();
             }
         });  
 		

@@ -33,8 +33,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
@@ -140,7 +138,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		});
 		
 		// Instantiate the defaultColumnWidths checkbox
-		checkBoxDefault = new JCheckBox("Default Table Settings", true);
+		checkBoxDefault = new JCheckBox("Reset Table Layout", true);
 		this.checkBoxStatus = true;
 		//Save the state of the checkbox every time it changes, workaround for reseting views when tabs are changed
 		checkBoxDefault.addItemListener(new ItemListener() {
@@ -160,10 +158,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	protected void setCheckBoxStatus(boolean checkBoxStatus) {
 		this.checkBoxStatus = checkBoxStatus;
 	}
-
-//	public void setCheckBoxDefault(JCheckBox checkBoxDefault) {
-//		this.checkBoxDefault = checkBoxDefault;
-//	}
 
 	public void refreshData() {
 		// Load initial data

@@ -166,7 +166,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 	/** Function to reload data from "List Requirements" tab without refreshing **/
-	private void reloadData(){
+	public void reloadData(){
 		
 		//Grab requirements
 		Requirement[] requirements;
