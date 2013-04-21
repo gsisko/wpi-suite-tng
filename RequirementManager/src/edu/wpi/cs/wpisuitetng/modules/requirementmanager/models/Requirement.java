@@ -32,7 +32,6 @@ import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 /** Requirement: Holds data that makes up a Requirement
@@ -65,7 +64,7 @@ public class Requirement extends AbstractModel {
 	/** This is the list of acceptance tests for this Requirement */
 	private ArrayList<AcceptanceTest> acceptanceTests;
 	/** This is the list of users associated with this Requirement */
-	private ArrayList<User> users;
+	private ArrayList<String> userNames;
 	/** This is the history log for the Requirement */
 	private ArrayList<RequirementEvent> events;
 	/** This is the list of attachments associated with this Requirement */
@@ -100,7 +99,7 @@ public class Requirement extends AbstractModel {
 		this.setStatus(RequirementStatus.New);	// Initial status should be set to NEW
 		this.setId(-1); 						// (-1) will be a flag to the server/database that this value needs to be set
 		this.notes = new ArrayList<Note>();
-		this.users = new ArrayList<User>();
+		this.userNames = new ArrayList<String>();
 		this.events = new ArrayList<RequirementEvent>();
 		this.subrequirement = new ArrayList<Requirement>();
 		this.attachments = new ArrayList<Attachment>();
@@ -350,7 +349,7 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(reqUpdate.getActualEffort());
 		this.setType(reqUpdate.getType());
 		this.setNotes(reqUpdate.getNotes());
-		this.setUsers(reqUpdate.getUsers());
+		this.setUserNames(reqUpdate.getUserNames());
 		this.setEvents(reqUpdate.getEvents());
 		this.setIteration(reqUpdate.getIteration());
 		this.setAttachments(reqUpdate.getAttachments());
@@ -408,16 +407,16 @@ public class Requirement extends AbstractModel {
 	/**
 	 * @return users assigned to this requirement
 	 */
-	public ArrayList<User> getUsers() {
-		return users;
+	public ArrayList<String> getUserNames() {
+		return userNames;
 	}
 
 
 	/**
 	 * @param users ArrayList of users to assign to this requirement
 	 */
-	public void setUsers(ArrayList<User> users) {
-		this.users = users;
+	public void setUserNames(ArrayList<String> users) {
+		this.userNames = users;
 	}
 
 	/**

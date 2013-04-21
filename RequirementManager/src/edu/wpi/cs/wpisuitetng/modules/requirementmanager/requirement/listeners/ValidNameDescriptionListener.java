@@ -66,17 +66,14 @@ public class ValidNameDescriptionListener implements KeyListener{
 	 *  to see if warnings should be put up, and does so.
 	 */
 	public void keyReleased(KeyEvent e) {
-	//	System.out.println("Name/Description: Key released");  //Debug Statement
 		thePanel.setSaveButtonWhenNameAndDescriptionAreValid();
 	}
 
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {
-//		System.out.println("Name/Description: Key typed");  //Debug Statement
 	}
 
 	/** This method is unused but required by the interface   */
 	public void keyPressed(KeyEvent e) {
-//		System.out.println("Name/Description: Key pressed");  //Debug Statement
 	}
 }

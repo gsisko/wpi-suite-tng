@@ -91,7 +91,6 @@ public class RetrieveModelController extends MouseAdapter {
 		builderView.setInputEnabled(true);
 		
 		listView.setNewBtnToCancel();
-		System.out.println(modelName  + " retrieved and displayed successfully");
 	}
 
 	/** Called by {@link RetrieveModelObserver} when an error

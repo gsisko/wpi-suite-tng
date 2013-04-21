@@ -360,6 +360,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 			
 			return; // end now
 		}
+		
+		setDeleteEnabled(false);
 	}
 
 	/**

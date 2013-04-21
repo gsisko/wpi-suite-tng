@@ -24,13 +24,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
-import java.awt.event.ActionListener;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.AttachmentReconstructionAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;

@@ -324,8 +324,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		toSend.setEndDate(trim(this.endDateChooser.getDate()));
 		toSend.setTotalEstimate(Integer.parseInt(this.totalEstimate.getText()));
 
-		System.out.println(toSend.toJSON());
-
 		return toSend.toJSON();
 	}
 
@@ -393,17 +391,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 
 		return true;
-	}
-
-	/** Checks if there is an overlap between a one day iteration and a multi-day iteration
-	 * 
-	 * @param oneDay
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	private boolean oneDayOverlap(Date oneDay, Date start, Date end) {
-		return !oneDay.equals(start);
 	}
 
 	/** Takes a JSON string that holds an array of models and uploads them

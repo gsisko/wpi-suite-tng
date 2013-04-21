@@ -5,21 +5,19 @@ import java.util.Iterator;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
 @SuppressWarnings({"serial","rawtypes"})
 public class UserListModel extends AbstractListModel {
 	
 	
-	private ArrayList<User> users;
+	private ArrayList<String> users;
 	
 
 	public UserListModel() {
-		users = new ArrayList<User>();
+		users = new ArrayList<String>();
 	}
 
 
-	public void addUser(User newUser) {
+	public void addUser(String newUser) {
 		// Add the user
 		users.add(newUser);
 		
@@ -28,7 +26,7 @@ public class UserListModel extends AbstractListModel {
 	}
 	
 
-	public void addUsers(User[] arrayOfUsers) {
+	public void addUsers(String[] arrayOfUsers) {
 		for (int i = 0; i < arrayOfUsers.length; i++) {
 			this.users.add(arrayOfUsers[i]);
 		}
@@ -38,7 +36,7 @@ public class UserListModel extends AbstractListModel {
 
 	public void emptyModel() {
 		int oldSize = getSize();
-		Iterator<User> iterator = users.iterator();
+		Iterator<String> iterator = users.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -53,7 +51,7 @@ public class UserListModel extends AbstractListModel {
 	}
 	
 
-	public User getUserAt(int index) {
+	public String getUserAt(int index) {
 		return users.get(users.size() - 1 - index);
 	}
 	

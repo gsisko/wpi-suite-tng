@@ -119,7 +119,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[10];
+		fieldsChanged = new boolean[11];
 		setFieldsChanged(false);
 
 		validNameAndDescription = new Boolean(true);
@@ -614,9 +614,9 @@ public class RequirementAttributePanel extends JPanel {
 			public void keyReleased(KeyEvent e) {
 				// When estimate is invalid, deactivate the iteration box
 				if (txtEstimate.getText().equals("") || Integer.parseInt(txtEstimate.getText()) == 0  ){
-					iterationBox.setEnabled(false);
+					toggleComponentEnabled(iterationBox, false);
 				} else {
-					iterationBox.setEnabled(true);
+					toggleComponentEnabled(iterationBox, true);
 				}
 
 				// Check the old value and set the box yellow as necessary
@@ -655,15 +655,10 @@ public class RequirementAttributePanel extends JPanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				//		System.out.println("Status Box: Changed!");
-
-
 				// Check the old value and set the box yellow as necessary
 				if (!statusBox.getSelectedItem().toString().equals(currentRequirement.getStatus() + "")) {
 					changeField(statusBox, 6, true);
-					System.out.println("  Result: activate");
 				} else {
-					System.out.println("  Result: deactivate");
 					changeField(statusBox, 6, false);
 				}
 				// Only valid in EDIT mode
@@ -888,10 +883,10 @@ public class RequirementAttributePanel extends JPanel {
 			toggleComponentEnabled(txtActualEffort, false);
 			toggleComponentEnabled(iterationBox, false);			
 		}
-		// Sets the selected entry to the first, which will be correct for each.
-		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses( setStatus));
+		// Sets the correct selected item
+		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses(setStatus));
 		statusBox.setModel(compbox);
-		statusBox.setSelectedIndex(0);
+		statusBox.setSelectedItem(setStatus);
 
 	}
 
@@ -905,9 +900,9 @@ public class RequirementAttributePanel extends JPanel {
 	public void fillIterationSelectionBox() {
 		// Iterations cannot be assigned when there is no estimate saved, so enable/disable the iteration box appropriately
 		if (currentRequirement.getEstimate() <= 0){
-			iterationBox.setEnabled(false);
+			toggleComponentEnabled(iterationBox, false);
 		} else {
-			iterationBox.setEnabled(true);
+			toggleComponentEnabled(iterationBox, true);
 		}
 
 		Iteration[] allIterations = parent.getAllIterations(); //Grab all the iterations in an array
@@ -953,8 +948,6 @@ public class RequirementAttributePanel extends JPanel {
 	 * @param e details about the event
 	 */
 	public void changeStatusWithIteration(ItemEvent e){
-		System.out.println("The assigned iteration has been changed; the status will be changed accordingly.");
-
 		// Only valid in EDIT mode
 		if (this.getMode().equals(Mode.EDIT) ){
 			RequirementStatus currentStatus = currentRequirement.getStatus(); 			
@@ -973,17 +966,15 @@ public class RequirementAttributePanel extends JPanel {
 				}
 				changeField(statusBox, 6, true); // Note that the status changed
 				this.updateStatusSettings("Open");
-				txtEstimate.setEnabled(true);
+				toggleComponentEnabled(txtEstimate, true);
 			} else {
-				txtEstimate.setEnabled(false); 
+				toggleComponentEnabled(txtEstimate, false); 
 				this.updateStatusSettings("InProgress");
 			}
 			// hack to make the status box change colors
 			if (! this.getCurrentRequirement().getStatus().toString().equals(statusBox.getSelectedItem().toString())){
-				System.out.println("Status was changed with the iteration.");
 				changeField(statusBox, 6, true); // Note that the status changed
 			} else {
-				System.out.println("The status was not changed by the iteration.");
 				changeField(statusBox, 6, false); // Note that the status changed
 			}     
 		}
@@ -1010,9 +1001,7 @@ public class RequirementAttributePanel extends JPanel {
 		// Check the old value and set the box yellow as necessary
 		if (!iterationBox.getSelectedItem().toString().equals(oldValue + "")) {
 			this.changeField(iterationBox, 8, true);
-			System.out.println("  Result: activate");
 		} else {
-			System.out.println("  Result: deactivate");
 			this.changeField(iterationBox, 8, false);
 		}
 	}
