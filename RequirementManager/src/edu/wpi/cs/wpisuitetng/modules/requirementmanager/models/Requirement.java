@@ -93,12 +93,12 @@ public class Requirement extends AbstractModel {
 		this.setPriority(priority); 			// Initialize priority
 		this.setReleaseNumber(releaseNumber); 	// release number of current project
 		this.setIteration(iterationID);
-		
 		this.setEstimate(0);
 		this.setActualEffort(0);				// Initial actual effort set to zero
 		this.setStatus(RequirementStatus.New);	// Initial status should be set to NEW
 		this.setId(-1); 						// (-1) will be a flag to the server/database that this value needs to be set
 		this.notes = new ArrayList<Note>();
+		this.acceptanceTests = new ArrayList<AcceptanceTest>();
 		this.userNames = new ArrayList<String>();
 		this.events = new ArrayList<RequirementEvent>();
 		this.subrequirement = new ArrayList<Requirement>();
@@ -349,6 +349,7 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(reqUpdate.getActualEffort());
 		this.setType(reqUpdate.getType());
 		this.setNotes(reqUpdate.getNotes());
+		this.setAcceptanceTests(reqUpdate.getAcceptanceTests());
 		this.setUserNames(reqUpdate.getUserNames());
 		this.setEvents(reqUpdate.getEvents());
 		this.setIteration(reqUpdate.getIteration());
@@ -399,7 +400,7 @@ public class Requirement extends AbstractModel {
 	/**
 	 * @param notes the notes to set
 	 */
-	public void setAcceptancetests(ArrayList<AcceptanceTest> acceptanceTests) {
+	public void setAcceptanceTests(ArrayList<AcceptanceTest> acceptanceTests) {
 		this.acceptanceTests = acceptanceTests;
 	}
 

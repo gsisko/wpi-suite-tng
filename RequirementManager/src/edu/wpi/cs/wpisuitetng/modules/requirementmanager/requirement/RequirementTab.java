@@ -154,7 +154,6 @@ public class RequirementTab extends JPanel {
 		tabPanel.settab();
 
 		addComponents();//Add the panels, enabling/disabling fields appropriately
-
 	}
 
 	/**
@@ -173,14 +172,25 @@ public class RequirementTab extends JPanel {
 			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 			tabPanel.getNotePanel().setEnabled(false);
 
+			//Disables the acceptanceTestPanel upon creation
+			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), false);
+			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+			tabPanel.getAcceptanceTestPanel().setEnabled(false);
+			
 			//Disables the appropriate fields in the attributePanel upon creation
 			attributePanel.disableFieldsOnCreation();
 
 		}
+		
+		//If deleted, we can't add notes or tests
 		if (this.currentRequirement.getStatus() == RequirementStatus.Deleted) {
 			this.toggleEnabled(this.tabPanel.getNotePanel().getNoteMessage(), false);
 			this.tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 			this.tabPanel.getNotePanel().setEnabled(false);
+			
+			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), false);
+			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+			tabPanel.getAcceptanceTestPanel().setEnabled(false);
 		}
 
 		// add the panels to the splitPane and add the splitPane to the page
@@ -206,6 +216,9 @@ public class RequirementTab extends JPanel {
 
 		tabPanel.getAttachmentPanel().getSaveButton().setEnabled(enabled);
 		
+		toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), enabled);
+		tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(enabled);
+		tabPanel.getAcceptanceTestPanel().setEnabled(enabled);
 	}
 
 	/**

@@ -115,7 +115,7 @@ public class AcceptanceTestPanel extends JPanel{
 
 		title = testName;//Set the "title"
 
-		txtDescription =  new JTextArea(testDescription); //Create and set the "content"
+		txtDescription = new JTextArea(testDescription); //Create and set the "content"
 
 		txtDescription.setLineWrap(true); //Make the content wrap long lines
 
