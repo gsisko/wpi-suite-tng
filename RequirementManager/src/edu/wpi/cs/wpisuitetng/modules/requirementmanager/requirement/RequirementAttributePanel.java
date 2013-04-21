@@ -119,7 +119,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[10];
+		fieldsChanged = new boolean[11];
 		setFieldsChanged(false);
 
 		validNameAndDescription = new Boolean(true);
@@ -888,10 +888,10 @@ public class RequirementAttributePanel extends JPanel {
 			toggleComponentEnabled(txtActualEffort, false);
 			toggleComponentEnabled(iterationBox, false);			
 		}
-		// Sets the selected entry to the first, which will be correct for each.
-		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses( setStatus));
+		// Sets the correct selected item
+		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses(setStatus));
 		statusBox.setModel(compbox);
-		statusBox.setSelectedIndex(0);
+		statusBox.setSelectedItem(setStatus);
 
 	}
 
