@@ -84,8 +84,16 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 		
 		Component comp = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 		
-		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
-			if (JOptionPane.showOptionDialog(this, "You have unsaved changes to this requirement, are you sure you want to exit?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
+		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isSaving()) {
+			if (JOptionPane.showOptionDialog(this, "The requirement is still saving.  Are you sure you want to exit?", "Warning",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
+				if (index> -1) {
+					tabbedPane.remove(index);
+				}
+			}
+		} else if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
+			if (JOptionPane.showOptionDialog(this, "You have unsaved changes to this requirement.  Are you sure you want to exit?", "Warning",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
 				if (index> -1) {
 					tabbedPane.remove(index);
 				}

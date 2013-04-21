@@ -84,12 +84,12 @@ public class SaveRequirementController
 			return;
 		}
 
-
+		// Warn when the user tries to exit the tab
+		view.getAttributePanel().setSaving(true);
+		
 		view.getParent().setSaveButtonEnable(false);
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
-			// Warn when the user tries to exit the tab
-			view.getAttributePanel().setSaving(true);
 			// make a PUT http request and let the observer get the response
 			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); // PUT == create
 			request.setBody(view.getRequirement().toJSON()); // put the new message in the body of the request
@@ -98,7 +98,7 @@ public class SaveRequirementController
 		}
 
 		else { // we are updating an existing requirement
-			
+
 			//If there is an unsaved note in the note tab, add the note to the requirement
 			if (!(view.getRequirementNote().getText().compareTo("") == 0))
 				saveNote();
