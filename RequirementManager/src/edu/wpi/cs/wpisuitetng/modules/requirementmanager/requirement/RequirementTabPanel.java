@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment.AttachmentTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note.NoteTab;
 
@@ -42,6 +43,7 @@ public class RequirementTabPanel extends JTabbedPane {
 
 	private RequirementTab parent;
 	private NoteTab notePanel;
+	private AcceptanceTestTab acceptanceTestPanel;
 	private AttachmentTab attachmentPanel;
 	private HistoryTab historyPanel;
 
@@ -60,8 +62,13 @@ public class RequirementTabPanel extends JTabbedPane {
 
 		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
+		
+		acceptanceTestPanel = new AcceptanceTestTab(parent);
+		addTab("Acceptance Tests", new ImageIcon(), acceptanceTestPanel, "Acceptance tests for the current requirement");
+		
 		historyPanel = new HistoryTab(parent);
 		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
+		
 		subtabcontroller = new RetrieveRequirmentsIntoSubController(this.parent.getParent());
 		subtabcontroller.setSubtab();
 		subtabcontroller.refreshData();
@@ -71,6 +78,7 @@ public class RequirementTabPanel extends JTabbedPane {
 
 		attachmentPanel = new AttachmentTab(parent);
 		addTab("Attachments", new ImageIcon(), attachmentPanel, "Attachments for the current requirement");
+		
 		userChooserPanel = new UserChooserTab(parent); 
 		addTab("Users", new ImageIcon(), userChooserPanel, "Users assigned to the current requirement");
 
