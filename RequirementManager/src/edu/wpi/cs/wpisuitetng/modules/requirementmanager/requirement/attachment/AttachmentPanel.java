@@ -25,6 +25,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -33,6 +34,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -80,7 +82,8 @@ public class AttachmentPanel extends JPanel{
 		TitledBorder titleBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), title); //First create a titled and (lowerd) etched border, using the provided title
 		titleBorder.setTitleJustification(TitledBorder.DEFAULT_JUSTIFICATION);//set the justification of the title to default (left justified)
 		titleBorder.setTitlePosition(TitledBorder.BOTTOM);//set the location of the title to the bottom edge of the panel
-		//titleBorder.setTitleFont(content.getFont().deriveFont(Font.ITALIC));//set the font of the title to an italic version of the font of the content of this panel
+		Font font = new JTextArea("").getFont().deriveFont(9);
+		titleBorder.setTitleFont(font.deriveFont(Font.ITALIC));//set the font of the title to an italic version of the font of the content of this panel
 		titleBorder.setTitleColor(Color.gray);//set the color of the title to grey
 
 		//Add inner and outer padding to the "titleBorder" and set the border of this panel to the result

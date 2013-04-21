@@ -105,8 +105,9 @@ public class Attachment extends RequirementEvent {
 	}
 
 	@Override
-	public String getLabelString() {	
-		return "Attachment added by " + userName +" on "+ this.getDate().toString();
+	public String getLabelString() {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
+		return "Attachment added by " + userName +" on "+ dateFormat.format(this.getDate());
 	}
 
 	/**
