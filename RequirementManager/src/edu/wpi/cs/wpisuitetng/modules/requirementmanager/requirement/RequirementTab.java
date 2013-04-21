@@ -171,6 +171,9 @@ public class RequirementTab extends JPanel {
 			toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), false);
 			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 			tabPanel.getNotePanel().setEnabled(false);
+			
+			//Disables the userChooserTab upon creation
+			tabPanel.getUserChooserPanel().setInputEnabled(false);
 
 			//Disables the acceptanceTestPanel upon creation
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), false);
@@ -191,6 +194,9 @@ public class RequirementTab extends JPanel {
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
+
+			tabPanel.getUserChooserPanel().setInputEnabled(false);
+
 		}
 
 		// add the panels to the splitPane and add the splitPane to the page
@@ -219,6 +225,11 @@ public class RequirementTab extends JPanel {
 		toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), enabled);
 		tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(enabled);
 		tabPanel.getAcceptanceTestPanel().setEnabled(enabled);
+
+		//toggles the UserChooserTab
+		tabPanel.getUserChooserPanel().setInputEnabled(enabled);
+		
+
 	}
 
 	/**

@@ -60,7 +60,7 @@ public class UserChooserTab extends JPanel {
 	private JList assignedList;//The JList that displays the users assigned to this requirement
 
 	//A boolean indicating if input is enabled on the form 
-	protected boolean inputEnabled;
+	private boolean inputEnabled;
 
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 
@@ -89,6 +89,10 @@ public class UserChooserTab extends JPanel {
 		//Set an empty border around this panel for spacing purposes (10 units wide in all directions)
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+		//Create the buttons
+		addSelectedUserButton = new JButton("Add Users ->");
+		removeSelectedUserButton= new JButton("<- Remove Users");
+
 		//Create the UserListModels
 		unassignedUserListModel = new UserListModel();
 		assignedUserListModel = new UserListModel();
@@ -97,7 +101,7 @@ public class UserChooserTab extends JPanel {
 		unassignedList = new JList(unassignedUserListModel);
 		assignedList = new JList(assignedUserListModel);
 
-		//Dummy list of users
+		//List of users
 		users = new ArrayList<User>();
 
 		Request request;
@@ -171,10 +175,6 @@ public class UserChooserTab extends JPanel {
 		//Set the preferred size of both of the scroll panes holding the lists to the same value (the maximum of the preferred widths and heights of the lists)
 		unassignedScroll.setPreferredSize(new Dimension((int)maxPrefWidth,(int)maxPrefHeight));
 		assignedScroll.setPreferredSize(new Dimension((int)maxPrefWidth,(int)maxPrefHeight));
-
-		//Create the buttons
-		addSelectedUserButton = new JButton("Add Users ->");
-		removeSelectedUserButton= new JButton("<- Remove Users");
 
 		//Create and set the titled borders for the lists
 		//create the titled border for the list of assigned users
@@ -411,6 +411,24 @@ public class UserChooserTab extends JPanel {
 	 */
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
+	}
+
+	/**
+	 * @return the inputEnabled
+	 */
+	public boolean isInputEnabled() {
+		return inputEnabled;
+	}
+
+	/**
+	 * @param inputEnabled the inputEnabled to set
+	 */
+	public void setInputEnabled(boolean inputEnabled) {
+		this.inputEnabled = inputEnabled;
+		addSelectedUserButton.setEnabled(inputEnabled);
+		removeSelectedUserButton.setEnabled(inputEnabled);
+		unassignedList.setEnabled(inputEnabled);
+		assignedList.setEnabled(inputEnabled);
 	}
 
 }

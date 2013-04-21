@@ -113,11 +113,7 @@ public class SaveRequirementController
 			//grab the old requirement
 			Requirement oldRequirement = view.getCurrentRequirement();
 
-
 			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
-
-
-
 
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
@@ -143,8 +139,6 @@ public class SaveRequirementController
 					newIter = iter;
 				}
 			}
-
-
 
 			int oldIterID = oldRequirement.getIteration(); //grab the old status
 			int newIterID = updatedRequirement.getIteration();
@@ -184,8 +178,6 @@ public class SaveRequirementController
 					requirementList.remove((Integer)oldRequirement.getId());
 				}
 				oldIteration.setRequirementsContained(requirementList);
-
-
 
 				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
 				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
@@ -266,14 +258,16 @@ public class SaveRequirementController
 				saveUpdatedIterationRequest.send();
 
 			}
-			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {		// Disable the note panel if the requirement has been deleted
+			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {		// Disable the note panel and userChooserTab if the requirement has been deleted
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
 				view.getTabPanel().getNotePanel().setEnabled(false);
+				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
 			} else {
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
 				view.getTabPanel().getNotePanel().setEnabled(true);
+				view.getTabPanel().getUserChooserPanel().setInputEnabled(true);
 			}
 		}
 		else {
