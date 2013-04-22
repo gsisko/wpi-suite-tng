@@ -80,16 +80,24 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 		//Construct and add a new component listener to listen for a resize event
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {  //on resize...
-				double newTotalHeight=0;//This stores the new running total of the heights of the acceptance test panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
-				for (Component c : referenceToThis.getComponents()) {//For each component in this panel
-					newTotalHeight += c.getMaximumSize().getHeight();//add that panel's height to the running total
-				}
-				referenceToThis.setPreferredSize(new Dimension(325, (int)newTotalHeight)); //Set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately 
+				((ListOfAcceptanceTestPanel) referenceToThis).resizeFunction();//call the resize function
 			}
 		});
 		//end resize functionality
 	}
 
+	/**
+	 * This function is called when the ListOfAcceptanceTestPanel is resized or when 
+	 * the description field in any of the AcceptanceTestPanels is resized 
+	 * (edited to make it different than it's current size).
+	 */
+	public void resizeFunction(){
+		double newTotalHeight=0;//This stores the new running total of the heights of the acceptance test panels- this is used later to set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately
+		for (Component c : this.getComponents()) {//For each component in this panel
+			newTotalHeight += c.getMaximumSize().getHeight();//add that panel's height to the running total
+		}
+		this.setPreferredSize(new Dimension(325, (int)newTotalHeight)); //Set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately 
+	}
 	
 	
 }

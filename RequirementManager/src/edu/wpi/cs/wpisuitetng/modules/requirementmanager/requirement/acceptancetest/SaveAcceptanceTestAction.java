@@ -44,7 +44,7 @@ public class SaveAcceptanceTestAction extends AbstractAction {
 	 * @param controller When the action is performed, controller.save will be called
 	 */
 	public SaveAcceptanceTestAction(SaveRequirementController controller) {
-		super("Add Acceptance Test");
+		super("Add New Test");
 		this.controller = controller;
 		putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 	}
