@@ -62,7 +62,6 @@ public class SaveRequirementObserver implements RequestObserver {
 		// Parse the message out of the response body
 		final Requirement requirement = Requirement.fromJSON(response.getBody());
 		view.getRequirementPanel().setCurrentRequirement(requirement);
-		view.getRequirementPanel().updateModel(requirement, Mode.EDIT);
 
 		// make sure the requirement isn't null
 		if (requirement != null) {
@@ -72,17 +71,14 @@ public class SaveRequirementObserver implements RequestObserver {
 					view.getRequirementPanel().getTabPanel().getHistoryPanel().refreshEventsList();
 					
 					NoteListModel noteListModel = view.getRequirementPanel().getTabPanel().getNotePanel().getNoteListModel();
+					AttachmentListModel attachmentListModel = view.getRequirementPanel().getTabPanel().getAttachmentPanel().getAttachmentListModel();
+
 					if (noteListModel.getSize() < requirement.getNotes().size()) {
 						view.getRequirementPanel().getTabPanel().getNotePanel().addNoteToList(requirement.getNotes().get(requirement.getNotes().size() - 1));
 						view.getRequirementPanel().getRequirementNote().setText("");
 						view.getRequirementPanel().getCurrentRequirement().setNotes(requirement.getNotes());
 					}
-					else {
-						view.getRequirementPanel().updateModel(requirement,Mode.EDIT);
-						view.setEditModeDescriptors(requirement);
-					}
-					AttachmentListModel attachmentListModel = view.getRequirementPanel().getTabPanel().getAttachmentPanel().getAttachmentListModel();
-					if (attachmentListModel.getSize() < requirement.getAttachments().size()) {
+					else if (attachmentListModel.getSize() < requirement.getAttachments().size()) {
 						view.getRequirementPanel().getTabPanel().getAttachmentPanel().addAttachmentToList(requirement.getAttachments().get(requirement.getAttachments().size() - 1));
 						view.getRequirementPanel().getCurrentRequirement().setAttachments(requirement.getAttachments());
 					}
@@ -90,6 +86,7 @@ public class SaveRequirementObserver implements RequestObserver {
 						view.getRequirementPanel().updateModel(requirement,Mode.EDIT);
 						view.setEditModeDescriptors(requirement);
 					}
+					
 					view.getController().saveSuccess(requirement);
 				}
 			});
