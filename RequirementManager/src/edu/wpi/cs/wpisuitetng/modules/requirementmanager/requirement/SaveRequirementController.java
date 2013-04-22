@@ -274,6 +274,9 @@ public class SaveRequirementController
 				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
 				}
+				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
+				}
 			} else {
 				
 				//Enable Notes
@@ -291,6 +294,9 @@ public class SaveRequirementController
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(true);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
+				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setBackground(new Color(248,253,188));
+				}
 				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setBackground(new Color(248,253,188));
 				}
@@ -341,13 +347,12 @@ public class SaveRequirementController
 		else if (view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Acceptance Test name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		}
+		} //TODO: Will it ever get here?
 		else if ((view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) &&(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) ) {
 			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-
 		Requirement currentRequirement = view.getCurrentRequirement();
 
 		AcceptanceTest newTest = view.getRequirementAcceptanceTest();
