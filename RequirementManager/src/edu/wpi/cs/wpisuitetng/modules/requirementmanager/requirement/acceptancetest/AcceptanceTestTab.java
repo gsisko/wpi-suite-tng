@@ -23,7 +23,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -42,7 +41,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
@@ -124,9 +122,7 @@ public class AcceptanceTestTab extends JPanel {
 		}
 
 		//Construct the acceptanceTestList, using the previously defined empty model
-		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);
-		acceptanceTestList.setBackground(this.getBackground()); //set the background of the acceptanceTestList to be the same gray as the background of this panel
-		
+		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);		
 
 		// Put the acceptanceTestList in a scroll pane
 		listScrollPane = new JScrollPane(acceptanceTestList);

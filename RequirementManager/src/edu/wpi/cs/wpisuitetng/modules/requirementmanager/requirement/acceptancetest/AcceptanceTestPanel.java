@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 
 import com.lowagie.text.Font;
 
@@ -81,10 +82,10 @@ public class AcceptanceTestPanel extends JPanel{
 
 		//Name:
 		txtName = new JTextField(testName);
-		txtName.setFont(txtName.getFont().deriveFont(10)); //set the font of the name to size 10
-		txtName.setFont(txtName.getFont().deriveFont(Font.BOLDITALIC)); //set the font of the name to underline
-		
-		txtName.setBorder(null);//Tell the txtName to not draw a border
+		txtName.setFont(txtName.getFont().deriveFont(11)); //set the font of the name to size 11
+		txtName.setFont(txtName.getFont().deriveFont(Font.ITALIC)); //set the font of the name to bold and italic
+
+		txtName.setBorder(null); // tell the txtName field to not paint a border
 		//end Name
 
 		//Description:
@@ -122,6 +123,9 @@ public class AcceptanceTestPanel extends JPanel{
 		JPanel nameAndStatusPanel = new JPanel();
 		nameAndStatusPanel.setBackground(Color.white);//set the background of the nameAndStatusPanel to be gray
 		nameAndStatusPanel.setLayout(new BoxLayout(nameAndStatusPanel, BoxLayout.LINE_AXIS));//create and set the layout for the nameAndStatusPanel
+		
+		nameAndStatusPanel.setBorder(  BorderFactory.createCompoundBorder( (BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray)),
+																			(BorderFactory.createEmptyBorder(0, 0, 5, 0))  )  );//Set a compound matte border to underline the nameAndStatusPanel and space the underline 5 pixels bellow the components
 
 		nameAndStatusPanel.add(txtName);//actually add the "txtName" JTextField to the nameAndStatusPanel
 		nameAndStatusPanel.add(Box.createRigidArea(new Dimension(5,0)));//add 5 units of horizontal spacing after the txtName
@@ -130,10 +134,12 @@ public class AcceptanceTestPanel extends JPanel{
 		//end nameAndStatusPanel
 
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));//create and set the layout for this panel
+		
 
-		//Create a lowered etched border, add inner padding, and set the border of this panel to the result
-		setBorder(BorderFactory.createCompoundBorder( (BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)),
-						(BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  );
+		//Create a lowered etched border, add inner padding, add outer padding, and set the border of this panel to the result
+		setBorder(BorderFactory.createCompoundBorder((BorderFactory.createEmptyBorder(5, 5, 5, 5)),
+														BorderFactory.createCompoundBorder( (BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)),
+																							(BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  )   );
 
 		//Add the components to this panel
 		add(nameAndStatusPanel);//actually add the nameAndStatusPanel to this panel
