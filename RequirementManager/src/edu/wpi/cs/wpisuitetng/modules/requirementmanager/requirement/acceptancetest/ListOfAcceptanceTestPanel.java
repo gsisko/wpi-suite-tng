@@ -73,7 +73,6 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 
 		this.setBackground(Color.WHITE); //set the background color of this panel to white
 		
-
 		this.setPreferredSize(new Dimension(325, (int)totalHeight)); //Set the preferred size of this panel 
 		
 		//Add resize functionality to keep the maximum height current

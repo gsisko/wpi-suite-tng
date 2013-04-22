@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestListModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment.AttachmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note.NoteListModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -71,12 +72,19 @@ public class SaveRequirementObserver implements RequestObserver {
 					view.getRequirementPanel().getTabPanel().getHistoryPanel().refreshEventsList();
 					
 					NoteListModel noteListModel = view.getRequirementPanel().getTabPanel().getNotePanel().getNoteListModel();
+					AcceptanceTestListModel acceptanceTestListModel = view.getRequirementPanel().getTabPanel().getAcceptanceTestPanel().getAcceptanceTestListModel();
 					AttachmentListModel attachmentListModel = view.getRequirementPanel().getTabPanel().getAttachmentPanel().getAttachmentListModel();
 
 					if (noteListModel.getSize() < requirement.getNotes().size()) {
 						view.getRequirementPanel().getTabPanel().getNotePanel().addNoteToList(requirement.getNotes().get(requirement.getNotes().size() - 1));
 						view.getRequirementPanel().getRequirementNote().setText("");
 						view.getRequirementPanel().getCurrentRequirement().setNotes(requirement.getNotes());
+					} 
+					else if (acceptanceTestListModel.getSize() < requirement.getNotes().size()) {
+						view.getRequirementPanel().getTabPanel().getAcceptanceTestPanel().addAcceptanceTestToList(requirement.getAcceptanceTests().get(requirement.getAcceptanceTests().size() - 1));
+						view.getRequirementPanel().getRequirementAcceptanceTest().setAcceptanceTestTitle("");
+						view.getRequirementPanel().getRequirementAcceptanceTest().setDescription("");
+						view.getRequirementPanel().getCurrentRequirement().setAcceptanceTests(requirement.getAcceptanceTests());
 					}
 					else if (attachmentListModel.getSize() < requirement.getAttachments().size()) {
 						view.getRequirementPanel().getTabPanel().getAttachmentPanel().addAttachmentToList(requirement.getAttachments().get(requirement.getAttachments().size() - 1));
