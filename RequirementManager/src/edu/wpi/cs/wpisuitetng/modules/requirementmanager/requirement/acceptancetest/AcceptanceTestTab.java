@@ -67,11 +67,13 @@ public class AcceptanceTestTab extends JPanel {
 	private  JTextArea txtDescription;//The description text area 
 	private JScrollPane scrollDescription; // ScrollPane that the txtDescription box will be held in 
 
-	//The save button
-	private JButton saveButton;
+	//The buttons
+	private JButton saveButton;//The button to add a new test
+	private JButton updateButton;//The button to save any changes made to the tests already listed in the acceptanceTestList
 
-	//An inner panel to hold the name label and field, and the description label and the scrollDescription holding the txtDescription area
-	JPanel nameAndDescriptionPanel;
+	//The inner panels
+	private JPanel nameAndDescriptionPanel;//An inner panel to hold the name label and field, and the description label and the scrollDescription holding the txtDescription area
+	private JPanel buttonPanel;//An inner panel to hold the buttons
 
 	//The variables to hold information about the current instance of the panel
 	private AcceptanceTest currentAcceptanceTest;//Stores the acceptance test currently open for editing or creation
@@ -127,7 +129,7 @@ public class AcceptanceTestTab extends JPanel {
 
 		// Put the acceptanceTestList in a scroll pane
 		listScrollPane = new JScrollPane(acceptanceTestList);
-		
+
 		// Construct the other components to be displayed
 
 		//Construct the labels
@@ -138,12 +140,13 @@ public class AcceptanceTestTab extends JPanel {
 		txtName = new JTextField("");
 		txtDescription = new JTextArea("", 1, 1);
 
-		//Construct the saveButton
-		saveButton = new JButton("Add Acceptance Test");
+		//Construct the buttons
+		saveButton = new JButton("Add New Test");//Construct the saveButton
+		updateButton = new JButton("Save Changes to all Tests");//Construct the updateButton
 
 		//Set the character limit for the txtName field
 		txtName.setDocument(new JTextFieldLimit(100));
-		
+
 
 		// Set the txtMessage component to wrap
 		txtDescription.setLineWrap(true);
@@ -172,7 +175,6 @@ public class AcceptanceTestTab extends JPanel {
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));
 		scrollDescription.setPreferredSize(new Dimension(1, 100));
-		saveButton.setPreferredSize(new Dimension(120, 40));
 
 		//Disable the txtMessage and saveButton if this is a new requirement
 		if ((parent.getMode()) == Mode.CREATE)
@@ -181,13 +183,13 @@ public class AcceptanceTestTab extends JPanel {
 			getAcceptanceTestDescription().setEnabled(false);
 		}
 
-		//Construct an inner panel to hold the name label, name field, description label, and the scrollDescription holding the txtDescription area
+		//Construct and Layout the inner panel to hold the name label, name field, description label, and the scrollDescription holding the txtDescription area
 		nameAndDescriptionPanel = new JPanel(); //Create the nameAndDescriptionPanel
 
 		//Create and set the layout manager that controls the positions of the components in the nameAndDescriptionPanel
 		layout = new GridBagLayout();//Create the layout
 		nameAndDescriptionPanel.setLayout(layout); //Set the layout
-		
+
 		//In this section we adjust the size and alignments of the components to be added to the nameAndDescriptionPanel and add them to the nameAndDescriptionPanel.
 		//Please read all the comments in this section if you are having trouble understanding what is going on.
 
@@ -234,21 +236,32 @@ public class AcceptanceTestTab extends JPanel {
 		nameAndDescriptionPanelConstraints.gridy = 1;
 		nameAndDescriptionPanel.add(scrollDescription, nameAndDescriptionPanelConstraints);
 		//end Description
+
+		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));//set the size of the nameAndDescriptionPanel to keep it from stretching vertically
+		//end nameAndDescriptionPanel
+
+		//Construct the inner panel to hold the buttons
+		buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));// Create and set the layout manager for the buttonPanel
 		
+		//add the buttons to the button panel
+		buttonPanel.add(Box.createHorizontalGlue()); //Add a horizontal glue component for dynamic spacing
+		buttonPanel.add(saveButton); // add the saveButton to the panel
+		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.add(updateButton); // add the updateButton to the panel
+		buttonPanel.add(Box.createHorizontalGlue());
 		
-		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));
-		//end nameAndDescriptionPanel layout
-		
-		
-		// Add components
+		buttonPanel.setMaximumSize(new Dimension(1000, saveButton.getPreferredSize().height));//set the size of the buttonPanel to keep it from stretching vertically
+		//end buttonPanel
+
+		// Add the components in their respective inner panels to this panel
 		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
 		this.add(nameAndDescriptionPanel); // add the nameAndDescriptionPanel to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-		this.add(saveButton); // add the saveButton to the panel
+		this.add(buttonPanel); // add the saveButton to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 
-		saveButton.setAlignmentX(CENTER_ALIGNMENT); //Set the horizontal alignment of the save button to the center of this panel
 	}
 
 
@@ -368,5 +381,37 @@ public class AcceptanceTestTab extends JPanel {
 	 */
 	public void setTxtName(JTextField txtName) {
 		this.txtName = txtName;
+	}
+
+
+	/**
+	 * @return the updateButton
+	 */
+	public JButton getUpdateButton() {
+		return updateButton;
+	}
+
+
+	/**
+	 * @param updateButton the updateButton to set
+	 */
+	public void setUpdateButton(JButton updateButton) {
+		this.updateButton = updateButton;
+	}
+
+
+	/**
+	 * @return the buttonPanel
+	 */
+	public JPanel getButtonPanel() {
+		return buttonPanel;
+	}
+
+
+	/**
+	 * @param buttonPanel the buttonPanel to set
+	 */
+	public void setButtonPanel(JPanel buttonPanel) {
+		this.buttonPanel = buttonPanel;
 	}
 }
