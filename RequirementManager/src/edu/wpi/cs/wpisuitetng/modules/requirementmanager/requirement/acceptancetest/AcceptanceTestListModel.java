@@ -34,26 +34,26 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 @SuppressWarnings({"serial","rawtypes"})
 public class AcceptanceTestListModel extends AbstractListModel {
 	
-	/** The list of messages on the board */
+	/** The list of tests in the model */
 	private List<AcceptanceTest> acceptanceTests;
 	
 	/**
-	 * Constructs a new board with no messages.
+	 * Constructs a new model with no tests.
 	 */
 	public AcceptanceTestListModel() {
 		acceptanceTests = new ArrayList<AcceptanceTest>();
 	}
 
 	/**
-	 * Adds the given message to the board
+	 * Adds the given test to the board
 	 * 
-	 * @param newMessage the new message to add
+	 * @param newTest the new AcceptanceTest to add
 	 */
-	public void addMessage(AcceptanceTest newMessage) {
-		// Add the message
-		acceptanceTests.add(newMessage);
+	public void addAcceptanceTest(AcceptanceTest newTest) {
+		// Add the test
+		acceptanceTests.add(newTest);
 		
-		// Notify the model that it has changed so the GUI will be udpated
+		// Notify the model that it has changed so the GUI will be updated
 		this.fireIntervalAdded(this, 0, 0);
 	}
 	
@@ -62,7 +62,7 @@ public class AcceptanceTestListModel extends AbstractListModel {
 	 * 
 	 * @param acceptanceTests the array of tests to add
 	 */
-	public void addMessages(AcceptanceTest[] acceptanceTests) {
+	public void addAcceptanceTests(AcceptanceTest[] acceptanceTests) {
 		for (int i = 0; i < acceptanceTests.length; i++) {
 			this.acceptanceTests.add(acceptanceTests[i]);
 		}
@@ -88,8 +88,7 @@ public class AcceptanceTestListModel extends AbstractListModel {
 	}
 	
 	/* 
-	 * Returns the test at the given index. This method is called
-	 * internally by the JList in BoardPanel. Note this method returns
+	 * Returns the test at the given index. Note this method returns
 	 * elements in reverse order, so newest messages are returned first.
 	 * 
 	 * @see javax.swing.ListModel#getElementAt(int)
@@ -100,8 +99,7 @@ public class AcceptanceTestListModel extends AbstractListModel {
 	}
 
 	/*
-	 * Returns the number of tests in the model. Also used internally
-	 * by the JList in BoardPanel.
+	 * Returns the number of tests in the model.
 	 * 
 	 * @see javax.swing.ListModel#getSize()
 	 */

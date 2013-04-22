@@ -39,7 +39,7 @@ public class AcceptanceTest extends RequirementEvent {
 	
 	/** Internal private variables */
 	private String title;
-	private String message;	
+	private String description;	
 	private AcceptanceTestResult result;
 	
 	//TODO: Do we want this constructor as an option?
@@ -47,13 +47,14 @@ public class AcceptanceTest extends RequirementEvent {
 	 * Create a AcceptanceTest with given properties
 	 * 
 	 * @param title The title of the acceptance test
-	 * @param message The message the user wishes to post with the acceptance test
+	 * @param description The description the user wishes to post with the acceptance test
 	 * @param result The initial result of the acceptance test
 	 */
-	public AcceptanceTest(String title, String message, AcceptanceTestResult result)
+	public AcceptanceTest(String title, String description, AcceptanceTestResult result)
 	{
 		this.type = EventType.ACCEPTANCETEST;
-		this.setMessage(message);
+		this.setDescription(description);
+		this.setAcceptanceTestTitle(title);
 		this.date = new Date();
 		this.result = result;
 	}
@@ -62,11 +63,11 @@ public class AcceptanceTest extends RequirementEvent {
 	 * Create a AcceptanceTest with given properties
 	 * 
 	 * @param title The title of the acceptance test
-	 * @param message The message the user wishes to post with the acceptance test
+	 * @param description The description the user wishes to post with the acceptance test
 	 */
-	public AcceptanceTest(String title, String message)
+	public AcceptanceTest(String title, String description)
 	{
-		this(title, message, AcceptanceTestResult.NONE);
+		this(title, description, AcceptanceTestResult.NONE);
 	}
 
 	/** Converts the entirety of the message to a formatted string and returns it
@@ -81,17 +82,17 @@ public class AcceptanceTest extends RequirementEvent {
 	}
 	
 	/**
-	 * @return the message
+	 * @return the description
 	 */
-	public String getMessage() {
-		return message;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
-	 * @param message the message to set
+	 * @param description the description to set
 	 */
-	public void setMessage(String message) {
-		this.message = message;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	/** 
@@ -143,14 +144,14 @@ public class AcceptanceTest extends RequirementEvent {
 	}
 	
 	/** Gets the body of the acceptance test and returns it
-	 * @return the body of the acceptance test
+	 * @return the body of the acceptance test (the description of the acceptance test)
 	 */
 	public String getBodyString() {
-		return this.getMessage();
+		return this.getDescription();
 	}
 	
-	/** Gets the label of the acce[tamce test and returns it
-	 * @return the label of the acceptance test
+	/** Gets the label of the acceptance test and returns it
+	 * @return the label of the acceptance test (the username and date it was added of the test)
 	 */
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");

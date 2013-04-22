@@ -99,7 +99,7 @@ public class SaveRequirementController
 		}
 
 		else { // we are updating an existing requirement
-			
+
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
 
@@ -299,16 +299,27 @@ public class SaveRequirementController
 	 */
 	public void saveAcceptanceTest() {
 		// check if any inputs are invalid, print an error message if one is
-		if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestMessage().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test message must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+		if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "Acceptance Test description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		else if (view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) {
+			JOptionPane.showMessageDialog(null, "Acceptance Test name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		else if ((view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) &&(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) ) {
+			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 
 		Requirement currentRequirement = view.getCurrentRequirement();
 
-		String acceptanceTestMessage = view.getRequirementAcceptanceTest().getText();
-		view.getRequirementAcceptanceTest().setText("");
-		currentRequirement.getAcceptanceTests().add(new AcceptanceTest("Give me a title please!", acceptanceTestMessage));
+		AcceptanceTest newTest = view.getRequirementAcceptanceTest();
+		view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
+		view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
+		
+		currentRequirement.getAcceptanceTests().add(newTest);
 
 		// make a POST http request and let the observer get the response
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update

@@ -65,8 +65,8 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 		//For each acceptance test in the AcceptanceListModel....
 		for (int i = 0; i<acceptanceTestListModel.getSize(); i++)
 		{
-			String message = acceptanceTestListModel.getElementAt(i).getMessage(); //grab the message portion of the acceptance test
-			AcceptanceTestPanel panel = new AcceptanceTestPanel(acceptanceTestListModel.getElementAt(i).toString(),message); //create a new AcceptanceTestPanel to hold the acceptance test
+			String description = acceptanceTestListModel.getElementAt(i).getDescription(); //grab the description portion of this acceptance test
+			AcceptanceTestPanel panel = new AcceptanceTestPanel(acceptanceTestListModel.getElementAt(i).getAcceptanceTestTitle(),description, AcceptanceTestResult.NONE); //create a new AcceptanceTestPanel to hold this acceptance test
 			totalHeight += panel.getSize().getHeight();//add this panel's height to the running total
 			this.add(panel);//actually add this acceptanceTestPanel to this ListOfAcceptanceTestPanel
 		}

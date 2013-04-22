@@ -38,11 +38,13 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 
 /**
  * This class is a JPanel. 
@@ -174,7 +176,7 @@ public class RequirementTab extends JPanel {
 			tabPanel.getUserChooserPanel().setInputEnabled(false);
 
 			//Disables the acceptanceTestPanel upon creation
-			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), false);
+			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
 			
@@ -189,7 +191,7 @@ public class RequirementTab extends JPanel {
 			this.tabPanel.getNotePanel().getSaveButton().setEnabled(false);
 			this.tabPanel.getNotePanel().setEnabled(false);
 			
-			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), false);
+			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
 
@@ -220,7 +222,7 @@ public class RequirementTab extends JPanel {
 
 		tabPanel.getAttachmentPanel().getSaveButton().setEnabled(enabled);
 		
-		toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage(), enabled);
+		toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), enabled);
 		tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(enabled);
 		tabPanel.getAcceptanceTestPanel().setEnabled(enabled);
 
@@ -353,11 +355,12 @@ public class RequirementTab extends JPanel {
 	}
 
 	/**
-	 * This returns the JTextArea "txtNote" from the Acceptance Test
-	 * @return the txtNote JTextArea
+	 * This returns the AcceptanceTest currently under construction in the Acceptance Test tab
+	 * @return the AcceptanceTest currently under construction in the Acceptance Test tab
 	 */
-	public JTextArea getRequirementAcceptanceTest() {
-		return tabPanel.getAcceptanceTestPanel().getAcceptanceTestMessage();
+	public AcceptanceTest getRequirementAcceptanceTest() {
+		AcceptanceTest newTest = new AcceptanceTest(tabPanel.getAcceptanceTestPanel().getTxtName().getText(), tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription().getText());
+		return newTest;
 	}
 	
 	public RequirementTabPanel getTabPanel() {

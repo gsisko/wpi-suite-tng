@@ -51,7 +51,7 @@ public class AcceptanceTestPanel extends JPanel{
 	private  JLabel statusLabel; //The label for the status combo box ("statusBox")
 
 	//The fillable components
-	private JTextArea txtDescription;//The actual message component of the test to be displayed in this panel, stored in a JTextArea
+	private JTextArea txtDescription;//The actual description component of the test to be displayed in this panel, stored in a JTextArea
 	private  JTextField txtName;//The name text field
 	private  JComboBox statusBox;//The status combo box
 
@@ -60,28 +60,31 @@ public class AcceptanceTestPanel extends JPanel{
 	/**
 	 * This is the constructor for this panel.
 	 * It takes in the AcceptanceTest to be displayed in this panel by two of it's components:
-	 * -The title of the acceptance test, passed in as "acceptanceTestTitle"
-	 * -The body of the acceptance test, passed in as "message"
-	 * @param acceptanceTestTitle A string containing the title of the acceptance test to be displayed in this panel (who added the acceptance test and when)
-	 * @param message A string containing the actual body of the acceptance test to be displayed in this panel
+	 * -The name of the acceptance test, passed in as "testName"
+	 * -The description of the acceptance test, passed in as "testDescription"
+	 * @param testName A string containing the name of the acceptance test to be displayed in this panel
+	 * @param testDescription A string containing the actual body (description) of the acceptance test to be displayed in this panel
+	 * @param status An AcceptanceTestResult describing the status of the acceptance test to be displayed in this panel
 	 */
 
-	public AcceptanceTestPanel(String testName, String testDescription){
+	public AcceptanceTestPanel(String testName, String testDescription, AcceptanceTestResult status){
+		
+
+		
 		this.setBackground(Color.white);//Set the background color of this panel to white
 		this.setOpaque(true);//Set this panel to Opaque (means the background is painted)
 
 		//Create the label for the statusBox:
-		statusLabel = new JLabel("Status:");
+		statusLabel = new JLabel("Status: ");
 
 		//Create and set the components:
 
 		//Name:
 		txtName = new JTextField(testName);
-		txtName.setFont(txtName.getFont().deriveFont(9)); //set the font of the name to size 9
-		txtName.setFont(txtName.getFont().deriveFont(Font.BOLD)); //set the font of the name to bold
-
-		//Set the character limit for the name
-		txtName.setDocument(new JTextFieldLimit(100));
+		txtName.setFont(txtName.getFont().deriveFont(10)); //set the font of the name to size 10
+		txtName.setFont(txtName.getFont().deriveFont(Font.BOLDITALIC)); //set the font of the name to underline
+		
+		txtName.setBorder(null);//Tell the txtName to not draw a border
 		//end Name
 
 		//Description:
@@ -96,26 +99,41 @@ public class AcceptanceTestPanel extends JPanel{
 
 		//Construct the status box
 		statusBox = new JComboBox(statusStrings);
+		
+		statusBox.setBackground(Color.white);//set the background of the statusBox to white
 
-		//Set the initial selections for the status box
-		statusBox.setSelectedIndex(0);
+		//Set the initial selection for the status box
+		switch (status) {
+		case NONE:
+			statusBox.setSelectedIndex(0);
+			break;
+		case PASSED:
+			statusBox.setSelectedIndex(1);
+			break;
+		case FAILED:
+			statusBox.setSelectedIndex(2);
+			break;
+		}
+
+
 		//end Status box
 
 		//Create an inner panel ("nameAndStatusPanel") to hold the name and status, add them to that panel
 		JPanel nameAndStatusPanel = new JPanel();
+		nameAndStatusPanel.setBackground(Color.white);//set the background of the nameAndStatusPanel to be gray
 		nameAndStatusPanel.setLayout(new BoxLayout(nameAndStatusPanel, BoxLayout.LINE_AXIS));//create and set the layout for the nameAndStatusPanel
 
 		nameAndStatusPanel.add(txtName);//actually add the "txtName" JTextField to the nameAndStatusPanel
-		nameAndStatusPanel.add(Box.createRigidArea(new Dimension(0,5)));//add 5 units of horizontal spacing after the txtName
+		nameAndStatusPanel.add(Box.createRigidArea(new Dimension(5,0)));//add 5 units of horizontal spacing after the txtName
+		nameAndStatusPanel.add(statusLabel);//actually add the "statusLabel" JLabel to the nameAndStatusPanel
 		nameAndStatusPanel.add(statusBox);//actually add the "statusBox" JComboBox to the nameAndStatusPanel
 		//end nameAndStatusPanel
 
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));//create and set the layout for this panel
 
-		//Create a lowered etched border, add inner and outer padding, and set the border of this panel to the result
-		setBorder(  BorderFactory.createCompoundBorder(	(BorderFactory.createEmptyBorder(5, 5, 5, 5)),
-				BorderFactory.createCompoundBorder( (BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)),
-						(BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  ));
+		//Create a lowered etched border, add inner padding, and set the border of this panel to the result
+		setBorder(BorderFactory.createCompoundBorder( (BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)),
+						(BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  );
 
 		//Add the components to this panel
 		add(nameAndStatusPanel);//actually add the nameAndStatusPanel to this panel
