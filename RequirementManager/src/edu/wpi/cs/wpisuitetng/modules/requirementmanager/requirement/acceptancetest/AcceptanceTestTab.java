@@ -116,6 +116,7 @@ public class AcceptanceTestTab extends JPanel {
 		// Construct the acceptanceTestListModel
 		acceptanceTestListModel = new AcceptanceTestListModel();
 
+		//Add the tests from the parent requirement to the acceptanceTestListModel
 		ArrayList<AcceptanceTest> acceptanceTests = parent.getCurrentRequirement().getAcceptanceTests();
 		for (int i = 0; i < acceptanceTests.size(); i++) {
 			acceptanceTestListModel.addAcceptanceTest(acceptanceTests.get(i));
