@@ -316,7 +316,7 @@ public class SaveRequirementController
 
 		String acceptanceTestMessage = view.getRequirementAcceptanceTest().getText();
 		view.getRequirementAcceptanceTest().setText("");
-		currentRequirement.getAcceptanceTests().add(new AcceptanceTest(acceptanceTestMessage));
+		currentRequirement.getAcceptanceTests().add(new AcceptanceTest("Give me a title please!", acceptanceTestMessage));
 
 		// make a POST http request and let the observer get the response
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update

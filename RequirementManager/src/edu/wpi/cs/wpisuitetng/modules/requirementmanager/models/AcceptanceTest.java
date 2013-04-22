@@ -31,23 +31,42 @@ import java.util.Date;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 
 /** The model that stores a single acceptance test. The user name is set
  *  within the RequirementManager.    */
 public class AcceptanceTest extends RequirementEvent {
-	/** The acceptance test itself */
-	private String message;	
 	
+	/** Internal private variables */
+	private String title;
+	private String message;	
+	private AcceptanceTestResult result;
+	
+	//TODO: Do we want this constructor as an option?
 	/**
 	 * Create a AcceptanceTest with given properties
 	 * 
-	 * @param message The message the user wishes to post
+	 * @param title The title of the acceptance test
+	 * @param message The message the user wishes to post with the acceptance test
+	 * @param result The initial result of the acceptance test
 	 */
-	public AcceptanceTest(String message)
+	public AcceptanceTest(String title, String message, AcceptanceTestResult result)
 	{
 		this.type = EventType.ACCEPTANCETEST;
 		this.setMessage(message);
 		this.date = new Date();
+		this.result = result;
+	}
+	
+	/**
+	 * Create a AcceptanceTest with given properties
+	 * 
+	 * @param title The title of the acceptance test
+	 * @param message The message the user wishes to post with the acceptance test
+	 */
+	public AcceptanceTest(String title, String message)
+	{
+		this(title, message, AcceptanceTestResult.NONE);
 	}
 
 	/** Converts the entirety of the message to a formatted string and returns it
@@ -74,7 +93,35 @@ public class AcceptanceTest extends RequirementEvent {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
+	
+	/** 
+	 * @param result the result to set this acceptance test to
+	 */
+	public void setAcceptanceTestResult(AcceptanceTestResult result){
+		this.result = result;
+	}
+	
+	/**
+	 * @return the result this acceptance test is set to
+	 */
+	public AcceptanceTestResult getAcceptanceTestResult(){
+		return this.result;
+	}
+	
+	/** 
+	 * @param title the title to set this acceptance test to
+	 */
+	public void setAcceptanceTestTitle(String title){
+		this.title = title;
+	}
+	
+	/**
+	 * @return the title of this acceptance test
+	 */
+	public String getAcceptanceTestTitle(){
+		return this.title;
+	}
+	
 	/** Converts the acceptance test to a JSON string and returns it 
 	 * @return a JSON string of the acceptance test
 	 */

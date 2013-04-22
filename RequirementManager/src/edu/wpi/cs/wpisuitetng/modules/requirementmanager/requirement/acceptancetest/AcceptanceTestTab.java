@@ -155,8 +155,6 @@ public class AcceptanceTestTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 
 		saveButton.setAlignmentX(CENTER_ALIGNMENT); //Set the horizontal alignment of the save button to the center of this panel
-
-
 	}
 
 
@@ -260,7 +258,5 @@ public class AcceptanceTestTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // adds the save button to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-
 	}
-
 }
