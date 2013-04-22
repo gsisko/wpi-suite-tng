@@ -52,8 +52,6 @@ public class SaveChangesAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		controller.save();
-		// refreshes the list view, should be made much cleaner in the future
-		((ListView)controller.getView().getParent().getTabController().getView().getComponentAt(0)).refreshData();
 	}
 
 }

@@ -38,6 +38,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
@@ -269,6 +270,8 @@ public class SaveRequirementController
 					view.getTabPanel().getNotePanel().getNoteMessage().setBackground(new Color(248,253,188));
 				}
 			}
+			// refreshes the list view, should be made much cleaner in the future
+			((ListView)view.getParent().getTabController().getView().getComponentAt(0)).refreshData();
 		}
 		else {
 			System.err.print("Undected error saving requirement\n");
