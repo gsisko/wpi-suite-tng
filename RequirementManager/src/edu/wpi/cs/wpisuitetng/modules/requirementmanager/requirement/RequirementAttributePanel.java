@@ -552,6 +552,17 @@ public class RequirementAttributePanel extends JPanel {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return the nonNoteFieldsChanged
+	 */
+	public boolean isNonNoteFieldsChanged() {
+		for (int i = 0; i < this.fieldsChanged.length; i++){
+			if (fieldsChanged[i] && i != 9)
+				return true;
+		}
+		return false;
+	}
 
 	/**
 	 * @param fieldsChanged the fieldsChanged to set
@@ -559,6 +570,16 @@ public class RequirementAttributePanel extends JPanel {
 	public void setFieldsChanged(boolean fieldsChanged) {
 		for (int i = 0; i < this.fieldsChanged.length; ++i) {
 			this.fieldsChanged[i] = fieldsChanged;
+		}
+	}
+	
+	/**
+	 * @param fieldsChanged the fieldsChanged to set
+	 */
+	public void setNonNoteFieldsChanged(boolean fieldsChanged) {
+		for (int i = 0; i < this.fieldsChanged.length; ++i) {
+			if (i != 9)
+				this.fieldsChanged[i] = fieldsChanged;
 		}
 	}
 
@@ -586,7 +607,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		if (saveButton != null && nameAndDescriptionValidityListener != null){
-			saveButton.setEnabled(isFieldsChanged() && setSaveButtonWhenNameAndDescriptionAreValid());
+			saveButton.setEnabled(isNonNoteFieldsChanged() && setSaveButtonWhenNameAndDescriptionAreValid());
 		}
 	}
 	/** Sets up the controllers and listeners for this panel   */
@@ -861,7 +882,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		// Set the status of the fields to unchanged because they just got populated
-		setFieldsChanged(false);
+		setNonNoteFieldsChanged(false);
 	}
 
 	/**

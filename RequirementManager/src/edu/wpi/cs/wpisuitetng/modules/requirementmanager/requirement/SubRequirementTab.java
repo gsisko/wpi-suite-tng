@@ -36,7 +36,6 @@ import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.SubRequirementTabModel;
 
 
 @SuppressWarnings("serial")

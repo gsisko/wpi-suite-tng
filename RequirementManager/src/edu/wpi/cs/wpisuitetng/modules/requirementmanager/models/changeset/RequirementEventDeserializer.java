@@ -32,6 +32,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent.EventType;
@@ -61,6 +62,8 @@ class RequirementEventDeserializer implements JsonDeserializer<RequirementEvent>
 				return context.deserialize(element, UserChange.class);
 			case ATTACHMENT:
 				return context.deserialize(element, Attachment.class);
+			case ACCEPTANCETEST:
+				return context.deserialize(element, AcceptanceTest.class);
 			}
 		}
 		throw new JsonParseException("RequirementEvent type is unrecognized");

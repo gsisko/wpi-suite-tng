@@ -26,6 +26,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -256,11 +257,17 @@ public class SaveRequirementController
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
 				view.getTabPanel().getNotePanel().setEnabled(false);
 				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
+				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
+					view.getTabPanel().getNotePanel().getNoteMessage().setText("");
+				}
 			} else {
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
 				view.getTabPanel().getNotePanel().setEnabled(true);
 				view.getTabPanel().getUserChooserPanel().setInputEnabled(true);
+				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
+					view.getTabPanel().getNotePanel().getNoteMessage().setBackground(new Color(248,253,188));
+				}
 			}
 		}
 		else {
