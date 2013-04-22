@@ -98,6 +98,17 @@ public class AcceptanceTestListModel extends AbstractListModel {
 		return acceptanceTests.get(acceptanceTests.size() - 1 - index);
 	}
 
+	
+	/* 
+	 * Sets the test at the given index. Note this method accesses
+	 * elements in reverse order, so newest messages are returned first.
+	 * 
+	 */
+	public void setElementAt(int index, AcceptanceTest newAcceptanceTest) {
+		acceptanceTests.set(acceptanceTests.size() - 1 - index, newAcceptanceTest);
+	}
+
+	
 	/*
 	 * Returns the number of tests in the model.
 	 * 

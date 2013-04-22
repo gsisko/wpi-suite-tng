@@ -121,6 +121,7 @@ public class SaveRequirementController
 			updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
 			updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
+			updatedRequirement.setAcceptanceTests(oldRequirement.getAcceptanceTests());
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 			updatedRequirement.setEvents(oldRequirement.getEvents());
 
@@ -254,20 +255,44 @@ public class SaveRequirementController
 
 			}
 			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {		// Disable the note panel and userChooserTab if the requirement has been deleted
+			
+				//Disable notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
 				view.getTabPanel().getNotePanel().setEnabled(false);
-				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
 				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
 					view.getTabPanel().getNotePanel().getNoteMessage().setText("");
 				}
+				
+				//Disable UserChooseTab
+				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
+				
+				//Disable Acceptance Tests
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
+				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+				view.getTabPanel().getAcceptanceTestPanel().setEnabled(false);
+				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
+				}
 			} else {
+				
+				//Enable Notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
 				view.getTabPanel().getNotePanel().setEnabled(true);
-				view.getTabPanel().getUserChooserPanel().setInputEnabled(true);
 				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
 					view.getTabPanel().getNotePanel().getNoteMessage().setBackground(new Color(248,253,188));
+				}
+				
+				//Enable UserChooserTab
+				view.getTabPanel().getUserChooserPanel().setInputEnabled(true);
+				
+				//Enable Acceptance Tests
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
+				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(true);
+				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
+				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setBackground(new Color(248,253,188));
 				}
 			}
 			// refreshes the list view, should be made much cleaner in the future

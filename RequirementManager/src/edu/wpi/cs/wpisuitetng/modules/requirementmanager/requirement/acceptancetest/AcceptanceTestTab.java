@@ -63,8 +63,8 @@ public class AcceptanceTestTab extends JPanel {
 
 
 	//The fillable components
-	private  JTextField txtName;//The name text field 
-	private  JTextArea txtDescription;//The description text area 
+	private JTextField txtName;//The name text field 
+	private JTextArea txtDescription;//The description text area 
 	private JScrollPane scrollDescription; // ScrollPane that the txtDescription box will be held in 
 
 	//The save button
