@@ -48,7 +48,6 @@ public class RequirementTabPanel extends JTabbedPane {
 	private HistoryTab historyPanel;
 
 	private SubRequirementTab subRequirementPanel;
-	private RetrieveRequirmentsIntoSubController subtabcontroller;
 
 	private UserChooserTab userChooserPanel;
 
@@ -69,12 +68,8 @@ public class RequirementTabPanel extends JTabbedPane {
 		historyPanel = new HistoryTab(parent);
 		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
 		
-		subtabcontroller = new RetrieveRequirmentsIntoSubController(this.parent.getParent());
-		subtabcontroller.setSubtab();
-		subtabcontroller.refreshData();
 		subRequirementPanel= new SubRequirementTab(parent);
-		//subRequirementPanel
-		addTab("SubRequirement", new ImageIcon(), subRequirementPanel, "SubRequirements for the current requirement");
+		addTab("Sub-Requirements", new ImageIcon(), subRequirementPanel, "Sub-Requirements for the current requirement");
 
 		attachmentPanel = new AttachmentTab(parent);
 		addTab("Attachments", new ImageIcon(), attachmentPanel, "Attachments for the current requirement");
@@ -88,10 +83,9 @@ public class RequirementTabPanel extends JTabbedPane {
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
-	}
-	
-	public void settab(){
-		subtabcontroller.setSubtab();
+		if (getComponentAt(index) instanceof SubRequirementTab) {
+			subRequirementPanel.getSubController().refreshData();
+		}
 	}
 	
 	/**

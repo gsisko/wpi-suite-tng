@@ -29,15 +29,15 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-public class RetrieveRequirementsIntoSubObserver implements RequestObserver {
+public class RetrieveSubrequirementsObserver implements RequestObserver {
 	/** The controller managing the request */
-	protected RetrieveRequirmentsIntoSubController controller;
+	protected RetrieveSubrequirementsController controller;
 
 	/**
 	 * Construct the observer
 	 * @param controller
 	 */
-	public RetrieveRequirementsIntoSubObserver(RetrieveRequirmentsIntoSubController controller) {
+	public RetrieveSubrequirementsObserver(RetrieveSubrequirementsController controller) {
 		this.controller = controller;
 	}
 

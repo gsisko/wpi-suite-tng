@@ -150,8 +150,6 @@ public class RequirementTab extends JPanel {
 		layout.putConstraint(SpringLayout.WEST, splitPane, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, splitPane, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, splitPane, 0, SpringLayout.SOUTH, this);
-		
-		tabPanel.settab();
 
 		addComponents();//Add the panels, enabling/disabling fields appropriately
 	}

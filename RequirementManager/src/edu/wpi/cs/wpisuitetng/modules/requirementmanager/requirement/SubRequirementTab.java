@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.DateTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.SubRequirementTabModel;
 
@@ -43,18 +44,17 @@ public class SubRequirementTab extends JPanel {
 
 	private RequirementTab parent;
 	
-	protected SubRequirementTabModel submodel;
+	protected ResultsTableModel submodel;
 	
 	protected JTable subtable;
-	
-	//protected final RetrieveRequirmentsIntoSubController subController;
+
+	private RetrieveSubrequirementsController subController;
 	
 	public SubRequirementTab(RequirementTab rparent){
-		//this.subController=subController;
 		setParent(rparent);
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3)); 
-		submodel = new SubRequirementTabModel();
+		submodel = new ResultsTableModel();
 		subtable = new JTable(submodel);
 		subtable.setAutoCreateRowSorter(true);
 		subtable.setFillsViewportHeight(true);
@@ -64,8 +64,12 @@ public class SubRequirementTab extends JPanel {
 		JScrollPane subScrollPane = new JScrollPane(subtable);
 		
 		this.add(subScrollPane, BorderLayout.CENTER);
-		//this.subController.refreshData();
 		
+	}
+	
+	public void setUp() {
+		this.subController = new RetrieveSubrequirementsController(this.getParent().getParent());
+		this.subController.refreshData();
 	}
 
 	public RequirementTab getParent() {
@@ -76,13 +80,26 @@ public class SubRequirementTab extends JPanel {
 		this.parent = parent;
 	}
 
-	public SubRequirementTabModel getModel() {
-		return this.submodel;
+	public ResultsTableModel getModel() {
+		return submodel;
 	}
 
 	public JTable getResultsTable() {
-	
 		return subtable;
+	}
+
+	/**
+	 * @return the subController
+	 */
+	public RetrieveSubrequirementsController getSubController() {
+		return subController;
+	}
+
+	/**
+	 * @param subController the subController to set
+	 */
+	public void setSubController(RetrieveSubrequirementsController subController) {
+		this.subController = subController;
 	}
 	
 }

@@ -69,8 +69,8 @@ public class Requirement extends AbstractModel {
 	private ArrayList<RequirementEvent> events;
 	/** This is the list of attachments associated with this Requirement */
 	private ArrayList<Attachment> attachments;	
-	
-	private ArrayList<Requirement> subrequirement;
+	/** This is the list of subrequirements associated with this Requirement */
+	private ArrayList<Integer> subrequirements;
 	
 	
 	/** Basic constructor for a requirement */
@@ -101,7 +101,7 @@ public class Requirement extends AbstractModel {
 		this.acceptanceTests = new ArrayList<AcceptanceTest>();
 		this.userNames = new ArrayList<String>();
 		this.events = new ArrayList<RequirementEvent>();
-		this.subrequirement = new ArrayList<Requirement>();
+		this.setSubrequirements(new ArrayList<Integer>());
 		this.attachments = new ArrayList<Attachment>();
 	}
 	
@@ -463,11 +463,17 @@ public class Requirement extends AbstractModel {
 		this.attachments = attachment;
 	}
 
-	public ArrayList<Requirement> getSubrequirement() {
-		return subrequirement;
+	/**
+	 * @return the subrequirements
+	 */
+	public ArrayList<Integer> getSubrequirements() {
+		return subrequirements;
 	}
 
-	public void setSubrequirement(ArrayList<Requirement> subrequirement) {
-		this.subrequirement = subrequirement;
+	/**
+	 * @param subrequirements the subrequirements to set
+	 */
+	public void setSubrequirements(ArrayList<Integer> subrequirements) {
+		this.subrequirements = subrequirements;
 	}
 }
