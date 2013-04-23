@@ -178,7 +178,6 @@ public class RequirementTab extends JPanel {
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
-			tabPanel.getAcceptanceTestPanel().getUpdateButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
 			
 			//Disables the appropriate fields in the attributePanel upon creation
@@ -195,7 +194,6 @@ public class RequirementTab extends JPanel {
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
-			tabPanel.getAcceptanceTestPanel().getUpdateButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
 			
 			tabPanel.getUserChooserPanel().setInputEnabled(false);
@@ -227,7 +225,6 @@ public class RequirementTab extends JPanel {
 		toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), enabled);
 		toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), enabled);
 		tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(enabled);
-		tabPanel.getAcceptanceTestPanel().getUpdateButton().setEnabled(enabled);
 		tabPanel.getAcceptanceTestPanel().setEnabled(enabled);
 
 		//toggles the UserChooserTab

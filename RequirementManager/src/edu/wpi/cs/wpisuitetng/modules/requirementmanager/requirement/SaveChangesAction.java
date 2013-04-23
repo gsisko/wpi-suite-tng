@@ -29,8 +29,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
-
 /**
  * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
  */

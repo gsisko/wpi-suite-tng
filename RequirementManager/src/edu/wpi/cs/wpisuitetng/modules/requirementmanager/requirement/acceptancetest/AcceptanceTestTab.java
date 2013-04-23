@@ -69,11 +69,9 @@ public class AcceptanceTestTab extends JPanel {
 
 	//The buttons
 	private JButton saveButton;//The button to add a new test
-	private JButton updateButton;//The button to save any changes made to the tests already listed in the acceptanceTestList
 
-	//The inner panels
+	//The inner panel
 	private JPanel nameAndDescriptionPanel;//An inner panel to hold the name label and field, and the description label and the scrollDescription holding the txtDescription area
-	private JPanel buttonPanel;//An inner panel to hold the buttons
 
 	//The variables to hold information about the current instance of the panel
 	private AcceptanceTest currentAcceptanceTest;//Stores the acceptance test currently open for editing or creation
@@ -141,8 +139,7 @@ public class AcceptanceTestTab extends JPanel {
 		txtDescription = new JTextArea("", 1, 1);
 
 		//Construct the buttons
-		saveButton = new JButton("Add New Test");//Construct the saveButton
-		updateButton = new JButton("Save Changes to all Tests");//Construct the updateButton
+		saveButton = new JButton("Add Acceptance Test");//Construct the saveButton
 
 		//Set the character limit for the txtName field
 		txtName.setDocument(new JTextFieldLimit(100));
@@ -198,7 +195,6 @@ public class AcceptanceTestTab extends JPanel {
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
-			updateButton.setEnabled(false);
 			getTxtName().setEnabled(false);
 			getAcceptanceTestDescription().setEnabled(false);
 		}
@@ -260,27 +256,16 @@ public class AcceptanceTestTab extends JPanel {
 		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));//set the size of the nameAndDescriptionPanel to keep it from stretching vertically
 		//end nameAndDescriptionPanel
 
-		//Construct the inner panel to hold the buttons
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));// Create and set the layout manager for the buttonPanel
-		
-		//add the buttons to the button panel
-		buttonPanel.add(Box.createHorizontalGlue()); //Add a horizontal glue component for dynamic spacing
-		buttonPanel.add(saveButton); // add the saveButton to the panel
-		buttonPanel.add(Box.createHorizontalGlue());
-		buttonPanel.add(updateButton); // add the updateButton to the panel
-		buttonPanel.add(Box.createHorizontalGlue());
-		
-		buttonPanel.setMaximumSize(new Dimension(1000, saveButton.getPreferredSize().height));//set the size of the buttonPanel to keep it from stretching vertically
-		//end buttonPanel
 
 		// Add the components in their respective inner panels to this panel
 		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
 		this.add(nameAndDescriptionPanel); // add the nameAndDescriptionPanel to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-		this.add(buttonPanel); // add the saveButton to the panel
+		this.add(saveButton); // add the saveButton to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
+		
+		saveButton.setAlignmentX(CENTER_ALIGNMENT);
 	}
 
 
@@ -289,9 +274,6 @@ public class AcceptanceTestTab extends JPanel {
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
 		saveButton.setAction(new SaveAcceptanceTestAction(parent.getParent().getController()));
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
-		//TODO: Link to controller for saving edits?
-		//updateButton.setAction(new SaveAcceptanceTestEditAction(parent.getParent().getController()));
-		updateButton.setEnabled(restoreEnableStateBool);
 	}
 
 	/**
@@ -303,7 +285,6 @@ public class AcceptanceTestTab extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 		saveButton.setEnabled(enabled);
-		updateButton.setEnabled(enabled);
 		txtName.setEnabled(enabled);
 		txtDescription.setEnabled(enabled);
 	}
@@ -407,35 +388,4 @@ public class AcceptanceTestTab extends JPanel {
 		this.txtName = txtName;
 	}
 
-
-	/**
-	 * @return the updateButton
-	 */
-	public JButton getUpdateButton() {
-		return updateButton;
-	}
-
-
-	/**
-	 * @param updateButton the updateButton to set
-	 */
-	public void setUpdateButton(JButton updateButton) {
-		this.updateButton = updateButton;
-	}
-
-
-	/**
-	 * @return the buttonPanel
-	 */
-	public JPanel getButtonPanel() {
-		return buttonPanel;
-	}
-
-
-	/**
-	 * @param buttonPanel the buttonPanel to set
-	 */
-	public void setButtonPanel(JPanel buttonPanel) {
-		this.buttonPanel = buttonPanel;
-	}
 }

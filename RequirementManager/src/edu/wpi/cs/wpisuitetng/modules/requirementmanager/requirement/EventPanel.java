@@ -94,6 +94,7 @@ public class EventPanel extends JPanel{
 			public void componentResized(ComponentEvent e) { //on resize...
 				referenceToThis.setMaximumSize(new Dimension(100000, referenceToThis.getPreferredSize().height));//reset the maximum height appropriately 
 				referenceToThis.invalidate(); //send an invalidate to signal to the parent container that this panel must be repainted
+				((ListOfEventPanel) referenceToThis.getParent()).resizeFunction();//call the resize function on the parent (an instance of ListOfEventPanel) to resize the scroll pane holding the list appropriately
 			}
 		});
 		//end resize functionality

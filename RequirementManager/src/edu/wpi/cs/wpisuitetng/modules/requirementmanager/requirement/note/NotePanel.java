@@ -94,6 +94,7 @@ public class NotePanel extends JPanel{
 			public void componentResized(ComponentEvent e) { //on resize...
 				referenceToThis.setMaximumSize(new Dimension(100000, referenceToThis.getPreferredSize().height));//reset the maximum height appropriately 
 				referenceToThis.invalidate(); //send an invalidate to signal to the parent container that this panel must be repainted
+				((ListOfNotePanel) referenceToThis.getParent()).resizeFunction();//call the resize function on the parent (an instance of ListOfNotePanel) to resize the scroll pane holding the list appropriately
 			}
 		});
 		//end resize functionality

@@ -85,12 +85,17 @@ public class AcceptanceTestPanel extends JPanel{
 		txtName.setFont(txtName.getFont().deriveFont(Font.ITALIC)); //set the font of the name to bold and italic
 
 		txtName.setBorder(null); // tell the txtName field to not paint a border
+		txtName.setBackground(Color.WHITE);//set the background of the txtName to white
+		
+		txtName.setEditable(false);//make sure the name cannot be altered
 		//end Name
 
 		//Description:
 		txtDescription = new JTextArea(testDescription, 2, 2);
 		txtDescription.setLineWrap(true); //Make the description wrap long lines
 		txtDescription.setFont(txtDescription.getFont().deriveFont(9)); //set the font of the description to size 9
+		txtDescription.setEditable(false);//make sure the description cannot be altered
+		
 		//end Description
 
 		//Status box:
@@ -151,20 +156,12 @@ public class AcceptanceTestPanel extends JPanel{
 		
 		final JPanel referenceToThis = this; // a reference to this panel to use within the following constructor
 		
-		//Construct and add a new component listener to listen for a resize event on the txtDescription
-		txtDescription.addComponentListener(new ComponentAdapter() {
-			public void componentResized(ComponentEvent e) { //on resize...
-				referenceToThis.setMaximumSize(new Dimension(100000, referenceToThis.getPreferredSize().height));//reset the maximum height appropriately 
-				referenceToThis.invalidate(); //send an invalidate to signal to the parent container that this panel must be repainted
-				((ListOfAcceptanceTestPanel) referenceToThis.getParent()).resizeFunction();//call the resize function on the parent (an instance of ListOfAcceptanceTestPanel) to resize the scroll pane holding the list appropriately
-			}
-		});
-
 		//Construct and add a new component listener to listen for a resize event on this panel
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) { //on resize...
 				referenceToThis.setMaximumSize(new Dimension(100000, referenceToThis.getPreferredSize().height));//reset the maximum height appropriately 
 				referenceToThis.invalidate(); //send an invalidate to signal to the parent container that this panel must be repainted
+				((ListOfAcceptanceTestPanel) referenceToThis.getParent()).resizeFunction();//call the resize function on the parent (an instance of ListOfAcceptanceTestPanel) to resize the scroll pane holding the list appropriately
 			}
 		});
 		//end resize functionality

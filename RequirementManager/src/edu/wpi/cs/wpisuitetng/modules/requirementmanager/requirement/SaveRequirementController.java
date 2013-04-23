@@ -270,7 +270,6 @@ public class SaveRequirementController
 				//Disable Acceptance Tests
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(false);
-				view.getTabPanel().getAcceptanceTestPanel().getUpdateButton().setEnabled(false);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(false);
 
 				//Clear out the text if disabled
@@ -297,7 +296,6 @@ public class SaveRequirementController
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), true);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(true);
-				view.getTabPanel().getAcceptanceTestPanel().getUpdateButton().setEnabled(true);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
 
 				//Set background to yellow if changed
