@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
@@ -255,6 +256,14 @@ public class RequirementManager implements EntityManager<Requirement> {
 			lastNote.setUser(currentUser);
 			reqUpdate.getEvents().add(lastNote);
 		}
+		else if (reqUpdate.getAcceptanceTests().size() > oldReq.getAcceptanceTests().size())// If the update was adding an acceptance test, set the user and update appropriately
+		{
+			ArrayList<AcceptanceTest> acceptanceTests = reqUpdate.getAcceptanceTests();
+			AcceptanceTest lastAcceptanceTest = acceptanceTests.get(acceptanceTests.size() -  1);
+			lastAcceptanceTest.setUser(currentUser);
+			reqUpdate.getEvents().add(lastAcceptanceTest);
+		}
+		
 		else if (reqUpdate.getUserNames().size() != oldReq.getUserNames().size()) { // if the update is a user assignment change
 			UserChange userChange = new UserChange(oldReq, reqUpdate, currentUser);
 			reqUpdate.getEvents().add(userChange);

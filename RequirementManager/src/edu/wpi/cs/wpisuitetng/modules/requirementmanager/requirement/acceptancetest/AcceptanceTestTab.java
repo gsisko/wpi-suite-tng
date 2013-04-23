@@ -180,6 +180,7 @@ public class AcceptanceTestTab extends JPanel {
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
+			getTxtName().setEnabled(false);
 			getAcceptanceTestDescription().setEnabled(false);
 		}
 
@@ -281,6 +282,7 @@ public class AcceptanceTestTab extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 		saveButton.setEnabled(enabled);
+		getTxtName().setEnabled(enabled);
 		getAcceptanceTestDescription().setEnabled(enabled);
 	}
 
