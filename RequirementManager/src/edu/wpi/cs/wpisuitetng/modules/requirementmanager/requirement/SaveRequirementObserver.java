@@ -80,7 +80,7 @@ public class SaveRequirementObserver implements RequestObserver {
 						view.getRequirementPanel().getRequirementNote().setText("");
 						view.getRequirementPanel().getCurrentRequirement().setNotes(requirement.getNotes());
 					} 
-					else if (acceptanceTestListModel.getSize() < requirement.getNotes().size()) {
+					else if (acceptanceTestListModel.getSize() < requirement.getAcceptanceTests().size()) {
 						view.getRequirementPanel().getTabPanel().getAcceptanceTestPanel().addAcceptanceTestToList(requirement.getAcceptanceTests().get(requirement.getAcceptanceTests().size() - 1));
 						view.getRequirementPanel().getRequirementAcceptanceTest().setAcceptanceTestTitle("");
 						view.getRequirementPanel().getRequirementAcceptanceTest().setDescription("");

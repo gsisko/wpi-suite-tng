@@ -295,6 +295,7 @@ public class SaveRequirementController
 
 				//Enable Acceptance Tests
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), true);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(true);
 				view.getTabPanel().getAcceptanceTestPanel().getUpdateButton().setEnabled(true);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
@@ -311,7 +312,7 @@ public class SaveRequirementController
 			((ListView)view.getParent().getTabController().getView().getComponentAt(0)).refreshData();
 		}
 		else {
-			System.err.print("Undected error saving requirement\n");
+			System.err.print("Undetected error saving requirement\n");
 		}
 	}
 

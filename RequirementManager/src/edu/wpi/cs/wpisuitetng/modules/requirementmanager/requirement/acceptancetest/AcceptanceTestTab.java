@@ -58,8 +58,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 public class AcceptanceTestTab extends JPanel {
 
 	//The labels
-	private  JLabel nameLabel; //The label for the name text field ("txtName")
-	private  JLabel descriptionLabel;//The label for the description text area ("txtDescription")
+	private JLabel nameLabel; //The label for the name text field ("txtName")
+	private JLabel descriptionLabel;//The label for the description text area ("txtDescription")
 
 
 	//The fillable components
@@ -281,7 +281,6 @@ public class AcceptanceTestTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(buttonPanel); // add the saveButton to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-
 	}
 
 
