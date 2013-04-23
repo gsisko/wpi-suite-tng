@@ -44,7 +44,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 
 /**
  * This class is a JPanel. 
@@ -177,7 +176,9 @@ public class RequirementTab extends JPanel {
 
 			//Disables the acceptanceTestPanel upon creation
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
+			toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+			tabPanel.getAcceptanceTestPanel().getUpdateButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
 			
 			//Disables the appropriate fields in the attributePanel upon creation
@@ -192,9 +193,11 @@ public class RequirementTab extends JPanel {
 			this.tabPanel.getNotePanel().setEnabled(false);
 			
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
+			toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), false);
 			tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+			tabPanel.getAcceptanceTestPanel().getUpdateButton().setEnabled(false);
 			tabPanel.getAcceptanceTestPanel().setEnabled(false);
-
+			
 			tabPanel.getUserChooserPanel().setInputEnabled(false);
 
 		}
@@ -220,16 +223,15 @@ public class RequirementTab extends JPanel {
 		toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), enabled);
 		tabPanel.getNotePanel().getSaveButton().setEnabled(enabled);
 
-		tabPanel.getAttachmentPanel().getSaveButton().setEnabled(enabled);
-		
+		//Toggle acceptance tests boxes
 		toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), enabled);
+		toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), enabled);
 		tabPanel.getAcceptanceTestPanel().getSaveButton().setEnabled(enabled);
+		tabPanel.getAcceptanceTestPanel().getUpdateButton().setEnabled(enabled);
 		tabPanel.getAcceptanceTestPanel().setEnabled(enabled);
 
 		//toggles the UserChooserTab
 		tabPanel.getUserChooserPanel().setInputEnabled(enabled);
-		
-
 	}
 
 	/**

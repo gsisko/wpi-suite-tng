@@ -89,7 +89,7 @@ public class SaveRequirementController
 
 		// Warn when the user tries to exit the tab
 		view.getAttributePanel().setSaving(true);
-		
+
 		view.getParent().setSaveButtonEnable(false);
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
@@ -255,7 +255,7 @@ public class SaveRequirementController
 
 			}
 			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {		// Disable the note panel and userChooserTab if the requirement has been deleted
-			
+
 				//Disable notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
@@ -263,14 +263,17 @@ public class SaveRequirementController
 				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
 					view.getTabPanel().getNotePanel().getNoteMessage().setText("");
 				}
-				
+
 				//Disable UserChooseTab
 				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
-				
+
 				//Disable Acceptance Tests
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+				view.getTabPanel().getAcceptanceTestPanel().getUpdateButton().setEnabled(false);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(false);
+
+				//Clear out the text if disabled
 				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
 				}
@@ -278,7 +281,7 @@ public class SaveRequirementController
 					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
 				}
 			} else {
-				
+
 				//Enable Notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
 				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
@@ -286,14 +289,17 @@ public class SaveRequirementController
 				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
 					view.getTabPanel().getNotePanel().getNoteMessage().setBackground(new Color(248,253,188));
 				}
-				
+
 				//Enable UserChooserTab
 				view.getTabPanel().getUserChooserPanel().setInputEnabled(true);
-				
+
 				//Enable Acceptance Tests
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(true);
+				view.getTabPanel().getAcceptanceTestPanel().getUpdateButton().setEnabled(true);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
+
+				//Set background to yellow if changed
 				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setBackground(new Color(248,253,188));
 				}
@@ -340,25 +346,25 @@ public class SaveRequirementController
 	 */
 	public void saveAcceptanceTest() {
 		// check if any inputs are invalid, print an error message if one is
-		if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) {
+		if ((view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) &&(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) ) {
+			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		else if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Acceptance Test description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		else if (view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Acceptance Test name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} //TODO: Will it ever get here?
-		else if ((view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) &&(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) ) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
+		} 
+
 		Requirement currentRequirement = view.getCurrentRequirement();
 
 		AcceptanceTest newTest = view.getRequirementAcceptanceTest();
 		view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
 		view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
-		
+
 		currentRequirement.getAcceptanceTests().add(newTest);
 
 		// make a POST http request and let the observer get the response
@@ -367,7 +373,7 @@ public class SaveRequirementController
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		request.send();
 	}
-	
+
 	public void saveAttachment() throws IOException {
 		JFileChooser fc = new JFileChooser();
 
@@ -416,7 +422,7 @@ public class SaveRequirementController
 				request.setBody(part.toJSON()); // put the new message in the body of the request
 				request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
 				request.send();
-				
+
 				n++;
 			}
 
@@ -445,18 +451,18 @@ public class SaveRequirementController
 		}
 		fc.setSelectedFile(null);
 	}
-	
+
 	public void saveUsers() {
-		
+
 		Requirement currentRequirement = view.getCurrentRequirement();
 		ArrayList<String> assignedUsers = new ArrayList<String>();
 		UserListModel assignedUserListModel = view.getTabPanel().getUserChooserPanel().getAssignedUserListModel();
-		
+
 		for (int i = 0; i < assignedUserListModel.getSize(); i++) {
 			assignedUsers.add(assignedUserListModel.getUserAt(i));
 		}
 		currentRequirement.setUserNames(assignedUsers);
-		
+
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response

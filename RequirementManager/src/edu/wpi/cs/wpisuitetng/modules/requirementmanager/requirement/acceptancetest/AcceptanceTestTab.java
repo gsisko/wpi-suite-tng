@@ -147,6 +147,22 @@ public class AcceptanceTestTab extends JPanel {
 		//Set the character limit for the txtName field
 		txtName.setDocument(new JTextFieldLimit(100));
 
+		// Add key listener to txtName
+		txtName.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (!txtName.getText().equals("")) {
+					parent.getAttributePanel().changeField(txtName, 9, true);
+				} else {
+					parent.getAttributePanel().changeField(txtName, 9, false);
+				}
+			}
+		});
+
 
 		// Set the txtMessage component to wrap
 		txtDescription.setLineWrap(true);
@@ -164,8 +180,10 @@ public class AcceptanceTestTab extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (!txtDescription.getText().equals("")) {
+					parent.getAttributePanel().changeField(txtName, 9, true);
 					parent.getAttributePanel().changeField(txtDescription, 9, true);
 				} else {
+					parent.getAttributePanel().changeField(txtName, 9, false);
 					parent.getAttributePanel().changeField(txtDescription, 9, false);
 				}
 			}
@@ -180,6 +198,7 @@ public class AcceptanceTestTab extends JPanel {
 		if ((parent.getMode()) == Mode.CREATE)
 		{
 			saveButton.setEnabled(false);
+			updateButton.setEnabled(false);
 			getTxtName().setEnabled(false);
 			getAcceptanceTestDescription().setEnabled(false);
 		}
@@ -271,6 +290,9 @@ public class AcceptanceTestTab extends JPanel {
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
 		saveButton.setAction(new SaveAcceptanceTestAction(parent.getParent().getController()));
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
+		//TODO: Link to controller for saving edits?
+		//updateButton.setAction(new SaveAcceptanceTestEditAction(parent.getParent().getController()));
+		updateButton.setEnabled(restoreEnableStateBool);
 	}
 
 	/**
@@ -282,8 +304,9 @@ public class AcceptanceTestTab extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 		saveButton.setEnabled(enabled);
-		getTxtName().setEnabled(enabled);
-		getAcceptanceTestDescription().setEnabled(enabled);
+		updateButton.setEnabled(enabled);
+		txtName.setEnabled(enabled);
+		txtDescription.setEnabled(enabled);
 	}
 
 	/**
