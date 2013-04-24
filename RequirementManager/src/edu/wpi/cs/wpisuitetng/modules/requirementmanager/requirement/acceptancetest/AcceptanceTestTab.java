@@ -170,6 +170,7 @@ public class AcceptanceTestTab extends JPanel {
 				} else {
 					parent.getAttributePanel().changeField(txtDescription, 9, false);
 				}
+			}
 		});
 
 
