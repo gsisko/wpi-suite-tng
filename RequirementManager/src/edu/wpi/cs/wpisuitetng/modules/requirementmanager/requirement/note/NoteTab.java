@@ -45,7 +45,10 @@ public class NoteTab extends JPanel implements ActionListener {
 	//The fillable components
 	private  JTextArea txtMessage;//The message text field 
 	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
-
+	
+	//txtMessage.setDocument(new JTextFieldLimit(500));
+	
+	
 	//The save button
 	private JButton saveButton;
 
