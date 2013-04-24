@@ -166,13 +166,10 @@ public class AcceptanceTestTab extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (!txtDescription.getText().equals("")) {
-					parent.getAttributePanel().changeField(txtName, 9, true);
 					parent.getAttributePanel().changeField(txtDescription, 9, true);
 				} else {
-					parent.getAttributePanel().changeField(txtName, 9, false);
 					parent.getAttributePanel().changeField(txtDescription, 9, false);
 				}
-			}
 		});
 
 
