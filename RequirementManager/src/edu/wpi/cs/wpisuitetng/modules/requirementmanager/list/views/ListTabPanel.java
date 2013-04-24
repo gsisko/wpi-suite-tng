@@ -44,9 +44,9 @@ public class ListTabPanel extends JTabbedPane {
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
 		filterList = new FilterListTab(parent);
-		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
 		iterationList = new IterationListTab(parent);
 		addTab("Iterations", new ImageIcon(), iterationList, "List of Iterations");
+		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
 
 		this.setPreferredSize(new Dimension(190, 500));
 	}
