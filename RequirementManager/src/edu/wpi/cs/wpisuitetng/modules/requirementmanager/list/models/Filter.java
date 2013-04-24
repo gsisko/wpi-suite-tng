@@ -179,7 +179,7 @@ public class Filter extends AbstractModel {
 				if (this.comparator == OperatorType.Contains ){
 					return req.getUserNames().contains(this.value) || (req.getUserNames().size() == 0 && this.value.equals(""));			
 				} else { // The operator will be DoesNotContain
-					return !req.getUserNames().contains(this.value) || (req.getUserNames().size() > 0 && this.value.equals(""));
+					return (!req.getUserNames().contains(this.value)  && !this.value.equals("") )|| (req.getUserNames().size() > 0 && this.value.equals(""));
 				}
 				
 				// The following five are Integers
