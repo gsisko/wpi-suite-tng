@@ -57,6 +57,7 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 			String description = acceptanceTestListModel.getElementAt(i).getDescription(); //grab the description portion of this acceptance test
 			AcceptanceTestPanel panel = new AcceptanceTestPanel(acceptanceTestListModel.getElementAt(i).getAcceptanceTestTitle(),description, AcceptanceTestResult.NONE); //create a new AcceptanceTestPanel to hold this acceptance test
 			totalHeight += panel.getSize().getHeight();//add this panel's height to the running total
+			panel.setup();
 			this.add(panel);//actually add this acceptanceTestPanel to this ListOfAcceptanceTestPanel
 		}
 

@@ -156,6 +156,13 @@ public class AcceptanceTestPanel extends JPanel{
 		//end resize functionality
 
 	}
+	
+	/**
+	 * Sets up listeners
+	 */
+	public void setup() {
+		this.statusBox.addPopupMenuListener(new AcceptanceTestStatusListener(this));
+	}
 
 	/**
 	 * @return the txtDescription
