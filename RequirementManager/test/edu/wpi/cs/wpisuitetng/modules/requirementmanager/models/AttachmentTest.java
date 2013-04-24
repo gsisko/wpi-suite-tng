@@ -13,15 +13,10 @@ import static org.junit.Assert.*;
  *
  * @generatedBy CodePro at 4/23/13 11:07 PM
  * @author Team 5 D13
- * @version $Revision: 1.0 $
  */
 public class AttachmentTest {
 	/**
 	 * Run the Attachment(String,int) constructor test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	
 	private Date test_date;
@@ -49,10 +44,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the ArrayList<Integer> getAttachmentPartIds() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testGetAttachmentPartIds_1()
@@ -69,10 +60,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the String getBodyString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testGetBodyString_1()
@@ -88,10 +75,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the String getFileName() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testGetFileName_1()
@@ -107,10 +90,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the int getFileSize() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testGetFileSize_1()
@@ -126,10 +105,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the String getLabelString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testGetLabelString_1()
@@ -145,10 +120,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the void setAttachmentPartIds(ArrayList<Integer>) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testSetAttachmentPartIds_1()
@@ -164,10 +135,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the void setFileName(String) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testSetFileName_1()
@@ -183,10 +150,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the void setFileSize(int) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testSetFileSize_1()
@@ -202,10 +165,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the String toJSON() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testToJSON_1()
@@ -221,10 +180,6 @@ public class AttachmentTest {
 
 	/**
 	 * Run the String toString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Test
 	public void testToString_1()
@@ -240,11 +195,6 @@ public class AttachmentTest {
 
 	/**
 	 * Perform pre-test initialization.
-	 *
-	 * @throws Exception
-	 *         if the initialization fails for some reason
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@Before
 	public void setUp()
@@ -255,11 +205,6 @@ public class AttachmentTest {
 
 	/**
 	 * Perform post-test clean-up.
-	 *
-	 * @throws Exception
-	 *         if the clean-up fails for some reason
-	 *
-	 * @generatedBy CodePro at 4/23/13 11:07 PM
 	 */
 	@After
 	public void tearDown()

@@ -12,18 +12,11 @@ import static org.junit.Assert.*;
 
 /**
  * The class <code>RequirementCreationTest</code> contains tests for the class <code>{@link RequirementCreation}</code>.
- *
- * @generatedBy CodePro at 4/23/13 10:26 PM
  * @author Team 5 D13
- * @version $Revision: 1.0 $
  */
 public class RequirementCreationTest {
 	/**
 	 * Run the RequirementCreation(Requirement,String) constructor test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:26 PM
 	 */
 	
 	private Date test_date;
@@ -52,10 +45,6 @@ public class RequirementCreationTest {
 
 	/**
 	 * Run the String getBodyString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:26 PM
 	 */
 	@Test
 	public void testGetBodyString_1()
@@ -78,10 +67,6 @@ public class RequirementCreationTest {
 
 	/**
 	 * Run the String getLabelString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:26 PM
 	 */
 	@Test
 	public void testGetLabelString_1()
@@ -104,11 +89,6 @@ public class RequirementCreationTest {
 
 	/**
 	 * Perform pre-test initialization.
-	 *
-	 * @throws Exception
-	 *         if the initialization fails for some reason
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:26 PM
 	 */
 	@Before
 	public void setUp(){
@@ -120,11 +100,6 @@ public class RequirementCreationTest {
 
 	/**
 	 * Perform post-test clean-up.
-	 *
-	 * @throws Exception
-	 *         if the clean-up fails for some reason
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:26 PM
 	 */
 	@After
 	public void tearDown()
