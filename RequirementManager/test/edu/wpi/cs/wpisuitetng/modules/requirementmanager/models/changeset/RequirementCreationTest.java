@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  * The class <code>RequirementCreationTest</code> contains tests for the class <code>{@link RequirementCreation}</code>.
  *
  * @generatedBy CodePro at 4/23/13 10:26 PM
- * @author Edison
+ * @author Team 5 D13
  * @version $Revision: 1.0 $
  */
 public class RequirementCreationTest {
