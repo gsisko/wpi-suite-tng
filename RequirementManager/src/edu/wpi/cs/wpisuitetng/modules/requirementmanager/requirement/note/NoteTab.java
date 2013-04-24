@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JViewport;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
@@ -46,7 +47,7 @@ public class NoteTab extends JPanel implements ActionListener {
 	private  JTextArea txtMessage;//The message text field 
 	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
 	
-	//txtMessage.setDocument(new JTextFieldLimit(500));
+	
 	
 	
 	//The save button
@@ -107,7 +108,8 @@ public class NoteTab extends JPanel implements ActionListener {
 		// Set the txtMessage component to wrap
 		txtMessage.setLineWrap(true);
 		txtMessage.setWrapStyleWord(true);
-
+		txtMessage.setDocument(new JTextFieldLimit(100000));
+		
 		// Put txtMessage in a scroll pane
 		scrollMessage = new JScrollPane(txtMessage);
 		

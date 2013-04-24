@@ -89,7 +89,7 @@ public class AcceptanceTestPanel extends JPanel{
 		txtDescription.setLineWrap(true); //Make the description wrap long lines
 		txtDescription.setFont(txtDescription.getFont().deriveFont(9)); //set the font of the description to size 9
 		txtDescription.setEditable(false);//make sure the description cannot be altered
-		
+		txtDescription.setDocument(new JTextFieldLimit(100000));
 		//end Description
 
 		//Status box:
