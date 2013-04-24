@@ -27,7 +27,6 @@ public class RequirementCreationTest {
 	 */
 	
 	private Date test_date;
-	private Requirement test_req;
 	private DateFormat dateFormat;
 	
 	@Test
@@ -114,7 +113,6 @@ public class RequirementCreationTest {
 	@Before
 	public void setUp(){
 		 test_date = new Date();
-		 test_req = new Requirement();
 		 dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 //	public void setUp() throws Exception {
 		// add additional set up code here
