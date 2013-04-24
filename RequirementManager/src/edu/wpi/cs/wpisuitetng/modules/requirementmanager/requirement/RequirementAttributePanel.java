@@ -63,8 +63,8 @@ public class RequirementAttributePanel extends JPanel {
 	private  JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
 	private  JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
 	private  JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
-	private  JLabel warningName;
-	private  JLabel warningDescription;
+	private  JLabel warningName;//The Jlabel for warning the user about invalid names
+	private  JLabel warningDescription;//The Jlabel for warning the user about invalid descriptions
 	//The fillable components
 	private  JTextField txtName;//The name text field 
 	private  JTextArea txtDescription;//The description text area
@@ -672,6 +672,7 @@ public class RequirementAttributePanel extends JPanel {
 					changeField(statusBox, 6, false);
 				}
 				// Only valid in EDIT mode
+				//TODO: Is this necessary?
 				if (mode.equals(Mode.EDIT) ){
 
 				}

@@ -20,8 +20,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -52,27 +50,13 @@ public class SaveRequirementController
 
 	public void save() 
 	{
-		// check if any inputs are invalid, print an error message if one is
-		String error = "";
-		if (view.getRequirementName().getText().length() == 0) {
-			error += "Name must be non-blank.\n";
-		}
-		if (view.getRequirementName().getText().length() > 100) {
-			error += "Name cannot be greater than 100 characters.\n";
-		}
-		if (view.getRequirementDescription().getText().length() == 0) {
-			error += "Description must be non-blank.\n";
-		}
+		//If the requirement estimate is blank...
 		if (view.getRequirementEstimate().getText().length() == 0) {
-			error += "Estimate must be non-blank.\n";
-		}
+			view.getRequirementEstimate().setText("0");//...set it to 0
+		} 
+		//If the requirement actual effort is blank...
 		if (view.getRequirementActualEffort().getText().length() == 0) {
-			error += "ActualEffort must be non-blank.\n";
-		}
-		//TODO this should change to eliminate popups, maybe put error checking in the panel itself?
-		if (!error.equals("")) {
-			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-			return;
+			view.getRequirementActualEffort().setText("0");//...set it to 0
 		}
 
 		// Warn when the user tries to exit the tab
@@ -112,26 +96,14 @@ public class SaveRequirementController
 			updatedRequirement.setAcceptanceTests(oldRequirement.getAcceptanceTests());
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 			updatedRequirement.setEvents(oldRequirement.getEvents());
-
-			Iteration newIter = null;
+			
 			// Setting the Iteration			
 			String selectedIteration = view.getIterationBox().getSelectedItem().toString();
 			for (Iteration iter: view.getAllIterations()){
 				// If it is the right Iteration, save it into the updated requirement
 				if (selectedIteration.equals(iter.getName())){
 					updatedRequirement.setIteration(iter.getID());
-					newIter = iter;
 				}
-			}
-
-			int oldIterID = oldRequirement.getIteration(); //grab the old status
-			int newIterID = updatedRequirement.getIteration();
-			if (newIterID != oldIterID) {
-				if (newIter.getEndDate().before(new Date()) && newIterID != 0) {
-					JOptionPane.showMessageDialog(null, "Cannot assign a requirement to an iteration that has already ended.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
-					return;//cancel the update
-				}
-
 			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
@@ -271,7 +243,7 @@ public class SaveRequirementController
 
 				//Enable Notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
-				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(true);
+				view.getTabPanel().getNotePanel().setSaveButtonWhenMessageIsValid();
 				view.getTabPanel().getNotePanel().setEnabled(true);
 				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
 					view.getTabPanel().getNotePanel().getNoteMessage().setBackground(new Color(248,253,188));
@@ -309,11 +281,6 @@ public class SaveRequirementController
 	 * Saves a new note to the Requirement
 	 */
 	public void saveNote() {
-		// check if any inputs are invalid, print an error message if one is
-		if (view.getTabPanel().getNotePanel().getNoteMessage().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Note must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
 
 		Requirement currentRequirement = view.getCurrentRequirement();
 
@@ -334,15 +301,15 @@ public class SaveRequirementController
 	public void saveAcceptanceTest() {
 		// check if any inputs are invalid, print an error message if one is
 		if ((view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) &&(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) ) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //TODO Get rid of popup
 			return;
 		}
 		else if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Acceptance Test description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //TODO Get rid of popup
 			return;
 		}
 		else if (view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Acceptance Test name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //TODO Get rid of popup
 			return;
 		} 
 
@@ -433,7 +400,7 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304){
+		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304){ //TODO Get rid of popup
 			JOptionPane.showMessageDialog(null, "File size must be 4 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		fc.setSelectedFile(null);

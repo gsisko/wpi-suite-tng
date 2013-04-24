@@ -39,7 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
  */
 @SuppressWarnings({"serial"})
 public class NoteTab extends JPanel {
-
+	
 	//The fillable components
 	private  JTextArea txtMessage;//The message text field 
 	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
@@ -119,9 +119,10 @@ public class NoteTab extends JPanel {
 				} else {
 					parent.getAttributePanel().changeField(txtMessage, 9, false);
 				}
+				setSaveButtonWhenMessageIsValid();
 			}
 		});
-
+		
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));
 		scrollMessage.setPreferredSize(new Dimension(580, 100));
@@ -133,6 +134,9 @@ public class NoteTab extends JPanel {
 			saveButton.setEnabled(false);
 			getNoteMessage().setEnabled(false);
 		}
+		else
+			setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
+			
 
 
 		// Add components
@@ -175,6 +179,25 @@ public class NoteTab extends JPanel {
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
+	
+	/** Checks the txtMessage field for changes and sets the warning label 
+	 * ("emptyWarning") status appropriately            
+	 *  
+	 *   @return True if the txtMessage field is valid (non-empty), false otherwise
+	 */
+	public boolean setSaveButtonWhenMessageIsValid(){
+		// Initialize flag
+		boolean messageGood = true;
+
+		// Check the note message ("txtMessage") box
+		if (txtMessage.getText().length()==0){
+			messageGood = false;
+		}
+		
+		saveButton.setEnabled( messageGood);	
+		return messageGood;
+	}
+	
 
 	/**
 	 * This returns the JTextArea "txtMessage"
