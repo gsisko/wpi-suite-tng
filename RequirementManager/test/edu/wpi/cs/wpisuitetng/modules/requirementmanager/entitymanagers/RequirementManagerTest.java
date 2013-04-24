@@ -56,7 +56,7 @@ public class RequirementManagerTest {
 	Requirement otherRequirement;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		User admin = new User("admin", "admin", "1234", 27);
 		admin.setRole(Role.ADMIN);
 		testProject = new Project("test", "1");
@@ -139,7 +139,7 @@ public class RequirementManagerTest {
 	}
 	
 	@Test
-	public void testGetAll() throws WPISuiteException {
+	public void testGetAll() {
 		Requirement[] gotten = manager.getAll(defaultSession);
 		assertEquals(1, gotten.length);
 		assertSame(existingRequirement, gotten[0]);
@@ -185,7 +185,7 @@ public class RequirementManagerTest {
 	
 	
 	@Test
-	public void testDeleteAllWhenEmpty() throws WPISuiteException {
+	public void testDeleteAllWhenEmpty() {
 		manager.deleteAll(adminSession);
 		manager.deleteAll(adminSession);
 		// no exceptions

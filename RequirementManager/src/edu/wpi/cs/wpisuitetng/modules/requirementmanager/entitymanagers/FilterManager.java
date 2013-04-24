@@ -70,7 +70,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @return The number of Requirements currently in the database
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		// Passing a dummy Filter lets the db know what type of object to
 		// retrieve
 		return this.db.retrieveAll(new Filter()).size();
@@ -290,7 +290,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws NotImplementedException - Thrown because its not implemented!
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
-	public String advancedPut(Session s, String[] args, String content)	throws WPISuiteException,NotImplementedException {
+	public String advancedPut(Session s, String[] args, String content)	throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
@@ -304,7 +304,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws NotImplementedException - Thrown because its not implemented!
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
 	 */
-	public String advancedPost(Session s, String string, String content)throws WPISuiteException,NotImplementedException {
+	public String advancedPost(Session s, String string, String content)throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
@@ -317,7 +317,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws NotImplementedException - Thrown because its not implemented!
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedGet(Session, String[])
 	 */
-	public String advancedGet(Session s, String[] args)	throws WPISuiteException,NotImplementedException {
+	public String advancedGet(Session s, String[] args)	throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 

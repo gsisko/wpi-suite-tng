@@ -58,7 +58,7 @@ public class TestRequirementControllers {
 	FilterBuilderPanel filterBuilderTest;
 
 	@Before
-	public void setup() throws Exception{
+	public void setup(){
 		Network.initNetwork(new MockNetwork());
 		Network.getInstance().setDefaultNetworkConfiguration(new NetworkConfiguration("http://wpisuitetng"));
 

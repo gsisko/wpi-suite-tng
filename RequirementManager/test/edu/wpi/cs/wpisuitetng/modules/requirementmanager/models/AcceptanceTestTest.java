@@ -14,8 +14,7 @@ public class AcceptanceTestTest {
 	 * Run the AcceptanceTest(String,String) constructor test.
 	 */
 	@Test
-	public void testAcceptanceTest_1()
-		throws Exception {
+	public void testAcceptanceTest_1() {
 		String title = "Acceptance Test 1";
 		String description = "Description 1";
 
@@ -37,8 +36,7 @@ public class AcceptanceTestTest {
 	 * Run the AcceptanceTest(String,String,AcceptanceTestResult) constructor test.
 	 */
 	@Test
-	public void testAcceptanceTest_2()
-		throws Exception {
+	public void testAcceptanceTest_2() {
 		String title = "Acceptance Test 2";
 		String description = "Description 2";
 		AcceptanceTestResult result = AcceptanceTestResult.FAILED;
@@ -61,8 +59,7 @@ public class AcceptanceTestTest {
 	 * Run the AcceptanceTest fromJson(String) method test.
 	 */
 	@Test
-	public void testFromJson_1()
-		throws Exception {
+	public void testFromJson_1() {
 		String json = "";
 
 		AcceptanceTest result = AcceptanceTest.fromJson(json);
@@ -75,8 +72,7 @@ public class AcceptanceTestTest {
 	 * Run the AcceptanceTest fromJson(String) method test.
 	 */
 	@Test
-	public void testFromJson_2()
-		throws Exception {
+	public void testFromJson_2() {
 		String json = "";
 
 		AcceptanceTest result = AcceptanceTest.fromJson(json);
@@ -89,8 +85,7 @@ public class AcceptanceTestTest {
 	 * Run the AcceptanceTestResult getAcceptanceTestResult() method test.
 	 */
 	@Test
-	public void testGetAcceptanceTestResult_1()
-		throws Exception {
+	public void testGetAcceptanceTestResult_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -108,8 +103,7 @@ public class AcceptanceTestTest {
 	 * Run the String getAcceptanceTestTitle() method test.
 	 */
 	@Test
-	public void testGetAcceptanceTestTitle_1()
-		throws Exception {
+	public void testGetAcceptanceTestTitle_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -124,8 +118,7 @@ public class AcceptanceTestTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_1()
-		throws Exception {
+	public void testGetBodyString_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -140,8 +133,7 @@ public class AcceptanceTestTest {
 	 * Run the String getDescription() method test.
 	 */
 	@Test
-	public void testGetDescription_1()
-		throws Exception {
+	public void testGetDescription_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -156,8 +148,7 @@ public class AcceptanceTestTest {
 	 * Run the String getLabelString() method test.
 	 */
 	@Test
-	public void testGetLabelString_1()
-		throws Exception {
+	public void testGetLabelString_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -171,8 +162,7 @@ public class AcceptanceTestTest {
 	 * Run the void setAcceptanceTestResult(AcceptanceTestResult) method test.
 	 */
 	@Test
-	public void testSetAcceptanceTestResult_1()
-		throws Exception {
+	public void testSetAcceptanceTestResult_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -187,8 +177,7 @@ public class AcceptanceTestTest {
 	 * Run the void setAcceptanceTestTitle(String) method test.
 	 */
 	@Test
-	public void testSetAcceptanceTestTitle_1()
-		throws Exception {
+	public void testSetAcceptanceTestTitle_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -203,8 +192,7 @@ public class AcceptanceTestTest {
 	 * Run the void setDescription(String) method test.
 	 */
 	@Test
-	public void testSetDescription_1()
-		throws Exception {
+	public void testSetDescription_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -219,8 +207,7 @@ public class AcceptanceTestTest {
 	 * Run the String toJSON() method test.
 	 */
 	@Test
-	public void testToJSON_1()
-		throws Exception {
+	public void testToJSON_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -235,8 +222,7 @@ public class AcceptanceTestTest {
 	 *
 	 */
 	@Test
-	public void testToString_1()
-		throws Exception {
+	public void testToString_1() {
 		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
@@ -251,8 +237,7 @@ public class AcceptanceTestTest {
 	 * Perform pre-test initialization.
 	 */
 	@Before
-	public void setUp()
-		throws Exception {
+	public void setUp() {
 		// add additional set up code here
 	}
 
@@ -260,8 +245,7 @@ public class AcceptanceTestTest {
 	 * Perform post-test clean-up.
 	 */
 	@After
-	public void tearDown()
-		throws Exception {
+	public void tearDown() {
 		// Add additional tear down code here
 	}
 }

@@ -23,8 +23,7 @@ public class RequirementCreationTest {
 	private DateFormat dateFormat;
 	
 	@Test
-	public void testRequirementCreation_1()
-		throws Exception {
+	public void testRequirementCreation_1() {
 		Requirement requirement = new Requirement();
 		requirement.setReleaseNumber("2");
 		requirement.setType(RequirementType.Epic);
@@ -47,8 +46,7 @@ public class RequirementCreationTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_1()
-		throws Exception {
+	public void testGetBodyString_1() {
 		Requirement requirement = new Requirement();
 		requirement.setReleaseNumber("1");
 		requirement.setType(RequirementType.Epic);
@@ -69,8 +67,7 @@ public class RequirementCreationTest {
 	 * Run the String getLabelString() method test.
 	 */
 	@Test
-	public void testGetLabelString_1()
-		throws Exception {
+	public void testGetLabelString_1() {
 		Requirement requirement = new Requirement();
 		requirement.setReleaseNumber("");
 		requirement.setType(RequirementType.Epic);
@@ -102,8 +99,7 @@ public class RequirementCreationTest {
 	 * Perform post-test clean-up.
 	 */
 	@After
-	public void tearDown()
-		throws Exception {
+	public void tearDown() {
 		// Add additional tear down code here
 	}
 }

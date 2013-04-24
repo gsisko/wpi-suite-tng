@@ -80,7 +80,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
 	 */
 	public Requirement makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
+			throws BadRequestException, WPISuiteException {
 
 		// Parse the requirement from JSON
 		final Requirement newRequirement;
@@ -148,7 +148,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @throws WPISuiteException "Retrieve all failed"
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
 		return this.db.retrieveAll(new Requirement()).size();
 	}
@@ -373,8 +373,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	// Unimplemented Manager methods	
 	// Advanced Manager methods
 
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) {
 		throw new NotImplementedException();
 	}
 
@@ -388,8 +387,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) {
 		throw new NotImplementedException();
 	}
 
@@ -402,8 +400,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
 	 */
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content) {
 		throw new NotImplementedException();
 	}
 

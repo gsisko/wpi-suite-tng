@@ -57,7 +57,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 	 * @return The number of Requirements currently in the database
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		// Passing a dummy Filter lets the db know what type of object to
 		// retrieve
 		return this.db.retrieveAll(new AttachmentPart(0, null, 0)).size();
@@ -118,7 +118,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 	}
 
 	@Override
-	public AttachmentPart[] getAll(Session s) throws NotImplementedException {
+	public AttachmentPart[] getAll(Session s) {
 		List<AttachmentPart> attachmentPartList = this.db.retrieveAll((new AttachmentPart(0, null, 0)));
 		return attachmentPartList.toArray(new AttachmentPart[attachmentPartList.size()]);
 	}
