@@ -36,6 +36,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 import edu.wpi.cs.wpisuitetng.modules.defecttracker.entitymanagers.CommentManager;
 import edu.wpi.cs.wpisuitetng.modules.defecttracker.entitymanagers.DefectManager;
+import edu.wpi.cs.wpisuitetng.modules.dropbox.model.FileBlobManager;
+import edu.wpi.cs.wpisuitetng.modules.dropbox.model.FileIndexManager;
 import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.FilterManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.IterationManager;
@@ -81,10 +83,15 @@ public class ManagerLayer {
 		map.put("defecttrackerdefect", new DefectManager(data));
 		map.put("defecttrackercomment", new CommentManager(data));
 		map.put("postboardpostboardmessage", new PostBoardEntityManager(data));
+<<<<<<< HEAD
 		map.put("requirementmanagerrequirement", new RequirementManager(data));
 		map.put("requirementmanagerfilter", new FilterManager(data));
 		map.put("requirementmanageriteration", new IterationManager(data));
 		map.put("requirementmanagerattachmentpart", new AttachmentPartManager(data));
+=======
+		map.put("dropboxfileblob", new FileBlobManager(data));
+		map.put("dropboxfileindex", new FileIndexManager(data));
+>>>>>>> 7037bd569b707ff3d311a2a73c4bc3c916c9daf4
 
 		//add just your module to this list
 		String[] fullModuleList = {"core","defecttracker","postboard", "requirementmanager"};
