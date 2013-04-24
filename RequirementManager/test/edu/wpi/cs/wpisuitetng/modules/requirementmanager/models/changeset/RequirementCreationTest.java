@@ -1,0 +1,136 @@
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
+
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.junit.*;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import static org.junit.Assert.*;
+
+/**
+ * The class <code>RequirementCreationTest</code> contains tests for the class <code>{@link RequirementCreation}</code>.
+ *
+ * @generatedBy CodePro at 4/23/13 10:26 PM
+ * @author Edison
+ * @version $Revision: 1.0 $
+ */
+public class RequirementCreationTest {
+	/**
+	 * Run the RequirementCreation(Requirement,String) constructor test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/23/13 10:26 PM
+	 */
+	
+	private Date test_date;
+	private Requirement test_req;
+	private DateFormat dateFormat;
+	
+	@Test
+	public void testRequirementCreation_1()
+		throws Exception {
+		Requirement requirement = new Requirement();
+		requirement.setReleaseNumber("2");
+		requirement.setType(RequirementType.Epic);
+		requirement.setDescription("Desc 2");
+		requirement.setName("Req 2");
+		requirement.setPriority(RequirementPriority.High);
+		String theCreator = "ejimenez";
+
+		RequirementCreation result = new RequirementCreation(requirement, theCreator);
+
+		// add additional test code here
+		assertNotNull(result);
+		assertEquals("Requirement created by " +theCreator + " on " +dateFormat.format(test_date), result.getLabelString());
+		assertEquals("Name initialized to \"Req 2\"\nDescription initialized to \"Desc 2\"\nType initialized to \"Epic\"\nPriority initialized to \"High\"\nReleaseNumber initialized to \"2\"", result.getBodyString());
+		assertEquals("ejimenez", result.getUser());
+		assertEquals(null, result.getProject());
+	}
+
+	/**
+	 * Run the String getBodyString() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/23/13 10:26 PM
+	 */
+	@Test
+	public void testGetBodyString_1()
+		throws Exception {
+		Requirement requirement = new Requirement();
+		requirement.setReleaseNumber("1");
+		requirement.setType(RequirementType.Epic);
+		requirement.setDescription("Description 1");
+		requirement.setName("Name 1");
+		requirement.setPriority(RequirementPriority.High);
+		RequirementCreation fixture = new RequirementCreation(requirement, "");
+		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
+		fixture.date = new Date();
+
+		String result = fixture.getBodyString();
+
+		// add additional test code here
+		assertEquals("Name initialized to \"Name 1\"\nDescription initialized to \"Description 1\"\nType initialized to \"Epic\"\nPriority initialized to \"High\"\nReleaseNumber initialized to \"1\"", result);
+	}
+
+	/**
+	 * Run the String getLabelString() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/23/13 10:26 PM
+	 */
+	@Test
+	public void testGetLabelString_1()
+		throws Exception {
+		Requirement requirement = new Requirement();
+		requirement.setReleaseNumber("");
+		requirement.setType(RequirementType.Epic);
+		requirement.setDescription("");
+		requirement.setName("");
+		requirement.setPriority(RequirementPriority.High);
+		RequirementCreation fixture = new RequirementCreation(requirement, "");
+		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
+		fixture.date = new Date();
+
+		String result = fixture.getLabelString();
+
+		assertEquals("Requirement created by  on " + dateFormat.format(test_date),result);
+		// add additional test code here
+	}
+
+	/**
+	 * Perform pre-test initialization.
+	 *
+	 * @throws Exception
+	 *         if the initialization fails for some reason
+	 *
+	 * @generatedBy CodePro at 4/23/13 10:26 PM
+	 */
+	@Before
+	public void setUp(){
+		 test_date = new Date();
+		 test_req = new Requirement();
+		 dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
+//	public void setUp() throws Exception {
+		// add additional set up code here
+	}
+
+	/**
+	 * Perform post-test clean-up.
+	 *
+	 * @throws Exception
+	 *         if the clean-up fails for some reason
+	 *
+	 * @generatedBy CodePro at 4/23/13 10:26 PM
+	 */
+	@After
+	public void tearDown()
+		throws Exception {
+		// Add additional tear down code here
+	}
+}
