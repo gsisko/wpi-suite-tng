@@ -31,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -40,6 +41,7 @@ import java.util.Date;
 public class TestRequirementControllers {
 
 	RetrieveAllRequirementsController controller;
+	SaveRequirementController saveController;
 
 	Requirement requirementTester,reqTest;
 	
@@ -103,6 +105,8 @@ public class TestRequirementControllers {
 		
 		listTab = new ListTab(tabController, listView);
 		filterBuilderTest = new FilterBuilderPanel(listTab);
+		
+		saveController = new SaveRequirementController(rView);
 	}
 
 	@Test
@@ -156,6 +160,24 @@ public class TestRequirementControllers {
 	    filterBuilderTest.toggleNewCancelMode();
 
 	    
+	}
+	@Test
+	public void testSaveController(){
+	    
+	    saveController.getView().getAttributePanel().setCurrentRequirement(reqTest);
+	    saveController.getView().getAttributePanel().setMode(RequirementTab.Mode.EDIT);
+	    saveController.getView().setMode(RequirementTab.Mode.EDIT);
+	    
+	    saveController.getView().getIterationBox().addItem(testIteration);
+	    saveController.getView().getAttributePanel().getRequirementName().setText("This is a Test!!");
+	    saveController.getView().getAttributePanel().getRequirementDescription().setText("This is a Test!!");
+	    saveController.save();
+	    
+	    saveController.getView().getTabPanel().getNotePanel().getNoteMessage().setText("This is a Test Note");
+	    
+	    saveController.saveNote();
+	    
+	    assertEquals(true, true);
 	}
 	
 }

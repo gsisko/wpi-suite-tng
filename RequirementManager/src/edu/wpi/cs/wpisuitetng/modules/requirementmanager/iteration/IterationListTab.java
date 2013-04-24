@@ -32,10 +32,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveIterationTableCellRenderer;
 
 /**
  * Panel to contain the list of Iterations that have been saved by the user
@@ -77,19 +79,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
-		resultsTable.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
+		resultsTable.setDefaultRenderer(String.class, new ActiveIterationTableCellRenderer());
 
-		    SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
-
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		        if( value instanceof Date) {
-		            value = f.format(value);
-		        }
-		        return super.getTableCellRendererComponent(table, value, isSelected,
-		                hasFocus, row, column);
-		    }
-		}
-		);
 		
 
 		// Put the table in a scroll pane
@@ -322,8 +313,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 			for (int i = 0; i < displayedIterations.length; i++) {
 				entries[i][0] = displayedIterations[i].getID();
 				entries[i][1] = displayedIterations[i].getName();
-				entries[i][2] = displayedIterations[i].getStartDate();
-				entries[i][3] = displayedIterations[i].getEndDate();
+				entries[i][2] = displayedIterations[i].getStartDate().toString();
+				entries[i][3] = displayedIterations[i].getEndDate().toString();
 
 			}
 

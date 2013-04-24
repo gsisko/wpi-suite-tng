@@ -13,6 +13,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JViewport;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
@@ -38,12 +41,15 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
  * -a save button to save the new note
  */
 @SuppressWarnings({"serial"})
-public class NoteTab extends JPanel {
+public class NoteTab extends JPanel implements ActionListener {
 	
 	//The fillable components
 	private  JTextArea txtMessage;//The message text field 
 	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
-
+	
+	
+	
+	
 	//The save button
 	private JButton saveButton;
 
@@ -102,7 +108,8 @@ public class NoteTab extends JPanel {
 		// Set the txtMessage component to wrap
 		txtMessage.setLineWrap(true);
 		txtMessage.setWrapStyleWord(true);
-
+		txtMessage.setDocument(new JTextFieldLimit(100000));
+		
 		// Put txtMessage in a scroll pane
 		scrollMessage = new JScrollPane(txtMessage);
 		
@@ -153,6 +160,7 @@ public class NoteTab extends JPanel {
 		// Set controller for save button
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
 		saveButton.setAction(new SaveNoteAction(parent.getParent().getController()));
+		saveButton.addActionListener(this);
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
 	}
 
@@ -267,4 +275,12 @@ public class NoteTab extends JPanel {
 
 	}
 
+	
+	/**
+	 * Tell field that it should not have changes
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		parent.getAttributePanel().changeField(txtMessage, 9, false);
+	}
 }

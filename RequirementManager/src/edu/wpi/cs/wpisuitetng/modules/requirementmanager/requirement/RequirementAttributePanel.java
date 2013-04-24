@@ -108,7 +108,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[11];
+		fieldsChanged = new boolean[13];
 		setFieldsChanged(false);
 
 		validNameAndDescription = new Boolean(true);
@@ -169,6 +169,8 @@ public class RequirementAttributePanel extends JPanel {
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
 		txtDescription.setWrapStyleWord(true);
+		//set character limit on description
+		txtDescription.setDocument(new JTextFieldLimit(100000));
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };

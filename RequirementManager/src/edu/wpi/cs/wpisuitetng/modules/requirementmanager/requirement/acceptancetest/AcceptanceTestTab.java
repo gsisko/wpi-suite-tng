@@ -16,6 +16,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
  * -a save button to save the new acceptance test
  */
 @SuppressWarnings({"serial"})
-public class AcceptanceTestTab extends JPanel {
+public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 	//The labels
 	private JLabel nameLabel; //The label for the name text field ("txtName")
@@ -142,9 +144,9 @@ public class AcceptanceTestTab extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (!txtName.getText().equals("")) {
-					parent.getAttributePanel().changeField(txtName, 9, true);
+					parent.getAttributePanel().changeField(txtName, 11, true);
 				} else {
-					parent.getAttributePanel().changeField(txtName, 9, false);
+					parent.getAttributePanel().changeField(txtName, 11, false);
 				}
 				setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			}
@@ -167,9 +169,9 @@ public class AcceptanceTestTab extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (!txtDescription.getText().equals("")) {
-					parent.getAttributePanel().changeField(txtDescription, 9, true);
+					parent.getAttributePanel().changeField(txtDescription, 12, true);
 				} else {
-					parent.getAttributePanel().changeField(txtDescription, 9, false);
+					parent.getAttributePanel().changeField(txtDescription, 12, false);
 				}
 				setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			}
@@ -264,6 +266,7 @@ public class AcceptanceTestTab extends JPanel {
 		// Set controller for save button
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
 		saveButton.setAction(new SaveAcceptanceTestAction(parent.getParent().getController()));
+		saveButton.addActionListener(this);	// Tells fields that a save has occured
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
 	}
 
@@ -391,6 +394,16 @@ public class AcceptanceTestTab extends JPanel {
 	 */
 	public void setTxtName(JTextField txtName) {
 		this.txtName = txtName;
+	}
+
+
+	/**
+	 * Tell fields that they should not have changes
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		parent.getAttributePanel().changeField(txtDescription, 12, false);
+		parent.getAttributePanel().changeField(txtName, 11, false);
 	}
 
 }
