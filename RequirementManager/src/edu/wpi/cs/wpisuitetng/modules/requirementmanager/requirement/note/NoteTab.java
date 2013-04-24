@@ -119,7 +119,7 @@ public class NoteTab extends JPanel {
 				} else {
 					parent.getAttributePanel().changeField(txtMessage, 9, false);
 				}
-				setSaveButtonWhenMessageIsValid();
+				setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			}
 		});
 		
@@ -137,8 +137,6 @@ public class NoteTab extends JPanel {
 		else
 			setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			
-
-
 		// Add components
 		this.add(listScrollPane); //add the noteList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
@@ -146,10 +144,8 @@ public class NoteTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // adds the save button to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-
+		
 		saveButton.setAlignmentX(CENTER_ALIGNMENT); //Set the horizontal alignment of the save button to the center of this panel
-
-
 	}
 
 
@@ -180,21 +176,17 @@ public class NoteTab extends JPanel {
 		return inputEnabled;
 	}
 	
-	/** Checks the txtMessage field for changes and sets the warning label 
-	 * ("emptyWarning") status appropriately            
-	 *  
+	/**
+	 *  Checks the txtMessage field for validity (non-emptiness) and sets the save button appropriately     
 	 *   @return True if the txtMessage field is valid (non-empty), false otherwise
 	 */
 	public boolean setSaveButtonWhenMessageIsValid(){
-		// Initialize flag
-		boolean messageGood = true;
+		boolean messageGood = true;	// Initialize flag
 
-		// Check the note message ("txtMessage") box
-		if (txtMessage.getText().length()==0){
+		if (txtMessage.getText().length()==0)// Check if the note message ("txtMessage") box is empty
 			messageGood = false;
-		}
-		
-		saveButton.setEnabled( messageGood);	
+				
+		saveButton.setEnabled( messageGood);//Set the save button enabled/disabled appropriately
 		return messageGood;
 	}
 	

@@ -255,7 +255,7 @@ public class SaveRequirementController
 				//Enable Acceptance Tests
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), true);
-				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(true);
+				view.getTabPanel().getAcceptanceTestPanel().setSaveButtonWhenMessageIsValid();
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
 
 				//Set background to yellow if changed
@@ -299,20 +299,6 @@ public class SaveRequirementController
 	 * Saves an acceptance test to the Requirement
 	 */
 	public void saveAcceptanceTest() {
-		// check if any inputs are invalid, print an error message if one is
-		if ((view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) &&(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) ) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test name and description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //TODO Get rid of popup
-			return;
-		}
-		else if (view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test description must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //TODO Get rid of popup
-			return;
-		}
-		else if (view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Acceptance Test name must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE); //TODO Get rid of popup
-			return;
-		} 
-
 		Requirement currentRequirement = view.getCurrentRequirement();
 
 		AcceptanceTest newTest = view.getRequirementAcceptanceTest();
@@ -400,7 +386,7 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304){ //TODO Get rid of popup
+		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304){ //TODO Get rid of popup?
 			JOptionPane.showMessageDialog(null, "File size must be 4 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		fc.setSelectedFile(null);

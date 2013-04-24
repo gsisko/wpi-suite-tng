@@ -146,6 +146,7 @@ public class AcceptanceTestTab extends JPanel {
 				} else {
 					parent.getAttributePanel().changeField(txtName, 9, false);
 				}
+				setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			}
 		});
 
@@ -170,6 +171,7 @@ public class AcceptanceTestTab extends JPanel {
 				} else {
 					parent.getAttributePanel().changeField(txtDescription, 9, false);
 				}
+				setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			}
 		});
 
@@ -185,6 +187,8 @@ public class AcceptanceTestTab extends JPanel {
 			getTxtName().setEnabled(false);
 			getAcceptanceTestDescription().setEnabled(false);
 		}
+		else
+			setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 
 		//Construct and Layout the inner panel to hold the name label, name field, description label, and the scrollDescription holding the txtDescription area
 		nameAndDescriptionPanel = new JPanel(); //Create the nameAndDescriptionPanel
@@ -284,6 +288,20 @@ public class AcceptanceTestTab extends JPanel {
 		return inputEnabled;
 	}
 
+	/**
+	 *  Checks the txtDescription and txtName for validity (non-emptiness) and sets the save button appropriately     
+	 *   @return True if the txtDescription and txtName fields are valid (non-empty), false otherwise
+	 */
+	public boolean setSaveButtonWhenMessageIsValid(){
+		boolean messageGood = true;	// Initialize flag
+
+		if ((txtName.getText().length()==0) || (txtDescription.getText().length()==0) )// Check if the txtDescription and txtName are empty
+			messageGood = false;
+				
+		saveButton.setEnabled( messageGood);//Set the save button enabled/disabled appropriately
+		return messageGood;
+	}
+	
 	/**
 	 * This returns the JTextArea "txtDescription"
 	 * @return the txtDescription JTextArea
