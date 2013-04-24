@@ -17,13 +17,15 @@ import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
+import org.apache.commons.codec.binary.Base64;
+
 public class AttachmentPart extends AbstractModel {
 	//private User user; 
 	//private Date date;
 	
 	private int id;
 	private int partSize;
-	private byte[] attachmentPartByteArray;
+	private String attachmentPartByteArray;
 	private int partNumber;
 	
 	/**
@@ -35,7 +37,7 @@ public class AttachmentPart extends AbstractModel {
 	{
 		this.id = -1;
 		this.partSize = partSize;
-		this.attachmentPartByteArray = filePart;
+		this.attachmentPartByteArray = Base64.encodeBase64String(filePart);
 		this.partNumber = partNumber;
 	}
 
@@ -75,14 +77,14 @@ public class AttachmentPart extends AbstractModel {
 	 * @return the attachmentPartByteArray
 	 */
 	public byte[] getAttachmentPartByteArray() {
-		return attachmentPartByteArray;
+		return Base64.decodeBase64(attachmentPartByteArray);
 	}
 
 	/**
 	 * @param attachmentPartByteArray the attachmentPartByteArray to set
 	 */
 	public void setAttachmentPartByteArray(byte[] attachmentPartByteArray) {
-		this.attachmentPartByteArray = attachmentPartByteArray;
+		this.attachmentPartByteArray = Base64.encodeBase64String(attachmentPartByteArray);
 	}
 
 	/**
