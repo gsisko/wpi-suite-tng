@@ -13,6 +13,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
  * -a save button to save the new note
  */
 @SuppressWarnings({"serial"})
-public class NoteTab extends JPanel {
+public class NoteTab extends JPanel implements ActionListener {
 	
 	//The fillable components
 	private  JTextArea txtMessage;//The message text field 
@@ -157,6 +159,7 @@ public class NoteTab extends JPanel {
 		// Set controller for save button
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
 		saveButton.setAction(new SaveNoteAction(parent.getParent().getController()));
+		saveButton.addActionListener(this);
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
 	}
 
@@ -275,4 +278,12 @@ public class NoteTab extends JPanel {
 
 	}
 
+	
+	/**
+	 * Tell field that it should not have changes
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		parent.getAttributePanel().changeField(txtMessage, 9, false);
+	}
 }

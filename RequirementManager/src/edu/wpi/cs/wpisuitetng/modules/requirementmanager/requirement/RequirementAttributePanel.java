@@ -108,7 +108,7 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[11];
+		fieldsChanged = new boolean[13];
 		setFieldsChanged(false);
 
 		validNameAndDescription = new Boolean(true);
