@@ -168,13 +168,19 @@ public class Filter extends AbstractModel {
 
 		try{
 			switch (this.type){	
-			// The following two are strings
+			// The following are strings
 			case Name:
 				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
 			case Description:
 				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);		
 			case ReleaseNumber:
 				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getReleaseNumber().toLowerCase(), false);
+			case AssignedUsers:
+				if (this.comparator == OperatorType.Contains ){
+					return req.getUserNames().contains(this.value) || (req.getUserNames().size() == 0 && this.value.equals(""));			
+				} else { // The operator will be DoesNotContain
+					return !req.getUserNames().contains(this.value) || (req.getUserNames().size() > 0 && this.value.equals(""));
+				}
 				
 				// The following five are Integers
 			case Id: 

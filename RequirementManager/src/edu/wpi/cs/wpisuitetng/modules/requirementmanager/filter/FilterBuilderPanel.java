@@ -37,6 +37,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPane
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** This is the builder panel for Filters. It is located in the list view on the 
  *  RequirementManager module above the list of requirements and right of the list 
@@ -82,7 +85,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	private String curType = "Id";
 	/** Keeps track of active/inactive state of builder */
 	private boolean isBuilderActive = false;
-	
+
 	/** This controller is activated when the save button is pressed */
 	private SaveModelController saveController;
 
@@ -115,7 +118,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 
 		//create strings for the boxes
-		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","Iteration","ReleaseNumber","Estimate","ActualEffort"};
+		String[] typeStrings = { "Id", "Name", "Description","Type", "Status","Priority","Iteration","ReleaseNumber","Estimate","ActualEffort", "AssignedUsers"};
 		String[] comparatorStrings = {"=", "!=", ">","<",">=","<="};
 		String[] userFilterStrings ={"Active","Inactive"};
 
@@ -217,7 +220,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		//end Save button
 
 		currentFilter = new Filter();
-		 setCurType("Id");
+		setCurType("Id");
+
+
 	}
 
 	/** Watches the "Type" box for changes and sets up the "value" field
@@ -239,9 +244,14 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			comparatorStrings = new String[]{"=", "!=", ">","<",">=","<=",};
 		else if(selected.equals("Name") ||selected.equals("Description") ||selected.equals("ReleaseNumber"))
 			comparatorStrings = new String[]{"=","!=","Contains","DoesNotContain"};
-
-		// This section is for enumerators, which need specific operators and values
-		else if(selected.equals("Type") ||selected.equals("Status")  ||selected.equals("Priority")||selected.equals("Iteration")){
+		else if(selected.equals("AssignedUsers")){
+			comparatorStrings = new String[]{"Contains","DoesNotContain"};
+			Request request;
+			request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
+			request.addObserver(new RetrieveAllUsersObserver(this));
+			request.send();		
+			// This section is for enumerators, which need specific operators and values
+		} else if(selected.equals("Type") ||selected.equals("Status")  ||selected.equals("Priority")||selected.equals("Iteration")){
 			comparatorStrings = new String[]{"=","!="};
 			if(selected.equals("Type") )
 				valueStrings=new String[]{"","Epic","Theme","UserStory","NonFunctional","Scenario"};
@@ -267,7 +277,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		numValue.setVisible(false);
 		valueBox.setVisible(false);
 
-		if(selected.equals("Type") ||selected.equals("Status")  ||selected.equals("Priority") || selected.equals("Iteration"))
+		if(selected.equals("AssignedUsers") || selected.equals("Type") ||selected.equals("Status")  ||selected.equals("Priority") || selected.equals("Iteration"))
 			valueBox.setVisible(true);
 		else if(selected.equals("Name") ||selected.equals("Description")||selected.equals("ReleaseNumber"))
 			txtValue.setVisible(true);
@@ -428,7 +438,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			box.setBackground(new Color(238,238,238));
 		}
 	}
-	
+
 	/** Set the given box to the given enable status as well 
 	 *  set the box to the correct color
 	 * 
@@ -520,7 +530,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.revalidate();
 		this.repaint();
 	}
-	
+
 	/** Gets the model from the panel in the form of a JSON string
 	 *  that is ready to be sent as a message over the network
 	 * 
@@ -532,6 +542,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		setCurType(this.getFilterType().getSelectedItem().toString());
 		// Check conditions that verify that the value field has something
 		if (!getCurType().equals("Type") && !getCurType().equals("Status") && !getCurType().equals("Priority") && !getCurType().equals("Iteration")
+				&& !getCurType().equals("AssignedUsers")
 				&& 	this.getFilterValue().getText().length() == 0   
 				&&  this.getFilterNumValue().getText().length() == 0) {
 			JOptionPane.showMessageDialog(null, "Value cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -550,7 +561,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		newFilter.setType(type);
 
 		// The selected type determines how the filter value should be obtained
-		if(type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
+		if(type == FilterType.toType("AssignedUsers") || type == FilterType.toType("Type")||type == FilterType.toType("Status")||type == FilterType.toType("Priority"))
 			newFilter.setValue(this.getFilterValueBox().getSelectedItem().toString());
 		else if (type == FilterType.toType("Name") || type == FilterType.toType("Description") || type == FilterType.toType("ReleaseNumber"))
 			newFilter.setValue(this.getFilterValue().getText());
@@ -649,6 +660,4 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public void setCurType(String curType) {
 		this.curType = curType;
 	}
-
-
 }

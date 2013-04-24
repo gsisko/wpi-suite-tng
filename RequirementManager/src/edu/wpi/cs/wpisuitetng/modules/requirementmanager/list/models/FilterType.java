@@ -26,6 +26,7 @@ public enum FilterType {
 	Estimate,
 	ActualEffort,
 	Iteration,
+	AssignedUsers,
 	Other;
 	
 	/** Converts a string to the proper FilterType
@@ -65,9 +66,10 @@ public enum FilterType {
 			return "Type";
 		case Iteration:
 			return "Iteration";
+		case AssignedUsers:
+			return "AssignedUsers";
 		default:
-			return "";
-		
+			return "";		
 		}
 	}
 }
