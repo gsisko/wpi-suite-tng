@@ -367,7 +367,7 @@ public class SaveRequirementController
 		int returnVal = fc.showDialog(null,"Add Attachment");
 
 		//Process the results.
-		if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 20971520) {
+		if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 4194304) {
 
 			Requirement currentRequirement = view.getCurrentRequirement();
 			InputStream source = null;
@@ -376,7 +376,7 @@ public class SaveRequirementController
 			try {
 				source = new FileInputStream(fc.getSelectedFile());// = new InputStream().getChannel();
 
-				byte[] buffer = new byte[32768];
+				byte[] buffer = new byte[8192];
 
 
 				int read = 0;
@@ -433,8 +433,8 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 20971520){
-			JOptionPane.showMessageDialog(null, "File size must be 20 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
+		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304){
+			JOptionPane.showMessageDialog(null, "File size must be 4 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		fc.setSelectedFile(null);
 	}
