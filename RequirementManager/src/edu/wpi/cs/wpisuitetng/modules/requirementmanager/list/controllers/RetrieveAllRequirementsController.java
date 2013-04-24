@@ -243,6 +243,19 @@ public class RetrieveAllRequirementsController {
 				entries[i][5] = "";					
 			} else {
 				entries[i][5] = isFiltered.get(i).getPriority().toString();
+				if (entries[i][5]=="High"){
+					
+				}
+				else if (entries[i][5]=="Medium"){
+					
+				}
+				else if (entries[i][5]=="LOW"){
+					
+				}
+				else{
+					
+				}
+							
 			}
 			entries[i][6] = isFiltered.get(i).getReleaseNumber();
 			entries[i][7] = String.valueOf(isFiltered.get(i).getEstimate());

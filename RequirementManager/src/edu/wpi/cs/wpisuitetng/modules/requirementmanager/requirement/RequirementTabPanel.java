@@ -46,16 +46,17 @@ public class RequirementTabPanel extends JTabbedPane {
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-
+		
+		historyPanel = new HistoryTab(parent);
+		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
+		
 		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 		
 		acceptanceTestPanel = new AcceptanceTestTab(parent);
 		addTab("Acceptance Tests", new ImageIcon(), acceptanceTestPanel, "Acceptance tests for the current requirement");
 		
-		historyPanel = new HistoryTab(parent);
-		addTab("History", new ImageIcon(), historyPanel, "Event history for the current requirement");
-		
+	
 		subRequirementPanel= new SubRequirementTab(parent);
 		addTab("Sub-Requirements", new ImageIcon(), subRequirementPanel, "Sub-Requirements for the current requirement");
 
