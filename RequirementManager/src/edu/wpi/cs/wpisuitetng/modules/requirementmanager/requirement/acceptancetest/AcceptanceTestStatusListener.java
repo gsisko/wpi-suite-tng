@@ -35,26 +35,26 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 	 * @param indexOfBoolean The index in the boolean array of the current item being watched
 	 */
 	public AcceptanceTestStatusListener (AcceptanceTestPanel thePanel){
+//		System.out.println("Listener was created");
 		this.thePanel = thePanel;
 		this.toWatch = thePanel.getStatusBox();
 	}
 
 	/** Checks the field for changes and sets it to yellow on changes or white otherwise */
 	private void checkForChanges(){
-//		System.out.println("The listener was called");
-//		if (thePanel.getStatusBox() == null) {
-//			System.out.println("bugger");
-//		} else if (thePanel.getStatusBox().getSelectedItem() == null) {
-//			System.out.println("fuck");
-//		} else if (thePanel.getAcceptanceTest() == null) {
-//			System.out.println("wtf");
-//		} else if (thePanel.getAcceptanceTest().getAcceptanceTestResult() == null) {
-//			System.out.println("FML");
-//		}
-//		if (!thePanel.getStatusBox().getSelectedItem().toString().equals(thePanel.getAcceptanceTest().getAcceptanceTestResult().toString())) {
-//			thePanel.getAcceptanceTest().setAcceptanceTestResult((AcceptanceTestResult)thePanel.getStatusBox().getSelectedItem());
-//			((AcceptanceTestTab)thePanel.getParent().getParent()).getParent().getParent().getController().saveAcceptanceTest();
-//		}
+		// Check if the status has changed
+		String inBox = toWatch.getSelectedItem().toString();
+		String inTest = thePanel.getMyTest().getAcceptanceTestResult().toString();
+		if (inTest.equals("NONE")) {
+			inTest = " ";
+		}
+		if (!inBox.equals(inTest)) {
+//			System.out.println("Something changed");
+//			System.out.println("\"" + inBox + "\"");
+//			System.out.println("\"" + inTest + "\"");
+		} else {
+//			System.out.println("Nothing changed");
+		}
 	}
 
 	/** This method is unused but required by the interface   */
