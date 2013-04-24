@@ -37,7 +37,7 @@ public class NotesTest {
 	Note n1;
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws Exception{
 		//seting up new requirement
 		r1 = new Requirement("Tester Requirement", "Testing Description", RequirementType.Theme, RequirementPriority.NoPriority, "0",0);
 		r1.setPriority(RequirementPriority.Medium);

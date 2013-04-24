@@ -61,7 +61,7 @@ public class IterationManagerTest {
 	Iteration existingIteration;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		// Setup users
 		User admin = new User("admin", "admin", "1234", 27);
 		admin.setRole(Role.ADMIN);
@@ -117,7 +117,7 @@ public class IterationManagerTest {
 	}
 
 	@Test   
-	public void testInstantiateBacklogForFirstTime() throws WPISuiteException{
+	public void testInstantiateBacklogForFirstTime() throws NotFoundException, WPISuiteException{
 		assertSame(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).size(), 0); // must find that there is no backlog yet
 		manager.instantiateBacklog(defaultSession); 
 		assertNotNull(db.retrieve(Iteration.class, "id", 0, defaultSession.getProject()).get(0)); // must find the backlog
@@ -169,7 +169,7 @@ public class IterationManagerTest {
 	}
 	
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws WPISuiteException {
 		Iteration[] gotten = manager.getAll(defaultSession);
 		assertEquals(2, gotten.length);
 	}
@@ -222,7 +222,7 @@ public class IterationManagerTest {
 	
 	
 	@Test
-	public void testDeleteAllWhenEmpty() {
+	public void testDeleteAllWhenEmpty() throws WPISuiteException {
 		manager.deleteAll(adminSession);
 		manager.deleteAll(adminSession);
 		// no exceptions

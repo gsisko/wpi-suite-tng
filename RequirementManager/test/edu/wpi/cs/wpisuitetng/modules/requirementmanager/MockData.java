@@ -163,7 +163,8 @@ public class MockData implements Data {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Model> andRetrieve(Class arg0, String[] arg1, List<Object> arg2)
-			throws IllegalArgumentException {
+			throws WPISuiteException, IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -172,7 +173,8 @@ public class MockData implements Data {
 	@Override
 	public List<Model> complexRetrieve(Class arg0, String[] arg1,
 			List<Object> arg2, Class arg3, String[] arg4, List<Object> arg5)
-					throws IllegalArgumentException {
+					throws WPISuiteException, IllegalArgumentException,
+					IllegalAccessException, InvocationTargetException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -186,7 +188,9 @@ public class MockData implements Data {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public List<Model> orRetrieve(Class arg0, String[] arg1, List<Object> arg2) {
+	public List<Model> orRetrieve(Class arg0, String[] arg1, List<Object> arg2)
+			throws WPISuiteException, IllegalAccessException,
+			InvocationTargetException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -204,7 +208,7 @@ public class MockData implements Data {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Model> retrieve(Class arg0, String arg1, Object arg2,
-			Project arg3) {
+			Project arg3) throws WPISuiteException {
 		return filterByProject(retrieve(arg0, arg1, arg2), arg3);
 	}
 

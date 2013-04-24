@@ -23,7 +23,8 @@ public class AttachmentTest {
 	private DateFormat dateFormat;
 	
 	@Test
-	public void testAttachment_1() {
+	public void testAttachment_1()
+		throws Exception {
 		String fileName = "Attachment1.txt";
 		int fileSize = 1;
 
@@ -45,7 +46,8 @@ public class AttachmentTest {
 	 * Run the ArrayList<Integer> getAttachmentPartIds() method test.
 	 */
 	@Test
-	public void testGetAttachmentPartIds_1() {
+	public void testGetAttachmentPartIds_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -60,7 +62,8 @@ public class AttachmentTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_1() {
+	public void testGetBodyString_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -74,7 +77,8 @@ public class AttachmentTest {
 	 * Run the String getFileName() method test.
 	 */
 	@Test
-	public void testGetFileName_1() {
+	public void testGetFileName_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -88,7 +92,8 @@ public class AttachmentTest {
 	 * Run the int getFileSize() method test.
 	 */
 	@Test
-	public void testGetFileSize_1() {
+	public void testGetFileSize_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -102,7 +107,8 @@ public class AttachmentTest {
 	 * Run the String getLabelString() method test.
 	 */
 	@Test
-	public void testGetLabelString_1() {
+	public void testGetLabelString_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -116,7 +122,8 @@ public class AttachmentTest {
 	 * Run the void setAttachmentPartIds(ArrayList<Integer>) method test.
 	 */
 	@Test
-	public void testSetAttachmentPartIds_1() {
+	public void testSetAttachmentPartIds_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 		ArrayList<Integer> attachmentPartIds = new ArrayList();
@@ -130,7 +137,8 @@ public class AttachmentTest {
 	 * Run the void setFileName(String) method test.
 	 */
 	@Test
-	public void testSetFileName_1() {
+	public void testSetFileName_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 		String fileName = "";
@@ -144,7 +152,8 @@ public class AttachmentTest {
 	 * Run the void setFileSize(int) method test.
 	 */
 	@Test
-	public void testSetFileSize_1() {
+	public void testSetFileSize_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 		int fileSize = 1;
@@ -158,7 +167,8 @@ public class AttachmentTest {
 	 * Run the String toJSON() method test.
 	 */
 	@Test
-	public void testToJSON_1() {
+	public void testToJSON_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -172,7 +182,8 @@ public class AttachmentTest {
 	 * Run the String toString() method test.
 	 */
 	@Test
-	public void testToString_1() {
+	public void testToString_1()
+		throws Exception {
 		Attachment fixture = new Attachment("", 1);
 		fixture.setAttachmentPartIds(new ArrayList());
 
@@ -196,7 +207,8 @@ public class AttachmentTest {
 	 * Perform post-test clean-up.
 	 */
 	@After
-	public void tearDown() {
+	public void tearDown()
+		throws Exception {
 		// Add additional tear down code here
 	}
 }

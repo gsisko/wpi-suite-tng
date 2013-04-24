@@ -74,7 +74,7 @@ public class FilterManagerTest {
 	Session otherSession;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		// Setting up background stuff
 		// Users
 		bob = new User("bob", "bob", "1234", 28);

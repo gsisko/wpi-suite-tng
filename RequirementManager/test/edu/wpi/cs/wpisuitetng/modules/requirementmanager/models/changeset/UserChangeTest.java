@@ -18,7 +18,8 @@ public class UserChangeTest {
 	 * Run the UserChange(Requirement,Requirement,String) constructor test.
 	 */
 	@Test
-	public void testUserChange_1() {
+	public void testUserChange_1()
+		throws Exception {
 		Requirement oldReq = new Requirement();
 		oldReq.setUserNames(new ArrayList());
 		Requirement newReq = new Requirement();
@@ -39,7 +40,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_1() {
+	public void testGetBodyString_1()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -61,7 +63,8 @@ public class UserChangeTest {
 	 *
 	 */
 	@Test
-	public void testGetBodyString_2() {
+	public void testGetBodyString_2()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -82,7 +85,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_3() {
+	public void testGetBodyString_3()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -103,7 +107,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_4() {
+	public void testGetBodyString_4()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -124,7 +129,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_5() {
+	public void testGetBodyString_5()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -149,7 +155,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_6() {
+	public void testGetBodyString_6()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -174,7 +181,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_7() {
+	public void testGetBodyString_7()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -199,7 +207,8 @@ public class UserChangeTest {
 	 * Run the String getBodyString() method test.
 	 */
 	@Test
-	public void testGetBodyString_8() {
+	public void testGetBodyString_8()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -224,7 +233,8 @@ public class UserChangeTest {
 	 * Run the String getLabelString() method test.
 	 */
 	@Test
-	public void testGetLabelString_1() {
+	public void testGetLabelString_1()
+		throws Exception {
 		Requirement requirement = new Requirement();
 		requirement.setUserNames(new ArrayList());
 		Requirement requirement1 = new Requirement();
@@ -254,7 +264,8 @@ public class UserChangeTest {
 	 * Perform post-test clean-up.
 	 */
 	@After
-	public void tearDown() {
+	public void tearDown()
+		throws Exception {
 		// Add additional tear down code here
 	}
 }
