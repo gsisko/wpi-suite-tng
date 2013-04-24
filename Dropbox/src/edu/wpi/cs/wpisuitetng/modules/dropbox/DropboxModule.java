@@ -64,4 +64,11 @@ public class DropboxModule implements IJanewayModule {
 		return tabs;
 	}
 
+
+	@Override
+	public void invokeWhenSelected() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
