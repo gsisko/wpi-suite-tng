@@ -412,7 +412,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 				nameErrorFound = true;
 			}
 
-
+			//TODO: Fix this IF statement
 			//Compare the dates
 			if (newStart.equals(newEnd) && oldStart.equals(oldEnd)) {				// Both are 1 day iterations
 				if (newStart.equals(oldStart))										// They fall on the same day
