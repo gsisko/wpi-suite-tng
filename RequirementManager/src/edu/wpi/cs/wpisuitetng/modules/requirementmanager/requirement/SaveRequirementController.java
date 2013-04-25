@@ -96,7 +96,7 @@ public class SaveRequirementController
 			updatedRequirement.setAcceptanceTests(oldRequirement.getAcceptanceTests());
 			updatedRequirement.setNotes(oldRequirement.getNotes());
 			updatedRequirement.setEvents(oldRequirement.getEvents());
-			
+
 			// Setting the Iteration			
 			String selectedIteration = view.getIterationBox().getSelectedItem().toString();
 			for (Iteration iter: view.getAllIterations()){
@@ -268,10 +268,10 @@ public class SaveRequirementController
 			}
 			// refreshes the list view, should be made much cleaner in the future
 			((ListView)view.getParent().getTabController().getView().getComponentAt(0)).refreshData();
-		}
-		else {
+		} else {
 			System.err.print("Undetected error saving requirement\n");
 		}
+		view.getAttributePanel().getSaveButton().setEnabled(false);
 	}
 
 	public RequirementTab getView() {

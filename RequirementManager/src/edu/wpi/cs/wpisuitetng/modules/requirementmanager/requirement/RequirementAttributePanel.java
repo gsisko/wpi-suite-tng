@@ -80,16 +80,29 @@ public class RequirementAttributePanel extends JPanel {
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+	
+	/** This array holds the boolean flags for what fields are changed as well as 
+	 *  whether the save button is being saved or not
+	 *  Index:      Component isChanged
+	 *  0			Name field
+	 *	1			Description area
+	 *  2			Release number field
+	 *  3			Estimate number field
+	 *  4			Actual effort field
+	 *  5			Type box  
+	 *  6			Status box
+	 *  7			Priority box 
+	 *  8			*unsused*
+	 *  9			Notes 
+	 *  10        	Save button is saving
+	 */	
 	private boolean[] fieldsChanged;	// Have any fields been changed?
+	/** A reference to the save button in the tool bar */
 	private JButton saveButton;
 	private Boolean validNameAndDescription;
 
-
-	// Listeners
+	/** a listener to watch the name and description boxes    */
 	ValidNameDescriptionListener nameAndDescriptionValidityListener;
-
-
-
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
@@ -581,6 +594,14 @@ public class RequirementAttributePanel extends JPanel {
 	public void setSaveButton(JButton saveButton) {
 		this.saveButton = saveButton;
 	}
+	
+	/** Getter for the saveButton
+	 *  
+	 * @return the save button 
+	 */
+	public JButton getSaveButton() {
+		return saveButton;
+	}
 
 	/** Takes a JComponent and sets its color if its values were changed
 	 * 
@@ -681,12 +702,10 @@ public class RequirementAttributePanel extends JPanel {
 			}
 
 		});
-
-
-
 		// Add a listener to the iteration box that changes the Req's status when the iteration is changed
 		iterationBox.addItemListener(new IterationChangeListener(this));
 	}
+	
 	/** Checks the name and description fields for changes and sets the warning labels and 
 	 *  save button status appropriately            
 	 *  
@@ -772,12 +791,8 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Sets the appropriate fields disabled upon creation
-	 * 
-	 */
+	/** Sets the appropriate fields disabled upon creation	 */
 	protected void disableFieldsOnCreation(){
-
 		if (mode == Mode.CREATE) {
 			//Set the following fields to be initially grayed out
 			toggleComponentEnabled(txtEstimate, false);
@@ -800,8 +815,6 @@ public class RequirementAttributePanel extends JPanel {
 
 		populateFields();
 
-
-		// TODO: better comments here
 		revalidate();
 		layout.invalidateLayout(this);
 		layout.layoutContainer(this);
@@ -981,7 +994,7 @@ public class RequirementAttributePanel extends JPanel {
 				this.updateStatusSettings("Open");
 				toggleComponentEnabled(txtEstimate, true);
 			} else {
-				toggleComponentEnabled(txtEstimate, false); 
+				txtEstimate.setEnabled(false); 
 				this.updateStatusSettings("InProgress");
 			}
 			// hack to make the status box change colors
@@ -996,20 +1009,16 @@ public class RequirementAttributePanel extends JPanel {
 		this.repaint();
 	}
 
-	/** Checks the Iteration box for changes and yellows that box appropriately
-	 * 
-	 */
+	/** Checks the Iteration box for changes and yellows that box appropriately 	 */
 	public void checkIterationChange() {
 		// Get the name of the iteration that this Requirement used to be assigned to
 		Iteration[] allIterations = parent.getAllIterations();
-
 		String oldValue = "";
 		for (int i = 0; i < allIterations.length; ++i) {
 			if (currentRequirement.getIteration() == allIterations[i].getID()){
 				oldValue = (allIterations[i].getName());
 			}
 		}
-
 
 		// Check the old value and set the box yellow as necessary
 		if (!iterationBox.getSelectedItem().toString().equals(oldValue + "")) {
@@ -1019,10 +1028,18 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
+	/** Sets a boolean flag to say that the current requirement is being saved. This flag is checked
+	 *  when other operations that could interrupt the save are called
+	 * @param isSaving True if the requirement is being saved, false otherwise
+	 */
 	public void setSaving(boolean isSaving) {
 		this.fieldsChanged[10] = isSaving;
 	}
 	
+	/** Returns whether or not the current requirement is being saved.
+	 * 
+	 * @return True if the requirement is being saved, false otherwise
+	 */
 	public boolean isSaving () {
 		return this.fieldsChanged[10];
 	}
