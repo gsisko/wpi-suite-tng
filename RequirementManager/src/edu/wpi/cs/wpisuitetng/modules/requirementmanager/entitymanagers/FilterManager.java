@@ -37,13 +37,12 @@ public class FilterManager implements EntityManager<Filter> {
 	/** This is for advanced logging and debugging of the server interactions */
 	private static final Logger logger = Logger.getLogger(FilterManager.class.getName());
 
-	/**
-	 * Constructs the entity manager. This constructor is called by
+	/** Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
-	 * this happens, be sure to place add this entity manager to the map in the
+	 * this happens, be sure to add this entity manager to the map in the
 	 * ManagerLayer file.
 	 * 
-	 * Expects that the data passed is valid and does no error checking!
+	 * NOTE: This expects that the data passed is valid and does no error checking!
 	 * 
 	 * @param data  Database in the core
 	 */
@@ -51,8 +50,7 @@ public class FilterManager implements EntityManager<Filter> {
 		this.setDb(data);
 	}
 
-	/**
-	 * Takes a filter and assigns a unique id if necessary
+	/** Takes a filter and assigns a unique id if necessary
 	 * 
 	 * @param filter  The filter that possibly needs a unique id
 	 * @throws WPISuiteException
@@ -63,8 +61,7 @@ public class FilterManager implements EntityManager<Filter> {
 		}
 	}
 
-	/**
-	 * Returns the number of filters currently in the database. Counts only
+	/** Returns the number of filters currently in the database. Counts only
 	 * those filters specific to the current user
 	 * 
 	 * @return The number of Requirements currently in the database
@@ -76,14 +73,12 @@ public class FilterManager implements EntityManager<Filter> {
 		return this.db.retrieveAll(new Filter()).size();
 	}
 
-	/**
-	 * Saves the given Filter into the database if possible. Filters are not 
+	/** Saves the given Filter into the database if possible. Filters are not 
 	 * associated with a project, but instead have a field that ties them
 	 * to a specific user.
 	 * 
 	 * @param s  The current user session
 	 * @param model The Filter to be saved to the database
-	 * 
 	 * @throws WPISuiteException   "Unable to save Filter."
 	 */
 	public void save(Session s, Filter model) throws WPISuiteException {
@@ -97,15 +92,13 @@ public class FilterManager implements EntityManager<Filter> {
 		logger.log(Level.FINE, "Filtert Saved :" + model);
 	}
 
-	/**
-	 * Takes an encoded Filter(as a string) and converts it back to a
+	/** Takes an encoded Filter(as a string) and converts it back to a
 	 * Requirement and saves it in the database
 	 * 
 	 * @param s The current user session
 	 * @param content  The filter that comes in the form of a string to be recreated
-	 * 
-	 @return the Requirement that originally came as a string
-	  @throws BadRequestException   "The Filter creation string had invalid formatting. Entity String: " + content
+	 * @return the Requirement that originally came as a string
+	 * @throws BadRequestException   "The Filter creation string had invalid formatting. Entity String: " + content
 	 * @throws ConflictException  "A filter with the given ID already exists. Entity String: " + content
 	 * @throws WPISuiteException  "Unable to save Requirement."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
@@ -147,14 +140,12 @@ public class FilterManager implements EntityManager<Filter> {
 		}
 	}
 
-	/**
-	 * For the current user session, Takes a specific id for a Filter and
+	/** For the current user session, Takes a specific id for a Filter and
 	 * returns it in an array.
 	 * 
 	 * @param s   The current user session
 	 * @param id  Points to a specific Filter
-	 * 
-	 @return An array of Requirements
+	 * @return An array of Requirements
 	 * @throws NotFoundException  "The Filter with the specified id was not found:" + intId
 	 * @throws WPISuiteException  "There was a problem retrieving from the database."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session,  String)
@@ -183,14 +174,12 @@ public class FilterManager implements EntityManager<Filter> {
 		return filters;
 	}
 
-	/**
-	 * Updates a Filter already in the database
+	/** Updates a Filter already in the database
 	 * 
 	 * @param s The current user session
-	 * @param content  The filter to be update + the updates
-	 * 
-	 @return the changed Filter
-	  @throws NotFoundException  "The Filter with the specified id was not found:" + intId
+	 * @param content  The filter to be updated and the updates
+	 * @return the changed Filter
+	 * @throws NotFoundException  "The Filter with the specified id was not found:" + intId
 	 * @throws WPISuiteException "There was a problem retrieving from the database." or  "Null session."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
@@ -224,14 +213,12 @@ public class FilterManager implements EntityManager<Filter> {
 		return oldFilter;
 	}
 
-	/**
-	 * Modifies the Filter so that it is inaccessible: sudo-deleted Not fully
+	/** Modifies the Filter so that it is inaccessible: sudo-deleted Not fully
 	 * deleted to preserve the count/unique ID
 	 * 
 	 * @param s  The current user session
 	 * @param id The unique of the filter to delete
-	 * 
-	 @return TRUE if successful or FALSE if it fails
+	 * @return TRUE if successful or FALSE if it fails
 	 * @throws NotFoundException    "The Filter with the specified id was not found:" + intId
 	 * @throws WPISuiteException    "There was a problem retrieving from the database." or "Null session."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
@@ -250,8 +237,7 @@ public class FilterManager implements EntityManager<Filter> {
 		return true; // The deletion was successful
 	}
 
-	/**
-	 * Get's all Filters made by the current user
+	/** Gets all Filters made by the current user
 	 * 
 	 * @param s  The current session. The current user is extracted from this.
 	 * @return All of the Filters made by the current user.
@@ -263,8 +249,7 @@ public class FilterManager implements EntityManager<Filter> {
 		return filterList.toArray(new Filter[filterList.size()]);
 	}
 
-	/**
-	 * Delete all Filters made by the current user
+	/** Deletes all Filters made by the current user
 	 * 
 	 * @param s  The current session. The current user is extracted from this.
 	 * @throws WPISuiteException -- thrown when there are problems deleting
@@ -279,9 +264,9 @@ public class FilterManager implements EntityManager<Filter> {
 		this.db = data;
 	}
 
-// Not going to be implemented until we have good reason to
-	/**
-	 * Method advancedPut.
+	//The following methods are not implemented:
+
+	/** Method advancedPut. This method is not implemented.
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
@@ -294,8 +279,7 @@ public class FilterManager implements EntityManager<Filter> {
 		throw new NotImplementedException();
 	}
 
-	/**
-	 * Method advancedPost.
+	/** Method advancedPost. This method is not implemented.
 	 * @param s Session
 	 * @param string String
 	 * @param content String
@@ -308,10 +292,9 @@ public class FilterManager implements EntityManager<Filter> {
 		throw new NotImplementedException();
 	}
 
-	/** 
-	 *  @param s The current user session
-	 *  @param args 
-	 *  
+	/** Method advancedGet. This method is not implemented.
+	 * @param s The current user session
+	 * @param args 
 	 * @return String
 	 * @throws WPISuiteException
 	 * @throws NotImplementedException - Thrown because its not implemented!

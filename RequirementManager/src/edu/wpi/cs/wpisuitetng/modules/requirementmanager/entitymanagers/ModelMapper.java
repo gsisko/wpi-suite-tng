@@ -21,12 +21,11 @@ import java.util.Set;
 
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
-/**
- * Responsible for copying properties from one Model to another.
+/** Responsible for copying properties from one Model to another.
  */
 public class ModelMapper {
-
 	private final Set<String> blacklist = new HashSet<String>();
+	
 	private final MapCallback defaultMapCallback = new MapCallback() {
 		@Override
 		public Object call(Model source, Model destination, String fieldName, Object sourceValue,
@@ -36,16 +35,14 @@ public class ModelMapper {
 		}
 	};
 	
-	/**
-	 * Construct a ModelMapper with default blacklist of "permission"
+	/** Construct a ModelMapper with default blacklist of "permission"
 	 */
 	public ModelMapper() {
 		// this has two parameters
 		blacklist.add("permission");
 	}
 	
-	/**
-	 * Blacklist should contain field names.
+	/** Blacklist should contain field names.
 	 * e.g. getSomeField() -> getBlacklist().add("someField")
 	 * 
 	 * @return A set of field names to ignore, which can be modified
@@ -54,8 +51,7 @@ public class ModelMapper {
 		return blacklist;
 	}
 	
-	/**
-	 * Callback to pass to {@link ModelMapper#map(Model, Model, MapCallback)}
+	/** Callback to pass to {@link ModelMapper#map(Model, Model, MapCallback)}
 	 */
 	public interface MapCallback {
 		/**
@@ -81,8 +77,7 @@ public class ModelMapper {
 		return methodName.substring(0, 1).toLowerCase() + methodName.substring(1); // BlahField -> blahField
 	}
 	
-	/**
-	 * For each get/set pair (ignoring blacklisted fields), copy the result of callback to destination.
+	/** For each get/set pair (ignoring blacklisted fields), copy the result of callback to destination.
 	 * Setters without matching getters on the source are ignored.
 	 * 
 	 * @param source The Model to copy from
@@ -137,8 +132,7 @@ public class ModelMapper {
 		}
 	}
 	
-	/**
-	 * Copy all get/set pairs across from source to destination, ignoring blacklisted fields.
+	/** Copy all get/set pairs across from source to destination, ignoring blacklisted fields.
 	 * Setters without matching getters on the source are ignored.
 	 * 
 	 * @param source The Model to copy from

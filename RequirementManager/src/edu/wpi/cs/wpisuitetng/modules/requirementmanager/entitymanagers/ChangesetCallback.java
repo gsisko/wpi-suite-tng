@@ -21,33 +21,31 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.ModelMap
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.FieldChange;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementChangeset;
 
-/**
- * Responsible for filling in a changeset after being passed to
+/** Responsible for filling in a changeset after being passed to
  * {@link ModelMapper#map(Model, Model, MapCallback)} 
  */
 class ChangesetCallback implements MapCallback {
-	
+
 	private final RequirementChangeset changeset;
-	
+
 	//don't add these fields as changes
 	private static final Set<String> dontRecord =
 			new HashSet<String>(Arrays.asList("events", "lastModifiedDate"));
-	
-	/**
-	 * Create a callback that will fill in the given changeset.
+
+	/** Create a callback that will fill in the given changeset.
 	 * @param changeset The changeset to add changes to
 	 */
 	ChangesetCallback(RequirementChangeset changeset) {
 		this.changeset = changeset;
 	}
-	
+
 	@Override
 	public Object call(Model source, Model destination, String fieldName,
 			Object sourceValue, Object destinationValue) {
 		if(!dontRecord.contains(fieldName)) {
 			if(!objectsEqual(sourceValue, destinationValue)) {
-				/*
-				 * this field has changed - indicate the change in the changeset
+
+				/* This field has changed - indicate the change in the changeset
 				 * remember that fields from updated requirement are being copied to old one
 				 * destinationValue is the old value
 				 */
@@ -56,7 +54,7 @@ class ChangesetCallback implements MapCallback {
 		}
 		return sourceValue;
 	}
-	
+
 	private boolean objectsEqual(Object a, Object b) {
 		// Java 7 has Objects.equals... we're on Java 6
 		if(a == b) {
@@ -67,5 +65,5 @@ class ChangesetCallback implements MapCallback {
 		}
 		return a.equals(b);
 	}
-	
+
 }

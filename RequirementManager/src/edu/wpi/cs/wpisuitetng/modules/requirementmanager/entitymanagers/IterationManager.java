@@ -37,7 +37,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	/** The database */
 	private Data db;
 
-	/** This is for advanced logging and debugging of the server interactions */
+	/** This logger is for advanced logging and debugging of the server interactions */
 	private static final Logger logger = Logger.getLogger("Iteration manager logger");
 
 	/** Constructs the entity manager. This constructor is called by
@@ -45,7 +45,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 * To make sure this happens, be sure to place add this entity 
 	 * manager to the map in the ManagerLayer file.
 	 * 
-	 * Expects that the data passed is valid and does no error checking!
+	 * NOTE: This Expects that the data passed is valid and does no error checking!
 	 *
 	 * @param data Database in the core
 	 */	
@@ -53,12 +53,11 @@ public class IterationManager implements EntityManager<Iteration> {
 		this.db = data;
 	}
 
-
 	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
-	 *  the current project. Makes one if necessary
-	 *  Backlog has start and end date of 1ms after the epoch
+	 *  the current project. Makes one if necessary.
+	 *  Backlog has start and end date of 1ms after the epoch.
 	 *  
-	 *  This is designed to be called by get all
+	 *  This is designed to be called by getall
 	 *  
 	 *  @param s The current session which contains the current project    
 	 */
@@ -87,14 +86,12 @@ public class IterationManager implements EntityManager<Iteration> {
 		}	
 	}	
 
-
 	/** Takes an encoded Iteration(as a string) and converts it back to a 
 	 *  Iteration and saves it in the database
 	 *  
-	 *	@param s The current user session
-	 *	@param content The iteration that comes in the form of a string to be recreated
-	 *	
-	@return the Iteration that originally came as a string
+	 * @param s The current user session
+	 * @param content The iteration that comes in the form of a string to be recreated
+	 * @return the Iteration that originally came as a string
 	 * @throws BadRequestException "The Iteration creation string had invalid formatting. Entity String: " + content
 	 * @throws ConflictException "A Iteration with the given ID already exists. Entity String: " + content
 	 * @throws WPISuiteException "Unable to save Iteration."
@@ -129,14 +126,11 @@ public class IterationManager implements EntityManager<Iteration> {
 		return newIteration;
 	}
 
-
-
 	/** Saves the given Iteration into the database if possible.
 	 * 
 	 *  @param s The current user session
 	 *  @param model The Iteration to be saved to the database
-	 * 
-	 * @throws WPISuiteException  "Unable to save Iteration."
+	 *  @throws WPISuiteException  "Unable to save Iteration."
 	 */
 	public void save(Session s, Iteration model) throws WPISuiteException {
 		// Save the iteration in the database if possible, otherwise throw an exception
@@ -152,7 +146,6 @@ public class IterationManager implements EntityManager<Iteration> {
 	/** Takes an Iteration and assigns a unique id if necessary
 	 * 
 	 * @param iter The iteration that possibly needs a unique id
-
 	 * @throws WPISuiteException "Count failed"
 	 */
 	public void assignUniqueID(Iteration iter) throws WPISuiteException{
@@ -165,10 +158,9 @@ public class IterationManager implements EntityManager<Iteration> {
 	/** Returns the number of Iterations currently in the database. Disregards
 	 *  the current user session
 	 * 
-	 *  
-	@return The number of Iterations currently in the database 
-	 * @throws WPISuiteException "Retrieve all failed"
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
+	 *  @return The number of Iterations currently in the database 
+	 *  @throws WPISuiteException "Retrieve all failed"
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
@@ -193,25 +185,20 @@ public class IterationManager implements EntityManager<Iteration> {
 		return this.db.retrieveAll(new Iteration(), s.getProject()).toArray(new Iteration[0]);
 	}	
 
-
-
-
-	/**  For the current user session, Takes a specific id for a Iteration and returns it 
+	/**  For the current user session, takes a specific id for a Iteration and returns it 
 	 *   in an array.	
 	 *  
 	 *  @param s  The current user session
 	 *  @param sid String representation of id of desired iteration
-	 *  
- 	@return An array of Iterations  
-	 * @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
-	 * @throws WPISuiteException  "There was a problem retrieving from the database." 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
+	 *  @return An array of Iterations  
+	 *  @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 *  @throws WPISuiteException  "There was a problem retrieving from the database." 
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Iteration[] getEntity(Session s, String sid) throws NotFoundException, WPISuiteException {
 
 		Iteration[] iterations = null;
 		int id = Integer.parseInt(sid);
-
 
 		// Try to retrieve the specific Iteration
 		try {
@@ -228,16 +215,14 @@ public class IterationManager implements EntityManager<Iteration> {
 		return iterations;
 	}
 
-
 	/**  Updates a Iteration already in the database
 	 *   
 	 *  @param s The current user session
 	 *  @param content The iteration to be update + the updates
-	 * 	
-	@return the changed iteration 
-	 * @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
-	 * @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
+	 * 	@return the changed iteration 
+	 *  @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 *  @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Iteration update(Session s, String content) throws WPISuiteException {
 		// If there is no session
@@ -266,20 +251,16 @@ public class IterationManager implements EntityManager<Iteration> {
 		this.save(s,oldIteration);
 
 		return oldIteration;
-
 	}
 
-
-
-	/** Deletes a Iteration from the database (effectively hidden). Backlogs cannot be deleted
+	/** "Deletes" a Iteration from the database (makes it effectively hidden). Backlogs cannot be deleted.
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the iteration to delete
-	 *  
-	@return TRUE if successful or FALSE if it fails
-	 * @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
-	 * @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
+	 *  @return TRUE if successful or FALSE if it fails
+	 *  @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 *  @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
@@ -298,27 +279,21 @@ public class IterationManager implements EntityManager<Iteration> {
 		return true; // The deletion was successful
 	}
 
-
-
-	/** Deletes ALL Iteration from the database (not advised)
+	/** Deletes ALL Iterations from the database (not advised)
 	 * 
 	 *  @param s The current user session
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
+	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s)  {
 		this.db.deleteAll(new Iteration(), s.getProject());
 	}
 
-
-
-	// Unimplemented Manager methods	
-	// Advanced Manager methods
+	//The following methods are not implemented:
 	
-	/**
-	 * Method advancedPut.
+	/** Method advancedPut.
 	 * @param s Session
 	 * @param args String[]
-	  @return String
+	 * @return String
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
@@ -327,13 +302,11 @@ public class IterationManager implements EntityManager<Iteration> {
 		throw new NotImplementedException();
 	}
 
-
-	/**
-	 * Method advancedPut.
+	/**Method advancedPut.
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
-	  @return String
+	 * @return String
 	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
@@ -342,8 +315,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		throw new NotImplementedException();
 	}
 
-	/**
-	 * Method advancedPost.
+	/**Method advancedPost.
 	 * @param s Session
 	 * @param string String
 	 * @param content String
@@ -355,6 +327,5 @@ public class IterationManager implements EntityManager<Iteration> {
 			throws WPISuiteException {
 		throw new NotImplementedException();
 	}
-
-
+	
 }
