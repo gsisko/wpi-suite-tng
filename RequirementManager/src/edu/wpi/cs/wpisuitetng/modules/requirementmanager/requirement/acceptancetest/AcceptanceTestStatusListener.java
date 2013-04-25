@@ -9,6 +9,7 @@ import javax.swing.event.PopupMenuListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -57,24 +58,13 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 				newResult = AcceptanceTestResult.toResult(inBox);
 			}
 			AcceptanceTest oldTest = this.thePanel.getMyTest();
+			AcceptanceTest newTest = new AcceptanceTest(oldTest.getAcceptanceTestTitle(), oldTest.getDescription(), newResult);
 			
 			// Save it
 			AcceptanceTestTab tab = (AcceptanceTestTab) thePanel.getParent().getParent().getParent().getParent();	// Shortens the next line
-			Requirement currentRequirement = tab.myGetParent().getCurrentRequirement();		// Get the current requirement
-			ArrayList<AcceptanceTest> myList = currentRequirement.getAcceptanceTests();
-			for (int i = 0; i < myList.size(); i++) { 	// Look through the list of tests
-				// For the matching old test
-				if (myList.get(i).getAcceptanceTestTitle().equals(oldTest.getAcceptanceTestTitle()) && myList.get(i).getDescription().equals(oldTest.getDescription())) {
-					myList.get(i).setAcceptanceTestResult(newResult);	// And update it
-				}
-			}
-			currentRequirement.setAcceptanceTests(myList);
+			SaveRequirementController controller = tab.myGetParent().getParent().getController();
 			
-			// make a POST http request and let the observer get the response
-			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
-			request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
-			request.addObserver(new UpdateAcceptanceTestObserver()); // add an observer to process the response
-			request.send();
+			controller.updateAcceptanceTest(oldTest, newTest);
 		}
 	}
 

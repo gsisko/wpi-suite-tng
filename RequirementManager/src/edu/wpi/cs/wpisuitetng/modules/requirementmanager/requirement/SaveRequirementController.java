@@ -34,6 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.UpdateAcceptanceTestObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -307,6 +308,28 @@ public class SaveRequirementController
 
 		currentRequirement.getAcceptanceTests().add(newTest);
 
+		// make a POST http request and let the observer get the response
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
+	}
+	
+	/** Updates an old AcceptanceTest
+	 * 
+	 * @param oldTest The old version of the test
+	 * @param newTest Contains the changes we want to save
+	 */
+	public void updateAcceptanceTest (AcceptanceTest oldTest, AcceptanceTest newTest) {
+		Requirement currentRequirement = view.getCurrentRequirement();
+		ArrayList<AcceptanceTest> myList = currentRequirement.getAcceptanceTests();
+		for (int i = 0; i < myList.size(); i++) { 	// Look through the list of tests
+			// For the matching old test
+			if (myList.get(i).getAcceptanceTestTitle().equals(oldTest.getAcceptanceTestTitle()) && myList.get(i).getDescription().equals(oldTest.getDescription())) {
+				myList.get(i).setAcceptanceTestResult(newTest.getAcceptanceTestResult());	// And update it
+			}
+		}
+		
 		// make a POST http request and let the observer get the response
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
