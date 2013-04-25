@@ -26,30 +26,38 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-/**
- * Panel that contains options for the currently displayed chart.
+/** Panel that contains options for the currently displayed chart.
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
 	
 	//The labels
-	private  JLabel chartTypeLabel; //The label for the chartTypeBox
-	private  JLabel chartDataLabel;//The label for the chartDataBox
-	private  JLabel filtersLabel; //The label for the filtersOptionsBox
+	/** The label for the chartTypeBox */
+	private  JLabel chartTypeLabel;
+	/** The label for the chartDataBox */
+	private  JLabel chartDataLabel;
+	/** The label for the filtersOptionsBox */
+	private  JLabel filtersLabel;
 
 	//The fillable components
-	private  JComboBox chartTypeBox;//The combo box used to select which chart type to display
-	private  JComboBox chartDataBox;//The combo box used to select which data to graph
-	private  JComboBox filtersOptionsBox;//The combo box used to select the filters options (IE whether to apply the active filters to the data)
+	/** The combo box used to select which chart type to display */
+	private  JComboBox chartTypeBox;
+	/** The combo box used to select which data to graph */
+	private  JComboBox chartDataBox;
+	/** The combo box used to select the filters options (IE whether to apply the active filters to the data) */
+	private  JComboBox filtersOptionsBox;
 
 	//The layout manager
-	protected BoxLayout layout; //The layout for this panel
+	/** The layout manager for this panel */
+	protected BoxLayout layout; 
 
-	private ChartView parent; //Stores the PieChartView that contains the panel
-	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
+	/** Stores the PieChartView that contains the ChartOptionsPanel */
+	private ChartView parent;
+	
+	/** A boolean indicating if input is enabled on the form  */
+	protected boolean inputEnabled;
 
-	/**
-	 * Construct the panel and initialize necessary internal variables
+	/** Construct the panel and initialize necessary internal variables
 	 * @param parentView The ChartView that contains this panel
 	 */
 	public ChartOptionsPanel(ChartView parentView){
@@ -136,8 +144,7 @@ public class ChartOptionsPanel extends JPanel{
 		setInputEnabled(inputEnabled);
 	}
 
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * 
 	 * @param enabled Whether or not input is enabled.
@@ -192,7 +199,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.filtersOptionsBox = filtersOptionsBox;
 	}
 
-	/** Method to get the parent of this panel
+	/** Method to get the parent of this ChartOptionsPanel
 	 * @return the parent
 	 */
 	public ChartView getParent() {
@@ -200,8 +207,7 @@ public class ChartOptionsPanel extends JPanel{
 	}
 	
 	
-	/**
-	 * Method to get whether input is enabled for this panel
+	/** Method to get whether input is enabled for this panel
 	 * @return A boolean representing whether or not input is enabled for this panel.
 	 */
 	public boolean getInputEnabled() {
@@ -209,6 +215,7 @@ public class ChartOptionsPanel extends JPanel{
 	}
 	
 	/** Set the given box to enabled and to the correct color
+	 * 
 	 * @param box Which box to enable
 	 * @param enabled True to enable and False to disable
 	 */
