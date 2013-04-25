@@ -25,10 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-/**
- * View that contains the charts
+/** View that contains all the charts
  */
-
 @SuppressWarnings("serial")
 public class ChartView extends JPanel implements IToolbarGroupProvider{
 
@@ -65,21 +63,25 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	/** The panel containing various chart options on the left of the view */
 	private ChartOptionsPanel optionsPanel; 
 
+	/** Boolean indicated if the data to be displayed is to be taken from the dataset with the active filters applied or not */
 	private boolean isFiltered;
-
-	/** Internal variables related to what type of chart should be displayed */
+	
+	/** The type of data displayed in the chart */
 	private String chartDataType;
+	
+	/** The type of chart to dispay (bar chart or pie chart)*/
 	private String chartType;
 
+	/** The parent ListTab that contains this ChartView */
 	private ListTab view;
 
 
-	/**
-	 * Construct the view and initialize necessary internal variables
+	/** Construct the view and initialize necessary internal variables
 	 * @param view A ListTab that this view will be used in
 	 */
 	public ChartView(ListTab view) {
-		/** Init all the variables */
+		
+		//Initialize all the variables:
 		//Charts
 		this.statusPiePanel = new PieChartPanel();
 		this.iterationPiePanel = new PieChartPanel();
@@ -91,7 +93,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.requirementCountBarPanel = new BarChartPanel();
 		this.requirementEstimateBarPanel = new BarChartPanel();
 
-		//Toolbar and buttons on the top
+		//The buttons (including toolbar buttons)
 		this.buttonGroup = new ToolbarGroupView("All Charts");
 		this.btnRefresh = new JButton("Refresh");
 		this.buttonGroup.getContent().add(btnRefresh);
@@ -103,6 +105,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.chartDataType = "Requirement Status"; //TODO: Make this an enum?
 		this.chartType = "Pie Chart"; //TODO: Make this an enum?
 
+		//Add an action listener to the refresh button so that it will refresh the data being displayed when it is pushed
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,7 +119,9 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
 
-		/** Initial setup */
+		
+		//Initial set up:
+		
 		//Bar Charts
 		this.add(iterationBarPanel, BorderLayout.CENTER);
 		this.add(statusBarPanel, BorderLayout.CENTER);
