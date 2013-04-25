@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
@@ -9,8 +8,11 @@ import javax.swing.event.PopupMenuListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementObserver;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * Listener for the drop-down menus in the list of acceptance tests.
@@ -49,11 +51,30 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 			inTest = " ";
 		}
 		if (!inBox.equals(inTest)) {
-//			System.out.println("Something changed");
-//			System.out.println("\"" + inBox + "\"");
-//			System.out.println("\"" + inTest + "\"");
-		} else {
-//			System.out.println("Nothing changed");
+			// Create new acceptance test
+			AcceptanceTestResult newResult = AcceptanceTestResult.NONE;
+			if (!inBox.equals(" ")) {
+				newResult = AcceptanceTestResult.toResult(inBox);
+			}
+			AcceptanceTest oldTest = this.thePanel.getMyTest();
+			
+			// Save it
+			AcceptanceTestTab tab = (AcceptanceTestTab) thePanel.getParent().getParent().getParent().getParent();	// Shortens the next line
+			Requirement currentRequirement = tab.myGetParent().getCurrentRequirement();		// Get the current requirement
+			ArrayList<AcceptanceTest> myList = currentRequirement.getAcceptanceTests();
+			for (int i = 0; i < myList.size(); i++) { 	// Look through the list of tests
+				// For the matching old test
+				if (myList.get(i).getAcceptanceTestTitle().equals(oldTest.getAcceptanceTestTitle()) && myList.get(i).getDescription().equals(oldTest.getDescription())) {
+					myList.get(i).setAcceptanceTestResult(newResult);	// And update it
+				}
+			}
+			currentRequirement.setAcceptanceTests(myList);
+			
+			// make a POST http request and let the observer get the response
+			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+			request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+			request.addObserver(new UpdateAcceptanceTestObserver()); // add an observer to process the response
+			request.send();
 		}
 	}
 

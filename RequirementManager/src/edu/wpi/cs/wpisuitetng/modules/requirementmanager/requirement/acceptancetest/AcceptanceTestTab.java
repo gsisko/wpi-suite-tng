@@ -406,4 +406,8 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		parent.getAttributePanel().changeField(txtName, 11, false);
 	}
 
+
+	public RequirementTab myGetParent() {
+		return this.parent;
+	}
 }

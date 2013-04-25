@@ -213,6 +213,10 @@ public class AcceptanceTestPanel extends JPanel{
 	}
 
 	
+	/** Gets the current test
+	 * 
+	 * @return the current test
+	 */
 	public AcceptanceTest getMyTest () {
 		return myTest;
 	}
