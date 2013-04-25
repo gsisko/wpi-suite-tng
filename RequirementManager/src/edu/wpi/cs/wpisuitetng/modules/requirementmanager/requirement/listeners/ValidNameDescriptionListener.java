@@ -55,7 +55,7 @@ public class ValidNameDescriptionListener implements KeyListener{
 	 *  to see if warnings should be put up, and does so.
 	 */
 	public void keyReleased(KeyEvent e) {
-		thePanel.setSaveButtonWhenNameAndDescriptionAreValid();
+		thePanel.setSaveButtonWhenFieldsAreValid();
 	}
 
 	/** This method is unused but required by the interface   */
