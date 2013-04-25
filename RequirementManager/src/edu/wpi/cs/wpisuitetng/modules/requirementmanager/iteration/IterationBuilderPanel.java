@@ -365,8 +365,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 * A validate function that checks to make sure that the dates and name of the iteration are valid,
 	 * and sets the warning labels ("nameWarning" and "dateWarning") appropriately.
 	 * Also sets the "btnCreate" button disabled if any fields are invalid, enabled if all fields are valid.
-	 * 
-	 * @return true if the iteration update/save is valid, false otherwise
 	 */
 	public void isIterationValid(){
 		
