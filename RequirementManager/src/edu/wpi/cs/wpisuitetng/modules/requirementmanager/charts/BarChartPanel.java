@@ -39,8 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
-/**
- * Panel that contains the bar chart specified by the user in the ChartOptionsPanel.
+/** Panel that contains the bar chart specified by the user in the ChartOptionsPanel.
  */
 @SuppressWarnings("serial")
 public class BarChartPanel extends JPanel {
@@ -109,6 +108,7 @@ public class BarChartPanel extends JPanel {
 	}
 
 	/** Creates a chart using specified data and title
+	 * 
 	 * @param dataset set of data to use to make the bar chart
 	 * @param title title of the chart
 	 * @return JFreeChart object containing the chart with the title and data
@@ -189,6 +189,7 @@ public class BarChartPanel extends JPanel {
 	}
 
 	/** Function to refresh and redraw bar chart with Iterations 
+	 * 
 	 * @param requirements array of requirements to use to generate chart
 	 * @param iterations array of iterations to use to generate chart
 	 */
