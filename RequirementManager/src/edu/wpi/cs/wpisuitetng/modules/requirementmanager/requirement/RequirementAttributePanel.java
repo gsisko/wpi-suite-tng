@@ -54,35 +54,86 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 public class RequirementAttributePanel extends JPanel {
 
 	//The labels
-	private  JLabel nameLabel; //The label for the name text field ("txtName")
-	private  JLabel descriptionLabel;//The label for the description text area ("txtDescription")
-	private  JLabel typeLabel; //The label for the type combo box ("typeBox")
-	private  JLabel statusLabel; //The label for the status combo box ("statusBox")
-	private  JLabel priorityLabel; //The label for the priority combo box ("priorityBox")
-	private  JLabel iterationLabel; //The label for the iteration combo box ("iterationBox")
-	private  JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
-	private  JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
-	private  JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
-	private  JLabel warningName;//The Jlabel for warning the user about invalid (blank or over 100 characters) names
-	private  JLabel warningDescription;//The Jlabel for warning the user about invalid (blank) descriptions
-	private  JLabel warningEstimate;//The Jlabel for warning the user about invalid (blank) estimates
-	private  JLabel warningActualEffort;//The Jlabel for warning the user about invalid (blank) actual efforts
+	/** The JLabel for the name text field ("txtName") */
+	private  JLabel nameLabel; 
+
+	/** The JLabel for the description text area ("txtDescription") */
+	private  JLabel descriptionLabel;
+
+	/** The JLabel for the type combo box ("typeBox") */
+	private  JLabel typeLabel; 
+
+	/** The JLabel for the status combo box ("statusBox") */
+	private  JLabel statusLabel; 
+
+	/** The JLabel for the priority combo box ("priorityBox") */
+	private  JLabel priorityLabel; 
+
+	/** The JLabel for the iteration combo box ("iterationBox") */
+	private  JLabel iterationLabel; 
+
+	/** The JLabel for the release number text field ("txtReleaseNum") */
+	private  JLabel releaseNumLabel;
+
+	/** The JLabel for the estimate text field ("txtEstimate") */
+	private  JLabel estimateLabel; 
+
+	/** The JLabel for the actual effort text field ("txtActualEffort") */
+	private  JLabel actualEffortLabel;
+
+	/** The JLabel for warning the user about invalid (blank or over 100 characters) names */
+	private  JLabel warningName;
+
+	/** The JLabel for warning the user about invalid (blank) descriptions */
+	private  JLabel warningDescription;
+
+	/** The JLabel for warning the user about invalid (blank) estimates */
+	private  JLabel warningEstimate;
+
+	/** The JLabel for warning the user about invalid (blank) actual efforts */
+	private  JLabel warningActualEffort;
 
 	//The fillable components
-	private  JTextField txtName;//The name text field 
-	private  JTextArea txtDescription;//The description text area
-	private  JComboBox typeBox;//The type combo box
-	private  JComboBox statusBox;//The status combo box
-	private  JComboBox priorityBox;//The priority combo box
-	private  JComboBox iterationBox;//The iteration combo box
-	private  JTextField txtReleaseNumber;//The release number text field
-	private  JNumberTextField txtEstimate;//The estimate text field
-	private  JNumberTextField txtActualEffort;//The actual effort text field
+	/** The name text field */
+	private  JTextField txtName;
 
-	private Requirement currentRequirement;//Stores the requirement currently open for editing or creation
-	private RequirementTab parent; //Stores the RequirementTab that contains the panel
-	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
-	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+	/** The description text area */
+	private  JTextArea txtDescription;
+
+	/** The type combo box */
+	private  JComboBox typeBox;
+
+	/** The status combo box */
+	private  JComboBox statusBox;
+
+	/** The priority combo box */
+	private  JComboBox priorityBox;
+
+	/** The iteration combo box */
+	private  JComboBox iterationBox;
+
+	/** The release number text field */
+	private  JTextField txtReleaseNumber;
+
+	/** The estimate text field */
+	private  JNumberTextField txtEstimate;
+
+	/** The actual effort text field */
+	private  JNumberTextField txtActualEffort;
+
+	//Other variables
+
+	/** Stores the requirement currently open for editing or creation */
+	private Requirement currentRequirement;
+
+	/** Stores the RequirementTab that contains the panel */
+	private RequirementTab parent;
+
+	/** A boolean indicating if input is enabled on the form  */
+	protected boolean inputEnabled;
+
+	/** The variable to store the enum indicating whether or not you are creating at the time */
+	private Mode mode;
 
 	/** This array holds the boolean flags for what fields are changed as well as 
 	 *  whether the save button is being saved or not
@@ -99,35 +150,36 @@ public class RequirementAttributePanel extends JPanel {
 	 *  9			Notes 
 	 *  10        	Save button is saving
 	 */	
-	private boolean[] fieldsChanged;	// Have any fields been changed?
+	private boolean[] fieldsChanged;
+
 	/** A reference to the save button in the tool bar */
 	private JButton saveButton;
+
+	/** A boolean used to keep track of if the fields are valid or not */
 	private Boolean validFields;
 
 	/** a listener to watch the name and description boxes    */
 	ValidNameDescriptionListener nameAndDescriptionValidityListener;
 
-	//The layout manager
-	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
+	/** The layout manager for this panel */
+	protected GridBagLayout layout;
 
 	String[] iterationArr = { "Backlog"};
 	String[] iterationStrings = iterationArr;
 
-	//The constraints
-	private GridBagConstraints attributePanelConstraints;//The constraints variable for the layout of the innerPanel
+	/** The constraints variable used to layout this panel */
+	private GridBagConstraints attributePanelConstraints;
 
 	public RequirementAttributePanel(RequirementTab parentTab, Requirement requirement, Mode editMode){
-
 		parent = parentTab;//Set the RequirementView that contains this instance of this panel
 		currentRequirement = requirement; //Set the requirement that is currently open for editing or creation
 		mode = editMode;//Set the indicated mode
 
-		// Indicate that input is enabled
-		inputEnabled = true;
-		fieldsChanged = new boolean[13];
+		inputEnabled = true; // Indicate that input is enabled
+		fieldsChanged = new boolean[13];//Set up the fieldsChanged array
 		setFieldsChanged(false);
 
-		validFields = new Boolean(true);
+		validFields = new Boolean(true);//Set up the validFields boolean
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -138,14 +190,10 @@ public class RequirementAttributePanel extends JPanel {
 
 		addComponents();//Add the components to the panel
 		populateFields();//Update the fields to those given in the currentRequirement, if necessary.
-
 	}
 
-	/**
-	 * Adds the components to both the innerPanel and 
-	 * this instance of a RequirementPanel and places
-	 * constraints on the components within the innerPanel
-	 * for the GridBagLayout.
+	/** Constructs and  adds the components to the panel and places
+	 * constraints them for the GridBagLayout.
 	 */
 	protected void addComponents(){
 		//Construct the labels
@@ -187,7 +235,8 @@ public class RequirementAttributePanel extends JPanel {
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
 		txtDescription.setWrapStyleWord(true);
-		//set character limit on description
+
+		//Set character limit on description
 		txtDescription.setDocument(new JTextFieldLimit(100000));
 
 		//Create the strings for the boxes
@@ -434,34 +483,23 @@ public class RequirementAttributePanel extends JPanel {
 		attributePanelConstraints.gridy = 3;//set the y coord of the cell of the layout we are describing
 		add(warningDescription, attributePanelConstraints);//Actually add the "warningDescription" to the layout given the previous constraints
 		//end warning labels
-
-
-
-
 	}
 
-
-
-
-
-	/**
-	 * Returns a boolean representing whether or not input is enabled for the RequirementPanel.
+	/** Returns a boolean representing whether or not input is enabled for the RequirementPanel.
 	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for the RequirementPanel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
 
-	/**
-	 * This returns the JTextField "txtName"
+	/**nThis returns the JTextField "txtName"
 	 * @return the txtName JTextField
 	 */
 	public JTextField getRequirementName() {
 		return txtName;
 	}
 
-	/**
-	 * This returns the JTextArea "txtDescription"
+	/** This returns the JTextArea "txtDescription"
 	 * @return the txtDescription JTextArea
 	 */
 	public JTextArea getRequirementDescription() {
@@ -469,110 +507,99 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 
-	/**
-	 * This returns the JComboBox "typeBox"
+	/** This returns the JComboBox "typeBox"
 	 * @return the typeBox JComboBox
 	 */
 	public JComboBox getRequirementType() {
 		return typeBox;
 	}
 
-	/**
-	 * This returns the JComboBox "statusBox"
+	/** This returns the JComboBox "statusBox"
 	 * @return the statusBox JComboBox
 	 */
 	public JComboBox getRequirementStatus() {
 		return statusBox;
 	}
 
-	/**
-	 * This returns the JComboBox "priorityBox"
+	/** This returns the JComboBox "priorityBox"
 	 * @return the priorityBox JComboBox
 	 */
 	public JComboBox getRequirementPriority() {
 		return priorityBox;
 	}
 
-	/**
-	 * This returns the JTextField "txtReleaseNum"
+	/** This returns the JTextField "txtReleaseNum"
 	 * @return the txtReleaseNum JTextField
 	 */
 	public JTextField getRequirementReleaseNumber() {
 		return txtReleaseNumber;
 	}
 
-	/**
-	 * This returns the JTextField "txtEstimate"
+	/** This returns the JTextField "txtEstimate"
 	 * @return the txtEstimate JTextField
 	 */
 	public JTextField getRequirementEstimate() {
 		return txtEstimate;
 	}
 
-	/**
-	 * This returns the JTextField "txtActualEffort"
+	/** This returns the JTextField "txtActualEffort"
 	 * @return the txtActualEffort JTextField
 	 */
 	public JTextField getRequirementActualEffort() {
 		return txtActualEffort;
 	}
 
-	/**
-	 * This returns the "mode" of this panel (Mode.EDIT or Mode.CREATE)
+	/** This returns the "mode" of this panel (Mode.EDIT or Mode.CREATE)
 	 * @return the mode Mode
 	 */
 	public Mode getMode() {
 		return mode;
 	}
 
-	/**
-	 * This sets the Mode "mode" of this panel
+	/** This sets the Mode "mode" of this panel
 	 * @param m Mode to set mode to (Mode.EDIT or Mode.CREATE)
 	 */
 	public void setMode(Mode m) {
 		mode = m;
 	}
 
-	/**
-	 * This returns the Requirement "currentRequirement" 
+	/** This returns the Requirement "currentRequirement" 
 	 * @return the currentRequirement Requirement
 	 */
 	public Requirement getCurrentRequirement() {
 		return currentRequirement;
 	}
 
-	/**
-	 * This sets the Requirement "currentRequirement" 
+	/** This sets the Requirement "currentRequirement" 
 	 * @param currentRequirement What to set the current requirement to
 	 */
 	public void setCurrentRequirement(Requirement currentRequirement) {
 		this.currentRequirement = currentRequirement;
 	}
 
-	/**
-	 * This returns the "parent" (a RequirementView) of this panel
+	/** This returns the "parent" (a RequirementView) of this panel
 	 * @return the parent RequirementTab
 	 */
 	public RequirementTab getParent() {
 		return parent;
 	}
 
-	/**
-	 * @return the iterationBox
+	/** This gets the JComboBox "iterationBox"
+	 * @return iterationBox The iterationBox JComboBox
 	 */
 	public JComboBox getIterationBox() {
 		return iterationBox;
 	}
 
-	/**
-	 * @param iterationBox the iterationBox to set
+	/** This sets the JComboBox "iterationBox"
+	 * @param iterationBox The JComboBox iterationBox to set
 	 */
 	public void setIterationBox(JComboBox iterationBox) {
 		this.iterationBox = iterationBox;
 	}
 
-	/**
-	 * @return the fieldsChanged
+	/** This returns a boolean indicating if any of the fields in this panel have changed or not
+	 * @return true when any of the fieldsChanged booleans are true, false otherwise
 	 */
 	public boolean isFieldsChanged() {
 		for (int i = 0; i < fieldsChanged.length; i++){
@@ -583,8 +610,8 @@ public class RequirementAttributePanel extends JPanel {
 		return false;
 	}
 
-	/**
-	 * @return the nonNoteFieldsChanged
+	/** This returns a boolean indicating if any of the fields  EXCEPT the note fields in this panel have changed or not
+	 * @return true when any of the fieldsChanged booleans are true that are not associated with the note fields, false otherwise
 	 */
 	public boolean isNonNoteFieldsChanged() {
 		for (int i = 0; i < fieldsChanged.length; i++){
@@ -595,8 +622,9 @@ public class RequirementAttributePanel extends JPanel {
 		return false;
 	}
 
-	/**
-	 * @param fieldsChanged the fieldsChanged to set
+	/** This sets all the booleans in the fieldsChanged array to a boolean
+	 *  passed in as  "fieldsChanged"
+	 * @param fieldsChanged The boolean to set all booleans in the fieldsChanged array to
 	 */
 	public void setFieldsChanged(boolean fieldsChanged) {
 		for (int i = 0; i < this.fieldsChanged.length; ++i) {
@@ -604,8 +632,10 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * @param fieldsChanged the fieldsChanged to set
+	/** This sets all the booleans in the fieldsChanged array to a boolean
+	 *  passed in as  "fieldsChanged", EXCEPT those booleans in the fieldsChanged
+	 *  array associated with the note fields
+	 * @param fieldsChanged The boolean to set all booleans in the fieldsChanged array to, EXCEPT those booleans in the fieldsChanged associated with the note fields
 	 */
 	public void setNonNoteFieldsChanged(boolean fieldsChanged) {
 		for (int i = 0; i < this.fieldsChanged.length; ++i) {
@@ -615,17 +645,15 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	/** Setter for the saveButton
-	 *  
-	 * @param saveButton The button that should be referenced as the save button. Located in tool bar
+	/** Setter for the saveButton 
+	 * @param saveButton The JButton that should be referenced as the save button. Located in tool bar.
 	 */
 	public void setSaveButton(JButton saveButton) {
 		this.saveButton = saveButton;
 	}
 
-	/** Getter for the saveButton
-	 *  
-	 * @return the save button 
+	/** Getter for the saveButton  
+	 * @return saveButton The save button JButton
 	 */
 	public JButton getSaveButton() {
 		return saveButton;
@@ -641,7 +669,8 @@ public class RequirementAttributePanel extends JPanel {
 		if (toSet) {
 			obj.setBackground(new Color(248,253,188));
 			fieldsChanged[i] = true;
-		} else {
+		} 
+		else {
 			toggleComponentEnabled(obj, obj.isEnabled());
 			fieldsChanged[i] = false;
 		}
@@ -650,7 +679,9 @@ public class RequirementAttributePanel extends JPanel {
 			saveButton.setEnabled(isNonNoteFieldsChanged() && setSaveButtonWhenFieldsAreValid());
 		}
 	}
-	/** Sets up the controllers and listeners for this panel   */
+
+	/** Sets up the controllers and listeners for this panel
+	 */
 	public void setupControllersAndListeners() {
 		// Add a listener to check the Name and Description boxes for validity
 		nameAndDescriptionValidityListener = new ValidNameDescriptionListener(this);
@@ -661,16 +692,20 @@ public class RequirementAttributePanel extends JPanel {
 		txtName.addKeyListener(new FieldChangeListener(this, txtName,    "Name",0));
 		txtDescription.addKeyListener(new FieldChangeListener(this, txtDescription,     "Description",1));
 		txtReleaseNumber.addKeyListener(new FieldChangeListener(this, txtReleaseNumber, "ReleaseNumber",2));
-		txtEstimate.addKeyListener(new KeyListener(){
-			/** Unused */
-			public void keyTyped(KeyEvent e) {	}
 
-			/** Unused */
-			public void keyPressed(KeyEvent e) {	}
+		// Add a key listener that turns the txtEstimate field yellow when changed. Also performs a validity check and sets the warning labels and save button appropriately
+		txtEstimate.addKeyListener(new KeyListener(){
+			/** Unused, but required by interface */
+			public void keyTyped(KeyEvent e) {}
+
+			/** Unused, but required by interface */
+			public void keyPressed(KeyEvent e) {}
 
 			/** When an estimate is entered and is 0 or nonexistent, the iteration box is disabled
 			 *  so that the user cannot assign the requirement to an iteration without first filling
-			 *  out a valid estimate. 
+			 *  out a valid estimate. Also call setSaveButtonWhenFieldsAreValid to validate the 
+			 *  change and set the warning label and save button appropriately. This is called
+			 *  whenever a key is released while entering into the txtEstimate field.
 			 */
 			public void keyReleased(KeyEvent e) {
 				// When estimate is invalid, deactivate the iteration box
@@ -691,14 +726,20 @@ public class RequirementAttributePanel extends JPanel {
 				setSaveButtonWhenFieldsAreValid();//This is here because otherwise the estimate validity is only checked when the field has changed from it's stored value
 			}
 		});
+
+		// Add a key listener that turns the txtActualEffort field yellow when changed. Also performs a validity check and sets the warning labels and save button appropriately
 		txtActualEffort.addKeyListener(new KeyListener(){
-			/** Unused */
+			/** Unused, but required by interface */
 			public void keyTyped(KeyEvent e) {  }
 
-			/** Unused */
-			public void keyPressed(KeyEvent e) {	}
+			/** Unused, but required by interface */
+			public void keyPressed(KeyEvent e) {}
 
-			/** Checks the actual effort box for changes and turns it yellow when changes are made */
+			/** Checks the actual effort box for changes and turns it yellow when changes are made.
+			 * Also calls setSaveButtonWhenFieldsAreValid to validate the change and set the 
+			 * warning label and save button appropriately. This is called whenever a key is released
+			 * when entering into the txtActualEffort field.
+			 */
 			public void keyReleased(KeyEvent e) {
 				// Check the old value and set the box yellow as necessary
 				if (txtActualEffort.getText().equals("")){
@@ -707,7 +748,8 @@ public class RequirementAttributePanel extends JPanel {
 					changeField(txtActualEffort, 4, true);
 				} else {
 					changeField(txtActualEffort, 4, false);
-				}			
+				}
+				setSaveButtonWhenFieldsAreValid();//This is here because otherwise the actual effort validity is only checked when the field has changed from it's stored value
 			}	
 		});
 
@@ -736,15 +778,25 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 	/** Checks the name, description, estimate, and actual effort fields for changes and sets the warning labels and 
-	 *  save button status appropriately            
+	 *  save button status appropriately.
+	 *  Name (the "txtName" JTextField) is considered valid when it is not blank and >= 100 characters.
+	 *  Description (the "txtDescription" JTextArea), estimate (the "txtEstimate" JTextField), and actual effort
+	 *  (the "txtActualEffort" JTextField), are considered valid when they are not blank.           
 	 *  
 	 *   @return True if the name, description, estimate, and actual effort fields are valid, false otherwise
 	 */
 	public boolean setSaveButtonWhenFieldsAreValid(){
 		// Initialize flags
+		/** Used to indicate the name field ("txtName") is valid */
 		boolean nameGood = true;
+
+		/** Used to indicate the description area ("txtDescription") is valid */
 		boolean desGood = true;
+
+		/** Used to indicate the estimate field ("txtEstimate") is valid */
 		boolean estimateGood = true;
+
+		/** Used to indicate the actual effort field ("txtActualEffort") is valid */
 		boolean effortGood = true;
 
 		// Check the name box
@@ -764,7 +816,7 @@ public class RequirementAttributePanel extends JPanel {
 			// reset the warning if necessary
 			warningDescription.setText("");
 		}
-		
+
 		// Check the estimate box
 		if ((txtEstimate.getText().length()==0)&& txtEstimate.isEnabled()){
 			warningEstimate.setText("Estimate cannot be blank");
@@ -773,7 +825,7 @@ public class RequirementAttributePanel extends JPanel {
 			// reset the warning if necessary
 			warningEstimate.setText("");
 		}
-			
+
 		// Check the actual effort box
 		if ((txtActualEffort.getText().length()==0)&& txtActualEffort.isEnabled()){
 			warningActualEffort.setText("ActualEffort cannot be blank");
@@ -783,16 +835,14 @@ public class RequirementAttributePanel extends JPanel {
 			warningActualEffort.setText("");
 		}
 
-		// If any are false, keep it disabled
+		// If any are false, set the save button disabled
 		validFields = Boolean.valueOf(desGood && nameGood && effortGood && estimateGood);
 		saveButton.setEnabled( validFields.booleanValue() && isFieldsChanged());	
 		return validFields;
 	}	
 
-	/**
-	 * Gets a requirement from the current text fields
+	/** Creates and returns a requirement from the current entries/selections in this RequirementAttribute panel.
 	 * TODO error check
-	 * 
 	 * @return Requirement made from the text fields
 	 */
 	public Requirement getRequirement()
@@ -804,18 +854,16 @@ public class RequirementAttributePanel extends JPanel {
 		RequirementPriority priority = RequirementPriority.toPriority(this.getRequirementPriority().getSelectedItem().toString());
 		RequirementType type = RequirementType.toType(this.getRequirementType().getSelectedItem().toString());
 
-
 		Requirement toReturn = new Requirement(name, description, type, priority,  releaseNumber, 0);
 
 		return toReturn;
-
 	}
 
 
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
-	 * 
+	 * Also disables the txtEstimate field when the status of this requirement is "InProgress",
+	 * and refreshes (fills) the iteration selection box if the fields are being enabled
 	 * @param enabled Whether or not input is enabled.
 	 */
 	protected void setInputEnabled(boolean enabled){
@@ -827,11 +875,12 @@ public class RequirementAttributePanel extends JPanel {
 		toggleComponentEnabled(statusBox, enabled);
 		toggleComponentEnabled(priorityBox, enabled);
 		toggleComponentEnabled(txtReleaseNumber, enabled);
+		//Disables the txtEstimate field if appropriate
 		if (currentRequirement.getStatus() == RequirementStatus.InProgress){
 			toggleComponentEnabled(txtEstimate, false);
 		}
 		else
-		toggleComponentEnabled(txtEstimate, enabled);
+			toggleComponentEnabled(txtEstimate, enabled);
 		toggleComponentEnabled(txtActualEffort, enabled);
 		toggleComponentEnabled(iterationBox, enabled);
 
@@ -841,7 +890,10 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	/** Sets the appropriate fields disabled upon creation	 */
+	/** Sets the appropriate fields disabled upon creation
+	 * (IE, this panel is in Mode.CREATE because it is being used to create
+	 * a new requirement
+	 */
 	protected void disableFieldsOnCreation(){
 		if (mode == Mode.CREATE) {
 			//Set the following fields to be initially grayed out
@@ -852,9 +904,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-
-	/**
-	 * Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement.
+	/** Updates the RequirementPanel's model ("currentRequirement") to contain the values of the given Requirement.
 	 * 
 	 * @param requirement	The Requirement which contains the new values for the model ("currentRequirement").
 	 * @param newMode		The new "mode"
@@ -863,16 +913,16 @@ public class RequirementAttributePanel extends JPanel {
 		mode = newMode;
 		currentRequirement = requirement;
 
-		populateFields();
+		populateFields();//Update the fields in this panel to match those in the "requirement" Requirement
 
+		//Revalidate, re-layout, and repaint so that changes are made visible
 		revalidate();
 		layout.invalidateLayout(this);
 		layout.layoutContainer(this);
 		repaint();
 	}
 
-	/**
-	 * Enables or disables a given JComponent and sets is color accordingly
+	/** Enables or disables a given JComponent and sets is color accordingly
 	 * 
 	 * @param box Box to be enabled / disabled
 	 * @param enabled True for enable, false for disable
@@ -888,16 +938,12 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Updates the RequirementPanel's fields to match those in the current model (stored in "currentRequirement").
+	/** Updates the RequirementPanel's fields to match those in the current model (stored in "currentRequirement").
 	 */
 	private void populateFields(){
 
 		if (mode == Mode.EDIT)//If we are editing an existing requirement
 		{
-			//Enable all fields
-			//			setInputEnabled(true);
-
 			//Set the fields to the values passed in with "requirement"
 			txtName.setText(currentRequirement.getName());
 			txtDescription.setText(currentRequirement.getDescription());
@@ -933,16 +979,17 @@ public class RequirementAttributePanel extends JPanel {
 			else // oldPriority = "NoPriority"
 				priorityBox.setSelectedIndex(0);
 
-			updateStatusSettings(oldStatus);
+			updateStatusSettings(oldStatus);//Limit the status' available to the user for selection in the statusBox JComboBox appropriately, and disable the appropriate fields/comments if the new status is "Complete" or "Deleted"
 		}
 
 		// Set the status of the fields to unchanged because they just got populated
 		setNonNoteFieldsChanged(false);
 	}
 
-	/**
-	 * This section limits the status changes available to the user
-	 * in the JComboBox for status based on requirements
+	/** This method limits the changes available to the user by disabling various fields/components
+	 * when the current status of the requirement is "Deleted" or "Complete". It also sets the selection
+	 * and status available in the statusBox JComboBox appropriately based on the current status of the
+	 * requirement.
 	 * 
 	 * @param setStatus the status to set the boxes to
 	 */
@@ -959,17 +1006,16 @@ public class RequirementAttributePanel extends JPanel {
 			toggleComponentEnabled(txtActualEffort, false);
 			toggleComponentEnabled(iterationBox, false);			
 		}
-		// Sets the correct selected item
+		//Make a new DefaultComboBoxModel to use to set the status available for selection in the statusBox appropriately
 		DefaultComboBoxModel compbox = new DefaultComboBoxModel (RequirementStatus.getAvailableStatuses(setStatus));
 		statusBox.setModel(compbox);
-		statusBox.setSelectedItem(setStatus);
+		statusBox.setSelectedItem(setStatus);// Sets the correct selected item
 
 	}
 
-	/** 
-	 *  Gets the names of the current iterations 
-	 *  and puts them into the Iteration selection combo box
-	 *  if the iteration in question has a end date that is 
+	/**  Gets the names of the current iterations 
+	 *  and puts them into the Iteration selection combo box,
+	 *  IFF the iteration in question has a end date that is 
 	 *  NOT before this date, OR has an id number of 0 (the backlog).  
 	 *  Also sets the selected index appropriately.
 	 */
@@ -1014,13 +1060,13 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 	/** When the selected value in the iteration box is changed, this method is 
-	 * called by the listener watching the box. Under certain circumstances,
+	 * called by the listener watching the box. Under appropriate circumstances,
 	 * this method changes the Requirement's status.
 	 * 
 	 * If not Complete or Deleted, check the following:
 	 * 
-	 * If changed to Backlog -> Open
-	 * If changed to Iteration -> InProgress
+	 * If the iteration is changed to Backlog, set the status to Open
+	 * If the iteration is changed to an Iteration, set the status to InProgress
 	 * 
 	 * @param e details about the event
 	 */
@@ -1036,7 +1082,7 @@ public class RequirementAttributePanel extends JPanel {
 
 			// If changed to the backlog, set the status to Open
 			if ( ((JComboBox) e.getSource()).getSelectedIndex() == 0){
-				// Special case: if the old status was New (and obviously isn't now
+				// Special case: if the old status was New (and obviously isn't now)
 				if ( this.getCurrentRequirement().getStatus() == RequirementStatus.New){
 					this.updateStatusSettings("New");
 					return;
@@ -1056,11 +1102,13 @@ public class RequirementAttributePanel extends JPanel {
 			}     
 		}
 
+		//Revalidate and repaint to ensure changes are shown
 		this.revalidate();
 		this.repaint();
 	}
 
-	/** Checks the Iteration box for changes and yellows that box appropriately 	 */
+	/** Checks the Iteration box for changes and yellows that box appropriately 
+	 */
 	public void checkIterationChange() {
 		// Get the name of the iteration that this Requirement used to be assigned to
 		Iteration[] allIterations = parent.getAllIterations();
@@ -1080,15 +1128,14 @@ public class RequirementAttributePanel extends JPanel {
 	}
 
 	/** Sets a boolean flag to say that the current requirement is being saved. This flag is checked
-	 *  when other operations that could interrupt the save are called
+	 *  when other operations that could interrupt the save are called.
 	 * @param isSaving True if the requirement is being saved, false otherwise
 	 */
 	public void setSaving(boolean isSaving) {
 		this.fieldsChanged[10] = isSaving;
 	}
 
-	/** Returns whether or not the current requirement is being saved.
-	 * 
+	/** Returns a boolean indicating whether or not the current requirement is being saved.
 	 * @return True if the requirement is being saved, false otherwise
 	 */
 	public boolean isSaving () {
