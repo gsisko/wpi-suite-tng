@@ -178,9 +178,9 @@ public class ChartOptionsPanel extends JPanel{
 		this.add(Box.createRigidArea(new Dimension(0,3)));
 		this.add(filtersOptionsBox);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
-		this.add(filterlistlabel);
-		this.add(Box.createRigidArea(new Dimension(0,3)));
-		this.add(resultsScrollPane);
+//		this.add(filterlistlabel);
+//		this.add(Box.createRigidArea(new Dimension(0,3)));
+//		this.add(resultsScrollPane);
 
 		setInputEnabled(inputEnabled);
 	}
