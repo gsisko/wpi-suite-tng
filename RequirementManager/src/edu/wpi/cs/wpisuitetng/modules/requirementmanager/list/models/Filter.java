@@ -22,17 +22,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatu
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
-/** A filter is one set of constraints that a user can use to filter a list of requirements.
- *
+/** A filter is a single set of constraints that a user can use to filter a list of requirements.
  */
 public class Filter extends AbstractModel {
-	/** Unique identifier for database extraction    */
+	/** Unique identifier for database extraction */
 	private int uniqueID;
-	/**	What to filter by	*/
+	/**	What to filter by */
 	private FilterType type;
-	/**	Operator to use for comparison	*/
+	/**	Operator to use for comparison */
 	private OperatorType comparator;
-	/**	String, integer, or RequirementStatus, RequirementPriority	*/
+	/**	String, integer, or RequirementStatus, RequirementPriority */
 	private String value;
 	/**	Use filter? */
 	private boolean useFilter;
@@ -44,7 +43,6 @@ public class Filter extends AbstractModel {
 	public Filter () {
 		this.setUniqueID(-1); 		// default as a flag to entity manager
 	}
-
 
 	/**	Full constructor for Filter. 
 	 * 
@@ -62,9 +60,7 @@ public class Filter extends AbstractModel {
 
 	}
 
-
 	/** Converts this Filter to a JSON string
-	 * 
 	 * @return a string in JSON representing this Filter
 	 */
 	public String toJSON() {
@@ -88,17 +84,16 @@ public class Filter extends AbstractModel {
 
 	@Override
 	/** Alternate call to convert class to a JSON
-	 * 
 	 * @return Same as {@link toJON()}
 	 */
 	public String toString() {
 		return toJSON();
 	}
 
-	/** Converts a given json string to a Filter
+	/** Converts a given JSON string to a Filter
 	 * 
-	 * @param json Json string to parse containing Filter
-	 * @return The Filter given by Json
+	 * @param json JSON string to parse containing Filter
+	 * @return The Filter given by JSON
 	 */
 	public static Filter fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
@@ -130,8 +125,9 @@ public class Filter extends AbstractModel {
 		return returnValue;
 	}
 
-	/** Changes all fields in the current Filter to equal the fields of the filterUpdate
-	 * User and UniqueID are ignored as they should never be updated
+	/** Changes all fields in the current Filter to equal the fields of the
+	 * filter passed in as "filterUpdate".
+	 * User and UniqueID are ignored as they should never be updated.
 	 * 
 	 * @param filterUpdate Filter holding the updates
 	 */
@@ -144,10 +140,9 @@ public class Filter extends AbstractModel {
 		// Unique ID does not need to be set, as it cannot be changed anyways
 	}
 
-	/** Compares two filters. Intended use in the makeEntity method
+	/** Compares two filters. Intended for use in the makeEntity method.
 	 * 
 	 * @param toCompareTo The Filter to compare to
-	 * 
 	 * @return Whether the two Filters are equal or not
 	 */
 	public boolean equals(Filter toCompareTo){ // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
@@ -160,12 +155,10 @@ public class Filter extends AbstractModel {
 	/** Determines whether a Requirement passes this filter
 	 *
 	 *	@param req The Requirement in question
-	 *
 	 *	@return True if the Requirement passes, false if it does not
 	 */
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
-
 		try{
 			switch (this.type){	
 			// The following are strings
@@ -181,7 +174,6 @@ public class Filter extends AbstractModel {
 				} else { // The operator will be DoesNotContain
 					return (!req.getUserNames().contains(this.value)  && !this.value.equals("") )|| (req.getUserNames().size() > 0 && this.value.equals(""));
 				}
-				
 				// The following five are Integers
 			case Id: 
 				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
@@ -209,13 +201,11 @@ public class Filter extends AbstractModel {
 		}
 	}
 
-
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	public void save() {
 		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -223,7 +213,6 @@ public class Filter extends AbstractModel {
 	 */
 	public void delete() {
 		// TODO Auto-generated method stub
-
 	}
 
 
@@ -269,7 +258,6 @@ public class Filter extends AbstractModel {
 		this.comparator = comparator;
 	}
 
-
 	/**
 	 * @return The useFilter
 	 */
@@ -284,14 +272,12 @@ public class Filter extends AbstractModel {
 		this.useFilter = useFilter;
 	}
 
-
 	/**
 	 * @return The user
 	 */
 	public User getUser() {
 		return user;
 	}
-
 
 	/**
 	 * @param user The user to set
@@ -307,9 +293,7 @@ public class Filter extends AbstractModel {
 		return value;
 	}
 
-
 	/** Sets the value of the Filter when the input is Object
-	 * 
 	 * @param o The value to set
 	 */
 	public void setValue(Object o){

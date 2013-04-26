@@ -12,8 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
 
-/**	Possible values for the type of filter.
- *
+/**	Possible values for the type of a filter.
  */
 public enum FilterType {
 	Id,
@@ -35,7 +34,6 @@ public enum FilterType {
 	 * only the enums listed as FilterType.
 	 * 
 	 * @param toConvert The string you want to convert
-	 * 
 	 * @return the proper FilterType
 	 */
 	public static FilterType toType (String toConvert){

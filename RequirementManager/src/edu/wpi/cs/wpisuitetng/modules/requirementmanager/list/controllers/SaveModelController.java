@@ -79,7 +79,6 @@ public class SaveModelController implements ActionListener
 		builderView.resetFields();
 		builderView.setInputEnabled(false);
 		
-		
 		listView.setCancelBtnToNew();
 		listView.refreshAll();
 	}
