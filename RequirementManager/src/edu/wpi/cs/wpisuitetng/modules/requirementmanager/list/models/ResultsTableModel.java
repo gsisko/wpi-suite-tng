@@ -25,6 +25,8 @@ public class ResultsTableModel extends AbstractTableModel {
 	/** The data to be displayed in the table */
 	private Object[][] data = {};
 	
+	private boolean editable = false;
+	
 	/**
 	 * Basic constructor.
 	 */
@@ -97,7 +99,7 @@ public class ResultsTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		return false;
+		return editable;
 	}
 
 	/**
@@ -112,5 +114,19 @@ public class ResultsTableModel extends AbstractTableModel {
 	 */
 	public Object[][] getData() {
 		return data;
+	}
+
+	/**
+	 * @return the editable
+	 */
+	public boolean isEditable() {
+		return editable;
+	}
+
+	/**
+	 * @param editable the editable to set
+	 */
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }

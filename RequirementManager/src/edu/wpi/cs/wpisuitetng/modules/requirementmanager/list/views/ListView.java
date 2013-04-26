@@ -37,56 +37,65 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
  */
 @SuppressWarnings("serial")
 public class ListView extends JPanel implements IToolbarGroupProvider {
-	
+
 	/** Panel containing the list interface */
 	protected ListTab mainPanel;
-	
+
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
-	
+
 	/** The panel containing buttons for the tool bar */
 	protected ToolbarGroupView buttonGroup;
-	
+
 	/** The refresh button that reloads the results of the list/filter */
 	protected JButton btnRefresh;
-	
+
+	/** The button that enables editing in the list view */
+	protected JButton btnEnableEdit;
+
+	/** The button that saves editing in the list view */
+	protected JButton btnSave;
+
+	/** The button that cancels editing in the list view */
+	protected JButton btnCancel;
+
 	/** The display pie chart button that loads the pie chart tab */
 	protected JButton btnDisplayPieChart;
-	
+
 	/** The check box for Default Column Widths */
 	protected JCheckBox checkBoxDefault;
-	
+
 	/** Boolean to represent state of the check box */
 	protected boolean checkBoxStatus;
 
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
-	
+
 	protected RetrieveAllModelsController filterController;
 	protected RetrieveAllModelsController iterationController;
-	
+
 	/** The main tab controller */
 	protected MainTabController tabController;
-	
+
 	/** The arrays of models stored in the database */
 	protected Filter[] allFilters;
 	protected Iteration[] allIterations;
 	protected Requirement[] allRequirements;
 	protected Requirement[] displayedRequirements;
-	
+
 	/**Construct the view
 	 * @param tabController The main tab controller
 	 */
 	public ListView(final MainTabController tabController) {
 		this.tabController = tabController;
-		
+
 		mainPanel = new ListTab(tabController, this);
-		
+
 		allFilters = new Filter[0];
 		allIterations = new Iteration[0];
 		allRequirements = new Requirement[0];
 		displayedRequirements = new Requirement[0];
-		
+
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();
 		this.setLayout(layout);
@@ -94,21 +103,21 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		layout.putConstraint(SpringLayout.SOUTH, mainPanel, 0, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.WEST, mainPanel, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, mainPanel, 0, SpringLayout.EAST, this);
-		
+
 		// Add the mainPanel to this view
 		this.add(mainPanel);
-		
+
 		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
 		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
 		iterationController = new RetrieveAllModelsController(mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
-		
+
 		// Add a listener for row clicks in the actual table
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
-		
+
 		// Instantiate the button panel
 		buttonGroup = new ToolbarGroupView("Options for Requirements");
-		
+
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
@@ -118,11 +127,11 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				filterController.refreshData();
-				iterationController.refreshData();
+				refreshData();
 			}
 		});
-		
+
+
 		// Instantiate the defaultColumnWidths checkbox
 		checkBoxDefault = new JCheckBox("Reset Table Layout", true);
 		checkBoxStatus = true;
@@ -130,39 +139,77 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		checkBoxDefault.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				
+
 				checkBoxStatus = checkBoxDefault.isSelected();
 			}
-        });
+		});
 		buttonGroup.getContent().add(checkBoxDefault);
+
+		// Create and make button to Enable Editing in list view
+		btnEnableEdit = new JButton("Enable Edit Mode");
+		btnCancel = new JButton("Cancel");
+		btnSave = new JButton("Save Changes");
+		btnSave.setVisible(false);
+		btnCancel.setVisible(false);
+		buttonGroup.getContent().add(btnEnableEdit);
+		buttonGroup.getContent().add(btnCancel);
+		buttonGroup.getContent().add(btnSave);
+
+		btnEnableEdit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnEditVisible();
+				mainPanel.getResultsPanel().getModel().setEditable(true);
+			}
+		});
+
+		btnCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnCancelSaveVisible();
+				mainPanel.getResultsPanel().getModel().setEditable(false);
+				refreshData();
+			}
+		});
+		
+		btnSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnCancelSaveVisible();
+				mainPanel.getResultsPanel().getModel().setEditable(false);
+			}
+		});
+		
 	}
-	
+
 	public boolean getCheckBoxStatus() {
 		return checkBoxStatus;
 	}
-	
+
 	protected void setCheckBoxStatus(boolean checkBoxStatus) {
 		this.checkBoxStatus = checkBoxStatus;
 	}
 
+	/**
+	 * refresh the Data
+	 */
 	public void refreshData() {
-		// Load initial data
 		filterController.refreshData();
 		iterationController.refreshData();
 	}
-	
+
 	public RetrieveAllRequirementsController getController() {
 		return controller;
 	}
-	
+
 	public RetrieveAllModelsController getFilterController() {
 		return filterController;
 	}
-	
+
 	public RetrieveAllModelsController getIterationController() {
 		return iterationController;
 	}
-	
+
 	public ListTab getListTab() {
 		return mainPanel;
 	}
@@ -171,7 +218,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
 	}
-	
+
 	/**
 	 * @return the allFilters
 	 */
@@ -227,5 +274,33 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
 		this.displayedRequirements = displayedRequirements;
 	}
-	
+
+	/**
+	 * get the Edit button
+	 * @return btnEnableEdit
+	 */
+	public JButton getBtnEdit(){
+		return btnEnableEdit;
+	}
+
+	/**
+	 * Set the Save and Cancel buttons to invisible
+	 * Set the EnableEdit button to visible
+	 */
+	public void btnCancelSaveVisible() {
+		btnCancel.setVisible(false);
+		btnSave.setVisible(false);
+		btnEnableEdit.setVisible(true);
+	}
+
+	/**
+	 * Set the Save and Cancel buttons to visible
+	 * Set the EnableEdit button to invisible
+	 */
+	public void btnEditVisible() {
+		btnEnableEdit.setVisible(false);
+		btnSave.setVisible(true);
+		btnCancel.setVisible(true);
+	}
+
 }
