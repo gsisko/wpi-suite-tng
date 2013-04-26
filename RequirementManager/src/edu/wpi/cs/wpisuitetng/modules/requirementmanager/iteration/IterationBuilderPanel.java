@@ -45,7 +45,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 /** This is the builder panel for Iterations. It is located in the list view on the 
  *  RequirementManager module above the list of requirements and right of the list 
  *  of iterations. This builder will be switched to when the Iteration list view
- *  tab is selected.  */
+ *  tab is selected.  
+ */
 @SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
@@ -87,7 +88,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final ListTab parent;
 
 	/** Construct the panel and all of its components
-	 *
 	 * @param view The ListTab that this panel will live in
 	 */
 	public IterationBuilderPanel(ListTab view) {
@@ -277,8 +277,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	}
 
-	/** 
-	 * Enables or disables all fields in the builder panel.
+	/** Enables or disables all fields in the builder panel.
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo) {
@@ -300,9 +299,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-
-	/** 
-	 * Toggles between active and inactive modes mode 
+	/** Toggles between active and inactive modes mode 
 	 */
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function
@@ -310,9 +307,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		setInputEnabled(isBuilderActive);
 	}
 
-
-	/**
-	 *  Restore all fields to their initial values 
+	/** Restore all fields to their initial values 
 	 */
 	public void resetFields() {
 		this.nameValue.setText("");
@@ -322,10 +317,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnCreate.setText("Create");
 	}
 
-	/** 
-	 * Sets the mode of the builder panel to the given mode. ALSO changes
-	 * the text in the button 
-	 * Mode.CREATE or Mode.EDIT
+	/** Sets the mode of the builder panel to the given mode (Mode.CREATE or Mode.EDIT).
+	 * ALSO changes the text in the button 
 	 * 
 	 * @param mode The mode that the builder panel should be in
 	 */
@@ -340,11 +333,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-	/** 
-	 * Gets the model from the panel in the form of a JSON string 
+	/** Gets the model from the panel in the form of a JSON string 
 	 * that is ready to be sent as a message over the network
 	 * 
-	 * NOTE: can be used for passing messages between views!
+	 * NOTE: This method can be used for passing messages between views!
 	 * 
 	 * @return JSON string of the model to be sent, Returns null on failure
 	 */
@@ -361,8 +353,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return toSend.toJSON();
 	}
 
-	/**
-	 * A validate function that checks to make sure that the dates and name of the iteration are valid,
+	/** A validate function that checks to make sure that the dates and name of the iteration are valid,
 	 * and sets the warning labels ("nameWarning" and "dateWarning") appropriately.
 	 * Also sets the "btnCreate" button disabled if any fields are invalid, enabled if all fields are valid.
 	 */
@@ -432,7 +423,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			}
 		}
 
-
 		//If no name error has been found, clear the nameWarning label
 		if (!nameErrorFound)
 			nameWarning.setText("");
@@ -455,7 +445,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 
 	}
-	
 
 	/** Takes a JSON string that holds an array of models and uploads them
 	 *  to the builder panel.
@@ -522,25 +511,24 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 	}
 
-	/** Set the given box to the given enable status as well 
-	 *  set the box to the correct color
+	/** Set the given JTextField to the given enable status as well 
+	 *  set the field's background to the correct color
 	 * 
-	 * @param box   The box that needs enabling and colors
+	 * @param field   The field that needs enabling and colors
 	 * @param enabled  True to enable and False to disable
 	 */
-	public void enable(JTextField box, boolean enabled) {
+	public void enable(JTextField field, boolean enabled) {
 		if (enabled) {
-			box.setEnabled(true);
-			box.setBackground(Color.WHITE);
+			field.setEnabled(true);
+			field.setBackground(Color.WHITE);
 		}
 		else {
-			box.setEnabled(false);
-			box.setBackground(new Color(238,238,238));
+			field.setEnabled(false);
+			field.setBackground(new Color(238,238,238));
 		}
 	}
 
-	/**
-	 * Trims a date by setting the time to 1 millisecond after midnight on the given day
+	/** Trims a date by setting the time to 1 millisecond before midnight on the given day
 	 * 
 	 * @param date The Date to trim
 	 * @return The trimmed date.

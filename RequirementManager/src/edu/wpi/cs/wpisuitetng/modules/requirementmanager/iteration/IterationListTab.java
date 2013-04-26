@@ -12,35 +12,27 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveIterationTableCellRenderer;
 
-/**
- * Panel to contain the list of Iterations that have been saved by the user
+/** Panel to contain the list of Iterations that have been saved by the user
  */
 @SuppressWarnings("serial")
 public class IterationListTab extends JPanel implements IListPanel {
@@ -62,8 +54,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 	private final ListTab parent;
 	
-	/**
-	 * Construct the panel
+	/** Construct the panel
 	 */
 	public IterationListTab(ListTab view) {
 		parent = view;
@@ -80,8 +71,6 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
 		resultsTable.setDefaultRenderer(String.class, new ActiveIterationTableCellRenderer());
-
-		
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -114,16 +103,13 @@ public class IterationListTab extends JPanel implements IListPanel {
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
 
-		
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
 		
-		
 	}
 
 	/**This method returns an ArrayList of active Iterations
-	 * 
 	 * @return activeIterations An ArrayList of the active Iterations
 	 */
 	public ArrayList<Iteration> getIterations() {
@@ -197,24 +183,21 @@ public class IterationListTab extends JPanel implements IListPanel {
 		this.btnCreateIsCancel = btnCreateIsCancel;
 	}
 
-	/**
-	 * Set the cancel button back to New Iteration if it was in cancel mode
+	/** Set the cancel button back to New Iteration if it was in cancel mode
 	 */
 	public void setCancelBtnToNew() {
 		this.getBtnCreate().setText("New Iteration"); 
 		this.setBtnCreateIsCancel(false);
 	}
 	
-	/**
-	 * Set the new iteration button to cancel
+	/** Set the new iteration button to cancel
 	 */
 	public void setNewBtnToCancel(){
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	/** 
-	 * Toggles between "New Model" and "Cancel" mode 
+	/** Toggles between "New Model" and "Cancel" mode 
 	 */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
@@ -260,7 +243,6 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 * @return An array of unique identifiers in the form of strings
 	 */
 	public String[] getSelectedUniqueIdentifiers() {
-		
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 
@@ -275,8 +257,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		return ids;
 	}
 
-	/** 
-	 * Show the models in the list view
+	/** Show the models in the list view
 	 *  Do nothing in builder
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
