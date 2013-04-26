@@ -45,15 +45,16 @@ import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.modules.AbstractEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.FileModel;
 //import edu.wpi.cs.wpisuitetng.modules.core.models.File;
 import edu.wpi.cs.wpisuitetng.modules.core.models.ProjectDeserializer;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 //TODO: Do we want to make a FilePart class that extends Model?
-public class FileManager implements EntityManager<File>{
+public class FileManager implements EntityManager<FileModel>{
 
-	Class<File> project = File.class;
+	Class<FileModel> project = FileModel.class;
 	Gson gson;
 	Data data;
 	private String[] allModules;
@@ -80,7 +81,7 @@ public class FileManager implements EntityManager<File>{
 	}
 
 	@Override
-	public File makeEntity(Session s, String content) throws WPISuiteException {	
+	public FileModel makeEntity(Session s, String content) throws WPISuiteException {	
 		User theUser = s.getUser();
 
 		logger.log(Level.FINER, "Attempting new File creation...");
@@ -130,7 +131,7 @@ public class FileManager implements EntityManager<File>{
 	}
 
 	@Override
-	public File[] getEntity(Session s, String id) throws WPISuiteException 
+	public FileModel[] getEntity(Session s, String id) throws WPISuiteException 
 	{
 		File[] m = new File[1];
 		if(id.equalsIgnoreCase(""))
@@ -153,7 +154,7 @@ public class FileManager implements EntityManager<File>{
 	 * @throws NotFoundException if the project cannot be found
 	 * @throws WPISuiteException if retrieve fails
 	 */
-	public File[] getEntity(String id) throws NotFoundException, WPISuiteException
+	public FileModel[] getEntity(String id) throws NotFoundException, WPISuiteException
 	{
 		File[] m = new File[1];
 		if(id.equalsIgnoreCase(""))
@@ -175,9 +176,9 @@ public class FileManager implements EntityManager<File>{
 		}
 	}
 
-	public File[] getEntityByName(Session s, String projectName) throws NotFoundException, WPISuiteException
+	public FileModel[] getEntityByName(Session s, String projectName) throws NotFoundException, WPISuiteException
 	{
-		File[] m = new File[1];
+		FileModel[] m = new FileModel[1];
 		if(projectName.equalsIgnoreCase(""))
 		{
 			throw new NotFoundException("No (blank) Project name given.");
@@ -189,14 +190,14 @@ public class FileManager implements EntityManager<File>{
 	}
 
 	@Override
-	public File[] getAll(Session s) {
+	public FileModel[] getAll(Session s) {
 		File[] ret = new File[1];
 		ret = data.retrieveAll(new File("","")).toArray(ret);
 		return ret;
 	}
 
 	@Override
-	public void save(Session s, File model) throws WPISuiteException {
+	public void save(Session s, FileModel model) throws WPISuiteException {
 		if(s == null){
 			throw new WPISuiteException("Null Session.");
 		}
@@ -230,7 +231,7 @@ public class FileManager implements EntityManager<File>{
 			throw new WPISuiteException("Null Session.");
 		}
 		User theUser = s1.getUser();
-		File[] model = this.getEntity(id);
+		FileModel[] model = this.getEntity(id);
 		
 		//TODO: Do we need a permission check?
 //		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
@@ -262,7 +263,7 @@ public class FileManager implements EntityManager<File>{
 
 	@Override
 	public int Count() {
-
+		//TODO: Implement?
 		return 0;
 	}
 
@@ -328,8 +329,8 @@ public class FileManager implements EntityManager<File>{
 	}
 
 	@Override
-	public File update(Session s, String content) throws WPISuiteException {
-		File[] p = null;
+	public FileModel update(Session s, String content) throws WPISuiteException {
+		FileModel[] p = null;
 
 		String id = AbstractEntityManager.parseFieldFromJSON(content, "idNum");
 
@@ -399,6 +400,12 @@ public class FileManager implements EntityManager<File>{
 	public String advancedPost(Session s, String string, String content) throws WPISuiteException 
 	{
 		return gson.toJson(allModules, String[].class);
+	}
+
+	@Override
+	public void save(Session s, FileModel model) throws WPISuiteException {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -26,32 +26,33 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 /**
  * The Data Model representation of a Project. Offers
  * 	serialization and database interaction.
- * @author mdelladonna, twack, bgaffey
+ * @author mdelladonna, twack, bgaffey, robertsmieja, bhetherman
  */
 
 
-public class Project extends AbstractModel
+public class FileModel extends AbstractModel
  {
-	private String name;
+
+	private String fileName;
 	private String idNum;
-	private String[] supportedModules;
+	private String[] fileData;
 	private User owner;
 	private ArrayList<User> team;
 	
 	/**
-	 * Primary constructor for a Project
-	 * @param name - the project name
+	 * Primary constructor for a FileModel
+	 * @param fileName - the name of the file
 	 * @param idNum - the project ID number as a string
 	 * @param owner - The User who owns this project
 	 * @param team - The User[] who are associated with the project
-	 * @param supportedModules - the modules supported by this project
+	 * @param fileData - the base64 string representing the file
 	 */
-	public Project(String name, String idNum, User owner, User[] team, String[] supportedModules)
+	public FileModel(String fileName, String idNum, User owner, User[] team, String[] fileData)
 	{
-		this.name = name;
+		this.fileName = fileName;
 		this.idNum = idNum;
 		this.owner = owner;
-		this.supportedModules = supportedModules;
+		this.fileData = fileData;
 		
 		if(team != null)
 		{
@@ -64,20 +65,20 @@ public class Project extends AbstractModel
 	}
 	
 	/**
-	 * Secondary constructor for a Project
-	 * @param name	the project name
-	 * @param idNum	the ID number to associate with this Project.
+	 * Secondary constructor for a FileModel
+	 * @param fileName	the file name
+	 * @param idNum	the ID number to associate with this FileModel.
 	 */
-	public Project(String name, String idNum)
+	public FileModel(String fileName, String idNum)
 	{
-		this.name = name;
+		this.fileName = fileName;
 		this.idNum = idNum;
 	}
 	
 	/* Accessors */
 	public String getName()
 	{
-		return name;
+		return fileName;
 	}
 	
 	public String getIdNum()
@@ -88,13 +89,13 @@ public class Project extends AbstractModel
 	/* Mutators */
 	public void setName(String newName)
 	{
-		this.name = newName;
+		this.fileName = newName;
 	}
 	
-	private void setIdNum(String newId)
-	{
-		this.idNum = newId;
-	}
+//	private void setIdNum(String newId)
+//	{
+//		this.idNum = newId;
+//	}
 	
 	/* database interaction */
 	
@@ -115,7 +116,7 @@ public class Project extends AbstractModel
 	}
 	
 	public String getProjectName() {
-		return this.name;
+		return this.fileName;
 	}
 	
 	/* Serializing */
@@ -131,7 +132,7 @@ public class Project extends AbstractModel
 		
 		json = "{";
 		
-		json += "\"name\":\"" + this.name +"\"";
+		json += "\"name\":\"" + this.fileName +"\"";
 		
 		json += ",\"idNum\":\"" + this.idNum+"\"";
 		
@@ -140,11 +141,11 @@ public class Project extends AbstractModel
 			json += ",\"owner\":" + this.owner.toJSON();
 		}
 		
-		if(this.supportedModules != null && this.supportedModules.length > 0)
+		if(this.fileData != null && this.fileData.length > 0)
 		{
 			json += ",\"supportedModules\":[";
 			
-			for(String str : this.supportedModules)
+			for(String str : this.fileData)
 			{
 				json += "\"" + str + "\",";
 			}
@@ -180,13 +181,13 @@ public class Project extends AbstractModel
 	 * @param u	The list of Projects to serialize
 	 * @return	a comma delimited list of Project JSON strings.
 	 */
-	public static String toJSON(Project[] u)
+	public static String toJSON(FileModel[] u)
 	{
 		String json ="";
 		
 		Gson gson = new Gson();
 		
-		json = gson.toJson(u, Project[].class);
+		json = gson.toJson(u, FileModel[].class);
 		
 		
 		return json;
@@ -197,15 +198,15 @@ public class Project extends AbstractModel
 	 * Deserializes the given JSON String into a Project's member variables
 	 * @return	the Project from the given JSON string representation 
 	 */
-	public static Project fromJSON(String json)
+	public static FileModel fromJSON(String json)
 	{
 		Gson gson;
 		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Project.class, new ProjectDeserializer());
+		builder.registerTypeAdapter(FileModel.class, new ProjectDeserializer());
 
 		gson = builder.create();
 		
-		return gson.fromJson(json, Project.class);
+		return gson.fromJson(json, FileModel.class);
 	}
 	
 	/* Built-in overrides/overloads */
@@ -227,9 +228,9 @@ public class Project extends AbstractModel
 	{
 		Boolean b  = false;
 		
-		if(o instanceof Project)
+		if(o instanceof FileModel)
 		{
-			if(((Project) o).getIdNum().equalsIgnoreCase(this.idNum))
+			if(((FileModel) o).getIdNum().equalsIgnoreCase(this.idNum))
 				{
 					b = true;
 				}
@@ -245,17 +246,17 @@ public class Project extends AbstractModel
 	
 	@Override
 	public boolean equals(Object anotherProject) {
-		if(anotherProject instanceof Project)
+		if(anotherProject instanceof FileModel)
 		{
-			if( ((Project)anotherProject).idNum.equals(this.idNum))
+			if( ((FileModel)anotherProject).idNum.equals(this.idNum))
 			{
 				//things that can be null
-				if(this.name != null && !this.name.equals(((Project)anotherProject).name))
+				if(this.fileName != null && !this.fileName.equals(((FileModel)anotherProject).fileName))
 				{
 					return false;
 				}
 				
-				if(this.idNum != null && !this.idNum.equals(((Project)anotherProject).idNum))
+				if(this.idNum != null && !this.idNum.equals(((FileModel)anotherProject).idNum))
 				{
 					return false;
 				}
@@ -267,11 +268,11 @@ public class Project extends AbstractModel
 	}
 
 	public String[] getSupportedModules() {
-		return supportedModules;
+		return fileData;
 	}
 
 	public void setSupportedModules(String[] supportedModules) {
-		this.supportedModules = supportedModules;
+		this.fileData = supportedModules;
 	}
 
 	public User getOwner() {
@@ -318,14 +319,14 @@ public class Project extends AbstractModel
 	}
 
 	
-	@Override
-	public Project getProject() {
-		return null;
-	}
-
-	@Override
-	public void setProject(Project aProject) {
-		//Can't set a project's project
-	}
+//	@Override
+//	public FileModel getProject() {
+//		return null;
+//	}
+//
+//	@Override
+//	public void setProject(FileModel aProject) {
+//		//Can't set a project's project
+//	}
 
 }
