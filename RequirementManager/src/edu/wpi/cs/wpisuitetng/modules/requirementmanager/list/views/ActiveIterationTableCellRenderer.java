@@ -43,10 +43,10 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 		//Format the start and end dates
 		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
 		if((column == 2)) {
-			setValue(f.format(new Date((String)startDate)));
+			setValue(f.format(new Date(startDate)));
 		}
 		if((column == 3)) {
-			setValue(f.format(new Date((String)endDate)));
+			setValue(f.format(new Date(endDate)));
 		}
 
 		//change color to blue if selected, grey if passed, otherwise white

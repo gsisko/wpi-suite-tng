@@ -33,7 +33,7 @@ public class FieldChangeTest {
 	@Test
 	public void testGetNewValue_1()
 		throws Exception {
-		FieldChange fixture = new FieldChange((Object) null, (Object) null);
+		FieldChange fixture = new FieldChange(null, null);
 
 		Object result = fixture.getNewValue();
 
@@ -49,7 +49,7 @@ public class FieldChangeTest {
 	@Test
 	public void testGetOldValue_1()
 		throws Exception {
-		FieldChange fixture = new FieldChange((Object) null, (Object) null);
+		FieldChange fixture = new FieldChange(null, null);
 
 		Object result = fixture.getOldValue();
 
