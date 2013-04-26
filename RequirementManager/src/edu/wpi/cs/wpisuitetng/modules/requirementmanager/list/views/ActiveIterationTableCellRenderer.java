@@ -20,12 +20,9 @@ import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
-/**
- * Custom cell renderer for JTables. Displays inactive as grey and active as white
- *
+
+/**Custom cell renderer for JTables. Displays inactive as grey and active as white
  */
-
-
 @SuppressWarnings("serial")
 public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 	Date currentDate = new Date();
@@ -38,11 +35,11 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 
 		TableModel model = table.getModel();
 		int modelRow = table.getRowSorter().convertRowIndexToModel(row);
-		
+
 		//Grab that start and end dates
 		String startDate = (String)model.getValueAt(modelRow, 2);
 		String endDate = (String)model.getValueAt(modelRow, 3);
-		
+
 		//Format the start and end dates
 		SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
 		if((column == 2)) {
@@ -51,8 +48,7 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 		if((column == 3)) {
 			setValue(f.format(new Date((String)endDate)));
 		}
-		
-		
+
 		//change color to blue if selected, grey if passed, otherwise white
 		if (isSelected) {
 			Color defaultBlue = new Color(200,221,242);
@@ -63,12 +59,10 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 			setBackground(defaultGrey);
 		}
 		else {        
-
 			setBackground(Color.white);
 		}     
 
 		return cell;  
-
 	}
 }
 

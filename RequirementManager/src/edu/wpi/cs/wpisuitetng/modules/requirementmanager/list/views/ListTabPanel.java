@@ -23,8 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab.Mode;
 
-/**
- * This tabbed pane will appear as the main content of the Requirements tab.
+/** This tabbed pane will appear as the main content of the Requirements tab.
  * It starts out showing the single Dashboard tab.
  */
 @SuppressWarnings("serial")

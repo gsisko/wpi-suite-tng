@@ -33,8 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-/**
- * View that contains the entire requirement listing interface
+/** View that contains the entire requirement listing interface
  */
 @SuppressWarnings("serial")
 public class ListView extends JPanel implements IToolbarGroupProvider {
@@ -75,8 +74,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	protected Requirement[] allRequirements;
 	protected Requirement[] displayedRequirements;
 	
-	/**
-	 * Construct the view
+	/**Construct the view
 	 * @param tabController The main tab controller
 	 */
 	public ListView(final MainTabController tabController) {

@@ -24,8 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-/**
- * Panel to hold the three portions of the requirement list interface. The
+/** Panel to hold the three portions of the requirement list interface. The
  * list of saved filters is displayed in {@link FilterListTab}, the filter
  * builder is displayed in {@link FilterBuilderPanel}, and the results of
  * the list are displayed in {@link RequirementListPanel}.
@@ -77,9 +76,7 @@ public class ListTab extends JPanel {
 
 	private Mode currentMode;
 
-
-	/**
-	 * Constructs the list panel and sets up the layout for the sub-panels
+	/** Constructs the list panel and sets up the layout for the sub-panels
 	 * @param tabController The main tab controller
 	 */
 	public ListTab(MainTabController tabController, ListView view) {
@@ -90,7 +87,6 @@ public class ListTab extends JPanel {
 		// Set the layout manager of this panel
 		this.layout = new SpringLayout();
 		this.setLayout(layout);
-
 
 		splitPane = new JSplitPane();
 		leftPanel = new JPanel();
@@ -109,11 +105,9 @@ public class ListTab extends JPanel {
 		this.filterBuilderPanel.setupControllersAndListeners();
 		this.iterationBuilderPanel.setupControllersAndListeners();
 		
-		
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
 		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
 		this.resultsPanel = new RequirementListPanel(tabController);
-
 
 
 		// Construct the layout manager and add constraints
@@ -153,13 +147,11 @@ public class ListTab extends JPanel {
 		splitPane.setLeftComponent(leftPanel);
 		splitPane.setRightComponent(rightPanel);
 		this.add(splitPane);
-		
 	}
 
 	public RequirementListPanel getResultsPanel(){
 		return resultsPanel;
 	}
-
 
 	public MainTabController getTabController() {
 		return tabController;

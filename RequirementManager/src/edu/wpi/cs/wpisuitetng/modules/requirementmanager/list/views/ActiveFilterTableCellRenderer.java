@@ -21,20 +21,14 @@ import javax.swing.table.TableModel;
 
 /**
  * Custom cell renderer for JTables. Displays inactive as grey and active as white
- *
  */
-
 @SuppressWarnings("serial")
 public class ActiveFilterTableCellRenderer extends DefaultTableCellRenderer {
-
-	
 	
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
 
-
-		
 		TableModel model = table.getModel();
 		int modelRow = table.getRowSorter().convertRowIndexToModel(row);
 		String status = (String)model.getValueAt(modelRow, 4);

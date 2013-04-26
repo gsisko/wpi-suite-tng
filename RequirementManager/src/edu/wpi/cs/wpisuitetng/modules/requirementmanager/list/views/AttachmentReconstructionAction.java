@@ -32,9 +32,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** Watches the "New <Model>" button and toggles its settings as well
  *  as the associated Builder's settings when the button is pressed.
- *  
  *  When pressed, the information in the filter builder panel
- *  is reset and the fields are grayed out.          */
+ *  is reset and the fields are grayed out.         
+ */
 public class AttachmentReconstructionAction implements ActionListener {
 	private ArrayList<Integer> parts;
 	private String fileName;
@@ -134,7 +134,6 @@ public class AttachmentReconstructionAction implements ActionListener {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
-
 		}
 		fc.setSelectedFile(null);
 	}

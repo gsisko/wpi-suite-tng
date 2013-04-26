@@ -17,10 +17,8 @@ import java.util.Date;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-/**
- * Custom cell renderer for JTables. Displays dates in the
+/** Custom cell renderer for JTables. Displays dates in the
  * following format: MM/dd/yy hh:mm am/pm
- *
  */
 @SuppressWarnings("serial")
 public class DateTableCellRenderer extends DefaultTableCellRenderer {

@@ -22,9 +22,7 @@ import javax.swing.JTable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-
-/**
- * Panel to hold the results of a list for requirements
+/** Panel to hold the results of a list of requirements
  */
 @SuppressWarnings("serial")
 public class RequirementListPanel extends JPanel {
@@ -38,8 +36,7 @@ public class RequirementListPanel extends JPanel {
 	/** The main tab controller */
 	protected final MainTabController tabController;
 
-	/**
-	 * Construct the panel
+	/**Construct the panel
 	 * @param tabController The main tab controller
 	 */
 	public RequirementListPanel(MainTabController tabController) {
@@ -84,8 +81,7 @@ public class RequirementListPanel extends JPanel {
 		return resultsTable;
 	}
 	
-	/**
-	 * Replace the results table with the given table
+	/** Replace the results table with the given table
 	 * @param newTable the new results table
 	 */
 	public void setResultsTable(JTable newTable) {

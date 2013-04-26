@@ -14,9 +14,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.event.MouseEvent;
 
-
 /** Interface to go over list panels that work together
- * and have buttons/controllers that include the following.
+ * and have buttons/controllers that include the following:
  * Delete
  * New Model/Cancel
  */
@@ -29,14 +28,11 @@ public interface IListPanel {
 	 */
 	String[] getSelectedUniqueIdentifiers();
 
-
-	/** Sets the New the button to clear/cancel	 */
+	/** Sets the New the button to clear/cancel */
 	void setNewBtnToCancel();
 
-
-	/** Sets the "Cancel" button back to "New <Model>" 	 */
+	/** Sets the "Cancel" button back to "New <Model>" */
 	void setCancelBtnToNew();
-
 
 	/** Begins refresh process, allows the panels to start triggering
 	 *  their own controllers and chains of controllers
@@ -45,11 +41,9 @@ public interface IListPanel {
 	 */
 	boolean refreshAll();
 
-	
 	/** Toggles between "New Model" and "Cancel" mode */
 	void toggleNewCancelMode();
 
-	
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
 	 * @param me The mouse event that was triggered by a double click
@@ -57,18 +51,15 @@ public interface IListPanel {
 	 */
 	String getSelectedUniqueIdentifier(MouseEvent me);
 
-	
 	/** Show the models in the list view
-	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 */
 	void showRecievedModels(String jsonString);
 
-	/** Refresh all the requirements    */
+	/** Refresh all the requirements */
 	void refreshRequirements();
 	
 	/** Sets the delete button to either activated or deactivated 
-	 * 
 	 * @param setActive True to activate and false to deactivate
 	 */
 	void setDeleteEnabled(boolean setActive);

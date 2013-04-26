@@ -15,18 +15,19 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * provides methods for observers in the list
- * 
+ * This interface provides methods for observers in the list
  */
 public interface IObserver {
 	/** Upon success, tell the controller to trigger a refresh 
 	 * @param iReq The request response from the server 
 	 */
 	void responseSuccess(IRequest iReq);
+	
 	/**  Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	void responseError(IRequest iReq) ;
+	
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
