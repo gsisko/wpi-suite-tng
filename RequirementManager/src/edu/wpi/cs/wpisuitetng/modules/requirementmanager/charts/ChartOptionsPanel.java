@@ -45,25 +45,14 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 public class ChartOptionsPanel extends JPanel{
 	
 	//The labels
-<<<<<<< HEAD
-	private  JLabel chartTypeLabel; //The label for the chartTypeBox
-	private  JLabel chartDataLabel;//The label for the chartDataBox
-	private  JLabel filtersLabel; //The label for the filtersOptionsBox
-	private  JLabel filterlistlabel;
-	private  ResultsTableModel filterTableModel;
-	//The fillable components
-	private  JComboBox chartTypeBox;//The combo box used to select which chart type to display
-	private  JComboBox chartDataBox;//The combo box used to select which data to graph
-	private  JComboBox filtersOptionsBox;//The combo box used to select the filters options (IE whether to apply the active filters to the data)
-	private  JTable filtertable;
-	
-=======
+
 	/** The label for the chartTypeBox */
 	private  JLabel chartTypeLabel;
 	/** The label for the chartDataBox */
 	private  JLabel chartDataLabel;
 	/** The label for the filtersOptionsBox */
 	private  JLabel filtersLabel;
+	
 
 	//The fillable components
 	/** The combo box used to select which chart type to display */
@@ -72,24 +61,23 @@ public class ChartOptionsPanel extends JPanel{
 	private  JComboBox chartDataBox;
 	/** The combo box used to select the filters options (IE whether to apply the active filters to the data) */
 	private  JComboBox filtersOptionsBox;
-
->>>>>>> 9bf76398ba53e1516548953b0de671e713e234bb
+	
+	private  ResultsTableModel filterTableModel;
+	
+	private  JTable filtertable;
 	//The layout manager
 	/** The layout manager for this panel */
 	protected BoxLayout layout; 
 
-<<<<<<< HEAD
-	private ChartView parent; //Stores the PieChartView that contains the panel
-	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
-	
+
 	//private Filter[] localFilters = {};
-=======
+
 	/** Stores the PieChartView that contains the ChartOptionsPanel */
 	private ChartView parent;
 	
 	/** A boolean indicating if input is enabled on the form  */
 	protected boolean inputEnabled;
->>>>>>> 9bf76398ba53e1516548953b0de671e713e234bb
+
 
 	/** Construct the panel and initialize necessary internal variables
 	 * @param parentView The ChartView that contains this panel
