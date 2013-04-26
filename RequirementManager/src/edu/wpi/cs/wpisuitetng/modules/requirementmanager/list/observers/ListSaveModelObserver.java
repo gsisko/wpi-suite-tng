@@ -47,8 +47,6 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 		this.modelIndex = modelIndex;
 	}
 	
-	
-	
 	/** Upon success, update the Boolean array of flags to show the completion. 
 	 *  If all the flags in the array are false, this will indicate that the 
 	 *  saving is done. 

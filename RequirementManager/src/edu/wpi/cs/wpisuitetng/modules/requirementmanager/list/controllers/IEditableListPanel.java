@@ -37,7 +37,22 @@ public interface IEditableListPanel {
 	 * @param i The index of the model
 	 * @return  The unique identifier of the model
 	 */
-	String getUniqueIAtIndex(int i);
+	String getUniqueIdAtIndex(int i);
+
+	
+	/** Way to trigger a pop-up or enable/disable certain 
+	 *  buttons when a  save is not successful.
+	 */
+	void failedToSave();
+
+	/** Change settings of table to indicate that the 
+	 *  save was completed and normal operations 
+	 *  should resume.
+	 */
+	void savesComplete();
+
+	/** Trigger a reset of all lists	 */
+	void refreshAll();
 
 	
 

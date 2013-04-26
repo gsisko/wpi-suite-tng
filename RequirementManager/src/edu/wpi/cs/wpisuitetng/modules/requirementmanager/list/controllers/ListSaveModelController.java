@@ -29,6 +29,12 @@ public class ListSaveModelController implements IController{
 	/** The list that this controller does saving for */
 	private final IEditableListPanel theList;
 
+	/** Constructor for ListSaveModelController. Takes a reference to the list that
+	 *  will be saved from as well as the current model being worked with.
+	 * 
+	 * @param theList     The list that this controller does saving for
+	 * @param modelName   The model name
+	 */
 	public ListSaveModelController(IEditableListPanel theList, String modelName){
 		this.theList = theList;
 		this.modelName = modelName;
@@ -44,7 +50,7 @@ public class ListSaveModelController implements IController{
 		// Go through the list of flags and send save requests as necessary
 		for(int i = 0; i < needsSaving.length; i++){			
 			if (needsSaving[i].booleanValue()){ 
-				perform(theList.getUniqueIAtIndex(i) , i, theList.getModelAsJson(i));
+				perform(theList.getUniqueIdAtIndex(i) , i, theList.getModelAsJson(i));
 			}
 		}
 	}
@@ -69,10 +75,9 @@ public class ListSaveModelController implements IController{
 	 */
 	public void success(String JSONString) {
 		// Re-set the table to be in normal mode, and re allow sorting etc
-
-
+		theList.savesComplete();
 		// Trigger a mass reset
-
+		theList.refreshAll();
 	}
 
 	/** Upon failure, prints to console
@@ -80,12 +85,14 @@ public class ListSaveModelController implements IController{
 	 */
 	public void fail() {
 		System.err.println("Fail: Cannot delete the " + modelName);		
+		theList.failedToSave();
 	}
 
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void error(String error) {
-		System.err.println("Could not delete the " + modelName);		
+		System.err.println("Could not delete the " + modelName);	
+		theList.failedToSave();
 	}
 }
