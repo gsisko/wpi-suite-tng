@@ -98,7 +98,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.buttonGroup.setPreferredWidth(150);
 
 		//Internal variables
-		this.view = view;
+		this.setView(view);
 		this.isFiltered = false;
 		this.chartDataType = "Requirement Status"; //TODO: Make this an enum?
 		this.chartType = "Pie Chart"; //TODO: Make this an enum?
@@ -147,7 +147,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	/** Refresh and reload data in the pie chart */
 	public void refreshData() {
 		//Ask parent to refresh data
-		view.getParent().refreshData();
+		getView().getParent().refreshData();
 
 		//Request data from parent
 		this.reloadData();
@@ -160,13 +160,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		Requirement[] requirements;
 		if(!isFiltered){
 			//TODO: make the bool in the PieChartPanel to be less redundant?
-			requirements = view.getParent().getAllRequirements();
+			requirements = getView().getParent().getAllRequirements();
 		}else{
-			requirements = view.getParent().getDisplayedRequirements();
+			requirements = getView().getParent().getDisplayedRequirements();
 		}
 
 		//Grab iterations
-		Iteration[] iterations = view.getParent().getAllIterations();
+		Iteration[] iterations = getView().getParent().getAllIterations();
 
 		//Pass the status of the filter to each chart
 		iterationPiePanel.enableFilter(isFiltered);
@@ -277,6 +277,14 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		
 		//Always repaint!
 		this.repaint();
+	}
+
+	public ListTab getView() {
+		return view;
+	}
+
+	public void setView(ListTab view) {
+		this.view = view;
 	}
 
 }

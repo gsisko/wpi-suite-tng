@@ -23,8 +23,16 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
  * Panel that contains options for the currently displayed chart.
@@ -36,17 +44,21 @@ public class ChartOptionsPanel extends JPanel{
 	private  JLabel chartTypeLabel; //The label for the chartTypeBox
 	private  JLabel chartDataLabel;//The label for the chartDataBox
 	private  JLabel filtersLabel; //The label for the filtersOptionsBox
-
+	private  JLabel filterlistlabel;
+	private  ResultsTableModel filterTableModel;
 	//The fillable components
 	private  JComboBox chartTypeBox;//The combo box used to select which chart type to display
 	private  JComboBox chartDataBox;//The combo box used to select which data to graph
 	private  JComboBox filtersOptionsBox;//The combo box used to select the filters options (IE whether to apply the active filters to the data)
-
+	private  JTable filtertable;
+	
 	//The layout manager
 	protected BoxLayout layout; //The layout for this panel
 
 	private ChartView parent; //Stores the PieChartView that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
+	
+	//private Filter[] localFilters = {};
 
 	/**
 	 * Construct the panel and initialize necessary internal variables
@@ -66,10 +78,25 @@ public class ChartOptionsPanel extends JPanel{
 		Border compound = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED), BorderFactory.createEmptyBorder(15, 10, 15, 10));
 		setBorder(compound);
 
+		// Construct the table model
+		filterTableModel = new ResultsTableModel();
+
+				// Construct the table and configure it
+		filtertable = new JTable(filterTableModel);
+		filtertable.setAutoCreateRowSorter(true);
+		filtertable.setFillsViewportHeight(true);
+		filtertable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
+		
+		JScrollPane resultsScrollPane = new JScrollPane(filtertable);
+		resultsScrollPane.setPreferredSize(new Dimension(175,250));
+
+		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
+		
 		//Construct the labels
 		chartTypeLabel = new JLabel("Type of chart:");
 		chartDataLabel = new JLabel("Data to display:");
 		filtersLabel = new JLabel("Active filters:");
+		filterlistlabel = new JLabel("Filter Lists");
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
@@ -100,6 +127,7 @@ public class ChartOptionsPanel extends JPanel{
             }
         });  
 		
+		
 		//Set the initial selections for the boxes
 		chartTypeBox.setSelectedIndex(0);
 		chartDataBox.setSelectedIndex(0);
@@ -109,6 +137,7 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeLabel.setAlignmentX(LEFT_ALIGNMENT);		
 		chartDataLabel.setAlignmentX(LEFT_ALIGNMENT);
 		filtersLabel.setAlignmentX(LEFT_ALIGNMENT);
+		filterlistlabel.setAlignmentX(LEFT_ALIGNMENT);
 		
 		chartTypeBox.setAlignmentX(LEFT_ALIGNMENT);		
 		chartDataBox.setAlignmentX(LEFT_ALIGNMENT);
@@ -132,6 +161,9 @@ public class ChartOptionsPanel extends JPanel{
 		this.add(Box.createRigidArea(new Dimension(0,3)));
 		this.add(filtersOptionsBox);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
+		this.add(filterlistlabel);
+		this.add(Box.createRigidArea(new Dimension(0,3)));
+		this.add(resultsScrollPane);
 
 		setInputEnabled(inputEnabled);
 	}
@@ -221,5 +253,127 @@ public class ChartOptionsPanel extends JPanel{
 			box.setEnabled(false);
 			box.setBackground(new Color(238,238,238));
 		}
+	}
+	
+	/** Show the filters in the list view
+	 * 
+	 * @param jsonString An array of models in the form of a JSON string
+	 */
+	public void showRecievedModels(String jsonString) {
+		// Setup data structures
+		String[] emptyColumns = {};
+		Object[][] emptyData = {};
+
+		// Fire blanks so that the old contents are removed
+		this.getModel().setColumnNames(emptyColumns);
+		this.getModel().setData(emptyData);
+		this.getModel().fireTableStructureChanged();
+
+		Filter[] filters = Filter.fromJSONArray(jsonString);
+		
+		// Check for invalid filters- Cancel upload and refresh again if necessary
+//		for (Filter filter: filters)
+//		{
+//			// Only filter out filters that have Iteration as their type
+//			if (filter.getType() == FilterType.Iteration){
+//				// Only filter out filters that reference deleted iterations
+//				boolean foundTheIter = false;
+//				for (Iteration iter : parent.getParent().getAllIterations()) {				
+//					// Check to see if the filter references a currently valid Iteration
+//					if (filter.getValue().equals(iter.getID() + "") ){
+//						foundTheIter = true; // means that the filter is valid and we can continue
+//					}
+//				}
+//				// Indicates an invalid filter if the iteration referenced was not found
+//				if (!foundTheIter){  
+//					// Delete the filter. A retrieve all command will be sent after the deletion occurs
+//					deleteController.perform(Integer.toString(filter.getUniqueID()));
+//					return; // end early
+//				}	
+//			}
+//		}
+		
+		// The new list of filters has passed basic validation, so it is saved
+		//this.setLocalFilters(filters);
+//		parent.getParent().setAllFilters(filters);
+
+		// Add the list of filters to the FilterListPanel object
+		if (filters.length > 0) {
+			// set the column names
+			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
+
+			// put the data in the table
+			Object[][] entries = new Object[filters.length][columnNames.length];
+			for (int i = 0; i < filters.length; i++) {
+				entries[i][0] = String.valueOf(filters[i].getUniqueID());
+				entries[i][1] = filters[i].getType().toString();
+
+				if (filters[i].getComparator().toString().equals("Contains")) {
+					entries[i][2] = "c";
+				} else if (filters[i].getComparator().toString().equals("DoesNotContain")) {
+					entries[i][2] = "!c";
+				} else {
+					entries[i][2] = filters[i].getComparator().toString();
+				}
+
+				String typeString = filters[i].getType().toString();
+				if (typeString.equals("Iteration")) {
+					String strId = filters[i].getValue();
+					while (parent.getView().getParent().getAllIterations().length == 0)
+					for (Iteration iter : parent.getView().getParent().getAllIterations()) {
+						if (strId.equals(iter.getID() + "")) {
+							entries[i][3] = iter.getName();
+						}
+					}
+				}
+				else {
+					entries[i][3] = filters[i].getValue();
+				}
+
+				if (filters[i].isUseFilter()) {
+					entries[i][4] = "yes";
+				} else {
+					entries[i][4] = "no";
+				}
+			}
+
+			// fill the table
+			this.getModel().setColumnNames(columnNames);
+			this.getModel().setData(entries);
+			this.getModel().fireTableStructureChanged();
+
+			//Hide the Id column
+			filtertable.getColumn("Id").setMinWidth(0);
+			filtertable.getColumn("Id").setMaxWidth(0);
+			filtertable.getColumn("Id").setWidth(0);
+
+			//Set preferred column widths
+			//Type
+			filtertable.getColumnModel().getColumn(1).setPreferredWidth(150);
+			//Op
+			filtertable.getColumnModel().getColumn(2).setPreferredWidth(50);
+			//Value
+			filtertable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			//Active
+			filtertable.getColumnModel().getColumn(4).setPreferredWidth(75);
+		}
+
+		refreshRequirements();
+	}
+
+	/**
+	 * @return the data model for the table
+	 */
+	public ResultsTableModel getModel() {
+		return filterTableModel;
+	}
+	
+	//public void setLocalFilters(Filter[] localFilters) {
+//		this.localFilters = localFilters;
+//	}
+	
+	/** Refresh all the requirements    */
+	public void refreshRequirements() {
+		parent.getView().getParent().getController().refreshData();
 	}
 }
