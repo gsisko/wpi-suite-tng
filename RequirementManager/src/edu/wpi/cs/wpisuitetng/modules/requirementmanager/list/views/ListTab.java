@@ -193,4 +193,8 @@ public class ListTab extends JPanel {
 			currentMode = newMode;
 		}
 	}
+	
+	public Mode getMode() {
+		return currentMode;
+	}
 }

@@ -248,6 +248,34 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 
 	/**
+	 * @return the startDateChooser
+	 */
+	public JDateChooser getStartDateChooser() {
+		return startDateChooser;
+	}
+
+	/**
+	 * @param startDateChooser the startDateChooser to set
+	 */
+	public void setStartDateChooser(JDateChooser startDateChooser) {
+		this.startDateChooser = startDateChooser;
+	}
+
+	/**
+	 * @return the endDateChooser
+	 */
+	public JDateChooser getEndDateChooser() {
+		return endDateChooser;
+	}
+
+	/**
+	 * @param endDateChooser the endDateChooser to set
+	 */
+	public void setEndDateChooser(JDateChooser endDateChooser) {
+		this.endDateChooser = endDateChooser;
+	}
+
+	/**
 	 * @return the currentMode
 	 */
 	public Mode getCurrentMode() {

@@ -29,6 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.Retrie
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab.Mode;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
@@ -160,6 +161,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				btnEditVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(true);
+				setListsAndBuildersVisible(false);
+				btnRefresh.setEnabled(false);
+				
 			}
 		});
 
@@ -168,6 +172,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				btnCancelSaveVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
+				setListsAndBuildersVisible(true);
+				btnRefresh.setEnabled(true);
 				refreshData();
 			}
 		});
@@ -177,6 +183,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				btnCancelSaveVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
+				setListsAndBuildersVisible(true);
+				btnRefresh.setEnabled(true);
+				refreshData();
 			}
 		});
 		
@@ -301,6 +310,20 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnEnableEdit.setVisible(false);
 		btnSave.setVisible(true);
 		btnCancel.setVisible(true);
+	}
+	
+	/**
+	 * Set everything else enabled or disabled when changing edit modes
+	 */
+	public void setListsAndBuildersVisible(boolean enable) {
+		mainPanel.getTabPanel().setVisible(enable);
+		
+		if (mainPanel.getMode() == Mode.FILTER) {
+			mainPanel.getFilterBuilderPanel().setVisible(enable);
+		}
+		else {
+			mainPanel.getIterationBuilderPanel().setVisible(enable);
+		}
 	}
 
 }
