@@ -82,7 +82,7 @@ public class ListTab extends JPanel {
 	public ListTab(MainTabController tabController, ListView view) {
 		this.tabController = tabController;
 		parent = view;
-		currentMode = Mode.FILTER;
+		currentMode = Mode.ITERATION;
 
 		// Set the layout manager of this panel
 		layout = new SpringLayout();
@@ -106,7 +106,7 @@ public class ListTab extends JPanel {
 		iterationBuilderPanel.setupControllersAndListeners();
 		
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
-		builderScrollPane = new JScrollPane(filterBuilderPanel);
+		builderScrollPane = new JScrollPane(iterationBuilderPanel);
 		resultsPanel = new RequirementListPanel(tabController);
 
 
