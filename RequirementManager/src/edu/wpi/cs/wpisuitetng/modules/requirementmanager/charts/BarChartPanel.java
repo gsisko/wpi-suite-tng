@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +36,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
@@ -42,7 +44,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatu
 /** Panel that contains the bar chart specified by the user in the ChartOptionsPanel.
  */
 @SuppressWarnings("serial")
-public class BarChartPanel extends JPanel {
+public class BarChartPanel extends JPanel implements IListPanel {
 
 	private CategoryDataset dataset;
 	private ChartPanel chartPanel;
@@ -310,6 +312,66 @@ public class BarChartPanel extends JPanel {
 	 */
 	public void enableFilter(boolean isFiltered){
 		this.isFiltered = isFiltered;
+	}
+
+	@Override
+	public String[] getSelectedUniqueIdentifiers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setNewBtnToCancel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCancelBtnToNew() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean refreshAll() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void toggleNewCancelMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getSelectedUniqueIdentifier(MouseEvent me) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void showRecievedModels(String jsonString) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshRequirements() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDeleteEnabled(boolean setActive) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean areSelectedItemsDeletable() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
