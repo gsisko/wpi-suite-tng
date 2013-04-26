@@ -28,7 +28,6 @@ import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
@@ -114,7 +113,7 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeLabel = new JLabel("Type of chart:");
 		chartDataLabel = new JLabel("Data to display:");
 		filtersLabel = new JLabel("Active filters:");
-		filterlistlabel = new JLabel("Filter Lists");
+		JLabel filterlistlabel = new JLabel("Filter Lists");
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
