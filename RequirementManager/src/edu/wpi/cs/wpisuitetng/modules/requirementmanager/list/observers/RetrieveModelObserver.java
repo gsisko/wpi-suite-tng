@@ -26,8 +26,7 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 	/** Controller that started this observer   	 */
 	private final RetrieveModelController controller;
 
-	/**
-	 * Construct a new observer
+	/**Construct a new observer
 	 * @param retrieveModelController the controller managing the request
 	 */
 	public RetrieveModelObserver(RetrieveModelController retrieveModelController) {
@@ -35,7 +34,6 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 	}
 
 	/** Respond to a successful message from the network
-	 * 
 	 */
 	public void responseSuccess(IRequest iReq) {
 		// cast observable to a Request
@@ -55,14 +53,12 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 	}
 
 	/** Respond to an  unsuccessful message from the network
-	 * 
 	 */
 	public void responseError(IRequest iReq) {
 		controller.errorRetrievingModel("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
 	/** Respond to a failure message from the network
-	 * 
 	 */
 	public void fail(IRequest iReq, Exception exception) {
 		controller.errorRetrievingModel("Unable to complete request: " + exception.getMessage());

@@ -16,10 +16,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.SaveMo
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
-/**
- * This observer is called when a response is received from a request
+/** This observer is called when a response is received from a request
  * to the server to save a message. 
- *
  */
 public class SaveModelObserver implements RequestObserver {
 	
@@ -29,23 +27,21 @@ public class SaveModelObserver implements RequestObserver {
 		this.rmcontroller = saveModelController;
 	}
 	
-	/**
-	 * Parse the message that was received from the server and tells the controller
-	 * 
+	/** Parse the message that was received from the server and tells the controller
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	public void responseSuccess(IRequest iReq) {
 		// Pass the messages back to the controller
 		rmcontroller.saveSuccess();
-
-		
 	}
+	
 	/** This method responses when there is a save response error
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	public void responseError(IRequest iReq) {
 		System.err.println("Cannot save the model.");
 	}
+	
 	/** This method responses when the save action failed 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
 	 */

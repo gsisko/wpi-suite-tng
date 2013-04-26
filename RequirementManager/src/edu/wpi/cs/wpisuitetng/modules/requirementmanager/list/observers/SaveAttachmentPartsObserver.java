@@ -28,8 +28,7 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 	/** The controller managing the request */
 	protected SaveRequirementController controller;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer
 	 * @param controller
 	 */
 	public SaveAttachmentPartsObserver(SaveRequirementController controller) {

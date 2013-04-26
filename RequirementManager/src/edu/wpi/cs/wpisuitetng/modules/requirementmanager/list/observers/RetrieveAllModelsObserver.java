@@ -27,8 +27,7 @@ public class RetrieveAllModelsObserver implements RequestObserver,IObserver{
 	/** The controller managing the request */
 	protected RetrieveAllModelsController controller;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer
 	 * @param controller
 	 */
 	public RetrieveAllModelsObserver(RetrieveAllModelsController controller) {
