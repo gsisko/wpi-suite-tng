@@ -21,14 +21,13 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 /** The model that stores a single note. The user name is set
- *  within the RequirementManager.    */
+ *  within the RequirementManager.   
+ */
 public class Note extends RequirementEvent {
 	/** The note itself */
 	private String message;	
 	
-	/**
-	 * Create a Note with given properties
-	 * 
+	/**Create a Note with given properties
 	 * @param message The message the user wishes to post
 	 */
 	public Note(String message)
@@ -39,7 +38,6 @@ public class Note extends RequirementEvent {
 	}
 
 	/** Converts the entirety of the message to a formatted string and returns it
-	 * 
 	 * @return a string version of the whole note
 	 */
 	public String toString() {
@@ -73,8 +71,7 @@ public class Note extends RequirementEvent {
 		return json;
 	}
 	
-	/**
-	 * Converts the given JSON string into a Note
+	/** Converts the given JSON string into a Note
 	 * @param json JSON string containing a serialized Note
 	 * @return a Note deserialized from the given JSON string
 	 */

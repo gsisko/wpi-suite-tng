@@ -20,31 +20,25 @@ import javax.swing.table.AbstractTableModel;
 @SuppressWarnings("serial")
 public class SubRequirementTabModel extends AbstractTableModel {
 
-	// The names to be displayed in the column headers
+	/** The names to be displayed in the column headers */
 	private String[] columnNames = {};
 	
-	// The data to be displayed in the table
+	/** The data to be displayed in the table */
 	private Object[][] data = {};
 	
-	/**
-	 * Basic constructor.
+	/** Basic constructor.
 	 */
 	public SubRequirementTabModel() {
-		
 	}
 	
-	/**
-	 * Set the data to be displayed in the table
-	 * 
+	/**Set the data to be displayed in the table
 	 * @param data A two-dimensional array of objects containing the data
 	 */
 	public void setData(Object[][] data) {
 		this.data = data;
 	}
 	
-	/**
-	 * Set the column names to be displayed in the table
-	 * 
+	/** Set the column names to be displayed in the table
 	 * @param columnNames An array of strings containing the column names
 	 */
 	public void setColumnNames(String[] columnNames) {
@@ -67,11 +61,9 @@ public class SubRequirementTabModel extends AbstractTableModel {
 		return getData().length;
 	}
 
-	
 	/**
 	 * @param row The row number of the value you wish to get
 	 * @param col The column number of the value you wish to get
-	 * 
 	 * @return the value at the requested row and column
 	 */
 	@Override
@@ -81,7 +73,6 @@ public class SubRequirementTabModel extends AbstractTableModel {
 	
 	/**
 	 * @param col The column number that you wish to get the name of
-	 * 
 	 * @return The name of the column you requested
 	 */
 	@Override
@@ -91,7 +82,6 @@ public class SubRequirementTabModel extends AbstractTableModel {
 
 	/**
 	 * @param col The column number that you wish to get the class of
-	 * 
 	 * @return the class of the column number you requested
 	 */
 	@Override
@@ -102,15 +92,12 @@ public class SubRequirementTabModel extends AbstractTableModel {
 	/**
 	 * @param row The row number of the value you wish to know if it's editable
 	 * @param col The column number of the value you wish to know if it's editable
-	 * 
 	 * @return false, none of the Results Table Model is editable
 	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return false;
 	}
-
-	
 	/**
 	 * @return an array of column names;
 	 */
@@ -119,8 +106,7 @@ public class SubRequirementTabModel extends AbstractTableModel {
 	}
 
 	/**
-	 * 
-	 * @return The data
+	 * @return The data 
 	 */
 	public Object[][] getData() {
 		return data;

@@ -23,7 +23,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 /** Requirement: Holds data that makes up a Requirement
- * 
  * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {
@@ -60,14 +59,12 @@ public class Requirement extends AbstractModel {
 	/** This is the list of subrequirements associated with this Requirement */
 	private ArrayList<Integer> subrequirements;
 	
-	
 	/** Basic constructor for a requirement */
 	public Requirement(){
 		this("", "", RequirementType.NoType, RequirementPriority.NoPriority, "", 0);
 	}
 	
-	/**
-	 *  Full Constructor for Requirement.
+	/** Full Constructor for Requirement.
 	 * @param name Name of the requirement 
 	 * @param description Description of the requirement
 	 * @param releaseNumber Release number of the requirement
@@ -93,33 +90,27 @@ public class Requirement extends AbstractModel {
 		attachments = new ArrayList<Attachment>();
 	}
 	
+	// The following functions come from the Model interface:
 	
-	// The following functions come from the Model interface
-	/**
-	 * Method save.
+	/** Method save.
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
 	}
 
-	/**
-	 * Method delete.
+	/** Method delete.
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
-		
 	}
 	
-	/**
-	 * Converts this Epic to a JSON string for sending accross the network
-	
-	
-	 * @return a string in JSON representing this Epic * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
+	/**Converts this requirement to a JSON string for sending across the network
+	 * @return a string in JSON representing this requirement 
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() 
 	 */
 	public String toJSON() {
 		String json;
@@ -128,12 +119,11 @@ public class Requirement extends AbstractModel {
 		return json;
 	}
 
-	/**
-	 * Method identify.
+	/** Method identify.
 	 * @param o Object
-	
-	
-	 * @return Boolean * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(Object) */
+	 * @return Boolean 
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(Object) 
+	 */
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
 		if(o instanceof Requirement && id == ((Requirement) o).getId()) {
@@ -147,12 +137,10 @@ public class Requirement extends AbstractModel {
 	
 	// End of Model interface functions
 	
-	
-	/**
-	 * Converts the given list of Requirements to a JSON string
+	/** Converts the given list of Requirements to a JSON string
 	 * @param rlist a list of Requirements
-	
-	 * @return a string in JSON representing the list of Requirements */
+	 * @return a string in JSON representing the list of Requirements 
+	 */
 	public static String toJSON(Requirement[] rlist) {
 		String json;
 		Gson gson = new Gson();
@@ -160,11 +148,10 @@ public class Requirement extends AbstractModel {
 		return json;
 	}
 	
-	/**
-	 * Method toString. Current outputs a JSON string
-	
-	
-	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() */
+	/** Method toString.  Outputs a JSON string.
+	 * @return String 
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() 
+	 */
 	@Override
 	public String toString() {
 		return this.toJSON();
@@ -172,8 +159,8 @@ public class Requirement extends AbstractModel {
 	
 	/**
 	 * @param json Json string to parse containing Requirement
-	
-	 * @return The Requirement given by json */
+	 * @return The Requirement given by json 
+	 */
 	public static Requirement fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
 		addGsonDependencies(builder);
@@ -182,37 +169,32 @@ public class Requirement extends AbstractModel {
 	
 	/**
 	 * @param json Json string to parse containing Requirement array
-	
-	 * @return The Requirement array given by json */
+	 * @return The Requirement array given by json 
+	 */
 	public static Requirement[] fromJSONArray(String json) {
 		GsonBuilder builder = new GsonBuilder();
 		addGsonDependencies(builder);
 		return builder.create().fromJson(json, Requirement[].class);
 	}
 	
-	/**
-	 * Add dependencies necessary for Gson to interact with this class
+	/**Add dependencies necessary for Gson to interact with this class
 	 * @param builder Builder to modify
 	 */
 	public static void addGsonDependencies(GsonBuilder builder) {
 		RequirementEvent.addGsonDependencies(builder);
 	}
-	
 
-	// The following are getters and setters
-	/**
-	 * Method setProject.
+	/**Method setProject.
 	 * @param project Project
-	
-	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setProject(Project) */
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setProject(Project) 
+	 */
 	public void setProject(Project project) {
 		super.setProject(project);
 	}
 	
-	
 	/**
-	
-	 * @return the id */
+	 * @return the id 
+	 */
 	public int getId() {
 		return id;
 	}
@@ -225,14 +207,13 @@ public class Requirement extends AbstractModel {
 	}	
 	
 	/**
-	
-	 * @return the actualEffort */
+	 * @return the actualEffort 
+	 */
 	public int getActualEffort() {
 		return actualEffort;
 	}
 
 	/**
-	
 	 * @param actualEffort int
 	 */
 	public void setActualEffort(int actualEffort) {
@@ -240,8 +221,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	
-	 * @return the estimate */
+	 * @return the estimate 
+	 */
 	public int getEstimate() {
 		return estimate;
 	}
@@ -254,8 +235,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	
-	 * @return the description */
+	 * @return the description 
+	 */
 	public String getDescription() {
 		return description;
 	}
@@ -268,8 +249,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	
-	 * @return the name */
+	 * @return the name 
+	 */
 	public String getName() {
 		return name;
 	}
@@ -282,8 +263,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	
-	 * @return the releaseNumber */
+	 * @return the releaseNumber 
+	 */
 	public String getReleaseNumber() {
 		return releaseNumber;
 	}
@@ -296,8 +277,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	
-	 * @return the status */
+	 * @return the status 
+	 */
 	public RequirementStatus getStatus() {
 		return status;
 	}
@@ -310,8 +291,8 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	
-	 * @return the priority */
+	 * @return the priority 
+	 */
 	public RequirementPriority getPriority() {
 		return priority;
 	}
@@ -324,7 +305,6 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/** Changes all fields in the current Requirement to equal the fields of the reqUpdate
-	 * 
 	 * @param reqUpdate Requirement holding the updates
 	 */
 	public void updateReq(Requirement reqUpdate) {
@@ -344,14 +324,12 @@ public class Requirement extends AbstractModel {
 		this.setAttachments(reqUpdate.getAttachments());
 	}
 
-
 	/**
 	 * @return the type
 	 */
 	public RequirementType getType() {
 		return type;
 	}
-
 
 	/**
 	 * @param type the type to set
@@ -360,14 +338,12 @@ public class Requirement extends AbstractModel {
 		this.type = type;
 	}
 
-
 	/**
 	 * @return the notes
 	 */
 	public ArrayList<Note> getNotes() {
 		return notes;
 	}
-
 
 	/**
 	 * @param notes the notes to set
@@ -376,14 +352,12 @@ public class Requirement extends AbstractModel {
 		this.notes = notes;
 	}
 	
-
 	/**
 	 * @return the acceptance tests
 	 */
 	public ArrayList<AcceptanceTest> getAcceptanceTests() {
 		return acceptanceTests;
 	}
-
 
 	/**
 	 * @param notes the notes to set
@@ -392,14 +366,12 @@ public class Requirement extends AbstractModel {
 		this.acceptanceTests = acceptanceTests;
 	}
 
-
 	/**
 	 * @return users assigned to this requirement
 	 */
 	public ArrayList<String> getUserNames() {
 		return userNames;
 	}
-
 
 	/**
 	 * @param users ArrayList of users to assign to this requirement
@@ -414,7 +386,6 @@ public class Requirement extends AbstractModel {
 	public int getIteration() {
 		return iteration;
 	}
-
 
 	/**
 	 * @param assignedIteration the assignedIteration to set

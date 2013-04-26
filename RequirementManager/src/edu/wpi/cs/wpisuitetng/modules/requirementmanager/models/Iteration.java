@@ -41,8 +41,7 @@ public class Iteration extends AbstractModel {
 		this("", new Date(), new Date());
 	}
 	
-	/**
-	 * Create an Iteration with given properties
+	/** Create an Iteration with given properties
 	 * 
 	 * @param name the Name of the Iteration
 	 * @param startDate the starting date of the Iteration
@@ -57,23 +56,19 @@ public class Iteration extends AbstractModel {
 		
 		//Initialize our other private variables
 		this.setID(-1);
+		
 		totalEstimate = 0;
 		requirementsAssigned = new ArrayList<Integer>();
-
 	}
-
-
 
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -83,7 +78,6 @@ public class Iteration extends AbstractModel {
 		json = gson.toJson(this, Iteration.class);
 		return json;
 	}
-	
 	
 	/** Converts the given list of Iterations to a JSON string
 	 * 
@@ -96,8 +90,6 @@ public class Iteration extends AbstractModel {
 		json = gson.toJson(dlist, Iteration.class);
 		return json;
 	}
-	
-	
 	
 	/** Converts a given json string to an Iteration
 	 * 
@@ -120,7 +112,6 @@ public class Iteration extends AbstractModel {
 		return builder.create().fromJson(json, Iteration[].class);
 	}
 	
-
 	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
@@ -133,9 +124,7 @@ public class Iteration extends AbstractModel {
 		return returnValue;
 	}
 	
-	
 	/** Changes all fields in the current Iteration to equal the fields of the iterationUpdate
-	 * 
 	 * @param iterationUpdate Iteration holding the updates
 	 */
 	public void updateIteration(Iteration iterationUpdate){	
@@ -147,9 +136,7 @@ public class Iteration extends AbstractModel {
 		// id does not need to be set, as it cannot be changed anyways
 	}
 	
-	
 	/** Gets estimates from each associated requirement and sums up the total. 
-	 * 
 	 * @return The sum of all the requirements estimates
 	 */
 	public int getTotalEstimate(){
@@ -175,15 +162,12 @@ public class Iteration extends AbstractModel {
 		return totalEstimate;
 	}
 	
-	/**
-	 * Ask the controller to retrieve the total estimate and give it to us.
+	/** Ask the controller to retrieve the total estimate and give it to us.
 	 */
 	public void setTotalEstimate(int newTotalEstimate){
 		totalEstimate = newTotalEstimate;
 	}	
 	
-	
-// The following are Getters and Setters
 	/**
 	 * @return the name
 	 */

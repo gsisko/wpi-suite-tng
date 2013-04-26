@@ -28,9 +28,7 @@ public class AttachmentPart extends AbstractModel {
 	private String attachmentPartByteArray;
 	private int partNumber;
 	
-	/**
-	 * Create a Note with given properties
-	 * 
+	/**Create a Note with given properties
 	 * @param message The message the user wishes to post
 	 */
 	public AttachmentPart(int partSize, byte[] filePart, int partNumber)
@@ -132,7 +130,4 @@ public class AttachmentPart extends AbstractModel {
 	public void setPartNumber(int partNumber) {
 		this.partNumber = partNumber;
 	}
-
-	
-	
 }

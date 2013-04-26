@@ -22,17 +22,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.Requir
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 
 /** The model that stores a single acceptance test. The user name is set
- *  within the RequirementManager.    */
+ *  within the RequirementManager.   
+ */
 public class AcceptanceTest extends RequirementEvent {
 	
 	/** Internal private variables */
 	private String title;
 	private String description;	
 	private AcceptanceTestResult result;
-	
-	//TODO: Do we want this constructor as an option?
-	/**
-	 * Create a AcceptanceTest with given properties
+
+	/** Create a AcceptanceTest with given properties
 	 * 
 	 * @param title The title of the acceptance test
 	 * @param description The description the user wishes to post with the acceptance test
@@ -47,8 +46,7 @@ public class AcceptanceTest extends RequirementEvent {
 		this.result = result;
 	}
 	
-	/**
-	 * Create a AcceptanceTest with given properties
+	/**Create a AcceptanceTest with given properties
 	 * 
 	 * @param title The title of the acceptance test
 	 * @param description The description the user wishes to post with the acceptance test
@@ -59,7 +57,6 @@ public class AcceptanceTest extends RequirementEvent {
 	}
 
 	/** Converts the entirety of the message to a formatted string and returns it
-	 * 
 	 * @return a string version of the whole acceptance test
 	 */
 	public String toString() {
@@ -121,8 +118,8 @@ public class AcceptanceTest extends RequirementEvent {
 		return json;
 	}
 	
-	/**
-	 * Converts the given JSON string into a AcceptanceTest
+	/**Converts the given JSON string into a AcceptanceTest
+	 * 
 	 * @param json JSON string containing a serialized AcceptanceTest
 	 * @return a AcceptanceTest deserialized from the given JSON string
 	 */
