@@ -21,18 +21,24 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
+/** Class for history log event when changes are made to a Requirement's assigned users
+ */
 public class UserChange extends RequirementEvent {
 	
 	ArrayList<String> oldUsers;
 	ArrayList<String> newUsers;
 	
+	/** Constructor for a UserChange */
 	public UserChange(Requirement oldReq, Requirement newReq, String userName) {
 		type = EventType.USER;
 		oldUsers = oldReq.getUserNames();
 		newUsers = newReq.getUserNames();
 		this.userName = userName;
 	}
-
+	
+	/**
+	 * @return the JSON string representation of the UserChange
+	 */
 	@Override
 	public String toJSON() {
 		String json;
@@ -41,11 +47,15 @@ public class UserChange extends RequirementEvent {
 		return json;
 	}
 
+	/**
+	 * @return the body string for the history log entry in the UI
+	 */
 	@Override
 	public String getBodyString() {
 		String content = "";
 		boolean first = true;
 		
+		// if there are more users now, find the ones that were added
 		if (newUsers.size() > oldUsers.size()) {
 			for (String u : newUsers) {
 				if (!oldUsers.contains(u)) {
@@ -56,7 +66,7 @@ public class UserChange extends RequirementEvent {
 				}
 			}
 		}
-		else {
+		else { // there are less users nw, find the ones that were removed
 			for (String u : oldUsers) {
 				if (!newUsers.contains(u)) {
 					if (!first) content += '\n';
@@ -70,6 +80,9 @@ public class UserChange extends RequirementEvent {
 		return content;
 	}
 
+	/**
+	 * @return the label string for the history log entry in the UI
+	 */
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");

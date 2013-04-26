@@ -103,13 +103,13 @@ public class AcceptanceTestPanel extends JPanel{
 
 		//Set the initial selection for the status box
 		switch (status) {
-		case NONE:
+		case None:
 			statusBox.setSelectedIndex(0);
 			break;
-		case PASSED:
+		case Passed:
 			statusBox.setSelectedIndex(1);
 			break;
-		case FAILED:
+		case Failed:
 			statusBox.setSelectedIndex(2);
 			break;
 		}

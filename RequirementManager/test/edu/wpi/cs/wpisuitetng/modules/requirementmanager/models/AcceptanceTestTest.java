@@ -41,7 +41,7 @@ public class AcceptanceTestTest {
 		throws Exception {
 		String title = "Acceptance Test 2";
 		String description = "Description 2";
-		AcceptanceTestResult result = AcceptanceTestResult.FAILED;
+		AcceptanceTestResult result = AcceptanceTestResult.Failed;
 
 		AcceptanceTest result2 = new AcceptanceTest(title, description, result);
 
@@ -91,7 +91,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testGetAcceptanceTestResult_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 
@@ -110,7 +110,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testGetAcceptanceTestTitle_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 
@@ -126,7 +126,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testGetBodyString_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 
@@ -142,7 +142,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testGetDescription_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 
@@ -158,7 +158,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testGetLabelString_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 
@@ -173,10 +173,10 @@ public class AcceptanceTestTest {
 	@Test
 	public void testSetAcceptanceTestResult_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
-		AcceptanceTestResult result = AcceptanceTestResult.FAILED;
+		AcceptanceTestResult result = AcceptanceTestResult.Failed;
 
 		fixture.setAcceptanceTestResult(result);
 
@@ -189,7 +189,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testSetAcceptanceTestTitle_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 		String title = "";
@@ -205,7 +205,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testSetDescription_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 		String description = "";
@@ -221,7 +221,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testToJSON_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 
@@ -237,7 +237,7 @@ public class AcceptanceTestTest {
 	@Test
 	public void testToString_1()
 		throws Exception {
-		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.FAILED);
+		AcceptanceTest fixture = new AcceptanceTest("", "", AcceptanceTestResult.Failed);
 		fixture.setAcceptanceTestTitle("");
 		fixture.setDescription("");
 

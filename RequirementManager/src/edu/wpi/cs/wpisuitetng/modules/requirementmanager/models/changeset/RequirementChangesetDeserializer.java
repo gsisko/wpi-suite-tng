@@ -37,6 +37,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 		/** A hash map to hold the deserialized FieldChange objects */
 		HashMap<String, FieldChange<?>> changesMap = new HashMap<String, FieldChange<?>>();
 		
+		// For each change contained in changeSet, put the FieldChange into changesMap
 		JsonObject changeSet = json.getAsJsonObject();
 		if (changeSet.has("changes")) {
 			JsonObject changes = changeSet.get("changes").getAsJsonObject();

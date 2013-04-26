@@ -1,19 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest;
 
-import java.util.ArrayList;
-
 import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementObserver;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * Listener for the drop-down menus in the list of acceptance tests.
@@ -48,12 +40,12 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 		// Check if the status has changed
 		String inBox = toWatch.getSelectedItem().toString();
 		String inTest = thePanel.getMyTest().getAcceptanceTestResult().toString();
-		if (inTest.equals("NONE")) {
+		if (inTest.equals("None")) {
 			inTest = " ";
 		}
 		if (!inBox.equals(inTest)) {
 			// Create new acceptance test
-			AcceptanceTestResult newResult = AcceptanceTestResult.NONE;
+			AcceptanceTestResult newResult = AcceptanceTestResult.None;
 			if (!inBox.equals(" ")) {
 				newResult = AcceptanceTestResult.toResult(inBox);
 			}

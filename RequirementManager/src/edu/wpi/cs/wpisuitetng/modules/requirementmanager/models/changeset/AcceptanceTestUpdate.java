@@ -19,32 +19,27 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 
-/** Class for the history log event when a Requirement is created
+/** Class for the history log event when an AcceptanceTest is updated
  */
-public class RequirementCreation extends RequirementEvent {
+public class AcceptanceTestUpdate extends RequirementEvent {
 
-	private String reqName;
-	private String reqDescription;
-	private String reqType;
-	private String reqPriority;
-	private String reqReleaseNumber;
+	private String testName;
+	private AcceptanceTestResult oldResult;
+	private AcceptanceTestResult newResult;
 	
 	/** Constructor for a RequirementCreation */
-	public RequirementCreation(Requirement requirement, String theCreator) {
-		type = EventType.CREATION;
-		reqName = requirement.getName();
-		reqDescription = requirement.getDescription();
-		reqType = RequirementType.toBlankString(requirement.getType());
-		reqPriority = RequirementPriority.toBlankString(requirement.getPriority());
-		reqReleaseNumber = requirement.getReleaseNumber();
-		userName = theCreator;
+	public AcceptanceTestUpdate(Requirement oldReq, Requirement newReq, int testNumber, String userName) {
+		type = EventType.ACCEPTANCETESTUPDATE;
+		testName = oldReq.getAcceptanceTests().get(testNumber).getAcceptanceTestTitle();
+		oldResult = oldReq.getAcceptanceTests().get(testNumber).getAcceptanceTestResult();
+		newResult = newReq.getAcceptanceTests().get(testNumber).getAcceptanceTestResult();
+		this.userName = userName;
 	}
 	
 	/**
-	 * @return the JSON string representation of the RequirementCreation
+	 * @return the JSON string representation of the AcceptanceTestUpdate
 	 */
 	@Override
 	public String toJSON() {
@@ -61,11 +56,10 @@ public class RequirementCreation extends RequirementEvent {
 	public String getBodyString() {
 		String content = "";
 		
-		content += "Name initialized to \"" + reqName + "\"\n";
-		content += "Description initialized to \"" + reqDescription + "\"\n";
-		content += "Type initialized to \"" + reqType + "\"\n";
-		content += "Priority initialized to \"" + reqPriority + "\"\n";
-		content += "ReleaseNumber initialized to \"" + reqReleaseNumber + "\"";
+		content += "Result of acceptance test \"";
+		content += testName;
+		content += "\" changed from \"" + oldResult.toString();
+		content += "\" to \"" + newResult.toString() + "\"";
 		
 		return content;
 	}
@@ -76,7 +70,7 @@ public class RequirementCreation extends RequirementEvent {
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		return "Requirement created by " + userName + " on " + dateFormat.format(this.getDate());
+		return "Acceptance Test updated by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 
 }

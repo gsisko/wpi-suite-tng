@@ -31,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.AcceptanceTestUpdate;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.FieldChange;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementChangeset;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementCreation;
@@ -224,18 +225,32 @@ public class RequirementManager implements EntityManager<Requirement> {
 			lastNote.setUser(currentUser);
 			reqUpdate.getEvents().add(lastNote);
 		}
-		else if (reqUpdate.getAcceptanceTests().size() > oldReq.getAcceptanceTests().size())// If the update was adding an acceptance test, set the user and update appropriately
+		// If the update was adding an acceptance test, set the user and update appropriately
+		else if (reqUpdate.getAcceptanceTests().size() > oldReq.getAcceptanceTests().size())
 		{
 			ArrayList<AcceptanceTest> acceptanceTests = reqUpdate.getAcceptanceTests();
 			AcceptanceTest lastAcceptanceTest = acceptanceTests.get(acceptanceTests.size() -  1);
 			lastAcceptanceTest.setUser(currentUser);
 			reqUpdate.getEvents().add(lastAcceptanceTest);
 		}
-		
-		else if (reqUpdate.getUserNames().size() != oldReq.getUserNames().size()) { // if the update is a user assignment change
+		// If the update was editing an acceptance test status, find which one it was and update accordingly
+		else if (!hasSameTestResults(oldReq, reqUpdate)) {
+			int testNumber = 0;
+			for (int i = 0; i < reqUpdate.getAcceptanceTests().size(); i++) {
+				AcceptanceTest oldTest = oldReq.getAcceptanceTests().get(i);
+				AcceptanceTest newTest = reqUpdate.getAcceptanceTests().get(i);
+				if (oldTest.getAcceptanceTestResult() != newTest.getAcceptanceTestResult())
+					testNumber = i;
+			}
+			AcceptanceTestUpdate acceptanceTestUpdate = new AcceptanceTestUpdate(oldReq, reqUpdate, testNumber, currentUser);
+			reqUpdate.getEvents().add(acceptanceTestUpdate);
+		}
+		// If the update was a user change, set the user and update accordingly
+		else if (reqUpdate.getUserNames().size() != oldReq.getUserNames().size()) {
 			UserChange userChange = new UserChange(oldReq, reqUpdate, currentUser);
 			reqUpdate.getEvents().add(userChange);
 		}
+		// If the update was adding an attachment, set the user and update accordingly
 		else if (reqUpdate.getAttachments().size() > oldReq.getAttachments().size()) {
 			ArrayList<Attachment> attachments = reqUpdate.getAttachments();
 			Attachment lastAttachment = attachments.get(attachments.size() -  1);
@@ -249,6 +264,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 			// copy values to old requirement and fill in our changeset appropriately
 			updateMapper.map(reqUpdate, oldReq, callback);
 			
+			// make the event contain the iteration name (at the time) instead of the id
 			if (changeset.getChanges().containsKey("iteration")) {
 				int oldId = (Integer)changeset.getChanges().get("iteration").getOldValue();
 				int newId = (Integer)changeset.getChanges().get("iteration").getNewValue();
@@ -262,40 +278,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 			
 			reqUpdate.getEvents().add(changeset);
 		}
-
-//		// This is to update the Iteration that a requirement is assigned to, if the assigned iteration was changed
-//		// The total estimate of the backlog will be skewed
-//		if (oldReq.getIteration() != reqUpdate.getIteration()){
-//			IterationManager iterationManager = new IterationManager(db);
-//			// Update the old iteration
-//			Iteration oldIter = iterationManager.getEntity(s, oldReq.getIteration() + "")[0];
-//			oldIter.setTotalEstimate(oldIter.getTotalEstimate() - oldReq.getEstimate()); // total estimate
-//			// Special case for backlog: keeps the total estimate from dropping below zero
-//			if (oldIter.getID() == 0 && oldIter.getTotalEstimate() < 0){ 
-//				oldIter.setTotalEstimate(0);
-//			}
-//
-//			//Remove id from the list
-//			ArrayList<Integer> oldList = oldIter.getRequirementsContained();
-//			if (oldList.size() == 1){ // if there is only one entry, it must be the current req, so we make a new list
-//				oldList = new ArrayList<Integer>();
-//			} else if(oldList.size() != 0){ //Only update if there are requirements saved...
-//				oldList.remove((Integer)oldReq.getId());
-//			}
-//
-//			oldIter.setRequirementsContained(oldList);
-//			iterationManager.save(s, oldIter);
-//
-//			// Update the new iteration
-//			Iteration newIter = iterationManager.getEntity(s, reqUpdate.getIteration() + "")[0];
-//			newIter.setTotalEstimate(newIter.getTotalEstimate() + reqUpdate.getEstimate()+1);  // total estimate
-//			ArrayList<Integer> newList = newIter.getRequirementsContained();
-//			if (!newList.add((Integer)reqUpdate.getId())){ // Add the requirement to the iteration
-//				logger.log(Level.FINER, "The requirement wasn added iteration");
-//			}
-//			newIter.setRequirementsContained(newList);
-//			iterationManager.save(s, newIter);
-//		}
 		
 		// Copy new field values into old Requirement. This is because the "same" model must
 		// be saved back into the database
@@ -366,6 +348,23 @@ public class RequirementManager implements EntityManager<Requirement> {
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
 		throw new NotImplementedException();
+	}
+	
+	/** Checks if the two requirements have identical acceptance tests
+	 * 
+	 * @param oldReq
+	 * @param reqUpdate
+	 * @return true if the tests haven't changed, false if they have
+	 */
+	public boolean hasSameTestResults(Requirement oldReq, Requirement reqUpdate) {
+		// Loop through acceptance tests and see if there are any changes
+		for (int i = 0; i < reqUpdate.getAcceptanceTests().size(); i++) {
+			AcceptanceTest oldTest = oldReq.getAcceptanceTests().get(i);
+			AcceptanceTest newTest = reqUpdate.getAcceptanceTests().get(i);
+			if (oldTest.getAcceptanceTestResult() != newTest.getAcceptanceTestResult())
+				return false;
+		}
+		return true;
 	}
 
 }

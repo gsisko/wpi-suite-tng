@@ -17,12 +17,12 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptance
  *
  */
 public enum AcceptanceTestResult {
-	NONE,
-	PASSED,
-	FAILED;
+	None,
+	Passed,
+	Failed;
 	
 	
 	public static AcceptanceTestResult toResult (String toConvert) {
-		return valueOf(toConvert.toUpperCase());
+		return valueOf(toConvert);
 	}
 }

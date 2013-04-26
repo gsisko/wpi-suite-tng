@@ -37,7 +37,7 @@ public class RequirementChangeset extends RequirementEvent {
 	}
 
 	/**
-	 * @return the map of field names to changes (Assignee -> (Bob, Joe))
+	 * @return the map of field names to changes (Status -> (New, InProgress))
 	 */
 	public Map<String, FieldChange<?>> getChanges() {
 		return changes;
@@ -50,6 +50,9 @@ public class RequirementChangeset extends RequirementEvent {
 		this.changes = changes;
 	}
 
+	/**
+	 * @return the JSON string representation of the RequirementChangeset
+	 */
 	@Override
 	public String toJSON() {
 		String json;
@@ -58,6 +61,9 @@ public class RequirementChangeset extends RequirementEvent {
 		return json;
 	}
 
+	/**
+	 * @return the body string for the history log entry in the UI
+	 */
 	@Override
 	public String getBodyString() {
 		String content = "";
@@ -74,6 +80,7 @@ public class RequirementChangeset extends RequirementEvent {
 			// Add the field name to the content label
 			content += fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1) + " changed";
 
+			// Add the values
 			content += " from \"";
 			content += oldValue.toString();
 			content += "\" to \"";
@@ -84,6 +91,9 @@ public class RequirementChangeset extends RequirementEvent {
 		return content;
 	}
 
+	/**
+	 * @return the label string for the history log entry in the UI
+	 */
 	@Override
 	public String getLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");

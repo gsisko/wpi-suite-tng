@@ -30,7 +30,7 @@ public class Attachment extends RequirementEvent {
 	private ArrayList<Integer> attachmentPartIds;
 	
 	/**
-	 * Create a Note with given properties
+	 * Create an Attachment with given properties
 	 * 
 	 * @param message The message the user wishes to post
 	 */

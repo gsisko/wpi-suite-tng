@@ -53,7 +53,7 @@ public class AcceptanceTest extends RequirementEvent {
 	 */
 	public AcceptanceTest(String title, String description)
 	{
-		this(title, description, AcceptanceTestResult.NONE);
+		this(title, description, AcceptanceTestResult.None);
 	}
 
 	/** Converts the entirety of the message to a formatted string and returns it

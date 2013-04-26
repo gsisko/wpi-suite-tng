@@ -51,6 +51,8 @@ class RequirementEventDeserializer implements JsonDeserializer<RequirementEvent>
 				return context.deserialize(element, Attachment.class);
 			case ACCEPTANCETEST:
 				return context.deserialize(element, AcceptanceTest.class);
+			case ACCEPTANCETESTUPDATE:
+				return context.deserialize(element, AcceptanceTestUpdate.class);
 			}
 		}
 		throw new JsonParseException("RequirementEvent type is unrecognized");
