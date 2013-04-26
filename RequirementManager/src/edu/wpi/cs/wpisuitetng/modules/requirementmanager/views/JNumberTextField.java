@@ -181,7 +181,7 @@ public class JNumberTextField extends JTextField
     {
         private JNumberFieldFilter()
         {
-            super();
+            
         }
 
         public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException
