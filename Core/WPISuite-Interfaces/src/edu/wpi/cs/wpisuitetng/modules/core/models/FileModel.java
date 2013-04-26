@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /**
- * The Data Model representation of a Project. Offers
+ * The Data Model representation of a File. Offers
  * 	serialization and database interaction.
  * @author mdelladonna, twack, bgaffey, robertsmieja, bhetherman
  */
@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 
 public class FileModel extends AbstractModel
  {
+
 
 	private String fileName;
 	private String idNum;
@@ -64,16 +65,17 @@ public class FileModel extends AbstractModel
 		}
 	}
 	
-	/**
-	 * Secondary constructor for a FileModel
-	 * @param fileName	the file name
-	 * @param idNum	the ID number to associate with this FileModel.
-	 */
-	public FileModel(String fileName, String idNum)
-	{
-		this.fileName = fileName;
-		this.idNum = idNum;
-	}
+	//TODO: Do we want this for files?
+//	/**
+//	 * Secondary constructor for a FileModel
+//	 * @param fileName	the file name
+//	 * @param idNum	the ID number to associate with this FileModel.
+//	 */
+//	public FileModel(String fileName, String idNum)
+//	{
+//		this.fileName = fileName;
+//		this.idNum = idNum;
+//	}
 	
 	/* Accessors */
 	public String getName()
@@ -120,16 +122,18 @@ public class FileModel extends AbstractModel
 	}
 	
 	/* Serializing */
-	
+	//XXX: We are serializing using Base64 instead...
 	/**
 	 * Serializes this Project's member variables into
 	 * 	a JSON string.
 	 * @return	the JSON string representation of this Project
 	 */
+	
 	public String toJSON()
 	{
-		String json = null;
 		
+		String json = null;
+		/*
 		json = "{";
 		
 		json += "\"name\":\"" + this.fileName +"\"";
@@ -171,7 +175,7 @@ public class FileModel extends AbstractModel
 		}
 		
 		json += "}";
-		
+		*/
 		return json;
 	}
 	
@@ -212,15 +216,32 @@ public class FileModel extends AbstractModel
 	/* Built-in overrides/overloads */
 	
 	/**
-	 * Returns the JSON representation of this object as 
+	 * Returns the Base64 representation of this object as 
 	 * 	the toString.
 	 * 
-	 * @return	the String returned by toJSON()
-	 * @see		Project.toJSON()
+	 * @return	the String representation of this object in Base64
 	 */
 	public String toString()
 	{
-		return this.toJSON();
+		//TODO: Fill out this method
+		String converted = "";
+		
+		return converted;
+		
+//		return this.toJSON();
+	}
+	
+	/**
+	 * Converts the Base64 representation of this object 
+	 * and sets the appropriate fields
+	 *
+	 * @param encoded the Base64 encoded representation of this object
+	 */
+	static public FileModel fromString(String encoded){
+		
+		FileModel decoded = null;
+		
+		return decoded;
 	}
 	
 	@Override
@@ -267,14 +288,6 @@ public class FileModel extends AbstractModel
 		return false;
 	}
 
-	public String[] getSupportedModules() {
-		return fileData;
-	}
-
-	public void setSupportedModules(String[] supportedModules) {
-		this.fileData = supportedModules;
-	}
-
 	public User getOwner() {
 		return owner;
 	}
@@ -283,6 +296,48 @@ public class FileModel extends AbstractModel
 		this.owner = owner;
 	}
 
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	/**
+	 * @return the fileData
+	 */
+	public String[] getFileData() {
+		return fileData;
+	}
+
+	/**
+	 * @param fileData the fileData to set
+	 */
+	public void setFileData(String[] fileData) {
+		this.fileData = fileData;
+	}
+
+	/**
+	 * @param idNum the idNum to set
+	 */
+	public void setIdNum(String idNum) {
+		this.idNum = idNum;
+	}
+
+	/**
+	 * @param team the team to set
+	 */
+	public void setTeam(ArrayList<User> team) {
+		this.team = team;
+	}
+	
 	public User[] getTeam() {
 		User[] a = new User[1];
 		return team.toArray(a);

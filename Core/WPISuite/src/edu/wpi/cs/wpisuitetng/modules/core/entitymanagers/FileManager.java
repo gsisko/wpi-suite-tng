@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,7 +55,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 //TODO: Do we want to make a FilePart class that extends Model?
 public class FileManager implements EntityManager<FileModel>{
 
-	Class<FileModel> project = FileModel.class;
+	Class<FileModel> fileModel = FileModel.class;
 	Gson gson;
 	Data data;
 	private String[] allModules;
@@ -76,8 +77,8 @@ public class FileManager implements EntityManager<FileModel>{
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 
-		//TODO: Convert this file into a string
-//		return this.getEntity(s, s.getProject().getIdNum())[0].toJSON();
+		//TODO: Split this into parts here or somewhere else?
+		return this.getEntity(s, s.getProject().getIdNum())[0].toString();
 	}
 
 	@Override
@@ -86,28 +87,26 @@ public class FileManager implements EntityManager<FileModel>{
 
 		logger.log(Level.FINER, "Attempting new File creation...");
 
-		File f;
+		FileModel f;
 
-		try {
-			byte[] bytes = Hex.decodeHex(content.toCharArray()); //Convert from string to bytes
-		} catch (DecoderException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
+		if (Base64.isBase64(content)){
+			f = FileModel.fromString(content);
+		} else  {
 			logger.log(Level.WARNING, "Invalid File entity creation string.");
 			throw new BadRequestException("The entity creation string had invalid format. Entity String: " + content);
 		}
 
 
 		//TODO: Add logging
-//		logger.log(Level.FINE, "New file: "+ f.getName() +" submitted by: "+ theUser.getName() );
+		logger.log(Level.FINE, "New file: "+ f.getName() +" submitted by: "+ theUser.getName() );
 //		p.setOwner(theUser);
-
 		
 		//TODO: Check ID here
 		//TODO: Check Size here
 		//TODO: Check number of packets received based on expected size here
 		//TODO: Reconstruct the file here
+//		f = bytes;
+		
 //		if(getEntity(s,p.getIdNum())[0] == null)
 //		{
 //			if(getEntityByName(s, p.getName())[0] == null)
@@ -125,22 +124,22 @@ public class FileManager implements EntityManager<FileModel>{
 //			logger.log(Level.WARNING, "ID Conflict Exception during Project creation.");
 //			throw new ConflictException("A project with the given ID already exists. Entity String: " + content); 
 //		}
-//
-//		logger.log(Level.FINER, "Project creation success!");
-//		return p;
+
+		logger.log(Level.FINER, "File creation success!");
+		return f;
 	}
 
 	@Override
 	public FileModel[] getEntity(Session s, String id) throws WPISuiteException 
 	{
-		File[] m = new File[1];
+		FileModel[] m = new FileModel[1];
 		if(id.equalsIgnoreCase(""))
 		{
 			return getAll(s);
 		}
 		else
 		{
-			return data.retrieve(project, "idNum", id).toArray(m);
+			return data.retrieve(fileModel, "idNum", id).toArray(m);
 		}
 	}
 
@@ -156,14 +155,14 @@ public class FileManager implements EntityManager<FileModel>{
 	 */
 	public FileModel[] getEntity(String id) throws NotFoundException, WPISuiteException
 	{
-		File[] m = new File[1];
+		FileModel[] m = new FileModel[1];
 		if(id.equalsIgnoreCase(""))
 		{
 			throw new NotFoundException("No (blank) Project id given.");
 		}
 		else
 		{
-			m = data.retrieve(project, "idNum", id).toArray(m);
+			m = data.retrieve(fileModel, "idNum", id).toArray(m);
 
 			if(m[0] == null)
 			{
@@ -185,13 +184,13 @@ public class FileManager implements EntityManager<FileModel>{
 		}
 		else
 		{
-			return data.retrieve(project, "name", projectName).toArray(m);
+			return data.retrieve(fileModel, "name", projectName).toArray(m);
 		}
 	}
 
 	@Override
 	public FileModel[] getAll(Session s) {
-		File[] ret = new File[1];
+		FileModel[] ret = new FileModel[1];
 		ret = data.retrieveAll(new File("","")).toArray(ret);
 		return ret;
 	}
@@ -234,17 +233,17 @@ public class FileManager implements EntityManager<FileModel>{
 		FileModel[] model = this.getEntity(id);
 		
 		//TODO: Do we need a permission check?
-//		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
-//				theUser.getRole().equals(Role.ADMIN)){
-//			Model m = data.delete(data.retrieve(project, "idNum", id).get(0));
-//			logger.log(Level.INFO, "ProjectManager deleting project <" + id + ">");
-//
-//			return (m != null) ? true : false;
-//		}
-//		else{
-//			logger.log(Level.WARNING, "ProjectManager Delete attempted by user with insufficient permission");
-//			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
-//		}
+		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
+				theUser.getRole().equals(Role.ADMIN)){
+			Model m = data.delete(data.retrieve(fileModel, "idNum", id).get(0));
+			logger.log(Level.INFO, "ProjectManager deleting project <" + id + ">");
+
+			return (m != null) ? true : false;
+		}
+		else{
+			logger.log(Level.WARNING, "ProjectManager Delete attempted by user with insufficient permission");
+			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
+		}
 	}
 
 	@Override
@@ -267,8 +266,10 @@ public class FileManager implements EntityManager<FileModel>{
 		return 0;
 	}
 
-	public File update(Session s, File toUpdate, String changeSet) throws WPISuiteException
+	//TODO: Are we implementing updating of files?
+	public FileModel update(Session s, FileModel toUpdate, String changeSet) throws WPISuiteException
 	{
+		/*
 		if(s == null){
 			throw new WPISuiteException("Null session.");
 		}
@@ -283,14 +284,14 @@ public class FileManager implements EntityManager<FileModel>{
 			{
 				logger.log(Level.FINE, "Project update being attempted...");
 //				File change = File.fromJSON(changeSet);
-				byte[] bytes = Hex.decodeHex(changeSet.toCharArray()); //Convert from string to bytes
+				byte[] bytes = Base64.decodeBase64(changeSet);
 
 
 				// check if the changes contains each field of name
 				if(changeSet.getName() != null && !changeSet.getName().equals(""))
 				{
 					// check for conflict for changing the project name
-					File isConflict = getEntityByName(s, changeSet.getName())[0];
+					FileModel isConflict = getEntityByName(s, changeSet.getName())[0];
 					if(isConflict != null && !isConflict.getIdNum().equals(changeSet.getIdNum()))
 					{
 						throw new ConflictException("ProjectManager attempted to update a Project's name to be the same as an existing project");
@@ -317,7 +318,7 @@ public class FileManager implements EntityManager<FileModel>{
 
 			// save the changes back
 			this.save(s, toUpdate);
-
+			*/
 			// check for changes in each field
 			return toUpdate;
 		}
@@ -326,12 +327,13 @@ public class FileManager implements EntityManager<FileModel>{
 //			logger.log(Level.WARNING, "Unauthorized Project update attempted.");
 //			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
 //		}
-	}
+//	}
 
+	//TODO: Are we going to handle updating files?
 	@Override
 	public FileModel update(Session s, String content) throws WPISuiteException {
 		FileModel[] p = null;
-
+		/*
 		String id = AbstractEntityManager.parseFieldFromJSON(content, "idNum");
 
 		if(id.equalsIgnoreCase(""))
@@ -347,7 +349,7 @@ public class FileManager implements EntityManager<FileModel>{
 				throw new NotFoundException("Project with id <" + id + "> not found.");
 			}
 		}
-
+		*/
 		return update(s, p[0], content);
 	}
 
@@ -359,7 +361,7 @@ public class FileManager implements EntityManager<FileModel>{
 	@Override
 	public String advancedPut(Session s, String[] args, String content) throws WPISuiteException 
 	{
-		File p = getEntity(args[2])[0];
+		FileModel p = getEntity(args[2])[0];
 		String[] names = null;
 
 		try{
@@ -401,14 +403,4 @@ public class FileManager implements EntityManager<FileModel>{
 	{
 		return gson.toJson(allModules, String[].class);
 	}
-
-	@Override
-	public void save(Session s, FileModel model) throws WPISuiteException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
 }

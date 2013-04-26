@@ -188,9 +188,7 @@ public class Project extends AbstractModel
 		
 		json = gson.toJson(u, Project[].class);
 		
-		
 		return json;
-		
 	}
 	
 	/**
