@@ -105,7 +105,7 @@ public class RequirementTab extends JPanel {
 		inputEnabled = true;
 		
 		// Set the layout manager of this panel
-		this.layout = new SpringLayout();
+		layout = new SpringLayout();
 		this.setLayout(layout);
 		
 		//Instantiate the panels
@@ -120,12 +120,12 @@ public class RequirementTab extends JPanel {
 		rightPanel = new JPanel();
 		rightPanel.setMinimumSize(new Dimension(370, 500));
 
-		this.splitPane.setOneTouchExpandable(false);
-		this.splitPane.setDividerLocation(650);
-		this.splitPane.setContinuousLayout(true);
+		splitPane.setOneTouchExpandable(false);
+		splitPane.setDividerLocation(650);
+		splitPane.setContinuousLayout(true);
 
 		// Construct the layout manager for the right
-		this.rightLayout = new SpringLayout();
+		rightLayout = new SpringLayout();
 		rightPanel.setLayout(rightLayout);
 
 		// Constrain the tabPanel
@@ -174,10 +174,10 @@ public class RequirementTab extends JPanel {
 		}
 		
 		//If deleted, we can't add notes or tests
-		if (this.currentRequirement.getStatus() == RequirementStatus.Deleted) {
-			this.toggleEnabled(this.tabPanel.getNotePanel().getNoteMessage(), false);
-			this.tabPanel.getNotePanel().getSaveButton().setEnabled(false);
-			this.tabPanel.getNotePanel().setEnabled(false);
+		if (currentRequirement.getStatus() == RequirementStatus.Deleted) {
+			this.toggleEnabled(tabPanel.getNotePanel().getNoteMessage(), false);
+			tabPanel.getNotePanel().getSaveButton().setEnabled(false);
+			tabPanel.getNotePanel().setEnabled(false);
 			
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 			toggleEnabled(tabPanel.getAcceptanceTestPanel().getTxtName(), false);

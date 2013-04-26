@@ -30,7 +30,7 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 	 * @param retrieveModelController the controller managing the request
 	 */
 	public RetrieveModelObserver(RetrieveModelController retrieveModelController) {
-		this.controller = retrieveModelController;
+		controller = retrieveModelController;
 	}
 
 	/** Respond to a successful message from the network

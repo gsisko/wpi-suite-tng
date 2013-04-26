@@ -67,8 +67,8 @@ public class RetrieveAllRequirementsController {
 	 */
 	public RetrieveAllRequirementsController(ListView view) {
 		this.view = view;
-		this.resultsPanel = view.getListTab().getResultsPanel();
-		this.filterPanel = view.getListTab().getTabPanel().getFilterList();
+		resultsPanel = view.getListTab().getResultsPanel();
+		filterPanel = view.getListTab().getTabPanel().getFilterList();
 	}
 
 	/** Sends a request for all of the requirements
@@ -127,7 +127,7 @@ public class RetrieveAllRequirementsController {
 		// Filtering Phase
 		if (requirements.length > 0) {
 			//Save the data
-			this.data = requirements;
+			data = requirements;
 
 			if(filters != null && filters.size() > 0) {
 

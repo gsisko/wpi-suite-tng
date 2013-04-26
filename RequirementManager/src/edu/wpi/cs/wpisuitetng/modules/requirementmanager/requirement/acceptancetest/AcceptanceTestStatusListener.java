@@ -40,7 +40,7 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 	public AcceptanceTestStatusListener (AcceptanceTestPanel thePanel){
 //		System.out.println("Listener was created");
 		this.thePanel = thePanel;
-		this.toWatch = thePanel.getStatusBox();
+		toWatch = thePanel.getStatusBox();
 	}
 
 	/** Checks the field for changes and sets it to yellow on changes or white otherwise */
@@ -57,7 +57,7 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 			if (!inBox.equals(" ")) {
 				newResult = AcceptanceTestResult.toResult(inBox);
 			}
-			AcceptanceTest oldTest = this.thePanel.getMyTest();
+			AcceptanceTest oldTest = thePanel.getMyTest();
 			AcceptanceTest newTest = new AcceptanceTest(oldTest.getAcceptanceTestTitle(), oldTest.getDescription(), newResult);
 			
 			// Save it

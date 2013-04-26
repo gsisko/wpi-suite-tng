@@ -40,10 +40,10 @@ public class AcceptanceTest extends RequirementEvent {
 	 */
 	public AcceptanceTest(String title, String description, AcceptanceTestResult result)
 	{
-		this.type = EventType.ACCEPTANCETEST;
+		type = EventType.ACCEPTANCETEST;
 		this.setDescription(description);
 		this.setAcceptanceTestTitle(title);
-		this.date = new Date();
+		date = new Date();
 		this.result = result;
 	}
 	
@@ -94,7 +94,7 @@ public class AcceptanceTest extends RequirementEvent {
 	 * @return the result this acceptance test is set to
 	 */
 	public AcceptanceTestResult getAcceptanceTestResult(){
-		return this.result;
+		return result;
 	}
 	
 	/** 
@@ -108,7 +108,7 @@ public class AcceptanceTest extends RequirementEvent {
 	 * @return the title of this acceptance test
 	 */
 	public String getAcceptanceTestTitle(){
-		return this.title;
+		return title;
 	}
 	
 	/** Converts the acceptance test to a JSON string and returns it 

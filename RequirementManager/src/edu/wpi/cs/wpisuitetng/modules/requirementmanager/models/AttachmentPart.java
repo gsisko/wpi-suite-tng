@@ -35,9 +35,9 @@ public class AttachmentPart extends AbstractModel {
 	 */
 	public AttachmentPart(int partSize, byte[] filePart, int partNumber)
 	{
-		this.id = -1;
+		id = -1;
 		this.partSize = partSize;
-		this.attachmentPartByteArray = Base64.encodeBase64String(filePart);
+		attachmentPartByteArray = Base64.encodeBase64String(filePart);
 		this.partNumber = partNumber;
 	}
 

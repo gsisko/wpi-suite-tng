@@ -57,7 +57,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Filter lets the db know what type of object to
 		// retrieve
-		return this.db.retrieveAll(new AttachmentPart(0, null, 0)).size();
+		return db.retrieveAll(new AttachmentPart(0, null, 0)).size();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 
 		// Save the filter in the database if possible, otherwise throw an exception
 		// We DON'T want the filter to be associated with any project
-		if (!this.db.save(model)) {
+		if (!db.save(model)) {
 			throw new WPISuiteException("Unable to save AttachmentPart.");
 		}
 	}
@@ -116,7 +116,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 
 	@Override
 	public AttachmentPart[] getAll(Session s) throws NotImplementedException {
-		List<AttachmentPart> attachmentPartList = this.db.retrieveAll((new AttachmentPart(0, null, 0)));
+		List<AttachmentPart> attachmentPartList = db.retrieveAll((new AttachmentPart(0, null, 0)));
 		return attachmentPartList.toArray(new AttachmentPart[attachmentPartList.size()]);
 	}
 

@@ -160,37 +160,37 @@ public class Filter extends AbstractModel {
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
 		try{
-			switch (this.type){	
+			switch (type){	
 			// The following are strings
 			case Name:
-				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
+				return OperatorType.perform(comparator,value.toLowerCase(), req.getName().toLowerCase(), false);
 			case Description:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);		
+				return OperatorType.perform(comparator, value.toLowerCase(), req.getDescription().toLowerCase(), false);		
 			case ReleaseNumber:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getReleaseNumber().toLowerCase(), false);
+				return OperatorType.perform(comparator, value.toLowerCase(), req.getReleaseNumber().toLowerCase(), false);
 			case AssignedUsers:
-				if (this.comparator == OperatorType.Contains ){
-					return req.getUserNames().contains(this.value) || (req.getUserNames().size() == 0 && this.value.equals(""));			
+				if (comparator == OperatorType.Contains ){
+					return req.getUserNames().contains(value) || (req.getUserNames().size() == 0 && value.equals(""));			
 				} else { // The operator will be DoesNotContain
-					return (!req.getUserNames().contains(this.value)  && !this.value.equals("") )|| (req.getUserNames().size() > 0 && this.value.equals(""));
+					return (!req.getUserNames().contains(value)  && !value.equals("") )|| (req.getUserNames().size() > 0 && value.equals(""));
 				}
 				// The following five are Integers
 			case Id: 
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getId());
 			case Iteration:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getIteration());
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getIteration());
 			case ActualEffort:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getActualEffort());		
 			case Estimate:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());	
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getEstimate());	
 
 				// The following three are different enums
 			case Status:
-				return OperatorType.perform(this.comparator, RequirementStatus.toStatus(this.value), req.getStatus());
+				return OperatorType.perform(comparator, RequirementStatus.toStatus(value), req.getStatus());
 			case Type:
-				return OperatorType.perform(this.comparator, RequirementType.toType(this.value), req.getType());
+				return OperatorType.perform(comparator, RequirementType.toType(value), req.getType());
 			case Priority:
-				return OperatorType.perform(this.comparator, RequirementPriority.toPriority(this.value), req.getPriority());
+				return OperatorType.perform(comparator, RequirementPriority.toPriority(value), req.getPriority());
 
 				// Default
 			default:
@@ -297,6 +297,6 @@ public class Filter extends AbstractModel {
 	 * @param o The value to set
 	 */
 	public void setValue(Object o){
-		this.value = o.toString();		
+		value = o.toString();		
 	}
 }

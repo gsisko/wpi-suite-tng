@@ -36,8 +36,8 @@ public class ListTabPanel extends JTabbedPane {
 
 	public ListTabPanel(ListTab view) {
 
-		this.parent = view;
-		this.firstTime = true;
+		parent = view;
+		firstTime = true;
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);

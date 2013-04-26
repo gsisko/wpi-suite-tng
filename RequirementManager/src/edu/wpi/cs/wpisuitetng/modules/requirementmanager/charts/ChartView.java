@@ -83,27 +83,27 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		
 		//Initialize all the variables:
 		//Charts
-		this.statusPiePanel = new PieChartPanel();
-		this.iterationPiePanel = new PieChartPanel();
-		this.requirementCountPiePanel = new PieChartPanel();
-		this.requirementEstimatePiePanel = new PieChartPanel();
+		statusPiePanel = new PieChartPanel();
+		iterationPiePanel = new PieChartPanel();
+		requirementCountPiePanel = new PieChartPanel();
+		requirementEstimatePiePanel = new PieChartPanel();
 		
-		this.statusBarPanel = new BarChartPanel();
-		this.iterationBarPanel = new BarChartPanel();
-		this.requirementCountBarPanel = new BarChartPanel();
-		this.requirementEstimateBarPanel = new BarChartPanel();
+		statusBarPanel = new BarChartPanel();
+		iterationBarPanel = new BarChartPanel();
+		requirementCountBarPanel = new BarChartPanel();
+		requirementEstimateBarPanel = new BarChartPanel();
 
 		//The buttons (including toolbar buttons)
-		this.buttonGroup = new ToolbarGroupView("All Charts");
-		this.btnRefresh = new JButton("Refresh");
-		this.buttonGroup.getContent().add(btnRefresh);
-		this.buttonGroup.setPreferredWidth(150);
+		buttonGroup = new ToolbarGroupView("All Charts");
+		btnRefresh = new JButton("Refresh");
+		buttonGroup.getContent().add(btnRefresh);
+		buttonGroup.setPreferredWidth(150);
 
 		//Internal variables
 		this.setView(view);
-		this.isFiltered = false;
-		this.chartDataType = "Requirement Status"; //TODO: Make this an enum?
-		this.chartType = "Pie Chart"; //TODO: Make this an enum?
+		isFiltered = false;
+		chartDataType = "Requirement Status"; //TODO: Make this an enum?
+		chartType = "Pie Chart"; //TODO: Make this an enum?
 
 		//Add an action listener to the refresh button so that it will refresh the data being displayed when it is pushed
 		btnRefresh.addActionListener(new ActionListener() {
@@ -114,7 +114,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		});
 
 		//Set up the options panel to configure the charts
-		this.optionsPanel = new ChartOptionsPanel(this);		
+		optionsPanel = new ChartOptionsPanel(this);		
 
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
@@ -131,18 +131,18 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.add(statusPiePanel, BorderLayout.CENTER);
 		
 		//Visibility for all charts
-		this.requirementCountBarPanel.setVisible(true);
-		this.requirementEstimateBarPanel.setVisible(true);
-		this.iterationBarPanel.setVisible(true);
-		this.statusBarPanel.setVisible(true);
-		this.requirementCountPiePanel.setVisible(true);
-		this.requirementEstimatePiePanel.setVisible(true);
-		this.iterationPiePanel.setVisible(true);
-		this.statusPiePanel.setVisible(true);
+		requirementCountBarPanel.setVisible(true);
+		requirementEstimateBarPanel.setVisible(true);
+		iterationBarPanel.setVisible(true);
+		statusBarPanel.setVisible(true);
+		requirementCountPiePanel.setVisible(true);
+		requirementEstimatePiePanel.setVisible(true);
+		iterationPiePanel.setVisible(true);
+		statusPiePanel.setVisible(true);
 		
 		//Options
 		this.add(optionsPanel, BorderLayout.WEST);
-		this.optionsPanel.setVisible(true);
+		optionsPanel.setVisible(true);
 
 		//Initial visibility and data
 		this.reloadData();
@@ -207,7 +207,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	 * @param dataType the type of data to make visible
 	 */
 	public void setDataTypeVisible(String dataType) {
-		this.chartDataType = dataType;
+		chartDataType = dataType;
 		//So it starts displaying immediately without a delay
 		this.refreshChartVisibility();
 	}
@@ -233,49 +233,49 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	/** Sets visibility of charts based on chartDataType and chartType */
 	private void refreshChartVisibility(){
 		//Remove all charts then add the one we want
-		this.iterationBarPanel.setVisible(false);
-		this.statusBarPanel.setVisible(false);
-		this.requirementCountBarPanel.setVisible(false);
-		this.requirementEstimateBarPanel.setVisible(false);
-		this.iterationPiePanel.setVisible(false);
-		this.statusPiePanel.setVisible(false);
-		this.requirementCountPiePanel.setVisible(false);
-		this.requirementEstimatePiePanel.setVisible(false);
+		iterationBarPanel.setVisible(false);
+		statusBarPanel.setVisible(false);
+		requirementCountBarPanel.setVisible(false);
+		requirementEstimateBarPanel.setVisible(false);
+		iterationPiePanel.setVisible(false);
+		statusPiePanel.setVisible(false);
+		requirementCountPiePanel.setVisible(false);
+		requirementEstimatePiePanel.setVisible(false);
 
 		//Pie Chart
-		if (this.chartType.equals("Pie Chart")){
-			if(this.chartDataType.equals("Requirement Status")){
+		if (chartType.equals("Pie Chart")){
+			if(chartDataType.equals("Requirement Status")){
 				this.add(statusPiePanel, BorderLayout.CENTER);
-				this.statusPiePanel.setVisible(true);
+				statusPiePanel.setVisible(true);
 			}
-			else if(this.chartDataType.equals("Requirement Iteration")){
+			else if(chartDataType.equals("Requirement Iteration")){
 				this.add(iterationPiePanel, BorderLayout.CENTER);
-				this.iterationPiePanel.setVisible(true);
+				iterationPiePanel.setVisible(true);
 			}
-			else if(this.chartDataType.equals("Number of Users Assigned To Requirements")){
-				this.add(this.requirementCountPiePanel, BorderLayout.CENTER);
-				this.requirementCountPiePanel.setVisible(true);
-			} else if (this.chartDataType.equals("Total Estimate for Each User")){
-				this.add(this.requirementEstimatePiePanel, BorderLayout.CENTER);
-				this.requirementEstimatePiePanel.setVisible(true);
+			else if(chartDataType.equals("Number of Users Assigned To Requirements")){
+				this.add(requirementCountPiePanel, BorderLayout.CENTER);
+				requirementCountPiePanel.setVisible(true);
+			} else if (chartDataType.equals("Total Estimate for Each User")){
+				this.add(requirementEstimatePiePanel, BorderLayout.CENTER);
+				requirementEstimatePiePanel.setVisible(true);
 			}
 
 		//BarChart	
-		} else if (this.chartType.equals("Bar Chart")){
-			if(this.chartDataType.equals("Requirement Status")){
+		} else if (chartType.equals("Bar Chart")){
+			if(chartDataType.equals("Requirement Status")){
 				this.add(statusBarPanel, BorderLayout.CENTER);
-				this.statusBarPanel.setVisible(true);
+				statusBarPanel.setVisible(true);
 			}
-			else if(this.chartDataType.equals("Requirement Iteration")){
+			else if(chartDataType.equals("Requirement Iteration")){
 				this.add(iterationBarPanel, BorderLayout.CENTER);
-				this.iterationBarPanel.setVisible(true);
+				iterationBarPanel.setVisible(true);
 			}
-			else if(this.chartDataType.equals("Number of Users Assigned To Requirements")){
-				this.add(this.requirementCountBarPanel, BorderLayout.CENTER);
-				this.requirementCountBarPanel.setVisible(true);
-			} else if (this.chartDataType.equals("Total Estimate for Each User")){
-				this.add(this.requirementEstimateBarPanel, BorderLayout.CENTER);
-				this.requirementEstimateBarPanel.setVisible(true);
+			else if(chartDataType.equals("Number of Users Assigned To Requirements")){
+				this.add(requirementCountBarPanel, BorderLayout.CENTER);
+				requirementCountBarPanel.setVisible(true);
+			} else if (chartDataType.equals("Total Estimate for Each User")){
+				this.add(requirementEstimateBarPanel, BorderLayout.CENTER);
+				requirementEstimateBarPanel.setVisible(true);
 			}
 
 		}

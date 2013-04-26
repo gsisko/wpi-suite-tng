@@ -40,7 +40,7 @@ public class UserListModel extends AbstractListModel {
 
 	public void addUsers(String[] arrayOfUsers) {
 		for (int i = 0; i < arrayOfUsers.length; i++) {
-			this.users.add(arrayOfUsers[i]);
+			users.add(arrayOfUsers[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}

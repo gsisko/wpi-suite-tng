@@ -125,7 +125,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		
 		// Instantiate the defaultColumnWidths checkbox
 		checkBoxDefault = new JCheckBox("Reset Table Layout", true);
-		this.checkBoxStatus = true;
+		checkBoxStatus = true;
 		//Save the state of the checkbox every time it changes, workaround for reseting views when tabs are changed
 		checkBoxDefault.addItemListener(new ItemListener() {
 			@Override
@@ -138,7 +138,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	}
 	
 	public boolean getCheckBoxStatus() {
-		return this.checkBoxStatus;
+		return checkBoxStatus;
 	}
 	
 	protected void setCheckBoxStatus(boolean checkBoxStatus) {

@@ -53,7 +53,7 @@ public class AttachmentListModel extends AbstractListModel {
 	 */
 	public void addMessages(Attachment[] newFiles) {
 		for (int i = 0; i < newFiles.length; i++) {
-			this.attachments.add(newFiles[i]);
+			attachments.add(newFiles[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}

@@ -85,6 +85,6 @@ public class RequirementListPanel extends JPanel {
 	 * @param newTable the new results table
 	 */
 	public void setResultsTable(JTable newTable) {
-		this.resultsTable = newTable;
+		resultsTable = newTable;
 	}
 }

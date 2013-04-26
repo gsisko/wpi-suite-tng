@@ -85,12 +85,12 @@ public class Requirement extends AbstractModel {
 		this.setActualEffort(0);				// Initial actual effort set to zero
 		this.setStatus(RequirementStatus.New);	// Initial status should be set to NEW
 		this.setId(-1); 						// (-1) will be a flag to the server/database that this value needs to be set
-		this.notes = new ArrayList<Note>();
-		this.acceptanceTests = new ArrayList<AcceptanceTest>();
-		this.userNames = new ArrayList<String>();
-		this.events = new ArrayList<RequirementEvent>();
+		notes = new ArrayList<Note>();
+		acceptanceTests = new ArrayList<AcceptanceTest>();
+		userNames = new ArrayList<String>();
+		events = new ArrayList<RequirementEvent>();
 		this.setSubrequirements(new ArrayList<Integer>());
-		this.attachments = new ArrayList<Attachment>();
+		attachments = new ArrayList<Attachment>();
 	}
 	
 	
@@ -405,7 +405,7 @@ public class Requirement extends AbstractModel {
 	 * @param users ArrayList of users to assign to this requirement
 	 */
 	public void setUserNames(ArrayList<String> users) {
-		this.userNames = users;
+		userNames = users;
 	}
 
 	/**
@@ -420,7 +420,7 @@ public class Requirement extends AbstractModel {
 	 * @param assignedIteration the assignedIteration to set
 	 */
 	public void setIteration(int assignedIteration) {
-		this.iteration = assignedIteration;
+		iteration = assignedIteration;
 	}
 
 	/**
@@ -448,7 +448,7 @@ public class Requirement extends AbstractModel {
 	 * @param attachment the attachment to set
 	 */
 	public void setAttachments(ArrayList<Attachment> attachment) {
-		this.attachments = attachment;
+		attachments = attachment;
 	}
 
 	/**

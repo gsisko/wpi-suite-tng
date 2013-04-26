@@ -63,7 +63,7 @@ public class AcceptanceTestPanel extends JPanel{
 	 */
 
 	public AcceptanceTestPanel(String testName, String testDescription, AcceptanceTestResult status){
-		this.myTest = new AcceptanceTest (testName, testDescription, status);
+		myTest = new AcceptanceTest (testName, testDescription, status);
 		
 		this.setBackground(Color.white);//Set the background color of this panel to white
 		this.setOpaque(true);//Set this panel to Opaque (means the background is painted)
@@ -166,7 +166,7 @@ public class AcceptanceTestPanel extends JPanel{
 	 * Sets up listeners
 	 */
 	public void setup() {
-		this.statusBox.addPopupMenuListener(new AcceptanceTestStatusListener(this));
+		statusBox.addPopupMenuListener(new AcceptanceTestStatusListener(this));
 	}
 
 	/**

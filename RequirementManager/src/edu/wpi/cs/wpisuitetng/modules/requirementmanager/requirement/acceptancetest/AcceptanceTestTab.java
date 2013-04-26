@@ -335,7 +335,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 	 * @param acceptanceTest What to set the current acceptance test to
 	 */
 	public void setCurrentAcceptanceTest(AcceptanceTest acceptanceTest) {
-		this.currentAcceptanceTest = acceptanceTest;
+		currentAcceptanceTest = acceptanceTest;
 	}
 
 	/**
@@ -408,6 +408,6 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 
 	public RequirementTab myGetParent() {
-		return this.parent;
+		return parent;
 	}
 }

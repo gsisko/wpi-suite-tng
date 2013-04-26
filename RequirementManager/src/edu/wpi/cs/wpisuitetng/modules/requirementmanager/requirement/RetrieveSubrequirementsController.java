@@ -45,7 +45,7 @@ public class RetrieveSubrequirementsController {
 	 */
 	public RetrieveSubrequirementsController(RequirementView view) {
 		this.view = view;
-		this.subtab = view.getRequirementTabPanel().getSubRequirementPanel();
+		subtab = view.getRequirementTabPanel().getSubRequirementPanel();
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class RetrieveSubrequirementsController {
 	public void setSubtab()
 	{
 		//this.subtab = view.getRequirementTabPanel().getSubRequirementPanel();
-		this.subtab = new SubRequirementTab(view.getRequirementPanel());
+		subtab = new SubRequirementTab(view.getRequirementPanel());
 	}
 	/**
 	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an

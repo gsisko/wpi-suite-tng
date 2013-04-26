@@ -36,12 +36,12 @@ public class Attachment extends RequirementEvent {
 	 */
 	public Attachment(String fileName, int fileSize)
 	{
-		this.type = EventType.ATTACHMENT;
-		this.date = new Date();
+		type = EventType.ATTACHMENT;
+		date = new Date();
 		
 		this.fileName = fileName;
 		this.fileSize=fileSize;
-		this.attachmentPartIds = new ArrayList<Integer>();	
+		attachmentPartIds = new ArrayList<Integer>();	
 	}
 
 	public String toString() {
@@ -89,7 +89,7 @@ public class Attachment extends RequirementEvent {
 
 	@Override
 	public String getBodyString() {
-		return this.fileName;
+		return fileName;
 	}
 
 	@Override

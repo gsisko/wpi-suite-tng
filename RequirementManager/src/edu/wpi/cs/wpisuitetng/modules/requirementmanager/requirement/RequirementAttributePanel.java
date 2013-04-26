@@ -575,7 +575,7 @@ public class RequirementAttributePanel extends JPanel {
 	 * @return the fieldsChanged
 	 */
 	public boolean isFieldsChanged() {
-		for (int i = 0; i < this.fieldsChanged.length; i++){
+		for (int i = 0; i < fieldsChanged.length; i++){
 			if (fieldsChanged[i])
 				return true;
 		}
@@ -586,7 +586,7 @@ public class RequirementAttributePanel extends JPanel {
 	 * @return the nonNoteFieldsChanged
 	 */
 	public boolean isNonNoteFieldsChanged() {
-		for (int i = 0; i < this.fieldsChanged.length; i++){
+		for (int i = 0; i < fieldsChanged.length; i++){
 			if (fieldsChanged[i] && i != 9)
 				return true;
 		}

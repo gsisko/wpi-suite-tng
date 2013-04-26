@@ -27,7 +27,7 @@ public class UserChange extends RequirementEvent {
 	ArrayList<String> newUsers;
 	
 	public UserChange(Requirement oldReq, Requirement newReq, String userName) {
-		this.type = EventType.USER;
+		type = EventType.USER;
 		oldUsers = oldReq.getUserNames();
 		newUsers = newReq.getUserNames();
 		this.userName = userName;

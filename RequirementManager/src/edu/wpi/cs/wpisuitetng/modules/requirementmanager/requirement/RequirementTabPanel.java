@@ -42,7 +42,7 @@ public class RequirementTabPanel extends JTabbedPane {
 
 	public RequirementTabPanel(RequirementTab view) {
 
-		this.parent = view;
+		parent = view;
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);

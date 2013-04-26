@@ -282,20 +282,20 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 */
 	public void setInputEnabled(boolean setTo) {
 		isBuilderActive = setTo;
-		enable(this.nameValue, setTo);
-		this.startDateChooser.setEnabled(setTo);
-		this.endDateChooser.setEnabled(setTo);
-		this.btnCreate.setEnabled(setTo);
+		enable(nameValue, setTo);
+		startDateChooser.setEnabled(setTo);
+		endDateChooser.setEnabled(setTo);
+		btnCreate.setEnabled(setTo);
 		if (!setTo){
-			this.nameValue.setText("");
+			nameValue.setText("");
 		}
-		if (this.currentMode == Mode.CREATE) {
-			this.totalEstimate.setVisible(false);
-			this.totalEstimateLabel.setVisible(false);
+		if (currentMode == Mode.CREATE) {
+			totalEstimate.setVisible(false);
+			totalEstimateLabel.setVisible(false);
 		}
 		else {
-			this.totalEstimate.setVisible(setTo);
-			this.totalEstimateLabel.setVisible(setTo);
+			totalEstimate.setVisible(setTo);
+			totalEstimateLabel.setVisible(setTo);
 		}
 	}
 
@@ -310,7 +310,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	/** Restore all fields to their initial values 
 	 */
 	public void resetFields() {
-		this.nameValue.setText("");
+		nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
 		endDateChooser.setDate(new Date());
 
@@ -345,10 +345,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		if (this.getCurrentMode() == Mode.EDIT) toSend.setID(currentIteration.getID());
 
-		toSend.setName(this.nameValue.getText());
-		toSend.setStartDate(trim(this.startDateChooser.getDate()));
-		toSend.setEndDate(trim(this.endDateChooser.getDate()));
-		toSend.setTotalEstimate(Integer.parseInt(this.totalEstimate.getText()));
+		toSend.setName(nameValue.getText());
+		toSend.setStartDate(trim(startDateChooser.getDate()));
+		toSend.setEndDate(trim(endDateChooser.getDate()));
+		toSend.setTotalEstimate(Integer.parseInt(totalEstimate.getText()));
 
 		return toSend.toJSON();
 	}
@@ -371,14 +371,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		boolean nameErrorFound = false;
 		boolean dateErrorFound = false;
 		
-		if (this.nameValue.getText().length() <= 0){//If the nameValue is blank...
+		if (nameValue.getText().length() <= 0){//If the nameValue is blank...
 			nameWarning.setText("Name cannot be blank");
 			nameErrorFound = true;
 		}
 		
 		//Grab the dates in the builder
-		Date newStart = trim(this.startDateChooser.getDate());
-		Date newEnd = trim(this.endDateChooser.getDate());
+		Date newStart = trim(startDateChooser.getDate());
+		Date newEnd = trim(endDateChooser.getDate());
 
 		for (int i = 0; i < iters.size(); i++)//For every iteration in the list
 		{
@@ -388,16 +388,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			
 			boolean errorOnThis = false;//Used to avoid indicating a date error more than once
 
-			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))//We should not be comparing an iteration to it's own entry in the list, so continue
+			if (currentIteration != null && (currentIteration.getID() == iters.get(i).getID()))//We should not be comparing an iteration to it's own entry in the list, so continue
 				continue;
 
 			//Compare the names
-			if (!nameErrorFound && this.nameValue.getText().toLowerCase().equals("backlog")) {//If we have not already found an error in the name, and the nameValue is currently "backlog" (ignoring case)
+			if (!nameErrorFound && nameValue.getText().toLowerCase().equals("backlog")) {//If we have not already found an error in the name, and the nameValue is currently "backlog" (ignoring case)
 				nameWarning.setText("Name cannot be \"Backlog\"");
 				nameErrorFound = true;
 			}
 
-			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()) && !this.nameValue.getText().equals(""))//If the name of the iteration being constructed matches the name of the iteration at this index (i) in the list, AND  we have not already found an error in the name, AND we are not comparing the iteration under construction to it's own entry in the list,AND the nameValue is not blank 
+			if (!nameErrorFound && nameValue.getText().equals(iters.get(i).getName()) && !nameValue.getText().equals(""))//If the name of the iteration being constructed matches the name of the iteration at this index (i) in the list, AND  we have not already found an error in the name, AND we are not comparing the iteration under construction to it's own entry in the list,AND the nameValue is not blank 
 			{
 				nameWarning.setText("Name must be unique");
 				nameErrorFound = true;
@@ -456,10 +456,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		currentIteration = toDisplay;
 
-		this.nameValue.setText(toDisplay.getName());
-		this.startDateChooser.setDate(toDisplay.getStartDate());
-		this.endDateChooser.setDate(toDisplay.getEndDate());
-		this.totalEstimate.setText(Integer.toString(toDisplay.getTotalEstimate()));
+		nameValue.setText(toDisplay.getName());
+		startDateChooser.setDate(toDisplay.getStartDate());
+		endDateChooser.setDate(toDisplay.getEndDate());
+		totalEstimate.setText(Integer.toString(toDisplay.getTotalEstimate()));
 
 		setInputEnabled(true);
 	}

@@ -146,14 +146,14 @@ public class JNumberTextField extends JTextField
         case NUMERIC:
         default:
             this.format = NUMERIC;
-            this.precision = 0;
-            this.allowedChars = FM_NUMERIC;
+            precision = 0;
+            allowedChars = FM_NUMERIC;
             break;
 
         case DECIMAL:
             this.format = DECIMAL;
-            this.precision = DEF_PRECISION;
-            this.allowedChars = FM_DECIMAL;
+            precision = DEF_PRECISION;
+            allowedChars = FM_DECIMAL;
             break;
         }
     }

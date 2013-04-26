@@ -142,6 +142,6 @@ public class AttachmentReconstructionAction implements ActionListener {
 	 * @param getPartSuccess the getPartSuccess to set
 	 */
 	public synchronized void getPartSuccess(AttachmentPart attachmentPart) {
-		this.attachmentParts.add(attachmentPart);
+		attachmentParts.add(attachmentPart);
 	}
 }

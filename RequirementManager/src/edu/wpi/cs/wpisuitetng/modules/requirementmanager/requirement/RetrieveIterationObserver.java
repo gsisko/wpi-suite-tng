@@ -30,7 +30,7 @@ public class RetrieveIterationObserver implements RequestObserver {
 	 * @param retrieveModelController the controller managing the request
 	 */
 	public RetrieveIterationObserver() {
-		this.iteration = null;
+		iteration = null;
 	}
 
 	/** Respond to a successful message from the network
@@ -49,7 +49,7 @@ public class RetrieveIterationObserver implements RequestObserver {
 		}
 		
 		Iteration[] iterationArray = Iteration.fromJSONArray(response.getBody());
-		this.iteration = iterationArray[0];
+		iteration = iterationArray[0];
 	}
 
 	/** Respond to an  unsuccessful message from the network

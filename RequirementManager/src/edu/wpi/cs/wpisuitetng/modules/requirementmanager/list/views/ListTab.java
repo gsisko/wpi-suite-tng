@@ -81,11 +81,11 @@ public class ListTab extends JPanel {
 	 */
 	public ListTab(MainTabController tabController, ListView view) {
 		this.tabController = tabController;
-		this.parent = view;
-		this.currentMode = Mode.FILTER;
+		parent = view;
+		currentMode = Mode.FILTER;
 
 		// Set the layout manager of this panel
-		this.layout = new SpringLayout();
+		layout = new SpringLayout();
 		this.setLayout(layout);
 
 		splitPane = new JSplitPane();
@@ -94,26 +94,26 @@ public class ListTab extends JPanel {
 		rightPanel = new JPanel();
 		rightPanel.setMinimumSize(new Dimension(500, 500));
 
-		this.splitPane.setOneTouchExpandable(false);
-		this.splitPane.setDividerLocation(260);
-		this.splitPane.setContinuousLayout(true);
+		splitPane.setOneTouchExpandable(false);
+		splitPane.setDividerLocation(260);
+		splitPane.setContinuousLayout(true);
 
 		// Construct the panels that compose the list view
-		this.filterBuilderPanel = new FilterBuilderPanel(this);
-		this.iterationBuilderPanel = new IterationBuilderPanel(this);
-		this.tabPanel = new ListTabPanel(this);
-		this.filterBuilderPanel.setupControllersAndListeners();
-		this.iterationBuilderPanel.setupControllersAndListeners();
+		filterBuilderPanel = new FilterBuilderPanel(this);
+		iterationBuilderPanel = new IterationBuilderPanel(this);
+		tabPanel = new ListTabPanel(this);
+		filterBuilderPanel.setupControllersAndListeners();
+		iterationBuilderPanel.setupControllersAndListeners();
 		
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
-		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
-		this.resultsPanel = new RequirementListPanel(tabController);
+		builderScrollPane = new JScrollPane(filterBuilderPanel);
+		resultsPanel = new RequirementListPanel(tabController);
 
 
 		// Construct the layout manager and add constraints
-		this.rightLayout = new SpringLayout();
+		rightLayout = new SpringLayout();
 		rightPanel.setLayout(rightLayout);
-		this.leftLayout = new SpringLayout();
+		leftLayout = new SpringLayout();
 		leftPanel.setLayout(leftLayout);
 
 		// Constrain the FilterBuilderPanel and IteationBuilderPanel
@@ -180,17 +180,17 @@ public class ListTab extends JPanel {
 	 * @param listView the listView to set
 	 */
 	public void setParent(ListView listView) {
-		this.parent = listView;
+		parent = listView;
 	}
 
 	public void setMode(Mode newMode) {
-		if (this.currentMode != newMode) {
+		if (currentMode != newMode) {
 			if (newMode == Mode.FILTER) {
-				this.builderScrollPane.setViewportView(filterBuilderPanel);
+				builderScrollPane.setViewportView(filterBuilderPanel);
 			} else {
-				this.builderScrollPane.setViewportView(iterationBuilderPanel);
+				builderScrollPane.setViewportView(iterationBuilderPanel);
 			}
-			this.currentMode = newMode;
+			currentMode = newMode;
 		}
 	}
 }

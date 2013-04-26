@@ -213,7 +213,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 
 	public void setSubRequirements(Requirement[] requirements) {
 	
-		this.subRequirements = requirements;
+		subRequirements = requirements;
 		
 	}
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {

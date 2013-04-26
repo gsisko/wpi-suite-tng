@@ -55,13 +55,13 @@ public class BarChartPanel extends JPanel implements IListPanel {
 	public BarChartPanel() {
 
 		// This will create the dataset
-		this.dataset = createDataset();
+		dataset = createDataset();
 
 		// based on the dataset we create the chart
-		this.chart = createChart(dataset, "Sample Chart: Favorite OS");
+		chart = createChart(dataset, "Sample Chart: Favorite OS");
 
 		// we put the chart into a panel
-		this.chartPanel = new ChartPanel(chart);
+		chartPanel = new ChartPanel(chart);
 
 		// default size
 		chartPanel.setPreferredSize(new Dimension(1300, 500));
@@ -71,8 +71,8 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		chartPanel.setPopupMenu(null);
 
 		//Disable click+drag to zoom
-		this.chartPanel.setDomainZoomable(false);
-		this.chartPanel.setRangeZoomable(false);
+		chartPanel.setDomainZoomable(false);
+		chartPanel.setRangeZoomable(false);
 		
 		// Construct the layout
 		this.setLayout(new BorderLayout());
@@ -82,7 +82,7 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		add(chartPanel, BorderLayout.CENTER);
 
 		//Are we using filtered data?
-		this.isFiltered = true;
+		isFiltered = true;
 	}
 
 	/** Creates the sample dataset 
@@ -179,15 +179,15 @@ public class BarChartPanel extends JPanel implements IListPanel {
 			if (count > 0) data.addValue(count, rs.toString(), "");
 		}
 		
-		this.dataset = data;
+		dataset = data;
 		if (isFiltered){
-			this.chart = createChart(dataset, "Status of Displayed Requirements");
+			chart = createChart(dataset, "Status of Displayed Requirements");
 		} else {
-			this.chart = createChart(dataset, "Status of All Requirements");
+			chart = createChart(dataset, "Status of All Requirements");
 		}
-		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-		this.chart.getPlot().setOutlineVisible(false);
-		this.chartPanel.setChart(this.chart);
+		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		chart.getPlot().setOutlineVisible(false);
+		chartPanel.setChart(chart);
 	}
 
 	/** Function to refresh and redraw bar chart with Iterations 
@@ -211,15 +211,15 @@ public class BarChartPanel extends JPanel implements IListPanel {
 
 		}
 		
-		this.dataset = data;
+		dataset = data;
 		if (isFiltered){
-			this.chart = createChart(dataset, "Iterations of Displayed Requirements");
+			chart = createChart(dataset, "Iterations of Displayed Requirements");
 		} else {
-			this.chart = createChart(dataset, "Iterations of All Requirements");
+			chart = createChart(dataset, "Iterations of All Requirements");
 		}
-		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-		this.chart.getPlot().setOutlineVisible(false);
-		this.chartPanel.setChart(this.chart);
+		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		chart.getPlot().setOutlineVisible(false);
+		chartPanel.setChart(chart);
 		
 	}
 
@@ -253,16 +253,16 @@ public class BarChartPanel extends JPanel implements IListPanel {
 			data.addValue(requirementCountMap.get(allUsers.get(i)), allUsers.get(i) , "");	
 		}
 		
-		this.dataset = data;
+		dataset = data;
 		if (isFiltered){
-			this.chart = createChart(dataset, "Number of Users Assigned for Displayed Requirements");
+			chart = createChart(dataset, "Number of Users Assigned for Displayed Requirements");
 		} else {
-			this.chart = createChart(dataset, "Number of Users Assigned for All Requirements");
+			chart = createChart(dataset, "Number of Users Assigned for All Requirements");
 		}
 		
-		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-		this.chart.getPlot().setOutlineVisible(false);
-		this.chartPanel.setChart(this.chart);
+		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		chart.getPlot().setOutlineVisible(false);
+		chartPanel.setChart(chart);
 	}
 	
 	/** Function to refresh and redraw bar chart with Assigned Users 
@@ -295,16 +295,16 @@ public class BarChartPanel extends JPanel implements IListPanel {
 			data.addValue(estimateCountMap.get(allUsers.get(i)), allUsers.get(i) , "");	
 		}
 		
-		this.dataset = data;
+		dataset = data;
 		if (isFiltered){	
-			this.chart = createChart(dataset, "Estimate for Users of Displayed Requirements");
+			chart = createChart(dataset, "Estimate for Users of Displayed Requirements");
 		} else {
-			this.chart = createChart(dataset, "Estimate for Users of All Requirements");
+			chart = createChart(dataset, "Estimate for Users of All Requirements");
 		}
 		
-		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-		this.chart.getPlot().setOutlineVisible(false);
-		this.chartPanel.setChart(this.chart);
+		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		chart.getPlot().setOutlineVisible(false);
+		chartPanel.setChart(chart);
 	}
 	
 	/** Function to toggle whether to use active filters to get chart information 

@@ -92,7 +92,7 @@ public class SaveRequirementObserver implements RequestObserver {
 					"Save Requirement Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		this.view.getRequirementPanel().getAttributePanel().setSaving(false);
+		view.getRequirementPanel().getAttributePanel().setSaving(false);
 	}
 	/* This method responses when there is a save response error
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)

@@ -83,7 +83,7 @@ public class ChartOptionsPanel extends JPanel{
 	 */
 	public ChartOptionsPanel(ChartView parentView){
 				
-		this.parent = parentView; //Set the parent
+		parent = parentView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
 

@@ -57,8 +57,8 @@ public class Iteration extends AbstractModel {
 		
 		//Initialize our other private variables
 		this.setID(-1);
-		this.totalEstimate = 0;
-		this.requirementsAssigned = new ArrayList<Integer>();
+		totalEstimate = 0;
+		requirementsAssigned = new ArrayList<Integer>();
 
 	}
 
@@ -172,14 +172,14 @@ public class Iteration extends AbstractModel {
 		
 		*/
 				
-		return this.totalEstimate;
+		return totalEstimate;
 	}
 	
 	/**
 	 * Ask the controller to retrieve the total estimate and give it to us.
 	 */
 	public void setTotalEstimate(int newTotalEstimate){
-		this.totalEstimate = newTotalEstimate;
+		totalEstimate = newTotalEstimate;
 	}	
 	
 	
@@ -208,7 +208,7 @@ public class Iteration extends AbstractModel {
 	 * @param ID the id to set
 	 */
 	public void setID(int ID) {
-		this.id = ID;
+		id = ID;
 	}
 	/**
 	 * @return the startDate
@@ -249,7 +249,7 @@ public class Iteration extends AbstractModel {
 	 * @param requirementsContained the requirementsAssigned to set
 	 */
 	public void setRequirementsContained(ArrayList<Integer> requirementsContained) {
-		this.requirementsAssigned = requirementsContained;
+		requirementsAssigned = requirementsContained;
 	}
 	
 

@@ -460,7 +460,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		//Value
 		if (filter.getType().toString().equals("Iteration")) {
-			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			Iteration[] allIterations = parent.getParent().getAllIterations();
 			for (Iteration i : allIterations) {
 				if (filter.getValue().equals(i.getID() + ""))
 					this.getFilterValueBox().setSelectedItem(i.getName());
@@ -640,7 +640,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			newFilter.setValue(this.getFilterValue().getText());
 		else if (type == FilterType.toType("Iteration")) {
 			String chosen = this.getFilterValueBox().getSelectedItem().toString();
-			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			Iteration[] allIterations = parent.getParent().getAllIterations();
 			for (int i = 0; i < allIterations.length; i++) {
 				if (chosen.equals(allIterations[i].getName()))
 					newFilter.setValue(allIterations[i].getID() + "");
@@ -686,7 +686,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		//Value box
 		if (filter.getType().equals(FilterType.Iteration)) {
-			Iteration[] allIterations = this.parent.getParent().getAllIterations();
+			Iteration[] allIterations = parent.getParent().getAllIterations();
 			for (int i = 0; i < allIterations.length; i++) {
 				if (filter.getValue().equals(allIterations[i].getID() + ""))
 					valueBox.setSelectedItem(allIterations[i].getName());
@@ -713,7 +713,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 * @return an array of strings that represent the names of the iterations
 	 */
 	public String[] getIterationNames(){
-		Iteration[] allIterations = this.parent.getParent().getAllIterations();
+		Iteration[] allIterations = parent.getParent().getAllIterations();
 		String[] names = new String[allIterations.length];
 		for (int i = 0; i < allIterations.length; ++i) {
 			names[i] = (allIterations[i].getName());

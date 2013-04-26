@@ -56,8 +56,8 @@ public class SubRequirementTab extends JPanel {
 	}
 	
 	public void setUp() {
-		this.subController = new RetrieveSubrequirementsController(this.getParent().getParent());
-		this.subController.refreshData();
+		subController = new RetrieveSubrequirementsController(this.getParent().getParent());
+		subController.refreshData();
 	}
 
 	public RequirementTab getParent() {

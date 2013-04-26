@@ -50,7 +50,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 * @param data Database in the core
 	 */	
 	public IterationManager(Data data) {
-		this.db = data;
+		db = data;
 	}
 
 	/** Checks the database to make sure there is a "Backlog" of ID 0 for 
@@ -80,7 +80,7 @@ public class IterationManager implements EntityManager<Iteration> {
 			model.setProject(currentProject);
 			// Save the backlog in the database if possible, otherwise throw an exception
 			// We want the iteration to be associated with the project the user logged in to
-			if (!this.db.save(model,currentProject)) {
+			if (!db.save(model,currentProject)) {
 				logger.log(Level.WARNING, "A backlog was not created properly.");
 			}
 		}	
@@ -135,7 +135,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	public void save(Session s, Iteration model) throws WPISuiteException {
 		// Save the iteration in the database if possible, otherwise throw an exception
 		// We want the iteration to be associated with the project the user logged in to
-		if (!this.db.save(model, s.getProject())) {
+		if (!db.save(model, s.getProject())) {
 			throw new WPISuiteException("Unable to save Iteration.");
 		}
 
@@ -164,7 +164,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 */
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
-		return this.db.retrieveAll(new Iteration()).size();
+		return db.retrieveAll(new Iteration()).size();
 	}
 
 
@@ -182,7 +182,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
 		// Passing the project makes it only get iterations from that project
 		// Return the list of iterations as an array
-		return this.db.retrieveAll(new Iteration(), s.getProject()).toArray(new Iteration[0]);
+		return db.retrieveAll(new Iteration(), s.getProject()).toArray(new Iteration[0]);
 	}	
 
 	/**  For the current user session, takes a specific id for a Iteration and returns it 
@@ -285,7 +285,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s)  {
-		this.db.deleteAll(new Iteration(), s.getProject());
+		db.deleteAll(new Iteration(), s.getProject());
 	}
 
 	//The following methods are not implemented:

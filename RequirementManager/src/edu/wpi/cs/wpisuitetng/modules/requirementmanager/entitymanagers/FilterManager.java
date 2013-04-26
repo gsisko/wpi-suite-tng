@@ -70,7 +70,7 @@ public class FilterManager implements EntityManager<Filter> {
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Filter lets the db know what type of object to
 		// retrieve
-		return this.db.retrieveAll(new Filter()).size();
+		return db.retrieveAll(new Filter()).size();
 	}
 
 	/** Saves the given Filter into the database if possible. Filters are not 
@@ -86,7 +86,7 @@ public class FilterManager implements EntityManager<Filter> {
 
 		// Save the filter in the database if possible, otherwise throw an exception
 		// We DON'T want the filter to be associated with any project
-		if (!this.db.save(model)) {
+		if (!db.save(model)) {
 			throw new WPISuiteException("Unable to save Filter.");
 		}
 		logger.log(Level.FINE, "Filtert Saved :" + model);
@@ -244,7 +244,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException    -- thrown if there are problems retrieving
 	 */
 	public Filter[] getAll(Session s) throws WPISuiteException {
-		List<Model> filterList = this.db.retrieve(Filter.class, "User",	s.getUser());
+		List<Model> filterList = db.retrieve(Filter.class, "User",	s.getUser());
 		filterList.size();
 		return filterList.toArray(new Filter[filterList.size()]);
 	}
@@ -261,7 +261,7 @@ public class FilterManager implements EntityManager<Filter> {
 		}
 	}
 	private void setDb(Data data) {
-		this.db = data;
+		db = data;
 	}
 
 	//The following methods are not implemented:

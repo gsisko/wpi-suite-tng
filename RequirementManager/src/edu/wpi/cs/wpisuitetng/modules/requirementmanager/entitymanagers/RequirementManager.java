@@ -60,7 +60,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param data Database in the core
 	 */	
 	public RequirementManager(Data data) {
-		this.db = data;
+		db = data;
 		updateMapper = new ModelMapper();
 		updateMapper.getBlacklist().add("project"); // never allow project changing
 	}
@@ -112,7 +112,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 		// Save the requirement in the database if possible, otherwise throw an exception
 		// We want the requirement to be associated with the project the user logged in to
-		if (!this.db.save(model, s.getProject())) {
+		if (!db.save(model, s.getProject())) {
 			throw new WPISuiteException("Unable to save Requirement.");
 		}
 		logger.log(Level.FINE, "Requirement Saved :" + model);
@@ -138,7 +138,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 */
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
-		return this.db.retrieveAll(new Requirement()).size();
+		return db.retrieveAll(new Requirement()).size();
 	}
 
 	/** Takes a session and returns an array of all the Requirements contained
@@ -151,7 +151,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// Passing a dummy Requirement lets the db know what type of object to retrieve
 		// Passing the project makes it only get requirements from that project
 		// Return the list of requirements as an array
-		return this.db.retrieveAll(new Requirement(), s.getProject()).toArray(new Requirement[0]);
+		return db.retrieveAll(new Requirement(), s.getProject()).toArray(new Requirement[0]);
 	}	
 
 	/**  For the current user session, Takes a specific id for a Requirement and returns it 
@@ -320,7 +320,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
 		Requirement oldReq = getEntity(s,   id    )[0];
 
-		if (this.db.delete(oldReq) == oldReq){
+		if (db.delete(oldReq) == oldReq){
 			return true; // the deletion was successful
 		}	    
 		return false; // The deletion was unsuccessful
@@ -332,7 +332,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s)  {
-		this.db.deleteAll(new Requirement(), s.getProject());
+		db.deleteAll(new Requirement(), s.getProject());
 	}
 
 	// The following methods are not implemented:

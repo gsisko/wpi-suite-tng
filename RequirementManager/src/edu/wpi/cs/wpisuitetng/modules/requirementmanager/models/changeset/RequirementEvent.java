@@ -75,7 +75,7 @@ public abstract class RequirementEvent extends AbstractModel {
 	 * @param userName The User responsible for the event to set
 	 */
 	public void setUser( User user) {
-		this.userName = user.getName();
+		userName = user.getName();
 	}	
 	
 	/**

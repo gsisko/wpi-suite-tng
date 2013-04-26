@@ -33,9 +33,9 @@ public class Note extends RequirementEvent {
 	 */
 	public Note(String message)
 	{
-		this.type = EventType.NOTE;
+		type = EventType.NOTE;
 		this.setMessage(message);
-		this.date = new Date();
+		date = new Date();
 	}
 
 	/** Converts the entirety of the message to a formatted string and returns it

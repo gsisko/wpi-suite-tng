@@ -24,7 +24,7 @@ public class SaveModelObserver implements RequestObserver {
 	private final SaveModelController rmcontroller;
 	
 	public SaveModelObserver(SaveModelController saveModelController) {
-		this.rmcontroller = saveModelController;
+		rmcontroller = saveModelController;
 	}
 	
 	/** Parse the message that was received from the server and tells the controller

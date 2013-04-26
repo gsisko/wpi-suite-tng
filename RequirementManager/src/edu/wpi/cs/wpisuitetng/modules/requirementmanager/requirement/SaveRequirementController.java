@@ -447,6 +447,6 @@ public class SaveRequirementController
 	}
 
 	public synchronized void addAttachmentPartId(int id) {
-		this.currentAttachment.getAttachmentPartIds().add(id);
+		currentAttachment.getAttachmentPartIds().add(id);
 	}
 }

@@ -36,7 +36,7 @@ public class RequirementChangeset extends RequirementEvent {
 	public RequirementChangeset(String user) {
 		type = EventType.CHANGESET;
 		changes = new HashMap<String, FieldChange<?>>();
-		this.userName = user;
+		userName = user;
 	}
 
 

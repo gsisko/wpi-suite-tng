@@ -28,7 +28,7 @@ public class DeleteModelObserver implements RequestObserver,IObserver {
 	 * @param deleteFilterController
 	 */
 	public DeleteModelObserver(DeleteModelController deleteFilterController) {
-		this.controller = deleteFilterController;
+		controller = deleteFilterController;
 	}
 
 	/** Upon success, tell the controller to trigger a refresh 
