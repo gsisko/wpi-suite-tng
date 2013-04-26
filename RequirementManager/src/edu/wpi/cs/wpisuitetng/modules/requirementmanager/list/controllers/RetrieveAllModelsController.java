@@ -23,12 +23,13 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** Controller to handle retrieving all Models from the server and
- *  displaying them in the {@link SearchFiltersView} for a list panel */
+ *  displaying them in the {@link SearchFiltersView} for a list panel 
+ */
 public class RetrieveAllModelsController implements ActionListener{
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
-	@SuppressWarnings("unused") // May be used later
+	@SuppressWarnings("unused")
 	private final IBuilderPanel builderView;
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
@@ -51,7 +52,7 @@ public class RetrieveAllModelsController implements ActionListener{
 		this.refreshData();		
 	}
 	
-	/** Sends a request for all of the filters          */
+	/** Sends a request for all of the filters */
 	public void refreshData() {
 		Request request;
 		request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.GET);
@@ -74,7 +75,5 @@ public class RetrieveAllModelsController implements ActionListener{
 	public void errorReceivingData(String error) {
 		System.err.println("An error occured while receiving the " + modelName);
 	}
-
-
 
 }

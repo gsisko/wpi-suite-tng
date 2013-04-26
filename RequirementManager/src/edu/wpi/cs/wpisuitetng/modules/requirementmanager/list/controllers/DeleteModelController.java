@@ -22,17 +22,17 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/** Full process of deleting filters from Press of the delete button
- *  to sending the delete message
+/** This controller handles the full process of deleting filters from 
+ *  the press of the delete button to sending the delete message
  */
 public class DeleteModelController implements ActionListener {
+	
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-
 
 	/** Constructs a controller with an action listener that can, on a button
 	 *  press, delete the highlighted items in a list view.
@@ -46,8 +46,8 @@ public class DeleteModelController implements ActionListener {
 		this.modelName = modelName;
 		this.builderView = builderView;
 	}
-	/**
-	 * provide action listener or other ways to check whether a certain action is performed
+	
+	/** provide action listener or other ways to check whether a certain action is performed
 	 */
 	public void perform(){
 		String[] uniqueIdentifiers = listView.getSelectedUniqueIdentifiers();
@@ -64,8 +64,8 @@ public class DeleteModelController implements ActionListener {
 		listView.setDeleteEnabled(false);
 		listView.setCancelBtnToNew();
 	}
-	/**
-	 * provide action listener or other ways to check whether a certain action is performed
+	
+	/** provide action listener or other ways to check whether a certain action is performed
 	 * @param String
 	 */
 	public void perform(String uniqueIdentifier){
@@ -76,22 +76,20 @@ public class DeleteModelController implements ActionListener {
 		request.addObserver(new DeleteModelObserver(this));
 		request.send();
 	}
-	/**
-	 * takes a string and checks whether the action is performed successfully
+	
+	/** takes a string and checks whether the action is performed successfully
 	 */
 	public void success(String JSONString)
 	{
 	}
 	
-	/**
-	 * perform certain actions if the intended actions failed
+	/** perform certain actions if the intended actions failed
 	 */
 	public void fail(){
 		System.err.println("Fail: Cannot delete the " + this.getModelName());
 	}
 	
-	/**
-	 * gives an error 
+	/** gives an error 
 	 */
 	public void error(String error){
 		System.err.println("Could not delete the " + this.getModelName());
@@ -108,9 +106,9 @@ public class DeleteModelController implements ActionListener {
 		perform();
 	}
 
-
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
-	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. */
+	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. 
+	 */
 	public void refreshListViews() {;
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	

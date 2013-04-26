@@ -27,12 +27,12 @@ public class SaveModelController implements ActionListener
 {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
+	
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
 		
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-	
 	
 	/** Constructs a controller with an action listener that can, on a button
 	 *  press, save the model currently loaded into the builder view
@@ -47,7 +47,6 @@ public class SaveModelController implements ActionListener
 		this.modelName = modelName;
 		this.builderView = builderView;
 	}
-
 
 	public void actionPerformed(ActionEvent event) 
 	{
@@ -70,8 +69,7 @@ public class SaveModelController implements ActionListener
 		request.addObserver(new SaveModelObserver(this)); // add an observer to process the response
 		request.send();		
 	}
-
-
+	
 	/** Simple success message for saving a model.  
 	 */
 	public void saveSuccess() {
@@ -88,7 +86,6 @@ public class SaveModelController implements ActionListener
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
 	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed.
-	 * 
 	 */
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work
