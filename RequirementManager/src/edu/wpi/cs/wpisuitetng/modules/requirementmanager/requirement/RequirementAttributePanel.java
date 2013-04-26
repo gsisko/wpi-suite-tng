@@ -576,8 +576,9 @@ public class RequirementAttributePanel extends JPanel {
 	 */
 	public boolean isFieldsChanged() {
 		for (int i = 0; i < fieldsChanged.length; i++){
-			if (fieldsChanged[i])
+			if (fieldsChanged[i]){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -587,8 +588,9 @@ public class RequirementAttributePanel extends JPanel {
 	 */
 	public boolean isNonNoteFieldsChanged() {
 		for (int i = 0; i < fieldsChanged.length; i++){
-			if (fieldsChanged[i] && i != 9)
+			if (fieldsChanged[i] && i != 9){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -607,8 +609,9 @@ public class RequirementAttributePanel extends JPanel {
 	 */
 	public void setNonNoteFieldsChanged(boolean fieldsChanged) {
 		for (int i = 0; i < this.fieldsChanged.length; ++i) {
-			if (i != 9)
+			if (i != 9) {
 				this.fieldsChanged[i] = fieldsChanged;
+			}
 		}
 	}
 
@@ -824,10 +827,11 @@ public class RequirementAttributePanel extends JPanel {
 		toggleComponentEnabled(statusBox, enabled);
 		toggleComponentEnabled(priorityBox, enabled);
 		toggleComponentEnabled(txtReleaseNumber, enabled);
-		if (currentRequirement.getStatus() == RequirementStatus.InProgress)
+		if (currentRequirement.getStatus() == RequirementStatus.InProgress){
 			toggleComponentEnabled(txtEstimate, false);
+		}
 		else
-			toggleComponentEnabled(txtEstimate, enabled);
+		toggleComponentEnabled(txtEstimate, enabled);
 		toggleComponentEnabled(txtActualEffort, enabled);
 		toggleComponentEnabled(iterationBox, enabled);
 
@@ -984,8 +988,9 @@ public class RequirementAttributePanel extends JPanel {
 		for (int i = 0; i < allIterations.length; ++i) //For all the iterations in the "allIterations" array
 		{
 			//If the iteration at this index (i) has a end date that is NOT before this date, OR has an id number of 0 (the backlog)
-			if ( (!(allIterations[i].getEndDate().before(new Date()))) || (allIterations[i].getID() == 0)  )
+			if ( (!(allIterations[i].getEndDate().before(new Date()))) || (allIterations[i].getID() == 0)  ){
 				iterationsToDisplay.add(allIterations[i]);//add it to the list of iterations to display 
+			}
 		}
 
 		//Create and fill an array of the iteration names to display, to be used to create the combo box model
