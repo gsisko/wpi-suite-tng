@@ -19,36 +19,26 @@ package edu.wpi.cs.wpisuitetng.modules.core.entitymanagers;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import edu.wpi.cs.wpisuitetng.database.Data;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
-import edu.wpi.cs.wpisuitetng.exceptions.DatabaseException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
-import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
-import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.ManagerLayer;
 import edu.wpi.cs.wpisuitetng.Permission;
 import edu.wpi.cs.wpisuitetng.Session;
-import edu.wpi.cs.wpisuitetng.modules.AbstractEntityManager;
+import edu.wpi.cs.wpisuitetng.database.Data;
+import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
+import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
+import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
+import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.FileModel;
-//import edu.wpi.cs.wpisuitetng.modules.core.models.File;
-import edu.wpi.cs.wpisuitetng.modules.core.models.ProjectDeserializer;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
@@ -65,12 +55,6 @@ public class FileManager implements EntityManager<FileModel>{
 	public FileManager(Data data)
 	{
 		this.data = data;
-
-		// hang the custom serializer/deserializer
-		//		GsonBuilder builder = new GsonBuilder();
-		//		builder.registerTypeAdapter(this.project, new ProjectDeserializer());
-
-		//		this.gson = builder.create();
 	}
 
 	@Override
@@ -90,40 +74,37 @@ public class FileManager implements EntityManager<FileModel>{
 		FileModel f;
 
 		if (Base64.isBase64(content)){
-			f = FileModel.fromString(content);
+			f = FileModel.fromString(content); //Reconstruct the file from the string recieved
 		} else  {
 			logger.log(Level.WARNING, "Invalid File entity creation string.");
 			throw new BadRequestException("The entity creation string had invalid format. Entity String: " + content);
 		}
 
-
 		//TODO: Add logging
 		logger.log(Level.FINE, "New file: "+ f.getName() +" submitted by: "+ theUser.getName() );
-//		p.setOwner(theUser);
+		f.setOwner(theUser);
 		
-		//TODO: Check ID here
-		//TODO: Check Size here
-		//TODO: Check number of packets received based on expected size here
-		//TODO: Reconstruct the file here
-//		f = bytes;
-		
-//		if(getEntity(s,p.getIdNum())[0] == null)
-//		{
-//			if(getEntityByName(s, p.getName())[0] == null)
-//			{
-//				save(s,p);
-//			}
-//			else
-//			{
-//				logger.log(Level.WARNING, "Project Name Conflict Exception during Project creation.");
-//				throw new ConflictException("A project with the given name already exists. Entity String: " + content);
-//			}
-//		}
-//		else
-//		{
-//			logger.log(Level.WARNING, "ID Conflict Exception during Project creation.");
-//			throw new ConflictException("A project with the given ID already exists. Entity String: " + content); 
-//		}
+		//Check ID here
+		if(getEntity(s,f.getIdNum())[0] == null)
+		{
+			//TODO: Check Size here?
+			//TODO: Check number of packets received based on expected size here?
+			//TODO: Do we want to be able to store files with the same name?
+			if(getEntityByName(s, f.getName())[0] == null)
+			{
+				save(s,f);
+			}
+			else
+			{
+				logger.log(Level.WARNING, "File Name Conflict Exception during Project creation.");
+				throw new ConflictException("A file with the given name already exists. Entity String: " + content);
+			}
+		}
+		else
+		{
+			logger.log(Level.WARNING, "ID Conflict Exception during File creation.");
+			throw new ConflictException("A file with the given ID already exists. Entity String: " + content); 
+		}
 
 		logger.log(Level.FINER, "File creation success!");
 		return f;
@@ -149,7 +130,7 @@ public class FileManager implements EntityManager<FileModel>{
 	 * only ever returns one project, "" is not a valid argument;
 	 * 
 	 * @param id - the id of the user, in this case it's the idNum
-	 * @return a list of matching projects
+	 * @return a list of matching files
 	 * @throws NotFoundException if the project cannot be found
 	 * @throws WPISuiteException if retrieve fails
 	 */
@@ -166,7 +147,7 @@ public class FileManager implements EntityManager<FileModel>{
 
 			if(m[0] == null)
 			{
-				throw new NotFoundException("Project with id <" + id + "> not found.");
+				throw new NotFoundException("File with id <" + id + "> not found.");
 			}
 			else
 			{
@@ -175,16 +156,16 @@ public class FileManager implements EntityManager<FileModel>{
 		}
 	}
 
-	public FileModel[] getEntityByName(Session s, String projectName) throws NotFoundException, WPISuiteException
+	public FileModel[] getEntityByName(Session s, String fileName) throws NotFoundException, WPISuiteException
 	{
 		FileModel[] m = new FileModel[1];
-		if(projectName.equalsIgnoreCase(""))
+		if(fileName.equalsIgnoreCase(""))
 		{
-			throw new NotFoundException("No (blank) Project name given.");
+			throw new NotFoundException("No (blank) File name given.");
 		}
 		else
 		{
-			return data.retrieve(fileModel, "name", projectName).toArray(m);
+			return data.retrieve(fileModel, "name", fileName).toArray(m);
 		}
 	}
 
@@ -206,14 +187,14 @@ public class FileManager implements EntityManager<FileModel>{
 				Permission.WRITE.equals(model.getPermission(theUser))){*/
 		if(data.save(model))
 		{
-			logger.log(Level.FINE, "Project Saved :" + model);
+			logger.log(Level.FINE, "File Saved :" + model.getFileName());
 			return ;
 		}
 		/*else
 		{
-			logger.log(Level.WARNING, "Project Save Failure!");
-			throw new DatabaseException("Save failure for Project."); // Session User: " + s.getUsername() + " Project: " + model.getName());
-		}
+			logger.log(Level.WARNING, "File Save Failure!");
+			throw new DatabaseException("Save failure for File."); // Session User: " + s.getUsername() + " Project: " + model.getName());
+		}*/
 		/*}
 		else
 		{
@@ -365,10 +346,11 @@ public class FileManager implements EntityManager<FileModel>{
 		String[] names = null;
 
 		try{
-			names = gson.fromJson(content, String[].class);
+			//TODO: Use our toString method?
+//			names = gson.fromJson(content, String[].class);
 		}catch(JsonSyntaxException j)
 		{
-			throw new BadRequestException("Could not parse JSON");
+			throw new BadRequestException("Could not parse String");
 		}
 
 		ArrayList<String> success = new ArrayList<String>();
