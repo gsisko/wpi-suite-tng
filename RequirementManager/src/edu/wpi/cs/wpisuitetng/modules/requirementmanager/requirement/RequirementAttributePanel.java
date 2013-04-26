@@ -684,7 +684,8 @@ public class RequirementAttributePanel extends JPanel {
 					changeField(txtEstimate, 3, true);
 				} else {
 					changeField(txtEstimate, 3, false);
-				}		
+				}
+				setSaveButtonWhenFieldsAreValid();//This is here because otherwise the estimate validity is only checked when the field has changed from it's stored value
 			}
 		});
 		txtActualEffort.addKeyListener(new KeyListener(){
@@ -769,7 +770,7 @@ public class RequirementAttributePanel extends JPanel {
 			// reset the warning if necessary
 			warningEstimate.setText("");
 		}
-		
+			
 		// Check the actual effort box
 		if ((txtActualEffort.getText().length()==0)&& txtActualEffort.isEnabled()){
 			warningActualEffort.setText("ActualEffort cannot be blank");
