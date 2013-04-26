@@ -13,7 +13,7 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 
-/** It provides methods for controllers for models 
+/** Provides methods for controllers for models 
  */
 public interface IController {
 	/** provide action listener or other ways to check whether a certain action is performed
