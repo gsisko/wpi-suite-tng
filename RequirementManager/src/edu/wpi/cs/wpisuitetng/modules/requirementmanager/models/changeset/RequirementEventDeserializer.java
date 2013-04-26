@@ -25,8 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent.EventType;
 
-/**
- * Responsible for deserializing a RequirementEvent.
+/**Deserializer Responsible for deserializing a RequirementEvent.
  */
 class RequirementEventDeserializer implements JsonDeserializer<RequirementEvent> {
 	@Override

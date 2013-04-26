@@ -12,8 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
-/**
- * Model that holds and old and new value for some field.
+/** Model that holds and old and new value for some field.
  * Doesn't implement Model since it will see no use outside of RequirementChangesets.
  *
  * @param <T> the type of the field that was changed

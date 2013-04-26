@@ -26,8 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
-/**
- * Custom JSON deserializer for the RequirementChangeset class
+/** Custom JSON deserializer for the RequirementChangeset class
  */
 public class RequirementChangesetDeserializer implements JsonDeserializer<RequirementChangeset> {
 
@@ -35,7 +34,7 @@ public class RequirementChangesetDeserializer implements JsonDeserializer<Requir
 	public RequirementChangeset deserialize(JsonElement json, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
 		
-		// hash map to hold the deserialized FieldChange objects
+		/** A hash map to hold the deserialized FieldChange objects */
 		HashMap<String, FieldChange<?>> changesMap = new HashMap<String, FieldChange<?>>();
 		
 		JsonObject changeSet = json.getAsJsonObject();

@@ -19,8 +19,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-/**
- * Persistent Model that holds information about a set of changes to a Requirement.
+/** Persistent Model that holds information about a set of changes to a Requirement.
  * Every time a Requirement is changed by a user, a RequirementChangeset should be created
  * containing the changes and the user responsible for making them.
  */
@@ -28,9 +27,7 @@ public class RequirementChangeset extends RequirementEvent {
 
 	private Map<String, FieldChange<?>> changes;
 
-	/**
-	 * Construct a RequirementChangeset with default properties.
-	 * 
+	/**Construct a RequirementChangeset with default properties.
 	 * @param user the User responsible for this change
 	 */
 	public RequirementChangeset(String user) {
@@ -38,7 +35,6 @@ public class RequirementChangeset extends RequirementEvent {
 		changes = new HashMap<String, FieldChange<?>>();
 		userName = user;
 	}
-
 
 	/**
 	 * @return the map of field names to changes (Assignee -> (Bob, Joe))

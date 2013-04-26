@@ -19,8 +19,7 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
-/**
- * Implementations of this interface represent some kind of event in a requirement.
+/** Implementations of this interface represent some kind of event in a requirement.
  * For example, the addition of a comment or the modification of fields.
  */
 public abstract class RequirementEvent extends AbstractModel {
@@ -37,6 +36,7 @@ public abstract class RequirementEvent extends AbstractModel {
 	
 	/** The date that this event was made */
 	protected Date date = new Date();
+	
 	/** The user that caused this event */
 	protected String userName = "";	
 
@@ -80,7 +80,6 @@ public abstract class RequirementEvent extends AbstractModel {
 	
 	/**
 	 * Given a builder, add anything to it that's necessary for Gson to interact with this class.
-	 * 
 	 * @param builder The builder to modify
 	 */
 	public static void addGsonDependencies(GsonBuilder builder) {

@@ -30,7 +30,6 @@ public class RequirementCreation extends RequirementEvent {
 	private String reqPriority;
 	private String reqReleaseNumber;
 	
-
 	public RequirementCreation(Requirement requirement, String theCreator) {
 		type = EventType.CREATION;
 		reqName = requirement.getName();
