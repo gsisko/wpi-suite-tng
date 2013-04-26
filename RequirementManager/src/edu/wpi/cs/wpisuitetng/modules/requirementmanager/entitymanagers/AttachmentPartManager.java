@@ -25,21 +25,19 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 
-/** This is the entity manager for filters in the RequirementManager module   */
+/** This is the entity manager for filters in the RequirementManager module */
 public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 
 	private final Data db;
-	
-	/**
-	 * Create a CommentManager that uses the given Data instance
+
+	/** Create a CommentManager that uses the given Data instance
 	 * @param data The Data instance to interact with
 	 */
 	public AttachmentPartManager(Data data) {
 		db = data;
 	}
-	
-	/**
-	 * Takes a filter and assigns a unique id if necessary
+
+	/** Takes a filter and assigns a unique id if necessary
 	 * 
 	 * @param filter  The filter that possibly needs a unique id
 	 * @throws WPISuiteException
@@ -50,8 +48,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 		}
 	}
 
-	/**
-	 * Returns the number of filters currently in the database. Counts only
+	/** Returns the number of filters currently in the database. Counts only
 	 * those filters specific to the current user
 	 * 
 	 * @return The number of Requirements currently in the database
@@ -62,7 +59,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 		// retrieve
 		return this.db.retrieveAll(new AttachmentPart(0, null, 0)).size();
 	}
-	
+
 	@Override
 	public void save(Session s, AttachmentPart model) throws WPISuiteException {
 		assignUniqueID(model); // Assigns a unique ID to the Req if necessary
@@ -73,7 +70,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 			throw new WPISuiteException("Unable to save AttachmentPart.");
 		}
 	}
-	
+
 	@Override
 	public synchronized AttachmentPart makeEntity(Session s, String content) throws WPISuiteException {
 		// Parse the requirement from JSON
@@ -128,7 +125,7 @@ public class AttachmentPartManager implements EntityManager<AttachmentPart> {
 		throw new NotImplementedException();
 	}
 
-	
+
 
 	@Override
 	public boolean deleteEntity(Session s, String id) throws NotImplementedException {

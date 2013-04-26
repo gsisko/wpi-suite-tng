@@ -19,6 +19,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -44,7 +45,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 /** This is the builder panel for Iterations. It is located in the list view on the 
  *  RequirementManager module above the list of requirements and right of the list 
  *  of iterations. This builder will be switched to when the Iteration list view
- *  tab is selected.  */
+ *  tab is selected.  
+ */
 @SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
@@ -58,6 +60,11 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final JLabel totalEstimateLabel;
 	/** The total estimate for the current iteration is displayed here */
 	private final JLabel totalEstimate;
+
+	/** The name warning label, used to warn the user of an invalid name on the iteration currently being built*/
+	private JLabel nameWarning;
+	/** The date warning label, used to warn the user of an invalid date on the iteration currently being built*/
+	private JLabel dateWarning;
 
 	/** The text box for filling in an Iteration's name */
 	private JTextField nameValue;
@@ -81,7 +88,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	private final ListTab parent;
 
 	/** Construct the panel and all of its components
-	 *
 	 * @param view The ListTab that this panel will live in
 	 */
 	public IterationBuilderPanel(ListTab view) {
@@ -95,6 +101,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
 		totalEstimateLabel = new JLabel("Total Estimate:");
+		nameWarning = new JLabel("");
+		dateWarning = new JLabel("");
+
+		//Set the color for the warnings
+		nameWarning.setForeground(Color.red);
+		dateWarning.setForeground(Color.red);
+
+		//Set the font size for the warnings to 9 point
+		nameWarning.setFont(nameWarning.getFont().deriveFont(9));
+		dateWarning.setFont(nameWarning.getFont().deriveFont(9));
 
 		//construct the components
 		btnCreate = new JButton("Create");
@@ -104,12 +120,24 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		endDateChooser = new JDateChooser(trim(new Date()));
 		totalEstimate = new JLabel("0");
 
+		//Add key listener to nameValue to toggle warnings and create button appropriately
+		nameValue.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				isIterationValid();//Set the save button enabled if there is something to save, disabled if not, set warnings if needed
+			}
+		});
+
 		// The action listener for these are below
 		btnCreate.setEnabled(false);
 		startDateChooser.setEnabled(false);
 		endDateChooser.setEnabled(false);
 
-		totalEstimate.setFont(totalEstimateLabel.getFont().deriveFont(Font.NORMAL));
+		totalEstimate.setFont(totalEstimateLabel.getFont().deriveFont(Font.NORMAL));//Make the totalEstimate non-bold
 
 		//Add a titled boarder to this panel
 		setBorder(BorderFactory.createTitledBorder("Iteration Builder"));
@@ -121,36 +149,34 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Set the preferred sizes of the components
 		startDateChooser.setPreferredSize(new Dimension (125,20));
 		endDateChooser.setPreferredSize(new Dimension (125,20));
-		btnCreate.setPreferredSize(new Dimension (75,30));
+		btnCreate.setPreferredSize(new Dimension (btnCreate.getPreferredSize().width,30));
 
 		//Total Estimate
 		//Set the constraints for the "totalEstimateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
-		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
+		IterationBuilderConstraints.insets = new Insets(8,10,2,0); //Set the top padding to 8 units of blank space, set left padding to 10 units, bottom padding to 2 units
 		IterationBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(totalEstimateLabel, IterationBuilderConstraints);//Actually add the "totalEstimateLabel" to the layout given the previous constraints
 		//Set the constraints for the "totalEstimate" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
-		IterationBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
+		IterationBuilderConstraints.insets = new Insets(8,10,2,25); //Set the top padding to 8 units of blank space, set left padding to 10 units, bottom padding to 2 units, right padding to 25 units
 		IterationBuilderConstraints.ipadx= 30;//stretch this field horizontally by 30 units
 		IterationBuilderConstraints.gridx = 1;
 		IterationBuilderConstraints.gridy = 0;
 		add(totalEstimate, IterationBuilderConstraints);//Actually add the "totalEstimate" to the layout given the previous constraints
 
-
-
 		//Iteration Name
 		//Set the constraints for the "nameLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
 		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 30 units back to 0 units
-		IterationBuilderConstraints.insets = new Insets(10,10,10,0); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units
+		IterationBuilderConstraints.insets = new Insets(8,10,2,0); //Set the top padding to 8 units of blank space, set left padding to 10 units, bottom padding to 2 units
 		IterationBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
 		IterationBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
 		add(nameLabel, IterationBuilderConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
 		//Set the constraints for the "nameValue" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the center left of it's field
-		IterationBuilderConstraints.insets = new Insets(10,10,10,25); //Set the top padding to 10 units of blank space, set left padding to 10 units, bottom padding to 10 units, right padding to 25 units
+		IterationBuilderConstraints.insets = new Insets(8,10,2,25); //Set the top padding to 8 units of blank space, set left padding to 10 units, bottom padding to 2 units, right padding to 25 units
 		IterationBuilderConstraints.ipadx=80;//stretch this field horizontally by 80 units
 		IterationBuilderConstraints.gridx = 3;
 		IterationBuilderConstraints.gridy = 0;
@@ -159,14 +185,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Start Date
 		//Set the constraints for the "startDateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
-		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
+		IterationBuilderConstraints.insets = new Insets(8,10,2,0);
 		IterationBuilderConstraints.ipadx=0;//This resets the horizontal padding from the previously defined 80 units back to 0 units
 		IterationBuilderConstraints.gridx = 4;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateLabel, IterationBuilderConstraints);
 		//Set the constraints for the "startDateChooser" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;
-		IterationBuilderConstraints.insets = new Insets(10,10,10,25);
+		IterationBuilderConstraints.insets = new Insets(8,10,2,25);
 		IterationBuilderConstraints.gridx = 5;
 		IterationBuilderConstraints.gridy = 0;
 		add(startDateChooser, IterationBuilderConstraints);
@@ -174,17 +200,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//End Date
 		//Set the constraints for the "endDateLabel" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_END;
-		IterationBuilderConstraints.insets = new Insets(10,10,10,0);
+		IterationBuilderConstraints.insets = new Insets(8,10,2,0);
 		IterationBuilderConstraints.gridx = 6;
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateLabel, IterationBuilderConstraints);
 		//Set the constraints for the "endDateChooser" and add it to the view
 		IterationBuilderConstraints.anchor = GridBagConstraints.LINE_START;
-		IterationBuilderConstraints.insets = new Insets(10,10,10,40);
+		IterationBuilderConstraints.insets = new Insets(8,10,2,40);
 		IterationBuilderConstraints.gridx = 7;
 		IterationBuilderConstraints.gridy = 0;
 		add(endDateChooser, IterationBuilderConstraints);
-
 
 		//Save button:
 		//Set the constraints for the "Create" button and add it to the view
@@ -192,6 +217,24 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		IterationBuilderConstraints.gridx = 8;
 		IterationBuilderConstraints.gridy = 0;
 		add(btnCreate, IterationBuilderConstraints);//Actually add the "Create" button to the layout given the previous constraints
+
+		//Name warning
+		//Set the constraints for the "nameWarning" and add it to the view
+		IterationBuilderConstraints.fill = GridBagConstraints.HORIZONTAL; //Tell the field to stretch horizontally to fit it's cell(s)
+		IterationBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
+		IterationBuilderConstraints.insets = new Insets(0,10,5,0); //Set the top padding to 0 units of blank space, set left padding to 10 units,right padding to 0 units, bottom padding to 5 units
+		IterationBuilderConstraints.gridx = 2;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridwidth = 2; //Tell this component to fill 2 columns
+		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		add(nameWarning, IterationBuilderConstraints);//Actually add the "nameWarning" to the layout given the previous constraints
+
+		//Date warning
+		//Set the constraints for the "dateWarning" and add it to the view
+		IterationBuilderConstraints.gridx = 4;//Set the x coord of the cell of the layout we are describing
+		IterationBuilderConstraints.gridwidth = 4;//Tell this component to fill 4 columns
+		IterationBuilderConstraints.gridy = 1;//Set the y coord of the cell of the layout we are describing
+		add(dateWarning, IterationBuilderConstraints);//Actually add the "dateWarning" to the layout given the previous constraints
+
 	}
 
 	public JButton getButton()
@@ -235,7 +278,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 
 	/** Enables or disables all fields in the builder panel.
-	 * 
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo) {
@@ -257,16 +299,16 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-
-	/** Toggles between active and inactive modes mode */
+	/** Toggles between active and inactive modes mode 
+	 */
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function
 		isBuilderActive = !isBuilderActive;
 		setInputEnabled(isBuilderActive);
 	}
 
-
-	/** Restore all fields to their initial values */
+	/** Restore all fields to their initial values 
+	 */
 	public void resetFields() {
 		this.nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
@@ -275,9 +317,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		btnCreate.setText("Create");
 	}
 
-	/** Sets the mode of the builder panel to the given mode. ALSO changes
-	 *  the text in the button 
-	 *  Mode.CREATE or Mode.EDIT
+	/** Sets the mode of the builder panel to the given mode (Mode.CREATE or Mode.EDIT).
+	 * ALSO changes the text in the button 
 	 * 
 	 * @param mode The mode that the builder panel should be in
 	 */
@@ -292,10 +333,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		}
 	}
 
-	/** Gets the model from the panel in the form of a JSON string
-	 *  that is ready to be sent as a message over the network
+	/** Gets the model from the panel in the form of a JSON string 
+	 * that is ready to be sent as a message over the network
 	 * 
-	 * *NOTE: can be used for passing messages between views!
+	 * NOTE: This method can be used for passing messages between views!
 	 * 
 	 * @return JSON string of the model to be sent, Returns null on failure
 	 */
@@ -303,9 +344,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		Iteration toSend = new Iteration();
 
 		if (this.getCurrentMode() == Mode.EDIT) toSend.setID(currentIteration.getID());
-
-		if(!isIterationValid())
-			return null;
 
 		toSend.setName(this.nameValue.getText());
 		toSend.setStartDate(trim(this.startDateChooser.getDate()));
@@ -315,45 +353,58 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return toSend.toJSON();
 	}
 
-	/**A validator function that checks to make sure that the dates and name of the iteration are valid
-	 * 
-	 * @return true if the iteration update/save is valid, false otherwise
+	/** A validate function that checks to make sure that the dates and name of the iteration are valid,
+	 * and sets the warning labels ("nameWarning" and "dateWarning") appropriately.
+	 * Also sets the "btnCreate" button disabled if any fields are invalid, enabled if all fields are valid.
 	 */
-	public boolean isIterationValid(){
-
-		ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();
-
-		String error = "";
-
-		if (this.nameValue.getText().length() <= 0){
-			error += "The name field of the iteration must be non-blank.\n";
+	public void isIterationValid(){
+		
+		if (!isBuilderActive){//If the builder is inactive, there is no need to check the validity of the iteration, and the warning labels should be blank
+			nameWarning.setText("");
+			dateWarning.setText("");
+			return;
 		}
 
+		ArrayList<Iteration> iters = parent.getTabPanel().getIterationList().getIterations();//Grab the list of iterations from the parent
+
+		//Create booleans to flag if errors are found
 		boolean nameErrorFound = false;
 		boolean dateErrorFound = false;
+		
+		if (this.nameValue.getText().length() <= 0){//If the nameValue is blank...
+			nameWarning.setText("Name cannot be blank");
+			nameErrorFound = true;
+		}
+		
+		//Grab the dates in the builder
+		Date newStart = trim(this.startDateChooser.getDate());
+		Date newEnd = trim(this.endDateChooser.getDate());
 
-		for (int i = 0; i < iters.size(); i++)
+		for (int i = 0; i < iters.size(); i++)//For every iteration in the list
 		{
-			Date newStart = trim(this.startDateChooser.getDate());
-			Date newEnd = trim(this.endDateChooser.getDate());
+			//Grab the dates from the iteration at this index in the list
 			Date oldStart = trim(iters.get(i).getStartDate());
 			Date oldEnd = trim(iters.get(i).getEndDate());
-			boolean errorOnThis = false;
+			
+			boolean errorOnThis = false;//Used to avoid indicating a date error more than once
 
-			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))
+			if (this.currentIteration != null && (this.currentIteration.getID() == iters.get(i).getID()))//We should not be comparing an iteration to it's own entry in the list, so continue
 				continue;
 
-			if (!nameErrorFound && this.nameValue.getText().toLowerCase().equals("backlog")) {
-				error += "The name field of the iteration cannot be \"Backlog\".\n";
+			//Compare the names
+			if (!nameErrorFound && this.nameValue.getText().toLowerCase().equals("backlog")) {//If we have not already found an error in the name, and the nameValue is currently "backlog" (ignoring case)
+				nameWarning.setText("Name cannot be \"Backlog\"");
 				nameErrorFound = true;
 			}
 
-			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()) && !this.nameValue.getText().equals(""))
+			if (!nameErrorFound && this.nameValue.getText().equals(iters.get(i).getName()) && !this.nameValue.getText().equals(""))//If the name of the iteration being constructed matches the name of the iteration at this index (i) in the list, AND  we have not already found an error in the name, AND we are not comparing the iteration under construction to it's own entry in the list,AND the nameValue is not blank 
 			{
-				error += "The name field of the iteration cannot be the same as other iterations.\n";
+				nameWarning.setText("Name must be unique");
 				nameErrorFound = true;
 			}
 
+			//TODO: Fix this IF statement
+			//Compare the dates
 			if (newStart.equals(newEnd) && oldStart.equals(oldEnd)) {				// Both are 1 day iterations
 				if (newStart.equals(oldStart))										// They fall on the same day
 					errorOnThis = true;	
@@ -365,20 +416,34 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					errorOnThis = true;
 				}
 			}
-			if (errorOnThis && !dateErrorFound)
+			if (errorOnThis && !dateErrorFound)//If this is the first time we have found an iteration whose dates overlap with the iteration under construction/editing
 			{
-				error += "The start date and end date of the iteration cannot fall within another iteration's dates.\n";
+				dateWarning.setText("Start and end dates cannot fall within another iteration");
 				dateErrorFound = true;
 			}
 		}
 
-
-		if (error.length() > 0) {
-			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-			return false;
+		//If no name error has been found, clear the nameWarning label
+		if (!nameErrorFound)
+			nameWarning.setText("");
+		
+		//If no date error has been found, clear the dateWarning label
+		if (!dateErrorFound)
+			dateWarning.setText("");
+		
+		//Revalidate and repaint the builder panel to ensure changes are shown
+		this.revalidate();
+		this.repaint();
+		
+		if ( nameErrorFound || dateErrorFound){//If any errors were found
+			btnCreate.setEnabled(false);//disable the create button
+			return;
+		}
+		else{
+			btnCreate.setEnabled(true);//enable the create button
+			return;
 		}
 
-		return true;
 	}
 
 	/** Takes a JSON string that holds an array of models and uploads them
@@ -414,6 +479,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					public void propertyChange(PropertyChangeEvent e) {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
+								
 								if (startDateChooser.getDate().compareTo(endDateChooser.getDate()) > 0) {
 									endDateChooser.setDate(startDateChooser.getDate());
 									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
@@ -422,44 +488,59 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 								}
 							}
 						});
+						
+						SwingUtilities.invokeLater(new Runnable() { 
+							public void run() {
+								isIterationValid();
+							}
+						});
+					}
+				});
+		
+		endDateChooser.getDateEditor().addPropertyChangeListener(
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								isIterationValid();
+							}
+						});
 					}
 				});
 
 	}
 
-	/** Set the given box to the given enable status as well 
-	 *  set the box to the correct color
+	/** Set the given JTextField to the given enable status as well 
+	 *  set the field's background to the correct color
 	 * 
-	 * @param box   The box that needs enabling and colors
+	 * @param field   The field that needs enabling and colors
 	 * @param enabled  True to enable and False to disable
 	 */
-	public void enable(JTextField box, boolean enabled) {
+	public void enable(JTextField field, boolean enabled) {
 		if (enabled) {
-			box.setEnabled(true);
-			box.setBackground(Color.WHITE);
+			field.setEnabled(true);
+			field.setBackground(Color.WHITE);
 		}
 		else {
-			box.setEnabled(false);
-			box.setBackground(new Color(238,238,238));
+			field.setEnabled(false);
+			field.setBackground(new Color(238,238,238));
 		}
 	}
 
-	/**
-	 * Trims a date by setting the time to 1 millisecond after midnight on the given day
+	/** Trims a date by setting the time to 1 millisecond before midnight on the given day
 	 * 
 	 * @param date The Date to trim
 	 * @return The trimmed date.
 	 */
-	public static Date trim(Date date) {
+	public static synchronized Date trim(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.clear();
 		cal.setTime(date);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.DAY_OF_YEAR, 1); //Set it a day forward
-		cal.add(Calendar.MILLISECOND, -1); //Go a day backward so we reach the last millisecond of the day
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
 
 		return cal.getTime();
 	}

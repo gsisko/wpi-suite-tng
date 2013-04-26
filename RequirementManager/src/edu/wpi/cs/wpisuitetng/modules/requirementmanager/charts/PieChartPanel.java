@@ -34,8 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
-/**
- * Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
+/** Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
  */
 @SuppressWarnings("serial")
 public class PieChartPanel extends JPanel {
@@ -75,7 +74,6 @@ public class PieChartPanel extends JPanel {
 		this.isFiltered = true;
 	}
 
-
 	/** Creates the sample dataset 
 	 * @return a sample set of data for a bar chart
 	 */
@@ -89,6 +87,7 @@ public class PieChartPanel extends JPanel {
 	}
 
 	/** Creates a chart using specified data and title
+	 * 
 	 * @param dataset set of data to use to make the bar chart
 	 * @param title title of the chart
 	 * @return JFreeChart object containing the chart with the title and data
@@ -134,123 +133,123 @@ public class PieChartPanel extends JPanel {
 	}
 
 	/** Function to refresh and redraw bar chart with Iterations 
+	 * 
 	 * @param requirements array of requirements to use to generate chart
 	 * @param iterations array of iterations to use to generate chart
-	 */	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
-		 DefaultPieDataset data = new DefaultPieDataset();
-		 for (Iteration iter : iterations) {
-			 int count = 0;
-			 for (int i = 0; i < requirements.length; i++) {
-				 if (iter.getID() == requirements[i].getIteration()) count++;
-			 }
-			 if (count > 0) {
-				 if (iter.getName().equals(""))
-					 data.setValue("Backlog", count);
-				 else
-					 data.setValue(iter.getName(), count);
-			 }
+	 */
+	public void refreshIterationChart(Requirement[] requirements, Iteration[] iterations) {
+		DefaultPieDataset data = new DefaultPieDataset();
+		for (Iteration iter : iterations) {
+			int count = 0;
+			for (int i = 0; i < requirements.length; i++) {
+				if (iter.getID() == requirements[i].getIteration()) count++;
+			}
+			if (count > 0) {
+				if (iter.getName().equals(""))
+					data.setValue("Backlog", count);
+				else
+					data.setValue(iter.getName(), count);
+			}
 
-		 }
+		}
 
-		 this.dataset = data;
-		 if (isFiltered){
-			 this.chart = createChart(dataset, "Iterations of Displayed Requirements");
-		 } else {
-			 this.chart = createChart(dataset, "Iterations of All Requirements");
-		 }
-		 this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-		 this.chart.getPlot().setOutlineVisible(false);
-		 this.chartPanel.setChart(this.chart);
-	 }
+		this.dataset = data;
+		if (isFiltered){
+			this.chart = createChart(dataset, "Iterations of Displayed Requirements");
+		} else {
+			this.chart = createChart(dataset, "Iterations of All Requirements");
+		}
+		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		this.chart.getPlot().setOutlineVisible(false);
+		this.chartPanel.setChart(this.chart);
+	}
 
-		/** Function to refresh and redraw bar chart with Assigned Users 
-		 * @param requirements array of requirements to use to obtain the assigned users for the chart
-		 */
-		public void refreshAssignedUsersCountChart(Requirement[] requirements) {
-			DefaultPieDataset data = new DefaultPieDataset();
-			
-			//ArrayList to contain all users assigned to iterations
-			ArrayList<String> allUsers = new ArrayList<String>();
-			
-			//HashMap that contains how many times each user has been assigned
-			HashMap<String, Integer> requirementCountMap = new HashMap<String, Integer>();
-			
-			for (int i = 0; i < requirements.length; i++){
-				allUsers.addAll(requirements[i].getUserNames()); //Combine all users into a giant list
-				
-				//Add one if the user appears in the list
-				for(String user : requirements[i].getUserNames()){
-					if (requirementCountMap.get(user) == null){ //Check if user has an entry
-						requirementCountMap.put(user, 1);  //If not this is the first entry
-					} else {
-						requirementCountMap.put(user, requirementCountMap.get(user) + 1); //Otherwise increment the count by one
-					}
+	/** Function to refresh and redraw bar chart with Assigned Users 
+	 * @param requirements array of requirements to use to obtain the assigned users for the chart
+	 */
+	public void refreshAssignedUsersCountChart(Requirement[] requirements) {
+		DefaultPieDataset data = new DefaultPieDataset();
+
+		//ArrayList to contain all users assigned to iterations
+		ArrayList<String> allUsers = new ArrayList<String>();
+
+		//HashMap that contains how many times each user has been assigned
+		HashMap<String, Integer> requirementCountMap = new HashMap<String, Integer>();
+
+		for (int i = 0; i < requirements.length; i++){
+			allUsers.addAll(requirements[i].getUserNames()); //Combine all users into a giant list
+
+			//Add one if the user appears in the list
+			for(String user : requirements[i].getUserNames()){
+				if (requirementCountMap.get(user) == null){ //Check if user has an entry
+					requirementCountMap.put(user, 1);  //If not this is the first entry
+				} else {
+					requirementCountMap.put(user, requirementCountMap.get(user) + 1); //Otherwise increment the count by one
 				}
 			}
-			
-			//Add data to the chart after we have gone through each requirement for each user
-			for(int i = 0; i < allUsers.size(); i++){
-				data.setValue(allUsers.get(i), requirementCountMap.get(allUsers.get(i)));
-			}
-			
-			this.dataset = data;
-			if (isFiltered){
-				this.chart = createChart(dataset, "Number of Users Assigned for Displayed Requirements");
-			} else {
-				this.chart = createChart(dataset, "Number of Users Assigned for All Requirements");
-			}
-			
-			this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-			this.chart.getPlot().setOutlineVisible(false);
-			this.chartPanel.setChart(this.chart);
 		}
-		
-		/** Function to refresh and redraw bar chart with Assigned Users 
-		 * @param requirements array of requirements to use to obtain the assigned users for the chart
-		 */
-		public void refreshAssignedUsersEstimateChart(Requirement[] requirements) {
-			DefaultPieDataset data = new DefaultPieDataset();
-			
-			//ArrayList to contain all users assigned to iterations
-			ArrayList<String> allUsers = new ArrayList<String>();
-			
-			//HashMap that contains how many times each user has been assigned
-			HashMap<String, Integer> estimateCountMap = new HashMap<String, Integer>();
-			
-			for (int i = 0; i < requirements.length; i++){
-				allUsers.addAll(requirements[i].getUserNames()); //Combine all users into a giant list
-				
-				//Add one if the user appears in the list
-				for(String user : requirements[i].getUserNames()){
-					if (estimateCountMap.get(user) == null){ //Check if user has an entry
-						estimateCountMap.put(user, requirements[i].getEstimate());  //If not this is the first entry
-					} else {
-						estimateCountMap.put(user, estimateCountMap.get(user) + requirements[i].getEstimate()); //Otherwise increment the count by one
-					}
+
+		//Add data to the chart after we have gone through each requirement for each user
+		for(int i = 0; i < allUsers.size(); i++){
+			data.setValue(allUsers.get(i), requirementCountMap.get(allUsers.get(i)));
+		}
+
+		this.dataset = data;
+		if (isFiltered){
+			this.chart = createChart(dataset, "Number of Users Assigned for Displayed Requirements");
+		} else {
+			this.chart = createChart(dataset, "Number of Users Assigned for All Requirements");
+		}
+
+		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		this.chart.getPlot().setOutlineVisible(false);
+		this.chartPanel.setChart(this.chart);
+	}
+
+	/** Function to refresh and redraw bar chart with Assigned Users 
+	 * @param requirements array of requirements to use to obtain the assigned users for the chart
+	 */
+	public void refreshAssignedUsersEstimateChart(Requirement[] requirements) {
+		DefaultPieDataset data = new DefaultPieDataset();
+
+		//ArrayList to contain all users assigned to iterations
+		ArrayList<String> allUsers = new ArrayList<String>();
+
+		//HashMap that contains how many times each user has been assigned
+		HashMap<String, Integer> estimateCountMap = new HashMap<String, Integer>();
+
+		for (int i = 0; i < requirements.length; i++){
+			allUsers.addAll(requirements[i].getUserNames()); //Combine all users into a giant list
+
+			//Add one if the user appears in the list
+			for(String user : requirements[i].getUserNames()){
+				if (estimateCountMap.get(user) == null){ //Check if user has an entry
+					estimateCountMap.put(user, requirements[i].getEstimate());  //If not this is the first entry
+				} else {
+					estimateCountMap.put(user, estimateCountMap.get(user) + requirements[i].getEstimate()); //Otherwise increment the count by one
 				}
 			}
-			
-			//Add data to the chart after we have gone through each requirement for each user
-			for(int i = 0; i < allUsers.size(); i++){
-				data.setValue(allUsers.get(i), estimateCountMap.get(allUsers.get(i)));
-			}
-			
-			this.dataset = data;
-			if (isFiltered){	
-				this.chart = createChart(dataset, "Estimate for Users of Displayed Requirements");
-			} else {
-				this.chart = createChart(dataset, "Estimate for Users of All Requirements");
-			}
-			
-			this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
-			this.chart.getPlot().setOutlineVisible(false);
-			this.chartPanel.setChart(this.chart);
 		}
-	 
-	 public void enableFilter(boolean isFiltered){
-		 this.isFiltered = isFiltered;
-	 }
-	 
-	 
+
+		//Add data to the chart after we have gone through each requirement for each user
+		for(int i = 0; i < allUsers.size(); i++){
+			data.setValue(allUsers.get(i), estimateCountMap.get(allUsers.get(i)));
+		}
+
+		this.dataset = data;
+		if (isFiltered){	
+			this.chart = createChart(dataset, "Estimate for Users of Displayed Requirements");
+		} else {
+			this.chart = createChart(dataset, "Estimate for Users of All Requirements");
+		}
+
+		this.chart.getPlot().setBackgroundPaint(new Color(255,255,255));
+		this.chart.getPlot().setOutlineVisible(false);
+		this.chartPanel.setChart(this.chart);
+	}
+
+	public void enableFilter(boolean isFiltered){
+		this.isFiltered = isFiltered;
+	}
 
 }

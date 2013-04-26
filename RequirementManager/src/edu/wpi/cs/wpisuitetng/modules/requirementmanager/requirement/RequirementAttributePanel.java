@@ -63,8 +63,11 @@ public class RequirementAttributePanel extends JPanel {
 	private  JLabel releaseNumLabel; //The label for the release number text field ("txtReleaseNum")
 	private  JLabel estimateLabel; //The label for the estimate text field ("txtEstimate")
 	private  JLabel actualEffortLabel; //The label for the actual effort text field ("txtActualEffort")
-	private  JLabel warningName;
-	private  JLabel warningDescription;
+	private  JLabel warningName;//The Jlabel for warning the user about invalid (blank or over 100 characters) names
+	private  JLabel warningDescription;//The Jlabel for warning the user about invalid (blank) descriptions
+	private  JLabel warningEstimate;//The Jlabel for warning the user about invalid (blank) estimates
+	private  JLabel warningActualEffort;//The Jlabel for warning the user about invalid (blank) actual efforts
+
 	//The fillable components
 	private  JTextField txtName;//The name text field 
 	private  JTextArea txtDescription;//The description text area
@@ -80,16 +83,29 @@ public class RequirementAttributePanel extends JPanel {
 	private RequirementTab parent; //Stores the RequirementTab that contains the panel
 	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
 	private Mode mode;// The variable to store the enum indicating whether or not you are creating at the time
+
+	/** This array holds the boolean flags for what fields are changed as well as 
+	 *  whether the save button is being saved or not
+	 *  Index:      Component isChanged
+	 *  0			Name field
+	 *	1			Description area
+	 *  2			Release number field
+	 *  3			Estimate number field
+	 *  4			Actual effort field
+	 *  5			Type box  
+	 *  6			Status box
+	 *  7			Priority box 
+	 *  8			*unused*
+	 *  9			Notes 
+	 *  10        	Save button is saving
+	 */	
 	private boolean[] fieldsChanged;	// Have any fields been changed?
+	/** A reference to the save button in the tool bar */
 	private JButton saveButton;
-	private Boolean validNameAndDescription;
+	private Boolean validFields;
 
-
-	// Listeners
+	/** a listener to watch the name and description boxes    */
 	ValidNameDescriptionListener nameAndDescriptionValidityListener;
-
-
-
 
 	//The layout manager
 	protected GridBagLayout layout; //The layout for the inner panel ("innerPanel")
@@ -108,10 +124,10 @@ public class RequirementAttributePanel extends JPanel {
 
 		// Indicate that input is enabled
 		inputEnabled = true;
-		fieldsChanged = new boolean[11];
+		fieldsChanged = new boolean[13];
 		setFieldsChanged(false);
 
-		validNameAndDescription = new Boolean(true);
+		validFields = new Boolean(true);
 
 		//Create and set the layout manager that controls the positions of the components
 		layout = new GridBagLayout();//Create the layout
@@ -144,6 +160,8 @@ public class RequirementAttributePanel extends JPanel {
 		actualEffortLabel = new JLabel("ActualEffort:");
 		warningName = new JLabel("Name must be between 0 and 100 characters");
 		warningDescription = new JLabel("Description cannot be blank");
+		warningEstimate = new JLabel("Estimate cannot be blank");
+		warningActualEffort = new JLabel("ActualEffort cannot be blank");
 
 		//Construct the misc. components
 		txtName = new JTextField("");
@@ -169,6 +187,8 @@ public class RequirementAttributePanel extends JPanel {
 		//Set the txtDescription component to wrap
 		txtDescription.setLineWrap(true);
 		txtDescription.setWrapStyleWord(true);
+		//set character limit on description
+		txtDescription.setDocument(new JTextFieldLimit(100000));
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "", "Epic", "Theme", "UserStory", "NonFunctional", "Scenario" };
@@ -187,10 +207,14 @@ public class RequirementAttributePanel extends JPanel {
 		//Set the color for the warning labels
 		warningName.setForeground(Color.red);
 		warningDescription.setForeground(Color.red);
+		warningEstimate.setForeground(Color.red);
+		warningActualEffort.setForeground(Color.red);
 
 		//Set the sizes for the warning labels
-		warningName.setPreferredSize(new Dimension(410, 10));
-		warningDescription.setPreferredSize(new Dimension(270, 10));
+		warningName.setPreferredSize(new Dimension(410, 15));
+		warningDescription.setPreferredSize(new Dimension(270, 15));
+		warningEstimate.setPreferredSize(new Dimension(250, 15));
+		warningActualEffort.setPreferredSize(new Dimension(280, 15));
 
 		//Set the estimate and actual effort to 0 since this is a new requirement
 		txtEstimate.setText("0");
@@ -292,7 +316,7 @@ public class RequirementAttributePanel extends JPanel {
 		//Set the constraints for the "priorityBox" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		attributePanelConstraints.insets = new Insets(15,5,10,0);
+		attributePanelConstraints.insets = new Insets(15,5,2,0);
 		attributePanelConstraints.gridx = 1;
 		attributePanelConstraints.gridy = 5;
 		add(priorityBox, attributePanelConstraints);
@@ -302,17 +326,17 @@ public class RequirementAttributePanel extends JPanel {
 		//Set the constraints for the "releaseNumLabel" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
-		attributePanelConstraints.insets = new Insets(15,15,0,0);
+		attributePanelConstraints.insets = new Insets(10,15,0,0);
 		attributePanelConstraints.gridx = 0;
-		attributePanelConstraints.gridy = 6;
+		attributePanelConstraints.gridy = 7;
 		add(releaseNumLabel, attributePanelConstraints);
 		//Set the constraints for the "txtReleaseNum" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.ipadx = 80;//This tells the layout to pad the interior of this field horizontally with 80 units of space
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-		attributePanelConstraints.insets = new Insets(15,5,10,0);
+		attributePanelConstraints.insets = new Insets(10,5,0,0);
 		attributePanelConstraints.gridx = 1;
-		attributePanelConstraints.gridy = 6;
+		attributePanelConstraints.gridy = 7;
 		add(txtReleaseNumber, attributePanelConstraints);
 		//end Release number
 
@@ -350,49 +374,65 @@ public class RequirementAttributePanel extends JPanel {
 		add(txtEstimate, attributePanelConstraints);
 		//end Estimate
 
+		//Estimate warning label
+		attributePanelConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+		attributePanelConstraints.insets = new Insets(0,5,0,0);
+		attributePanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
+		attributePanelConstraints.gridx = 3; //set the x coord of the cell of the layout we are describing
+		attributePanelConstraints.gridy = 6;//set the y coord of the cell of the layout we are describing
+		add(warningEstimate, attributePanelConstraints);//Actually add the "warningEstimate" to the layout given the previous constraints
+
 		//Actual effort:
 		//Set the constraints for the "actualEffortLabel" and add it to the innerPanel
-		attributePanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		attributePanelConstraints.insets = new Insets(10,5,0,0);
 		attributePanelConstraints.gridx = 2;
-		attributePanelConstraints.gridy = 6;
+		attributePanelConstraints.gridy = 7;
 		add(actualEffortLabel, attributePanelConstraints);
 		//Set the constraints for the "txtActualEffort" and add it to the innerPanel
 		attributePanelConstraints.ipadx = 80;
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.gridx = 3;
-		attributePanelConstraints.gridy = 6;
+		attributePanelConstraints.gridy = 7;
 		add(txtActualEffort, attributePanelConstraints);
 		//end Actual effort
 
+		//Actual effort warning label
+		attributePanelConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+		attributePanelConstraints.insets = new Insets(0,5,0,0);
+		attributePanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
+		attributePanelConstraints.gridx = 3; //set the x coord of the cell of the layout we are describing
+		attributePanelConstraints.gridy = 8;//set the y coord of the cell of the layout we are describing
+		add(warningActualEffort, attributePanelConstraints);//Actually add the "warningActualEffort" to the layout given the previous constraints
+
 		//Iteration
 		//Set the constraints for the "iterationLabel" and add it to the innerPanel
-		attributePanelConstraints.ipadx = 0;//This tells the layout to reset the horizontal ipad from the previously defined 80 units to now 0 units
 		attributePanelConstraints.weightx = 0.07;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		attributePanelConstraints.insets = new Insets(10,5,0,0);
 		attributePanelConstraints.gridx = 2;
-		attributePanelConstraints.gridy = 7;
+		attributePanelConstraints.gridy = 9;
 		add(iterationLabel, attributePanelConstraints);
 		//Set the constraints for the "iterationBox" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.43;
 		attributePanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		attributePanelConstraints.gridx = 3;
-		attributePanelConstraints.gridy = 7;
+		attributePanelConstraints.gridy = 9;
 		add(iterationBox, attributePanelConstraints);
 		//end Iteration
 
-		//Warning labels
+		//Warning name and description labels
 		attributePanelConstraints.anchor = GridBagConstraints.LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
 		attributePanelConstraints.insets = new Insets(0,5,0,0);
 		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 		attributePanelConstraints.gridwidth = 3; //This tells the layout that this component will be 2 cells wide
 		attributePanelConstraints.gridy = 1;//set the y coord of the cell of the layout we are describing
-		add(warningName, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		add(warningName, attributePanelConstraints);//Actually add the "warningName" to the layout given the previous constraints
 		attributePanelConstraints.gridx = 1; //set the x coord of the cell of the layout we are describing
 		attributePanelConstraints.gridy = 3;//set the y coord of the cell of the layout we are describing
-		add(warningDescription, attributePanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
+		add(warningDescription, attributePanelConstraints);//Actually add the "warningDescription" to the layout given the previous constraints
 		//end warning labels
 
 
@@ -541,7 +581,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return the nonNoteFieldsChanged
 	 */
@@ -561,7 +601,7 @@ public class RequirementAttributePanel extends JPanel {
 			this.fieldsChanged[i] = fieldsChanged;
 		}
 	}
-	
+
 	/**
 	 * @param fieldsChanged the fieldsChanged to set
 	 */
@@ -580,6 +620,14 @@ public class RequirementAttributePanel extends JPanel {
 		this.saveButton = saveButton;
 	}
 
+	/** Getter for the saveButton
+	 *  
+	 * @return the save button 
+	 */
+	public JButton getSaveButton() {
+		return saveButton;
+	}
+
 	/** Takes a JComponent and sets its color if its values were changed
 	 * 
 	 * @param obj The component that is being watched
@@ -596,7 +644,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		if (saveButton != null && nameAndDescriptionValidityListener != null){
-			saveButton.setEnabled(isNonNoteFieldsChanged() && setSaveButtonWhenNameAndDescriptionAreValid());
+			saveButton.setEnabled(isNonNoteFieldsChanged() && setSaveButtonWhenFieldsAreValid());
 		}
 	}
 	/** Sets up the controllers and listeners for this panel   */
@@ -636,7 +684,8 @@ public class RequirementAttributePanel extends JPanel {
 					changeField(txtEstimate, 3, true);
 				} else {
 					changeField(txtEstimate, 3, false);
-				}		
+				}
+				setSaveButtonWhenFieldsAreValid();//This is here because otherwise the estimate validity is only checked when the field has changed from it's stored value
 			}
 		});
 		txtActualEffort.addKeyListener(new KeyListener(){
@@ -672,27 +721,28 @@ public class RequirementAttributePanel extends JPanel {
 					changeField(statusBox, 6, false);
 				}
 				// Only valid in EDIT mode
+				//TODO: Is this necessary?
 				if (mode.equals(Mode.EDIT) ){
 
 				}
 			}
 
 		});
-
-
-
 		// Add a listener to the iteration box that changes the Req's status when the iteration is changed
 		iterationBox.addItemListener(new IterationChangeListener(this));
 	}
-	/** Checks the name and description fields for changes and sets the warning labels and 
+
+	/** Checks the name, description, estimate, and actual effort fields for changes and sets the warning labels and 
 	 *  save button status appropriately            
 	 *  
-	 *   @return True if the name and description fields are valid, false otherwise
+	 *   @return True if the name, description, estimate, and actual effort fields are valid, false otherwise
 	 */
-	public boolean setSaveButtonWhenNameAndDescriptionAreValid(){
+	public boolean setSaveButtonWhenFieldsAreValid(){
 		// Initialize flags
 		boolean nameGood = true;
 		boolean desGood = true;
+		boolean estimateGood = true;
+		boolean effortGood = true;
 
 		// Check the name box
 		if ((txtName.getText().length()>=100)||(txtName.getText().length()<1)){
@@ -711,11 +761,29 @@ public class RequirementAttributePanel extends JPanel {
 			// reset the warning if necessary
 			warningDescription.setText("");
 		}
+		
+		// Check the estimate box
+		if ((txtEstimate.getText().length()==0)&& txtEstimate.isEnabled()){
+			warningEstimate.setText("Estimate cannot be blank");
+			estimateGood = false;
+		} else {
+			// reset the warning if necessary
+			warningEstimate.setText("");
+		}
+			
+		// Check the actual effort box
+		if ((txtActualEffort.getText().length()==0)&& txtActualEffort.isEnabled()){
+			warningActualEffort.setText("ActualEffort cannot be blank");
+			effortGood = false;
+		} else {
+			// reset the warning if necessary
+			warningActualEffort.setText("");
+		}
 
-		// If either are false, keep it disabled
-		validNameAndDescription = Boolean.valueOf(desGood && nameGood);
-		saveButton.setEnabled( validNameAndDescription.booleanValue() && isFieldsChanged());	
-		return validNameAndDescription;
+		// If any are false, keep it disabled
+		validFields = Boolean.valueOf(desGood && nameGood && effortGood && estimateGood);
+		saveButton.setEnabled( validFields.booleanValue() && isFieldsChanged());	
+		return validFields;
 	}	
 
 	/**
@@ -769,12 +837,8 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Sets the appropriate fields disabled upon creation
-	 * 
-	 */
+	/** Sets the appropriate fields disabled upon creation	 */
 	protected void disableFieldsOnCreation(){
-
 		if (mode == Mode.CREATE) {
 			//Set the following fields to be initially grayed out
 			toggleComponentEnabled(txtEstimate, false);
@@ -797,8 +861,6 @@ public class RequirementAttributePanel extends JPanel {
 
 		populateFields();
 
-
-		// TODO: better comments here
 		revalidate();
 		layout.invalidateLayout(this);
 		layout.layoutContainer(this);
@@ -978,7 +1040,7 @@ public class RequirementAttributePanel extends JPanel {
 				this.updateStatusSettings("Open");
 				toggleComponentEnabled(txtEstimate, true);
 			} else {
-				toggleComponentEnabled(txtEstimate, false); 
+				txtEstimate.setEnabled(false); 
 				this.updateStatusSettings("InProgress");
 			}
 			// hack to make the status box change colors
@@ -993,20 +1055,16 @@ public class RequirementAttributePanel extends JPanel {
 		this.repaint();
 	}
 
-	/** Checks the Iteration box for changes and yellows that box appropriately
-	 * 
-	 */
+	/** Checks the Iteration box for changes and yellows that box appropriately 	 */
 	public void checkIterationChange() {
 		// Get the name of the iteration that this Requirement used to be assigned to
 		Iteration[] allIterations = parent.getAllIterations();
-
 		String oldValue = "";
 		for (int i = 0; i < allIterations.length; ++i) {
 			if (currentRequirement.getIteration() == allIterations[i].getID()){
 				oldValue = (allIterations[i].getName());
 			}
 		}
-
 
 		// Check the old value and set the box yellow as necessary
 		if (!iterationBox.getSelectedItem().toString().equals(oldValue + "")) {
@@ -1016,10 +1074,18 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 
+	/** Sets a boolean flag to say that the current requirement is being saved. This flag is checked
+	 *  when other operations that could interrupt the save are called
+	 * @param isSaving True if the requirement is being saved, false otherwise
+	 */
 	public void setSaving(boolean isSaving) {
 		this.fieldsChanged[10] = isSaving;
 	}
-	
+
+	/** Returns whether or not the current requirement is being saved.
+	 * 
+	 * @return True if the requirement is being saved, false otherwise
+	 */
 	public boolean isSaving () {
 		return this.fieldsChanged[10];
 	}

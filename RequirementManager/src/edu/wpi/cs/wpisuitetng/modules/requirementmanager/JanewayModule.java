@@ -29,10 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarController;
 
-
-/**
- * The Requirement Manager module added to the Janeway client.
- *
+/** The Requirement Manager module added to the Janeway client.
  */
 public class JanewayModule implements IJanewayModule {
 	
@@ -46,11 +43,9 @@ public class JanewayModule implements IJanewayModule {
 	public final MainTabPanel mainTabPanel;
 	public final ToolbarView toolbarView;
 	
-	/**
-	 * Construct a new DummyModule for demonstration purposes
+	/** Construct a new RequirementManager module
 	 */
 	public JanewayModule() {
-		
 		// Setup main tab view and controller
 		mainTabPanel = new MainTabPanel();
 		mainTabController = mainTabPanel.getMainTabController();
@@ -67,7 +62,7 @@ public class JanewayModule implements IJanewayModule {
 		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabPanel);
 		tabs.add(tab);
 		
-		// add keyboard shortcuts to requirements tab
+		// Add keyboard shortcuts to requirements tab
 	    registerKeyboardShortcuts(tab);
 	}
 
@@ -87,6 +82,9 @@ public class JanewayModule implements IJanewayModule {
 		return tabs;
 	}
 	
+	/** Register the keyboard shortcuts recognized by this tab
+	 * @param tab the tab to register keyboard shortcuts for
+	 */
 	@SuppressWarnings("serial")
 	private void registerKeyboardShortcuts(JanewayTabModel tab) {
 		
@@ -128,12 +126,12 @@ public class JanewayModule implements IJanewayModule {
 		}
 	}
 
+	/**
+	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#invokeWhenSelected()
+	 */
 	@Override
 	public void invokeWhenSelected() {
 		ListView tmpListView = (ListView)mainTabPanel.getComponentAt(0);
 		tmpListView.refreshData();
-		
-		// Set the correct iteration/filter tab
-		tmpListView.getListTab().getTabPanel().setSelectedComponent(tmpListView.getListTab().getTabPanel().getIterationList());
 	}
 }

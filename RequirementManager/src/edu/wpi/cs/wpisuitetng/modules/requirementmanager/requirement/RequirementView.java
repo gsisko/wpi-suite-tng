@@ -115,7 +115,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		buttonGroup.setPreferredWidth(150);
 		
 		requirementTab.getAttributePanel().setSaveButton(saveButton);
-		requirementTab.getAttributePanel().setSaveButtonWhenNameAndDescriptionAreValid();
+		requirementTab.getAttributePanel().setSaveButtonWhenFieldsAreValid();
 		requirementTab.getAttributePanel().setupControllersAndListeners();
 		
 		requirementTab.getTabPanel().getSubRequirementPanel().setUp();

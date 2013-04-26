@@ -20,4 +20,9 @@ public enum AcceptanceTestResult {
 	NONE,
 	PASSED,
 	FAILED;
+	
+	
+	public static AcceptanceTestResult toResult (String toConvert) {
+		return valueOf(toConvert.toUpperCase());
+	}
 }

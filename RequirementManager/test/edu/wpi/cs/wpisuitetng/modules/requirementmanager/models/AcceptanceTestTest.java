@@ -8,16 +8,10 @@ import static org.junit.Assert.*;
  * The class <code>AcceptanceTestTest</code> contains tests for the class <code>{@link AcceptanceTest}</code>.
  *
  * @generatedBy CodePro at 4/23/13 10:12 PM
- * @author Edison
- * @version $Revision: 1.0 $
  */
 public class AcceptanceTestTest {
 	/**
 	 * Run the AcceptanceTest(String,String) constructor test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testAcceptanceTest_1()
@@ -41,10 +35,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the AcceptanceTest(String,String,AcceptanceTestResult) constructor test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testAcceptanceTest_2()
@@ -69,10 +59,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the AcceptanceTest fromJson(String) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testFromJson_1()
@@ -87,10 +73,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the AcceptanceTest fromJson(String) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testFromJson_2()
@@ -105,10 +87,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the AcceptanceTestResult getAcceptanceTestResult() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testGetAcceptanceTestResult_1()
@@ -128,10 +106,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the String getAcceptanceTestTitle() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testGetAcceptanceTestTitle_1()
@@ -148,10 +122,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the String getBodyString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testGetBodyString_1()
@@ -168,10 +138,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the String getDescription() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testGetDescription_1()
@@ -188,10 +154,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the String getLabelString() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testGetLabelString_1()
@@ -207,10 +169,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the void setAcceptanceTestResult(AcceptanceTestResult) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testSetAcceptanceTestResult_1()
@@ -227,10 +185,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the void setAcceptanceTestTitle(String) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testSetAcceptanceTestTitle_1()
@@ -247,10 +201,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the void setDescription(String) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testSetDescription_1()
@@ -267,10 +217,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Run the String toJSON() method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testToJSON_1()
@@ -287,9 +233,6 @@ public class AcceptanceTestTest {
 	/**
 	 * Run the String toString() method test.
 	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Test
 	public void testToString_1()
@@ -306,11 +249,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Perform pre-test initialization.
-	 *
-	 * @throws Exception
-	 *         if the initialization fails for some reason
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@Before
 	public void setUp()
@@ -320,11 +258,6 @@ public class AcceptanceTestTest {
 
 	/**
 	 * Perform post-test clean-up.
-	 *
-	 * @throws Exception
-	 *         if the clean-up fails for some reason
-	 *
-	 * @generatedBy CodePro at 4/23/13 10:12 PM
 	 */
 	@After
 	public void tearDown()

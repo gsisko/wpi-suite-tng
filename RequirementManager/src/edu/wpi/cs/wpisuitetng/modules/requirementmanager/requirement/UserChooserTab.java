@@ -23,11 +23,15 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import com.lowagie.text.Font;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -59,6 +63,8 @@ public class UserChooserTab extends JPanel {
 
 	private JButton addSelectedUserButton;//The button to trigger the assignment of a selected user to this requirement from the "unassignedList"
 	private JButton removeSelectedUserButton;//The button to trigger the unassignment of a selected user to this requirement from the "assignedList"
+	
+	private JLabel changesSavedLabel; //A label to tell the user that changes in this panel are automatically saved
 
 	private ArrayList<User> users;
 
@@ -82,6 +88,11 @@ public class UserChooserTab extends JPanel {
 		//Create the buttons
 		addSelectedUserButton = new JButton("Add Users ->");
 		removeSelectedUserButton= new JButton("<- Remove Users");
+		
+		//Create the label
+		changesSavedLabel = new JLabel("(saves automatically)");
+		changesSavedLabel.setFont(changesSavedLabel.getFont().deriveFont(7));//set the size (7 point) of the text of this label
+		changesSavedLabel.setFont(changesSavedLabel.getFont().deriveFont(Font.ITALIC));//set the text of this label to italic
 
 		//Create the UserListModels
 		unassignedUserListModel = new UserListModel();
@@ -269,18 +280,23 @@ public class UserChooserTab extends JPanel {
 			}
 		});
 
-		//Create the buttonPanel using a grid layout with 2 rows, 1 column, 0 horizontal spacing, and 6 units of vertical spacing between the components
-		//This is a small inner panel to hold the buttons
-		JPanel buttonPanel = new JPanel(new GridLayout(2,1,0,6));
+		//Create the buttonPanel using a grid layout with 3 rows, 1 column, 0 horizontal spacing, and 6 units of vertical spacing between the components
+		//This is a small inner panel to hold the buttons and the changesSavedLabel
+		JPanel buttonPanel = new JPanel(new GridLayout(3,1,0,6));
 		//Set the border of the buttonPanel to an empty boarder for spacing purposes
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
+		
+		//Set the alignment of the changesSavedLabel to the center of it's area
+		changesSavedLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-		//add the buttons to the buttonPanel
+		//add the buttons and the changesSavedLabel to the buttonPanel
 		buttonPanel.add(addSelectedUserButton);
 		buttonPanel.add(removeSelectedUserButton);
+		buttonPanel.add(changesSavedLabel);
+		
 
 		//set the maximum size of the buttonPanel. This is especially important because a grid layout will stretch it's components to fill whatever space it can
-		buttonPanel.setMaximumSize(new Dimension(140, 66));
+		buttonPanel.setMaximumSize(new Dimension(140, 90));
 
 		//End button panel
 

@@ -134,10 +134,7 @@ public enum OperatorType {
 				reqField = "";
 			}			
 		}
-		
-		
-		
-		
+
 		switch(op){
 		case Contains:
 			if (isEnum) return false;// False because enums can't be compared by contain
