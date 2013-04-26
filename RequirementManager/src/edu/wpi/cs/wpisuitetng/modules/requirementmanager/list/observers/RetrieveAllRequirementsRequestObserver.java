@@ -19,16 +19,14 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve all requirements
+/** An observer for a request to retrieve all requirements
  */
 public class RetrieveAllRequirementsRequestObserver implements RequestObserver {
 
 	/** The controller managing the request */
 	protected RetrieveAllRequirementsController controller;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer
 	 * @param controller
 	 */
 	public RetrieveAllRequirementsRequestObserver(RetrieveAllRequirementsController controller) {

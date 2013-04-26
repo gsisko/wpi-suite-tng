@@ -50,21 +50,19 @@ public class RetrieveAllRequirementsController {
 	/**Initialize to keep track of table column order */
 	protected String[] columnOrder;
 
-	/**Initialize to keep track of table column width */
+	/** ArrayList of integers initialized to keep track of table column width */
 	protected ArrayList<Integer> columnWidth  = new ArrayList<Integer>();
 
-	/**Initialize to keep track of table column width */
+	/** ArrayList of strings initialized to keep track of table column width */
 	protected ArrayList<String> columnHeader  = new ArrayList<String>();
 	
-	/**Initialize to keep track of table column sort */
+	/**Used to keep track of table column sort */
 	protected java.util.List<? extends SortKey> columnSort;
 
 	/** boolean to designate if there is existing data in the list */
 	protected boolean hasPreviousData;
 
-	/**
-	 * Constructs a new RetrieveAllRequirementsController
-	 * 
+	/** Constructs a new RetrieveAllRequirementsController
 	 * @param view the search requirements view
 	 */
 	public RetrieveAllRequirementsController(ListView view) {
@@ -73,8 +71,7 @@ public class RetrieveAllRequirementsController {
 		this.filterPanel = view.getListTab().getTabPanel().getFilterList();
 	}
 
-	/**
-	 * Sends a request for all of the requirements
+	/** Sends a request for all of the requirements
 	 */
 	public void refreshData() {		
 		final RequestObserver requestObserver = new RetrieveAllRequirementsRequestObserver(this);
@@ -84,25 +81,23 @@ public class RetrieveAllRequirementsController {
 		request.send();
 	}
 
-	/**
-	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when the
+	/**This method is called by the {@link RetrieveAllRequirementsRequestObserver} when the
 	 * response is received. This method will now also take into account active filters
 	 * when determining what requirements to show. 
 	 * 
 	 * @param requirements an array of requirements returned by the server
 	 */
 	public void receivedData(Requirement[] requirements) {
-
-		// if requirements exist
+		// If requirements exist
 		if (requirements.length > 0) {
 			hasPreviousData = true;
 		} else {
 			hasPreviousData = false;
 		}
 
-		// if the box is not selected (user doesn't want default), and
+		// If the box is not selected (user doesn't want default), and
 		// if there is previous data, and
-		// if there are rows in the table
+		// if there are rows in the table,
 		// get the column widths
 		if ((!(view.getCheckBoxStatus())) 
 				&& hasPreviousData 
@@ -119,7 +114,7 @@ public class RetrieveAllRequirementsController {
 		//Array to keep track of which requirements should be filtered
 		ArrayList<Requirement> isFiltered = new ArrayList<Requirement>();
 
-		// empty the table
+		//Empty the table
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
 
@@ -131,7 +126,7 @@ public class RetrieveAllRequirementsController {
 
 		// Filtering Phase
 		if (requirements.length > 0) {
-			// save the data
+			//Save the data
 			this.data = requirements;
 
 			if(filters != null && filters.size() > 0) {
@@ -139,7 +134,7 @@ public class RetrieveAllRequirementsController {
 				for (int i = 0; i < requirements.length; i++) {
 					boolean passAllFilters = true; // Must reset to true before going into filter loop
 					for(int x = 0; x < filters.size(); x++){
-						Filter currentFilter = filters.get(x); //get current filter
+						Filter currentFilter = filters.get(x); //Get current filter
 
 						if(!currentFilter.passesFilter(requirements[i])){
 							passAllFilters = false;
@@ -165,13 +160,13 @@ public class RetrieveAllRequirementsController {
 		// Transferring Phase
 		// Put the requirements that passed the filters
 		if (isFiltered.size() > 0) {
-			// set the column names
+			// Set the column names
 			String[] columnNames = {"ID", "Name", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
 			Object[][] entries = new Object[isFiltered.size() ][columnNames.length];
 
 			setColumnEntries(columnNames, entries, isFiltered);
 
-			// fill the table
+			// Fill the table
 			resultsPanel.getModel().setColumnNames(columnNames);
 			resultsPanel.getModel().setData(entries);
 
@@ -182,7 +177,7 @@ public class RetrieveAllRequirementsController {
 				return;
 			}
 
-			// if the box is checked, use defaults, else set custom
+			// If the box is checked, use defaults, else set custom
 			if (view.getCheckBoxStatus()) {
 				defaultColumnWidths();
 			} else {
@@ -194,8 +189,7 @@ public class RetrieveAllRequirementsController {
 		}
 	}
 
-	/**
-	 * Set default widths of all columns
+	/** Set default widths of all columns
 	 */
 	public void defaultColumnWidths(){
 		//ID
@@ -218,8 +212,7 @@ public class RetrieveAllRequirementsController {
 		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(110);
 	}
 
-	/**
-	 * put the data in the table using default view
+	/** Put the data in the table using default view
 	 * @param columnNames the name of each column name
 	 * @param enteries each cell of the table
 	 * @param isFiltered requirement that passed the filter
@@ -263,8 +256,7 @@ public class RetrieveAllRequirementsController {
 		}
 	}
 
-	/**
-	 *A getter to get the current column headers of the table 
+	/** A getter to get the current column headers of the table 
 	 * @return columnHeader the ArrayList of headers for the table
 	 */
 	public ArrayList<String> getTableName(){
@@ -304,8 +296,7 @@ public class RetrieveAllRequirementsController {
 		return columnHeader;
 	}
 
-	/**
-	 * put the data in the table using default view
+	/** Put the data in the table using default view
 	 * @param columnNames the names of each column of the table
 	 * @param entries each cell of the table
 	 */
@@ -325,8 +316,7 @@ public class RetrieveAllRequirementsController {
 		}
 	}
 
-	/**
-	 *A getter to get the current width of the table 
+	/**A getter to get the current width of the table 
 	 * @return columnWidth return the ArrayList of column Widths
 	 */
 	public ArrayList<Integer> getTableWidth(){
@@ -366,8 +356,7 @@ public class RetrieveAllRequirementsController {
 		return columnWidth;
 	}
 
-	/**
-	 * Set custom widths of all columns
+	/** Set custom widths of all columns
 	 * @param columnWidth the ArrayList of columnWidths
 	 */
 	public void setTableWidth(ArrayList<Integer> columnWidth){
@@ -383,8 +372,7 @@ public class RetrieveAllRequirementsController {
 		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
 	}
 	
-	/**
-	 *A getter to get the current sorts of the table 
+	/**A getter to get the current sorts of the table 
 	 * @return columnSort return the ArrayList of column Sorts
 	 */
 	public java.util.List<? extends SortKey> getTableSort(){
@@ -394,8 +382,7 @@ public class RetrieveAllRequirementsController {
 		return columnSort;
 	}
 
-	/**
-	 * Set custom Sorts of all columns
+	/**Set custom Sorts of all columns
 	 * @param columnSort the ArrayList of columnSorts
 	 */
 	public void setTableSort(java.util.List<? extends SortKey> columnSort){
@@ -404,8 +391,7 @@ public class RetrieveAllRequirementsController {
 	}
 
 
-	/**
-	 * This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
+	/** This method is called by the {@link RetrieveAllRequirementsRequestObserver} when an
 	 * error occurs retrieving the requirements from the server.
 	 */
 	public void errorReceivingData(String error) {
@@ -413,8 +399,7 @@ public class RetrieveAllRequirementsController {
 				"Error Communicating with Server", JOptionPane.ERROR_MESSAGE);
 	}
 
-	/**
-	 * Get the name of the iteration
+	/** Get the name of the iteration
 	 * @param requirement the current requirement
 	 * @return
 	 */
@@ -428,7 +413,6 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/**A getter required for testing
-	 * 
 	 * @return resultsPanel
 	 */
 	public RequirementListPanel getResultsPanel(){
@@ -436,7 +420,6 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/**A getter for use in tests
-	 * 
 	 * @return the filterPanel
 	 */
 	public FilterListTab getFilterPanel(){

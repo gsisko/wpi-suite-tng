@@ -24,7 +24,8 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** Controller to handle retrieving one requirement from the server triggered
- *  by double clicking on a model in the list of a list panel   */
+ *  by double clicking on a model in the list of a list panel  
+ */
 public class RetrieveModelController extends MouseAdapter {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
@@ -32,7 +33,6 @@ public class RetrieveModelController extends MouseAdapter {
 	private final IBuilderPanel builderView;	
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-	
 	
 	/** Constructs a controller with an action listener that can load up a 
 	 *  model when an item is double clicked in the list.

@@ -25,25 +25,21 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * Controller to handle retrieving one requirement from the server
+/** Controller to handle retrieving one requirement from the server
  */
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
 	protected RequirementListPanel view;
 
-	/**
-	 * Construct the controller
-	 * 
+	/** Construct the controller
 	 * @param view the parent view 
 	 */
 	public RetrieveRequirementController(RequirementListPanel view) {
 		this.view = view;
 	}
 
-	/**
-	 * @see java.awt.event.MouseAdapter#mouseClicked(MouseEvent)
+	/**@see java.awt.event.MouseAdapter#mouseClicked(MouseEvent)
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -68,8 +64,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 		}
 	}
 
-	/**
-	 * Called by {@link RetrieveRequirementRequestObserver} when the response
+	/** Called by {@link RetrieveRequirementRequestObserver} when the response
 	 * is received from the server.
 	 * @param requirement the requirement that was retrieved
 	 */
@@ -78,8 +73,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 		view.getTabController().addEditRequirementTab(requirement);
 	}
 
-	/**
-	 * Called by {@link RetrieveRequirementRequestObserver} when an error
+	/** Called by {@link RetrieveRequirementRequestObserver} when an error
 	 * occurred retrieving the requirement from the server.
 	 */
 	public void errorRetrievingRequirement(String error) {

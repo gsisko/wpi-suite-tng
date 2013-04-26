@@ -18,9 +18,10 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /** Observer that waits for a single delete Model request to return
- *  from the server. It refreshes all list views applicable. */
+ *  from the server. It refreshes all list views applicable. 
+ */
 public class DeleteModelObserver implements RequestObserver,IObserver {
-	/** Controller that started this observer   	 */
+	/** Controller that started this observer */
 	private final DeleteModelController controller;
 	
 	/** Default constructor with a reference back to the controller
@@ -39,7 +40,7 @@ public class DeleteModelObserver implements RequestObserver,IObserver {
 		controller.refreshListViews();
 	}
 
-	/**  Upon failure, prints to console
+	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void responseError(IRequest iReq) {

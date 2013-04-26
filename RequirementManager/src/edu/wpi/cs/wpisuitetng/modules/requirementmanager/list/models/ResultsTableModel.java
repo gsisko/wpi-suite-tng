@@ -14,16 +14,15 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
 
 import javax.swing.table.AbstractTableModel;
 
-/**
- * A model to manage the data displayed in the {@link RequirementListPanel}
+/** A model to manage the data displayed in the {@link RequirementListPanel}
  */
 @SuppressWarnings("serial")
 public class ResultsTableModel extends AbstractTableModel {
 
-	// The names to be displayed in the column headers
+	/** The names to be displayed in the column headers */
 	private String[] columnNames = {};
 	
-	// The data to be displayed in the table
+	/** The data to be displayed in the table */
 	private Object[][] data = {};
 	
 	/**
@@ -33,18 +32,14 @@ public class ResultsTableModel extends AbstractTableModel {
 		
 	}
 	
-	/**
-	 * Set the data to be displayed in the table
-	 * 
+	/**Set the data to be displayed in the table 
 	 * @param data A two-dimensional array of objects containing the data
 	 */
 	public void setData(Object[][] data) {
 		this.data = data;
 	}
 	
-	/**
-	 * Set the column names to be displayed in the table
-	 * 
+	/** Set the column names to be displayed in the table
 	 * @param columnNames An array of strings containing the column names
 	 */
 	public void setColumnNames(String[] columnNames) {
@@ -67,11 +62,9 @@ public class ResultsTableModel extends AbstractTableModel {
 		return getData().length;
 	}
 
-	
 	/**
 	 * @param row The row number of the value you wish to get
 	 * @param col The column number of the value you wish to get
-	 * 
 	 * @return the value at the requested row and column
 	 */
 	@Override
@@ -81,7 +74,6 @@ public class ResultsTableModel extends AbstractTableModel {
 	
 	/**
 	 * @param col The column number that you wish to get the name of
-	 * 
 	 * @return The name of the column you requested
 	 */
 	@Override
@@ -91,7 +83,6 @@ public class ResultsTableModel extends AbstractTableModel {
 
 	/**
 	 * @param col The column number that you wish to get the class of
-	 * 
 	 * @return the class of the column number you requested
 	 */
 	@Override
@@ -102,7 +93,6 @@ public class ResultsTableModel extends AbstractTableModel {
 	/**
 	 * @param row The row number of the value you wish to know if it's editable
 	 * @param col The column number of the value you wish to know if it's editable
-	 * 
 	 * @return false, none of the Results Table Model is editable
 	 */
 	@Override
@@ -110,7 +100,6 @@ public class ResultsTableModel extends AbstractTableModel {
 		return false;
 	}
 
-	
 	/**
 	 * @return an array of column names;
 	 */
@@ -119,8 +108,7 @@ public class ResultsTableModel extends AbstractTableModel {
 	}
 
 	/**
-	 * 
-	 * @return The data
+	 * @return The data in the table
 	 */
 	public Object[][] getData() {
 		return data;
