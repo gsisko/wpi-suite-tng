@@ -31,8 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public class FileModel extends AbstractModel
  {
-
-
 	private String fileName;
 	private String idNum;
 	private Integer fileSize; //In bytes
@@ -261,9 +259,10 @@ public class FileModel extends AbstractModel
 		String idNum = new String((Base64.decodeBase64(parts[0])));
 		String fileName = new String((Base64.decodeBase64(parts[1])));
 		
-		FileModel decoded = new FileModel(fileName,idNum, parts[3]);
+//		FileModel decoded = new FileModel(fileName,idNum, parts[3], null);
 		
-		return decoded;
+//		return decoded;
+		return null;
 	}
 	
 	@Override
@@ -327,14 +326,14 @@ public class FileModel extends AbstractModel
 	/**
 	 * @return the fileData
 	 */
-	public String getFileData() {
+	public ArrayList<String> getFileData() {
 		return fileData;
 	}
 
 	/**
 	 * @param fileData the fileData to set
 	 */
-	public void setFileData(String fileData) {
+	public void setFileData(ArrayList<String> fileData) {
 		this.fileData = fileData;
 	}
 
