@@ -21,7 +21,7 @@ public interface IEditableListPanel {
 	 * 
 	 * @return a Boolean array of what models need saving
 	 */
-	Boolean[] getNeedsSaveFlags();
+	Boolean[][] getNeedsSaveFlags();
 	
 	/** Sets up any arrays of flags or other settings needed
 	 *  before editing can start 
