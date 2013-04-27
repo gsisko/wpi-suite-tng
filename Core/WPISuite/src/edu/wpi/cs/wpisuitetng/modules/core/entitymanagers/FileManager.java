@@ -131,28 +131,39 @@ public class FileManager implements EntityManager<FileModel>{
 	 * @throws NotFoundException if the project cannot be found
 	 * @throws WPISuiteException if retrieve fails
 	 */
-	public FileModel[] getEntity(String id) throws NotFoundException, WPISuiteException
-	{
-		FileModel[] m = new FileModel[1];
-		if(id.equalsIgnoreCase(""))
-		{
-			throw new NotFoundException("No (blank) Project id given.");
-		}
-		else
-		{
-			m = data.retrieve(fileModel, "idNum", id).toArray(m);
+	//TODO: Do we want to be able to only retrieve by id? This seems bad...
+//	public FileModel[] getEntity(String id) throws NotFoundException, WPISuiteException
+//	{
+//		FileModel[] m = new FileModel[1];
+//		if(id.equalsIgnoreCase(""))
+//		{
+//			throw new NotFoundException("No (blank) File id given.");
+//		}
+//		else
+//		{
+//			m = data.retrieve(fileModel, "idNum", id).toArray(m);
+//
+//			if(m[0] == null)
+//			{
+//				throw new NotFoundException("File with id <" + id + "> not found.");
+//			}
+//			else
+//			{
+//				return m;
+//			}
+//		}
+//	}
 
-			if(m[0] == null)
-			{
-				throw new NotFoundException("File with id <" + id + "> not found.");
-			}
-			else
-			{
-				return m;
-			}
-		}
-	}
-
+	/**
+	 * returns a project without requiring a session, 
+	 * specifically for the scenario where a session needs to be created.
+	 * only ever returns one project, "" is not a valid argument;
+	 * 
+	 * @param id - the id of the user, in this case it's the idNum
+	 * @return a list of matching files
+	 * @throws NotFoundException if the project cannot be found
+	 * @throws WPISuiteException if retrieve fails
+	 */
 	public FileModel[] getEntityByName(Session s, String fileName) throws NotFoundException, WPISuiteException
 	{
 		FileModel[] m = new FileModel[1];
@@ -207,21 +218,23 @@ public class FileManager implements EntityManager<FileModel>{
 		if(s1==null){
 			throw new WPISuiteException("Null Session.");
 		}
-		User theUser = s1.getUser();
-		FileModel[] model = this.getEntity(id);
 		
-		//TODO: Do we need a permission check?
-		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
-				theUser.getRole().equals(Role.ADMIN)){
-			Model m = data.delete(data.retrieve(fileModel, "idNum", id).get(0));
-			logger.log(Level.INFO, "ProjectManager deleting project <" + id + ">");
-
-			return (m != null) ? true : false;
-		}
-		else{
-			logger.log(Level.WARNING, "ProjectManager Delete attempted by user with insufficient permission");
-			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
-		}
+		return false;
+		//TODO: Can we do this with only an id?
+//		User theUser = s1.getUser();
+//		FileModel[] model = this.getEntity(id);
+//		
+//		//TODO: Do we need a permission check?
+//		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
+//				theUser.getRole().equals(Role.ADMIN)){
+//			Model m = data.delete(data.retrieve(fileModel, "idNum", id).get(0));
+//			logger.log(Level.INFO, "FileManager deleting file <" + id + ">");
+//
+//			return (m != null) ? true : false;
+//		}
+//		else{
+//			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
+//		}
 	}
 
 	@Override

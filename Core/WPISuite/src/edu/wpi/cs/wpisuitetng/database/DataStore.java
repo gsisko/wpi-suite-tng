@@ -11,10 +11,13 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.database;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -80,32 +83,6 @@ public class DataStore implements Data {
 		}
 		return myself;
 	}
-//
-//	/**
-//	 * Get the single instance of the Blob Database
-//	 * @return the only instance of the Blob Database
-//	 */
-//	public static Blob getBlobStore()
-//	{
-//		if(myBlob == null)
-//		{
-//			logger.log(Level.FINE, "Opening connection to db4o database...");
-//			myBlob = new Blob();
-//			// accessLocalServer
-//			// Please see Wiki for more information on the ServerConfiguration.
-//			ServerConfiguration config = Db4oClientServer.newServerConfiguration();
-//			config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
-//			config.common().objectClass(User.class).storeTransientFields(true); // Enables data persistence for passwords
-//
-//			//Connect to the Database
-//			server = Db4oClientServer.openServer(config, WPI_TNG_DB, PORT);
-//			server.grantAccess(DB4oUser,DB4oPass);
-//
-//			theDB = server.openClient();
-//			logger.log(Level.FINE, "Connected to db4o database!");
-//		}
-//		return myBlob;
-//	}
 
 	/**
 	 * Method to check if the database is finished with the Blob
@@ -136,8 +113,8 @@ public class DataStore implements Data {
 		//TODO: Rewrite to not use instanceof?
 		if (aModel instanceof FileModel){
 			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
-				
-			//Temporary file because we only need it to exist when we put it in the blob
+
+			//Temporary file because we only need it to exist when we move between blob and Base64 String
 			File file;
 			try {
 				file = File.createTempFile(((FileModel) aModel).getFileName(), "");
@@ -148,7 +125,7 @@ public class DataStore implements Data {
 				return false;
 			} 
 			file.deleteOnExit(); //Delete file if the JVM exits
-			
+
 			//Convert byte array to a file :
 			OutputStream os;
 			try {
@@ -165,7 +142,7 @@ public class DataStore implements Data {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 				logger.log(Level.SEVERE, "Core Can't write to file to save a BLOB!");
-				
+
 				try {
 					os.close();
 				} catch (IOException e) {
@@ -174,7 +151,7 @@ public class DataStore implements Data {
 				}
 				return false;
 			}
-			
+
 			try {
 				os.close();
 			} catch (IOException e) {
@@ -183,45 +160,53 @@ public class DataStore implements Data {
 				return false;
 			}
 			//End conversion
-			
+
 			//Save to blob
-			try {
-				blob.readFrom(file);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				logger.log(Level.SEVERE, "Core Can't write to BLOB!");
+			if (blob.getFileName().compareTo(((FileModel) aModel).getFileName()) != 0) {//If file doesn't exist in the blob 
+				try {
+					blob.readFrom(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't write to BLOB!");
+				}
+			} else {
+				//File already exists
+				logger.log(Level.SEVERE, "Core Error saving BLOB! BLOB already exists!");
+
+				return false;
 			}
-			
+
 			waitTillDBIsFinished(blob);
+			logger.log(Level.FINE, "BLOB saved as: " + blob.getFileName());
+			//			return true;
 
-			return true;
-		} else {
-			theDB.store(aModel);
-			System.out.println("Stored " + aModel);
-			logger.log(Level.FINE, "Saving model [" + aModel + "]");
-			theDB.commit();
-			return true;
+			//Clear fileData so we can store in DB as normal
+			((FileModel) aModel).setFileData(null);
 		}
-	}
 
-	/**
-	 * Saves a Model associated with the given project into the database 
-	 * @param Model to save
-	 */
-	public <T> boolean save(T aModel, Project aProject){
-		// Please see Wiki for more information on the ServerConfiguration.
-		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
-		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
-
-		((Model) aModel).setProject(aProject); //Sets the model's project to the given project
+		//store in normal DB
 		theDB.store(aModel);
 		System.out.println("Stored " + aModel);
 		logger.log(Level.FINE, "Saving model [" + aModel + "]");
 		theDB.commit();
 		return true;
+
 	}
 
+	/**
+	 * Saves a Model associated with the given project into the database 
+	 * @param aModel Model to save
+	 * @param aProject Project to save to
+	 */
+	public <T> boolean save(T aModel, Project aProject){
+		// Please see Wiki for more information on the ServerConfiguration.
+		
+		//Rewritten so that files will always get parsed and no repeated code...
+		((Model) aModel).setProject(aProject);
+		return save(aModel);
+	}
+	
 	/**
 	 * Retrieves objects of the given class with the given value for the given field. 
 	 * This function is not project specific.
@@ -249,6 +234,7 @@ public class DataStore implements Data {
 
 		logger.log(Level.FINE, "Attempting Database Retrieve...");
 
+		//Get a list of get* Methods
 		Method[] allMethods = anObjectQueried.getMethods();
 		Method methodToBeSaved = null;
 		for(Method m: allMethods){//Cycles through all of the methods in the class anObjectQueried
@@ -256,6 +242,8 @@ public class DataStore implements Data {
 				methodToBeSaved = m; //saves the method called "get" + aFieldName
 			}
 		}
+
+
 		final Method theGetter = methodToBeSaved;
 		if(theGetter == null){
 			logger.log(Level.WARNING, "Getter method was null during retrieve attempt");
@@ -277,6 +265,74 @@ public class DataStore implements Data {
 			}
 		});
 
+		//Retrieve fileData here if it's a file we are looking up
+				if (anObjectQueried == FileModel.class){
+					//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+
+					//TODO: Do we need aFieldName? It's probably important and we probably should...
+					//			if(aFieldName.equals("FileName"))
+
+					//Loop through entire results
+					for(Model aModel: result){
+						String fileName = ((FileModel) aModel).getFileName();
+
+						File file;
+						try {
+							file = File.createTempFile(fileName, "");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't create temporary file while trying to get a BLOB!");
+							break;
+						} 
+						file.deleteOnExit(); //Delete file if the JVM exits
+
+						//Load file from blob
+						try {
+							blob.writeTo(file);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't read from BLOB!");
+						}
+
+						//TODO:
+						InputStream is;
+						ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+						try {
+							is = new FileInputStream(file);
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't open file I/O stream to get a BLOB!");
+							break;
+						}
+
+						//Load file to byte array
+						int nRead;
+						byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+
+						try {
+							while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+								buffer.write(tempData, 0, nRead);
+
+								buffer.flush();
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't read file I/O stream to get a BLOB!");
+						}
+
+						((FileModel)aModel).setFileData(Base64.encodeBase64String(buffer.toByteArray()));
+
+						waitTillDBIsFinished(blob);
+						
+						logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+					}
+				}
+
+		
 		System.out.println(result);
 		theDB.commit();
 
@@ -334,7 +390,6 @@ public class DataStore implements Data {
 			throw new WPISuiteException("Null getter method.");
 		}
 
-
 		List<Model> result = theDB.query(new Predicate<Model>(){
 			public boolean match(Model anObject){
 				try {
@@ -355,6 +410,73 @@ public class DataStore implements Data {
 				}
 			}
 		});
+
+		//Retrieve fileData here if it's a file we are looking up
+		if (anObjectQueried == FileModel.class){
+			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+
+			//TODO: Do we need aFieldName? It's probably important and we probably should...
+			//			if(aFieldName.equals("FileName"))
+
+			//Loop through entire results
+			for(Model aModel: result){
+				String fileName = ((FileModel) aModel).getFileName();
+
+				File file;
+				try {
+					file = File.createTempFile(fileName, "");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't create temporary file while trying to get a BLOB!");
+					break;
+				} 
+				file.deleteOnExit(); //Delete file if the JVM exits
+
+				//Load file from blob
+				try {
+					blob.writeTo(file);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't read from BLOB!");
+				}
+
+				//TODO:
+				InputStream is;
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				try {
+					is = new FileInputStream(file);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't open file I/O stream to get a BLOB!");
+					break;
+				}
+
+				//Load file to byte array
+				int nRead;
+				byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+
+				try {
+					while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+						buffer.write(tempData, 0, nRead);
+
+						buffer.flush();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't read file I/O stream to get a BLOB!");
+				}
+
+				((FileModel)aModel).setFileData(Base64.encodeBase64String(buffer.toByteArray()));
+
+				waitTillDBIsFinished(blob);
+				
+				logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+			}
+		}
 
 		System.out.println(result);
 		theDB.commit();
