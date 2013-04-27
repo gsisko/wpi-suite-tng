@@ -727,4 +727,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	public void setCurType(String curType) {
 		this.curType = curType;
 	}
+	
+	public ListTab getMyParent() {
+		return this.parent;
+	}
 }

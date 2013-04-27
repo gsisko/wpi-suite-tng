@@ -593,4 +593,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		return cal.getTime();
 	}
+	
+	public ListTab getMyParent() {
+		return this.parent;
+	}
 }
