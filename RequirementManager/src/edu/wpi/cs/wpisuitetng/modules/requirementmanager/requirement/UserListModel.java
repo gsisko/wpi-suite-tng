@@ -20,24 +20,17 @@ import javax.swing.AbstractListModel;
 @SuppressWarnings({"serial","rawtypes"})
 public class UserListModel extends AbstractListModel {
 	
-	
 	private ArrayList<String> users;
 	
-
 	public UserListModel() {
 		users = new ArrayList<String>();
 	}
-
-
+	
 	public void addUser(String newUser) {
-		// Add the user
-		users.add(newUser);
-		
-		// Notify the model that it has changed so the GUI will be udpated
-		this.fireIntervalAdded(this, 0, 0);
+		users.add(newUser);// Add the user
+		this.fireIntervalAdded(this, 0, 0);// Notify the model that it has changed so the GUI will be updated
 	}
 	
-
 	public void addUsers(String[] arrayOfUsers) {
 		for (int i = 0; i < arrayOfUsers.length; i++) {
 			users.add(arrayOfUsers[i]);
@@ -45,7 +38,6 @@ public class UserListModel extends AbstractListModel {
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-
 	public void emptyModel() {
 		int oldSize = getSize();
 		Iterator<String> iterator = users.iterator();
@@ -55,23 +47,19 @@ public class UserListModel extends AbstractListModel {
 		}
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
-	
 
 	@Override
 	public String getElementAt(int index) {
 		return users.get(users.size() - 1 - index).toString();
 	}
 	
-
 	public String getUserAt(int index) {
 		return users.get(users.size() - 1 - index);
 	}
 	
-
 	public void removeElementAt(int index) {
 		users.remove(users.size() - 1 - index);
 	}
-
 
 	@Override
 	public int getSize() {

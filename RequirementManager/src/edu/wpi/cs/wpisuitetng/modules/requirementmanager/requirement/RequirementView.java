@@ -46,16 +46,14 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	protected Requirement[] subRequirements = {new Requirement()};
 	protected Requirement[] displayedRequirements;
 
-	/**
-	 * Constructs a new CreateRequirementView where the user can enter the data for a new requirement.
+	/** Constructs a new CreateRequirementView where the user can enter the data for a new requirement.
 	 */
 	public RequirementView(MainTabController tabController) {
 		this(new Requirement(), Mode.CREATE, null, tabController);
 		
 	}
 
-	/**
-	 * Constructs a new RequirementView where the user can view (and edit) a requirement.
+	/** Constructs a new RequirementView where the user can view (and edit) a requirement.
 	 * 
 	 * @param requirement	The requirement to show.
 	 * @param editMode	The editMode for editing the Requirement
@@ -80,7 +78,6 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 			setEditModeDescriptors(requirement);
 		}
 		
-
 		// Instantiate the main create requirement panel
 		RequirementTab requirementTab = new RequirementTab(this,requirement, editMode);
 		mainPanel = requirementTab;
@@ -98,8 +95,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 				});
 			}
 		});
-		
-		
+				
 		this.add(mainPanelScrollPane, BorderLayout.CENTER);
 		controller = new SaveRequirementController(this);
 		mainPanel.getTabPanel().getNotePanel().setUp();
@@ -116,12 +112,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		
 		requirementTab.getAttributePanel().setSaveButton(saveButton);
 		requirementTab.getAttributePanel().setSaveButtonWhenFieldsAreValid();
-		requirementTab.getAttributePanel().setupControllersAndListeners();
-		
+		requirementTab.getAttributePanel().setupControllersAndListeners();	
 	}
 	
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * 
 	 * @param enabled	Whether or not input is enabled.
@@ -130,32 +124,31 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		inputEnabled = enabled;
 	}
 	
+	/** Sets the saveButton enabled or disabled depending upon the boolean passed in as "enabled"
+	 * @param enabled A boolean representing whether or not the saveButton should be enabled
+	 */
 	public void setsaveEnabled(boolean enabled) {
-
 		saveButton.setEnabled(enabled);
 	}
 	
-	/**
-	 * Returns whether or not input is enabled.
+	/** Returns the "inputEnabled" boolean;
+	 * A boolean representing whether or not input is enabled
+	 * for this panel and it's children.
 	 * 
-	 * @return whether or not input is enabled.
+	 * @return inputEnabled A boolean representing whether or not input is enabled for this RequirementView panel and it's children
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
 
-	/**
-	 * Returns the main panel with the data fields
-	 * 
+	/** Returns the main panel with the data fields
 	 * @return the main panel with the data fields
 	 */
 	public RequirementTab getRequirementPanel() {
 		return mainPanel;
 	}
 	
-	/**
-	 * Returns the tab panel with the data fields
-	 * 
+	/** Returns the tab panel with the data fields
 	 * @return the tab panel with the data fields
 	 */
 	public RequirementTabPanel getRequirementTabPanel() {
@@ -176,16 +169,14 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		buttonGroup.setName("Edit Requirement");
 	}
 	
-	/**
-	 * Scrolls the scroll pane containing the main panel to the bottom
+	/** Scrolls the scroll pane containing mainPanel to the bottom
 	 */
 	public void scrollToBottom() {
 		JScrollBar vBar = mainPanelScrollPane.getVerticalScrollBar();
 		vBar.setValue(vBar.getMaximum());
 	}
 
-	/**
-	 * Revalidates and repaints the scroll pane containing the RequirementPanel
+	/** Revalidates and repaints the scroll pane containing the RequirementTab
 	 */
 	public void refreshScrollPane() {
 		mainPanelScrollPane.revalidate();
@@ -210,13 +201,11 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		saveButton.setEnabled(isEnabled);
 	}
 
-	public void setSubRequirements(Requirement[] requirements) {
-	
-		subRequirements = requirements;
-		
+	public void setSubRequirements(Requirement[] requirements) {	
+		subRequirements = requirements;	
 	}
+	
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
 		this.displayedRequirements = displayedRequirements;
 	}
-	
 }

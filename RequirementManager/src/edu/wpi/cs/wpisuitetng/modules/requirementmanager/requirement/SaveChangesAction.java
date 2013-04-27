@@ -17,16 +17,14 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 
-/**
- * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
+/** Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
  */
 @SuppressWarnings("serial")
 public class SaveChangesAction extends AbstractAction {
 
 	private final SaveRequirementController controller;
 	
-	/**
-	 * Create a SaveChangesAction
+	/** Create a SaveChangesAction
 	 * @param controller When the action is performed, controller.save will be called
 	 */
 	public SaveChangesAction(SaveRequirementController controller) {
@@ -39,5 +37,4 @@ public class SaveChangesAction extends AbstractAction {
 	public void actionPerformed(ActionEvent arg0) {
 		controller.save();
 	}
-
 }

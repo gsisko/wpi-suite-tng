@@ -21,16 +21,14 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve all requirements
+/** An observer for a request to retrieve all requirements
  */
 public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
 	/** The user chooser managing the request */
 	protected UserChooserTab userChooser;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer
 	 * @param controller
 	 */
 	public RetrieveAllUsersObserver(UserChooserTab userChooser) {
@@ -48,9 +46,8 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 		
 		ArrayList<User> userList = new ArrayList<User>();
 		
-		for (int i = 0; i < users.length; i++) {
+		for (int i = 0; i < users.length; i++)
 			userList.add(users[i]);
-		}
 		
 		userChooser.setUsers(userList);
 		userChooser.resumeInitialization();
