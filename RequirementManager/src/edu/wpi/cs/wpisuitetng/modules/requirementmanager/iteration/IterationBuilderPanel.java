@@ -101,8 +101,8 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		startDateLabel = new JLabel("Start Date:");
 		endDateLabel = new JLabel("End Date:");
 		totalEstimateLabel = new JLabel("Total Estimate:");
-		nameWarning = new JLabel("");
-		dateWarning = new JLabel("");
+		nameWarning = new JLabel("Name cannot be \"Backlog\"");
+		dateWarning = new JLabel("Start and end dates cannot fall within another iteration");
 
 		//Set the color for the warnings
 		nameWarning.setForeground(Color.red);
@@ -111,6 +111,10 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Set the font size for the warnings to 9 point
 		nameWarning.setFont(nameWarning.getFont().deriveFont(9));
 		dateWarning.setFont(nameWarning.getFont().deriveFont(9));
+
+		//Set the preferred size of the warnings to avoid shifts in the layout when the text is changed
+		nameWarning.setPreferredSize(nameWarning.getPreferredSize());
+		dateWarning.setPreferredSize(dateWarning.getPreferredSize());
 
 		//construct the components
 		btnCreate = new JButton("Create");
@@ -386,7 +390,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	 * Also sets the "btnCreate" button disabled if any fields are invalid, enabled if all fields are valid.
 	 */
 	public void isIterationValid(){
-		
+
 		if (!isBuilderActive){//If the builder is inactive, there is no need to check the validity of the iteration, and the warning labels should be blank
 			nameWarning.setText("");
 			dateWarning.setText("");
@@ -398,12 +402,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//Create booleans to flag if errors are found
 		boolean nameErrorFound = false;
 		boolean dateErrorFound = false;
-		
+
 		if (nameValue.getText().length() <= 0){//If the nameValue is blank...
 			nameWarning.setText("Name cannot be blank");
 			nameErrorFound = true;
 		}
-		
+
 		//Grab the dates in the builder
 		Date newStart = trim(startDateChooser.getDate());
 		Date newEnd = trim(endDateChooser.getDate());
@@ -413,7 +417,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			//Grab the dates from the iteration at this index in the list
 			Date oldStart = trim(iters.get(i).getStartDate());
 			Date oldEnd = trim(iters.get(i).getEndDate());
-			
+
 			boolean errorOnThis = false;//Used to avoid indicating a date error more than once
 
 			if (currentIteration != null && (currentIteration.getID() == iters.get(i).getID()))//We should not be comparing an iteration to it's own entry in the list, so continue
@@ -454,15 +458,15 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		//If no name error has been found, clear the nameWarning label
 		if (!nameErrorFound)
 			nameWarning.setText("");
-		
+
 		//If no date error has been found, clear the dateWarning label
 		if (!dateErrorFound)
 			dateWarning.setText("");
-		
+
 		//Revalidate and repaint the builder panel to ensure changes are shown
 		this.revalidate();
 		this.repaint();
-		
+
 		if ( nameErrorFound || dateErrorFound){//If any errors were found
 			btnCreate.setEnabled(false);//disable the create button
 			return;
@@ -507,7 +511,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					public void propertyChange(PropertyChangeEvent e) {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
-								
+
 								if (startDateChooser.getDate().compareTo(endDateChooser.getDate()) > 0) {
 									endDateChooser.setDate(startDateChooser.getDate());
 									endDateChooser.setMinSelectableDate(startDateChooser.getDate());
@@ -516,7 +520,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 								}
 							}
 						});
-						
+
 						SwingUtilities.invokeLater(new Runnable() { 
 							public void run() {
 								isIterationValid();
@@ -524,7 +528,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 						});
 					}
 				});
-		
+
 		endDateChooser.getDateEditor().addPropertyChangeListener(
 				new PropertyChangeListener() {
 					@Override

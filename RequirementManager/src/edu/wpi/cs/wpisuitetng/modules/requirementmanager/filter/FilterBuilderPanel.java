@@ -108,13 +108,16 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		typeLabel = new JLabel("Type:");
 		operatorLabel = new JLabel("Operator:");
 		valueLabel = new JLabel("Value:");
-		valueWarning = new JLabel("");
+		valueWarning = new JLabel("Value cannot be empty.");
 
 		//Set the color for the warning
 		valueWarning.setForeground(Color.red);
 		
 		//Set the font size for the warning to 9 point
 		valueWarning.setFont(valueWarning.getFont().deriveFont(9));
+		
+		//Set the preferred size of the warning to avoid shifts in the layout when the text is changed
+		valueWarning.setPreferredSize(valueWarning.getPreferredSize());
 		
 		//construct the components
 		txtValue = new JTextField();
@@ -134,8 +137,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			}
 		});
 		
-
-
 		//construct the Number Text Field
 		numValue = new JNumberTextField();
 		enable(numValue, false);
@@ -215,8 +216,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		add(operatorBox, FilterBuilderConstraints);//Actually add the "operatorBox" to the layout given the previous constraints
 		//end comparator
 
-
-
 		//value:
 		//Set the constraints for the "value" and add it to the view
 		FilterBuilderConstraints.anchor = GridBagConstraints.LINE_END;
@@ -265,11 +264,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		add(valueWarning, FilterBuilderConstraints);//Actually add the "valueWarning" to the layout given the previous constraints
 		//end value warning
 		
-
 		currentFilter = new Filter();
 		setCurType("Id");
-
-
 	}
 
 	/** Watches the "Type" box for changes and sets up the "value" field
@@ -479,8 +475,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		//Set current filter to the one retrieved
 		this.setCurrentFilter(filter);
-		
-
 	}
 
 	/** Set the given box to the given enable status as well 
@@ -657,7 +651,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 		// Convert the filter to a JSON string and send it away
 		return newFilter.toJSON();
-
 	}
 
 	/** Takes a JSON string that holds an array of models and uploads them
@@ -693,7 +686,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			}
 		}
 		else valueBox.setSelectedItem(filter.getValue());
-
 
 		//Active
 		if(filter.isUseFilter()){
