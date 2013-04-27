@@ -39,7 +39,9 @@ function changePage(str){
 		CheckHistory();
 	else if (str.toString() == "addingATest")
 		AddingATest();
-		
+	else if (str.toString() == "addingAnAttachment")
+		AddingAnAttachment();
+	
 	else if (str.toString() == "filterListPanel")
 		FilterListPanel();
 	else if (str.toString() == "filterBuilderPanel")
@@ -53,6 +55,9 @@ function changePage(str){
 		IterationBuilderPanel();
 	else if (str.toString() == "createDeleteIteration")
 		CreateDeleteIteration();
+		
+	else if (str.toString() == "makeChart")
+		MakeChart();
 
 }
 
@@ -269,6 +274,35 @@ function AddingATest(){
 			str += '<a>To add an acceptance test, you must first select the acceptance test tab from the right side of the requirement builder panel.  Then you must enter a name and description into the provided boxes. After a name and descrption have been entered, you can click the "Add Acceptance Test" button to add the test to the requirement</a><br/><br/>';
 			str += '<img src="images/enteredTest.png" height="100" /><br/>';
 			str += '<a>The test will appear in the Panel above where you entered information, but a drop down menu to select if the requirement passed of failed the test.</a>';
+			return str;
+        });
+    });
+}
+
+function AddingAnAttachment(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Add an Attachment</a>');
+		$(".instructionTitle").html('<a>The Attachment Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/requirementBuilderWithAttachment.png" height="400"/><br/>';
+			str += '<a>To add an attachment move to the right panel of the requirement builder panel and select the attachment tab. From the attachment tab click the "Add Attachment" button to open a file browse screen to find and attach your file.</a>';
+			return str;
+        });
+    });
+}
+
+function MakeChart(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Make a Chart</a>');
+		$(".instructionTitle").html('<a>The Chart Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/displayChartsButton.png"/><br/>';
+			str += '<a>To being viewing charts of your data, begin by click the <span style="color:#ED1C24">"Display Charts"</span> button from the top left of the main view.</a><br /><br />';
+			str += '<img src="images/displayedChart.png" height="400" /><br />';
+			str += '<a>From the chart view you may select either a <span style="color:#22B14C;">pie chart or bar chart</span> to display your data. ';
+			str += 'You can also select the <span style="color:#00A2E8">Data you wish to disply</span>, such as requirement statuses, requirement iterations, number of users assigned to requirements, and total estimate for each user. Lastly there is a menu for if you wish to <span style="color:#3F48CC">show applied filters or not.</span></a>'
 			return str;
         });
     });
