@@ -259,15 +259,6 @@ public class FileModel extends AbstractModel
 		
 		FileModel decoded = new FileModel(fileName,idNum, parts[3]);
 		
-		//Convert variables to be sent as Base64
-//		converted += Base64.encodeBase64String(getIdNum().getBytes());
-//		converted += " "; //Delimiter
-//		converted += Base64.encodeBase64String(getFileName().getBytes());
-//		converted += " ";
-//		converted += getFileData(); //This should already be in Base64
-		
-//		return converted;
-		
 		return decoded;
 	}
 	

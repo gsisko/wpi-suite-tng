@@ -18,16 +18,13 @@
 package edu.wpi.cs.wpisuitetng.modules.core.entitymanagers;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
-//import edu.wpi.cs.wpisuitetng.ManagerLayer;
 import edu.wpi.cs.wpisuitetng.Permission;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -48,7 +45,7 @@ public class FileManager implements EntityManager<FileModel>{
 	Class<FileModel> fileModel = FileModel.class;
 	Gson gson;
 	Data data;
-	private String[] allModules;
+//	private String[] allModules;
 
 	private static final Logger logger = Logger.getLogger(FileManager.class.getName());
 
@@ -336,7 +333,7 @@ public class FileManager implements EntityManager<FileModel>{
 
 	public void setAllModules(String[] mods)
 	{
-		this.allModules = mods;
+//		this.allModules = mods;
 	}
 
 	@Override

@@ -11,13 +11,19 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.database;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.codec.binary.Base64;
 
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectServer;
@@ -25,18 +31,21 @@ import com.db4o.ObjectSet;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ClientConfiguration;
 import com.db4o.cs.config.ServerConfiguration;
+import com.db4o.ext.Status;
 import com.db4o.query.Predicate;
 import com.db4o.reflect.jdk.JdkReflector;
+import com.db4o.types.Blob;
 
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.FileModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
 public class DataStore implements Data {
 
 	static String WPI_TNG_DB ="WPISuite_TNG_local";
 	private static DataStore myself = null;
+	private  Blob blob;
 	static ObjectContainer theDB;
 	static ObjectServer server;
 	static int PORT = 0;
@@ -71,6 +80,48 @@ public class DataStore implements Data {
 		}
 		return myself;
 	}
+//
+//	/**
+//	 * Get the single instance of the Blob Database
+//	 * @return the only instance of the Blob Database
+//	 */
+//	public static Blob getBlobStore()
+//	{
+//		if(myBlob == null)
+//		{
+//			logger.log(Level.FINE, "Opening connection to db4o database...");
+//			myBlob = new Blob();
+//			// accessLocalServer
+//			// Please see Wiki for more information on the ServerConfiguration.
+//			ServerConfiguration config = Db4oClientServer.newServerConfiguration();
+//			config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
+//			config.common().objectClass(User.class).storeTransientFields(true); // Enables data persistence for passwords
+//
+//			//Connect to the Database
+//			server = Db4oClientServer.openServer(config, WPI_TNG_DB, PORT);
+//			server.grantAccess(DB4oUser,DB4oPass);
+//
+//			theDB = server.openClient();
+//			logger.log(Level.FINE, "Connected to db4o database!");
+//		}
+//		return myBlob;
+//	}
+
+	/**
+	 * Method to check if the database is finished with the Blob
+	 * unfortunately there's no callback for blobs. So the only way it to poll for it
+	 */
+	private void waitTillDBIsFinished(Blob blob) {
+		// #example: wait until the operation is done
+		while (blob.getStatus() > Status.COMPLETED){
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
+		// #end example
+	}
 
 	/**
 	 * Saves a Model into the database
@@ -81,11 +132,77 @@ public class DataStore implements Data {
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
-		theDB.store(aModel);
-		System.out.println("Stored " + aModel);
-		logger.log(Level.FINE, "Saving model [" + aModel + "]");
-		theDB.commit();
-		return true;
+		//Check if this should be stored as a BLOB
+		//TODO: Rewrite to not use instanceof?
+		if (aModel instanceof FileModel){
+			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+				
+			//Temporary file because we only need it to exist when we put it in the blob
+			File file;
+			try {
+				file = File.createTempFile(((FileModel) aModel).getFileName(), "");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't create temporary file when to save a BLOB!");
+				return false;
+			} 
+			file.deleteOnExit(); //Delete file if the JVM exits
+			
+			//Convert byte array to a file :
+			OutputStream os;
+			try {
+				os = new FileOutputStream(file);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't open file I/O stream to save a BLOB!");
+				return false;
+			}
+
+			try {
+				os.write(Base64.decodeBase64(((FileModel) aModel).getFileData()));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't write to file to save a BLOB!");
+				
+				try {
+					os.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't close file I/O stream to save a BLOB after failing to write to file!");
+				}
+				return false;
+			}
+			
+			try {
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't close file I/O stream to save a BLOB!");
+				return false;
+			}
+			//End conversion
+			
+			//Save to blob
+			try {
+				blob.readFrom(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't write to BLOB!");
+			}
+			
+			waitTillDBIsFinished(blob);
+
+			return true;
+		} else {
+			theDB.store(aModel);
+			System.out.println("Stored " + aModel);
+			logger.log(Level.FINE, "Saving model [" + aModel + "]");
+			theDB.commit();
+			return true;
+		}
 	}
 
 	/**
@@ -312,7 +429,7 @@ public class DataStore implements Data {
 		return found;
 
 	}
-	
+
 	/**
 	 * Deletes all objects of the given Class in the database
 	 * @param aSample an object of the class we want to retrieve All of
@@ -519,7 +636,7 @@ public class DataStore implements Data {
 		System.out.println(result);
 		return result;
 	}
-	
+
 	/**
 	 * Retrieves objects which match one of the given fields to one of the given values
 	 * @param anObjectQueried - Class of the object to be queried
@@ -827,7 +944,7 @@ public class DataStore implements Data {
 		System.out.println(fullresult);
 		return fullresult;
 	}
-	
+
 	/**
 	 * Retrieves objects which match all of the given "and" fields to all of the given "and" values AND 
 	 * which match one of the given "or" fields to one of the given "or" values 
@@ -843,7 +960,7 @@ public class DataStore implements Data {
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
 	public List<Model> complexRetrieve(final Class andAnObjectQueried, String[] andFieldNameList, final List<Object> andGivenValueList, 
 			final Class orAnObjectQueried, String[] orFieldNameList, final List<Object> orGivenValueList) throws WPISuiteException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+			{
 		List<Model> returnList = new ArrayList<Model>();
 		List<Model> bothList = new ArrayList<Model>();
 		List<Model> orList = new ArrayList<Model>();
@@ -854,7 +971,7 @@ public class DataStore implements Data {
 		bothList.addAll(andList);
 		returnList = removeDuplicates(bothList);
 		return returnList;
-	}
+			}
 
 	/**
 	 * Returns a List with all duplicate items removed
