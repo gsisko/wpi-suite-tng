@@ -341,6 +341,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		nameValue.setText("");
 		startDateChooser.setDate(new Date());	// Set the two date-choosers to today
 		endDateChooser.setDate(new Date());
+		currentIteration = null;				// No current iteration when we are creating a new iteration
 
 		btnCreate.setText("Create");
 	}
@@ -436,11 +437,21 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			if (newStart.equals(newEnd) && oldStart.equals(oldEnd)) {				// Both are 1 day iterations
 				if (newStart.equals(oldStart))										// They fall on the same day
 					errorOnThis = true;	
+			} else if (newStart.equals(newEnd)) {									// New is a 1 day iteration and old is not
+				if (oldStart.before(newStart) && oldEnd.after(newEnd)) {			// 1 day iteration contained within a larger iteration
+					errorOnThis = true;
+				}
+			} else if (oldStart.equals(oldEnd)) {									// Old is a 1 day iteration and new is not
+				if (newStart.before(oldStart) && newEnd.after(oldEnd)) {			// 1 day iteration contained within a larger iteration
+					errorOnThis = true;
+				}
 			} else if (!(newStart.equals(newEnd) || oldStart.equals(oldEnd))) {		// Neither is a one-day iteration
 				if (newStart.equals(oldStart) ||									// Same start date
 						newEnd.equals(oldEnd) ||									// Same end date
 						(newStart.before(oldStart) && oldStart.before(newEnd)) ||	// Overlap where new date starts first
-						(oldStart.before(newStart) && newStart.before(oldEnd))) {	// Overlap where old date starts first
+						(oldStart.before(newStart) && newStart.before(oldEnd)) ||	// Overlap where old date starts first
+						(newStart.before(oldStart) && newEnd.after(oldEnd)) ||		// Old contained within new
+						(oldStart.before(newStart) && oldEnd.after(newEnd))) {		// New contained within old
 					errorOnThis = true;
 				}
 			}
