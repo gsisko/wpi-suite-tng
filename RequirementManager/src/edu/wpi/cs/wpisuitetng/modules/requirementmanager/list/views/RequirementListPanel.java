@@ -62,7 +62,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public RequirementListPanel(MainTabController tabController, ListTab parent) {
 		this.tabController = tabController;
-		this.columnHeadListeners = new ArrayList<MouseListener>();
+		columnHeadListeners = new ArrayList<MouseListener>();
 		
 		this.parent = parent;
 		// Set the layout
@@ -120,7 +120,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setComboxforType()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(3);
+	{
+	TableColumn typeColumn = resultsTable.getColumnModel().getColumn(3);
 	@SuppressWarnings("rawtypes")
 	JComboBox typebox = new JComboBox();
 	typebox.addItem("Epic");
@@ -138,7 +139,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setComboxforStatus()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(4);
+	{
+	TableColumn typeColumn = resultsTable.getColumnModel().getColumn(4);
 	@SuppressWarnings("rawtypes")
 	JComboBox typebox = new JComboBox();
 	typebox.addItem("New");
@@ -156,7 +158,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setComboxforPriority()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(5);
+	{
+	TableColumn typeColumn = resultsTable.getColumnModel().getColumn(5);
 	@SuppressWarnings("rawtypes")
 	JComboBox typebox = new JComboBox();
 	typebox.addItem("High");

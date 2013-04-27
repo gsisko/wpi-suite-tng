@@ -143,17 +143,16 @@ public class JNumberTextField extends JTextField
     {
         switch ( format )
         {
+        case DECIMAL:
+            this.format = DECIMAL;
+            precision = DEF_PRECISION;
+            allowedChars = FM_DECIMAL;
+            break;
         case NUMERIC:
         default:
             this.format = NUMERIC;
             precision = 0;
             allowedChars = FM_NUMERIC;
-            break;
-
-        case DECIMAL:
-            this.format = DECIMAL;
-            precision = DEF_PRECISION;
-            allowedChars = FM_DECIMAL;
             break;
         }
     }

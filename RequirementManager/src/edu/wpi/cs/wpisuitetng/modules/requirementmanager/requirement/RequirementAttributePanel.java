@@ -1132,14 +1132,14 @@ public class RequirementAttributePanel extends JPanel {
 	 * @param isSaving True if the requirement is being saved, false otherwise
 	 */
 	public void setSaving(boolean isSaving) {
-		this.fieldsChanged[10] = isSaving;
+		fieldsChanged[10] = isSaving;
 	}
 
 	/** Returns a boolean indicating whether or not the current requirement is being saved.
 	 * @return True if the requirement is being saved, false otherwise
 	 */
 	public boolean isSaving () {
-		return this.fieldsChanged[10];
+		return fieldsChanged[10];
 	}
 
 }
