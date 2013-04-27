@@ -81,6 +81,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 	/** Location of divider before entering edit mode */
 	protected int oldDividerLocation;
+	
+	/** Size of divider before entering edit mode */
+	protected int oldDividerSize;
 
 	/** The arrays of models stored in the database */
 	protected Filter[] allFilters;
@@ -334,11 +337,14 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		if (enable) {
 			mainPanel.getSplitPane().setDividerLocation(oldDividerLocation);
 			mainPanel.getSplitPane().setEnabled(true);
+			mainPanel.getSplitPane().setDividerSize(oldDividerSize);
 		}
 		else {
 			oldDividerLocation = mainPanel.getSplitPane().getDividerLocation();
+			oldDividerSize = mainPanel.getSplitPane().getDividerSize();
 			mainPanel.getSplitPane().setEnabled(false);
 			mainPanel.getSplitPane().setDividerLocation(0);
+			mainPanel.getSplitPane().setDividerSize(0);
 		}
 		
 		if (mainPanel.getMode() == Mode.FILTER) {
