@@ -34,7 +34,8 @@ public class ListTab extends JPanel {
 
 	public enum Mode {
 		FILTER,
-		ITERATION
+		ITERATION,
+		EDIT
 	};
 
 	/** Panel containing filter/iteration builders and requirements list */
@@ -46,8 +47,11 @@ public class ListTab extends JPanel {
 	/** Panel containing the filter building interface */
 	protected FilterBuilderPanel filterBuilderPanel;
 
-	/** Panel containing the filter building interface */
+	/** Panel containing the iteration building interface */
 	protected IterationBuilderPanel iterationBuilderPanel;
+	
+	/** Panel containing the Editing Mode interface */
+	protected EditModeBuilderPanel editModeBuilderPanel;
 
 	/** Panel containing the results of the requirement list */
 	protected RequirementListPanel resultsPanel;
@@ -101,6 +105,7 @@ public class ListTab extends JPanel {
 		// Construct the panels that compose the list view
 		filterBuilderPanel = new FilterBuilderPanel(this);
 		iterationBuilderPanel = new IterationBuilderPanel(this);
+		editModeBuilderPanel = new EditModeBuilderPanel(this);
 		tabPanel = new ListTabPanel(this);
 		filterBuilderPanel.setupControllersAndListeners();
 		iterationBuilderPanel.setupControllersAndListeners();
@@ -163,6 +168,10 @@ public class ListTab extends JPanel {
 
 	public IterationBuilderPanel getIterationBuilderPanel(){
 		return iterationBuilderPanel;
+	}
+
+	public EditModeBuilderPanel getEditModeBuilderPanel() {
+		return editModeBuilderPanel;
 	}
 
 	public ListTabPanel getTabPanel(){

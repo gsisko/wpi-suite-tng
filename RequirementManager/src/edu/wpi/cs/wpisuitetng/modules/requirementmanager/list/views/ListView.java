@@ -363,8 +363,11 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		if (mainPanel.getMode() == Mode.FILTER) {
 			mainPanel.getFilterBuilderPanel().setVisible(enable);
 		}
-		else {
+		else if (mainPanel.getMode() == Mode.ITERATION) {
 			mainPanel.getIterationBuilderPanel().setVisible(enable);
+		}
+		else {
+			mainPanel.getIterationBuilderPanel().setVisible(!enable);
 		}
 	}
 
