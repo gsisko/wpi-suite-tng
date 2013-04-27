@@ -109,7 +109,7 @@ public class ListTab extends JPanel {
 		
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
 		builderScrollPane = new JScrollPane(iterationBuilderPanel);
-		resultsPanel = new RequirementListPanel(tabController);
+		resultsPanel = new RequirementListPanel(tabController, this);
 
 
 		// Construct the layout manager and add constraints

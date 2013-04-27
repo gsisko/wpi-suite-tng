@@ -176,7 +176,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				
 
 				mainPanel.getResultsPanel().disableSorting();
-
+				mainPanel.getResultsPanel().setUpForEditing();
 			}
 		});
 

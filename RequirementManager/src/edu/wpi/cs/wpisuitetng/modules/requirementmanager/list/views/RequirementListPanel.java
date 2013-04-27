@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseListener;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,9 +26,11 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 /** Panel to hold the results of a list of requirements
  */
 @SuppressWarnings({"serial"})
@@ -48,14 +51,20 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	/** ArrayList of listeners on resultsTable column heads */
 	private ArrayList<MouseListener> columnHeadListeners;
 	
+	/** The SaveListModelController that does the saving */
+	private ListSaveModelController listSaveModelController;
+	
+	/** the parent that holds this panel */
+	ListTab parent;
 	
 	/**Construct the panel
 	 * @param tabController The main tab controller
 	 */
-	public RequirementListPanel(MainTabController tabController) {
+	public RequirementListPanel(MainTabController tabController, ListTab parent) {
 		this.tabController = tabController;
 		this.columnHeadListeners = new ArrayList<MouseListener>();
 		
+		this.parent = parent;
 		// Set the layout
 		this.setLayout(new BorderLayout());
 		
@@ -72,6 +81,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
 		
 		this.add(resultsScrollPane, BorderLayout.CENTER);
+		
+		// Setup controller
+		listSaveModelController = new ListSaveModelController(this, "requirement");
 	}
 	
 	/**
@@ -212,11 +224,88 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 * @return  The JSON version of the model
 	 */
 	public String getModelAsJson(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		// Get the names of the columns
+		ArrayList<String> columnNames = this.getTableName();
+		
+		// Get the ID of the requirement being edited
+		String id = (String) resultsTable.getValueAt(i, this.getColumnIndex("ID", columnNames));
+		
+		// Get the original version of the requirement
+		Requirement[] reqs = parent.getParent().getDisplayedRequirements();
+		Requirement toUpdate = null;
+		for (Requirement aReq: reqs){
+			if (Integer.toString(aReq.getId()).equals(id) ){
+				toUpdate = aReq;
+			}
+		}
+		
+		// Check to see if the retrieve worked
+		if (toUpdate == null){
+			System.err.print("Fatal Save Problem: Unable to get the model.");
+			return "";
+		}
+		
+		// Start saving the rest of the fields
+		toUpdate.setName((String) resultsTable.getValueAt(i, this.getColumnIndex("Name", columnNames)));
+		toUpdate.setType( RequirementType.toType((String) resultsTable.getValueAt(i, this.getColumnIndex("Type", columnNames))));
+		toUpdate.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(i, this.getColumnIndex("Status", columnNames))));
+		toUpdate.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(i, this.getColumnIndex("Priority", columnNames))));
+		toUpdate.setReleaseNumber((String)resultsTable.getValueAt(i, this.getColumnIndex("ReleaseNumber", columnNames)));
+		toUpdate.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(i, this.getColumnIndex("Estimate", columnNames))));
+		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(i, this.getColumnIndex("ActualEffort", columnNames))));
+		
+		int iterationID = this.getIterationID((String) resultsTable.getValueAt(i, this.getColumnIndex("Iteration", columnNames)));
+		toUpdate.setId(iterationID);
+		
+		return toUpdate.toJSON();
 
+	}
 	
+	/** Gets the id of the iteration with the given name
+	 * 
+	 * @param iterName the name of the iteration
+	 * @return the id of the iteration
+	 */
+	private int getIterationID(String iterName){
+		Iteration[] allIterations = parent.getParent().getAllIterations();
+		for (Iteration anIter: allIterations){
+			if (anIter.getName().equals(iterName)){
+				return anIter.getID();
+			}
+		}
+		System.err.print("Failed to find the iteration");
+		return -1; // failure
+	}
+	
+	
+	
+	/** Gets the column index of the column with the given name
+	 * 
+	 * @param name The name to check for
+	 * @return the column index, returns -1 upon failure
+	 */
+	private int getColumnIndex(String name, ArrayList<String> columnNames){
+		for (int Column = 0; Column < columnNames.size(); Column++ ){
+			if (columnNames.get(Column).equals(name)){
+				return Column;
+			}
+		}
+		System.err.print("That column doesn't exist!");
+		return -1;
+	}
+	
+	
+	
+	
+	/** Sets up any arrays of flags or other settings needed
+	 *  before editing can start 
+	 */
+	public void setUpForEditing(){
+		needsSaving = new Boolean[resultsTable.getRowCount()];
+		for (int i = 0; i < resultsTable.getRowCount(); i++){
+			needsSaving[i] = Boolean.valueOf(false); // Set entries false
+		}		
+	}
 	
 	
 	
@@ -244,8 +333,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 *  should resume.
 	 */
 	public void savesComplete() {
-		// TODO Auto-generated method stub
-		
+		System.out.print("Save complete");
 	}
 
 	/** Trigger a reset of all lists	 */
@@ -253,4 +341,50 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		// TODO Auto-generated method stub	
 	}
 
+	/**
+	 * @return the listSaveModelController
+	 */
+	public ListSaveModelController getListSaveModelController() {
+		return listSaveModelController;
+	}
+
+	/** A getter to get the current column headers of the table 
+	 * @return columnHeader the ArrayList of headers for the table
+	 */
+	public ArrayList<String> getTableName(){
+		 ArrayList<String> columnHeader  = new ArrayList<String>();
+
+		String column0Header = "";
+		String column1Header = "";
+		String column2Header = "";
+		String column3Header = "";
+		String column4Header = "";
+		String column5Header = "";
+		String column6Header = "";
+		String column7Header = "";
+		String column8Header = "";
+
+		//get Headers
+		column0Header = resultsTable.getColumnModel().getColumn(0).getHeaderValue().toString();
+		column1Header = resultsTable.getColumnModel().getColumn(1).getHeaderValue().toString();
+		column2Header = resultsTable.getColumnModel().getColumn(2).getHeaderValue().toString();
+		column3Header = resultsTable.getColumnModel().getColumn(3).getHeaderValue().toString();
+		column4Header = resultsTable.getColumnModel().getColumn(4).getHeaderValue().toString();
+		column5Header = resultsTable.getColumnModel().getColumn(5).getHeaderValue().toString();
+		column6Header = resultsTable.getColumnModel().getColumn(6).getHeaderValue().toString();
+		column7Header = resultsTable.getColumnModel().getColumn(7).getHeaderValue().toString();
+		column8Header = resultsTable.getColumnModel().getColumn(8).getHeaderValue().toString();
+
+		columnHeader.add(column0Header);
+		columnHeader.add(column1Header);
+		columnHeader.add(column2Header);
+		columnHeader.add(column3Header);
+		columnHeader.add(column4Header);
+		columnHeader.add(column5Header);
+		columnHeader.add(column6Header);
+		columnHeader.add(column7Header);
+		columnHeader.add(column8Header);
+
+		return columnHeader;
+	}
 }
