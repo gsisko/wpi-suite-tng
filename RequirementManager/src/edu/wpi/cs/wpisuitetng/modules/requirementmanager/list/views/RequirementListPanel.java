@@ -108,7 +108,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setComboxforType()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(4);
+	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(3);
 	@SuppressWarnings("rawtypes")
 	JComboBox typebox = new JComboBox();
 	typebox.addItem("Epic");
@@ -126,7 +126,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setComboxforStatus()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(5);
+	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(4);
 	@SuppressWarnings("rawtypes")
 	JComboBox typebox = new JComboBox();
 	typebox.addItem("New");
@@ -144,7 +144,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setComboxforPriority()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(6);
+	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(5);
 	@SuppressWarnings("rawtypes")
 	JComboBox typebox = new JComboBox();
 	typebox.addItem("High");
@@ -154,6 +154,25 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	
 		
 	}
+	
+	/**numeric validation
+	 * 
+	 */
+	public void NumValidationforEffort()
+	{
+	 TableColumn estimateColum = resultsTable.getColumnModel().getColumn(8);
+	 estimateColum.setCellEditor(new NumValidation());
+	}
+	
+	/**numeric validation
+	 * 
+	 */
+	public void NumValidationforEstimate()
+	{
+	 TableColumn estimateColum = resultsTable.getColumnModel().getColumn(7);
+	 estimateColum.setCellEditor(new NumValidation());
+	}
+	
 
 	/** Disables the sorting of the JTable */
 	public void disableSorting(){

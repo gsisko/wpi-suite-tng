@@ -166,6 +166,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getResultsPanel().setComboxforType();
 				mainPanel.getResultsPanel().setComboxforStatus();
 				mainPanel.getResultsPanel().setComboxforPriority();
+				mainPanel.getResultsPanel().NumValidationforEstimate();
+				mainPanel.getResultsPanel().NumValidationforEffort();
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
 				
