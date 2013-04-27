@@ -110,7 +110,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 
 		//Set the font size for the warnings to 9 point
 		nameWarning.setFont(nameWarning.getFont().deriveFont(9));
-		dateWarning.setFont(nameWarning.getFont().deriveFont(9));
+		dateWarning.setFont(dateWarning.getFont().deriveFont(9));
 
 		//Set the preferred size of the warnings to avoid shifts in the layout when the text is changed
 		nameWarning.setPreferredSize(nameWarning.getPreferredSize());
@@ -240,25 +240,29 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		add(dateWarning, IterationBuilderConstraints);//Actually add the "dateWarning" to the layout given the previous constraints
 
 	}
-
+	/** the create button
+	 * @return btnCreate
+	 */
 	public JButton getButton()
 	{
 		return btnCreate;
 	}
-
+	/** get the name of the iteration
+	 * @return nameValue
+	 */
 	public JTextField getIterationValue()
 	{
 		return nameValue;
 	}
 
-	/**
-	 * @return the startDateChooser
+	/** get the start Date Chooser
+	 * @return startDateChooser 
 	 */
 	public JDateChooser getStartDateChooser() {
 		return startDateChooser;
 	}
 
-	/**
+	/** 
 	 * @param startDateChooser the startDateChooser to set
 	 */
 	public void setStartDateChooser(JDateChooser startDateChooser) {
@@ -425,13 +429,18 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 				continue;
 
 			//Compare the names
-			if (!nameErrorFound && nameValue.getText().toLowerCase().equals("backlog")) {//If we have not already found an error in the name, and the nameValue is currently "backlog" (ignoring case)
+			//  If we have not already found an error in the name,
+			//   AND the nameValue is currently "backlog" (ignoring case)
+			if (!nameErrorFound && nameValue.getText().toLowerCase().equals("backlog")) {
 				nameWarning.setText("Name cannot be \"Backlog\"");
 				nameErrorFound = true;
 			}
 
-			if (!nameErrorFound && nameValue.getText().equals(iters.get(i).getName()) && !nameValue.getText().equals(""))//If the name of the iteration being constructed matches the name of the iteration at this index (i) in the list, AND  we have not already found an error in the name, AND we are not comparing the iteration under construction to it's own entry in the list,AND the nameValue is not blank 
-			{
+			//If the name of the iteration being constructed matches the name of the iteration at this index (i) in the list,
+			// AND  we have not already found an error in the name,
+			// AND we are not comparing the iteration under construction to it's own entry in the list,
+			// AND the nameValue is not blank 
+			if (!nameErrorFound && nameValue.getText().equals(iters.get(i).getName()) && !nameValue.getText().equals("")){
 				nameWarning.setText("Name must be unique");
 				nameErrorFound = true;
 			}
@@ -459,13 +468,14 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 					errorOnThis = true;
 				}
 			} else if (newStart.equals(newEnd) || oldStart.equals(oldEnd)) {		// one is a one-day iteration
-				if (newStart.equals(oldStart) ||  newEnd.equals(oldEnd) ||			// Same start date or Same end date								// Same end date
+				if (newStart.equals(oldStart) ||  newEnd.equals(oldEnd) ||			// Same start date OR Same end date								// Same end date
 						(oldStart.before(newStart) && newEnd.before(oldEnd)) ||		// new inside of old
 						(newStart.before(oldStart) && oldEnd.before(newEnd))) {		// old inside of new
 					errorOnThis = true;
 				}
 			}
-			if (errorOnThis && !dateErrorFound)//If this is the first time we have found an iteration whose dates overlap with the iteration under construction/editing
+			//If this is the first time we have found an iteration whose dates overlap with the iteration under construction/editing
+			if (errorOnThis && !dateErrorFound)
 			{
 				dateWarning.setText("Start and end dates cannot fall within another iteration");
 				dateErrorFound = true;
