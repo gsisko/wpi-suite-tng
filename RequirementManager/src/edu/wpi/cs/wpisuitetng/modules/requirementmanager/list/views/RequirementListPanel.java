@@ -33,44 +33,44 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 /** Panel to hold the results of a list of requirements
  */
-@SuppressWarnings({"serial"})
+@SuppressWarnings({"serial","unchecked","rawtypes"})
 public class RequirementListPanel extends JPanel implements IEditableListPanel {
-	
+
 	/** The table of results */
 	protected JTable resultsTable;
-	
+
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
-	
+
 	/** The main tab controller */
 	protected final MainTabController tabController;
 
 	/** Array of Boolean flags for whether or not Requirements need saving */
 	private Boolean[] needsSaving;
-	
+
 	/** ArrayList of listeners on resultsTable column heads */
 	private ArrayList<MouseListener> columnHeadListeners;
-	
+
 	/** The SaveListModelController that does the saving */
 	private ListSaveModelController listSaveModelController;
-	
+
 	/** the parent that holds this panel */
 	ListTab parent;
-	
+
 	/**Construct the panel
 	 * @param tabController The main tab controller
 	 */
 	public RequirementListPanel(MainTabController tabController, ListTab parent) {
 		this.tabController = tabController;
-		this.columnHeadListeners = new ArrayList<MouseListener>();
-		
+		columnHeadListeners = new ArrayList<MouseListener>();
+
 		this.parent = parent;
 		// Set the layout
 		this.setLayout(new BorderLayout());
-		
+
 		// Construct the table model
 		resultsTableModel = new ResultsTableModel();
-		
+
 		// Construct the table and configure it
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
@@ -79,112 +79,117 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
-		
+
 		this.add(resultsScrollPane, BorderLayout.CENTER);
-		
+
 		// Setup controller
 		listSaveModelController = new ListSaveModelController(this, "requirement");
 	}
-	
+
 	/**
 	 * @return the main tab controller
 	 */
 	public MainTabController getTabController() {
 		return tabController;
 	}
-	
+
 	/**
 	 * @return the data model for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
-	
+
 	/**
 	 * @return the results table
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
-	
+
 	/** Replace the results table with the given table
 	 * @param newTable the new results table
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
 	}
-	
+
 
 	/** 
 	 * place combox for type
 	 */
-	@SuppressWarnings("unchecked")
 	public void setComboxforType()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(3);
-	@SuppressWarnings("rawtypes")
-	JComboBox typebox = new JComboBox();
-	typebox.addItem("Epic");
-	typebox.addItem("Theme");
-	typebox.addItem("UserStory");
-	typebox.addItem("NonFunctional");
-	typebox.addItem("Scenario");
-	typeColumn.setCellEditor(new DefaultCellEditor(typebox));
-	
+	{
+		int typeColumnNum = this.getColumnIndex("Type", getTableName());
 		
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
+		JComboBox typebox = new JComboBox();
+		typebox.addItem("Epic");
+		typebox.addItem("Theme");
+		typebox.addItem("UserStory");
+		typebox.addItem("NonFunctional");
+		typebox.addItem("Scenario");
+		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+
+
 	}
-	
+
 	/** 
 	 * place combox for type
 	 */
-	@SuppressWarnings("unchecked")
 	public void setComboxforStatus()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(4);
-	@SuppressWarnings("rawtypes")
-	JComboBox typebox = new JComboBox();
-	typebox.addItem("New");
-	typebox.addItem("InProgress");
-	typebox.addItem("Open");
-	typebox.addItem("Complete");
-	typebox.addItem("Deleted");
-	typeColumn.setCellEditor(new DefaultCellEditor(typebox));
-	
+	{
+		int statusColumn = this.getColumnIndex("Status", getTableName());
 		
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(statusColumn);
+		JComboBox typebox = new JComboBox();
+		typebox.addItem("New");
+		typebox.addItem("InProgress");
+		typebox.addItem("Open");
+		typebox.addItem("Complete");
+		typebox.addItem("Deleted");
+		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+
+
 	}
-	
+
 	/** 
 	 * place combox for type
 	 */
-	@SuppressWarnings("unchecked")
 	public void setComboxforPriority()
-	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(5);
-	@SuppressWarnings("rawtypes")
-	JComboBox typebox = new JComboBox();
-	typebox.addItem("High");
-	typebox.addItem("Medium");
-	typebox.addItem("Low");
-	typeColumn.setCellEditor(new DefaultCellEditor(typebox));
-	
+	{
+		int priorityColumn = this.getColumnIndex("Priority", getTableName());
 		
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(priorityColumn);
+		JComboBox typebox = new JComboBox();
+		typebox.addItem("High");
+		typebox.addItem("Medium");
+		typebox.addItem("Low");
+		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
-	
+
 	/**numeric validation
 	 * 
 	 */
 	public void NumValidationforEffort()
 	{
-	 TableColumn estimateColum = resultsTable.getColumnModel().getColumn(8);
-	 estimateColum.setCellEditor(new NumValidation());
+		int effort = this.getColumnIndex("ActualEffort", getTableName());
+		
+		TableColumn estimateColum = resultsTable.getColumnModel().getColumn(effort);
+		estimateColum.setCellEditor(new NumValidation());
 	}
-	
+
 	/**numeric validation
 	 * 
 	 */
 	public void NumValidationforEstimate()
 	{
-	 TableColumn estimateColum = resultsTable.getColumnModel().getColumn(7);
-	 estimateColum.setCellEditor(new NumValidation());
+		int estimate = this.getColumnIndex("Estimate", getTableName());
+		
+		TableColumn estimateColum = resultsTable.getColumnModel().getColumn(estimate);
+		estimateColum.setCellEditor(new NumValidation());
 	}
-	
+
 
 	/** Disables the sorting of the JTable */
 	public void disableSorting(){
@@ -226,10 +231,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public String getModelAsJson(int i) {
 		// Get the names of the columns
 		ArrayList<String> columnNames = this.getTableName();
-		
+
 		// Get the ID of the requirement being edited
 		String id = (String) resultsTable.getValueAt(i, this.getColumnIndex("ID", columnNames));
-		
+
 		// Get the original version of the requirement
 		Requirement[] reqs = parent.getParent().getDisplayedRequirements();
 		Requirement toUpdate = null;
@@ -238,13 +243,13 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				toUpdate = aReq;
 			}
 		}
-		
+
 		// Check to see if the retrieve worked
 		if (toUpdate == null){
 			System.err.print("Fatal Save Problem: Unable to get the model.");
 			return "";
 		}
-		
+
 		// Start saving the rest of the fields
 		toUpdate.setName((String) resultsTable.getValueAt(i, this.getColumnIndex("Name", columnNames)));
 		toUpdate.setType( RequirementType.toType((String) resultsTable.getValueAt(i, this.getColumnIndex("Type", columnNames))));
@@ -253,14 +258,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		toUpdate.setReleaseNumber((String)resultsTable.getValueAt(i, this.getColumnIndex("ReleaseNumber", columnNames)));
 		toUpdate.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(i, this.getColumnIndex("Estimate", columnNames))));
 		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(i, this.getColumnIndex("ActualEffort", columnNames))));
-		
+
 		int iterationID = this.getIterationID((String) resultsTable.getValueAt(i, this.getColumnIndex("Iteration", columnNames)));
 		toUpdate.setId(iterationID);
-		
+
 		return toUpdate.toJSON();
 
 	}
-	
+
 	/** Gets the id of the iteration with the given name
 	 * 
 	 * @param iterName the name of the iteration
@@ -276,9 +281,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		System.err.print("Failed to find the iteration");
 		return -1; // failure
 	}
-	
-	
-	
+
+
+
 	/** Gets the column index of the column with the given name
 	 * 
 	 * @param name The name to check for
@@ -293,10 +298,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		System.err.println("That column doesn't exist!");
 		return -1;
 	}
-	
-	
-	
-	
+
+
+
+
 	/** Sets up any arrays of flags or other settings needed
 	 *  before editing can start 
 	 */
@@ -306,9 +311,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			needsSaving[i] = Boolean.valueOf(false); // Set entries false
 		}		
 	}
-	
-	
-	
+
+
+
 	/** Gets the unique identifier of the model at 
 	 *  the given index
 	 * 
@@ -341,22 +346,22 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 * @return columnHeader the ArrayList of headers for the table
 	 */
 	public ArrayList<String> getTableName(){
-		 ArrayList<String> columnHeader  = new ArrayList<String>();
+		ArrayList<String> columnHeader  = new ArrayList<String>();
 
-		 // Set each value of the column header
-		 for (int i = 0; i < 9; i++){
-			 columnHeader.add( resultsTable.getColumnModel().getColumn(i).getHeaderValue().toString());
-		 }
+		// Set each value of the column header
+		for (int i = 0; i < 9; i++){
+			columnHeader.add( resultsTable.getColumnModel().getColumn(i).getHeaderValue().toString());
+		}
 
 		return columnHeader;
 	}
-	
-	
+
+
 	/** Trigger a reset of all lists	 */
 	public void refreshAll() {
 		parent.getParent().refreshData();
 	}
-	
+
 	/** Way to trigger a pop-up or enable/disable certain 
 	 *  buttons when a  save is not successful.
 	 */

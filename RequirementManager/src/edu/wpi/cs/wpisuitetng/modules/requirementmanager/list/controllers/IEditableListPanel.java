@@ -26,7 +26,7 @@ public interface IEditableListPanel {
 	/** Sets up any arrays of flags or other settings needed
 	 *  before editing can start 
 	 */
-	public void setUpForEditing();
+	void setUpForEditing();
 
 	
 	/** Gets the JSOn version of the model at 
