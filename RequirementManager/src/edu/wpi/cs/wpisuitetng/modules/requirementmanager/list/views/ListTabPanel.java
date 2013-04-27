@@ -64,6 +64,7 @@ public class ListTabPanel extends JTabbedPane {
 				parent.setMode(Mode.FILTER);
 				filterList.refreshAll();
 				filterList.setCancelBtnToNew();
+				filterList.setDeleteEnabled(false);
 				parent.getFilterBuilderPanel().resetFields();
 				parent.getFilterBuilderPanel().setInputEnabled(false);
 			}
@@ -71,6 +72,7 @@ public class ListTabPanel extends JTabbedPane {
 				parent.setMode(Mode.ITERATION);
 				iterationList.refreshAll();
 				iterationList.setCancelBtnToNew();
+				iterationList.setDeleteEnabled(false);
 				parent.getIterationBuilderPanel().resetFields();
 				parent.getIterationBuilderPanel().setInputEnabled(false);
 			}

@@ -13,6 +13,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
@@ -22,13 +24,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /** Panel to hold the results of a list of requirements
  */
-@SuppressWarnings("serial")
-public class RequirementListPanel extends JPanel {
+@SuppressWarnings({"serial"})
+public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	
 	/** The table of results */
 	protected JTable resultsTable;
@@ -39,11 +42,19 @@ public class RequirementListPanel extends JPanel {
 	/** The main tab controller */
 	protected final MainTabController tabController;
 
+	/** Array of Boolean flags for whether or not Requirements need saving */
+	private Boolean[] needsSaving;
+	
+	/** ArrayList of listeners on resultsTable column heads */
+	private ArrayList<MouseListener> columnHeadListeners;
+	
+	
 	/**Construct the panel
 	 * @param tabController The main tab controller
 	 */
 	public RequirementListPanel(MainTabController tabController) {
 		this.tabController = tabController;
+		this.columnHeadListeners = new ArrayList<MouseListener>();
 		
 		// Set the layout
 		this.setLayout(new BorderLayout());
@@ -56,7 +67,7 @@ public class RequirementListPanel extends JPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
-		
+
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
 		
@@ -91,6 +102,7 @@ public class RequirementListPanel extends JPanel {
 		resultsTable = newTable;
 	}
 	
+<<<<<<< HEAD
 	/** 
 	 * place combox for type
 	 */
@@ -142,4 +154,84 @@ public class RequirementListPanel extends JPanel {
 	
 		
 	}
+=======
+	/** Disables the sorting of the JTable */
+	public void disableSorting(){
+		columnHeadListeners.clear();
+		// Removes mouse listeners from table header
+		for(MouseListener listener : resultsTable.getTableHeader().getMouseListeners()) {
+			columnHeadListeners.add(listener);
+			resultsTable.getTableHeader().removeMouseListener(listener);
+		}
+		resultsTable.getTableHeader().setResizingAllowed(false); // Disables column resizing
+		resultsTable.getTableHeader().setReorderingAllowed(false); // Disables column ordering
+	}
+
+	/** Enables the sorting of the JTable */
+	public void enableSorting() {
+		// Adds mouse listeners back to table header
+		for (MouseListener listener : columnHeadListeners) {
+			resultsTable.getTableHeader().addMouseListener(listener);
+		}
+		resultsTable.getTableHeader().setResizingAllowed(true); // Allows columns to be resized
+		resultsTable.getTableHeader().setReorderingAllowed(true); // Allows columns to be reordered
+	}
+
+	/** Gets the array of boolean flags of what models
+	 *  need saving
+	 * 
+	 * @return a Boolean array of what models need saving
+	 */
+	public Boolean[] getNeedsSaveFlags() {
+		return needsSaving;
+	}
+
+	/** Gets the JSOn version of the model at 
+	 *  the given index
+	 *  
+	 * @param i The index of the model
+	 * @return  The JSON version of the model
+	 */
+	public String getModelAsJson(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+	
+	
+	/** Gets the unique identifier of the model at 
+	 *  the given index
+	 * 
+	 * @param i The index of the model
+	 * @return  The unique identifier of the model
+	 */
+	public String getUniqueIdAtIndex(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** Way to trigger a pop-up or enable/disable certain 
+	 *  buttons when a  save is not successful.
+	 */
+	public void failedToSave() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/** Change settings of table to indicate that the 
+	 *  save was completed and normal operations 
+	 *  should resume.
+	 */
+	public void savesComplete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/** Trigger a reset of all lists	 */
+	public void refreshAll() {
+		// TODO Auto-generated method stub	
+	}
+>>>>>>> 41ec0bb659fac6eeb62bc8bcbeb0c19ba4b3d959
 }
