@@ -447,6 +447,12 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 						(oldStart.before(newStart) && newStart.before(oldEnd))) {	// Overlap where old date starts first
 					errorOnThis = true;
 				}
+			} else if (newStart.equals(newEnd) || oldStart.equals(oldEnd)) {		// one is a one-day iteration
+				if (newStart.equals(oldStart) ||  newEnd.equals(oldEnd) ||			// Same start date or Same end date								// Same end date
+						(oldStart.before(newStart) && newEnd.before(oldEnd)) ||		// new inside of old
+						(newStart.before(oldStart) && oldEnd.before(newEnd))) {		// old inside of new
+					errorOnThis = true;
+				}
 			}
 			if (errorOnThis && !dateErrorFound)//If this is the first time we have found an iteration whose dates overlap with the iteration under construction/editing
 			{
