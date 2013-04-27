@@ -15,9 +15,12 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 import java.awt.BorderLayout;
 import java.util.Date;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
@@ -86,5 +89,57 @@ public class RequirementListPanel extends JPanel {
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
+	}
+	
+	/** 
+	 * place combox for type
+	 */
+	@SuppressWarnings("unchecked")
+	public void setComboxforType()
+	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(4);
+	@SuppressWarnings("rawtypes")
+	JComboBox typebox = new JComboBox();
+	typebox.addItem("Epic");
+	typebox.addItem("Theme");
+	typebox.addItem("UserStory");
+	typebox.addItem("NonFunctional");
+	typebox.addItem("Scenario");
+	typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+	
+		
+	}
+	
+	/** 
+	 * place combox for type
+	 */
+	@SuppressWarnings("unchecked")
+	public void setComboxforStatus()
+	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(5);
+	@SuppressWarnings("rawtypes")
+	JComboBox typebox = new JComboBox();
+	typebox.addItem("New");
+	typebox.addItem("InProgress");
+	typebox.addItem("Open");
+	typebox.addItem("Complete");
+	typebox.addItem("Deleted");
+	typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+	
+		
+	}
+	
+	/** 
+	 * place combox for type
+	 */
+	@SuppressWarnings("unchecked")
+	public void setComboxforPriority()
+	{TableColumn typeColumn = resultsTable.getColumnModel().getColumn(6);
+	@SuppressWarnings("rawtypes")
+	JComboBox typebox = new JComboBox();
+	typebox.addItem("High");
+	typebox.addItem("Medium");
+	typebox.addItem("Low");
+	typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+	
+		
 	}
 }

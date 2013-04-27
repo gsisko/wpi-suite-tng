@@ -161,8 +161,12 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				btnEditVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(true);
+				mainPanel.getResultsPanel().setComboxforType();
+				mainPanel.getResultsPanel().setComboxforStatus();
+				mainPanel.getResultsPanel().setComboxforPriority();
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
+				
 				
 			}
 		});
