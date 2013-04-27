@@ -284,9 +284,26 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("NonFunctional");
 		typebox.addItem("Scenario");
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
-
-
 	}
+	
+	/** 
+	 * place combox for iteration
+	 */
+	public void setComboxforIteration()
+	{
+		int typeColumnNum = this.getColumnIndex("Iteration", getTableName());
+
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
+
+		JComboBox typebox = new JComboBox();
+		Iteration[] allIterations = parent.getParent().getAllIterations();
+		for (Iteration anIter: allIterations){
+			typebox.addItem(anIter.getName());
+		}
+		
+		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+	}
+	
 
 	/** 
 	 * place combox for type
@@ -495,6 +512,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 *  before editing can start 
 	 */
 	public void setUpForEditing(){
+		// Clear the boolean arrays
 		needsSaving = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 		for (int i = 0; i < resultsTable.getRowCount(); i++){
 			for (int j = 0; j < resultsTable.getColumnCount(); j++){
@@ -507,6 +525,12 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				isValid[i][j] = Boolean.valueOf(true); // Set entries false
 			}		
 		}
+		getModel().setEditable(true);
+		setComboxforType();
+		setComboxforStatus();
+		setComboxforPriority();
+		setComboxforIteration();
+		disableSorting();
 	}
 
 
