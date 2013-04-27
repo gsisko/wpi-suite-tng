@@ -54,7 +54,4 @@ public interface IEditableListPanel {
 	/** Trigger a reset of all lists	 */
 	void refreshAll();
 
-	
-
-
 }

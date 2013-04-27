@@ -25,7 +25,9 @@ public class ResultsTableModel extends AbstractTableModel {
 	/** The data to be displayed in the table */
 	private Object[][] data = {};
 	
+	/** Boolean for whether or not the table is editable or not */
 	private boolean editable = false;
+	
 	
 	/**
 	 * Basic constructor.
@@ -129,4 +131,8 @@ public class ResultsTableModel extends AbstractTableModel {
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
+	
+
+	
+	
 }

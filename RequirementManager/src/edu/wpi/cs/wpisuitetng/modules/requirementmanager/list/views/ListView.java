@@ -84,6 +84,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	protected Requirement[] allRequirements;
 	protected Requirement[] displayedRequirements;
 
+	
+	
 	/**Construct the view
 	 * @param tabController The main tab controller
 	 */
@@ -164,6 +166,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
 				
+				mainPanel.getResultsPanel().disableSorting();
 			}
 		});
 
@@ -175,6 +178,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
+				mainPanel.getResultsPanel().enableSorting();
 			}
 		});
 		
@@ -186,6 +190,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
+				mainPanel.getResultsPanel().enableSorting();
 			}
 		});
 		
