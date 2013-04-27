@@ -85,7 +85,7 @@ public class AcceptanceTestPanel extends JPanel{
 		//end Name
 
 		//Description:
-		txtDescription = new JTextArea(testDescription, 2, 2);
+		txtDescription = new JTextArea(testDescription,2,2);
 		txtDescription.setLineWrap(true); //Make the description wrap long lines
 		txtDescription.setFont(txtDescription.getFont().deriveFont(9)); //set the font of the description to size 9
 		txtDescription.setEditable(false);//make sure the description cannot be altered
@@ -126,6 +126,7 @@ public class AcceptanceTestPanel extends JPanel{
 		nameAndStatusPanel.add(txtName);//actually add the "txtName" JTextField to the nameAndStatusPanel
 		nameAndStatusPanel.add(Box.createRigidArea(new Dimension(5,0)));//add 5 units of horizontal spacing after the txtName
 		nameAndStatusPanel.add(statusLabel);//actually add the "statusLabel" JLabel to the nameAndStatusPanel
+		nameAndStatusPanel.add(txtDescription);
 		nameAndStatusPanel.add(statusBox);//actually add the "statusBox" JComboBox to the nameAndStatusPanel
 		//end nameAndStatusPanel
 
@@ -136,7 +137,7 @@ public class AcceptanceTestPanel extends JPanel{
 		setBorder(BorderFactory.createCompoundBorder((BorderFactory.createEmptyBorder(5, 5, 5, 5)),
 														BorderFactory.createCompoundBorder( (BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)),
 																							(BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  )   );
-
+		//txtDescription.append(txt);
 		//Add the components to this panel
 		add(nameAndStatusPanel);//actually add the nameAndStatusPanel to this panel
 		this.add(Box.createRigidArea(new Dimension(0,5)));//add 5 units of vertical spacing after the nameAndStatusPanel
@@ -179,8 +180,8 @@ public class AcceptanceTestPanel extends JPanel{
 	/**
 	 * @param txtDescription the txtDescription to set
 	 */
-	public void settxtDescription(JTextArea txtDescription) {
-		this.txtDescription = txtDescription;
+	public void settxtDescription(String Description) {
+		this.txtDescription.append(Description);
 	}
 
 	/**
