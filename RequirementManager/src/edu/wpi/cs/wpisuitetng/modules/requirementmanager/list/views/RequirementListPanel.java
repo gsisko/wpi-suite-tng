@@ -105,22 +105,51 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					boolean isInvalid = false;
 
 					Requirement currentRequirement = getCurrentRequirement(row);
+					RequirementStatus currentStatus = currentRequirement.getStatus();
 
 					if (columnName.equals("Name")) {
-						if (!requirement.getName().equals((String)data))
+						if (!requirement.getName().equals((String)data)) {
 							isChanged = true;
+							
+							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
+								isInvalid = true;
+						}
 						if (((String)data).equals(""))
 							isInvalid = true;
 					}
 
 					else if (columnName.equals("Iteration")) {
-						if (!getIterationName(requirement.getIteration()).equals((String)data))
+						String iteration = (String) data;
+						if (!getIterationName(requirement.getIteration()).equals(iteration)) {
 							isChanged = true;
+							
+							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
+								isInvalid = true;
+							
+							int statusColumn = getColumnIndex("Status");
+							if (iteration.equals("")) {
+								if (requirement.getStatus() == RequirementStatus.New)
+									resultsTable.setValueAt("New", row, statusColumn);
+								else
+									resultsTable.setValueAt("Open", row, statusColumn);
+							}
+							else
+								resultsTable.setValueAt("InProgress", row, statusColumn);
+							
+							if (currentRequirement.getEstimate() == 0) {
+								int estimateColumn = getColumnIndex("Estimate");
+								isValid[row][estimateColumn] = false;
+							}
+						}
 					}
 
 					else if (columnName.equals("Type")) {
-						if (requirement.getType() != RequirementType.toType((String)data))
+						if (requirement.getType() != RequirementType.toType((String)data)) {
 							isChanged = true;
+							
+							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
+								isInvalid = true;
+						}
 					}
 
 					else if (columnName.equals("Status")) {
@@ -129,13 +158,21 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					}
 
 					else if (columnName.equals("Priority")) {
-						if (requirement.getPriority() != RequirementPriority.toPriority((String)data))
+						if (requirement.getPriority() != RequirementPriority.toPriority((String)data)) {
 							isChanged = true;
+							
+							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
+								isInvalid = true;
+						}
 					}
 
 					else if (columnName.equals("ReleaseNumber")) {
-						if (!requirement.getReleaseNumber().equals((String)data))
+						if (!requirement.getReleaseNumber().equals((String)data)) {
 							isChanged = true;
+							
+							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
+								isInvalid = true;
+						}
 					}
 
 					else if (columnName.equals("Estimate")) {
@@ -144,8 +181,16 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							isInvalid = true;
 						else {
 							try {
-								if (requirement.getEstimate() != Integer.parseInt((String)data))
+								if (requirement.getEstimate() != Integer.parseInt((String)data)) {
 									isChanged = true;
+									
+									if (currentStatus == RequirementStatus.Deleted)
+										isInvalid = true;
+									
+									int iterationId = currentRequirement.getIteration();
+									if (iterationId != 0)
+										isInvalid = true;
+								}
 							} catch (Exception ex) {
 								isInvalid = true;
 							}
@@ -158,8 +203,12 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							isInvalid = true;
 						else {
 							try {
-								if (requirement.getActualEffort() != Integer.parseInt((String)data))
+								if (requirement.getActualEffort() != Integer.parseInt((String)data)) {
 									isChanged = true;
+									
+									if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
+										isInvalid = true;
+								}
 							} catch (Exception ex) {
 								isInvalid = true;
 							}
