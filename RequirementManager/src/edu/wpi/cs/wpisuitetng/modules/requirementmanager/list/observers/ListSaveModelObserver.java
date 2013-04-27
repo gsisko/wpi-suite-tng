@@ -71,7 +71,7 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 	 * @param iReq The request response from the server 
 	 */
 	public void responseError(IRequest iReq) {
-		controller.error("");
+		controller.error(iReq.getBody());
 	}
 
 	/** Upon failure, prints to console

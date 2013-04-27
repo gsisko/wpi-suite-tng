@@ -98,6 +98,7 @@ public class ListSaveModelController implements IController{
 	 */
 	public void error(String error) {
 		System.err.println("Could not save the " + modelName);	
+		System.err.println(error);	
 		theList.failedToSave();
 	}
 }
