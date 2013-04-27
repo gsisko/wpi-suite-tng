@@ -290,7 +290,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				return Column;
 			}
 		}
-		System.err.print("That column doesn't exist!");
+		System.err.println("That column doesn't exist!");
 		return -1;
 	}
 	
@@ -320,26 +320,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return null;
 	}
 
-	/** Way to trigger a pop-up or enable/disable certain 
-	 *  buttons when a  save is not successful.
-	 */
-	public void failedToSave() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	/** Change settings of table to indicate that the 
 	 *  save was completed and normal operations 
 	 *  should resume.
 	 */
 	public void savesComplete() {
-		System.out.print("Save complete");
+		System.out.println("Save complete");
 	}
 
-	/** Trigger a reset of all lists	 */
-	public void refreshAll() {
-		// TODO Auto-generated method stub	
-	}
+
 
 	/**
 	 * @return the listSaveModelController
@@ -354,37 +343,24 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public ArrayList<String> getTableName(){
 		 ArrayList<String> columnHeader  = new ArrayList<String>();
 
-		String column0Header = "";
-		String column1Header = "";
-		String column2Header = "";
-		String column3Header = "";
-		String column4Header = "";
-		String column5Header = "";
-		String column6Header = "";
-		String column7Header = "";
-		String column8Header = "";
-
-		//get Headers
-		column0Header = resultsTable.getColumnModel().getColumn(0).getHeaderValue().toString();
-		column1Header = resultsTable.getColumnModel().getColumn(1).getHeaderValue().toString();
-		column2Header = resultsTable.getColumnModel().getColumn(2).getHeaderValue().toString();
-		column3Header = resultsTable.getColumnModel().getColumn(3).getHeaderValue().toString();
-		column4Header = resultsTable.getColumnModel().getColumn(4).getHeaderValue().toString();
-		column5Header = resultsTable.getColumnModel().getColumn(5).getHeaderValue().toString();
-		column6Header = resultsTable.getColumnModel().getColumn(6).getHeaderValue().toString();
-		column7Header = resultsTable.getColumnModel().getColumn(7).getHeaderValue().toString();
-		column8Header = resultsTable.getColumnModel().getColumn(8).getHeaderValue().toString();
-
-		columnHeader.add(column0Header);
-		columnHeader.add(column1Header);
-		columnHeader.add(column2Header);
-		columnHeader.add(column3Header);
-		columnHeader.add(column4Header);
-		columnHeader.add(column5Header);
-		columnHeader.add(column6Header);
-		columnHeader.add(column7Header);
-		columnHeader.add(column8Header);
+		 // Set each value of the column header
+		 for (int i = 0; i < 9; i++){
+			 columnHeader.add( resultsTable.getColumnModel().getColumn(i).getHeaderValue().toString());
+		 }
 
 		return columnHeader;
+	}
+	
+	
+	/** Trigger a reset of all lists	 */
+	public void refreshAll() {
+		parent.getParent().refreshData();
+	}
+	
+	/** Way to trigger a pop-up or enable/disable certain 
+	 *  buttons when a  save is not successful.
+	 */
+	public void failedToSave() {
+		System.out.println("sadface ): ");
 	}
 }

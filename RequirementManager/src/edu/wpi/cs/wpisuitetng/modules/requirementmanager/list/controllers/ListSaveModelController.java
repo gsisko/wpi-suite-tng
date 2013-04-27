@@ -53,6 +53,7 @@ public class ListSaveModelController implements IController{
 				perform(theList.getUniqueIdAtIndex(i) , i, theList.getModelAsJson(i));
 			}
 		}
+		System.out.println("ListSaveModelController:    perform() ");
 	}
 
 	/** provide action listener or other ways to check whether a certain action is performed
@@ -66,6 +67,8 @@ public class ListSaveModelController implements IController{
 		request.setBody(modelJSON); // put the new message in the body of the request
 		request.addObserver(new ListSaveModelObserver(this, theList.getNeedsSaveFlags(), flagIndex)); // add an observer to process the response
 		request.send();
+		System.out.println("ListSaveModelController:    message sent ");
+
 	}
 
 
@@ -78,13 +81,15 @@ public class ListSaveModelController implements IController{
 		theList.savesComplete();
 		// Trigger a mass reset
 		theList.refreshAll();
+		System.out.println("ListSaveModelController:    message success! ");
+
 	}
 
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void fail() {
-		System.err.println("Fail: Cannot delete the " + modelName);		
+		System.err.println("Fail: Cannot save the " + modelName);		
 		theList.failedToSave();
 	}
 
@@ -92,7 +97,7 @@ public class ListSaveModelController implements IController{
 	 * @param iReq The request response from the server 
 	 */
 	public void error(String error) {
-		System.err.println("Could not delete the " + modelName);	
+		System.err.println("Could not save the " + modelName);	
 		theList.failedToSave();
 	}
 }

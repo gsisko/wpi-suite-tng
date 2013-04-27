@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,6 +24,7 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RefreshRequirementsAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
@@ -91,6 +91,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	protected Requirement[] allRequirements;
 	protected Requirement[] displayedRequirements;
 	
+	/** The controller that saves requirements that are edited in list view */
+	private ListSaveModelController listSaveRequirementController = null;	
+	
 	
 	/**Construct the view
 	 * @param tabController The main tab controller
@@ -118,8 +121,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
-		filterController = new RetrieveAllModelsController(mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
-		iterationController = new RetrieveAllModelsController(mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
+		filterController = new RetrieveAllModelsController(
+				mainPanel.getTabPanel().getFilterList(), mainPanel.getFilterBuilderPanel(), "filter");
+		iterationController = new RetrieveAllModelsController(
+				mainPanel.getTabPanel().getIterationList(), mainPanel.getIterationBuilderPanel(), "iteration");
 
 		// Add a listener for row clicks in the actual table
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
@@ -167,6 +172,13 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnEnableEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Instantiate the controller if it hasn't been made yet. This is done here just in case
+				// of instantiation path errors.
+				if (listSaveRequirementController == null){
+					listSaveRequirementController = new ListSaveModelController(mainPanel.getResultsPanel(), "requirement");
+				}
+				
+				
 				btnEditVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(true);
 				mainPanel.getResultsPanel().setComboxforType();
@@ -198,6 +210,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				listSaveRequirementController.perform();				
+				
 				btnCancelSaveVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
 				setListsAndBuildersVisible(true);

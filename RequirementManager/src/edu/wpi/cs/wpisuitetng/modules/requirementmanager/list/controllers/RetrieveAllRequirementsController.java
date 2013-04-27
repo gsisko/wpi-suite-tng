@@ -290,38 +290,12 @@ public class RetrieveAllRequirementsController {
 	 */
 	public ArrayList<Integer> getTableWidth(){
 		columnWidth  = new ArrayList<Integer>();
-
-		int column0Width = 0;
-		int column1Width = 0;
-		int column2Width = 0;
-		int column3Width = 0;
-		int column4Width = 0;
-		int column5Width = 0;
-		int column6Width = 0;
-		int column7Width = 0;
-		int column8Width = 0;
-
-		//get widths
-		column0Width = resultsPanel.getResultsTable().getColumnModel().getColumn(0).getWidth();
-		column1Width = resultsPanel.getResultsTable().getColumnModel().getColumn(1).getWidth();
-		column2Width = resultsPanel.getResultsTable().getColumnModel().getColumn(2).getWidth();
-		column3Width = resultsPanel.getResultsTable().getColumnModel().getColumn(3).getWidth();
-		column4Width = resultsPanel.getResultsTable().getColumnModel().getColumn(4).getWidth();
-		column5Width = resultsPanel.getResultsTable().getColumnModel().getColumn(5).getWidth();
-		column6Width = resultsPanel.getResultsTable().getColumnModel().getColumn(6).getWidth();
-		column7Width = resultsPanel.getResultsTable().getColumnModel().getColumn(7).getWidth();
-		column8Width = resultsPanel.getResultsTable().getColumnModel().getColumn(8).getWidth();
-
-		columnWidth.add(column0Width);
-		columnWidth.add(column1Width);
-		columnWidth.add(column2Width);
-		columnWidth.add(column3Width);
-		columnWidth.add(column4Width);
-		columnWidth.add(column5Width);
-		columnWidth.add(column6Width);
-		columnWidth.add(column7Width);
-		columnWidth.add(column8Width);
 		
+		// Save the width of each column
+		for (int i = 0; i < 9; i++){
+			columnWidth.add(resultsPanel.getResultsTable().getColumnModel().getColumn(0).getWidth());
+		}
+	
 		return columnWidth;
 	}
 
@@ -329,16 +303,10 @@ public class RetrieveAllRequirementsController {
 	 * @param columnWidth the ArrayList of columnWidths
 	 */
 	public void setTableWidth(ArrayList<Integer> columnWidth){
-		
-		resultsPanel.getResultsTable().getColumnModel().getColumn(0).setPreferredWidth(columnWidth.get(0));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(1).setPreferredWidth(columnWidth.get(1));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(2).setPreferredWidth(columnWidth.get(2));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(3).setPreferredWidth(columnWidth.get(3));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(4).setPreferredWidth(columnWidth.get(4));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(5).setPreferredWidth(columnWidth.get(5));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(6).setPreferredWidth(columnWidth.get(6));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(7).setPreferredWidth(columnWidth.get(7));
-		resultsPanel.getResultsTable().getColumnModel().getColumn(8).setPreferredWidth(columnWidth.get(8));
+		// Set the width of each column
+		 for (int i = 0; i < 9; i++){
+			resultsPanel.getResultsTable().getColumnModel().getColumn(i).setPreferredWidth(columnWidth.get(i));
+		 }
 	}
 	
 	/**A getter to get the current sorts of the table 
