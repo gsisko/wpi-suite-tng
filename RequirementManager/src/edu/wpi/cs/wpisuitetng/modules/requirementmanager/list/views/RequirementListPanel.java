@@ -22,8 +22,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
@@ -33,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSa
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 /** Panel to hold the results of a list of requirements
  */
@@ -54,6 +51,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Array of Boolean flags for whether or not cells are valid */
 	private Boolean[][] isValid;
+	
+	/** Array of Boolean flags for whether or not the cells are editable */
+	private Boolean[][] isEditable;
 
 	/** ArrayList of listeners on resultsTable column heads */
 	private ArrayList<MouseListener> columnHeadListeners;
@@ -223,7 +223,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					needsSaving[row][column] = isChanged;
 					isValid[row][column] = !isInvalid;
 
-					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid));			
+					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));			
 				}
 			}
 
@@ -516,16 +516,27 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		needsSaving = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 		for (int i = 0; i < resultsTable.getRowCount(); i++){
 			for (int j = 0; j < resultsTable.getColumnCount(); j++){
-				needsSaving[i][j] = Boolean.valueOf(false); // Set entries false
+				needsSaving[i][j] = Boolean.valueOf(false); // Set entries to false
 			}		
 		}
 		isValid = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 		for (int i = 0; i < resultsTable.getRowCount(); i++){
 			for (int j = 0; j < resultsTable.getColumnCount(); j++){
-				isValid[i][j] = Boolean.valueOf(true); // Set entries false
+				isValid[i][j] = Boolean.valueOf(true); // Set entries to true
 			}		
 		}
+		isEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
+		for (int i = 0; i < resultsTable.getRowCount(); i++){
+			for (int j = 0; j < resultsTable.getColumnCount(); j++){
+				isEditable[i][j] = Boolean.valueOf(true); // Set entries to true
+			}		
+		}
+		for (int i = 0; i < resultsTable.getRowCount(); i++) {
+			isEditable[i][getColumnIndex("ID")] = Boolean.valueOf(false);
+		}
 		getModel().setEditable(true);
+		getModel().setIsEditable(isEditable);
+		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
 		setComboxforType();
 		setComboxforStatus();
 		setComboxforPriority();
@@ -601,5 +612,19 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void setIsValid(Boolean[][] isValid) {
 		this.isValid = isValid;
+	}
+
+	/**
+	 * @return the isEditable
+	 */
+	public Boolean[][] getIsEditable() {
+		return isEditable;
+	}
+
+	/**
+	 * @param isEditable the isEditable to set
+	 */
+	public void setIsEditable(Boolean[][] isEditable) {
+		this.isEditable = isEditable;
 	}
 }

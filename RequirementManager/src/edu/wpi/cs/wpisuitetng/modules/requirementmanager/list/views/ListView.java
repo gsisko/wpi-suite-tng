@@ -203,7 +203,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				btnRefresh.setEnabled(true);
 				refreshData();
 				mainPanel.getResultsPanel().enableSorting();
-				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null));
+				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 			}
 		});
 		
