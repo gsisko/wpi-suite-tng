@@ -27,7 +27,7 @@ import org.apache.commons.codec.binary.Base64;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import edu.wpi.cs.wpisuitetng.ManagerLayer;
+//import edu.wpi.cs.wpisuitetng.ManagerLayer;
 import edu.wpi.cs.wpisuitetng.Permission;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -82,7 +82,7 @@ public class FileManager implements EntityManager<FileModel>{
 
 		//TODO: Add logging
 		logger.log(Level.FINE, "New file: "+ f.getName() +" submitted by: "+ theUser.getName() );
-		f.setOwner(theUser);
+//		f.setOwner(theUser);
 		
 		//Check ID here
 		if(getEntity(s,f.getIdNum())[0] == null)
@@ -342,6 +342,8 @@ public class FileManager implements EntityManager<FileModel>{
 	@Override
 	public String advancedPut(Session s, String[] args, String content) throws WPISuiteException 
 	{
+		//TODO: Do we need this functionality? It doesn't seem like we will if we don't use users/projects
+		/*
 		FileModel p = getEntity(args[2])[0];
 		String[] names = null;
 
@@ -355,34 +357,37 @@ public class FileManager implements EntityManager<FileModel>{
 
 		ArrayList<String> success = new ArrayList<String>();
 
-		UserManager u = ManagerLayer.getInstance().getUsers();
+//		UserManager u = ManagerLayer.getInstance().getUsers();
 
-		if(args.length > 3)
-		{
-			if("add".equals(args[3]))
-			{
-				for(String person : names)
-				{
-					if(p.addTeamMember(u.getEntity(s, person)[0]))
-						success.add(person);
-				}
-			}
-			else if("remove".equals(args[3]))
-			{
-				for(String person : names)
-				{
-					if(p.removeTeamMember(u.getEntity(s, person)[0]))
-						success.add(person);
-				}
-			}
-		}
-
-		return gson.toJson(success.toArray(names),String[].class );
+//		if(args.length > 3)
+//		{
+//			if("add".equals(args[3]))
+//			{
+//				for(String person : names)
+//				{
+//					if(p.addTeamMember(u.getEntity(s, person)[0]))
+//						success.add(person);
+//				}
+//			}
+//			else if("remove".equals(args[3]))
+//			{
+//				for(String person : names)
+//				{
+//					if(p.removeTeamMember(u.getEntity(s, person)[0]))
+//						success.add(person);
+//				}
+//			}
+//		}
+ */
+		return "";
+//		return gson.toJson(success.toArray(names),String[].class );
 	}
 
 	@Override
 	public String advancedPost(Session s, String string, String content) throws WPISuiteException 
 	{
-		return gson.toJson(allModules, String[].class);
+		//TODO: Implement?
+		return "";
+//		return gson.toJson(allModules, String[].class);
 	}
 }

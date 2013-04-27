@@ -14,14 +14,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.core.models;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.apache.commons.codec.binary.Base64;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import edu.wpi.cs.wpisuitetng.exceptions.SerializationException;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /**
  * The Data Model representation of a File. Offers
@@ -36,33 +32,31 @@ public class FileModel extends AbstractModel
 
 	private String fileName;
 	private String idNum;
-	private String[] fileData;
-	private User owner;
-	private ArrayList<User> team;
+	private String fileData; //This should be kept as Base64
+//	private User owner;
+//	private ArrayList<User> team;
 	
 	/**
 	 * Primary constructor for a FileModel
 	 * @param fileName - the name of the file
 	 * @param idNum - the project ID number as a string
-	 * @param owner - The User who owns this project
-	 * @param team - The User[] who are associated with the project
 	 * @param fileData - the base64 string representing the file
 	 */
-	public FileModel(String fileName, String idNum, User owner, User[] team, String[] fileData)
+//	public FileModel(String fileName, String idNum, User owner, User[] team, String fileData)
+	public FileModel(String fileName, String idNum, String fileData)
 	{
 		this.fileName = fileName;
 		this.idNum = idNum;
-		this.owner = owner;
-		this.fileData = fileData;
+		this.fileData = fileData; 
 		
-		if(team != null)
-		{
-			this.team = new ArrayList<User>(Arrays.asList(team));
-		}
-		else
-		{
-			this.team = new ArrayList<User>();
-		}
+//		if(team != null)
+//		{
+//			this.team = new ArrayList<User>(Arrays.asList(team));
+//		}
+//		else
+//		{
+//			this.team = new ArrayList<User>();
+//		}
 	}
 	
 	//TODO: Do we want this for files?
@@ -122,7 +116,7 @@ public class FileModel extends AbstractModel
 	}
 	
 	/* Serializing */
-	//XXX: We are serializing using Base64 instead...
+	//XXX NOTE: We are serializing using Base64 instead...
 	/**
 	 * Serializes this Project's member variables into
 	 * 	a JSON string.
@@ -189,10 +183,10 @@ public class FileModel extends AbstractModel
 	{
 		String json ="";
 		
-		Gson gson = new Gson();
+		/*Gson gson = new Gson();
 		
 		json = gson.toJson(u, FileModel[].class);
-		
+		*/
 		
 		return json;
 		
@@ -204,13 +198,17 @@ public class FileModel extends AbstractModel
 	 */
 	public static FileModel fromJSON(String json)
 	{
+		/*
 		Gson gson;
+		 
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(FileModel.class, new ProjectDeserializer());
 
 		gson = builder.create();
 		
 		return gson.fromJson(json, FileModel.class);
+		*/
+		return null;
 	}
 	
 	/* Built-in overrides/overloads */
@@ -226,9 +224,15 @@ public class FileModel extends AbstractModel
 		//TODO: Fill out this method
 		String converted = "";
 		
-		return converted;
+		//Convert variables to be sent as Base64
+		converted += Base64.encodeBase64String(getIdNum().getBytes());
+//		converted += Base64.encodeBase64String(Integer.toHexString(Integer.parseInt(getIdNum())).getBytes());
+		converted += " "; //Delimiter
+		converted += Base64.encodeBase64String(getFileName().getBytes());
+		converted += " ";
+		converted += getFileData(); //This should already be in Base64
 		
-//		return this.toJSON();
+		return converted;
 	}
 	
 	/**
@@ -236,10 +240,33 @@ public class FileModel extends AbstractModel
 	 * and sets the appropriate fields
 	 *
 	 * @param encoded the Base64 encoded representation of this object
+	 * @throws SerializationException 
 	 */
-	static public FileModel fromString(String encoded){
+	static public FileModel fromString(String encoded) throws SerializationException{
 		
-		FileModel decoded = null;
+		String[] parts = (new String(encoded)).split(" "); // split decoded token
+
+		//TODO: Is this a good idea?
+		//Check if all strings are Base64
+		for(int i = 0; i < parts.length; i++){
+			if (!Base64.isBase64(parts[i]))
+				throw new SerializationException("Failed to serialize String into FileModel!: " + parts[i]);
+		}
+
+		//TODO: Double check this decoding works
+		String idNum = new String((Base64.decodeBase64(parts[0])));
+		String fileName = new String((Base64.decodeBase64(parts[1])));
+		
+		FileModel decoded = new FileModel(fileName,idNum, parts[3]);
+		
+		//Convert variables to be sent as Base64
+//		converted += Base64.encodeBase64String(getIdNum().getBytes());
+//		converted += " "; //Delimiter
+//		converted += Base64.encodeBase64String(getFileName().getBytes());
+//		converted += " ";
+//		converted += getFileData(); //This should already be in Base64
+		
+//		return converted;
 		
 		return decoded;
 	}
@@ -287,14 +314,14 @@ public class FileModel extends AbstractModel
 		}
 		return false;
 	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
+//
+//	public User getOwner() {
+//		return owner;
+//	}
+//
+//	public void setOwner(User owner) {
+//		this.owner = owner;
+//	}
 
 	/**
 	 * @return the fileName
@@ -313,74 +340,70 @@ public class FileModel extends AbstractModel
 	/**
 	 * @return the fileData
 	 */
-	public String[] getFileData() {
+	public String getFileData() {
 		return fileData;
 	}
 
 	/**
 	 * @param fileData the fileData to set
 	 */
-	public void setFileData(String[] fileData) {
+	public void setFileData(String fileData) {
 		this.fileData = fileData;
 	}
 
+	//TODO: Do we want this?
 	/**
 	 * @param idNum the idNum to set
 	 */
 	public void setIdNum(String idNum) {
 		this.idNum = idNum;
 	}
-
-	/**
-	 * @param team the team to set
-	 */
-	public void setTeam(ArrayList<User> team) {
-		this.team = team;
-	}
+//	/**
+//	 * @return the team for this FileModel
+//	 */
+//	public User[] getTeam() {
+//		User[] a = new User[1];
+//		return team.toArray(a);
+//	}
+//	
+//	/**
+//	 * adds a team member to the team
+//	 * @param u - the user to add to the team
+//	 * @return true if the user was added, false if the user was already in the team
+//	 */
+//	public boolean addTeamMember(User u)
+//	{
+//		if(!team.contains(u))
+//		{
+//			team.add(u);
+//			return true;
+//		}
+//		return false;
+//	}
+//	
+//	/**
+//	 * removes a team member from the team
+//	 * @param u - the team member to remove from the team
+//	 * @return - true if the member was removed, false if they were not in the team
+//	 */
+//	public boolean removeTeamMember(User u)
+//	{
+//		if(team.contains(u))
+//		{
+//			team.remove(u);
+//			return true;
+//		}
+//		return false;
+//	}
 	
-	public User[] getTeam() {
-		User[] a = new User[1];
-		return team.toArray(a);
-	}
-	
-	/**
-	 * adds a team member to the team
-	 * @param u - the user to add to the team
-	 * @return true if the user was added, false if the user was already in the team
-	 */
-	public boolean addTeamMember(User u)
-	{
-		if(!team.contains(u))
-		{
-			team.add(u);
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * removes a team member from the team
-	 * @param u - the team member to remove from the team
-	 * @return - true if the member was removed, false if they were not in the team
-	 */
-	public boolean removeTeamMember(User u)
-	{
-		if(team.contains(u))
-		{
-			team.remove(u);
-			return true;
-		}
-		return false;
-	}
-
-	
+	//TODO: Do we want to restrict files to projects?
 //	@Override
-//	public FileModel getProject() {
+//	public Project getProject() {
 //		return null;
 //	}
 //
 //	@Override
-//	public void setProject(FileModel aProject) {
+//	public void setProject(Project aProject) {
 //		//Can't set a project's project
 //	}
 
