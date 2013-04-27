@@ -12,16 +12,20 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest;
 
-/**
- * @author Robert Smieja
- *
+/** An enum describing the possible states of an Acceptance Test. 
+ * AcceptanceTests are created with the state "None" 
  */
 public enum AcceptanceTestResult {
 	None,
 	Passed,
 	Failed;
 	
-	
+	/**Converts a String (passed in as "toConvert") to the
+	 * appropriate AcceptanceTestResult
+	 * 
+	 * @param toConvert The String to convert to an AcceptanceTestResult
+	 * @return the finished AcceptanceTestResult 
+	 */
 	public static AcceptanceTestResult toResult (String toConvert) {
 		return valueOf(toConvert);
 	}
