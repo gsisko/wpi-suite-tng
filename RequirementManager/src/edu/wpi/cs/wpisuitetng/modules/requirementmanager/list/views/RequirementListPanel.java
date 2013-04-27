@@ -102,7 +102,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable = newTable;
 	}
 	
-<<<<<<< HEAD
+
 	/** 
 	 * place combox for type
 	 */
@@ -154,7 +154,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	
 		
 	}
-=======
+
 	/** Disables the sorting of the JTable */
 	public void disableSorting(){
 		columnHeadListeners.clear();
@@ -233,5 +233,5 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public void refreshAll() {
 		// TODO Auto-generated method stub	
 	}
->>>>>>> 41ec0bb659fac6eeb62bc8bcbeb0c19ba4b3d959
+
 }
