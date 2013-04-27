@@ -169,11 +169,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
 				
-<<<<<<< HEAD
-				
-=======
+
 				mainPanel.getResultsPanel().disableSorting();
->>>>>>> 41ec0bb659fac6eeb62bc8bcbeb0c19ba4b3d959
+
 			}
 		});
 
