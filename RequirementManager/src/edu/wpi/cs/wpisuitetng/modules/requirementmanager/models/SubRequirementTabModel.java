@@ -26,10 +26,7 @@ public class SubRequirementTabModel extends AbstractTableModel {
 	/** The data to be displayed in the table */
 	private Object[][] data = {};
 	
-	/** Basic constructor.
-	 */
-	public SubRequirementTabModel() {
-	}
+	
 	
 	/**Set the data to be displayed in the table
 	 * @param data A two-dimensional array of objects containing the data
