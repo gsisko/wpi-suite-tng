@@ -14,6 +14,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.core.models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.apache.commons.codec.binary.Base64;
 
 import edu.wpi.cs.wpisuitetng.exceptions.SerializationException;
@@ -32,10 +35,9 @@ public class FileModel extends AbstractModel
 
 	private String fileName;
 	private String idNum;
-	private String fileData; //This should be kept as Base64
-//	private User owner;
-//	private ArrayList<User> team;
-	
+	private Integer fileSize; //In bytes
+	private ArrayList<String> fileData; //This should be kept as Base64
+	private ArrayList<User> team; 
 	/**
 	 * Primary constructor for a FileModel
 	 * @param fileName - the name of the file
@@ -43,33 +45,40 @@ public class FileModel extends AbstractModel
 	 * @param fileData - the base64 string representing the file
 	 */
 //	public FileModel(String fileName, String idNum, User owner, User[] team, String fileData)
-	public FileModel(String fileName, String idNum, String fileData)
+	public FileModel(String fileName, String idNum, Integer fileSize, String[] fileData, User[] team)
 	{
 		this.fileName = fileName;
 		this.idNum = idNum;
-		this.fileData = fileData; 
+		this.fileSize = fileSize;
 		
-//		if(team != null)
-//		{
-//			this.team = new ArrayList<User>(Arrays.asList(team));
-//		}
-//		else
-//		{
-//			this.team = new ArrayList<User>();
-//		}
+		if(fileData != null) {
+		this.fileData = new ArrayList<String>(Arrays.asList(fileData)); 
+		}
+		else
+		{
+			this.fileData = new ArrayList<String>();
+		}
+		
+		if(team != null)
+		{
+			this.team = new ArrayList<User>(Arrays.asList(team));
+		}
+		else
+		{
+			this.team = new ArrayList<User>();
+		}
 	}
 	
-	//TODO: Do we want this for files?
-//	/**
-//	 * Secondary constructor for a FileModel
-//	 * @param fileName	the file name
-//	 * @param idNum	the ID number to associate with this FileModel.
-//	 */
-//	public FileModel(String fileName, String idNum)
-//	{
-//		this.fileName = fileName;
-//		this.idNum = idNum;
-//	}
+	/**
+	 * Secondary constructor for a FileModel
+	 * @param fileName	the file name
+	 * @param idNum	the ID number to associate with this FileModel.
+	 */
+	public FileModel(String fileName, String idNum)
+	{
+		this.fileName = fileName;
+		this.idNum = idNum;
+	}
 	
 	/* Accessors */
 	public String getName()
@@ -87,11 +96,6 @@ public class FileModel extends AbstractModel
 	{
 		this.fileName = newName;
 	}
-	
-//	private void setIdNum(String newId)
-//	{
-//		this.idNum = newId;
-//	}
 	
 	/* database interaction */
 	
@@ -125,9 +129,9 @@ public class FileModel extends AbstractModel
 	
 	public String toJSON()
 	{
-		
-		String json = null;
 		/*
+		String json = null;
+		
 		json = "{";
 		
 		json += "\"name\":\"" + this.fileName +"\"";
@@ -170,7 +174,7 @@ public class FileModel extends AbstractModel
 		
 		json += "}";
 		*/
-		return json;
+		return toString();
 	}
 	
 	/**
@@ -181,15 +185,17 @@ public class FileModel extends AbstractModel
 	 */
 	public static String toJSON(FileModel[] u)
 	{
+		/*
 		String json ="";
 		
-		/*Gson gson = new Gson();
+		Gson gson = new Gson();
 		
 		json = gson.toJson(u, FileModel[].class);
-		*/
 		
 		return json;
+		*/
 		
+		return "";
 	}
 	
 	/**
@@ -221,12 +227,10 @@ public class FileModel extends AbstractModel
 	 */
 	public String toString()
 	{
-		//TODO: Fill out this method
 		String converted = "";
 		
 		//Convert variables to be sent as Base64
 		converted += Base64.encodeBase64String(getIdNum().getBytes());
-//		converted += Base64.encodeBase64String(Integer.toHexString(Integer.parseInt(getIdNum())).getBytes());
 		converted += " "; //Delimiter
 		converted += Base64.encodeBase64String(getFileName().getBytes());
 		converted += " ";
@@ -305,14 +309,6 @@ public class FileModel extends AbstractModel
 		}
 		return false;
 	}
-//
-//	public User getOwner() {
-//		return owner;
-//	}
-//
-//	public void setOwner(User owner) {
-//		this.owner = owner;
-//	}
 
 	/**
 	 * @return the fileName
@@ -342,7 +338,6 @@ public class FileModel extends AbstractModel
 		this.fileData = fileData;
 	}
 
-	//TODO: Do we want this?
 	/**
 	 * @param idNum the idNum to set
 	 */
@@ -386,16 +381,4 @@ public class FileModel extends AbstractModel
 //		}
 //		return false;
 //	}
-	
-	//TODO: Do we want to restrict files to projects?
-//	@Override
-//	public Project getProject() {
-//		return null;
-//	}
-//
-//	@Override
-//	public void setProject(Project aProject) {
-//		//Can't set a project's project
-//	}
-
 }

@@ -92,7 +92,7 @@ public class DataStore implements Data {
 		// #example: wait until the operation is done
 		while (blob.getStatus() > Status.COMPLETED){
 			try {
-				Thread.sleep(50);
+				Thread.sleep(100);
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
@@ -111,7 +111,7 @@ public class DataStore implements Data {
 
 		//Check if this should be stored as a BLOB
 		//TODO: Rewrite to not use instanceof?
-		if (aModel instanceof FileModel){
+		if (aModel instanceof FileModel && ((FileModel) aModel).getFileData() != null){
 			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
 
 			//Temporary file because we only need it to exist when we move between blob and Base64 String

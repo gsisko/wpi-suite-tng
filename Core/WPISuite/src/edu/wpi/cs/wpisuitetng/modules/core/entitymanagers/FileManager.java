@@ -43,7 +43,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 public class FileManager implements EntityManager<FileModel>{
 
 	Class<FileModel> fileModel = FileModel.class;
-	Gson gson;
 	Data data;
 //	private String[] allModules;
 
