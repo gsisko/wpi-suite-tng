@@ -33,7 +33,12 @@ function changePage(str){
         AddingANote();
 	else if (str.toString() == "deleteReqPage")
         DeleteReqPage();
-	
+	else if (str.toString() == "addingUsers")
+		AddingUsers();
+	else if (str.toString() == "checkHistory")
+		CheckHistory();
+	else if (str.toString() == "addingATest")
+		AddingATest();
 		
 	else if (str.toString() == "filterListPanel")
 		FilterListPanel();
@@ -65,7 +70,7 @@ function RequirementOverview(){
 		$(".instructionTitle").html('<a>The Requirement Manager Tab</a>');
 		$(".instructionText").html(function (){
 			var str = '<img width="750" src="images/mainPanel.png"/><br />';
-			str += 'The above image show the requirement manager in full. This section of the user manual will focus on the creation and management of requirements. Further sections will focus on the rest of our requirement manager, including Filters and Iterations'
+			str += 'The above image shows the requirement manager in full. This section of the user manual will focus on the creation and management of requirements. Further sections will focus on the rest of our requirement manager, including Filters and Iterations'
 			return str;
 		});
 	});
@@ -222,6 +227,48 @@ function CreateDeleteFilter(){
 			var str = '<a>To create a filter, first click the "New Filter" button located at the bottom of the Filter List Panel. Once clicked, the elements in the Filter Builder Panel will become active. You can create a filter with the type, operator, and value. Then hit the "Create" button. The filter will then appear on the left Filter List Panel.</a>';
 			str += '<br /><br /><a>You can then edit the filter by double clicking on it. It opens in the Filter Builder Panel. You can edit the filter accordingly. If you did not mean to create or edit a requirement you can click the "Cancel" button on the bottom of the Filter List Panel. </a>';
 			str += '<br /><br /><a>To delete a filter, simply double click the filter and click the "Delete" button. If you do not want to permanently delete the filter, you can double click the filter. The filter will open in the Filter Builder Panel, and you can change the filter from "Active" to "Inactive."</a>';
+			return str;
+        });
+    });
+}
+
+function AddingUsers(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Assign a User to a Requirement</a>');
+		$(".instructionTitle").html('<a>The User Assignment Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/Users.gif" height="400"/><br />';
+			str += '<a>To add a user to a requirement you must start with an existing requirement. In the right hand panel, where you find history, notes and acceptance Tests, select the tab that says user. Within that tab you will find a list of users currently in the database. Select the user you wish to assign to the requirement then click the "Add Users ->" button to assign the user to the current requirement.<a/><br/><br/>';
+			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign; click the "<- Remove Users" button; And the user will have been unassigned.</a>'
+			return str;
+        });
+    });
+}
+
+function CheckHistory(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Check Requirement History</a>');
+		$(".instructionTitle").html('<a>The Requirement History Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/requirementBuilderWithHistory.png" height="400"/><br/>';
+			str += '<a>To view a requirements history of changes, simply select the History tab from the panel on the right of the requirement builder view. From this history tab you can view all changes made to this requirement since it\'s creation.</a>';
+			return str;
+        });
+    });
+}
+
+function AddingATest(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Add an Acceptance Test</a>');
+		$(".instructionTitle").html('<a>The Acceptance Test Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/requirementBuilderWithTests.png" height="400"/><br/>';
+			str += '<a>To add an acceptance test, you must first select the acceptance test tab from the right side of the requirement builder panel.  Then you must enter a name and description into the provided boxes. After a name and descrption have been entered, you can click the "Add Acceptance Test" button to add the test to the requirement</a><br/><br/>';
+			str += '<img src="images/enteredTest.png" height="100" /><br/>';
+			str += '<a>The test will appear in the Panel above where you entered information, but a drop down menu to select if the requirement passed of failed the test.</a>';
 			return str;
         });
     });
