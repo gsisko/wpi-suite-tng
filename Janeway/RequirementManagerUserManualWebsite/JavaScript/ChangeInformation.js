@@ -88,9 +88,9 @@ function MakeReqPage() {
 		$(".instructionTitle").html('<a>The Requirement Builder Panel for Creation</a>');
         $(".instructionText").html(function(){
         	var str = '<img width="500" src="images/topPanel.png"/><br />';
-        	str += '<a>To begin the process of making a requirement simply click the "Create Requirement" button in the top left of the full display. The button is highlighted above</a><br />';
+        	str += '<a>To begin the process of making a requirement simply click the <span style="color:#ED1C24">"Create Requirement"</span> button in the top left of the full display. The button is highlighted above</a><br />';
         	str += '<img width = "500" src="images/requirementBuilder.png" alt="The Requirement Builder Panel" /><br />';
-        	str += '<a>The above image displays the requirement builder panel. The two fields marked in red, name and description, are required and provide textual warnings when not properly entered. The optional requirements, type, prority and relase number, are marked in orange. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement. The fields marked in black, status, estimate, actual effort, and iteration, are fields that are disabled at the creation of the requirement.</a>';
+        	str += '<a>The above image displays the requirement builder panel. The fields <span style="color:#ED1C24">name and description</span> are required and provide textual warnings when not properly entered. The optional requirements, type, prority and relase number, are marked in orange. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement. The fields marked in black, status, estimate, actual effort, and iteration, are fields that are disabled at the creation of the requirement.</a>';
         	str += '<br /><br /><a> The minimum that is required to successfully create a requirement is to give the requirement a name and description then click the "Save Changes" button at the top of the window.</a>';
             return str;
         });
