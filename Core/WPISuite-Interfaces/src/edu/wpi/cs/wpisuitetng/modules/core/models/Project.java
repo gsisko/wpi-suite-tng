@@ -32,7 +32,6 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 
 public class Project extends AbstractModel
  {
-
 	private String name;
 	private String idNum;
 	private String[] supportedModules;
@@ -189,9 +188,7 @@ public class Project extends AbstractModel
 		
 		json = gson.toJson(u, Project[].class);
 		
-		
 		return json;
-		
 	}
 	
 	/**

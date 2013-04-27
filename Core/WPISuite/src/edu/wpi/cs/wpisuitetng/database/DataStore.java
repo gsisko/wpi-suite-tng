@@ -11,13 +11,22 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.database;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.codec.binary.Base64;
 
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectServer;
@@ -25,18 +34,21 @@ import com.db4o.ObjectSet;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ClientConfiguration;
 import com.db4o.cs.config.ServerConfiguration;
+import com.db4o.ext.Status;
 import com.db4o.query.Predicate;
 import com.db4o.reflect.jdk.JdkReflector;
+import com.db4o.types.Blob;
 
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.FileModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
 public class DataStore implements Data {
 
 	static String WPI_TNG_DB ="WPISuite_TNG_Team5";
 	private static DataStore myself = null;
+	private  Blob blob;
 	static ObjectContainer theDB;
 	static ObjectServer server;
 	static int PORT = 0;
@@ -74,6 +86,22 @@ public class DataStore implements Data {
 	}
 
 	/**
+	 * Method to check if the database is finished with the Blob
+	 * unfortunately there's no callback for blobs. So the only way it to poll for it
+	 */
+	private void waitTillDBIsFinished(Blob blob) {
+		// #example: wait until the operation is done
+		while (blob.getStatus() > Status.COMPLETED){
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
+		// #end example
+	}
+
+	/**
 	 * Saves a Model into the database
 	 * @param Model to save
 	 */
@@ -82,30 +110,104 @@ public class DataStore implements Data {
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
+		//Check if this should be stored as a BLOB
+		//TODO: Rewrite to not use instanceof?
+		if (aModel instanceof FileModel){
+			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+
+			//Temporary file because we only need it to exist when we move between blob and Base64 String
+			File file;
+			try {
+				file = File.createTempFile(((FileModel) aModel).getFileName(), "");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't create temporary file when to save a BLOB!");
+				return false;
+			} 
+			file.deleteOnExit(); //Delete file if the JVM exits
+
+			//Convert byte array to a file :
+			OutputStream os;
+			try {
+				os = new FileOutputStream(file);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't open file I/O stream to save a BLOB!");
+				return false;
+			}
+
+			try {
+				os.write(Base64.decodeBase64(((FileModel) aModel).getFileData()));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't write to file to save a BLOB!");
+
+				try {
+					os.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't close file I/O stream to save a BLOB after failing to write to file!");
+				}
+				return false;
+			}
+
+			try {
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Can't close file I/O stream to save a BLOB!");
+				return false;
+			}
+			//End conversion
+
+			//Save to blob
+			if (blob.getFileName().compareTo(((FileModel) aModel).getFileName()) != 0) {//If file doesn't exist in the blob 
+				try {
+					blob.readFrom(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't write to BLOB!");
+				}
+			} else {
+				//File already exists
+				logger.log(Level.SEVERE, "Core Error saving BLOB! BLOB already exists!");
+
+				return false;
+			}
+
+			waitTillDBIsFinished(blob);
+			logger.log(Level.FINE, "BLOB saved as: " + blob.getFileName());
+			//			return true;
+
+			//Clear fileData so we can store in DB as normal
+			((FileModel) aModel).setFileData(null);
+		}
+
+		//store in normal DB
 		theDB.store(aModel);
 		System.out.println("Stored " + aModel);
 		logger.log(Level.FINE, "Saving model [" + aModel + "]");
 		theDB.commit();
 		return true;
+
 	}
 
 	/**
 	 * Saves a Model associated with the given project into the database 
-	 * @param Model to save
+	 * @param aModel Model to save
+	 * @param aProject Project to save to
 	 */
 	public <T> boolean save(T aModel, Project aProject){
 		// Please see Wiki for more information on the ServerConfiguration.
-		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
-		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
-
-		((Model) aModel).setProject(aProject); //Sets the model's project to the given project
-		theDB.store(aModel);
-		System.out.println("Stored " + aModel);
-		logger.log(Level.FINE, "Saving model [" + aModel + "]");
-		theDB.commit();
-		return true;
+		
+		//Rewritten so that files will always get parsed and no repeated code...
+		((Model) aModel).setProject(aProject);
+		return save(aModel);
 	}
-
+	
 	/**
 	 * Retrieves objects of the given class with the given value for the given field. 
 	 * This function is not project specific.
@@ -133,6 +235,7 @@ public class DataStore implements Data {
 
 		logger.log(Level.FINE, "Attempting Database Retrieve...");
 
+		//Get a list of get* Methods
 		Method[] allMethods = anObjectQueried.getMethods();
 		Method methodToBeSaved = null;
 		for(Method m: allMethods){//Cycles through all of the methods in the class anObjectQueried
@@ -140,6 +243,8 @@ public class DataStore implements Data {
 				methodToBeSaved = m; //saves the method called "get" + aFieldName
 			}
 		}
+
+
 		final Method theGetter = methodToBeSaved;
 		if(theGetter == null){
 			logger.log(Level.WARNING, "Getter method was null during retrieve attempt");
@@ -161,6 +266,74 @@ public class DataStore implements Data {
 			}
 		});
 
+		//Retrieve fileData here if it's a file we are looking up
+				if (anObjectQueried == FileModel.class){
+					//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+
+					//TODO: Do we need aFieldName? It's probably important and we probably should...
+					//			if(aFieldName.equals("FileName"))
+
+					//Loop through entire results
+					for(Model aModel: result){
+						String fileName = ((FileModel) aModel).getFileName();
+
+						File file;
+						try {
+							file = File.createTempFile(fileName, "");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't create temporary file while trying to get a BLOB!");
+							break;
+						} 
+						file.deleteOnExit(); //Delete file if the JVM exits
+
+						//Load file from blob
+						try {
+							blob.writeTo(file);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't read from BLOB!");
+						}
+
+						//TODO:
+						InputStream is;
+						ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+						try {
+							is = new FileInputStream(file);
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't open file I/O stream to get a BLOB!");
+							break;
+						}
+
+						//Load file to byte array
+						int nRead;
+						byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+
+						try {
+							while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+								buffer.write(tempData, 0, nRead);
+
+								buffer.flush();
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							logger.log(Level.SEVERE, "Core Can't read file I/O stream to get a BLOB!");
+						}
+
+						((FileModel)aModel).setFileData(Base64.encodeBase64String(buffer.toByteArray()));
+
+						waitTillDBIsFinished(blob);
+						
+						logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+					}
+				}
+
+		
 		System.out.println(result);
 		theDB.commit();
 
@@ -218,7 +391,6 @@ public class DataStore implements Data {
 			throw new WPISuiteException("Null getter method.");
 		}
 
-
 		List<Model> result = theDB.query(new Predicate<Model>(){
 			public boolean match(Model anObject){
 				try {
@@ -239,6 +411,73 @@ public class DataStore implements Data {
 				}
 			}
 		});
+
+		//Retrieve fileData here if it's a file we are looking up
+		if (anObjectQueried == FileModel.class){
+			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+
+			//TODO: Do we need aFieldName? It's probably important and we probably should...
+			//			if(aFieldName.equals("FileName"))
+
+			//Loop through entire results
+			for(Model aModel: result){
+				String fileName = ((FileModel) aModel).getFileName();
+
+				File file;
+				try {
+					file = File.createTempFile(fileName, "");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't create temporary file while trying to get a BLOB!");
+					break;
+				} 
+				file.deleteOnExit(); //Delete file if the JVM exits
+
+				//Load file from blob
+				try {
+					blob.writeTo(file);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't read from BLOB!");
+				}
+
+				//TODO:
+				InputStream is;
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				try {
+					is = new FileInputStream(file);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't open file I/O stream to get a BLOB!");
+					break;
+				}
+
+				//Load file to byte array
+				int nRead;
+				byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+
+				try {
+					while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+						buffer.write(tempData, 0, nRead);
+
+						buffer.flush();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Can't read file I/O stream to get a BLOB!");
+				}
+
+				((FileModel)aModel).setFileData(Base64.encodeBase64String(buffer.toByteArray()));
+
+				waitTillDBIsFinished(blob);
+				
+				logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+			}
+		}
 
 		System.out.println(result);
 		theDB.commit();
@@ -313,7 +552,7 @@ public class DataStore implements Data {
 		return found;
 
 	}
-	
+
 	/**
 	 * Deletes all objects of the given Class in the database
 	 * @param aSample an object of the class we want to retrieve All of
@@ -520,7 +759,7 @@ public class DataStore implements Data {
 		System.out.println(result);
 		return result;
 	}
-	
+
 	/**
 	 * Retrieves objects which match one of the given fields to one of the given values
 	 * @param anObjectQueried - Class of the object to be queried
@@ -828,7 +1067,7 @@ public class DataStore implements Data {
 		System.out.println(fullresult);
 		return fullresult;
 	}
-	
+
 	/**
 	 * Retrieves objects which match all of the given "and" fields to all of the given "and" values AND 
 	 * which match one of the given "or" fields to one of the given "or" values 
@@ -844,7 +1083,7 @@ public class DataStore implements Data {
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
 	public List<Model> complexRetrieve(final Class andAnObjectQueried, String[] andFieldNameList, final List<Object> andGivenValueList, 
 			final Class orAnObjectQueried, String[] orFieldNameList, final List<Object> orGivenValueList) throws WPISuiteException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+			{
 		List<Model> returnList = new ArrayList<Model>();
 		List<Model> bothList = new ArrayList<Model>();
 		List<Model> orList = new ArrayList<Model>();
@@ -855,7 +1094,7 @@ public class DataStore implements Data {
 		bothList.addAll(andList);
 		returnList = removeDuplicates(bothList);
 		return returnList;
-	}
+			}
 
 	/**
 	 * Returns a List with all duplicate items removed

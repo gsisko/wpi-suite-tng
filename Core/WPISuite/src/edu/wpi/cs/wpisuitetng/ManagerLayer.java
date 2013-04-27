@@ -22,14 +22,13 @@ import javax.servlet.http.Cookie;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.database.DataStore;
 import edu.wpi.cs.wpisuitetng.exceptions.AuthenticationException;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 
+import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.FileManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.ProjectManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.UserManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -78,6 +77,7 @@ public class ManagerLayer {
 		//TODO pull these mappings from some config file and reflect them
 		map.put("coreproject", new ProjectManager(data));
 		map.put("coreuser", new UserManager(data));
+		map.put("corefile", new FileManager(data));
 		map.put("defecttrackerdefect", new DefectManager(data));
 		map.put("defecttrackercomment", new CommentManager(data));
 		map.put("postboardpostboardmessage", new PostBoardEntityManager(data));
@@ -179,6 +179,16 @@ public class ManagerLayer {
 	{
 		ProjectManager p = (ProjectManager)map.get("coreproject");
 		return p;
+	}
+	
+	/**
+	 * Exposes the Files in the database for direct access.
+	 * @return	the FileManager instance
+	 */
+	public FileManager getFiles()
+	{
+		FileManager f = (FileManager)map.get("corefile");
+		return f;
 	}
 	
 	/**read()

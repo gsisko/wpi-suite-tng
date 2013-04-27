@@ -26,6 +26,7 @@
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar" />
 			<include name="servlet-api.jar" />
+			<include name="commons-codec-*.jar"/>
 		</fileset>
 		
 		<pathelement path="${build}" />
