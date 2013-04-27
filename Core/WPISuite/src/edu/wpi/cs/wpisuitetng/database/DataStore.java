@@ -59,7 +59,7 @@ public class DataStore implements Data {
 
 	//TODO: Replace with constant in FileRequest.java in Network!
 	static int partSize = 32 * 1024; //32 kilobytes
-	
+
 	private static final Logger logger = Logger.getLogger(DataStore.class.getName());
 
 	/**
@@ -238,60 +238,7 @@ public class DataStore implements Data {
 
 		//Retrieve fileData here if it's a file we are looking up
 		if (anObjectQueried == FileModel.class){
-			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
-
-			//TODO: Do we need aFieldName? It's probably important and we probably should...
-			//			if(aFieldName.equals("FileName"))
-
-			//Loop through entire results
-			for(Model aModel: result){
-				String fileName = ((FileModel) aModel).getFileName();
-				InputStream is;
-				ByteArrayOutputStream buffer;
-				ArrayList<String> fileData = new ArrayList<String>();
-
-				File file;
-				try {
-					file = File.createTempFile(fileName, "");
-
-					file.deleteOnExit(); //Delete file if the JVM exits
-
-					//Load file from blob
-					blob.writeTo(file);
-
-					//Wait until loading is finished
-					waitTillDBIsFinished(blob);
-
-					//fileSize/partSize = number of times to loop
-					int numParts = (((FileModel) aModel).getFileSize()/partSize);
-					for(int i = 0; i < numParts; i++){
-						//Populate the fileData array
-
-						buffer = new ByteArrayOutputStream();
-						is = new FileInputStream(file);
-
-						//Load file to byte array
-						int nRead;
-						byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
-
-						while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
-							buffer.write(tempData, 0, nRead);
-
-							buffer.flush();
-						}
-						fileData.set(i, Base64.encodeBase64String(buffer.toByteArray()));
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Error when reading file from BLOB! File name: " + ((FileModel) aModel).getFileName());
-					break;
-				}
-
-				((FileModel)aModel).setFileData(fileData);
-
-				logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
-			}
+			result = fileRetrieval(result);
 		}
 
 		System.out.println(result);
@@ -373,63 +320,10 @@ public class DataStore implements Data {
 		});
 
 		//Retrieve fileData here if it's a file we are looking up
-		//Retrieve fileData here if it's a file we are looking up
 		if (anObjectQueried == FileModel.class){
-			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
-
-			//TODO: Do we need aFieldName? It's probably important and we probably should...
-			//			if(aFieldName.equals("FileName"))
-
-			//Loop through entire results
-			for(Model aModel: result){
-				String fileName = ((FileModel) aModel).getFileName();
-				InputStream is;
-				ByteArrayOutputStream buffer;
-				ArrayList<String> fileData = new ArrayList<String>();
-
-				File file;
-				try {
-					file = File.createTempFile(fileName, "");
-
-					file.deleteOnExit(); //Delete file if the JVM exits
-
-					//Load file from blob
-					blob.writeTo(file);
-
-					//Wait until loading is finished
-					waitTillDBIsFinished(blob);
-
-					//fileSize/partSize = number of times to loop
-					int numParts = (((FileModel) aModel).getFileSize()/partSize);
-					for(int i = 0; i < numParts; i++){
-						//Populate the fileData array
-
-						buffer = new ByteArrayOutputStream();
-						is = new FileInputStream(file);
-
-						//Load file to byte array
-						int nRead;
-						byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
-
-						while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
-							buffer.write(tempData, 0, nRead);
-
-							buffer.flush();
-						}
-						fileData.set(i, Base64.encodeBase64String(buffer.toByteArray()));
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Error when reading file from BLOB! File name: " + ((FileModel) aModel).getFileName());
-					break;
-				}
-
-				((FileModel)aModel).setFileData(fileData);
-
-				logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
-			}
+			result = fileRetrieval(result);
 		}
+
 
 		System.out.println(result);
 		theDB.commit();
@@ -444,12 +338,20 @@ public class DataStore implements Data {
 	 * @param aSample an object of the class we want to retrieve All of
 	 * @return a List of all of the objects of the given class
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> List<T> retrieveAll(T aSample){
 		// Please see Wiki for more information on the ServerConfiguration.
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
 		List<T> result = theDB.queryByExample(aSample.getClass());
+		
+		//Retrieve fileData here if it's a file we are looking up
+		//TODO: Make cleaner and safer somehow?
+		if (result.getClass() == Model.class && result.getClass() == FileModel.class){
+			result = (List<T>) fileRetrieval((List<Model>)result);
+		}
+
 		System.out.println("retrievedAll: "+result);
 		theDB.commit();
 
@@ -476,6 +378,13 @@ public class DataStore implements Data {
 				result.add(theModel);
 			}
 		}
+		
+		//Retrieve fileData here if it's a file we are looking up
+		//TODO: Make cleaner and safer somehow?
+		if (allResults.getClass() == Model.class && allResults.getClass() == FileModel.class){
+			allResults = fileRetrieval((List<Model>)result);
+		}
+
 		System.out.println("retrievedAll: "+result);
 		theDB.commit();
 		logger.log(Level.FINE, "Database RetrieveAll Performed");
@@ -523,7 +432,6 @@ public class DataStore implements Data {
 		theDB.commit();
 		logger.log(Level.INFO, "Database Delete All performed");
 		return toBeDeleted;
-
 	}
 
 	/**
@@ -539,6 +447,13 @@ public class DataStore implements Data {
 
 		List<Model> toBeDeleted = retrieveAll(aSample, aProject);
 		for(Model aTNG: toBeDeleted){
+			
+			//Delete the fileData here if it's a file
+			//TODO: Make cleaner and safer somehow?
+			if (aTNG instanceof FileModel){
+//				blob.deleteFile();
+			}
+			
 			System.out.println("Deleting: "+aTNG);
 			theDB.delete(aTNG);
 		}
@@ -546,7 +461,6 @@ public class DataStore implements Data {
 
 		logger.log(Level.INFO, "Database Delete All performed");
 		return toBeDeleted;
-
 	}
 
 
@@ -1097,4 +1011,63 @@ public class DataStore implements Data {
 		return returnList;
 			}
 
+
+	private List<Model> fileRetrieval(List<Model> result){
+		//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+
+		//TODO: Do we need aFieldName? It's probably important and we probably should...
+		//			if(aFieldName.equals("FileName"))
+
+		//Loop through entire results
+		for(Model aModel: result){
+			String fileName = ((FileModel) aModel).getFileName();
+			InputStream is;
+			ByteArrayOutputStream buffer;
+			ArrayList<String> fileData = new ArrayList<String>();
+
+			File file;
+			try {
+				file = File.createTempFile(fileName, "");
+
+				file.deleteOnExit(); //Delete file if the JVM exits
+
+				//Load file from blob
+				blob.writeTo(file);
+
+				//Wait until loading is finished
+				waitTillDBIsFinished(blob);
+
+				//fileSize/partSize = number of times to loop
+				int numParts = (((FileModel) aModel).getFileSize()/partSize);
+				for(int i = 0; i < numParts; i++){
+					//Populate the fileData array
+
+					buffer = new ByteArrayOutputStream();
+					is = new FileInputStream(file);
+
+					//Load file to byte array
+					int nRead;
+					byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+
+					while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+						buffer.write(tempData, 0, nRead);
+
+						buffer.flush();
+					}
+					fileData.set(i, Base64.encodeBase64String(buffer.toByteArray()));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.log(Level.SEVERE, "Core Error when reading file from BLOB! File name: " + ((FileModel) aModel).getFileName());
+				break;
+			}
+
+			((FileModel)aModel).setFileData(fileData);
+
+			logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+		}
+		
+		return (List<Model>)result;
+	}
 }
