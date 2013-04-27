@@ -181,7 +181,7 @@ public class AcceptanceTestPanel extends JPanel{
 	 * @param txtDescription the txtDescription to set
 	 */
 	public void settxtDescription(String Description) {
-		this.txtDescription.append(Description);
+		txtDescription.append(Description);
 	}
 
 	/**

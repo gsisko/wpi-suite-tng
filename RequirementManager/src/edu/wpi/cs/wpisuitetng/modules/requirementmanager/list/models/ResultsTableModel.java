@@ -72,6 +72,16 @@ public class ResultsTableModel extends AbstractTableModel {
 	}
 	
 	/**
+	 * @param value The value to set the cell to
+	 * @param row The row number of the cell edited
+	 * @param col The column number of the cell edited
+	 */
+	public void setValueAt(Object value, int row, int col) {
+        data[row][col] = value;
+        fireTableCellUpdated(row, col);
+    }
+	
+	/**
 	 * @param col The column number that you wish to get the name of
 	 * @return The name of the column you requested
 	 */
@@ -96,7 +106,10 @@ public class ResultsTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		return editable;
+		if (getColumnName(col).equals("ID"))
+			return false;
+		else
+			return editable;
 	}
 
 	/**

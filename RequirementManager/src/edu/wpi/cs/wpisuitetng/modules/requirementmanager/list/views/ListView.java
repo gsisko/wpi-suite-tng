@@ -179,7 +179,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				}
 				
 				
-				btnEditVisible();
+				btnEditNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(true);
 				mainPanel.getResultsPanel().setComboxforType();
 				mainPanel.getResultsPanel().setComboxforStatus();
@@ -198,7 +198,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				btnCancelSaveVisible();
+				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
@@ -212,7 +212,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				listSaveRequirementController.perform();				
 				
-				btnCancelSaveVisible();
+				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
@@ -328,7 +328,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 * Set the Save and Cancel buttons to invisible
 	 * Set the EnableEdit button to visible
 	 */
-	public void btnCancelSaveVisible() {
+	public void btnCancelSaveNotVisible() {
 		btnCancel.setVisible(false);
 		btnSave.setVisible(false);
 		btnEnableEdit.setVisible(true);
@@ -338,7 +338,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 * Set the Save and Cancel buttons to visible
 	 * Set the EnableEdit button to invisible
 	 */
-	public void btnEditVisible() {
+	public void btnEditNotVisible() {
 		btnEnableEdit.setVisible(false);
 		btnSave.setVisible(true);
 		btnCancel.setVisible(true);
