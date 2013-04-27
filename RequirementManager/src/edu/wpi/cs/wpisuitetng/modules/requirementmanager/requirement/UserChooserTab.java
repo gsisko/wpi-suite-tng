@@ -27,9 +27,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.lowagie.text.Font;
 
@@ -63,10 +66,13 @@ public class UserChooserTab extends JPanel {
 
 	private JButton addSelectedUserButton;//The button to trigger the assignment of a selected user to this requirement from the "unassignedList"
 	private JButton removeSelectedUserButton;//The button to trigger the unassignment of a selected user to this requirement from the "assignedList"
-	
+
 	private JLabel changesSavedLabel; //A label to tell the user that changes in this panel are automatically saved
 
 	private ArrayList<User> users;
+
+	private ListSelectionModel unassignedListSelectionModel;
+	private ListSelectionModel assignedListSelectionModel;
 
 
 	/**
@@ -88,7 +94,11 @@ public class UserChooserTab extends JPanel {
 		//Create the buttons
 		addSelectedUserButton = new JButton("Add Users ->");
 		removeSelectedUserButton= new JButton("<- Remove Users");
-		
+
+		//Set the buttons to be initially disabled because there will be nothing selected in the lists upon creation
+		addSelectedUserButton.setEnabled(false);
+		removeSelectedUserButton.setEnabled(false);
+
 		//Create the label
 		changesSavedLabel = new JLabel("(saves automatically)");
 		changesSavedLabel.setFont(changesSavedLabel.getFont().deriveFont(7));//set the size (7 point) of the text of this label
@@ -195,6 +205,38 @@ public class UserChooserTab extends JPanel {
 		assignedScroll.setBackground(Color.WHITE);
 		unassignedScroll.setBackground(Color.WHITE);
 
+		//Create and add a selection listener to the unassignedList to grey out the add user button when nothing is selected
+		unassignedListSelectionModel = unassignedList.getSelectionModel();
+		unassignedListSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+				if (lsm.isSelectionEmpty()) {
+					addSelectedUserButton.setEnabled(false);
+
+				} else {
+					addSelectedUserButton.setEnabled(true);
+				}
+
+			}
+		});
+
+		//Create and add a selection listener to the assignedList to grey out the remove user button when nothing is selected
+		assignedListSelectionModel = assignedList.getSelectionModel();
+		assignedListSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+				if (lsm.isSelectionEmpty()) {
+					removeSelectedUserButton.setEnabled(false);
+
+				} else {
+					removeSelectedUserButton.setEnabled(true);
+				}
+
+			}
+		});
+
 		//Create and add an action listener to the "addSelectedUserButton"
 		addSelectedUserButton.addActionListener(new ActionListener()
 		{
@@ -285,7 +327,7 @@ public class UserChooserTab extends JPanel {
 		JPanel buttonPanel = new JPanel(new GridLayout(3,1,0,6));
 		//Set the border of the buttonPanel to an empty boarder for spacing purposes
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
-		
+
 		//Set the alignment of the changesSavedLabel to the center of it's area
 		changesSavedLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -293,7 +335,7 @@ public class UserChooserTab extends JPanel {
 		buttonPanel.add(addSelectedUserButton);
 		buttonPanel.add(removeSelectedUserButton);
 		buttonPanel.add(changesSavedLabel);
-		
+
 
 		//set the maximum size of the buttonPanel. This is especially important because a grid layout will stretch it's components to fill whatever space it can
 		buttonPanel.setMaximumSize(new Dimension(140, 90));
@@ -431,10 +473,21 @@ public class UserChooserTab extends JPanel {
 	 */
 	public void setInputEnabled(boolean inputEnabled) {
 		this.inputEnabled = inputEnabled;
-		addSelectedUserButton.setEnabled(inputEnabled);
-		removeSelectedUserButton.setEnabled(inputEnabled);
-		unassignedList.setEnabled(inputEnabled);
+
+		//If the unassignedList has nothing selected in it, set the addSelectedUserButton to disabled.
+		if (unassignedList.isSelectionEmpty())
+			addSelectedUserButton.setEnabled(false);
+		else //Set the addSelectedUserButton to whatever was passed in as inputEnabled
+			addSelectedUserButton.setEnabled(inputEnabled);
+
+		//If the assignedList has nothing selected in it, set the removeSelectedUserButton to disabled.
+		if (assignedList.isSelectionEmpty())
+			removeSelectedUserButton.setEnabled(false);
+		else //Set the removeSelectedUserButton to whatever was passed in as inputEnabled
+			removeSelectedUserButton.setEnabled(inputEnabled);
+
 		assignedList.setEnabled(inputEnabled);
+		unassignedList.setEnabled(inputEnabled);
 	}
 
 }
