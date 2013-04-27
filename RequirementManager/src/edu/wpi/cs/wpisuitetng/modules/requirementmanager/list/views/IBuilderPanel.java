@@ -74,4 +74,6 @@ public interface IBuilderPanel {
      */
 	void setupControllersAndListeners();
 
+	ListTab getMyParent();
+
 }

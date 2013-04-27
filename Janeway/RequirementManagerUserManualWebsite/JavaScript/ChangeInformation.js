@@ -88,9 +88,9 @@ function MakeReqPage() {
 		$(".instructionTitle").html('<a>The Requirement Builder Panel for Creation</a>');
         $(".instructionText").html(function(){
         	var str = '<img width="500" src="images/topPanel.png"/><br />';
-        	str += '<a>To begin the process of making a requirement simply click the <span style="color:#ED1C24">"Create Requirement"</span> button in the top left of the full display. The button is highlighted above</a><br />';
+        	str += '<a>To begin the process of making a requirement simply <span style="color:#ED1C24">click the "Create Requirement" button</span> in the top left of the full display. The button is highlighted above</a><br />';
         	str += '<img width = "500" src="images/requirementBuilder.png" alt="The Requirement Builder Panel" /><br />';
-        	str += '<a>The above image displays the requirement builder panel. The fields <span style="color:#ED1C24">name and description</span> are required and provide textual warnings when not properly entered. The optional requirements, type, prority and relase number, are marked in orange. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement. The fields marked in black, status, estimate, actual effort, and iteration, are fields that are disabled at the creation of the requirement.</a>';
+        	str += '<a>The above image displays the requirement builder panel. The fields <span style="color:#ED1C24">name and description are required</span> and provide textual warnings when not properly entered. The <span style="color:#FF7F27">optional requirements are type, prority and relase number</span>. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement. The fields: <b>status, estimate, actual effort, and iteration, are disabled</b> at the creation of the requirement.</a>';
         	str += '<br /><br /><a> The minimum that is required to successfully create a requirement is to give the requirement a name and description then click the "Save Changes" button at the top of the window.</a>';
             return str;
         });
@@ -104,12 +104,25 @@ function UpdateReqPage(){
 		$(".instructionTitle").html('<a>The Requirement Builder Panel</a>');
         $(".instructionText").html(function(){
         	var str = '<img width="750" src="images/requirementListPanel.png"/><br />';
-        	str += 'From the "List Requirements" tab, double click on the desired requirement you wish to edit. This will bring you to a screen identical to that of creating a requirement, though different areas are enabled or disabled.</a><br/>';
+        	str += 'From the "List Requirements" tab, <span style="color:#ED1C24">double click on the requirement you wish to edit</span>. This will bring you to a screen identical to that of creating a requirement, though different areas are enabled or disabled.</a><br/>';
         	str += '<img width = "500" src="images/editRequirementPanel.png"/><br />';
-        	str += '<a>As the above images shows, any fields previously entered are preserved, in this case that is only the name and description. While other fields have changed from disabled to optional, those are: status, estimate, and actual Effort. Iteration is still disabled as iterations can only be set for requirements that have an estimate value set.</a><br/>';
+        	str += '<a>As the above images shows, any <span style="color:#22B14C">fields previously entered are preserved</span>, in this case that is only the name and description. While other fields have changed from disabled to <span style="color:#FF7F27">optional</span>, those are: status, estimate, and actual Effort. <b>Iteration is still disabled</b> as iterations can only be set for requirements that have an estimate value set.</a><br/>';
         	str += '<img width="500" src = "images/editedRequirementPanel.png"/><br />';
-        	str += '<a>When a value has changed, such as editing the description of the requirement, the box of said field will become yellowed to indicate there is an unsaved change. To cancel unsaved changes click the "x" button at the top of the current requirement tab. If you wish instead to save the changes then click the "Save Changes" button instead.</a>';
+        	str += '<a>When a value has changed, such as editing the description of the requirement, the box of said field will become yellowed to <span style="color:#d3c500"><b>indicate there is an unsaved change</b></span>. To <span style="color:#ED1C24">cancel unsaved changes click the "x" button</span> at the top of the current requirement tab. If you wish to <span style="color:#22B14C">save the changes then click the "Save Changes" button</span> instead.</a>';
         	return str;
+        });
+    });
+}
+
+function CheckHistory(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Check Requirement History</a>');
+		$(".instructionTitle").html('<a>The Requirement History Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/requirementBuilderWithHistory.png" height="400"/><br/>';
+			str += '<a>To view a requirements history of changes, simply <span style="color:#ED1C24">select the History tab</span> from the panel on the right of the requirement builder view. From this history tab you can view all changes made to this requirement since it\'s creation.</a>';
+			return str;
         });
     });
 }
@@ -121,11 +134,53 @@ function AddingANote() {
 		$(".instructionTitle").html('<a>The Requirement Builder Panel With Notes</a>');
         $(".instructionText").html(function(){
         	var str = '<img width="750" src="images/requirementBuilderWithNotes.png"/><br />';
-        	str += '<a>The panel for adding notes is displayed directly next to where requirements are edited. Requirements yet to be created cannot have notes, therefore the notes panel is disabled on creation of notes.</a><br />';
-        	str += '<br /><a>To add a new note to the Notes panel, type the desired texted into the text field marked with the red arrow. When the note is comprised as desired, click the "Add Note" button to add the note to the Panel.</a>';
+        	str += '<a>The panel for adding notes is displayed directly next to where requirements are edited. <span style="color:#22B14C">Click on the Notes tab to open the notes view</span>. Requirements yet to be created cannot have notes, therefore the notes panel is disabled before creation of requirements.</a><br />';
+        	str += '<br /><a>To add a new note to the Notes panel, <span style="color:#ED1C24">type the desired note into the text field</span> marked with the arrow. When the note is comprised as desired, <span style="color:#ED1C24">click the "Add Note" button</span> to add the note to the Panel.</a>';
         	str += '<br /><img width="750" src="images/addedNote.png"/><br />';
-        	str += '<a>Upon clicking the "Add Note" button, your note will appear in the Notes panel with your name and the time at which the note was added.</a>';
+        	str += '<a>Upon clicking the "Add Note" button, your note will appear in the Notes panel with your <span style="color:#22B14C">name and the time</span> at which the note was added.</a>';
         	return str;
+        });
+    });
+}
+
+function AddingATest(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Add an Acceptance Test</a>');
+		$(".instructionTitle").html('<a>The Acceptance Test Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/requirementBuilderWithTests.png" height="400"/><br/>';
+			str += '<a>To add an acceptance test, you must first <span style="color:#22B14C">select the acceptance test tab</span> from the right side of the requirement builder panel.  Then you must enter a <span style="color:#ED1C24">required name and description</span> into the provided boxes. After a name and descrption have been entered, you can <span style="color:#00A2E8">click the "Add Acceptance Test" button to add the test</span> to the requirement</a><br/><br/>';
+			str += '<img src="images/enteredTest.png" height="100" /><br/>';
+			str += '<a>The test will appear in the Panel above where you entered information, with a drop down menu to <span style="color:#ED1C24">select if the requirement passed of failed</span> the test.</a>';
+			return str;
+        });
+    });
+}
+
+function AddingAnAttachment(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Add an Attachment</a>');
+		$(".instructionTitle").html('<a>The Attachment Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/requirementBuilderWithAttachment.png" height="400"/><br/>';
+			str += '<a>To add an attachment move to the right panel of the requirement builder panel and being by <span style="color:#22B14C">selecting the attachment tab</span>. From the attachment tab <span style="color:#ED1C24">click the "Add Attachment" button</span> to open a file browse screen to find and attach your file.</a>';
+			return str;
+        });
+    });
+}
+
+function AddingUsers(){
+	$(document).ready(function () {
+        //change where next and previous values point, do in a function
+        $(".moveTabs").html('<a class="title">How to Assign a User to a Requirement</a>');
+		$(".instructionTitle").html('<a>The User Assignment Panel</a>');
+        $(".instructionText").html(function(){
+			var str = '<img src="images/Users.gif" height="400"/><br />';
+			str += '<a>To add a user to a requirement you must start with an existing requirement. In the right hand panel, where you find history, notes and acceptance Tests, <span style="color:#ED1C24">select the tab that says user</span>. Within that tab you will find a list of users currently in the database. <span style="color:#ED1C24">Select the user you wish</span> to assign to the requirement then <span style="color:#ED1C24">click the "Add Users ->" button</span> to assign the user to the current requirement.<a/><br/><br/>';
+			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign; click the "<- Remove Users" button; And the user will have been unassigned.</a>'
+			return str;
         });
     });
 }
@@ -138,7 +193,7 @@ function DeleteReqPage() {
         $(".instructionText").html(function(){
         	var str = '<a>To delete a requirement begin by opening up the requirement you wish to delete as if you were going to edit it.</a><br />';
         	str += '<img height = "500" src = "images/deleteRequirementPanel.png" /><br />';
-        	str += '<a>To change a requirement to deleted select "Deleted" from the Status drop down menu and save changes. You cannot set the status to "Deleted" if the requirement is currently set to status "inProgress", and must first save the status to "Open" or "Completed" before being able to set the status to "Deleted". </a> <br />';
+        	str += '<a>To change a requirement to deleted <span style="color:#ED1C24">select "Deleted"</span> from the <span style="color:#22B14C">Status drop down menu</span> and save changes. You cannot set the status to "Deleted" if the requirement is currently set to status "inProgress", and must first save the status to "Open" or "Completed" before being able to set the status to "Deleted". </a> <br />';
         	str += '<br /><a>The deleted requirement will still be viewable from the List Requirements tab, but can be made invisible by activating a Filter where status != "Deleted". Move to the next section on Filters for more information.</a>';
         	return str;
         });
@@ -232,61 +287,6 @@ function CreateDeleteFilter(){
 			var str = '<a>To create a filter, first click the "New Filter" button located at the bottom of the Filter List Panel. Once clicked, the elements in the Filter Builder Panel will become active. You can create a filter with the type, operator, and value. Then hit the "Create" button. The filter will then appear on the left Filter List Panel.</a>';
 			str += '<br /><br /><a>You can then edit the filter by double clicking on it. It opens in the Filter Builder Panel. You can edit the filter accordingly. If you did not mean to create or edit a requirement you can click the "Cancel" button on the bottom of the Filter List Panel. </a>';
 			str += '<br /><br /><a>To delete a filter, simply double click the filter and click the "Delete" button. If you do not want to permanently delete the filter, you can double click the filter. The filter will open in the Filter Builder Panel, and you can change the filter from "Active" to "Inactive."</a>';
-			return str;
-        });
-    });
-}
-
-function AddingUsers(){
-	$(document).ready(function () {
-        //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Assign a User to a Requirement</a>');
-		$(".instructionTitle").html('<a>The User Assignment Panel</a>');
-        $(".instructionText").html(function(){
-			var str = '<img src="images/Users.gif" height="400"/><br />';
-			str += '<a>To add a user to a requirement you must start with an existing requirement. In the right hand panel, where you find history, notes and acceptance Tests, select the tab that says user. Within that tab you will find a list of users currently in the database. Select the user you wish to assign to the requirement then click the "Add Users ->" button to assign the user to the current requirement.<a/><br/><br/>';
-			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign; click the "<- Remove Users" button; And the user will have been unassigned.</a>'
-			return str;
-        });
-    });
-}
-
-function CheckHistory(){
-	$(document).ready(function () {
-        //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Check Requirement History</a>');
-		$(".instructionTitle").html('<a>The Requirement History Panel</a>');
-        $(".instructionText").html(function(){
-			var str = '<img src="images/requirementBuilderWithHistory.png" height="400"/><br/>';
-			str += '<a>To view a requirements history of changes, simply select the History tab from the panel on the right of the requirement builder view. From this history tab you can view all changes made to this requirement since it\'s creation.</a>';
-			return str;
-        });
-    });
-}
-
-function AddingATest(){
-	$(document).ready(function () {
-        //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Add an Acceptance Test</a>');
-		$(".instructionTitle").html('<a>The Acceptance Test Panel</a>');
-        $(".instructionText").html(function(){
-			var str = '<img src="images/requirementBuilderWithTests.png" height="400"/><br/>';
-			str += '<a>To add an acceptance test, you must first select the acceptance test tab from the right side of the requirement builder panel.  Then you must enter a name and description into the provided boxes. After a name and descrption have been entered, you can click the "Add Acceptance Test" button to add the test to the requirement</a><br/><br/>';
-			str += '<img src="images/enteredTest.png" height="100" /><br/>';
-			str += '<a>The test will appear in the Panel above where you entered information, but a drop down menu to select if the requirement passed of failed the test.</a>';
-			return str;
-        });
-    });
-}
-
-function AddingAnAttachment(){
-	$(document).ready(function () {
-        //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Add an Attachment</a>');
-		$(".instructionTitle").html('<a>The Attachment Panel</a>');
-        $(".instructionText").html(function(){
-			var str = '<img src="images/requirementBuilderWithAttachment.png" height="400"/><br/>';
-			str += '<a>To add an attachment move to the right panel of the requirement builder panel and select the attachment tab. From the attachment tab click the "Add Attachment" button to open a file browse screen to find and attach your file.</a>';
 			return str;
         });
     });

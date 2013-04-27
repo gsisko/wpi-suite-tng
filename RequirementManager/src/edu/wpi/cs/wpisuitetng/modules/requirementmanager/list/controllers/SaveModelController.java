@@ -81,6 +81,7 @@ public class SaveModelController implements ActionListener
 		
 		listView.setCancelBtnToNew();
 		listView.refreshAll();
+		builderView.getMyParent().getParent().getController().refreshData();
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.

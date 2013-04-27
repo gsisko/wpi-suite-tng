@@ -18,24 +18,21 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve an iteration with the provided id
+/** An observer for a request to retrieve an iteration with the provided id
  */
 public class RetrieveIterationObserver implements RequestObserver {
+	
 	/** Variable that contains the retrieved iteration	 */
 	private Iteration iteration;
 	
-	/**
-	 * Construct a new observer
+	/** Construct a new observer
 	 * @param retrieveModelController the controller managing the request
 	 */
 	public RetrieveIterationObserver() {
 		iteration = null;
 	}
 
-	/** Respond to a successful message from the network
-	 * 
-	 */
+	/** Respond to a successful message from the network */
 	public void responseSuccess(IRequest iReq) {
 		Request request = (Request) iReq;
 		
@@ -52,16 +49,12 @@ public class RetrieveIterationObserver implements RequestObserver {
 		iteration = iterationArray[0];
 	}
 
-	/** Respond to an  unsuccessful message from the network
-	 * 
-	 */
+	/** Respond to an  unsuccessful message from the network */
 	public void responseError(IRequest iReq) {
 		System.err.println("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
-	/** Respond to a failure message from the network
-	 * 
-	 */
+	/** Respond to a failure message from the network */
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("Unable to complete request: " + exception.getMessage());
 	}

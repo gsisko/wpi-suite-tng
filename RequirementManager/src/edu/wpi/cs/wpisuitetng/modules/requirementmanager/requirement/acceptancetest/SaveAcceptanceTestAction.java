@@ -19,8 +19,7 @@ import javax.swing.AbstractAction;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 
-/**
- * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
+/** Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
  */
 @SuppressWarnings("serial")
 public class SaveAcceptanceTestAction extends AbstractAction {

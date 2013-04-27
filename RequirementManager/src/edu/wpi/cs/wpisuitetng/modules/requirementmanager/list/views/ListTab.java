@@ -13,8 +13,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.Dimension;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -36,7 +34,8 @@ public class ListTab extends JPanel {
 
 	public enum Mode {
 		FILTER,
-		ITERATION
+		ITERATION,
+		EDIT
 	};
 
 	/** Panel containing filter/iteration builders and requirements list */
@@ -48,8 +47,11 @@ public class ListTab extends JPanel {
 	/** Panel containing the filter building interface */
 	protected FilterBuilderPanel filterBuilderPanel;
 
-	/** Panel containing the filter building interface */
+	/** Panel containing the iteration building interface */
 	protected IterationBuilderPanel iterationBuilderPanel;
+	
+	/** Panel containing the Editing Mode interface */
+	protected EditModeBuilderPanel editModeBuilderPanel;
 
 	/** Panel containing the results of the requirement list */
 	protected RequirementListPanel resultsPanel;
@@ -103,6 +105,7 @@ public class ListTab extends JPanel {
 		// Construct the panels that compose the list view
 		filterBuilderPanel = new FilterBuilderPanel(this);
 		iterationBuilderPanel = new IterationBuilderPanel(this);
+		editModeBuilderPanel = new EditModeBuilderPanel(this);
 		tabPanel = new ListTabPanel(this);
 		filterBuilderPanel.setupControllersAndListeners();
 		iterationBuilderPanel.setupControllersAndListeners();
@@ -122,7 +125,7 @@ public class ListTab extends JPanel {
 		rightLayout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, rightPanel);
 		rightLayout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.WEST, rightPanel);
 		rightLayout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, rightPanel);
-		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 85, SpringLayout.NORTH, builderScrollPane);
+		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 90, SpringLayout.NORTH, builderScrollPane);
 
 		// Constrain the resultsPanel
 		rightLayout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);
@@ -165,6 +168,10 @@ public class ListTab extends JPanel {
 
 	public IterationBuilderPanel getIterationBuilderPanel(){
 		return iterationBuilderPanel;
+	}
+
+	public EditModeBuilderPanel getEditModeBuilderPanel() {
+		return editModeBuilderPanel;
 	}
 
 	public ListTabPanel getTabPanel(){

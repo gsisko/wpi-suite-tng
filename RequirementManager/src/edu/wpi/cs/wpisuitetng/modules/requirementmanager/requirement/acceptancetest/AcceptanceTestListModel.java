@@ -26,29 +26,21 @@ public class AcceptanceTestListModel extends AbstractListModel {
 	/** The list of tests in the model */
 	private List<AcceptanceTest> acceptanceTests;
 	
-	/**
-	 * Constructs a new model with no tests.
+	/** Constructs a new model with no tests.
 	 */
 	public AcceptanceTestListModel() {
 		acceptanceTests = new ArrayList<AcceptanceTest>();
 	}
 
-	/**
-	 * Adds the given test to the board
-	 * 
+	/** Adds the given test to the list of tests in the model
 	 * @param newTest the new AcceptanceTest to add
 	 */
 	public void addAcceptanceTest(AcceptanceTest newTest) {
-		// Add the test
-		acceptanceTests.add(newTest);
-		
-		// Notify the model that it has changed so the GUI will be updated
-		this.fireIntervalAdded(this, 0, 0);
+		acceptanceTests.add(newTest);// Add the test
+		this.fireIntervalAdded(this, 0, 0);// Notify the model that it has changed so the GUI will be updated
 	}
 	
-	/**
-	 * Adds the given array of tests to the board
-	 * 
+	/** Adds the given array of tests to the list of tests in the model
 	 * @param acceptanceTests the array of tests to add
 	 */
 	public void addAcceptanceTests(AcceptanceTest[] acceptanceTests) {
@@ -58,8 +50,7 @@ public class AcceptanceTestListModel extends AbstractListModel {
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	/**
-	 * Removes all tests from this model
+	/** Removes all tests from this model
 	 * 
 	 * NOTE: One cannot simply construct a new instance of
 	 * the model, because other classes in this module have
@@ -76,8 +67,7 @@ public class AcceptanceTestListModel extends AbstractListModel {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 	
-	/* 
-	 * Returns the test at the given index. Note this method returns
+	/** Returns the test at the given index. Note this method returns
 	 * elements in reverse order, so newest messages are returned first.
 	 * 
 	 * @see javax.swing.ListModel#getElementAt(int)
@@ -87,20 +77,14 @@ public class AcceptanceTestListModel extends AbstractListModel {
 		return acceptanceTests.get(acceptanceTests.size() - 1 - index);
 	}
 
-	
-	/* 
-	 * Sets the test at the given index. Note this method accesses
+	/** Sets the test at the given index. Note this method accesses
 	 * elements in reverse order, so newest messages are returned first.
-	 * 
 	 */
 	public void setElementAt(int index, AcceptanceTest newAcceptanceTest) {
 		acceptanceTests.set(acceptanceTests.size() - 1 - index, newAcceptanceTest);
 	}
-
 	
-	/*
-	 * Returns the number of tests in the model.
-	 * 
+	/** Returns the number of tests in the model.
 	 * @see javax.swing.ListModel#getSize()
 	 */
 	@Override

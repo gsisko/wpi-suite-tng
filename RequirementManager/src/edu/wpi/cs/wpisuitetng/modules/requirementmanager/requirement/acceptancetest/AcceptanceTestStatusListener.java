@@ -18,35 +18,29 @@ import javax.swing.event.PopupMenuListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 
-/**
- * Listener for the drop-down menus in the list of acceptance tests.
- * Automatically saves the test when the status is changed
- * 
- * @author Team 5
- *
+/** Listener for the drop-down menus (statusBox) in the list of acceptance test panels (ListOfAcceptanceTestPanel).
+ * Automatically saves the test when the status is changed.
  */
 public class AcceptanceTestStatusListener implements PopupMenuListener {
 
-	/** The panel with the box being watched */
+	/** The AcceptanceTestPanel with the box being watched */
 	private AcceptanceTestPanel thePanel;
-	/** The box to watch */
+	
+	/** The JComboBox to watch */
 	@SuppressWarnings("rawtypes")
 	private JComboBox toWatch;
 
-	/** Constructor that takes all the references it needs
-	 * 
-	 * @param thePanel       The panel with the box being watched
-	 * @param toWatch        The box to watch
-	 * @param fieldToCheck   The box of the reference to watch
-	 * @param indexOfBoolean The index in the boolean array of the current item being watched
+	/** Constructor for a new AcceptanceTestStatusListener 
+	 * @param thePanel       The AcceptanceTestPanel with the box being watched
 	 */
 	public AcceptanceTestStatusListener (AcceptanceTestPanel thePanel){
-//		System.out.println("Listener was created");
 		this.thePanel = thePanel;
 		toWatch = thePanel.getStatusBox();
 	}
 
-	/** Checks the field for changes and sets it to yellow on changes or white otherwise */
+	/** Checks the JComboBox "toWatch" for changes, sets the background of the box to yellow
+	 * when changes are detected, and white otherwise 
+	 */
 	private void checkForChanges(){
 		// Check if the status has changed
 		String inBox = toWatch.getSelectedItem().toString();

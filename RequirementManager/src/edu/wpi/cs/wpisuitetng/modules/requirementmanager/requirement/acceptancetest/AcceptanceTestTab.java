@@ -37,10 +37,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.JTextFieldL
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
-/**
- * This panel is added to the RequirementTabPanel and 
+/** This panel is added to the RequirementTabPanel and 
  * contains all the GUI components involving acceptance tests:
- * -a panel to hold the list of acceptance tests
+ * -a panel to display the list of acceptance tests (each in their own AcceptanceTestPanel)
  * -a text field for a user to input a new acceptance test name
  * -a text area for a user to input a new acceptance test description
  * -a save button to save the new acceptance test
@@ -49,53 +48,59 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 	//The labels
-	private JLabel nameLabel; //The label for the name text field ("txtName")
-	private JLabel descriptionLabel;//The label for the description text area ("txtDescription")
-
+	/** The label for the name text field ("txtName") */
+	private JLabel nameLabel;
+	
+	/** The label for the description text area ("txtDescription") */
+	private JLabel descriptionLabel;
 
 	//The fillable components
-	private JTextField txtName;//The name text field 
-	private JTextArea txtDescription;//The description text area 
-	private JScrollPane scrollDescription; // ScrollPane that the txtDescription box will be held in 
+	/** The name text field  */
+	private JTextField txtName;
+	
+	/** The description text area  */
+	private JTextArea txtDescription;
+	
+	/** ScrollPane that the txtDescription box will be held in  */
+	private JScrollPane scrollDescription;
 
-	//The buttons
-	private JButton saveButton;//The button to add a new test
+	/** The button to add a new test */
+	private JButton saveButton;
 
-	//The inner panel
-	private JPanel nameAndDescriptionPanel;//An inner panel to hold the name label and field, and the description label and the scrollDescription holding the txtDescription area
+	/** An inner panel to hold the name label and field, and the description label and the scrollDescription holding the txtDescription area (enables the proper layout of the panel) */
+	private JPanel nameAndDescriptionPanel;
 
 	//The variables to hold information about the current instance of the panel
-	private AcceptanceTest currentAcceptanceTest;//Stores the acceptance test currently open for editing or creation
+	/** Stores the acceptance test currently undergoing creation in this AcceptanceTestTab*/
+	private AcceptanceTest currentAcceptanceTest;
 
-	// The parent 
-	private RequirementTab parent; //Stores the RequirementPanel that contains the panel
+	/** Stores the RequirementPanel that contains the panel */
+	private RequirementTab parent; 
 
-	//A boolean indicating if input is enabled on the form 
+	/** A boolean indicating if input is enabled on the form  */
 	protected boolean inputEnabled;
 
-	//The acceptanceTestListModel. This holds the acceptance tests to be displayed in the "acceptanceTestList" panel
+	/** The acceptanceTestListModel. This holds the acceptance tests to be displayed in the "acceptanceTestList" panel */
 	private AcceptanceTestListModel acceptanceTestListModel;
 
-	//The panel to hold all the AccpetanceTestPanels (containing all the acceptance tests) to display
+	/** The panel to hold all the AcceptanceTestPanels (containing all the acceptance tests) to display */
 	private ListOfAcceptanceTestPanel acceptanceTestList;
 
-	//A scroll pane to hold the "acceptanceTestList"
+	/** A scroll pane to hold the "acceptanceTestList" */
 	JScrollPane listScrollPane;
 
-	//The layout manager for the nameAndDescriptionPanel
+	/** The layout manager for the nameAndDescriptionPanel */
 	protected GridBagLayout layout; 
 
-	//The constraints
-	private GridBagConstraints nameAndDescriptionPanelConstraints;//The constraints variable for the layout of the nameAndDescriptionPanel
+	/** The constraints variable for the layout of the nameAndDescriptionPanel */
+	private GridBagConstraints nameAndDescriptionPanelConstraints;
 
-	/**
-	 * The constructor for AcceptanceTestPanel;
+	/** The constructor for AcceptanceTestTab;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
-	 * @param reqPanelParent	The parent of this tab
+	 * @param reqPanelParent The RequirementTab parent of this AcceptanceTestTab
 	 */
 	public AcceptanceTestTab(RequirementTab reqPanelParent) {
-
 		parent = reqPanelParent; //Set the RequirementPanel that contains this instance of this panel
 
 		// Create and set the layout manager
@@ -119,8 +124,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		// Put the acceptanceTestList in a scroll pane
 		listScrollPane = new JScrollPane(acceptanceTestList);
 
-		// Construct the other components to be displayed
-
+		// Construct the other components to be displayed:
 		//Construct the labels
 		nameLabel = new JLabel("Name:");
 		descriptionLabel = new JLabel("Description:");
@@ -152,7 +156,6 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 			}
 		});
 
-
 		// Set the txtMessage component to wrap
 		txtDescription.setLineWrap(true);
 		txtDescription.setWrapStyleWord(true);
@@ -176,7 +179,6 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 				setSaveButtonWhenMessageIsValid();//Set the save button enabled if there is something to save, disabled if not
 			}
 		});
-
 
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));
@@ -249,7 +251,6 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));//set the size of the nameAndDescriptionPanel to keep it from stretching vertically
 		//end nameAndDescriptionPanel
 
-
 		// Add the components in their respective inner panels to this panel
 		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
@@ -261,17 +262,17 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		saveButton.setAlignmentX(CENTER_ALIGNMENT);
 	}
 
-
+	/** This method sets up the controller for the "saveButton" JButton
+	 */
 	public void setUp() {
 		// Set controller for save button
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
 		saveButton.setAction(new SaveAcceptanceTestAction(parent.getParent().getController()));
-		saveButton.addActionListener(this);	// Tells fields that a save has occured
+		saveButton.addActionListener(this);	// Tells fields that a save has occurred
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
 	}
 
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * 
 	 * @param enabled Whether or not input is enabled.
@@ -283,17 +284,15 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		txtDescription.setEnabled(enabled);
 	}
 
-	/**
-	 * Returns a boolean representing whether or not input is enabled for the AcceptanceTestPanel.
+	/** Returns a boolean representing whether or not input is enabled for the AcceptanceTestPanel.
 	 * @return inputEnabled A boolean representing whether or not input is enabled for the AcceptanceTestPanel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
 
-	/**
-	 *  Checks the txtDescription and txtName for validity (non-emptiness) and sets the save button appropriately     
-	 *   @return True if the txtDescription and txtName fields are valid (non-empty), false otherwise
+	/** Checks the txtDescription and txtName for validity (non-emptiness) and sets the save button appropriately     
+	 * @return True if the txtDescription and txtName fields are valid (non-empty), false otherwise
 	 */
 	public boolean setSaveButtonWhenMessageIsValid(){
 		boolean messageGood = true;	// Initialize flag
@@ -305,8 +304,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		return messageGood;
 	}
 	
-	/**
-	 * This returns the JTextArea "txtDescription"
+	/** This returns the JTextArea "txtDescription"
 	 * @return the txtDescription JTextArea
 	 */
 	public JTextArea getAcceptanceTestDescription() {
@@ -314,40 +312,35 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		return (JTextArea) viewport.getView();
 	}
 
-	/**
-	 * This returns the JButton saveButton
+	/** This returns the JButton saveButton
 	 * @return the saveButton JButton
 	 */
 	public JButton getSaveButton() {
 		return saveButton;
 	}
 
-	/**
-	 * This returns the AcceptanceTest "currentAcceptanceTest" 
+	/** This returns the AcceptanceTest "currentAcceptanceTest" 
 	 * @return the currentAcceptanceTest AcceptanceTest
 	 */
 	public AcceptanceTest getCurrentAcceptanceTest() {
 		return currentAcceptanceTest;
 	}
 
-	/**
-	 * This sets the current acceptance test
+	/** This sets the current acceptance test
 	 * @param acceptanceTest What to set the current acceptance test to
 	 */
 	public void setCurrentAcceptanceTest(AcceptanceTest acceptanceTest) {
 		currentAcceptanceTest = acceptanceTest;
 	}
 
-	/**
-	 * This returns the ListOfAcceptanceTestPanel that displays the stored acceptance tests,
+	/** This returns the ListOfAcceptanceTestPanel that displays the stored acceptance tests,
 	 * each in their own acceptanceTestPanel.
 	 * @return the acceptanceTestList ListOfAcceptanceTestPanel
 	 */
 	public ListOfAcceptanceTestPanel getAcceptanceTestList() {
 		return acceptanceTestList;
 	}
-	/**
-	 * This returns the AcceptanceTestListModel "acceptanceTestListModel",
+	/** This returns the AcceptanceTestListModel "acceptanceTestListModel",
 	 * which stores the saved acceptance tests that are associated with the
 	 * current requirement being displayed
 	 * @return the acceptanceTestListModel AcceptanceTestListModel
@@ -356,8 +349,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		return acceptanceTestListModel;
 	}
 
-	/**
-	 * This adds a new acceptance test to the acceptanceTestListModel,
+	/** This adds a new acceptance test to the acceptanceTestListModel,
 	 * and then recreates and redisplays the acceptanceTestList
 	 * panel.
 	 * @param newAcceptanceTest the acceptance test to be added
@@ -380,25 +372,21 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 	}
 
-
 	/**
-	 * @return the txtName
+	 * @return txtName The "txtName" JTextField
 	 */
 	public JTextField getTxtName() {
 		return txtName;
 	}
 
-
 	/**
-	 * @param txtName the txtName to set
+	 * @param txtName The "txtName" (an instance of JTextField) to set
 	 */
 	public void setTxtName(JTextField txtName) {
 		this.txtName = txtName;
 	}
 
-
-	/**
-	 * Tell fields that they should not have changes
+	/** Tell fields that they should not have changes
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -406,7 +394,9 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		parent.getAttributePanel().changeField(txtName, 11, false);
 	}
 
-
+	/**
+	 * @return parent The RequirementTab that contains this AcceptanceTestTab
+	 */
 	public RequirementTab myGetParent() {
 		return parent;
 	}

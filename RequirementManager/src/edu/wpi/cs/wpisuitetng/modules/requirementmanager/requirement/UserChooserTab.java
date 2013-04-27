@@ -27,9 +27,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.lowagie.text.Font;
 
@@ -38,9 +41,8 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * This panel is added to the RequirementTabPanel and 
- * contains all the GUI components involving assigning a user to a requirement:
+/** This panel is added to the RequirementTabPanel and 
+ * contains all the GUI components involving assigning/removing a user to/from a requirement:
  * -a list of available users (in a scrollpane) not assigned to this requirement
  * -a list of users (in a scrollpane) assigned to this requirement
  * -two buttons to enable transfer of selected users between the lists (in an inner panel)
@@ -48,29 +50,50 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class UserChooserTab extends JPanel {
 
-	private UserListModel unassignedUserListModel;//The actual list of Users used to create the JList unassignedList
-	private UserListModel assignedUserListModel;//The actual list of Users used to create the JList assignedList
-	private JList unassignedList;//The JList that displays the available unassigned users
-	private JList assignedList;//The JList that displays the users assigned to this requirement
+	/** The actual list of Users used to create the JList unassignedList */
+	private UserListModel unassignedUserListModel;
+	
+	/** The actual list of Users used to create the JList assignedList */
+	private UserListModel assignedUserListModel;
+	
+	/** The JList that displays the available unassigned users */
+	private JList unassignedList;
+	
+	/** The JList that displays the users assigned to this requirement */
+	private JList assignedList;
 
-	//A boolean indicating if input is enabled on the form 
+	/** A boolean indicating if input is enabled on the form  */
 	private boolean inputEnabled;
 
-	private RequirementTab parent; //Stores the RequirementTab that contains the panel
+	/** Stores the RequirementTab that contains this panel (within a RequirementTabPanel)*/
+	private RequirementTab parent; 
 
-	private JScrollPane unassignedScroll;//The scroll pane to hold the JList of unassigned users ("unassignedList")
-	private JScrollPane assignedScroll;//The scroll pane to hold the JList of users assigned to this requirement ("assignedList")
-
-	private JButton addSelectedUserButton;//The button to trigger the assignment of a selected user to this requirement from the "unassignedList"
-	private JButton removeSelectedUserButton;//The button to trigger the unassignment of a selected user to this requirement from the "assignedList"
+	/** The scroll pane to hold the JList of unassigned users ("unassignedList") */
+	private JScrollPane unassignedScroll;
 	
-	private JLabel changesSavedLabel; //A label to tell the user that changes in this panel are automatically saved
+	/** The scroll pane to hold the JList of users assigned to this requirement ("assignedList") */
+	private JScrollPane assignedScroll;
 
+	/** The button to trigger the assignment of a selected user to this requirement from the "unassignedList" */
+	private JButton addSelectedUserButton;
+	
+	/** The button to trigger the unassignment of a selected user to this requirement from the "assignedList" */
+	private JButton removeSelectedUserButton;
+
+	/** A label to tell the user that changes in this panel are automatically saved */
+	private JLabel changesSavedLabel;
+
+	/** An array list of all the users in the current project (assigned or unassigned to this requirement) */
 	private ArrayList<User> users;
 
+	/** Used to store the ListSelectionModel of the unassignedList JList. This is used to respond to changes in the selection of users within the unassignedList */
+	private ListSelectionModel unassignedListSelectionModel;
+	
+	/** Used to store the ListSelectionModel of the assignedList JList. This is used to respond to changes in the selection of users within the assignedList */
+	private ListSelectionModel assignedListSelectionModel;
 
-	/**
-	 * The constructor for UserChooserTab;
+
+	/** The constructor for UserChooserTab;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
 	 * @param reqTabParent	The RequirementTab parent of this tab
@@ -88,7 +111,11 @@ public class UserChooserTab extends JPanel {
 		//Create the buttons
 		addSelectedUserButton = new JButton("Add Users ->");
 		removeSelectedUserButton= new JButton("<- Remove Users");
-		
+
+		//Set the buttons to be initially disabled because there will be nothing selected in the lists upon creation
+		addSelectedUserButton.setEnabled(false);
+		removeSelectedUserButton.setEnabled(false);
+
 		//Create the label
 		changesSavedLabel = new JLabel("(saves automatically)");
 		changesSavedLabel.setFont(changesSavedLabel.getFont().deriveFont(7));//set the size (7 point) of the text of this label
@@ -169,6 +196,7 @@ public class UserChooserTab extends JPanel {
 			else//The assigned list has a greater preferred width
 				maxPrefWidth = assignedScroll.getPreferredSize().getWidth();//So use the preferred width of the assigned list
 		}
+		
 		//Add 10 to each value to account for the border
 		maxPrefHeight += 10;
 		maxPrefWidth += 10;
@@ -194,6 +222,38 @@ public class UserChooserTab extends JPanel {
 		//Set the background of both of the scroll panes to white
 		assignedScroll.setBackground(Color.WHITE);
 		unassignedScroll.setBackground(Color.WHITE);
+
+		//Create and add a selection listener to the unassignedList to grey out the add user button when nothing is selected
+		unassignedListSelectionModel = unassignedList.getSelectionModel();
+		unassignedListSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+				if (lsm.isSelectionEmpty()) {
+					addSelectedUserButton.setEnabled(false);
+
+				} else {
+					addSelectedUserButton.setEnabled(true);
+				}
+
+			}
+		});
+
+		//Create and add a selection listener to the assignedList to grey out the remove user button when nothing is selected
+		assignedListSelectionModel = assignedList.getSelectionModel();
+		assignedListSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+				if (lsm.isSelectionEmpty()) {
+					removeSelectedUserButton.setEnabled(false);
+
+				} else {
+					removeSelectedUserButton.setEnabled(true);
+				}
+
+			}
+		});
 
 		//Create and add an action listener to the "addSelectedUserButton"
 		addSelectedUserButton.addActionListener(new ActionListener()
@@ -232,7 +292,7 @@ public class UserChooserTab extends JPanel {
 					assignedList.revalidate();
 					assignedList.repaint();
 
-					parent.getParent().getController().saveUsers();
+					parent.getParent().getController().saveUsers(); //Actually save the changes to the list of users assigned to this requirement
 				}
 				else{}//No users were selected in the unassigned user list at the time the button was pushed
 			}
@@ -274,18 +334,19 @@ public class UserChooserTab extends JPanel {
 					assignedList.revalidate();
 					assignedList.repaint();
 
-					parent.getParent().getController().saveUsers();
+					parent.getParent().getController().saveUsers(); //Actually save the changes to the list of users assigned to this requirement
 				}
 				else{}//No users were selected in the assigned user list at the time the button was pushed
 			}
 		});
 
 		//Create the buttonPanel using a grid layout with 3 rows, 1 column, 0 horizontal spacing, and 6 units of vertical spacing between the components
-		//This is a small inner panel to hold the buttons and the changesSavedLabel
+		/** This is a small inner panel to hold the buttons and the changesSavedLabel */
 		JPanel buttonPanel = new JPanel(new GridLayout(3,1,0,6));
+		
 		//Set the border of the buttonPanel to an empty boarder for spacing purposes
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
-		
+
 		//Set the alignment of the changesSavedLabel to the center of it's area
 		changesSavedLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -293,13 +354,10 @@ public class UserChooserTab extends JPanel {
 		buttonPanel.add(addSelectedUserButton);
 		buttonPanel.add(removeSelectedUserButton);
 		buttonPanel.add(changesSavedLabel);
-		
 
 		//set the maximum size of the buttonPanel. This is especially important because a grid layout will stretch it's components to fill whatever space it can
 		buttonPanel.setMaximumSize(new Dimension(140, 90));
-
 		//End button panel
-
 
 		//Add the components to this panel
 		this.add(Box.createHorizontalGlue());//Add a horizontal glue component to keep the lists in the center of the panel
@@ -309,33 +367,31 @@ public class UserChooserTab extends JPanel {
 		this.add(Box.createRigidArea(new Dimension(15,0)));//Add a rigid area for spacing
 		this.add(assignedScroll);//Add the list of assigned users, in the "assignedScroll" scroll pane to this panel
 		this.add(Box.createHorizontalGlue());//Add a horizontal glue component to keep the lists in the center of the panel
-
-
 	}
 
 	/**
-	 * @return the unassignedList
+	 * @return unassignedList The "unassignedList" JList
 	 */
 	public JList getUnassignedList() {
 		return unassignedList;
 	}
 
 	/**
-	 * @param unassignedList the unassignedList to set
+	 * @param unassignedList The "unassignedList" (an instance of JList) to set
 	 */
 	public void setUnassignedList(JList unassignedList) {
 		this.unassignedList = unassignedList;
 	}
 
 	/**
-	 * @return the assignedList
+	 * @return assignedList The "assignedList" JList
 	 */
 	public JList getAssignedList() {
 		return assignedList;
 	}
 
 	/**
-	 * @param assignedList the assignedList to set
+	 * @param assignedList The "assignedList" (an instance of JList) to set
 	 */
 	public void setAssignedList(JList assignedList) {
 		this.assignedList = assignedList;
@@ -343,98 +399,109 @@ public class UserChooserTab extends JPanel {
 
 
 	/**
-	 * @return the addSelectedUserButton
+	 * @return addSelectedUserButton The "addSelectedUserButton" JButton
 	 */
 	public JButton getAddSelectedUserButton() {
 		return addSelectedUserButton;
 	}
 
 	/**
-	 * @param addSelectedUserButton the addSelectedUserButton to set
+	 * @param addSelectedUserButton The "addSelectedUserButton" (an instance of JButton) to set
 	 */
 	public void setAddSelectedUserButton(JButton addSelectedUserButton) {
 		this.addSelectedUserButton = addSelectedUserButton;
 	}
 
 	/**
-	 * @return the removeSelectedUserButton
+	 * @return removeSelectedUserButton The "removeSelectedUserButton" JButton
 	 */
 	public JButton getRemoveSelectedUserButton() {
 		return removeSelectedUserButton;
 	}
 
 	/**
-	 * @param removeSelectedUserButton the removeSelectedUserButton to set
+	 * @param removeSelectedUserButton The "removeSelectedUserButton" (an instance of JButton) to set
 	 */
 	public void setRemoveSelectedUserButton(JButton removeSelectedUserButton) {
 		this.removeSelectedUserButton = removeSelectedUserButton;
 	}
 
 	/**
-	 * @return the unassignedUserListModel
+	 * @return unassignedUserListModel The "unassignedUserListModel" UserListModel
 	 */
 	public UserListModel getUnassignedUserListModel() {
 		return unassignedUserListModel;
 	}
 
 	/**
-	 * @param unassignedUserListModel the unassignedUserListModel to set
+	 * @param unassignedUserListModel The "unassignedUserListModel" (an instance of UserListModel) to set
 	 */
 	public void setUnassignedUserListModel(UserListModel unassignedUserListModel) {
 		this.unassignedUserListModel = unassignedUserListModel;
 	}
 
 	/**
-	 * @return the assignedUserListModel
+	 * @return assignedUserListModel The "assignedUserListModel" UserListModel
 	 */
 	public UserListModel getAssignedUserListModel() {
 		return assignedUserListModel;
 	}
 
 	/**
-	 * @param assignedUserListModel the assignedUserListModel to set
+	 * @param assignedUserListModel The "assignedUserListModel" (an instance of UserListModel) to set
 	 */
 	public void setAssignedUserListModel(UserListModel assignedUserListModel) {
 		this.assignedUserListModel = assignedUserListModel;
 	}
 
 	/**
-	 * @return the parent RequirementTab
+	 * @return parent The "parent" RequirementTab
 	 */
 	public RequirementTab getReqTabParent() {
 		return parent;
 	}
 
 	/**
-	 * @return the users
+	 * @return users The "users" ArrayList
 	 */
 	public ArrayList<User> getUsers() {
 		return users;
 	}
 
 	/**
-	 * @param users the users to set
+	 * @param users The "users" (an ArrayList of Users) to set
 	 */
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
 	}
 
 	/**
-	 * @return the inputEnabled
+	 * @return inputEnabled The "inputEnabled" boolean that represents whether or not input is enabled in this tab
 	 */
 	public boolean isInputEnabled() {
 		return inputEnabled;
 	}
 
-	/**
-	 * @param inputEnabled the inputEnabled to set
+	/** Sets whether input is enabled for this panel.
+	 * @param inputEnabled A boolean representing whether or not input is to be enabled for this panel.
 	 */
 	public void setInputEnabled(boolean inputEnabled) {
 		this.inputEnabled = inputEnabled;
-		addSelectedUserButton.setEnabled(inputEnabled);
-		removeSelectedUserButton.setEnabled(inputEnabled);
-		unassignedList.setEnabled(inputEnabled);
+
+		//If the unassignedList has nothing selected in it, set the addSelectedUserButton to disabled.
+		if (unassignedList.isSelectionEmpty())
+			addSelectedUserButton.setEnabled(false);
+		else //Set the addSelectedUserButton to whatever was passed in as inputEnabled
+			addSelectedUserButton.setEnabled(inputEnabled);
+
+		//If the assignedList has nothing selected in it, set the removeSelectedUserButton to disabled.
+		if (assignedList.isSelectionEmpty())
+			removeSelectedUserButton.setEnabled(false);
+		else //Set the removeSelectedUserButton to whatever was passed in as inputEnabled
+			removeSelectedUserButton.setEnabled(inputEnabled);
+
 		assignedList.setEnabled(inputEnabled);
+		unassignedList.setEnabled(inputEnabled);
 	}
 
 }

@@ -38,8 +38,7 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class SaveRequirementController
-{
+public class SaveRequirementController {
 	private final RequirementTab view;
 	private Attachment currentAttachment;
 
@@ -63,6 +62,7 @@ public class SaveRequirementController
 		view.getAttributePanel().setSaving(true);
 
 		view.getParent().setSaveButtonEnable(false);
+
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
 			// make a PUT http request and let the observer get the response
@@ -71,7 +71,6 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-
 		else { // we are updating an existing requirement
 
 			// make a new requirement to story the updated data
@@ -170,14 +169,11 @@ public class SaveRequirementController
 			request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
-
 		}
-
 	}
 
 
-	/**
-	 * Simple success message for saving a new requirement.  If we want the boxes to clear automatically,
+	/** Simple success message for saving a new requirement.  If we want the boxes to clear automatically,
 	 * this is probably where we would want to implement it.
 	 * @param newReq Requirement that was saved.
 	 */
@@ -201,7 +197,6 @@ public class SaveRequirementController
 			}
 
 			if (!alreadyContained) {
-
 				//Add id to the list
 				ArrayList<Integer> updatedRequirementList = currentIteration.getRequirementsContained();
 				updatedRequirementList.add(newReq.getId());
@@ -212,9 +207,9 @@ public class SaveRequirementController
 				saveUpdatedIterationRequest.setBody(currentIteration.toJSON());
 				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
 				saveUpdatedIterationRequest.send();
-
 			}
-			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {		// Disable the note panel and userChooserTab if the requirement has been deleted
+
+			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {// Disable the note panel and userChooserTab if the requirement has been deleted
 
 				//Disable notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
@@ -239,8 +234,9 @@ public class SaveRequirementController
 				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
 				}
-			} else {
-
+			}
+			else 
+			{
 				//Enable Notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
 				view.getTabPanel().getNotePanel().setSaveButtonWhenMessageIsValid();
@@ -268,20 +264,20 @@ public class SaveRequirementController
 			}
 			// refreshes the list view, should be made much cleaner in the future
 			((ListView)view.getParent().getTabController().getView().getComponentAt(0)).refreshData();
-		} else {
+		} 
+		else 
 			System.err.print("Undetected error saving requirement\n");
-		}
+
 		view.getAttributePanel().getSaveButton().setEnabled(false);
 	}
 
 	public RequirementTab getView() {
 		return view;
 	}
-	/**
-	 * Saves a new note to the Requirement
+
+	/** Saves a new note to the Requirement
 	 */
 	public void saveNote() {
-
 		Requirement currentRequirement = view.getCurrentRequirement();
 
 		String NoteContent = view.getRequirementNote().getText();
@@ -295,8 +291,7 @@ public class SaveRequirementController
 		request.send();
 	}
 
-	/**
-	 * Saves an acceptance test to the Requirement
+	/** Saves an acceptance test to the Requirement
 	 */
 	public void saveAcceptanceTest() {
 		Requirement currentRequirement = view.getCurrentRequirement();
@@ -313,7 +308,7 @@ public class SaveRequirementController
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		request.send();
 	}
-	
+
 	/** Updates an old AcceptanceTest
 	 * 
 	 * @param oldTest The old version of the test
@@ -328,7 +323,7 @@ public class SaveRequirementController
 				myList.get(i).setAcceptanceTestResult(newTest.getAcceptanceTestResult());	// And update it
 			}
 		}
-		
+
 		// make a POST http request and let the observer get the response
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
@@ -353,7 +348,6 @@ public class SaveRequirementController
 
 				byte[] buffer = new byte[8192];
 
-
 				int read = 0;
 				while ( (read = source.read(buffer)) != -1 ) {
 					ByteArrayOutputStream newDestination = new ByteArrayOutputStream();
@@ -362,13 +356,13 @@ public class SaveRequirementController
 				}
 			}
 			finally {
-				if(source != null) {
+				if(source != null)
 					source.close();
-				}
-				for(ByteArrayOutputStream destination : destinations){
-					if(destination != null) {
+				
+				for(ByteArrayOutputStream destination : destinations)
+				{
+					if(destination != null)
 						destination.close();
-					}
 				}   
 			}
 
@@ -384,11 +378,12 @@ public class SaveRequirementController
 				request.setBody(part.toJSON()); // put the new message in the body of the request
 				request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
 				request.send();
-
+				
 				n++;
 			}
 
 			boolean finished = false;
+			
 			while(!finished) {
 				try {
 					Thread.sleep(500);
@@ -408,14 +403,13 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304){ //TODO Get rid of popup?
+		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304)
 			JOptionPane.showMessageDialog(null, "File size must be 4 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
+		
 		fc.setSelectedFile(null);
 	}
 
 	public void saveUsers() {
-
 		Requirement currentRequirement = view.getCurrentRequirement();
 		ArrayList<String> assignedUsers = new ArrayList<String>();
 		UserListModel assignedUserListModel = view.getTabPanel().getUserChooserPanel().getAssignedUserListModel();
