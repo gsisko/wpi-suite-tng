@@ -199,6 +199,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
 
 		JComboBox typebox = new JComboBox();
+		typebox.addItem("");
 		typebox.addItem("Epic");
 		typebox.addItem("Theme");
 		typebox.addItem("UserStory");
@@ -239,9 +240,11 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(priorityColumn);
 
 		JComboBox typebox = new JComboBox();
-		typebox.addItem("High");
-		typebox.addItem("Medium");
+		typebox.addItem("");
 		typebox.addItem("Low");
+		typebox.addItem("Medium");
+		typebox.addItem("High");
+
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 
 	}
@@ -305,15 +308,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	/** Gets the JSOn version of the model at 
 	 *  the given index
 	 *  
-	 * @param i The index of the model
+	 * @param rowNumber The index of the model
 	 * @return  The JSON version of the model
 	 */
-	public String getModelAsJson(int i) {
+	public String getModelAsJson(int rowNumber) {
 		// Get the names of the columns
 		ArrayList<String> columnNames = this.getTableName();
 
 		// Get the ID of the requirement being edited
-		String id = (String) resultsTable.getValueAt(i, this.getColumnIndex("ID", columnNames));
+		String id = (String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("ID", columnNames));
 
 		// Get the original version of the requirement
 		Requirement[] reqs = parent.getParent().getDisplayedRequirements();
@@ -331,15 +334,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		}
 
 		// Start saving the rest of the fields
-		toUpdate.setName((String) resultsTable.getValueAt(i, this.getColumnIndex("Name", columnNames)));
-		toUpdate.setType( RequirementType.toType((String) resultsTable.getValueAt(i, this.getColumnIndex("Type", columnNames))));
-		toUpdate.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(i, this.getColumnIndex("Status", columnNames))));
-		toUpdate.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(i, this.getColumnIndex("Priority", columnNames))));
-		toUpdate.setReleaseNumber((String)resultsTable.getValueAt(i, this.getColumnIndex("ReleaseNumber", columnNames)));
-		toUpdate.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(i, this.getColumnIndex("Estimate", columnNames))));
-		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(i, this.getColumnIndex("ActualEffort", columnNames))));
+		toUpdate.setName((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Name", columnNames)));
+		toUpdate.setType( RequirementType.toType((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Type", columnNames))));
+		toUpdate.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Status", columnNames))));
+		toUpdate.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Priority", columnNames))));
+		toUpdate.setReleaseNumber((String)resultsTable.getValueAt(rowNumber, this.getColumnIndex("ReleaseNumber", columnNames)));
+		toUpdate.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Estimate", columnNames))));
+		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("ActualEffort", columnNames))));
 
-		int iterationID = this.getIterationID((String) resultsTable.getValueAt(i, this.getColumnIndex("Iteration", columnNames)));
+		int iterationID = this.getIterationID((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Iteration", columnNames)));
 		toUpdate.setId(iterationID);
 
 		return toUpdate.toJSON();

@@ -28,7 +28,7 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 	
 	/** Reference to a Boolean array that holds flags that represent the 
 	 *  statuses of requirements */
-	Boolean[] modelsThatNeedSaving;
+	Boolean[][] modelsThatNeedSaving;
 	
 	/** The index of the model in the Boolean array */
 	int modelIndex;
@@ -41,7 +41,7 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 	 * @param modelsThatNeedSaving Reference to a Boolean array that holds flags that represent the statuses of requirements
 	 * @param modelIndex           The index of the model in question in the Boolean array
 	 */
-	public ListSaveModelObserver(ListSaveModelController controller, Boolean[] modelsThatNeedSaving, int modelIndex){
+	public ListSaveModelObserver(ListSaveModelController controller, Boolean[][] modelsThatNeedSaving, int modelIndex){
 		this.controller = controller;
 		this.modelsThatNeedSaving = modelsThatNeedSaving;
 		this.modelIndex = modelIndex;
@@ -55,12 +55,15 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 	 */
 	public void responseSuccess(IRequest iReq) {
 		// Update the array of flags
-		modelsThatNeedSaving[modelIndex] = new Boolean(false);
-		
+		for (int i = 0; i < 9 ; i++){
+			modelsThatNeedSaving[modelIndex][i] = new Boolean(false);
+		}
 		// Go through the array of flags and see if we can refresh yet
-		for (Boolean flag: modelsThatNeedSaving ){
+		for (Boolean[] array: modelsThatNeedSaving){
+			for (Boolean flags: array){
 			// If any of the flags are still true, exit the method as we cannot refresh yet
-			if (flag.booleanValue()) return;	
+				if (flags.booleanValue()) return;	
+			}
 		}
 		
 		// If we exit the for loop, we can trigger a refresh
