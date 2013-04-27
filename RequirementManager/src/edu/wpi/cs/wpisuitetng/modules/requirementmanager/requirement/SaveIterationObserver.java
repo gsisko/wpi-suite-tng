@@ -21,11 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * An observer for a request to save an iteration with the provided id
  */
 public class SaveIterationObserver implements RequestObserver {
-	/**
-	 * Construct a new observer
-	 * @param retrieveModelController the controller managing the request
-	 */
-	public SaveIterationObserver() {	}
+	
 
 	/** Respond to a successful message from the network
 	 * 

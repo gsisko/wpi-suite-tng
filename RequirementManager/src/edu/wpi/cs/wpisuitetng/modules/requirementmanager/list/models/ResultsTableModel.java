@@ -29,12 +29,7 @@ public class ResultsTableModel extends AbstractTableModel {
 	private boolean editable = false;
 	
 	
-	/**
-	 * Basic constructor.
-	 */
-	public ResultsTableModel() {
-		
-	}
+	
 	
 	/**Set the data to be displayed in the table 
 	 * @param data A two-dimensional array of objects containing the data
