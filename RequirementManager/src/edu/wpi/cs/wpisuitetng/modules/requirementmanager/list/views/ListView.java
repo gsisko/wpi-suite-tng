@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -78,12 +79,14 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** The main tab controller */
 	protected MainTabController tabController;
 
+	/** Location of divider before entering edit mode */
+	protected int oldDividerLocation;
+
 	/** The arrays of models stored in the database */
 	protected Filter[] allFilters;
 	protected Iteration[] allIterations;
 	protected Requirement[] allRequirements;
 	protected Requirement[] displayedRequirements;
-
 	
 	
 	/**Construct the view
@@ -328,7 +331,15 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 * Set everything else enabled or disabled when changing edit modes
 	 */
 	public void setListsAndBuildersVisible(boolean enable) {
-		mainPanel.getTabPanel().setVisible(enable);
+		if (enable) {
+			mainPanel.getSplitPane().setDividerLocation(oldDividerLocation);
+			mainPanel.getSplitPane().setEnabled(true);
+		}
+		else {
+			oldDividerLocation = mainPanel.getSplitPane().getDividerLocation();
+			mainPanel.getSplitPane().setEnabled(false);
+			mainPanel.getSplitPane().setDividerLocation(0);
+		}
 		
 		if (mainPanel.getMode() == Mode.FILTER) {
 			mainPanel.getFilterBuilderPanel().setVisible(enable);
