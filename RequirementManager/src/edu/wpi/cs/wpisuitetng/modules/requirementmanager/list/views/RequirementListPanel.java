@@ -14,7 +14,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseListener;
-
 import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
@@ -29,9 +28,14 @@ import javax.swing.table.TableColumn;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
+
 /** Panel to hold the results of a list of requirements
  */
 @SuppressWarnings({"serial","unchecked","rawtypes"})
@@ -110,7 +114,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					if (columnName.equals("Name")) {
 						if (!requirement.getName().equals((String)data)) {
 							isChanged = true;
-							
+
 							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
 								isInvalid = true;
 						}
@@ -122,10 +126,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						String iteration = (String) data;
 						if (!getIterationName(requirement.getIteration()).equals(iteration)) {
 							isChanged = true;
-							
+
 							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
 								isInvalid = true;
-							
+
 							int statusColumn = getColumnIndex("Status");
 							if (iteration.equals("")) {
 								if (requirement.getStatus() == RequirementStatus.New)
@@ -135,7 +139,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							}
 							else
 								resultsTable.setValueAt("InProgress", row, statusColumn);
-							
+
 							if (currentRequirement.getEstimate() == 0) {
 								int estimateColumn = getColumnIndex("Estimate");
 								isValid[row][estimateColumn] = false;
@@ -146,7 +150,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					else if (columnName.equals("Type")) {
 						if (requirement.getType() != RequirementType.toType((String)data)) {
 							isChanged = true;
-							
+
 							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
 								isInvalid = true;
 						}
@@ -160,7 +164,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					else if (columnName.equals("Priority")) {
 						if (requirement.getPriority() != RequirementPriority.toPriority((String)data)) {
 							isChanged = true;
-							
+
 							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
 								isInvalid = true;
 						}
@@ -169,7 +173,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					else if (columnName.equals("ReleaseNumber")) {
 						if (!requirement.getReleaseNumber().equals((String)data)) {
 							isChanged = true;
-							
+
 							if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
 								isInvalid = true;
 						}
@@ -183,10 +187,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							try {
 								if (requirement.getEstimate() != Integer.parseInt((String)data)) {
 									isChanged = true;
-									
+
 									if (currentStatus == RequirementStatus.Deleted)
 										isInvalid = true;
-									
+
 									int iterationId = currentRequirement.getIteration();
 									if (iterationId != 0)
 										isInvalid = true;
@@ -205,7 +209,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							try {
 								if (requirement.getActualEffort() != Integer.parseInt((String)data)) {
 									isChanged = true;
-									
+
 									if (currentStatus == RequirementStatus.Complete || currentStatus == RequirementStatus.Deleted)
 										isInvalid = true;
 								}
@@ -225,6 +229,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));			
 				}
+				updateSaveButton();
 			}
 
 		});
@@ -285,7 +290,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("Scenario");
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
-	
+
 	/** 
 	 * place combox for iteration
 	 */
@@ -300,10 +305,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		for (Iteration anIter: allIterations){
 			typebox.addItem(anIter.getName());
 		}
-		
+
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
-	
+
 
 	/** 
 	 * place combox for type
@@ -440,7 +445,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		} catch (Exception e) {
 			currentRequirement.setActualEffort(-1);
 		}
-			
+
 		int iterationID = this.getIterationID((String) resultsTable.getValueAt(row, this.getColumnIndex("Iteration")));
 		currentRequirement.setIteration(iterationID);
 
@@ -542,6 +547,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		setComboxforPriority();
 		setComboxforIteration();
 		disableSorting();
+		parent.getParent().getBtnSave().setEnabled(false);
 	}
 
 
@@ -626,5 +632,28 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void setIsEditable(Boolean[][] isEditable) {
 		this.isEditable = isEditable;
+	}
+	/** Turns on the save button when all cells are
+	 *  valid and at least one has been changed. 
+	 */
+	public void updateSaveButton() {
+		// Check for validity and disables the save button if there is invalidity
+		for (Boolean[] Vrows : isValid)
+			for (Boolean Vcells: Vrows)
+				if (!Vcells.booleanValue()){
+					parent.getParent().getBtnSave().setEnabled(false);
+					// The save button has been disabled because there is invalidity in the table
+					return;
+				}
+		// Check for Changes, and turn the save button in if changes were made
+		for (Boolean[] Nrows : needsSaving)
+			for (Boolean Ncells: Nrows)
+				if (!Ncells.booleanValue()){
+					parent.getParent().getBtnSave().setEnabled(true);
+					// The save button has been disabled because there is invalidity in the table
+					return;			
+				}
+
+		// Double check that un-editable boxes are not changed
 	}
 }
