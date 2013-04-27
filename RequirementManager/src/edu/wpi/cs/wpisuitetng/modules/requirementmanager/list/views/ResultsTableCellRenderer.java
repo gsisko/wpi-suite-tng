@@ -19,22 +19,33 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- * Custom cell renderer for JTables. Displays changed as yellow and unchanged as white
+ * Custom cell renderer for JTables. Displays changed as yellow, unchanged as white, and invalid as red
  */
 @SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 	
 	Boolean[][] needsSaving;
+	Boolean[][] isValid;
 	
-	public ResultsTableCellRenderer(Boolean[][] needsSaving) {
+	public ResultsTableCellRenderer(Boolean[][] needsSaving, Boolean[][] isValid) {
 		this.needsSaving = needsSaving;
+		this.isValid = isValid;
 	}
 	
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		if (needsSaving[row][column]) {
+		if (needsSaving == null || isValid == null) {
+			cell.setBackground(Color.white);
+			return cell;
+		}
+		
+		if (!isValid[row][column]) {
+			Color defaultRed = new Color(255,70,70);
+			cell.setBackground(defaultRed);
+		}
+		else if (needsSaving[row][column]) {
 			Color defaultYellow = new Color(248,253,188);
 			cell.setBackground(defaultYellow);                
 		}        

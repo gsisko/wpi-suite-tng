@@ -13,28 +13,27 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 /** Panel to hold the results of a list of requirements
  */
@@ -52,6 +51,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Array of Boolean flags for whether or not Requirements need saving */
 	private Boolean[][] needsSaving;
+
+	/** Array of Boolean flags for whether or not cells are valid */
+	private Boolean[][] isValid;
 
 	/** ArrayList of listeners on resultsTable column heads */
 	private ArrayList<MouseListener> columnHeadListeners;
@@ -100,53 +102,79 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					String columnName = resultsTableModel.getColumnName(column);
 					Object data = resultsTableModel.getValueAt(row, column);
 					boolean isChanged = false;
+					boolean isInvalid = false;
+
+					Requirement currentRequirement = getCurrentRequirement(row);
 
 					if (columnName.equals("Name")) {
 						if (!requirement.getName().equals((String)data))
 							isChanged = true;
+						if (((String)data).equals(""))
+							isInvalid = true;
 					}
+
 					else if (columnName.equals("Iteration")) {
 						if (!getIterationName(requirement.getIteration()).equals((String)data))
 							isChanged = true;
 					}
+
 					else if (columnName.equals("Type")) {
 						if (requirement.getType() != RequirementType.toType((String)data))
 							isChanged = true;
 					}
+
 					else if (columnName.equals("Status")) {
 						if (requirement.getStatus() != RequirementStatus.valueOf((String)data))
 							isChanged = true;
 					}
+
 					else if (columnName.equals("Priority")) {
 						if (requirement.getPriority() != RequirementPriority.toPriority((String)data))
 							isChanged = true;
 					}
+
 					else if (columnName.equals("ReleaseNumber")) {
 						if (!requirement.getReleaseNumber().equals((String)data))
 							isChanged = true;
 					}
+
 					else if (columnName.equals("Estimate")) {
-						if (requirement.getEstimate() != Integer.parseInt((String)data))
-							isChanged = true;
+						String estimate = (String) data;
+						if (estimate.equals("") || estimate.contains("-") || estimate.contains("."))
+							isInvalid = true;
+						else {
+							try {
+								if (requirement.getEstimate() != Integer.parseInt((String)data))
+									isChanged = true;
+							} catch (Exception ex) {
+								isInvalid = true;
+							}
+						}
 					}
+
 					else if (columnName.equals("ActualEffort")) {
-						if (requirement.getActualEffort() != Integer.parseInt((String)data))
-							isChanged = true;
+						String actualEffort = (String) data;
+						if (actualEffort.equals("") || actualEffort.contains("-") || actualEffort.contains("."))
+							isInvalid = true;
+						else {
+							try {
+								if (requirement.getActualEffort() != Integer.parseInt((String)data))
+									isChanged = true;
+							} catch (Exception ex) {
+								isInvalid = true;
+							}
+						}
 					}
+
 					else {
 						System.err.println("Table change listener failed fatally");
 						return;
 					}
 
-					if (isChanged) {
-						needsSaving[row][column] = true;
-						resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving));
-					}
-					else {
-						needsSaving[row][column] = false;
-						resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving));
-					}
+					needsSaving[row][column] = isChanged;
+					isValid[row][column] = !isInvalid;
 
+					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid));			
 				}
 			}
 
@@ -196,7 +224,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public void setComboxforType()
 	{
 		int typeColumnNum = this.getColumnIndex("Type", getTableName());
-		
+
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
 
 		JComboBox typebox = new JComboBox();
@@ -217,7 +245,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public void setComboxforStatus()
 	{
 		int statusColumn = this.getColumnIndex("Status", getTableName());
-		
+
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(statusColumn);
 
 		JComboBox typebox = new JComboBox();
@@ -237,7 +265,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public void setComboxforPriority()
 	{
 		int priorityColumn = this.getColumnIndex("Priority", getTableName());
-		
+
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(priorityColumn);
 
 		JComboBox typebox = new JComboBox();
@@ -249,31 +277,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 
 	}
-
-	/**numeric validation
-	 * 
-	 */
-	public void NumValidationforEffort()
-	{
-		int effort = this.getColumnIndex("ActualEffort", getTableName());
-		
-		TableColumn estimateColum = resultsTable.getColumnModel().getColumn(effort);
-
-		estimateColum.setCellEditor(new NumValidation());
-	}
-
-	/**numeric validation
-	 * 
-	 */
-	public void NumValidationforEstimate()
-	{
-		int estimate = this.getColumnIndex("Estimate", getTableName());
-		
-		TableColumn estimateColum = resultsTable.getColumnModel().getColumn(estimate);
-
-		estimateColum.setCellEditor(new NumValidation());
-	}
-
 
 	/** Disables the sorting of the JTable */
 	public void disableSorting(){
@@ -350,6 +353,34 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	}
 
+	protected Requirement getCurrentRequirement(int row) {
+
+		Requirement currentRequirement = new Requirement();
+
+
+		// Start saving the rest of the fields
+		currentRequirement.setName((String) resultsTable.getValueAt(row, this.getColumnIndex("Name")));
+		currentRequirement.setType( RequirementType.toType((String) resultsTable.getValueAt(row, this.getColumnIndex("Type"))));
+		currentRequirement.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(row, this.getColumnIndex("Status"))));
+		currentRequirement.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(row, this.getColumnIndex("Priority"))));
+		currentRequirement.setReleaseNumber((String)resultsTable.getValueAt(row, this.getColumnIndex("ReleaseNumber")));
+		try {
+			currentRequirement.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(row, this.getColumnIndex("Estimate"))));
+		} catch (Exception e) {
+			currentRequirement.setEstimate(-1);
+		}
+		try {
+			currentRequirement.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(row, this.getColumnIndex("ActualEffort"))));
+		} catch (Exception e) {
+			currentRequirement.setActualEffort(-1);
+		}
+			
+		int iterationID = this.getIterationID((String) resultsTable.getValueAt(row, this.getColumnIndex("Iteration")));
+		currentRequirement.setIteration(iterationID);
+
+		return currentRequirement;
+	}
+
 	/** Gets the id of the iteration with the given name
 	 * 
 	 * @param iterName the name of the iteration
@@ -421,6 +452,12 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				needsSaving[i][j] = Boolean.valueOf(false); // Set entries false
 			}		
 		}
+		isValid = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
+		for (int i = 0; i < resultsTable.getRowCount(); i++){
+			for (int j = 0; j < resultsTable.getColumnCount(); j++){
+				isValid[i][j] = Boolean.valueOf(true); // Set entries false
+			}		
+		}
 	}
 
 
@@ -477,5 +514,19 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void failedToSave() {
 		System.out.println("sadface ): ");
+	}
+
+	/**
+	 * @return the isValid
+	 */
+	public Boolean[][] getIsValid() {
+		return isValid;
+	}
+
+	/**
+	 * @param isValid the isValid to set
+	 */
+	public void setIsValid(Boolean[][] isValid) {
+		this.isValid = isValid;
 	}
 }

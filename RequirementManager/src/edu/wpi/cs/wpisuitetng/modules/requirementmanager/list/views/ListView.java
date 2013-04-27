@@ -184,8 +184,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getResultsPanel().setComboxforType();
 				mainPanel.getResultsPanel().setComboxforStatus();
 				mainPanel.getResultsPanel().setComboxforPriority();
-				mainPanel.getResultsPanel().NumValidationforEstimate();
-				mainPanel.getResultsPanel().NumValidationforEffort();
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
 				
@@ -204,6 +202,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				btnRefresh.setEnabled(true);
 				refreshData();
 				mainPanel.getResultsPanel().enableSorting();
+				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null));
 			}
 		});
 		
@@ -367,6 +366,20 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		else {
 			mainPanel.getIterationBuilderPanel().setVisible(enable);
 		}
+	}
+
+	/**
+	 * @return the btnSave
+	 */
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+
+	/**
+	 * @param btnSave the btnSave to set
+	 */
+	public void setBtnSave(JButton btnSave) {
+		this.btnSave = btnSave;
 	}
 
 }
