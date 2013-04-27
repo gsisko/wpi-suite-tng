@@ -354,41 +354,56 @@ public class FileModel extends AbstractModel
 	public void setIdNum(String idNum) {
 		this.idNum = idNum;
 	}
-//	/**
-//	 * @return the team for this FileModel
-//	 */
-//	public User[] getTeam() {
-//		User[] a = new User[1];
-//		return team.toArray(a);
-//	}
-//	
-//	/**
-//	 * adds a team member to the team
-//	 * @param u - the user to add to the team
-//	 * @return true if the user was added, false if the user was already in the team
-//	 */
-//	public boolean addTeamMember(User u)
-//	{
-//		if(!team.contains(u))
-//		{
-//			team.add(u);
-//			return true;
-//		}
-//		return false;
-//	}
-//	
-//	/**
-//	 * removes a team member from the team
-//	 * @param u - the team member to remove from the team
-//	 * @return - true if the member was removed, false if they were not in the team
-//	 */
-//	public boolean removeTeamMember(User u)
-//	{
-//		if(team.contains(u))
-//		{
-//			team.remove(u);
-//			return true;
-//		}
-//		return false;
-//	}
+	
+	/**
+	 * @return the fileSize
+	 */
+	public Integer getFileSize() {
+		return fileSize;
+	}
+
+	/**
+	 * @param fileSize the fileSize to set
+	 */
+	public void setFileSize(Integer fileSize) {
+		this.fileSize = fileSize;
+	}
+	
+	/**
+	 * @return the team for this FileModel
+	 */
+	public User[] getTeam() {
+		User[] a = new User[1];
+		return team.toArray(a);
+	}
+	
+	/**
+	 * adds a team member to the team
+	 * @param u - the user to add to the team
+	 * @return true if the user was added, false if the user was already in the team
+	 */
+	public boolean addTeamMember(User u)
+	{
+		if(!team.contains(u))
+		{
+			team.add(u);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * removes a team member from the team
+	 * @param u - the team member to remove from the team
+	 * @return - true if the member was removed, false if they were not in the team
+	 */
+	public boolean removeTeamMember(User u)
+	{
+		if(team.contains(u))
+		{
+			team.remove(u);
+			return true;
+		}
+		return false;
+	}
 }
