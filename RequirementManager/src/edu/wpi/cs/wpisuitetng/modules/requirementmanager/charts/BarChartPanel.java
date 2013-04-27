@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
 /** Panel that contains the bar chart specified by the user in the ChartOptionsPanel.
+ * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class BarChartPanel extends JPanel implements IListPanel {

@@ -110,8 +110,8 @@ public class AcceptanceTestTest {
 
 		// add additional test code here
 		assertNotNull(result);
-		assertEquals("FAILED", result.toString());
-		assertEquals("FAILED", result.name());
+		assertEquals("Failed", result.toString());
+		assertEquals("Failed", result.name());
 		assertEquals(2, result.ordinal());
 	}
 
