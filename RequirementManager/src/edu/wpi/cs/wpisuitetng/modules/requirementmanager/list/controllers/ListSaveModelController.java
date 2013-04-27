@@ -45,15 +45,23 @@ public class ListSaveModelController implements IController{
 	 */
 	public void perform(){
 		// Get the unique identifiers of the models
-		Boolean[] needsSaving = theList.getNeedsSaveFlags();
-
+		Boolean[][] needsSaving = theList.getNeedsSaveFlags();
+		int numRequests = 0;
 		// Go through the list of flags and send save requests as necessary
 		for(int i = 0; i < needsSaving.length; i++){			
-			if (needsSaving[i].booleanValue()){ 
+			boolean currentRowNeedsSaving = false;
+			for (Boolean cell: needsSaving[i]){			
+				if (cell.booleanValue()){ 
+					currentRowNeedsSaving = true;
+				}
+			}
+			// If changes were found in the row, send the message
+			if (currentRowNeedsSaving){
 				perform(theList.getUniqueIdAtIndex(i) , i, theList.getModelAsJson(i));
+				numRequests++;
 			}
 		}
-		System.out.println("ListSaveModelController:    perform() ");
+		System.out.println("ListSaveModelController:    perform(): " + numRequests + " times");		
 	}
 
 	/** provide action listener or other ways to check whether a certain action is performed
