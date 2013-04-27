@@ -35,7 +35,7 @@ public class RequirementTabPanel extends JTabbedPane {
 	private AttachmentTab attachmentPanel;
 	private HistoryTab historyPanel;
 
-	private SubRequirementTab subRequirementPanel;
+	//private SubRequirementTab subRequirementPanel;
 
 	private UserChooserTab userChooserPanel;
 
@@ -56,10 +56,6 @@ public class RequirementTabPanel extends JTabbedPane {
 		acceptanceTestPanel = new AcceptanceTestTab(parent);
 		addTab("Acceptance Tests", new ImageIcon(), acceptanceTestPanel, "Acceptance tests for the current requirement");
 		
-	
-		subRequirementPanel= new SubRequirementTab(parent);
-		addTab("Sub-Requirements", new ImageIcon(), subRequirementPanel, "Sub-Requirements for the current requirement");
-
 		attachmentPanel = new AttachmentTab(parent);
 		addTab("Attachments", new ImageIcon(), attachmentPanel, "Attachments for the current requirement");
 		
@@ -68,7 +64,7 @@ public class RequirementTabPanel extends JTabbedPane {
 
 		this.setPreferredSize(new Dimension(450, 500));
 	}
-
+	/** There are no subrequirements, so refreshing them is useless. Even then, subrequirements should refresh their own data
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
@@ -76,7 +72,7 @@ public class RequirementTabPanel extends JTabbedPane {
 			subRequirementPanel.getSubController().refreshData();
 		}
 	}
-	
+	*/
 	/**
 	 * @return the notePanel
 	 */
@@ -118,16 +114,6 @@ public class RequirementTabPanel extends JTabbedPane {
 	public void setHistoryPanel(HistoryTab historyPanel) {
 		this.historyPanel = historyPanel;
 	}
-
-
-	public SubRequirementTab getSubRequirementPanel() {
-		return subRequirementPanel;
-	}
-
-	public void setSubRequirementPanel(SubRequirementTab subRequirementPanel) {
-		this.subRequirementPanel = subRequirementPanel;
-	}
-
 
 	public AttachmentTab getAttachmentPanel() {
 		return attachmentPanel;
