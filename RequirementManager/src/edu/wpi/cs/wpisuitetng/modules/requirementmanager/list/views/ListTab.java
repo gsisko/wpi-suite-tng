@@ -196,8 +196,10 @@ public class ListTab extends JPanel {
 		if (currentMode != newMode) {
 			if (newMode == Mode.FILTER) {
 				builderScrollPane.setViewportView(filterBuilderPanel);
-			} else {
+			} else if (newMode == Mode.ITERATION) {
 				builderScrollPane.setViewportView(iterationBuilderPanel);
+			} else {
+				builderScrollPane.setViewportView(editModeBuilderPanel);
 			}
 			currentMode = newMode;
 		}
