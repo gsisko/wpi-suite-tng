@@ -16,6 +16,7 @@ package edu.wpi.cs.wpisuitetng.modules.core.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -36,13 +37,14 @@ public class FileModel extends AbstractModel
 	private Integer fileSize; //In bytes
 	private ArrayList<String> fileData; //This should be kept as Base64
 	private ArrayList<User> team; 
+	
 	/**
 	 * Primary constructor for a FileModel
 	 * @param fileName - the name of the file
 	 * @param idNum - the project ID number as a string
 	 * @param fileData - the base64 string representing the file
 	 */
-//	public FileModel(String fileName, String idNum, User owner, User[] team, String fileData)
+	
 	public FileModel(String fileName, String idNum, Integer fileSize, String[] fileData, User[] team)
 	{
 		this.fileName = fileName;
@@ -76,23 +78,6 @@ public class FileModel extends AbstractModel
 	{
 		this.fileName = fileName;
 		this.idNum = idNum;
-	}
-	
-	/* Accessors */
-	public String getName()
-	{
-		return fileName;
-	}
-	
-	public String getIdNum()
-	{
-		return idNum;
-	}
-	
-	/* Mutators */
-	public void setName(String newName)
-	{
-		this.fileName = newName;
 	}
 	
 	/* database interaction */
@@ -308,7 +293,25 @@ public class FileModel extends AbstractModel
 		}
 		return false;
 	}
-
+	
+	/** 
+	 * Method to check if all parts are received
+	 */
+	//TODO: Rewrite since it can be slow for a large number of parts?
+	public boolean hasAllFileParts(){
+		boolean result = true;
+		
+		Iterator<String> it = fileData.iterator();
+		
+		while (it.hasNext()){
+			if(it.next() == null){
+				result = false;
+			}
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * @return the fileName
 	 */
@@ -337,6 +340,14 @@ public class FileModel extends AbstractModel
 		this.fileData = fileData;
 	}
 
+	/**
+	 * @return the idNum
+	 */
+	public String getIdNum()
+	{
+		return idNum;
+	}
+	
 	/**
 	 * @param idNum the idNum to set
 	 */

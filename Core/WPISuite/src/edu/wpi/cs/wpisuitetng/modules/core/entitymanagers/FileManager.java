@@ -229,8 +229,16 @@ public class FileManager implements EntityManager<FilePartModel>{
 			if(data.save(fileModel))
 			{
 				logger.log(Level.FINE, "File Saved :" + model.getFileName());
+				
+				//Delete the file from array since we don't need it anymore and it has been saved...
+				if ( !fileArray.remove(fileModel) ){
+					logger.log(Level.WARNING, "Error removing FileModel from FileManager!" + fileModel.getFileName());
+				}
+				
 				return ;
 			}
+			
+			
 		/*else
 		{
 			logger.log(Level.WARNING, "File Save Failure!");
