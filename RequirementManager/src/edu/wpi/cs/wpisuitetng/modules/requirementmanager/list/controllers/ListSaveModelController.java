@@ -48,16 +48,16 @@ public class ListSaveModelController implements IController{
 		Boolean[][] needsSaving = theList.getNeedsSaveFlags();
 		int numRequests = 0;
 		// Go through the list of flags and send save requests as necessary
-		for(int i = 0; i < needsSaving.length; i++){			
+		for(int row = 0; row < needsSaving.length; row++){			
 			boolean currentRowNeedsSaving = false;
-			for (Boolean cell: needsSaving[i]){			
+			for (Boolean cell: needsSaving[row]){			
 				if (cell.booleanValue()){ 
 					currentRowNeedsSaving = true;
 				}
 			}
 			// If changes were found in the row, send the message
 			if (currentRowNeedsSaving){
-				perform(theList.getUniqueIdAtIndex(i) , i, theList.getModelAsJson(i));
+				perform(theList.getUniqueIdAtIndex(row) , row, theList.getModelAsJson(row));
 				numRequests++;
 			}
 		}

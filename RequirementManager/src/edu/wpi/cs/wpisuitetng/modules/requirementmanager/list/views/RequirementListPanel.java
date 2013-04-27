@@ -80,7 +80,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
-		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
 
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
 
@@ -93,7 +92,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					Requirement requirement = null;
 					for (Requirement r : reqs) {
-						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, resultsTableModel.findColumn("ID"))))
+						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getColumnIndex("ID", getTableName()))))
 							requirement = r;	
 					}
 
@@ -102,49 +101,51 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					Object data = resultsTableModel.getValueAt(row, column);
 					boolean isChanged = false;
 
-					switch (columnName) {
-					case "Name":
+					if (columnName.equals("Name")) {
 						if (!requirement.getName().equals((String)data))
 							isChanged = true;
-						break;
-					case "Iteration":
+					}
+					else if (columnName.equals("Iteration")) {
 						if (!getIterationName(requirement.getIteration()).equals((String)data))
 							isChanged = true;
-						break;
-					case "Type":
-						if (requirement.getType() != RequirementType.valueOf((String)data))
+					}
+					else if (columnName.equals("Type")) {
+						if (requirement.getType() != RequirementType.toType((String)data))
 							isChanged = true;
-						break;
-					case "Status":
+					}
+					else if (columnName.equals("Status")) {
 						if (requirement.getStatus() != RequirementStatus.valueOf((String)data))
 							isChanged = true;
-						break;
-					case "Priority":
-						if (requirement.getPriority() != RequirementPriority.valueOf((String)data))
+					}
+					else if (columnName.equals("Priority")) {
+						if (requirement.getPriority() != RequirementPriority.toPriority((String)data))
 							isChanged = true;
-						break;
-					case "ReleaseNumber":
+					}
+					else if (columnName.equals("ReleaseNumber")) {
 						if (!requirement.getReleaseNumber().equals((String)data))
 							isChanged = true;
-						break;
-					case "Estimate":
+					}
+					else if (columnName.equals("Estimate")) {
 						if (requirement.getEstimate() != Integer.parseInt((String)data))
 							isChanged = true;
-						break;
-					case "ActualEffort":
+					}
+					else if (columnName.equals("ActualEffort")) {
 						if (requirement.getActualEffort() != Integer.parseInt((String)data))
 							isChanged = true;
-						break;
-					default:
+					}
+					else {
 						System.err.println("Table change listener failed fatally");
 						return;
 					}
 
 					if (isChanged) {
 						needsSaving[row][column] = true;
+						resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving));
 					}
-					else
+					else {
 						needsSaving[row][column] = false;
+						resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving));
+					}
 
 				}
 			}
@@ -343,7 +344,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("ActualEffort", columnNames))));
 
 		int iterationID = this.getIterationID((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Iteration", columnNames)));
-		toUpdate.setId(iterationID);
+		toUpdate.setIteration(iterationID);
 
 		return toUpdate.toJSON();
 
@@ -400,6 +401,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 
+	/** Gets the column index of the column with the given name
+	 * 
+	 * @param name The name to check for
+	 * @return the column index, returns -1 upon failure
+	 */
+	private int getColumnIndex(String name){
+		return getColumnIndex(name, getTableName());
+	}
 
 
 	/** Sets up any arrays of flags or other settings needed
@@ -423,8 +432,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 * @return  The unique identifier of the model
 	 */
 	public String getUniqueIdAtIndex(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return (String) resultsTable.getValueAt(i, this.getColumnIndex("ID"));
 	}
 
 	/** Change settings of table to indicate that the 
