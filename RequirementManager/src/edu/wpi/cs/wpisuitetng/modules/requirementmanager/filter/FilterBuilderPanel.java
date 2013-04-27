@@ -348,11 +348,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			return;
 		}
 		// Check conditions to see if the value field is blank when it should contain a value
-		if (     ( ( (typeBox.getSelectedIndex() == 0) || (typeBox.getSelectedIndex() == 8) ||(typeBox.getSelectedIndex() == 9) ) && (numValue.getText().length() == 0)) ||
-				( ( (typeBox.getSelectedIndex() == 1) || (typeBox.getSelectedIndex() == 2) ||(typeBox.getSelectedIndex() == 7) ) && (txtValue.getText().length() == 0))   )
+		if (    (((typeBox.getSelectedIndex() == 0) || (typeBox.getSelectedIndex() == 8) || (typeBox.getSelectedIndex() == 9)) && (numValue.getText().length() == 0)) ||
+				(((typeBox.getSelectedIndex() == 1) || (typeBox.getSelectedIndex() == 2) || (typeBox.getSelectedIndex() == 7)) && (txtValue.getText().length() == 0))   )
 		{
 			btnSave.setEnabled(false);
-			valueWarning.setText("Value cannot be empty.");
+			valueWarning.setText("Value cannot be empty");
 		}
 		else
 		{
