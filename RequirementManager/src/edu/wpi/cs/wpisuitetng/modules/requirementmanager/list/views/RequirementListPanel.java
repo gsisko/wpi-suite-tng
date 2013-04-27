@@ -13,12 +13,13 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.RowSorter;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
@@ -26,14 +27,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /** Panel to hold the results of a list of requirements
  */
-@SuppressWarnings({"serial","rawtypes","unchecked"})
+@SuppressWarnings({"serial"})
 public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	
 	/** The table of results */
 	protected JTable resultsTable;
-
-	/**  a saved version of the row sorter on the Jtable */
-	private RowSorter theSorter;
 	
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
@@ -44,12 +42,16 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	/** Array of Boolean flags for whether or not Requirements need saving */
 	private Boolean[] needsSaving;
 	
+	/** ArrayList of listeners on resultsTable column heads */
+	private ArrayList<MouseListener> columnHeadListeners;
+	
 	
 	/**Construct the panel
 	 * @param tabController The main tab controller
 	 */
 	public RequirementListPanel(MainTabController tabController) {
 		this.tabController = tabController;
+		this.columnHeadListeners = new ArrayList<MouseListener>();
 		
 		// Set the layout
 		this.setLayout(new BorderLayout());
@@ -62,8 +64,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(Date.class, new DateTableCellRenderer());
-		resultsTable.setRowSorter(null);
-		resultsTable.setAutoCreateRowSorter(true);
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -101,17 +101,24 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	
 	/** Disables the sorting of the JTable */
 	public void disableSorting(){
-		theSorter = resultsTable.getRowSorter(); // save the row sorter
-	//	resultsTable.setRowSorter(null); // disable the row sorting AND resets the sort settings	
-	//	resultsTable.setAutoCreateRowSorter(false); // not sure if it works
-		resultsTable.getTableHeader().setReorderingAllowed(false); // Disables row ordering
+		columnHeadListeners.clear();
+		// Removes mouse listeners from table header
+		for(MouseListener listener : resultsTable.getTableHeader().getMouseListeners()) {
+			columnHeadListeners.add(listener);
+			resultsTable.getTableHeader().removeMouseListener(listener);
+		}
+		resultsTable.getTableHeader().setResizingAllowed(false); // Disables column resizing
+		resultsTable.getTableHeader().setReorderingAllowed(false); // Disables column ordering
 	}
 
 	/** Enables the sorting of the JTable */
 	public void enableSorting() {
-		resultsTable.setRowSorter(theSorter); 
-	//	resultsTable.setAutoCreateRowSorter(true); // not sure if it works
-		resultsTable.getTableHeader().setReorderingAllowed(true); // Alows columns to be reordered
+		// Adds mouse listeners back to table header
+		for (MouseListener listener : columnHeadListeners) {
+			resultsTable.getTableHeader().addMouseListener(listener);
+		}
+		resultsTable.getTableHeader().setResizingAllowed(true); // Allows columns to be resized
+		resultsTable.getTableHeader().setReorderingAllowed(true); // Allows columns to be reordered
 	}
 
 	/** Gets the array of boolean flags of what models
