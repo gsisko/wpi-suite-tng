@@ -14,9 +14,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.core.models;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.apache.commons.codec.binary.Base64;
 
 import edu.wpi.cs.wpisuitetng.exceptions.SerializationException;
@@ -29,76 +26,37 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  */
 
 
-public class FileModel extends AbstractModel
- {
+public class FilePartModel extends AbstractModel
+{
 
 
-	private String fileName;
-	private String idNum;
-	private Integer fileSize; //In bytes
-	private ArrayList<String> fileData; //This should be kept as Base64
-	private ArrayList<User> team; 
+	private String idNum; //ID of this part
+	private String fileIdNum; //ID of the file in the Database. Has to be unique!
+	private String fileName; //Name of the file
+	private Integer fileSize; //Size in bytes
+	private String filePart; //Part of a file in Base64 
 	/**
 	 * Primary constructor for a FileModel
-	 * @param fileName - the name of the file
 	 * @param idNum - the project ID number as a string
-	 * @param fileData - the base64 string representing the file
+	 * @param filePart - the base64 string representing the file
 	 */
-//	public FileModel(String fileName, String idNum, User owner, User[] team, String fileData)
-	public FileModel(String fileName, String idNum, Integer fileSize, String[] fileData, User[] team)
+	//	public FileModel(String fileName, String idNum, User owner, User[] team, String fileData)
+	public FilePartModel(String fileIdNum, String idNum, String fileName, Integer fileSize, String filePart)
 	{
-		this.fileName = fileName;
 		this.idNum = idNum;
+		this.fileIdNum = fileIdNum;
+		this.fileName = fileName;
 		this.fileSize = fileSize;
-		
-		if(fileData != null) {
-		this.fileData = new ArrayList<String>(Arrays.asList(fileData)); 
+
+		if (Base64.isBase64(filePart)){
+			this.filePart = filePart;
+		} else {
+			this.filePart = new String();
 		}
-		else
-		{
-			this.fileData = new ArrayList<String>();
-		}
-		
-		if(team != null)
-		{
-			this.team = new ArrayList<User>(Arrays.asList(team));
-		}
-		else
-		{
-			this.team = new ArrayList<User>();
-		}
-	}
-	
-	/**
-	 * Secondary constructor for a FileModel
-	 * @param fileName	the file name
-	 * @param idNum	the ID number to associate with this FileModel.
-	 */
-	public FileModel(String fileName, String idNum)
-	{
-		this.fileName = fileName;
-		this.idNum = idNum;
-	}
-	
-	/* Accessors */
-	public String getName()
-	{
-		return fileName;
-	}
-	
-	public String getIdNum()
-	{
-		return idNum;
-	}
-	
-	/* Mutators */
-	public void setName(String newName)
-	{
-		this.fileName = newName;
 	}
 	
 	/* database interaction */
-	
+
 	/**
 	 * Implements Model-specific save logic
 	 */
@@ -106,7 +64,7 @@ public class FileModel extends AbstractModel
 	{
 		return; // TODO: implement saving during API - DB Layer Link up
 	}
-	
+
 	/**
 	 * Implements Model-specific delete logic
 	 */
@@ -114,11 +72,7 @@ public class FileModel extends AbstractModel
 	{
 		return; // TODO: implement deleting during API - DB Layer Link up
 	}
-	
-	public String getProjectName() {
-		return this.fileName;
-	}
-	
+
 	/* Serializing */
 	//XXX NOTE: We are serializing using Base64 instead...
 	/**
@@ -126,57 +80,57 @@ public class FileModel extends AbstractModel
 	 * 	a JSON string.
 	 * @return	the JSON string representation of this Project
 	 */
-	
+
 	public String toJSON()
 	{
 		/*
 		String json = null;
-		
+
 		json = "{";
-		
+
 		json += "\"name\":\"" + this.fileName +"\"";
-		
+
 		json += ",\"idNum\":\"" + this.idNum+"\"";
-		
+
 		if(this.owner != null)
 		{
 			json += ",\"owner\":" + this.owner.toJSON();
 		}
-		
+
 		if(this.fileData != null && this.fileData.length > 0)
 		{
 			json += ",\"supportedModules\":[";
-			
+
 			for(String str : this.fileData)
 			{
 				json += "\"" + str + "\",";
 			}
-			
+
 			//remove that last comma
 			json = json.substring(0, json.length()-1);
-			
+
 			json += "]";
 		}		
-		
+
 		if(this.team != null && this.team.size() > 0)
 		{
 			json += ",\"team\":[";
-		
+
 			for(User u : this.team)
 			{
 				json += u.toJSON() + ",";
 			}
 			//remove that last comma
 			json = json.substring(0, json.length()-1);
-		
+
 			json += "]";
 		}
-		
+
 		json += "}";
-		*/
+		 */
 		return toString();
 	}
-	
+
 	/**
 	 * Static Project method that serializes a list of Projects
 	 * 	into JSON strings.
@@ -187,17 +141,17 @@ public class FileModel extends AbstractModel
 	{
 		/*
 		String json ="";
-		
+
 		Gson gson = new Gson();
-		
+
 		json = gson.toJson(u, FileModel[].class);
-		
+
 		return json;
-		*/
-		
+		 */
+
 		return "";
 	}
-	
+
 	/**
 	 * Deserializes the given JSON String into a Project's member variables
 	 * @return	the Project from the given JSON string representation 
@@ -206,19 +160,19 @@ public class FileModel extends AbstractModel
 	{
 		/*
 		Gson gson;
-		 
+
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(FileModel.class, new ProjectDeserializer());
 
 		gson = builder.create();
-		
+
 		return gson.fromJson(json, FileModel.class);
-		*/
+		 */
 		return null;
 	}
-	
+
 	/* Built-in overrides/overloads */
-	
+
 	/**
 	 * Returns the Base64 representation of this object as 
 	 * 	the toString.
@@ -228,17 +182,24 @@ public class FileModel extends AbstractModel
 	public String toString()
 	{
 		String converted = "";
+
+		//Covert fileSize to byteArray
+//		byte[] fileSizeBytes = ByteBuffer.allocate(4).putInt(getFileSize()).array();
 		
 		//Convert variables to be sent as Base64
 		converted += Base64.encodeBase64String(getIdNum().getBytes());
 		converted += " "; //Delimiter
+		converted += Base64.encodeBase64String(getFileIdNum().getBytes());
+		converted += " ";
+		converted += Base64.encodeBase64String(Integer.toString(getFileSize()).getBytes());
+		converted += " ";
 		converted += Base64.encodeBase64String(getFileName().getBytes());
 		converted += " ";
-		converted += getFileData(); //This should already be in Base64
-		
+		converted += getFilePart(); //This should already be in Base64
+
 		return converted;
 	}
-	
+
 	/**
 	 * Converts the Base64 representation of this object 
 	 * and sets the appropriate fields
@@ -246,8 +207,8 @@ public class FileModel extends AbstractModel
 	 * @param encoded the Base64 encoded representation of this object
 	 * @throws SerializationException 
 	 */
-	static public FileModel fromString(String encoded) throws SerializationException{
-		
+	static public FilePartModel fromString(String encoded) throws SerializationException{
+
 		String[] parts = (new String(encoded)).split(" "); // split decoded token
 
 		//TODO: Is this a good idea?
@@ -259,56 +220,120 @@ public class FileModel extends AbstractModel
 
 		//TODO: Double check this decoding works
 		String idNum = new String((Base64.decodeBase64(parts[0])));
-		String fileName = new String((Base64.decodeBase64(parts[1])));
+		String fileIdNum = new String((Base64.decodeBase64(parts[1])));
+		Integer fileSize = Integer.parseInt(new String(Base64.decodeBase64(parts[2])));	
+		String fileName = new String((Base64.decodeBase64(parts[3])));
 		
-		FileModel decoded = new FileModel(fileName,idNum, parts[3]);
-		
+		FilePartModel decoded = new FilePartModel(fileIdNum, idNum, fileName, fileSize, parts[4]);
+
 		return decoded;
 	}
-	
+
 	@Override
 	public Boolean identify(Object o)
 	{
 		Boolean b  = false;
-		
+
 		if(o instanceof FileModel)
 		{
 			if(((FileModel) o).getIdNum().equalsIgnoreCase(this.idNum))
-				{
-					b = true;
-				}
+			{
+				b = true;
+			}
 		}
-		
+
 		if(o instanceof String)
 			if(((String) o).equalsIgnoreCase((this.idNum)))
 				b = true;
-		
-		
+
+
 		return b;
 	}
-	
+
 	@Override
-	public boolean equals(Object anotherProject) {
-		if(anotherProject instanceof FileModel)
+	public boolean equals(Object anotherModel) {
+		if(anotherModel instanceof FilePartModel)
 		{
-			if( ((FileModel)anotherProject).idNum.equals(this.idNum))
+			if( ((FilePartModel)anotherModel).idNum.equals(this.idNum))
 			{
 				//things that can be null
-				if(this.fileName != null && !this.fileName.equals(((FileModel)anotherProject).fileName))
+				if(this.fileName != null && !this.fileName.equals(((FilePartModel)anotherModel).fileName))
 				{
 					return false;
 				}
-				
-				if(this.idNum != null && !this.idNum.equals(((FileModel)anotherProject).idNum))
+
+				if(this.idNum != null && !this.idNum.equals(((FilePartModel)anotherModel).idNum))
 				{
 					return false;
 				}
-				
+
 				return true;
 			}
 		}
 		return false;
 	}
+
+	/* Getters and Setters */
+	
+	/**
+	 * @return the filePart
+	 */
+	public String getFilePart()
+	{
+		return filePart;
+	}
+
+	/**
+	 * @param filePart the filePart to set, in Base64
+	 */
+	public void setFilePart(String filePart)
+	{
+		this.filePart = filePart;
+	}
+	
+	/**
+	 * @return the idNum
+	 */
+	public String getIdNum()
+	{
+		return idNum;
+	}
+
+	/**
+	 * @param idNum the idNum to set
+	 */
+	public void setIdNum(String idNum) {
+		this.idNum = idNum;
+	}
+	
+	/**
+	 * @return the fileIdNum
+	 */
+	public String getFileIdNum() {
+		return fileIdNum;
+	}
+
+	/**
+	 * @param fileIdNum the fileIdNum to set
+	 */
+	public void setFileIdNum(String fileIdNum) {
+		this.fileIdNum = fileIdNum;
+	}
+
+	/**
+	 * @return the fileSize
+	 */
+	public Integer getFileSize() {
+		return fileSize;
+	}
+
+	/**
+	 * @param fileSize the fileSize to set
+	 */
+	public void setFileSize(Integer fileSize) {
+		this.fileSize = fileSize;
+	}
+
 
 	/**
 	 * @return the fileName
@@ -323,62 +348,4 @@ public class FileModel extends AbstractModel
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-
-	/**
-	 * @return the fileData
-	 */
-	public String getFileData() {
-		return fileData;
-	}
-
-	/**
-	 * @param fileData the fileData to set
-	 */
-	public void setFileData(String fileData) {
-		this.fileData = fileData;
-	}
-
-	/**
-	 * @param idNum the idNum to set
-	 */
-	public void setIdNum(String idNum) {
-		this.idNum = idNum;
-	}
-//	/**
-//	 * @return the team for this FileModel
-//	 */
-//	public User[] getTeam() {
-//		User[] a = new User[1];
-//		return team.toArray(a);
-//	}
-//	
-//	/**
-//	 * adds a team member to the team
-//	 * @param u - the user to add to the team
-//	 * @return true if the user was added, false if the user was already in the team
-//	 */
-//	public boolean addTeamMember(User u)
-//	{
-//		if(!team.contains(u))
-//		{
-//			team.add(u);
-//			return true;
-//		}
-//		return false;
-//	}
-//	
-//	/**
-//	 * removes a team member from the team
-//	 * @param u - the team member to remove from the team
-//	 * @return - true if the member was removed, false if they were not in the team
-//	 */
-//	public boolean removeTeamMember(User u)
-//	{
-//		if(team.contains(u))
-//		{
-//			team.remove(u);
-//			return true;
-//		}
-//		return false;
-//	}
 }
