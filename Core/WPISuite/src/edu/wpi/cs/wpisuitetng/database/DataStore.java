@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,6 +57,9 @@ public class DataStore implements Data {
 	static String DB4oPass = "password";
 	static String DB4oServer = "localhost";
 
+	//TODO: Replace with constant in FileRequest.java in Network!
+	static int partSize = 32 * 1024; //32 kilobytes
+	
 	private static final Logger logger = Logger.getLogger(DataStore.class.getName());
 
 	/**
@@ -93,7 +97,7 @@ public class DataStore implements Data {
 		// #example: wait until the operation is done
 		while (blob.getStatus() > Status.COMPLETED){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(50);
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
@@ -119,71 +123,39 @@ public class DataStore implements Data {
 			File file;
 			try {
 				file = File.createTempFile(((FileModel) aModel).getFileName(), "");
+
+				file.deleteOnExit(); //Delete file if the JVM exits
+
+				//Convert byte array to a file :
+				OutputStream os;
+				os = new FileOutputStream(file);
+				//Loop and write all the data
+				Iterator<String> it = ((FileModel)aModel).getFileData().iterator();
+
+				while (it.hasNext()){
+					os.write(Base64.decodeBase64(it.next()));
+				}
+
+				logger.log(Level.SEVERE, "Core Can't write to file to save a BLOB!");
+				os.close();
+
+				//Save to blob
+				if (blob.getFileName().compareTo(((FileModel) aModel).getFileName()) != 0) {//If file doesn't exist in the blob 
+					blob.readFrom(file);
+				} else {
+					waitTillDBIsFinished(blob);
+					logger.log(Level.FINE, "BLOB saved as: " + blob.getFileName());
+					//			return true;
+
+					//Clear fileData so we can store in DB as normal
+					((FileModel) aModel).setFileData(null);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				logger.log(Level.SEVERE, "Core Can't create temporary file when to save a BLOB!");
+				logger.log(Level.SEVERE, "Core Error when attempting to save to BLOB!");
 				return false;
 			} 
-			file.deleteOnExit(); //Delete file if the JVM exits
-
-			//Convert byte array to a file :
-			OutputStream os;
-			try {
-				os = new FileOutputStream(file);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				logger.log(Level.SEVERE, "Core Can't open file I/O stream to save a BLOB!");
-				return false;
-			}
-
-			try {
-				os.write(Base64.decodeBase64(((FileModel) aModel).getFileData()));
-			} catch (IOException e1) {
-				e1.printStackTrace();
-				logger.log(Level.SEVERE, "Core Can't write to file to save a BLOB!");
-
-				try {
-					os.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Can't close file I/O stream to save a BLOB after failing to write to file!");
-				}
-				return false;
-			}
-
-			try {
-				os.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.log(Level.SEVERE, "Core Can't close file I/O stream to save a BLOB!");
-				return false;
-			}
-			//End conversion
-
-			//Save to blob
-			if (blob.getFileName().compareTo(((FileModel) aModel).getFileName()) != 0) {//If file doesn't exist in the blob 
-				try {
-					blob.readFrom(file);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Can't write to BLOB!");
-				}
-			} else {
-				//File already exists
-				logger.log(Level.SEVERE, "Core Error saving BLOB! BLOB already exists!");
-
-				return false;
-			}
-
-			waitTillDBIsFinished(blob);
-			logger.log(Level.FINE, "BLOB saved as: " + blob.getFileName());
-			//			return true;
-
-			//Clear fileData so we can store in DB as normal
-			((FileModel) aModel).setFileData(null);
 		}
 
 		//store in normal DB
@@ -192,7 +164,6 @@ public class DataStore implements Data {
 		logger.log(Level.FINE, "Saving model [" + aModel + "]");
 		theDB.commit();
 		return true;
-
 	}
 
 	/**
@@ -202,12 +173,12 @@ public class DataStore implements Data {
 	 */
 	public <T> boolean save(T aModel, Project aProject){
 		// Please see Wiki for more information on the ServerConfiguration.
-		
+
 		//Rewritten so that files will always get parsed and no repeated code...
 		((Model) aModel).setProject(aProject);
 		return save(aModel);
 	}
-	
+
 	/**
 	 * Retrieves objects of the given class with the given value for the given field. 
 	 * This function is not project specific.
@@ -267,73 +238,63 @@ public class DataStore implements Data {
 		});
 
 		//Retrieve fileData here if it's a file we are looking up
-				if (anObjectQueried == FileModel.class){
-					//TODO: Do we want the base64 conversion here? It's easier on the end-user...
+		if (anObjectQueried == FileModel.class){
+			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
 
-					//TODO: Do we need aFieldName? It's probably important and we probably should...
-					//			if(aFieldName.equals("FileName"))
+			//TODO: Do we need aFieldName? It's probably important and we probably should...
+			//			if(aFieldName.equals("FileName"))
 
-					//Loop through entire results
-					for(Model aModel: result){
-						String fileName = ((FileModel) aModel).getFileName();
+			//Loop through entire results
+			for(Model aModel: result){
+				String fileName = ((FileModel) aModel).getFileName();
+				InputStream is;
+				ByteArrayOutputStream buffer;
+				ArrayList<String> fileData = new ArrayList<String>();
 
-						File file;
-						try {
-							file = File.createTempFile(fileName, "");
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							logger.log(Level.SEVERE, "Core Can't create temporary file while trying to get a BLOB!");
-							break;
-						} 
-						file.deleteOnExit(); //Delete file if the JVM exits
+				File file;
+				try {
+					file = File.createTempFile(fileName, "");
 
-						//Load file from blob
-						try {
-							blob.writeTo(file);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-							logger.log(Level.SEVERE, "Core Can't read from BLOB!");
-						}
+					file.deleteOnExit(); //Delete file if the JVM exits
 
-						//TODO:
-						InputStream is;
-						ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-						try {
-							is = new FileInputStream(file);
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							logger.log(Level.SEVERE, "Core Can't open file I/O stream to get a BLOB!");
-							break;
-						}
+					//Load file from blob
+					blob.writeTo(file);
+
+					//Wait until loading is finished
+					waitTillDBIsFinished(blob);
+
+					//fileSize/partSize = number of times to loop
+					int numParts = (((FileModel) aModel).getFileSize()/partSize);
+					for(int i = 0; i < numParts; i++){
+						//Populate the fileData array
+
+						buffer = new ByteArrayOutputStream();
+						is = new FileInputStream(file);
 
 						//Load file to byte array
 						int nRead;
 						byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
 
-						try {
-							while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
-								buffer.write(tempData, 0, nRead);
+						while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+							buffer.write(tempData, 0, nRead);
 
-								buffer.flush();
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							logger.log(Level.SEVERE, "Core Can't read file I/O stream to get a BLOB!");
+							buffer.flush();
 						}
-
-						((FileModel)aModel).setFileData(Base64.encodeBase64String(buffer.toByteArray()));
-
-						waitTillDBIsFinished(blob);
-						
-						logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+						fileData.set(i, Base64.encodeBase64String(buffer.toByteArray()));
 					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					logger.log(Level.SEVERE, "Core Error when reading file from BLOB! File name: " + ((FileModel) aModel).getFileName());
+					break;
 				}
 
-		
+				((FileModel)aModel).setFileData(fileData);
+
+				logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
+			}
+		}
+
 		System.out.println(result);
 		theDB.commit();
 
@@ -413,6 +374,7 @@ public class DataStore implements Data {
 		});
 
 		//Retrieve fileData here if it's a file we are looking up
+		//Retrieve fileData here if it's a file we are looking up
 		if (anObjectQueried == FileModel.class){
 			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
 
@@ -422,59 +384,50 @@ public class DataStore implements Data {
 			//Loop through entire results
 			for(Model aModel: result){
 				String fileName = ((FileModel) aModel).getFileName();
+				InputStream is;
+				ByteArrayOutputStream buffer;
+				ArrayList<String> fileData = new ArrayList<String>();
 
 				File file;
 				try {
 					file = File.createTempFile(fileName, "");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Can't create temporary file while trying to get a BLOB!");
-					break;
-				} 
-				file.deleteOnExit(); //Delete file if the JVM exits
 
-				//Load file from blob
-				try {
+					file.deleteOnExit(); //Delete file if the JVM exits
+
+					//Load file from blob
 					blob.writeTo(file);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					logger.log(Level.SEVERE, "Core Can't read from BLOB!");
-				}
 
-				//TODO:
-				InputStream is;
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				try {
-					is = new FileInputStream(file);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Can't open file I/O stream to get a BLOB!");
-					break;
-				}
+					//Wait until loading is finished
+					waitTillDBIsFinished(blob);
 
-				//Load file to byte array
-				int nRead;
-				byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+					//fileSize/partSize = number of times to loop
+					int numParts = (((FileModel) aModel).getFileSize()/partSize);
+					for(int i = 0; i < numParts; i++){
+						//Populate the fileData array
 
-				try {
-					while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
-						buffer.write(tempData, 0, nRead);
+						buffer = new ByteArrayOutputStream();
+						is = new FileInputStream(file);
 
-						buffer.flush();
+						//Load file to byte array
+						int nRead;
+						byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
+
+						while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
+							buffer.write(tempData, 0, nRead);
+
+							buffer.flush();
+						}
+						fileData.set(i, Base64.encodeBase64String(buffer.toByteArray()));
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					logger.log(Level.SEVERE, "Core Can't read file I/O stream to get a BLOB!");
+					logger.log(Level.SEVERE, "Core Error when reading file from BLOB! File name: " + ((FileModel) aModel).getFileName());
+					break;
 				}
 
-				((FileModel)aModel).setFileData(Base64.encodeBase64String(buffer.toByteArray()));
+				((FileModel)aModel).setFileData(fileData);
 
-				waitTillDBIsFinished(blob);
-				
 				logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
 			}
 		}

@@ -16,6 +16,7 @@ package edu.wpi.cs.wpisuitetng.modules.core.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -36,13 +37,14 @@ public class FileModel extends AbstractModel
 	private Integer fileSize; //In bytes
 	private ArrayList<String> fileData; //This should be kept as Base64
 	private ArrayList<User> team; 
+	
 	/**
 	 * Primary constructor for a FileModel
 	 * @param fileName - the name of the file
 	 * @param idNum - the project ID number as a string
 	 * @param fileData - the base64 string representing the file
 	 */
-//	public FileModel(String fileName, String idNum, User owner, User[] team, String fileData)
+	
 	public FileModel(String fileName, String idNum, Integer fileSize, String[] fileData, User[] team)
 	{
 		this.fileName = fileName;
@@ -76,23 +78,6 @@ public class FileModel extends AbstractModel
 	{
 		this.fileName = fileName;
 		this.idNum = idNum;
-	}
-	
-	/* Accessors */
-	public String getName()
-	{
-		return fileName;
-	}
-	
-	public String getIdNum()
-	{
-		return idNum;
-	}
-	
-	/* Mutators */
-	public void setName(String newName)
-	{
-		this.fileName = newName;
 	}
 	
 	/* database interaction */
@@ -308,7 +293,25 @@ public class FileModel extends AbstractModel
 		}
 		return false;
 	}
-
+	
+	/** 
+	 * Method to check if all parts are received
+	 */
+	//TODO: Rewrite since it can be slow for a large number of parts?
+	public boolean hasAllFileParts(){
+		boolean result = true;
+		
+		Iterator<String> it = fileData.iterator();
+		
+		while (it.hasNext()){
+			if(it.next() == null){
+				result = false;
+			}
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * @return the fileName
 	 */
@@ -338,46 +341,69 @@ public class FileModel extends AbstractModel
 	}
 
 	/**
+	 * @return the idNum
+	 */
+	public String getIdNum()
+	{
+		return idNum;
+	}
+	
+	/**
 	 * @param idNum the idNum to set
 	 */
 	public void setIdNum(String idNum) {
 		this.idNum = idNum;
 	}
-//	/**
-//	 * @return the team for this FileModel
-//	 */
-//	public User[] getTeam() {
-//		User[] a = new User[1];
-//		return team.toArray(a);
-//	}
-//	
-//	/**
-//	 * adds a team member to the team
-//	 * @param u - the user to add to the team
-//	 * @return true if the user was added, false if the user was already in the team
-//	 */
-//	public boolean addTeamMember(User u)
-//	{
-//		if(!team.contains(u))
-//		{
-//			team.add(u);
-//			return true;
-//		}
-//		return false;
-//	}
-//	
-//	/**
-//	 * removes a team member from the team
-//	 * @param u - the team member to remove from the team
-//	 * @return - true if the member was removed, false if they were not in the team
-//	 */
-//	public boolean removeTeamMember(User u)
-//	{
-//		if(team.contains(u))
-//		{
-//			team.remove(u);
-//			return true;
-//		}
-//		return false;
-//	}
+	
+	/**
+	 * @return the fileSize
+	 */
+	public Integer getFileSize() {
+		return fileSize;
+	}
+
+	/**
+	 * @param fileSize the fileSize to set
+	 */
+	public void setFileSize(Integer fileSize) {
+		this.fileSize = fileSize;
+	}
+	
+	/**
+	 * @return the team for this FileModel
+	 */
+	public User[] getTeam() {
+		User[] a = new User[1];
+		return team.toArray(a);
+	}
+	
+	/**
+	 * adds a team member to the team
+	 * @param u - the user to add to the team
+	 * @return true if the user was added, false if the user was already in the team
+	 */
+	public boolean addTeamMember(User u)
+	{
+		if(!team.contains(u))
+		{
+			team.add(u);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * removes a team member from the team
+	 * @param u - the team member to remove from the team
+	 * @return - true if the member was removed, false if they were not in the team
+	 */
+	public boolean removeTeamMember(User u)
+	{
+		if(team.contains(u))
+		{
+			team.remove(u);
+			return true;
+		}
+		return false;
+	}
 }

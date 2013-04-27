@@ -18,14 +18,12 @@
 package edu.wpi.cs.wpisuitetng.modules.core.entitymanagers;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.google.gson.Gson;
-
-import edu.wpi.cs.wpisuitetng.Permission;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -34,17 +32,20 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.FileModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.FilePartModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 //TODO: Do we want to make a FilePart class that extends Model?
-public class FileManager implements EntityManager<FileModel>{
+public class FileManager implements EntityManager<FilePartModel>{
 
-	Class<FileModel> fileModel = FileModel.class;
+	//TODO: Replace with constant in FileRequest.java in Network!
+	static int partSize = 32 * 1024; //32 kilobytes
+
+	Class<FilePartModel> filePartModel = FilePartModel.class;
 	Data data;
-//	private String[] allModules;
+	private ArrayList<FileModel> fileArray; //Temp storage for file parts, in order to re-assemble files
 
 	private static final Logger logger = Logger.getLogger(FileManager.class.getName());
 
@@ -62,31 +63,31 @@ public class FileManager implements EntityManager<FileModel>{
 	}
 
 	@Override
-	public FileModel makeEntity(Session s, String content) throws WPISuiteException {	
+	public FilePartModel makeEntity(Session s, String content) throws WPISuiteException {	
 		User theUser = s.getUser();
 
 		logger.log(Level.FINER, "Attempting new File creation...");
 
-		FileModel f;
+		FilePartModel f;
 
 		if (Base64.isBase64(content)){
-			f = FileModel.fromString(content); //Reconstruct the file from the string recieved
+			f = FilePartModel.fromString(content); //Reconstruct the file from the string recieved
 		} else  {
 			logger.log(Level.WARNING, "Invalid File entity creation string.");
 			throw new BadRequestException("The entity creation string had invalid format. Entity String: " + content);
 		}
 
 		//TODO: Add logging
-		logger.log(Level.FINE, "New file: "+ f.getName() +" submitted by: "+ theUser.getName() );
-//		f.setOwner(theUser);
-		
+		logger.log(Level.FINE, "New file: "+ f.getFileName() +" submitted by: "+ theUser.getName() );
+		//		f.setOwner(theUser);
+
 		//Check ID here
 		if(getEntity(s,f.getIdNum())[0] == null)
 		{
 			//TODO: Check Size here?
 			//TODO: Check number of packets received based on expected size here?
 			//TODO: Do we want to be able to store files with the same name?
-			if(getEntityByName(s, f.getName())[0] == null)
+			if(getEntityByName(s, f.getFileName())[0] == null)
 			{
 				save(s,f);
 			}
@@ -107,16 +108,16 @@ public class FileManager implements EntityManager<FileModel>{
 	}
 
 	@Override
-	public FileModel[] getEntity(Session s, String id) throws WPISuiteException 
+	public FilePartModel[] getEntity(Session s, String id) throws WPISuiteException 
 	{
-		FileModel[] m = new FileModel[1];
+		FilePartModel[] m = new FilePartModel[1];
 		if(id.equalsIgnoreCase(""))
 		{
 			return getAll(s);
 		}
 		else
 		{
-			return data.retrieve(fileModel, "idNum", id).toArray(m);
+			return data.retrieve(filePartModel, "idNum", id).toArray(m);
 		}
 	}
 
@@ -131,27 +132,27 @@ public class FileManager implements EntityManager<FileModel>{
 	 * @throws WPISuiteException if retrieve fails
 	 */
 	//TODO: Do we want to be able to only retrieve by id? This seems bad...
-//	public FileModel[] getEntity(String id) throws NotFoundException, WPISuiteException
-//	{
-//		FileModel[] m = new FileModel[1];
-//		if(id.equalsIgnoreCase(""))
-//		{
-//			throw new NotFoundException("No (blank) File id given.");
-//		}
-//		else
-//		{
-//			m = data.retrieve(fileModel, "idNum", id).toArray(m);
-//
-//			if(m[0] == null)
-//			{
-//				throw new NotFoundException("File with id <" + id + "> not found.");
-//			}
-//			else
-//			{
-//				return m;
-//			}
-//		}
-//	}
+	//	public FileModel[] getEntity(String id) throws NotFoundException, WPISuiteException
+	//	{
+	//		FileModel[] m = new FileModel[1];
+	//		if(id.equalsIgnoreCase(""))
+	//		{
+	//			throw new NotFoundException("No (blank) File id given.");
+	//		}
+	//		else
+	//		{
+	//			m = data.retrieve(fileModel, "idNum", id).toArray(m);
+	//
+	//			if(m[0] == null)
+	//			{
+	//				throw new NotFoundException("File with id <" + id + "> not found.");
+	//			}
+	//			else
+	//			{
+	//				return m;
+	//			}
+	//		}
+	//	}
 
 	/**
 	 * returns a project without requiring a session, 
@@ -163,40 +164,81 @@ public class FileManager implements EntityManager<FileModel>{
 	 * @throws NotFoundException if the project cannot be found
 	 * @throws WPISuiteException if retrieve fails
 	 */
-	public FileModel[] getEntityByName(Session s, String fileName) throws NotFoundException, WPISuiteException
+	public FilePartModel[] getEntityByName(Session s, String fileName) throws NotFoundException, WPISuiteException
 	{
-		FileModel[] m = new FileModel[1];
+		FilePartModel[] m = new FilePartModel[1];
 		if(fileName.equalsIgnoreCase(""))
 		{
 			throw new NotFoundException("No (blank) File name given.");
 		}
 		else
 		{
-			return data.retrieve(fileModel, "name", fileName).toArray(m);
+			return data.retrieve(filePartModel, "name", fileName).toArray(m);
 		}
 	}
 
 	@Override
-	public FileModel[] getAll(Session s) {
-		FileModel[] ret = new FileModel[1];
+	public FilePartModel[] getAll(Session s) {
+		FilePartModel[] ret = new FilePartModel[1];
 		ret = data.retrieveAll(new File("","")).toArray(ret);
 		return ret;
 	}
 
 	@Override
-	public void save(Session s, FileModel model) throws WPISuiteException {
+	public void save(Session s, FilePartModel model) throws WPISuiteException {
 		if(s == null){
 			throw new WPISuiteException("Null Session.");
 		}
+
+		FileModel fileModel = fileArray.get(Integer.parseInt(model.getFileIdNum()));
+
+		//Re-assemble a FileModel from FilePartModels...
+		//TODO: Is there a way to do this without ArrayList and exceptions?
+		try {
+			fileModel = fileArray.get(Integer.parseInt(model.getFileIdNum()));
+
+			//Check if exisitng data matches
+			if (fileModel.getFileName().equals(model.getFileName()) && fileModel.getIdNum().equals(model.getFileIdNum())){
+				//Update
+				fileModel.getFileData().add(Integer.parseInt(model.getIdNum()), model.getFilePart());
+				fileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);
+			} else {
+				//Error, file mismatch!
+				logger.log(Level.WARNING, "File part doesn't match the File at the given ID!: " + model.getFileIdNum());
+			}
+
+		} catch ( IndexOutOfBoundsException e ) { //If it doesn't exist
+
+			//Prepare new fileData
+			int numParts = (model.getFileSize() / partSize);
+			String[] fileData = new String[numParts];
+			fileData[Integer.parseInt(model.getIdNum())-1] = model.getFilePart();
+
+			fileModel = new FileModel(model.getFileName(), model.getFileIdNum(), model.getFileSize(), fileData, null);
+
+			fileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);		
+		}
+
 		//permissions checking happens in update, create, and delete methods only
 		/*User theUser = s.getUser();
 		if(Role.ADMIN.equals(theUser.getRole()) || 
 				Permission.WRITE.equals(model.getPermission(theUser))){*/
-		if(data.save(model))
-		{
-			logger.log(Level.FINE, "File Saved :" + model.getFileName());
-			return ;
-		}
+
+		//If FileModel, has all parts, save it!
+		if (fileModel.hasAllFileParts()){
+			if(data.save(fileModel))
+			{
+				logger.log(Level.FINE, "File Saved :" + model.getFileName());
+				
+				//Delete the file from array since we don't need it anymore and it has been saved...
+				if ( !fileArray.remove(fileModel) ){
+					logger.log(Level.WARNING, "Error removing FileModel from FileManager!" + fileModel.getFileName());
+				}
+				
+				return ;
+			}
+			
+			
 		/*else
 		{
 			logger.log(Level.WARNING, "File Save Failure!");
@@ -208,6 +250,9 @@ public class FileManager implements EntityManager<FileModel>{
 			logger.log(Level.WARNING, "ProjectManager Save attempted by user with insufficient permission");
 			throw new UnauthorizedException("You do not have the requred permissions to perform this action.");
 		}*/
+		} else {
+			logger.log(Level.FINE, "Waiting for more parts to save File:" + model.getFileName());
+		}
 
 	}
 
@@ -217,23 +262,23 @@ public class FileManager implements EntityManager<FileModel>{
 		if(s1==null){
 			throw new WPISuiteException("Null Session.");
 		}
-		
+
 		return false;
 		//TODO: Can we do this with only an id?
-//		User theUser = s1.getUser();
-//		FileModel[] model = this.getEntity(id);
-//		
-//		//TODO: Do we need a permission check?
-//		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
-//				theUser.getRole().equals(Role.ADMIN)){
-//			Model m = data.delete(data.retrieve(fileModel, "idNum", id).get(0));
-//			logger.log(Level.INFO, "FileManager deleting file <" + id + ">");
-//
-//			return (m != null) ? true : false;
-//		}
-//		else{
-//			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
-//		}
+		//		User theUser = s1.getUser();
+		//		FileModel[] model = this.getEntity(id);
+		//		
+		//		//TODO: Do we need a permission check?
+		//		if(model[0].getPermission(theUser).equals(Permission.WRITE) || 
+		//				theUser.getRole().equals(Role.ADMIN)){
+		//			Model m = data.delete(data.retrieve(fileModel, "idNum", id).get(0));
+		//			logger.log(Level.INFO, "FileManager deleting file <" + id + ">");
+		//
+		//			return (m != null) ? true : false;
+		//		}
+		//		else{
+		//			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
+		//		}
 	}
 
 	@Override
@@ -257,7 +302,7 @@ public class FileManager implements EntityManager<FileModel>{
 	}
 
 	//TODO: Are we implementing updating of files?
-	public FileModel update(Session s, FileModel toUpdate, String changeSet) throws WPISuiteException
+	public FilePartModel update(Session s, FilePartModel toUpdate, String changeSet) throws WPISuiteException
 	{
 		/*
 		if(s == null){
@@ -308,21 +353,21 @@ public class FileManager implements EntityManager<FileModel>{
 
 			// save the changes back
 			this.save(s, toUpdate);
-			*/
-			// check for changes in each field
-			return toUpdate;
-		}
-//		else
-//		{
-//			logger.log(Level.WARNING, "Unauthorized Project update attempted.");
-//			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
-//		}
-//	}
+		 */
+		// check for changes in each field
+		return toUpdate;
+	}
+	//		else
+	//		{
+	//			logger.log(Level.WARNING, "Unauthorized Project update attempted.");
+	//			throw new UnauthorizedException("You do not have the required permissions to perform this action.");
+	//		}
+	//	}
 
 	//TODO: Are we going to handle updating files?
 	@Override
-	public FileModel update(Session s, String content) throws WPISuiteException {
-		FileModel[] p = null;
+	public FilePartModel update(Session s, String content) throws WPISuiteException {
+		FilePartModel[] p = null;
 		/*
 		String id = AbstractEntityManager.parseFieldFromJSON(content, "idNum");
 
@@ -339,13 +384,13 @@ public class FileManager implements EntityManager<FileModel>{
 				throw new NotFoundException("Project with id <" + id + "> not found.");
 			}
 		}
-		*/
+		 */
 		return update(s, p[0], content);
 	}
 
 	public void setAllModules(String[] mods)
 	{
-//		this.allModules = mods;
+		//		this.allModules = mods;
 	}
 
 	@Override
@@ -387,9 +432,9 @@ public class FileManager implements EntityManager<FileModel>{
 //				}
 //			}
 //		}
- */
+		 */
 		return "";
-//		return gson.toJson(success.toArray(names),String[].class );
+		//		return gson.toJson(success.toArray(names),String[].class );
 	}
 
 	@Override
@@ -397,6 +442,6 @@ public class FileManager implements EntityManager<FileModel>{
 	{
 		//TODO: Implement?
 		return "";
-//		return gson.toJson(allModules, String[].class);
+		//		return gson.toJson(allModules, String[].class);
 	}
 }
