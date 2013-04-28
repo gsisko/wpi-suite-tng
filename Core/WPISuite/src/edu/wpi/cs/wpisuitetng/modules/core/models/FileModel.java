@@ -59,20 +59,13 @@ public class FileModel extends AbstractModel
 	 * @param fileData - the base64 string representing the file
 	 */
 
-	public FileModel(String fileName, String idNum, Integer fileSize, String[] fileData, User[] team)
+	public FileModel(String fileName, String idNum, Integer fileSize, User[] team)
 	{
 		this.fileName = fileName;
 		this.idNum = idNum;
 		this.fileSize = fileSize;
-
-		if(fileData != null) {
-			this.fileData = new ArrayList<String>(Arrays.asList(fileData)); 
-		}
-		else
-		{
-			this.fileData = new ArrayList<String>();
-		}
-
+		this.fileParts = new ArrayList<String>(fileSize/partSize);
+		
 		if(team != null)
 		{
 			this.team = new ArrayList<User>(Arrays.asList(team));
@@ -315,7 +308,7 @@ public class FileModel extends AbstractModel
 	public boolean hasAllFileParts(){
 		boolean result = true;
 
-		Iterator<String> it = fileData.iterator();
+		Iterator<String> it = fileParts.iterator();
 
 		while (it.hasNext()){
 			if(it.next() == null){
@@ -323,6 +316,11 @@ public class FileModel extends AbstractModel
 			}
 		}
 
+		if (result)
+		{
+			//Save it to the blob
+			setBlobFromBase64Array(this.fileParts);
+		}
 		return result;
 	}
 
@@ -351,7 +349,7 @@ public class FileModel extends AbstractModel
 	 * @param fileData the fileData to set
 	 */
 	public void setFileData(ArrayList<String> fileData) {
-		setBlobFromBase64Array(fileData);
+		this.fileParts = fileData;
 	}
 
 	/**

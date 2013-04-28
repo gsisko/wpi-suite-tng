@@ -233,7 +233,7 @@ public class FileManager implements EntityManager<FilePartModel>{
 			String[] fileData = new String[numParts];
 			fileData[Integer.parseInt(model.getIdNum())-1] = model.getFilePart();
 
-			fileModel = new FileModel(model.getFileName(), model.getFileIdNum(), model.getFileSize(), fileData, null);
+			fileModel = new FileModel(model.getFileName(), model.getFileIdNum(), model.getFileSize(), null);
 			fileModel.setProject(model.getProject());
 
 			fileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);		
