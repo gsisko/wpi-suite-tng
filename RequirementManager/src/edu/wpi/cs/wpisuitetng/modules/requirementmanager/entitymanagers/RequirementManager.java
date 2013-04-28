@@ -27,7 +27,6 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -249,13 +248,6 @@ public class RequirementManager implements EntityManager<Requirement> {
 		else if (reqUpdate.getUserNames().size() != oldReq.getUserNames().size()) {
 			UserChange userChange = new UserChange(oldReq, reqUpdate, currentUser);
 			reqUpdate.getEvents().add(userChange);
-		}
-		// If the update was adding an attachment, set the user and update accordingly
-		else if (reqUpdate.getAttachments().size() > oldReq.getAttachments().size()) {
-			ArrayList<Attachment> attachments = reqUpdate.getAttachments();
-			Attachment lastAttachment = attachments.get(attachments.size() -  1);
-			lastAttachment.setUser(currentUser);
-			reqUpdate.getEvents().add(lastAttachment);
 		}
 		else { // this update is a changeset
 			RequirementChangeset changeset = new RequirementChangeset(currentUser);

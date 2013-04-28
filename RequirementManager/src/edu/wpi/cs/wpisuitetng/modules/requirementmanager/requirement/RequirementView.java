@@ -100,7 +100,6 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		controller = new SaveRequirementController(this);
 		mainPanel.getTabPanel().getNotePanel().setUp();
 		mainPanel.getTabPanel().getAcceptanceTestPanel().setUp();
-		mainPanel.getTabPanel().getAttachmentPanel().setUp();
 		mainPanel.getIterationName();
 
 		// Instantiate the save button and add it to the button panel

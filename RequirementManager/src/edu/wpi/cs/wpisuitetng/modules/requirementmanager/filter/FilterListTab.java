@@ -281,6 +281,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		this.getModel().fireTableStructureChanged();
 
 		Filter[] filters = Filter.fromJSONArray(jsonString);
+		Iteration[] tmp = parent.getParent().getAllIterations();
 		
 		// Check for invalid filters- Cancel upload and refresh again if necessary
 		for (Filter filter: filters)
@@ -296,10 +297,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 					}
 				}
 				// Indicates an invalid filter if the iteration referenced was not found
-				if (!foundTheIter){  
+				if (!foundTheIter){
 					// Delete the filter. A retrieve all command will be sent after the deletion occurs
 					deleteController.perform(Integer.toString(filter.getUniqueID()));
-					return; // end early
 				}	
 			}
 		}
@@ -330,7 +330,6 @@ public class FilterListTab extends JPanel implements IListPanel{
 				String typeString = filters[i].getType().toString();
 				if (typeString.equals("Iteration")) {
 					String strId = filters[i].getValue();
-					while (parent.getParent().getAllIterations().length == 0)
 					for (Iteration iter : parent.getParent().getAllIterations()) {
 						if (strId.equals(iter.getID() + "")) {
 							entries[i][3] = iter.getName();
