@@ -126,8 +126,8 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 		// Construct the other components to be displayed:
 		//Construct the labels
-		nameLabel = new JLabel("Name:");
-		descriptionLabel = new JLabel("Description:");
+		nameLabel = new JLabel("Title:");
+		descriptionLabel = new JLabel("Body:");
 
 		//Construct the fillable components
 		txtName = new JTextField("");
