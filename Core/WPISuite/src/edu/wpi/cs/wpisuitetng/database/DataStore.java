@@ -7,18 +7,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:rchamer, bgaffey, mpdelladonna
- *    
+ *
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.database;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -27,38 +19,30 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.codec.binary.Base64;
-
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectServer;
 import com.db4o.ObjectSet;
 import com.db4o.cs.Db4oClientServer;
 import com.db4o.cs.config.ClientConfiguration;
 import com.db4o.cs.config.ServerConfiguration;
-import com.db4o.ext.Status;
 import com.db4o.query.Predicate;
 import com.db4o.reflect.jdk.JdkReflector;
-import com.db4o.types.Blob;
 
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.core.models.FileModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+
 public class DataStore implements Data {
 
 	static String WPI_TNG_DB ="WPISuite_TNG_local";
 	private static DataStore myself = null;
-	private  Blob blob;
 	static ObjectContainer theDB;
 	static ObjectServer server;
 	static int PORT = 0;
 	static String DB4oUser = "bgaffey";
 	static String DB4oPass = "password";
 	static String DB4oServer = "localhost";
-
-	//TODO: Replace with constant in FileRequest.java in Network!
-	static int partSize = 32 * 1024; //32 kilobytes
 
 	private static final Logger logger = Logger.getLogger(DataStore.class.getName());
 
@@ -89,22 +73,6 @@ public class DataStore implements Data {
 	}
 
 	/**
-	 * Method to check if the database is finished with the Blob
-	 * unfortunately there's no callback for blobs. So the only way it to poll for it
-	 */
-	private void waitTillDBIsFinished(Blob blob) {
-		// #example: wait until the operation is done
-		while (blob.getStatus() > Status.COMPLETED){
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-		}
-		// #end example
-	}
-
-	/**
 	 * Saves a Model into the database
 	 * @param Model to save
 	 */
@@ -113,51 +81,6 @@ public class DataStore implements Data {
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
-		//Check if this should be stored as a BLOB
-		//TODO: Rewrite to not use instanceof?
-		if (aModel instanceof FileModel && ((FileModel) aModel).getFileData() != null){
-			//TODO: Do we want the base64 conversion here? It's easier on the end-user...
-
-			//Temporary file because we only need it to exist when we move between blob and Base64 String
-			File file;
-			try {
-				file = File.createTempFile(((FileModel) aModel).getFileName(), "");
-
-				file.deleteOnExit(); //Delete file if the JVM exits
-
-				//Convert byte array to a file :
-				OutputStream os;
-				os = new FileOutputStream(file);
-				//Loop and write all the data
-				Iterator<String> it = ((FileModel)aModel).getFileData().iterator();
-
-				while (it.hasNext()){
-					os.write(Base64.decodeBase64(it.next()));
-				}
-
-				logger.log(Level.SEVERE, "Core Can't write to file to save a BLOB!");
-				os.close();
-
-				//Save to blob
-				if (blob.getFileName().compareTo(((FileModel) aModel).getFileName()) != 0) {//If file doesn't exist in the blob 
-					blob.readFrom(file);
-				} else {
-					waitTillDBIsFinished(blob);
-					logger.log(Level.FINE, "BLOB saved as: " + blob.getFileName());
-					//			return true;
-
-					//Clear fileData so we can store in DB as normal
-					((FileModel) aModel).setFileData(null);
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				logger.log(Level.SEVERE, "Core Error when attempting to save to BLOB!");
-				return false;
-			} 
-		}
-
-		//store in normal DB
 		theDB.store(aModel);
 		System.out.println("Stored " + aModel);
 		logger.log(Level.FINE, "Saving model [" + aModel + "]");
@@ -166,37 +89,41 @@ public class DataStore implements Data {
 	}
 
 	/**
-	 * Saves a Model associated with the given project into the database 
-	 * @param aModel Model to save
-	 * @param aProject Project to save to
+	 * Saves a Model associated with the given project into the database
+	 * @param Model to save
 	 */
 	public <T> boolean save(T aModel, Project aProject){
 		// Please see Wiki for more information on the ServerConfiguration.
+		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
+		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
-		//Rewritten so that files will always get parsed and no repeated code...
-		((Model) aModel).setProject(aProject);
-		return save(aModel);
+		((Model) aModel).setProject(aProject); //Sets the model's project to the given project
+		theDB.store(aModel);
+		System.out.println("Stored " + aModel);
+		logger.log(Level.FINE, "Saving model [" + aModel + "]");
+		theDB.commit();
+		return true;
 	}
 
 	/**
-	 * Retrieves objects of the given class with the given value for the given field. 
+	 * Retrieves objects of the given class with the given value for the given field.
 	 * This function is not project specific.
-	 * @param anObjectQueried - The class type of the object being queried. 
+	 * @param anObjectQueried - The class type of the object being queried.
 	 * @param aFieldName - The field name of the value in the object you are querying.
 	 * @param theGivenValue - The value of field aFieldName that you want all returned objects to have
 	 * @return a List of objects of the given type that have the given field match the given value
-	 * @throws WPISuiteException 
+	 * @throws WPISuiteException
 	 */
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
 	public List<Model> retrieve(final Class anObjectQueried, String aFieldName, final Object theGivenValue) throws WPISuiteException{
-		/*  For this function to work you need to have a getter that takes zero arguments,
-		 *  and has the name convention of get + the given fieldName (ie getID for the field id from an object). 
-		 *  The value can be of any type, provided that there is a .equals method for it.  To query
-		 *  by something else, like by a user object or defect object, you must create a .equals 
-		 *  function for it, that will return true if and only if all the fields of the object 
-		 *  have the same values.
-		 *  anObjectQueried - You can get this by giving an object of the desired type and calling .getClass()
-		 *  aFieldName - this should be the suffix of the getter. So for getID you would make this field be "ID"
+		/* For this function to work you need to have a getter that takes zero arguments,
+		 * and has the name convention of get + the given fieldName (ie getID for the field id from an object).
+		 * The value can be of any type, provided that there is a .equals method for it. To query
+		 * by something else, like by a user object or defect object, you must create a .equals
+		 * function for it, that will return true if and only if all the fields of the object
+		 * have the same values.
+		 * anObjectQueried - You can get this by giving an object of the desired type and calling .getClass()
+		 * aFieldName - this should be the suffix of the getter. So for getID you would make this field be "ID"
 		 */
 
 		// Please see Wiki for more information on the ServerConfiguration.
@@ -205,7 +132,6 @@ public class DataStore implements Data {
 
 		logger.log(Level.FINE, "Attempting Database Retrieve...");
 
-		//Get a list of get* Methods
 		Method[] allMethods = anObjectQueried.getMethods();
 		Method methodToBeSaved = null;
 		for(Method m: allMethods){//Cycles through all of the methods in the class anObjectQueried
@@ -213,8 +139,6 @@ public class DataStore implements Data {
 				methodToBeSaved = m; //saves the method called "get" + aFieldName
 			}
 		}
-
-
 		final Method theGetter = methodToBeSaved;
 		if(theGetter == null){
 			logger.log(Level.WARNING, "Getter method was null during retrieve attempt");
@@ -225,21 +149,16 @@ public class DataStore implements Data {
 			public boolean match(Model anObject){
 				try {
 					return theGetter.invoke(anObjectQueried.cast(anObject)).equals(theGivenValue);
-					//objects that have aFieldName equal to theGivenValue get added to the list 
+					//objects that have aFieldName equal to theGivenValue get added to the list
 				} catch (IllegalArgumentException e) {
 					return false;
 				} catch (IllegalAccessException e) {
 					return false;
 				} catch (InvocationTargetException e) {
-					return false;         
+					return false;
 				}
 			}
 		});
-
-		//Retrieve fileData here if it's a file we are looking up
-		if (anObjectQueried == FileModel.class){
-			result = fileRetrieval(result);
-		}
 
 		System.out.println(result);
 		theDB.commit();
@@ -250,33 +169,33 @@ public class DataStore implements Data {
 
 	/**
 	 * Retrieves the objects of the given class type with the given field value from only
-	 * the given project. 
-	 * @param anObjectQueried - The class type of the object being queried. 
+	 * the given project.
+	 * @param anObjectQueried - The class type of the object being queried.
 	 * @param aFieldName - The field Name of the value in the object you are querying about.
 	 * @param theGivenValue - The value of field aFieldName that you want all returned objects to have
 	 * @param theProject - The Project that returned Models are required to belong to
 	 * @return a List of objects of the given type that have the given field match the given value
-	 * @throws WPISuiteException 
+	 * @throws WPISuiteException
 	 */
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
 	@Override
 	public List<Model> retrieve(final Class anObjectQueried, String aFieldName,
 			final Object theGivenValue, final Project theProject) throws WPISuiteException {
 
-		//If no project is given, then the project neutral retrieve should be used 
+		//If no project is given, then the project neutral retrieve should be used
 		if(theProject == null){
 			//If no project is given, just search the entire database
 			retrieve(anObjectQueried, aFieldName, theGivenValue);
 		}
 
-		/*  For this function to work you need to have a getter that takes zero arguments,
-		 *  and has the name convention of get + the given fieldName (ie getID for the field id from an object). 
-		 *  The value can be of any type, provided that there is a .equals method for it.  To query
-		 *  by something else, like by a user object or defect object, you must create a .equals 
-		 *  function for it, that will return true if and only if all the fields of the object 
-		 *  have the same values.
-		 *  anObjectQueried - You can get this by giving an object of the desired type and calling .getClass()
-		 *  aFieldName - this should be the suffix of the getter. So for getID you would make this field be "ID"
+		/* For this function to work you need to have a getter that takes zero arguments,
+		 * and has the name convention of get + the given fieldName (ie getID for the field id from an object).
+		 * The value can be of any type, provided that there is a .equals method for it. To query
+		 * by something else, like by a user object or defect object, you must create a .equals
+		 * function for it, that will return true if and only if all the fields of the object
+		 * have the same values.
+		 * anObjectQueried - You can get this by giving an object of the desired type and calling .getClass()
+		 * aFieldName - this should be the suffix of the getter. So for getID you would make this field be "ID"
 		 */
 
 		// Please see Wiki for more information on the ServerConfiguration.
@@ -297,6 +216,7 @@ public class DataStore implements Data {
 			logger.log(Level.WARNING, "Getter method was null during retrieve attempt");
 			throw new WPISuiteException("Null getter method.");
 		}
+
 
 		List<Model> result = theDB.query(new Predicate<Model>(){
 			public boolean match(Model anObject){
@@ -319,12 +239,6 @@ public class DataStore implements Data {
 			}
 		});
 
-		//Retrieve fileData here if it's a file we are looking up
-		if (anObjectQueried == FileModel.class){
-			result = fileRetrieval(result);
-		}
-
-
 		System.out.println(result);
 		theDB.commit();
 
@@ -334,24 +248,16 @@ public class DataStore implements Data {
 	}
 
 	/**
-	 * Retrieves all objects of the given Class from the Database. 
+	 * Retrieves all objects of the given Class from the Database.
 	 * @param aSample an object of the class we want to retrieve All of
 	 * @return a List of all of the objects of the given class
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> List<T> retrieveAll(T aSample){
 		// Please see Wiki for more information on the ServerConfiguration.
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
 		List<T> result = theDB.queryByExample(aSample.getClass());
-		
-		//Retrieve fileData here if it's a file we are looking up
-		//TODO: Make cleaner and safer somehow?
-		if (result.getClass() == Model.class && result.getClass() == FileModel.class){
-			result = (List<T>) fileRetrieval((List<Model>)result);
-		}
-
 		System.out.println("retrievedAll: "+result);
 		theDB.commit();
 
@@ -370,7 +276,7 @@ public class DataStore implements Data {
 		ClientConfiguration config = Db4oClientServer.newClientConfiguration();
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
-		ArrayList<Model> result = new ArrayList<Model>(); 
+		ArrayList<Model> result = new ArrayList<Model>();
 		List<Model> allResults = theDB.queryByExample(aSample.getClass());
 		for(Model theModel : allResults) {
 			if(theModel.getProject() != null &&
@@ -378,20 +284,13 @@ public class DataStore implements Data {
 				result.add(theModel);
 			}
 		}
-		
-		//Retrieve fileData here if it's a file we are looking up
-		//TODO: Make cleaner and safer somehow?
-		if (allResults.getClass() == Model.class && allResults.getClass() == FileModel.class){
-			allResults = fileRetrieval((List<Model>)result);
-		}
-
 		System.out.println("retrievedAll: "+result);
 		theDB.commit();
 		logger.log(Level.FINE, "Database RetrieveAll Performed");
 		return result;
 	}
 
-	/** 
+	/**
 	 * Deletes the given object and returns the object if successful
 	 * @param The object to be deleted
 	 * @return The object being deleted
@@ -432,6 +331,7 @@ public class DataStore implements Data {
 		theDB.commit();
 		logger.log(Level.INFO, "Database Delete All performed");
 		return toBeDeleted;
+
 	}
 
 	/**
@@ -447,13 +347,6 @@ public class DataStore implements Data {
 
 		List<Model> toBeDeleted = retrieveAll(aSample, aProject);
 		for(Model aTNG: toBeDeleted){
-			
-			//Delete the fileData here if it's a file
-			//TODO: Make cleaner and safer somehow?
-			if (aTNG instanceof FileModel){
-//				blob.deleteFile();
-			}
-			
 			System.out.println("Deleting: "+aTNG);
 			theDB.delete(aTNG);
 		}
@@ -461,10 +354,11 @@ public class DataStore implements Data {
 
 		logger.log(Level.INFO, "Database Delete All performed");
 		return toBeDeleted;
+
 	}
 
 
-	/** 
+	/**
 	 * Updates the given field in every object which has the uniqueID value in a specific project
 	 * @param anObjectToBeModified - Class of object to be updated
 	 * @param fieldName - Field the object will be identified by
@@ -472,7 +366,7 @@ public class DataStore implements Data {
 	 * @param changeField - Field whose value will be changed
 	 * @param changeValue - Value that changeField will be changed to
 	 * @param aProject - The project the object to be updated belongs to
-	 * @throws WPISuiteException 
+	 * @throws WPISuiteException
 	 */
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
 	public void update(final Class anObjectToBeModified, String fieldName, Object uniqueID, String changeField, Object changeValue, Project aProject) throws WPISuiteException{
@@ -518,25 +412,25 @@ public class DataStore implements Data {
 		logger.log(Level.INFO, "Database Update Success!");
 	}
 
-	/** 
+	/**
 	 * Updates the given field in every object which has the uniqueID value
 	 * @param anObjectToBeModified - Class of object to be updated
 	 * @param fieldName - Field the object will be identified by
 	 * @param uniqueID - value of fieldName that the object will be identified by
 	 * @param changeField - Field whose value will be changed
 	 * @param changeValue - Value that changeField will be changed to
-	 * @throws WPISuiteException 
+	 * @throws WPISuiteException
 	 */
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
 	public void update(final Class anObjectToBeModified, String fieldName, Object uniqueID, String changeField, Object changeValue) throws WPISuiteException{
 		/*
 		 * For this function to work you need to have a setter that takes the value to change,
-		 *  the field to and is named in the convention
-		 *  convention of set + the given fieldName (ie setID for the field ID from an object). 
-		 *  The value can be of any type, provided that there is a .equals method for it. 
-		 *  To query by something else, like by a user object or defect object, you must create a .equals 
-		 *  function for it, that will return true if and only if all the fields of the object 
-		 *  have the same values.
+		 * the field to and is named in the convention
+		 * convention of set + the given fieldName (ie setID for the field ID from an object).
+		 * The value can be of any type, provided that there is a .equals method for it.
+		 * To query by something else, like by a user object or defect object, you must create a .equals
+		 * function for it, that will return true if and only if all the fields of the object
+		 * have the same values.
 		 */
 		logger.log(Level.INFO, "Database Update Attempt...");
 
@@ -608,7 +502,7 @@ public class DataStore implements Data {
 			public boolean match(Model anObject){
 				try {
 					Object foundobj = theGetter.invoke(anObjectQueried.cast(anObject));
-					return (!(foundobj.equals(theGivenValue)));//objects that have aFieldName equal to theGivenValue get added to the list 
+					return (!(foundobj.equals(theGivenValue)));//objects that have aFieldName equal to theGivenValue get added to the list
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					return false;
@@ -617,7 +511,7 @@ public class DataStore implements Data {
 					return false;
 				} catch (InvocationTargetException e) {
 					e.printStackTrace();
-					return false;         
+					return false;
 				}
 			}
 		});
@@ -668,7 +562,7 @@ public class DataStore implements Data {
 		final int theGettersSize = theGetter.size();
 		int j = 0;
 		List<Model> fullresult = new ArrayList<Model>();
-		List<Model> result = new ArrayList<Model>(); 
+		List<Model> result = new ArrayList<Model>();
 		for(j=0; j < theGettersSize ; j++){
 			final int finalcount = j;
 			final Method getBack = theGetter.get(finalcount);
@@ -735,7 +629,7 @@ public class DataStore implements Data {
 		final int theGettersSize = theGetter.size();
 		int j = 0;
 		List<Model> fullresult = new ArrayList<Model>();
-		List<Model> result = new ArrayList<Model>(); 
+		List<Model> result = new ArrayList<Model>();
 		for(j=0; j < theGettersSize ; j++){
 			final int finalcount = j;
 			final Method getBack = theGetter.get(finalcount);
@@ -821,7 +715,7 @@ public class DataStore implements Data {
 		final int theGettersSize = theGetter.size();
 		int j = 0;
 		List<Model> fullresult = new ArrayList<Model>();
-		List<Model> result = new ArrayList<Model>(); 
+		List<Model> result = new ArrayList<Model>();
 		for(j=0; j < theGettersSize ; j++){
 			final int finalcount = j;
 			final Method getBack = theGetter.get(finalcount);
@@ -829,7 +723,7 @@ public class DataStore implements Data {
 			result = theDB.query(new Predicate<Model>(){
 				public boolean match(Model anObject){
 					try {
-						return anObject.getProject().getIdNum().equals(aProject.getIdNum()) && 
+						return anObject.getProject().getIdNum().equals(aProject.getIdNum()) &&
 								getBack.invoke(anObjectQueried.cast(anObject)).equals(givenValue);
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
@@ -908,7 +802,7 @@ public class DataStore implements Data {
 		final int theGettersSize = theGetter.size();
 		int j = 0;
 		List<Model> fullresult = new ArrayList<Model>();
-		List<Model> result = new ArrayList<Model>(); 
+		List<Model> result = new ArrayList<Model>();
 		for(j=0; j < theGettersSize ; j++){
 			final int finalcount = j;
 			final Method getBack = theGetter.get(finalcount);
@@ -916,7 +810,7 @@ public class DataStore implements Data {
 			result = theDB.query(new Predicate<Model>(){
 				public boolean match(Model anObject){
 					try {
-						return anObject.getProject().getIdNum().equals(aProject.getIdNum()) && 
+						return anObject.getProject().getIdNum().equals(aProject.getIdNum()) &&
 								getBack.invoke(anObjectQueried.cast(anObject)).equals(givenValue);
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
@@ -935,8 +829,8 @@ public class DataStore implements Data {
 	}
 
 	/**
-	 * Retrieves objects which match all of the given "and" fields to all of the given "and" values AND 
-	 * which match one of the given "or" fields to one of the given "or" values 
+	 * Retrieves objects which match all of the given "and" fields to all of the given "and" values AND
+	 * which match one of the given "or" fields to one of the given "or" values
 	 * @param andAnObjectQueried - Class of the "and" object to be queried
 	 * @param andFieldNameList - Array of names of the "and" Fields to check in order
 	 * @param andGivenValueList - Array of values the "and" fields should equal in order
@@ -947,7 +841,7 @@ public class DataStore implements Data {
 	 * @throws WPISuiteException
 	 */
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
-	public List<Model> complexRetrieve(final Class andAnObjectQueried, String[] andFieldNameList, final List<Object> andGivenValueList, 
+	public List<Model> complexRetrieve(final Class andAnObjectQueried, String[] andFieldNameList, final List<Object> andGivenValueList,
 			final Class orAnObjectQueried, String[] orFieldNameList, final List<Object> orGivenValueList) throws WPISuiteException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
 			{
 		List<Model> returnList = new ArrayList<Model>();
@@ -983,7 +877,7 @@ public class DataStore implements Data {
 	}
 
 	/**
-	 * Retrieves objects which match all of the given "and" fields to all of the given "and" values AND 
+	 * Retrieves objects which match all of the given "and" fields to all of the given "and" values AND
 	 * which match one of the given "or" fields to one of the given "or" values in the given project
 	 * @param andAnObjectQueried - Class of the "and" object to be queried
 	 * @param andFieldNameList - Array of names of the "and" Fields to check in order
@@ -996,7 +890,7 @@ public class DataStore implements Data {
 	 * @throws WPISuiteException
 	 */
 	@SuppressWarnings("rawtypes") //Ignore the warning about the use of type Class
-	public List<Model> complexRetrieve(final Class andAnObjectQueried, String[] andFieldNameList, final List<Object> andGivenValueList, 
+	public List<Model> complexRetrieve(final Class andAnObjectQueried, String[] andFieldNameList, final List<Object> andGivenValueList,
 			final Class orAnObjectQueried, String[] orFieldNameList, final List<Object> orGivenValueList, final Project aProject) throws WPISuiteException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
 			{
 		List<Model> returnList = new ArrayList<Model>();
@@ -1011,63 +905,4 @@ public class DataStore implements Data {
 		return returnList;
 			}
 
-
-	private List<Model> fileRetrieval(List<Model> result){
-		//TODO: Do we want the base64 conversion here? It's easier on the end-user...
-
-		//TODO: Do we need aFieldName? It's probably important and we probably should...
-		//			if(aFieldName.equals("FileName"))
-
-		//Loop through entire results
-		for(Model aModel: result){
-			String fileName = ((FileModel) aModel).getFileName();
-			InputStream is;
-			ByteArrayOutputStream buffer;
-			ArrayList<String> fileData = new ArrayList<String>();
-
-			File file;
-			try {
-				file = File.createTempFile(fileName, "");
-
-				file.deleteOnExit(); //Delete file if the JVM exits
-
-				//Load file from blob
-				blob.writeTo(file);
-
-				//Wait until loading is finished
-				waitTillDBIsFinished(blob);
-
-				//fileSize/partSize = number of times to loop
-				int numParts = (((FileModel) aModel).getFileSize()/partSize);
-				for(int i = 0; i < numParts; i++){
-					//Populate the fileData array
-
-					buffer = new ByteArrayOutputStream();
-					is = new FileInputStream(file);
-
-					//Load file to byte array
-					int nRead;
-					byte[] tempData = new byte[Integer.MAX_VALUE]; //TODO: Set to max size of parts?
-
-					while ((nRead = is.read(tempData, 0, tempData.length)) != -1) {
-						buffer.write(tempData, 0, nRead);
-
-						buffer.flush();
-					}
-					fileData.set(i, Base64.encodeBase64String(buffer.toByteArray()));
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				logger.log(Level.SEVERE, "Core Error when reading file from BLOB! File name: " + ((FileModel) aModel).getFileName());
-				break;
-			}
-
-			((FileModel)aModel).setFileData(fileData);
-
-			logger.log(Level.FINE, "BLOB retrieved from: " + blob.getFileName());
-		}
-		
-		return (List<Model>)result;
-	}
 }
