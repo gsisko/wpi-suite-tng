@@ -21,23 +21,24 @@ public class ResultsTableModel extends AbstractTableModel {
 
 	/** The names to be displayed in the column headers */
 	private String[] columnNames = {};
-	
+
 	/** The data to be displayed in the table */
 	private Object[][] data = {};
-	
-	/** Boolean for whether or not the table is editable or not */
+
+	/** Boolean for whether or not the table is editable */
 	private boolean editable = false;
-	
-	
-	
-	
+
+	/** Array of Boolean flags for whether or not the cells are editable */
+	private Boolean[][] isEditable = {};
+
+
 	/**Set the data to be displayed in the table 
 	 * @param data A two-dimensional array of objects containing the data
 	 */
 	public void setData(Object[][] data) {
 		this.data = data;
 	}
-	
+
 	/** Set the column names to be displayed in the table
 	 * @param columnNames An array of strings containing the column names
 	 */
@@ -70,17 +71,17 @@ public class ResultsTableModel extends AbstractTableModel {
 	public Object getValueAt(int row, int col) {
 		return getData()[row][col];
 	}
-	
+
 	/**
 	 * @param value The value to set the cell to
 	 * @param row The row number of the cell edited
 	 * @param col The column number of the cell edited
 	 */
 	public void setValueAt(Object value, int row, int col) {
-        data[row][col] = value;
-        fireTableCellUpdated(row, col);
-    }
-	
+		data[row][col] = value;
+		fireTableCellUpdated(row, col);
+	}
+
 	/**
 	 * @param col The column number that you wish to get the name of
 	 * @return The name of the column you requested
@@ -98,7 +99,7 @@ public class ResultsTableModel extends AbstractTableModel {
 	public Class<?> getColumnClass(int col) {
 		return getValueAt(0, col).getClass();
 	}
-	
+
 	/**
 	 * @param row The row number of the value you wish to know if it's editable
 	 * @param col The column number of the value you wish to know if it's editable
@@ -106,10 +107,10 @@ public class ResultsTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		if (getColumnName(col).equals("ID"))
-			return false;
+		if (editable)
+			return isEditable[row][col];
 		else
-			return editable;
+			return false;
 	}
 
 	/**
@@ -139,8 +140,19 @@ public class ResultsTableModel extends AbstractTableModel {
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
-	
 
-	
-	
+	/**
+	 * @return the isEditable
+	 */
+	public Boolean[][] getIsEditable() {
+		return isEditable;
+	}
+
+	/**
+	 * @param isEditable the isEditable to set
+	 */
+	public void setIsEditable(Boolean[][] isEditable) {
+		this.isEditable = isEditable;
+	}
+
 }

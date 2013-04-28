@@ -60,4 +60,9 @@ public interface IEditableListPanel {
 	/** Trigger a reset of all lists	 */
 	void refreshAll();
 
+	/** Turns on the save button when all cells are
+	 *  valid and at least one has been changed. 
+	 */
+	public void updateSaveButton();
+	
 }

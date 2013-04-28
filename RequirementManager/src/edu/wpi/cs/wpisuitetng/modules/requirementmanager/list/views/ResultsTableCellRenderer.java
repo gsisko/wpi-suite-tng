@@ -26,22 +26,28 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 	
 	Boolean[][] needsSaving;
 	Boolean[][] isValid;
+	Boolean[][] isEditable;
 	
-	public ResultsTableCellRenderer(Boolean[][] needsSaving, Boolean[][] isValid) {
+	public ResultsTableCellRenderer(Boolean[][] needsSaving, Boolean[][] isValid, Boolean[][] isEditable) {
 		this.needsSaving = needsSaving;
 		this.isValid = isValid;
+		this.isEditable = isEditable;
 	}
 	
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		if (needsSaving == null || isValid == null) {
+		if (needsSaving == null || isValid == null || isEditable == null) {
 			cell.setBackground(Color.white);
 			return cell;
 		}
 		
-		if (!isValid[row][column]) {
+		if (!isEditable[row][column]) {
+			Color defaultGray = new Color(238,238,238);
+			cell.setBackground(defaultGray);
+		}
+		else if (!isValid[row][column]) {
 			Color defaultRed = new Color(255,70,70);
 			cell.setBackground(defaultRed);
 		}
