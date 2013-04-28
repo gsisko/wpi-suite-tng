@@ -75,6 +75,11 @@ public class MainTabController {
 					if (tab instanceof RequirementView){
 						((RequirementView) tab).getRequirementPanel().getAttributePanel().fillIterationSelectionBox();
 					}
+					
+					if (view.getTabCount() == 1)
+						((ListView)view.getComponentAt(0)).getBtnEdit().setEnabled(true);
+					else
+						((ListView)view.getComponentAt(0)).getBtnEdit().setEnabled(false);
 				}
 				else initialized = true;
 			}

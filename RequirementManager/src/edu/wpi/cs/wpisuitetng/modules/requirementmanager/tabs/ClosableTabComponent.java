@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
 /**
@@ -88,6 +89,10 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 			}
 		} else if (index > -1) {
 			tabbedPane.remove(index);
+			if (tabbedPane.getTabCount() == 1)
+				((ListView)tabbedPane.getComponentAt(0)).getBtnEdit().setEnabled(true);
+			else
+				((ListView)tabbedPane.getComponentAt(0)).getBtnEdit().setEnabled(false);
 		}
 	}
 	
