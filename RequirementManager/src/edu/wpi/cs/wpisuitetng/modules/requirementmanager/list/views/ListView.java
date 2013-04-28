@@ -194,6 +194,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		//		mainPanel.getResultsPanel().disableSorting();
 				mainPanel.getResultsPanel().setUpForEditing();
 				mainPanel.getResultsPanel().setInEditMode(true);
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(false);//disables the lookup by ID box
 			}
 		});
 
@@ -209,6 +211,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 			}
 		});
 		
@@ -226,6 +230,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 			}
 		});
 		

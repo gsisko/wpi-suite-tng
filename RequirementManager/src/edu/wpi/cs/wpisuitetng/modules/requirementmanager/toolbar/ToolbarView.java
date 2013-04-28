@@ -34,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
- * The Requirement tab's toolbar panel.
+ * This is the view that contains buttons to create requirements and display pei charts.
  * Always has a group of global commands (Create Requirement, List).
  */
 @SuppressWarnings("serial")
@@ -148,5 +148,21 @@ public class ToolbarView extends DefaultToolbarView {
 	public void setTabController(MainTabController tabController) {
 		this.tabController = tabController;
 	}
+	
+	/**Getter for create requirement button
+	 * @return the create requirement button
+	 */
+	public JButton getCreateRequirementButton()
+	{
+		return createRequirement;
+	}
+	/**Getter for the lookup by ID box
+	 * @return the lookup by ID box
+	 */
+	public JPlaceholderTextField getIDbox()
+	{
+		return listField;
+	}
+	
 
 }

@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.JanewayModule;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
@@ -64,7 +65,7 @@ public class TestRequirementControllers {
 		Network.initNetwork(new MockNetwork());
 		Network.getInstance().setDefaultNetworkConfiguration(new NetworkConfiguration("http://wpisuitetng"));
 
-		mainTabPanel = new MainTabPanel();
+		mainTabPanel = new MainTabPanel(new JanewayModule());
 		tabController = new MainTabController(mainTabPanel);
 		listView = new ListView(tabController);
 		

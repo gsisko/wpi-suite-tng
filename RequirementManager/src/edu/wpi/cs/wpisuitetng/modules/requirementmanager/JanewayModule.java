@@ -47,7 +47,7 @@ public class JanewayModule implements IJanewayModule {
 	 */
 	public JanewayModule() {
 		// Setup main tab view and controller
-		mainTabPanel = new MainTabPanel();
+		mainTabPanel = new MainTabPanel(this);
 		mainTabController = mainTabPanel.getMainTabController();
 		
 		// Setup tool bar view and controller
@@ -134,5 +134,12 @@ public class JanewayModule implements IJanewayModule {
 		ListView tmpListView = (ListView)mainTabPanel.getComponentAt(0);
 		if (!tmpListView.getListTab().getResultsPanel().isInEditMode())
 			tmpListView.refreshData();
+	}
+	/**Getter for the Toolbar View
+	 * @return the toolbar view
+	 */
+	public ToolbarView getToolbarView()
+	{
+		return toolbarView;
 	}
 }

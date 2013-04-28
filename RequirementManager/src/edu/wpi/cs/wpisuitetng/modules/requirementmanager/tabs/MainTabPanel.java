@@ -19,6 +19,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.JanewayModule;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
@@ -29,9 +30,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 @SuppressWarnings("serial")
 public class MainTabPanel extends JTabbedPane {
 	
+	private JanewayModule parent;
+	
 	private MainTabController mainTabController;
 	
-	public MainTabPanel() {
+	public MainTabPanel(JanewayModule _parent) {
+		this.parent = _parent;
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
@@ -65,6 +69,10 @@ public class MainTabPanel extends JTabbedPane {
 	public void setComponentAt(int index, Component component) {
 		super.setComponentAt(index, component);
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
+	}
+	public JanewayModule getJanewayModule()
+	{
+		return parent;
 	}
 	
 	public int getNonRequirementTabCount() {
