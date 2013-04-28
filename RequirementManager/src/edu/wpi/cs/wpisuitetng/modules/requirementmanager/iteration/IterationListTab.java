@@ -54,6 +54,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 	private final ListTab parent;
 	
+	private boolean recievedData = false;
+	
 	/** Construct the panel
 	 */
 	public IterationListTab(ListTab view) {
@@ -213,7 +215,18 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 * @return true on success, false on failure
 	 */
 	public boolean refreshAll() {
+		recievedData = false;
 		retrieveAllController.refreshData();
+		int count = 0;
+		while(!recievedData && count<20){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			count++;
+		}
 		return true;
 	}
 
@@ -317,10 +330,10 @@ public class IterationListTab extends JPanel implements IListPanel {
 			//EndDate
 			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
 			
-			
+			recievedData = true;
 			return; // end now
 		}
-		
+		recievedData = true;
 		setDeleteEnabled(false);
 	}
 
