@@ -60,6 +60,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Boolean for whether or not the table is in edit mode */
 	private boolean inEditMode;
+	
+	/** Count of refirings for estimate and iteration updates */
+	private int fireCount;
 
 	/** ArrayList of listeners on resultsTable column heads */
 	private ArrayList<MouseListener> columnHeadListeners;
@@ -76,6 +79,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public RequirementListPanel(MainTabController tabController, final ListTab parent) {
 		this.tabController = tabController;
 		columnHeadListeners = new ArrayList<MouseListener>();
+		fireCount = 0;
 
 		this.parent = parent;
 		// Set the layout
@@ -137,6 +141,13 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							}
 						}
 						isEditable[row][estimateColumn] = iteration.equals("");
+						
+						if (fireCount++ < 1) {
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, estimateColumn), row, estimateColumn);
+						}
+						else {
+							fireCount = 0;
+						}
 
 					}
 
@@ -191,7 +202,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							try {
 								if (requirement.getEstimate() != Integer.parseInt(estimate)) {
 									isChanged = true;
-
+									
 									int iterationId = currentRequirement.getIteration();
 									if (iterationId != 0)
 										isInvalid = true;
@@ -200,6 +211,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 								isInvalid = true;
 							}
 						}
+						
+						if (fireCount++ < 1) {
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, iterationColumn), row, iterationColumn);
+						}
+						else {
+							fireCount = 0;
+						}
+						
 					}
 
 					else if (columnName.equals("ActualEffort")) {
