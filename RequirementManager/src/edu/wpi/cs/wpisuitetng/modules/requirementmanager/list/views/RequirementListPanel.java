@@ -211,6 +211,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					}
 
 					else if (columnName.equals("Estimate")) {
+						
+						int iterationColumn = getColumnIndex("Iteration");
 						String estimate = (String) data;
 						if (estimate.equals("") || estimate.contains("-") || estimate.contains("."))
 							isInvalid = true;
@@ -218,7 +220,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							try {
 								if (requirement.getEstimate() != Integer.parseInt((String)data)) {
 									isChanged = true;
-
+									
+									isEditable[row][iterationColumn] = ( Integer.parseInt((String)data) > 0 );
+																		
 									if (currentStatus == RequirementStatus.Deleted)
 										isInvalid = true;
 
