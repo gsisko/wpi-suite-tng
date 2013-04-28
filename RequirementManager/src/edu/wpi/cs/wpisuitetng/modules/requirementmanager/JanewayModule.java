@@ -132,6 +132,7 @@ public class JanewayModule implements IJanewayModule {
 	@Override
 	public void invokeWhenSelected() {
 		ListView tmpListView = (ListView)mainTabPanel.getComponentAt(0);
-		tmpListView.refreshData();
+		if (!tmpListView.getListTab().getResultsPanel().isInEditMode())
+			tmpListView.refreshData();
 	}
 }

@@ -56,27 +56,29 @@ public class MainTabController {
 				{
 					Component tab = view.getComponentAt(view.getSelectedIndex());
 					if (tab instanceof ListView) {
-						((ListView)tab).getFilterController().refreshData();
-						((ListView)tab).getIterationController().refreshData();
-						
-						((ListView)tab).getListTab().getTabPanel().getFilterList().setCancelBtnToNew();
-						((ListView)tab).getListTab().getFilterBuilderPanel().resetFields();
-						((ListView)tab).getListTab().getFilterBuilderPanel().setInputEnabled(false);
-						
-						((ListView)tab).getListTab().getTabPanel().getIterationList().setCancelBtnToNew();
-						((ListView)tab).getListTab().getIterationBuilderPanel().resetFields();
-						((ListView)tab).getListTab().getIterationBuilderPanel().setInputEnabled(false);
+						if (!((ListView)tab).getListTab().getResultsPanel().isInEditMode()) {
+							((ListView)tab).getFilterController().refreshData();
+							((ListView)tab).getIterationController().refreshData();
+
+							((ListView)tab).getListTab().getTabPanel().getFilterList().setCancelBtnToNew();
+							((ListView)tab).getListTab().getFilterBuilderPanel().resetFields();
+							((ListView)tab).getListTab().getFilterBuilderPanel().setInputEnabled(false);
+
+							((ListView)tab).getListTab().getTabPanel().getIterationList().setCancelBtnToNew();
+							((ListView)tab).getListTab().getIterationBuilderPanel().resetFields();
+							((ListView)tab).getListTab().getIterationBuilderPanel().setInputEnabled(false);
+						}
 					} 
-					
+
 					if (tab instanceof ChartView) {
 						((ChartView)tab).reloadData();
 					}
-					
+
 					if (tab instanceof RequirementView){
 						((RequirementView) tab).getRequirementPanel().getAttributePanel().fillIterationSelectionBox();
 					}
-					
-					if (view.getTabCount() == 1)
+
+					if (view.getNonRequirementTabCount() == 0)
 						((ListView)view.getComponentAt(0)).getBtnEdit().setEnabled(true);
 					else
 						((ListView)view.getComponentAt(0)).getBtnEdit().setEnabled(false);
@@ -101,7 +103,7 @@ public class MainTabController {
 			view.setSelectedIndex(view.indexOfTab("Charts"));
 			return null;
 		}
-		
+
 		view.addTab(title, icon, component, tip);
 		int index = view.getTabCount() - 1;
 		view.setSelectedIndex(index);
@@ -208,7 +210,7 @@ public class MainTabController {
 			}
 		}
 	}
-	
+
 	public MainTabPanel getView() {
 		return view;
 	}

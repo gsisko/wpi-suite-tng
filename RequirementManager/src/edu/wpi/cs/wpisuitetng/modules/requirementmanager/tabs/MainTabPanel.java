@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
 /**
  * This tabbed pane will appear as the main content of the Requirements tab.
@@ -64,6 +65,14 @@ public class MainTabPanel extends JTabbedPane {
 	public void setComponentAt(int index, Component component) {
 		super.setComponentAt(index, component);
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
+	}
+	
+	public int getNonRequirementTabCount() {
+		int count = 0;
+		for (int i = 0; i < getTabCount(); i++) {
+			if (getComponentAt(i) instanceof RequirementView) count++;
+		}
+		return count;
 	}
 	
 }
