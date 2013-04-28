@@ -268,8 +268,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 * refresh the Data
 	 */
 	public void refreshData() {
-		filterController.refreshData();
 		iterationController.refreshData();
+		while (this.allIterations.length == 0);
+		filterController.refreshData();
 	}
 
 	public RetrieveAllRequirementsController getController() {
