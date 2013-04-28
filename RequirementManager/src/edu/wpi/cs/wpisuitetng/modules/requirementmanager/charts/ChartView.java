@@ -153,9 +153,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	public void refreshData() {
 		//Ask parent to refresh data
 		getView().getParent().refreshData();
-
 		//Request data from parent
 		this.reloadData();
+		//update filter table
+		optionsPanel.buildTable();
 	}
 
 	/** Function to reload data from "List Requirements" tab without refreshing **/
@@ -192,6 +193,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		requirementEstimateBarPanel.refreshAssignedUsersEstimateChart(requirements);
 		iterationPiePanel.refreshIterationChart(requirements, iterations);
 		iterationBarPanel.refreshIterationChart(requirements, iterations);
+		
+		optionsPanel.buildTable();
 	}
 	
 	/** Sets the type of chart to use

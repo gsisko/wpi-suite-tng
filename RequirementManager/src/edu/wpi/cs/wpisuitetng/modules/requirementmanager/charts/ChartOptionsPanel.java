@@ -28,10 +28,16 @@ import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /**
@@ -52,6 +58,8 @@ public class ChartOptionsPanel extends JPanel{
 	/** The label for the filtersOptionsBox */
 	private  JLabel filtersLabel;
 	
+	private JLabel filterlistlabel;
+	
 
 	//The fillable components
 	/** The combo box used to select which chart type to display */
@@ -68,7 +76,6 @@ public class ChartOptionsPanel extends JPanel{
 	/** The layout manager for this panel */
 	protected BoxLayout layout; 
 
-
 	//private Filter[] localFilters = {};
 
 	/** Stores the PieChartView that contains the ChartOptionsPanel */
@@ -76,6 +83,9 @@ public class ChartOptionsPanel extends JPanel{
 	
 	/** A boolean indicating if input is enabled on the form  */
 	protected boolean inputEnabled;
+	
+	private RetrieveModelController retrieveController;
+	private RetrieveAllModelsController retrieveAllController;
 
 
 	/** Construct the panel and initialize necessary internal variables
@@ -99,12 +109,21 @@ public class ChartOptionsPanel extends JPanel{
 		filterTableModel = new ResultsTableModel();
 
 				// Construct the table and configure it
+		
 		filtertable = new JTable(filterTableModel);
-		filtertable.setAutoCreateRowSorter(true);
+		filtertable.setAutoCreateRowSorter(true); 
 		filtertable.setFillsViewportHeight(true);
-		filtertable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
+		filtertable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());/*{
+			 public void ActiveFilterTableCellRenderer(){
+				 super.getListCellRendererComponent(filtertable, value, index,
+			        false, false);
+	            }
+		});*/
+		buildTable();
 		
 		JScrollPane resultsScrollPane = new JScrollPane(filtertable);
+		
+		
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
 
 		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
@@ -113,7 +132,7 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeLabel = new JLabel("Type of chart:");
 		chartDataLabel = new JLabel("Data to display:");
 		filtersLabel = new JLabel("Active filters:");
-		JLabel filterlistlabel = new JLabel("Filter Lists");
+		filterlistlabel = new JLabel("Filters");
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
@@ -178,9 +197,9 @@ public class ChartOptionsPanel extends JPanel{
 		this.add(Box.createRigidArea(new Dimension(0,3)));
 		this.add(filtersOptionsBox);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
-//		this.add(filterlistlabel);
-//		this.add(Box.createRigidArea(new Dimension(0,3)));
-//		this.add(resultsScrollPane);
+		this.add(filterlistlabel);
+		this.add(Box.createRigidArea(new Dimension(0,3)));
+		this.add(resultsScrollPane);
 
 		setInputEnabled(inputEnabled);
 	}
@@ -275,7 +294,7 @@ public class ChartOptionsPanel extends JPanel{
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 */
-	public void showRecievedModels(String jsonString) {
+	public void buildTable() {
 		// Setup data structures
 		String[] emptyColumns = {};
 		Object[][] emptyData = {};
@@ -285,33 +304,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.getModel().setData(emptyData);
 		this.getModel().fireTableStructureChanged();
 
-		Filter[] filters = Filter.fromJSONArray(jsonString);
-		
-		// Check for invalid filters- Cancel upload and refresh again if necessary
-//		for (Filter filter: filters)
-//		{
-//			// Only filter out filters that have Iteration as their type
-//			if (filter.getType() == FilterType.Iteration){
-//				// Only filter out filters that reference deleted iterations
-//				boolean foundTheIter = false;
-//				for (Iteration iter : parent.getParent().getAllIterations()) {				
-//					// Check to see if the filter references a currently valid Iteration
-//					if (filter.getValue().equals(iter.getID() + "") ){
-//						foundTheIter = true; // means that the filter is valid and we can continue
-//					}
-//				}
-//				// Indicates an invalid filter if the iteration referenced was not found
-//				if (!foundTheIter){  
-//					// Delete the filter. A retrieve all command will be sent after the deletion occurs
-//					deleteController.perform(Integer.toString(filter.getUniqueID()));
-//					return; // end early
-//				}	
-//			}
-//		}
-		
-		// The new list of filters has passed basic validation, so it is saved
-		//this.setLocalFilters(filters);
-//		parent.getParent().setAllFilters(filters);
+		Filter[] filters = parent.getView().getParent().getAllFilters();
 
 		// Add the list of filters to the FilterListPanel object
 		if (filters.length > 0) {
@@ -357,6 +350,7 @@ public class ChartOptionsPanel extends JPanel{
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
+			
 
 			//Hide the Id column
 			filtertable.getColumn("Id").setMinWidth(0);
@@ -373,8 +367,6 @@ public class ChartOptionsPanel extends JPanel{
 			//Active
 			filtertable.getColumnModel().getColumn(4).setPreferredWidth(75);
 		}
-
-		refreshRequirements();
 	}
 
 	/**
@@ -387,9 +379,4 @@ public class ChartOptionsPanel extends JPanel{
 	//public void setLocalFilters(Filter[] localFilters) {
 //		this.localFilters = localFilters;
 //	}
-	
-	/** Refresh all the requirements    */
-	public void refreshRequirements() {
-		parent.getView().getParent().getController().refreshData();
-	}
 }
