@@ -34,7 +34,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveIterationObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** Panel to hold the results of a list of requirements
  */
@@ -61,7 +66,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Boolean for whether or not the table is in edit mode */
 	private boolean inEditMode;
-	
+
 	/** Count of refirings for estimate and iteration updates */
 	private int fireCount;
 
@@ -142,7 +147,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							}
 						}
 						isEditable[row][estimateColumn] = iteration.equals("");
-						
+
 						if (fireCount++ < 1) {
 							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, estimateColumn), row, estimateColumn);
 						}
@@ -191,35 +196,27 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						String estimate = (String) data;
 
 						try {
-							isEditable[row][iterationColumn] = (Integer.parseInt(estimate) > 0);
+							int estimateVal = Integer.parseInt(estimate);
+							isEditable[row][iterationColumn] = (estimateVal > 0);
+
+							if (estimate.equals("") || estimate.contains("-") || estimate.contains(".")){
+								isInvalid = true;
+								isEditable[row][iterationColumn] = false;
+							} else if (requirement.getEstimate() != estimateVal)
+								isChanged = true;
+
 						} catch (Exception ex) {
 							isInvalid = true;
 							isEditable[row][iterationColumn] = false;
 						}
-						
-						if (estimate.equals("") || estimate.contains("-") || estimate.contains("."))
-							isInvalid = true;
-						else {
-							try {
-								if (requirement.getEstimate() != Integer.parseInt(estimate)) {
-									isChanged = true;
-									
-									int iterationId = currentRequirement.getIteration();
-									if (iterationId != 0)
-										isInvalid = true;
-								}
-							} catch (Exception ex) {
-								isInvalid = true;
-							}
-						}
-						
+
 						if (fireCount++ < 1) {
 							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, iterationColumn), row, iterationColumn);
 						}
 						else {
 							fireCount = 0;
 						}
-						
+
 					}
 
 					else if (columnName.equals("ActualEffort")) {
@@ -291,7 +288,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 
 	/** 
-	 * place combox for type
+	 * place comboBox for type
 	 */
 	public void setComboxforType()
 	{
@@ -310,7 +307,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** 
-	 * place combox for iteration
+	 * place comboBox for iteration
 	 */
 	public void setComboxforIteration()
 	{
@@ -332,7 +329,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 
 	/** 
-	 * place combox for type
+	 * place comboBox for type
 	 */
 	public void setComboxforStatus()
 	{
@@ -352,7 +349,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** 
-	 * place combox for type
+	 * place comboBox for type
 	 */
 	public void setComboxforPriority()
 	{
@@ -367,6 +364,38 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("High");
 
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+
+	}
+	
+	/** 
+	 * place numberBox for type
+	 */
+	public void setNumberBoxForEstimate()
+	{
+		int estimateColumn = this.getColumnIndex("Estimate", getTableName());
+
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(estimateColumn);
+
+		JNumberTextField estimateBox = new JNumberTextField();
+		estimateBox.setAllowNegative(false);
+
+		typeColumn.setCellEditor(new DefaultCellEditor(estimateBox));
+
+	}
+	
+	/** 
+	 * place numberBox for type
+	 */
+	public void setNumberBoxForActualEffort()
+	{
+		int actualEffortColumn = this.getColumnIndex("ActualEffort", getTableName());
+
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(actualEffortColumn);
+
+		JNumberTextField actualEffortBox = new JNumberTextField();
+		actualEffortBox.setAllowNegative(false);
+
+		typeColumn.setCellEditor(new DefaultCellEditor(actualEffortBox));
 
 	}
 
@@ -429,22 +458,84 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			return "";
 		}
 
+		// Get the iteration and status and estimate for special cases
+		RequirementStatus updatedStatus = RequirementStatus.toStatus((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Status", columnNames)));
+		int updatedEstimate = Integer.parseInt( (String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Estimate", columnNames)));
+		int updatedAssignedIterationID;
+		if (updatedStatus == RequirementStatus.Deleted || RequirementStatus.Open == updatedStatus){
+			updatedAssignedIterationID = 0;
+		} else {	
+			updatedAssignedIterationID = this.getIterationID((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Iteration", columnNames)));
+		}
+
+		//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
+		//This should reduce the number of requests the server gets sent
+		if (updatedAssignedIterationID != toUpdate.getIteration() || updatedEstimate != toUpdate.getEstimate()){
+			//!!! Assuming Iteration will be set above !!!
+
+			/** Update oldIteration */
+			Iteration oldIteration = null;
+
+			for (Iteration i : parent.getParent().getAllIterations()) {
+				if (toUpdate.getIteration() == i.getID()) {
+					oldIteration = i;
+				}
+			}
+
+			//Update totalEstimate
+			oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - toUpdate.getEstimate());
+
+			//Remove id from the list
+			ArrayList<Integer> requirementList = oldIteration.getRequirementsContained();
+			if(requirementList.size() != 0){ //Only update if there are requirements saved...
+				requirementList.remove((Integer)toUpdate.getId());
+			}
+			oldIteration.setRequirementsContained(requirementList);
+
+			//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+			saveOldIterationRequest.setBody(oldIteration.toJSON());
+			saveOldIterationRequest.send();
+
+			/** Update updatedIteration*/
+			Iteration updatedIteration = null;
+
+			for (Iteration i : parent.getParent().getAllIterations()) {
+				if (  updatedAssignedIterationID  ==  i.getID()) {
+					updatedIteration = i;
+				}
+			}
+
+			//Add id to the list
+			ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
+			updatedRequirementList.add((Integer)toUpdate.getId());
+			updatedIteration.setRequirementsContained(updatedRequirementList);
+
+			//Update totalEstimate
+			updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedEstimate);
+
+			//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+			saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
+			saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+			saveUpdatedIterationRequest.clearAsynchronous();
+			saveUpdatedIterationRequest.send();
+		}
+
 		// Start saving the rest of the fields
+		toUpdate.setIteration(updatedAssignedIterationID);
+		toUpdate.setEstimate(updatedEstimate);
+		toUpdate.setStatus( updatedStatus);
 		toUpdate.setName((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Name", columnNames)));
 		toUpdate.setType( RequirementType.toType((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Type", columnNames))));
-		toUpdate.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Status", columnNames))));
 		toUpdate.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Priority", columnNames))));
 		toUpdate.setReleaseNumber((String)resultsTable.getValueAt(rowNumber, this.getColumnIndex("ReleaseNumber", columnNames)));
-		toUpdate.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Estimate", columnNames))));
 		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("ActualEffort", columnNames))));
-
-		int iterationID = this.getIterationID((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Iteration", columnNames)));
-		toUpdate.setIteration(iterationID);
 
 		return toUpdate.toJSON();
 
 	}
-	
+
 	/** Gets the requirement that would be made if the columns from the given row were read.
 	 * 
 	 *  Invalid estimates and actual efforts are set to -1
@@ -589,6 +680,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		setComboxforStatus();
 		setComboxforPriority();
 		setComboxforIteration();
+		setNumberBoxForEstimate();
+		setNumberBoxForActualEffort();
 		disableSorting();
 		parent.getParent().getBtnSave().setEnabled(false);
 	}
@@ -611,7 +704,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void savesComplete() {
 	}
-	
+
 	/** Way to trigger a pop-up or enable/disable certain 
 	 *  buttons when a  save is not successful.
 	 */

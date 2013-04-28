@@ -71,7 +71,8 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 		// close this tab when close button is clicked
 		final int index = tabbedPane.indexOfTabComponent(this);
 		
-		Component comp = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+		Component comp = tabbedPane.getComponentAt(index);
+		int prevIndex = tabbedPane.getSelectedIndex();
 		
 		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isSaving()) {
 			if (JOptionPane.showOptionDialog(this, "The requirement is still saving.  Are you sure you want to exit?", "Warning",
@@ -81,15 +82,20 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 				}
 			}
 		} else if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
+			tabbedPane.setSelectedIndex(index);
 			if (JOptionPane.showOptionDialog(this, "You have unsaved changes to this requirement.  Are you sure you want to exit?", "Warning",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
 				if (index> -1) {
 					tabbedPane.remove(index);
+					if (prevIndex < index)
+						tabbedPane.setSelectedIndex(prevIndex);
+					else
+						tabbedPane.setSelectedIndex(prevIndex-1);
 				}
 			}
 		} else if (index > -1) {
 			tabbedPane.remove(index);
-			if (tabbedPane.getTabCount() == 1)
+			if (((MainTabPanel)tabbedPane).getNonRequirementTabCount() == 0)
 				((ListView)tabbedPane.getComponentAt(0)).getBtnEdit().setEnabled(true);
 			else
 				((ListView)tabbedPane.getComponentAt(0)).getBtnEdit().setEnabled(false);

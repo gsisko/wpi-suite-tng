@@ -34,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
 /**
- * The Requirement tab's toolbar panel.
+ * This is the view that contains buttons to create requirements and display pei charts.
  * Always has a group of global commands (Create Requirement, List).
  */
 @SuppressWarnings("serial")
@@ -70,7 +70,7 @@ public class ToolbarView extends DefaultToolbarView {
 		createRequirement.setAction(new CreateRequirementAction(tabController));
 		
 		// Construct the list field
-		listField = new JPlaceholderTextField("Lookup Requirement by ID", 15);
+		listField = new JPlaceholderTextField("Lookup by ID", 13);
 		listField.addActionListener(new LookupRequirementController(tabController, listField, this));
 		
 		// Instantiate the charts button
@@ -104,6 +104,7 @@ public class ToolbarView extends DefaultToolbarView {
             		}
     		}
 		});
+		helpButton.setPreferredSize(new Dimension(140, 25));
 		
 		// Add buttons to the content panel
 		content.add(createRequirement);
@@ -118,9 +119,9 @@ public class ToolbarView extends DefaultToolbarView {
 		layout.putConstraint(SpringLayout.NORTH, btnDisplayPieChart, 0, SpringLayout.NORTH, createRequirement); //Display Chart to top of panel
 		layout.putConstraint(SpringLayout.SOUTH, btnDisplayPieChart, 0, SpringLayout.SOUTH, createRequirement); //Align bot of Create Requirements and Display Charts
 		layout.putConstraint(SpringLayout.NORTH, helpButton, 12, SpringLayout.SOUTH, createRequirement); //Align Help button to bottom of Create Requirements
-		layout.putConstraint(SpringLayout.EAST, helpButton, 0, SpringLayout.EAST, btnDisplayPieChart); //Align Help button to left of panel
+		layout.putConstraint(SpringLayout.EAST, helpButton, 0, SpringLayout.EAST, btnDisplayPieChart); //Align Help button to right of panel
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
-		layout.putConstraint(SpringLayout.WEST, listField, 0, SpringLayout.WEST, createRequirement); //Align Lookup ID to right side of Create Requirements
+		layout.putConstraint(SpringLayout.WEST, listField, 0, SpringLayout.WEST, createRequirement); //Align Lookup ID to left side of Create Requirements
 
 		// Construct a new toolbar group to be added to the end of the toolbar
 		toolbarGroup = new ToolbarGroupView("Home", content);
@@ -148,5 +149,30 @@ public class ToolbarView extends DefaultToolbarView {
 	public void setTabController(MainTabController tabController) {
 		this.tabController = tabController;
 	}
+	
+	/**Getter for create requirement button
+	 * @return the create requirement button
+	 */
+	public JButton getCreateRequirementButton()
+	{
+		return createRequirement;
+	}
+	
+	/**Getter for the lookup by ID box
+	 * @return the lookup by ID box
+	 */
+	public JPlaceholderTextField getIDbox()
+	{
+		return listField;
+	}
+	
+	/**Getter for create requirement button
+	 * @return the create requirement button
+	 */
+	public JButton getDisplayChartsButton()
+	{
+		return btnDisplayPieChart;
+	}
+	
 
 }

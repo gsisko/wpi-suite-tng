@@ -613,9 +613,9 @@ public class RequirementAttributePanel extends JPanel {
 	/** This returns a boolean indicating if any of the fields  EXCEPT the note fields in this panel have changed or not
 	 * @return true when any of the fieldsChanged booleans are true that are not associated with the note fields, false otherwise
 	 */
-	public boolean isNonNoteFieldsChanged() {
+	public boolean isNonMainRequirementFieldsChanged() {
 		for (int i = 0; i < fieldsChanged.length; i++){
-			if (fieldsChanged[i] && i != 9){
+			if (fieldsChanged[i] && i != 9 && i != 11 && i != 12){
 				return true;
 			}
 		}
@@ -676,7 +676,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		if (saveButton != null && nameAndDescriptionValidityListener != null){
-			saveButton.setEnabled(isNonNoteFieldsChanged() && setSaveButtonWhenFieldsAreValid());
+			saveButton.setEnabled(isNonMainRequirementFieldsChanged() && setSaveButtonWhenFieldsAreValid());
 		}
 	}
 

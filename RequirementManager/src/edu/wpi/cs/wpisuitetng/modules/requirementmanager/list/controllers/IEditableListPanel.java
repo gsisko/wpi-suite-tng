@@ -63,6 +63,6 @@ public interface IEditableListPanel {
 	/** Turns on the save button when all cells are
 	 *  valid and at least one has been changed. 
 	 */
-	public void updateSaveButton();
+	void updateSaveButton();
 	
 }

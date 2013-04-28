@@ -47,6 +47,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
 
+	/** The layout manager for this panel */
+	protected SpringLayout btnlayout;
+
 	/** The panel containing buttons for the tool bar */
 	protected ToolbarGroupView buttonGroup;
 
@@ -82,7 +85,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 	/** Location of divider before entering edit mode */
 	protected int oldDividerLocation;
-	
+
 	/** Size of divider before entering edit mode */
 	protected int oldDividerSize;
 
@@ -91,11 +94,11 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	protected Iteration[] allIterations;
 	protected Requirement[] allRequirements;
 	protected Requirement[] displayedRequirements;
-	
+
 	/** The controller that saves requirements that are edited in list view */
 	private ListSaveModelController listSaveRequirementController = null;	
-	
-	
+
+
 	/**Construct the view
 	 * @param tabController The main tab controller
 	 */
@@ -112,13 +115,12 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		// Construct the layout manager and add constraints
 		layout = new SpringLayout();
 		this.setLayout(layout);
-		layout.putConstraint(SpringLayout.NORTH, mainPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, mainPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, mainPanel, 0, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, mainPanel, 0, SpringLayout.EAST, this);
 
-		// Add the mainPanel to this view
-		this.add(mainPanel);
+		// Construct the content panel
+		JPanel content = new JPanel();
+		btnlayout  = new SpringLayout();
+		content.setLayout(btnlayout);
+		content.setOpaque(false);
 
 		// Initialize the controllers
 		controller = new RetrieveAllRequirementsController(this);
@@ -131,13 +133,12 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		mainPanel.getResultsPanel().getResultsTable().addMouseListener(new RetrieveRequirementController(this.getListTab().getResultsPanel()));
 
 		// Instantiate the button panel
-		buttonGroup = new ToolbarGroupView("Options for Requirements");
+		buttonGroup = new ToolbarGroupView("Options for Requirements", content);
 
 		// Instantiate the refresh button
 		btnRefresh = new JButton();
 		btnRefresh.setAction(new RefreshRequirementsAction(controller));
-		buttonGroup.getContent().add(btnRefresh);
-		buttonGroup.setPreferredWidth((int)buttonGroup.getPreferredSize().getWidth());
+		buttonGroup.setPreferredWidth((int)buttonGroup.getPreferredSize().getWidth() - 15);
 
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -145,7 +146,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				refreshData();
 			}
 		});
-
 
 		// Instantiate the defaultColumnWidths checkbox
 		checkBoxDefault = new JCheckBox("Reset Table Layout", true);
@@ -158,7 +158,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				checkBoxStatus = checkBoxDefault.isSelected();
 			}
 		});
-		buttonGroup.getContent().add(checkBoxDefault);
 
 		// Create and make button to Enable Editing in list view
 		btnEnableEdit = new JButton("Enable Edit Mode");
@@ -166,9 +165,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnSave = new JButton("Save Changes");
 		btnSave.setVisible(false);
 		btnCancel.setVisible(false);
-		buttonGroup.getContent().add(btnEnableEdit);
-		buttonGroup.getContent().add(btnCancel);
-		buttonGroup.getContent().add(btnSave);
 
 		btnEnableEdit.addActionListener(new ActionListener() {
 			@Override
@@ -178,22 +174,16 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				if (listSaveRequirementController == null){
 					listSaveRequirementController = new ListSaveModelController(mainPanel.getResultsPanel(), "requirement");
 				}
-				
-				
+
 				btnEditNotVisible();
-		//		mainPanel.getResultsPanel().getModel().setEditable(true);
-		//		mainPanel.getResultsPanel().setComboxforType();
-		//		mainPanel.getResultsPanel().setComboxforStatus();
-		//		mainPanel.getResultsPanel().setComboxforPriority();
-		//		mainPanel.getResultsPanel().setComboxforIteration();
 				mainPanel.setMode(Mode.EDIT);
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
-				
 
-		//		mainPanel.getResultsPanel().disableSorting();
 				mainPanel.getResultsPanel().setUpForEditing();
 				mainPanel.getResultsPanel().setInEditMode(true);
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(false);//disables the lookup by ID box
 			}
 		});
 
@@ -209,14 +199,17 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 			}
 		});
-		
+		btnCancel.setPreferredSize(new Dimension(80, 25));
+
 		btnSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listSaveRequirementController.perform();				
-				
+
 				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
 				mainPanel.setMode(Mode.ITERATION);
@@ -226,9 +219,39 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 			}
 		});
-		
+		btnSave.setPreferredSize(new Dimension(130, 25));
+
+		layout.putConstraint(SpringLayout.NORTH, mainPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, mainPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, mainPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, mainPanel, 0, SpringLayout.EAST, this);
+
+		// Add the mainPanel to this view
+		this.add(mainPanel);
+
+		// Add buttons to the content panel
+		content.add(btnRefresh);
+		content.add(checkBoxDefault);
+		content.add(btnEnableEdit);
+		content.add(btnCancel);
+		content.add(btnSave);
+
+		// Configure the layout of the buttons on the content panel
+		btnlayout.putConstraint(SpringLayout.NORTH, btnRefresh, 5, SpringLayout.NORTH, content); //Refresh button to top of panel
+		btnlayout.putConstraint(SpringLayout.WEST, btnRefresh, 25, SpringLayout.WEST, content); //Refresh button to left of panel
+		btnlayout.putConstraint(SpringLayout.WEST, checkBoxDefault, 10, SpringLayout.EAST, btnRefresh); //check box next to Create Requirement
+		btnlayout.putConstraint(SpringLayout.NORTH, checkBoxDefault, 0, SpringLayout.NORTH, btnRefresh); //check to top of panel
+		btnlayout.putConstraint(SpringLayout.SOUTH, checkBoxDefault, 0, SpringLayout.SOUTH, btnRefresh); //Align bot of refresh and check box
+		btnlayout.putConstraint(SpringLayout.NORTH, btnEnableEdit, 11, SpringLayout.SOUTH, btnRefresh); //Align enable edit to bot of refresh
+		btnlayout.putConstraint(SpringLayout.WEST, btnEnableEdit, 50, SpringLayout.WEST, btnRefresh); //Align enable edit to center
+		btnlayout.putConstraint(SpringLayout.NORTH, btnCancel, 11, SpringLayout.SOUTH, btnRefresh); //Align cancel to bot of refresh
+		btnlayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, btnRefresh); //Align cancel to left side of refresh
+		btnlayout.putConstraint(SpringLayout.NORTH, btnSave, 11, SpringLayout.SOUTH, btnRefresh); //Align save to bot of refresh
+		btnlayout.putConstraint(SpringLayout.EAST, btnSave, 0, SpringLayout.EAST, checkBoxDefault); //Align save to right side of check box
 	}
 
 	public boolean getCheckBoxStatus() {
@@ -308,6 +331,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void setAllRequirements(Requirement[] allRequirements) {
 		this.allRequirements = allRequirements;
+		if (allRequirements.length > 0)
+			tabController.getView().getJanewayModule().getToolbarView().getDisplayChartsButton().setEnabled(true);
+		else
+			tabController.getView().getJanewayModule().getToolbarView().getDisplayChartsButton().setEnabled(false);
 	}
 
 	/**
@@ -322,6 +349,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
 		this.displayedRequirements = displayedRequirements;
+		if (displayedRequirements.length > 0 && tabController.getView().getNonRequirementTabCount() == 0)
+			btnEnableEdit.setEnabled(true);
+		else
+			btnEnableEdit.setEnabled(false);
 	}
 
 	/**
@@ -351,7 +382,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnSave.setVisible(true);
 		btnCancel.setVisible(true);
 	}
-	
+
 	/**
 	 * Set everything else enabled or disabled when changing edit modes
 	 */
@@ -370,7 +401,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			mainPanel.getSplitPane().setDividerSize(0);
 			mainPanel.getLeftPanel().setMinimumSize(new Dimension (0, 500));
 		}
-		
+
 		if (mainPanel.getMode() == Mode.FILTER) {
 			mainPanel.getFilterBuilderPanel().setVisible(enable);
 		}
