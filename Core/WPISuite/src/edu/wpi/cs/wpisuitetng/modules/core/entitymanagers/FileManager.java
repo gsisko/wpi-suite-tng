@@ -17,8 +17,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.core.entitymanagers;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,13 +49,18 @@ public class FileManager implements EntityManager<FilePartModel>{
 	Class<FilePartModel> filePartModel = FilePartModel.class;
 	Class<FileModel> fileModel = FileModel.class;
 	Data data;
-	private ArrayList<FileModel> fileArray; //Temp storage for file parts, in order to re-assemble files
+	private ArrayList<FileModel> recievedFileArray; //Temp storage for file parts, in order to re-assemble files
+	private HashMap<String, Integer> sendFilePartMap; //idNum, count
 
 	private static final Logger logger = Logger.getLogger(FileManager.class.getName());
 
 	public FileManager(Data data)
 	{
 		this.data = data;
+		this.recievedFileArray = new ArrayList<FileModel>();
+		//		this.toSendFileArray = new ArrayList<FileModel>();
+		this.sendFilePartMap = new HashMap<String, Integer>();
+
 	}
 
 	@Override
@@ -120,6 +125,7 @@ public class FileManager implements EntityManager<FilePartModel>{
 	 * @return The array of FilePartModels for the File
 	 * @throws WPISuiteException 
 	 */
+	//TODO: There should be a cleaner way to do this...
 	public FilePartModel[] getEntity(Session s, String id) throws WPISuiteException 
 	{
 		FileModel[] m = new FileModel[1];
@@ -131,8 +137,22 @@ public class FileManager implements EntityManager<FilePartModel>{
 		{
 			data.retrieve(fileModel, "idNum", id).toArray(m);
 
-			//Divide FileModel into FilePartModels
-			return fileModelToParts(m[0]);
+			//Divide FileModel into FilePartModels 
+
+			//Send the next part next time requested
+			if (sendFilePartMap.containsKey(id)){
+				if (sendFilePartMap.get(id) < (m[0].getFileSize()/partSize)){ //Did we send all the parts? 
+					sendFilePartMap.put(id, sendFilePartMap.get(id)+1);
+				} else { //If so reset
+					sendFilePartMap.put(id, 0);
+				}
+			} else{
+				sendFilePartMap.put(id, 0);
+			}
+
+			return new FilePartModel[] {
+					fileModelToParts(m[0])[sendFilePartMap.get(id)]
+			};
 		}
 	}
 
@@ -164,9 +184,25 @@ public class FileManager implements EntityManager<FilePartModel>{
 			}
 			else
 			{
-				//Divide FileModel into FilePartModels
-				return fileModelToParts(m[0]);
+				if (sendFilePartMap.containsKey(id))
+					//Divide FileModel into FilePartModels 
+
+					//Send the next part next time requested
+					if (sendFilePartMap.containsKey(id)){
+						if (sendFilePartMap.get(id) < (m[0].getFileSize()/partSize)){ //Did we send all the parts? 
+							sendFilePartMap.put(id, sendFilePartMap.get(id)+1);
+						} else { //If so reset
+							sendFilePartMap.put(id, 0);
+						}
+					} else{
+						sendFilePartMap.put(id, 0);
+					}
+
+				return new FilePartModel[] {
+						fileModelToParts(m[0])[sendFilePartMap.get(id)]
+				};
 			}
+
 		}
 	}
 
@@ -182,22 +218,56 @@ public class FileManager implements EntityManager<FilePartModel>{
 	 */
 	public FilePartModel[] getEntityByName(Session s, String fileName) throws NotFoundException, WPISuiteException
 	{
-		FilePartModel[] m = new FilePartModel[1];
+		FileModel[] m = new FileModel[1];
 		if(fileName.equalsIgnoreCase(""))
 		{
 			throw new NotFoundException("No (blank) File name given.");
 		}
 		else
 		{
-			return data.retrieve(filePartModel, "name", fileName).toArray(m);
-		}
+			String id = m[0].getIdNum();
+			if (sendFilePartMap.containsKey(id))
+				//Divide FileModel into FilePartModels 
+
+				//Send the next part next time requested
+				if (sendFilePartMap.containsKey(id)){
+					if (sendFilePartMap.get(id) < (m[0].getFileSize()/partSize)){ //Did we send all the parts? 
+						sendFilePartMap.put(id, sendFilePartMap.get(id)+1);
+					} else { //If so reset
+						sendFilePartMap.put(id, 0);
+					}
+				} else{
+					sendFilePartMap.put(id, 0);
+				}
+
+			return new FilePartModel[] {
+					fileModelToParts(m[0])[sendFilePartMap.get(id)]
+			};		}
 	}
 
 	@Override
 	public FilePartModel[] getAll(Session s) {
-		FilePartModel[] ret = new FilePartModel[1];
-		ret = data.retrieveAll(new File("","")).toArray(ret);
-		return ret;
+		FileModel[] ret = new FileModel[1];
+		ret = data.retrieveAll(new FileModel("","")).toArray(ret);
+		
+		String id = ret[0].getIdNum();
+		if (sendFilePartMap.containsKey(id))
+			//Divide FileModel into FilePartModels 
+
+			//Send the next part next time requested
+			if (sendFilePartMap.containsKey(id)){
+				if (sendFilePartMap.get(id) < (ret[0].getFileSize()/partSize)){ //Did we send all the parts? 
+					sendFilePartMap.put(id, sendFilePartMap.get(id)+1);
+				} else { //If so reset
+					sendFilePartMap.put(id, 0);
+				}
+			} else{
+				sendFilePartMap.put(id, 0);
+			}
+
+		return new FilePartModel[] {
+				fileModelToParts(ret[0])[sendFilePartMap.get(id)]
+		};		
 	}
 
 	@Override
@@ -206,13 +276,13 @@ public class FileManager implements EntityManager<FilePartModel>{
 			throw new WPISuiteException("Null Session.");
 		}
 
-		FileModel fileModel = fileArray.get(Integer.parseInt(model.getFileIdNum()));
+		FileModel fileModel;
 
 		//Re-assemble a FileModel from FilePartModels...
 		//TODO: Is there a way to do this without ArrayList and exceptions?
 		//TODO: Abstract assembling parts into the FileModel class?
 		try {
-			fileModel = fileArray.get(Integer.parseInt(model.getFileIdNum()));
+			fileModel = recievedFileArray.get(Integer.parseInt(model.getFileIdNum()));
 
 			//Check if exisitng data matches
 			if (fileModel.getFileName().equals(model.getFileName()) && fileModel.getIdNum().equals(model.getFileIdNum())){
@@ -220,7 +290,7 @@ public class FileManager implements EntityManager<FilePartModel>{
 				fileModel.getFileData().add(Integer.parseInt(model.getIdNum()), model.getFilePart());
 				fileModel.setProject(model.getProject());
 
-				fileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);
+				recievedFileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);
 			} else {
 				//Error, file mismatch!
 				logger.log(Level.WARNING, "File part doesn't match the File at the given ID!: " + model.getFileIdNum());
@@ -236,7 +306,7 @@ public class FileManager implements EntityManager<FilePartModel>{
 			fileModel = new FileModel(model.getFileName(), model.getFileIdNum(), model.getFileSize(), null);
 			fileModel.setProject(model.getProject());
 
-			fileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);		
+			recievedFileArray.set(Integer.parseInt(model.getFileIdNum()), fileModel);		
 		}
 
 		//permissions checking happens in update, create, and delete methods only
@@ -251,7 +321,7 @@ public class FileManager implements EntityManager<FilePartModel>{
 				logger.log(Level.FINE, "File Saved :" + model.getFileName());
 
 				//Delete the file from array since we don't need it anymore and it has been saved...
-				if ( !fileArray.remove(fileModel) ){
+				if ( !recievedFileArray.remove(fileModel) ){
 					logger.log(Level.WARNING, "Error removing FileModel from FileManager!" + fileModel.getFileName());
 				}
 
@@ -391,12 +461,12 @@ public class FileManager implements EntityManager<FilePartModel>{
 	@Override
 	public FilePartModel update(Session s, String content) throws WPISuiteException {
 		FilePartModel[] p = null;
-		
+
 		String id = AbstractEntityManager.parseFieldFromJSON(content, "idNum");
 
 		if(id.equalsIgnoreCase(""))
 		{
-			throw new NotFoundException("No (blank) Project id given.");
+			throw new NotFoundException("No (blank) File id given.");
 		}
 		else
 		{
@@ -407,14 +477,14 @@ public class FileManager implements EntityManager<FilePartModel>{
 				throw new NotFoundException("File with id <" + id + "> not found.");
 			}
 		}
-		 
+
 		return update(s, p[0], content);
 	}
 
-//	public void setAllModules(String[] mods)
-//	{
-//		//		this.allModules = mods;
-//	}
+	//	public void setAllModules(String[] mods)
+	//	{
+	//		//		this.allModules = mods;
+	//	}
 
 	@Override
 	public String advancedPut(Session s, String[] args, String content) throws WPISuiteException 
