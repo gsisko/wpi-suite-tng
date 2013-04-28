@@ -58,6 +58,7 @@ public class AcceptanceTestStatusListener implements PopupMenuListener {
 			AcceptanceTest newTest = new AcceptanceTest(oldTest.getAcceptanceTestTitle(), oldTest.getDescription(), newResult);
 			
 			// Save it
+			thePanel.getMyTest().setAcceptanceTestResult(newResult);
 			AcceptanceTestTab tab = (AcceptanceTestTab) thePanel.getParent().getParent().getParent().getParent();	// Shortens the next line
 			SaveRequirementController controller = tab.myGetParent().getParent().getController();
 			
