@@ -102,7 +102,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		endDateLabel = new JLabel("End Date:");
 		totalEstimateLabel = new JLabel("Total Estimate:");
 		nameWarning = new JLabel("Name cannot be \"Backlog\"");
-		dateWarning = new JLabel("Start and end dates cannot fall within another iteration");
+		dateWarning = new JLabel("Start and end dates cannot overlab with another iteration");
 
 		//Set the color for the warnings
 		nameWarning.setForeground(Color.red);
@@ -477,7 +477,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 			//If this is the first time we have found an iteration whose dates overlap with the iteration under construction/editing
 			if (errorOnThis && !dateErrorFound)
 			{
-				dateWarning.setText("Start and end dates cannot fall within another iteration");
+				dateWarning.setText("Start and end dates cannot overlab with another iteration");
 				dateErrorFound = true;
 			}
 		}
