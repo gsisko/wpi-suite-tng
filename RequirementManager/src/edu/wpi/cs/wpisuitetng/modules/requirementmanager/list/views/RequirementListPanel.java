@@ -651,7 +651,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public void setIsEditable(Boolean[][] isEditable) {
 		this.isEditable = isEditable;
 	}
-<<<<<<< Updated upstream
+	
 	/** Turns on the save button when all cells are
 	 *  valid and at least one has been changed. 
 	 */
@@ -672,9 +672,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					// The save button has been disabled because there is invalidity in the table
 					return;			
 				}
-
 		// Double check that un-editable boxes are not changed
-=======
+	}
 
 	/**
 	 * @return the inEditMode
@@ -688,6 +687,5 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void setInEditMode(boolean inEditMode) {
 		this.inEditMode = inEditMode;
->>>>>>> Stashed changes
 	}
 }
