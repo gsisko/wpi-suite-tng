@@ -25,18 +25,16 @@ public class EditModeBuilderPanel extends JPanel {
 
 	/** The name warning label, used to warn the user of an invalid fields in the EditMode */
 	private JLabel invalidInput;
-	
-	/** The "parent" that this builder lives in */
-	private final ListTab parent;
 
 	/** Construct the panel and all of its components
 	 * @param view The ListTab that this panel will live in
 	 */
 	public EditModeBuilderPanel(ListTab view) {
-		parent = view;
 
 		//construct the panels
-		invalidInput = new JLabel("There are invalid changes in the fields. Please address errors before saving.");
+		invalidInput = new JLabel("Invalid changes in the fields.");
+		
+		invalidInput.setText("There are invalid changes in the fields. Please address errors before saving.");
 
 		//Set the color for the warning label
 		invalidInput.setForeground(Color.red);
