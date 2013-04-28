@@ -12,8 +12,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
+import edu.wpi.cs.wpisuitetng.exceptions.SerializationException;
+import edu.wpi.cs.wpisuitetng.modules.core.models.FilePartModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -42,8 +43,15 @@ public class SaveAttachmentPartsObserver implements RequestObserver,IObserver{
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart attachmentPart = AttachmentPart.fromJson(response.getBody());
-		controller.addAttachmentPartId(attachmentPart.getId());
+		FilePartModel attachmentPart;
+		try {
+			attachmentPart = FilePartModel.fromString(response.getBody());
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		controller.addAttachmentPartId(Integer.parseInt(attachmentPart.getIdNum()));
 	}
 
 	@Override

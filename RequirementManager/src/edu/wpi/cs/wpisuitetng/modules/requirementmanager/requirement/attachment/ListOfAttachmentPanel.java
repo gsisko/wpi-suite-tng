@@ -30,7 +30,6 @@ public class ListOfAttachmentPanel extends JPanel {
 	//The list of stored notes to be displayed, passed in as a NoteListModel
 	private AttachmentListModel attachmentListModel;
 	
-
 	/**
 	 * The constructor for this panel.
 	 * This takes a NoteListModel ("newModel"),
@@ -87,7 +86,4 @@ public class ListOfAttachmentPanel extends JPanel {
 		}
 		this.setPreferredSize(new Dimension(325, (int)newTotalHeight)); //Set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately 
 	}
-
-	
-	
 }

@@ -24,8 +24,10 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.codec.binary.Base64;
+
+import edu.wpi.cs.wpisuitetng.modules.core.models.FilePartModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.RetrieveAttachmentPartObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -38,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class AttachmentReconstructionAction implements ActionListener {
 	private ArrayList<Integer> parts;
 	private String fileName;
-	private ArrayList<AttachmentPart> attachmentParts;
+	private ArrayList<FilePartModel> attachmentParts;
 
 	/** Constructor that takes the two panels to watch
 	 * 
@@ -63,7 +65,7 @@ public class AttachmentReconstructionAction implements ActionListener {
 		fc.setSelectedFile(new File(fileName));
 		int returnVal = fc.showDialog(null,"Download Attachment");
 
-		attachmentParts = new ArrayList<AttachmentPart>();
+		attachmentParts = new ArrayList<FilePartModel>();
 
 		//Process the results.
 		boolean overwrite = true;
@@ -109,13 +111,13 @@ public class AttachmentReconstructionAction implements ActionListener {
 							finished = true;
 					}
 					
-					AttachmentPart[] orderedAttachmentParts = new AttachmentPart[attachmentParts.size()];
-					for (AttachmentPart attachmentPart : attachmentParts) {
-						orderedAttachmentParts[attachmentPart.getPartNumber()] = attachmentPart;
+					FilePartModel[] orderedAttachmentParts = new FilePartModel[attachmentParts.size()];
+					for (FilePartModel attachmentPart : attachmentParts) {
+						orderedAttachmentParts[Integer.parseInt(attachmentPart.getIdNum())] = attachmentPart;
 					}
 					
 					for (int i = 0; i < orderedAttachmentParts.length; i++) {
-						destination.write(orderedAttachmentParts[i].getAttachmentPartByteArray());
+						destination.write(Base64.decodeBase64(orderedAttachmentParts[i].getFilePart()));
 					}
 
 					try {
@@ -141,7 +143,7 @@ public class AttachmentReconstructionAction implements ActionListener {
 	/**
 	 * @param getPartSuccess the getPartSuccess to set
 	 */
-	public synchronized void getPartSuccess(AttachmentPart attachmentPart) {
+	public synchronized void getPartSuccess(FilePartModel attachmentPart) {
 		attachmentParts.add(attachmentPart);
 	}
 }

@@ -12,9 +12,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
+import edu.wpi.cs.wpisuitetng.exceptions.SerializationException;
+import edu.wpi.cs.wpisuitetng.modules.core.models.FilePartModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.AttachmentReconstructionAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -41,7 +42,14 @@ public class RetrieveAttachmentPartObserver implements RequestObserver,IObserver
 		// get the response from the request
 		ResponseModel response = request.getResponse();
 
-		AttachmentPart attachmentPart = AttachmentPart.fromJsonArray(response.getBody())[0];
+		FilePartModel attachmentPart;
+		try {
+			attachmentPart = FilePartModel.fromString(response.getBody());
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
 		
 		action.getPartSuccess(attachmentPart);
 	}

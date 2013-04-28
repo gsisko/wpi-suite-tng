@@ -23,11 +23,14 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+
+import edu.wpi.cs.wpisuitetng.modules.core.models.FilePartModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -41,6 +44,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class SaveRequirementController {
 	private final RequirementTab view;
 	private Attachment currentAttachment;
+	private static int partSize = 32*1024; //32K
 
 	public SaveRequirementController(RequirementView view) 
 	{
@@ -337,7 +341,7 @@ public class SaveRequirementController {
 		int returnVal = fc.showDialog(null,"Add Attachment");
 
 		//Process the results.
-		if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 4194304) {
+		if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 4194304) { //4 MB
 
 			Requirement currentRequirement = view.getCurrentRequirement();
 			InputStream source = null;
@@ -369,13 +373,19 @@ public class SaveRequirementController {
 			currentAttachment = new Attachment(fc.getSelectedFile().getName(), (int) fc.getSelectedFile().length());
 
 			int n = 0;
-			ArrayList<AttachmentPart> parts = new ArrayList<AttachmentPart>();
+//			ArrayList<AttachmentPart> parts = new ArrayList<AttachmentPart>();
+			ArrayList<FilePartModel> parts = new ArrayList<FilePartModel>();
 			for(ByteArrayOutputStream destination : destinations){
-				AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray(), n);
+//				AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray(), n);
+				FilePartModel part = new FilePartModel("-1", new Integer(n).toString(), fc.getSelectedFile().getName(),
+						(int)fc.getSelectedFile().length(), Base64.encode(destination.toByteArray()));
+
 				parts.add(part);
 
-				final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
-				request.setBody(part.toJSON()); // put the new message in the body of the request
+//				final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
+//				request.setBody(part.toJSON()); // put the new message in the body of the request
+				final Request request = Network.getInstance().makeRequest("core/filemanager", HttpMethod.PUT); // PUT == create
+				request.setBody(part.toString());
 				request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
 				request.send();
 				
