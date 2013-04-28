@@ -186,6 +186,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		//		mainPanel.getResultsPanel().setComboxforStatus();
 		//		mainPanel.getResultsPanel().setComboxforPriority();
 		//		mainPanel.getResultsPanel().setComboxforIteration();
+				mainPanel.setMode(Mode.EDIT);
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
 				
@@ -201,6 +202,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
+				mainPanel.setMode(Mode.ITERATION);
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
@@ -217,6 +219,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				
 				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
+				mainPanel.setMode(Mode.ITERATION);
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
@@ -375,7 +378,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			mainPanel.getIterationBuilderPanel().setVisible(enable);
 		}
 		else {
-			mainPanel.getIterationBuilderPanel().setVisible(!enable);
+			mainPanel.getEditModeBuilderPanel().setVisible(!enable);
 		}
 	}
 
