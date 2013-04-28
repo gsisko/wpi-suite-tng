@@ -22,8 +22,6 @@ import javax.servlet.http.Cookie;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.database.DataStore;
 import edu.wpi.cs.wpisuitetng.exceptions.AuthenticationException;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
@@ -41,7 +39,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.FilterMa
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.IterationManager;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.RequirementManager;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.AttachmentPartManager;
 
 
 /**
@@ -84,7 +81,6 @@ public class ManagerLayer {
 		map.put("requirementmanagerrequirement", new RequirementManager(data));
 		map.put("requirementmanagerfilter", new FilterManager(data));
 		map.put("requirementmanageriteration", new IterationManager(data));
-		map.put("requirementmanagerattachmentpart", new AttachmentPartManager(data));
 
 		//add just your module to this list
 		String[] fullModuleList = {"core","defecttracker","postboard", "requirementmanager"};

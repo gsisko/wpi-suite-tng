@@ -15,19 +15,10 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -40,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class SaveRequirementController {
 	private final RequirementTab view;
-	private Attachment currentAttachment;
 
 	public SaveRequirementController(RequirementView view) 
 	{
@@ -333,84 +323,6 @@ public class SaveRequirementController {
 		request.send();
 	}
 
-	public void saveAttachment() throws IOException {
-		JFileChooser fc = new JFileChooser();
-
-		int returnVal = fc.showDialog(null,"Add Attachment");
-
-		//Process the results.
-		if (returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile().exists() && fc.getSelectedFile().length() <= 4194304) {
-
-			Requirement currentRequirement = view.getCurrentRequirement();
-			InputStream source = null;
-			ArrayList<ByteArrayOutputStream> destinations = new ArrayList<ByteArrayOutputStream>();
-
-			try {
-				source = new FileInputStream(fc.getSelectedFile());// = new InputStream().getChannel();
-
-				byte[] buffer = new byte[8192];
-
-				int read = 0;
-				while ( (read = source.read(buffer)) != -1 ) {
-					ByteArrayOutputStream newDestination = new ByteArrayOutputStream();
-					newDestination.write(buffer, 0, read);
-					destinations.add(newDestination);
-				}
-			}
-			finally {
-				if(source != null)
-					source.close();
-				
-				for(ByteArrayOutputStream destination : destinations)
-				{
-					if(destination != null)
-						destination.close();
-				}   
-			}
-
-			currentAttachment = new Attachment(fc.getSelectedFile().getName(), (int) fc.getSelectedFile().length());
-
-			int n = 0;
-			ArrayList<AttachmentPart> parts = new ArrayList<AttachmentPart>();
-			for(ByteArrayOutputStream destination : destinations){
-				AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray(), n);
-				parts.add(part);
-
-				final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
-				request.setBody(part.toJSON()); // put the new message in the body of the request
-				request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
-				request.send();
-				
-				n++;
-			}
-
-			boolean finished = false;
-			
-			while(!finished) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (currentAttachment.getAttachmentPartIds().size() == destinations.size())
-					finished = true;
-			}
-
-			currentRequirement.getAttachments().add(currentAttachment);
-
-			// make a POST http request and let the observer get the response
-			final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
-			request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
-			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
-			request.send();
-		}
-		else if(fc.getSelectedFile().exists() && fc.getSelectedFile().length() > 4194304)
-			JOptionPane.showMessageDialog(null, "File size must be 4 megabytes or less.", "Error", JOptionPane.ERROR_MESSAGE);
-		
-		fc.setSelectedFile(null);
-	}
-
 	public void saveUsers() {
 		Requirement currentRequirement = view.getCurrentRequirement();
 		ArrayList<String> assignedUsers = new ArrayList<String>();
@@ -427,21 +339,4 @@ public class SaveRequirementController {
 		request.send();
 	}
 
-	/**
-	 * @return the currentAttachment
-	 */
-	public Attachment getCurrentAttachment() {
-		return currentAttachment;
-	}
-
-	/**
-	 * @param currentAttachment the currentAttachment to set
-	 */
-	public void setCurrentAttachment(Attachment currentAttachment) {
-		this.currentAttachment = currentAttachment;
-	}
-
-	public synchronized void addAttachmentPartId(int id) {
-		currentAttachment.getAttachmentPartIds().add(id);
-	}
 }

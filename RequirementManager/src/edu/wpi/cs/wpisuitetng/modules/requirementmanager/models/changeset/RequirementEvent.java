@@ -30,7 +30,6 @@ public abstract class RequirementEvent extends AbstractModel {
 		CHANGESET,
 		NOTE,
 		USER,
-		ATTACHMENT,
 		ACCEPTANCETEST,
 		ACCEPTANCETESTUPDATE
 	};

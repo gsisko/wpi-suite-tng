@@ -179,7 +179,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.setMode(Mode.EDIT);
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
-	            //TODO make sure that enable editing allows selecting by individual cell
 				mainPanel.getResultsPanel().setUpForEditing();
 				mainPanel.getResultsPanel().setInEditMode(true);
 				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(false);//select by cells when in edit mode

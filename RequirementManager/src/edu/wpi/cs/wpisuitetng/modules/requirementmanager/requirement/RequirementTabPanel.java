@@ -19,7 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestTab;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.attachment.AttachmentTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.note.NoteTab;
 
 /** This is a JTabbedPane that is held within the RequirementTab and contains all the
@@ -38,9 +37,6 @@ public class RequirementTabPanel extends JTabbedPane {
 
 	/** The tab panel that contains the GUI for everything involving the creation, display, and editing of AcceptanceTests */
 	private AcceptanceTestTab acceptanceTestPanel;
-
-	/** The tab panel that contains the GUI for everything involving the creation and display of Attachments*/
-	private AttachmentTab attachmentPanel;
 
 	/** The tab panel that contains the GUI for displaying the history of the current Requirement */
 	private HistoryTab historyPanel;
@@ -66,17 +62,13 @@ public class RequirementTabPanel extends JTabbedPane {
 		notePanel = new NoteTab(parent);
 		addTab("Notes", new ImageIcon(), notePanel, "Notes for the current requirement");
 
-		//Create and add the AcceptanceTestTab "acceptanceTestPanel"
-		acceptanceTestPanel = new AcceptanceTestTab(parent);
-		addTab("Acceptance Tests", new ImageIcon(), acceptanceTestPanel, "Acceptance tests for the current requirement");
-
-		//Create and add the AttachmentTab "attachmentPanel"
-		attachmentPanel = new AttachmentTab(parent);
-		addTab("Attachments", new ImageIcon(), attachmentPanel, "Attachments for the current requirement");
-
 		//Create and add the UserChooserTab "userChooserPanel"
 		userChooserPanel = new UserChooserTab(parent); 
 		addTab("Users", new ImageIcon(), userChooserPanel, "Users assigned to the current requirement");
+
+		//Create and add the AcceptanceTestTab "acceptanceTestPanel"
+		acceptanceTestPanel = new AcceptanceTestTab(parent);
+		addTab("Acceptance Tests", new ImageIcon(), acceptanceTestPanel, "Acceptance tests for the current requirement");
 
 		this.setPreferredSize(new Dimension(450, 500)); // Set the preferred size of this panel
 	}
@@ -121,20 +113,6 @@ public class RequirementTabPanel extends JTabbedPane {
 	 */
 	public void setHistoryPanel(HistoryTab historyPanel) {
 		this.historyPanel = historyPanel;
-	}
-
-	/**
-	 * @return attachmentPanel The "attachmentPanel" AttachmentTab
-	 */
-	public AttachmentTab getAttachmentPanel() {
-		return attachmentPanel;
-	}
-
-	/**
-	 * @param attachmentPanel The "attachmentPanel" (an instance of AttachmentTab) to set
-	 */
-	public void setAttachmentPanel(AttachmentTab attachmentPanel) {
-		this.attachmentPanel = attachmentPanel;
 	}
 
 	/**
