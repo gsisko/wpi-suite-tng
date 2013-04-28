@@ -68,7 +68,7 @@ public class EditModeBuilderPanel extends JPanel {
 		enterPanel = new JPanel();
 		enterPanel.setPreferredSize(new Dimension(100, 90));
 		legendPanel = new JPanel();
-		legendPanel.setPreferredSize(new Dimension(140, 90));
+		legendPanel.setPreferredSize(new Dimension(150, 90));
 		warningPanel = new JPanel();
 		
 		// Enter Panel
@@ -80,16 +80,16 @@ public class EditModeBuilderPanel extends JPanel {
 		// Legend Panel
 		whiteLabel = new JLabel();
 		whiteLabel.setOpaque(false);
-		whiteLabel.setText("White: Editable field");
+		whiteLabel.setText("Editable field");
 		grayLabel = new JLabel();
-		grayLabel.setForeground(new Color(139,125,107));
-		grayLabel.setText("Gray: Non-editable field");
+		grayLabel.setForeground(Color.gray);
+		grayLabel.setText("Non-editable field");
 		yellowLabel = new JLabel();
 		yellowLabel.setForeground(new Color(204,204,0));
-		yellowLabel.setText("Yellow: Edited field");
+		yellowLabel.setText("Edited field");
 		redLabel = new JLabel();
 		redLabel.setForeground(Color.red);
-		redLabel.setText("Red: Invalid field");
+		redLabel.setText("Invalid field");
 		legendPanel.add(grayLabel);
 		legendPanel.add(whiteLabel);
 		legendPanel.add(yellowLabel);
