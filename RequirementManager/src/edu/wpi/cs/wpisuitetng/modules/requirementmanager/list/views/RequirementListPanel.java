@@ -34,7 +34,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveIterationObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** Panel to hold the results of a list of requirements
  */
@@ -429,18 +433,85 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			return "";
 		}
 
+		// Get the iteration and status and estimate for special cases
+		RequirementStatus updatedStatus = RequirementStatus.toStatus((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Status", columnNames)));
+		int updatedEstimate = Integer.parseInt( (String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Estimate", columnNames)));
+		int updatedAssignedIterationID;
+		if (updatedStatus == RequirementStatus.Deleted || RequirementStatus.Open == updatedStatus){
+			updatedAssignedIterationID = 0;
+		} else {	
+			updatedAssignedIterationID = this.getIterationID((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Iteration", columnNames)));
+		}
+
+		//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
+		//This should reduce the number of requests the server gets sent
+		if (updatedAssignedIterationID != toUpdate.getIteration() || updatedEstimate != toUpdate.getEstimate()){
+			//!!! Assuming Iteration will be set above !!!
+
+			/** Update oldIteration */
+			Iteration oldIteration = null;
+
+			for (Iteration i : parent.getParent().getAllIterations()) {
+				if (toUpdate.getIteration() == i.getID()) {
+					oldIteration = i;
+				}
+			}
+
+			//Update totalEstimate
+			oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - toUpdate.getEstimate());
+
+			//Remove id from the list
+			ArrayList<Integer> requirementList = oldIteration.getRequirementsContained();
+			if(requirementList.size() != 0){ //Only update if there are requirements saved...
+				requirementList.remove((Integer)toUpdate.getId());
+			}
+			oldIteration.setRequirementsContained(requirementList);
+
+			//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+			saveOldIterationRequest.setBody(oldIteration.toJSON());
+			saveOldIterationRequest.send();
+
+			/** Update updatedIteration*/
+			Iteration updatedIteration = null;
+
+			for (Iteration i : parent.getParent().getAllIterations()) {
+				if (  updatedAssignedIterationID  ==  i.getID()) {
+					updatedIteration = i;
+				}
+			}
+
+			//Add id to the list
+			ArrayList<Integer> updatedRequirementList = updatedIteration.getRequirementsContained();
+			updatedRequirementList.add((Integer)toUpdate.getId());
+			updatedIteration.setRequirementsContained(updatedRequirementList);
+
+			//Update totalEstimate
+			updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedEstimate);
+
+			//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
+			saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
+			saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+			saveUpdatedIterationRequest.clearAsynchronous();
+			saveUpdatedIterationRequest.send();
+		}
+		
+		
+		
+		
 		// Start saving the rest of the fields
+		toUpdate.setIteration(updatedAssignedIterationID);
+		toUpdate.setEstimate(updatedEstimate);
+		toUpdate.setStatus( updatedStatus);
 		toUpdate.setName((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Name", columnNames)));
 		toUpdate.setType( RequirementType.toType((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Type", columnNames))));
-		toUpdate.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Status", columnNames))));
 		toUpdate.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Priority", columnNames))));
 		toUpdate.setReleaseNumber((String)resultsTable.getValueAt(rowNumber, this.getColumnIndex("ReleaseNumber", columnNames)));
-		toUpdate.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Estimate", columnNames))));
 		toUpdate.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("ActualEffort", columnNames))));
 
-		int iterationID = this.getIterationID((String) resultsTable.getValueAt(rowNumber, this.getColumnIndex("Iteration", columnNames)));
-		toUpdate.setIteration(iterationID);
-
+		
+		
 		return toUpdate.toJSON();
 
 	}
