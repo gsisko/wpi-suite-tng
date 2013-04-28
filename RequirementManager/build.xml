@@ -11,6 +11,7 @@
 		<pathelement path="../Core/WPISuite-Interfaces/build"/>
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
+			<include name="commons-codec-*.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 		<fileset dir="../RequirementManager/lib">
