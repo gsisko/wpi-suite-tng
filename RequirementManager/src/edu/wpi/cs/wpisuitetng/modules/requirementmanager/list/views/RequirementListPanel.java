@@ -667,12 +667,12 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		// Check for Changes, and turn the save button in if changes were made
 		for (Boolean[] Nrows : needsSaving)
 			for (Boolean Ncells: Nrows)
-				if (!Ncells.booleanValue()){
+				if (Ncells.booleanValue()){
 					parent.getParent().getBtnSave().setEnabled(true);
 					// The save button has been disabled because there is invalidity in the table
 					return;			
 				}
-		// Double check that un-editable boxes are not changed
+		parent.getParent().getBtnSave().setEnabled(false);
 	}
 
 	/**
