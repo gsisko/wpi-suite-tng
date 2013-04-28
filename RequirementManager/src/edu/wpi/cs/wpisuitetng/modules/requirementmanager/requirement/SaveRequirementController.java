@@ -323,7 +323,9 @@ public class SaveRequirementController {
 				myList.get(i).setAcceptanceTestResult(newTest.getAcceptanceTestResult());	// And update it
 			}
 		}
-
+		
+		currentRequirement.setAcceptanceTests(myList);
+		
 		// make a POST http request and let the observer get the response
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
 		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request

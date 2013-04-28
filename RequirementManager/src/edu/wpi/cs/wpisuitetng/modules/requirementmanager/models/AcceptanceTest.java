@@ -108,6 +108,13 @@ public class AcceptanceTest extends RequirementEvent {
 		return title;
 	}
 	
+	/**
+	 * @return the description of this acceptance test
+	 */
+	public String getAcceptanceDescription(){
+		return description;
+	}
+	
 	/** Converts the acceptance test to a JSON string and returns it 
 	 * @return a JSON string of the acceptance test
 	 */
@@ -143,4 +150,22 @@ public class AcceptanceTest extends RequirementEvent {
 		return "Acceptance Test added by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 	
+	/**
+	 * Compares variables in AcceptanceTest to determine if the test is equal
+	 * @param otherTest test to compare
+	 * @return true if test is equal, false if not equal
+	 */
+	@Override
+	public boolean equals(Object otherTest){
+		if (otherTest instanceof AcceptanceTest){
+			if ((this.getAcceptanceTestResult().equals( ((AcceptanceTest) otherTest).getAcceptanceTestResult()) )&& 
+			(this.getAcceptanceTestTitle().equals( ((AcceptanceTest) otherTest).getAcceptanceTestResult()))  &&
+			(this.getAcceptanceDescription().equals( ((AcceptanceTest) otherTest).getAcceptanceDescription())) 
+			){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
