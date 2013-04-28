@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 import java.awt.BorderLayout;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -320,7 +321,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		JComboBox typebox = new JComboBox();
 		Iteration[] allIterations = parent.getParent().getAllIterations();
 		for (Iteration anIter: allIterations){
-			typebox.addItem(anIter.getName());
+			// Add the iteration to the list if backlog or not closed
+			if( anIter.getEndDate().after(new Date())  || anIter.getName().equals("") ) {  
+				typebox.addItem(anIter.getName());
+			}
 		}
 
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
