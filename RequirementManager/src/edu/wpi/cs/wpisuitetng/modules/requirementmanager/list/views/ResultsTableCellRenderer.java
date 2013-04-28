@@ -48,7 +48,7 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 			cell.setBackground(defaultGray);
 		}
 		else if (!isValid[row][column]) {
-			Color defaultRed = new Color(255,70,70);
+			Color defaultRed = new Color(255,50,50);
 			cell.setBackground(defaultRed);
 		}
 		else if (needsSaving[row][column]) {
