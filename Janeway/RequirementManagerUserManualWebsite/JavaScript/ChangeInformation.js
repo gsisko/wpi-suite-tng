@@ -29,6 +29,9 @@ function changePage(str){
         MakeReqPage();
 	else if (str.toString() == "updateReqPage")
         UpdateReqPage();
+        else if (str.toString() == "inlineUpdate")
+        	InlineUpdate();
+        
 	else if (str.toString() == "addingANote")
         AddingANote();
 	else if (str.toString() == "deleteReqPage")
@@ -100,11 +103,11 @@ function MakeReqPage() {
 function UpdateReqPage(){
 	$(document).ready(function () {
         //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Create a Requirement</a>');
+        $(".moveTabs").html('<a class="title">How to Update a Requirement</a>');
 		$(".instructionTitle").html('<a>The Requirement Builder Panel</a>');
         $(".instructionText").html(function(){
         	var str = '<img width="750" src="images/requirementListPanel.png"/><br />';
-        	str += 'From the "List Requirements" tab, <span style="color:#ED1C24">double click on the requirement you wish to edit</span>. This will bring you to a screen identical to that of creating a requirement, though different areas are enabled or disabled.</a><br/>';
+        	str += '<a>From the "List Requirements" tab, <span style="color:#ED1C24">double click on the requirement you wish to edit</span>. This will bring you to a screen identical to that of creating a requirement, though different areas are enabled or disabled.</a><br/>';
         	str += '<img width = "500" src="images/editRequirementPanel.png"/><br />';
         	str += '<a>As the above images shows, any <span style="color:#22B14C">fields previously entered are preserved</span>, in this case that is only the name and description. While other fields have changed from disabled to <span style="color:#FF7F27">optional</span>, those are: status, estimate, and actual Effort. <b>Iteration is still disabled</b> as iterations can only be set for requirements that have an estimate value set.</a><br/>';
         	str += '<img width="500" src = "images/editedRequirementPanel.png"/><br />';
@@ -112,6 +115,18 @@ function UpdateReqPage(){
         	return str;
         });
     });
+}
+
+function InlineUpdate(){
+	$(document).ready(function () {
+		$(".moveTabs").html('<a class="title">How to Update a Requirement Inline</a>');
+		$(".instructionTitle").html('<a>The Inline Requirement Editor</a>');
+		$(".instructionText").html(function (){
+			var str = '<img src="images/inlineEditButton.png" /><br />';
+			str += '<a>To edit inline, begin by clicking the inline edit button to have the defualt building screen change into an inline editing screen.</a><br /><br />';
+			return str;
+		});
+	});
 }
 
 function CheckHistory(){
