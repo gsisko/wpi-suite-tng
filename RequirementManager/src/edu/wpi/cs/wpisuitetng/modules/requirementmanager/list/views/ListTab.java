@@ -223,4 +223,18 @@ public class ListTab extends JPanel {
 		this.splitPane = splitPane;
 	}
 
+	/**
+	 * @return the leftPanel
+	 */
+	public JPanel getLeftPanel() {
+		return leftPanel;
+	}
+
+	/**
+	 * @param leftPanel the leftPanel to set
+	 */
+	public void setLeftPanel(JPanel leftPanel) {
+		this.leftPanel = leftPanel;
+	}
+
 }

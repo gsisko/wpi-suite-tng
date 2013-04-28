@@ -12,6 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -356,6 +357,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			mainPanel.getSplitPane().setDividerLocation(oldDividerLocation);
 			mainPanel.getSplitPane().setEnabled(true);
 			mainPanel.getSplitPane().setDividerSize(oldDividerSize);
+			mainPanel.getLeftPanel().setMinimumSize(new Dimension (260, 500));
 		}
 		else {
 			oldDividerLocation = mainPanel.getSplitPane().getDividerLocation();
@@ -363,6 +365,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			mainPanel.getSplitPane().setEnabled(false);
 			mainPanel.getSplitPane().setDividerLocation(0);
 			mainPanel.getSplitPane().setDividerSize(0);
+			mainPanel.getLeftPanel().setMinimumSize(new Dimension (0, 500));
 		}
 		
 		if (mainPanel.getMode() == Mode.FILTER) {
