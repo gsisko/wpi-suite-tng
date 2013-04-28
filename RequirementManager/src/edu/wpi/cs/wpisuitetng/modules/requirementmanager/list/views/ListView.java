@@ -179,9 +179,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.setMode(Mode.EDIT);
 				setListsAndBuildersVisible(false);
 				btnRefresh.setEnabled(false);
-
+	            //TODO make sure that enable editing allows selecting by individual cell
 				mainPanel.getResultsPanel().setUpForEditing();
 				mainPanel.getResultsPanel().setInEditMode(true);
+				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(false);//select by cells when in edit mode
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(false);//disables the lookup by ID box
 			}
@@ -198,6 +199,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				refreshData();
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
+				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(true);//select by rows when not in edit mode
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
@@ -218,6 +220,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				refreshData();
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
+				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(true);//select by rows when not in edit mode
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box

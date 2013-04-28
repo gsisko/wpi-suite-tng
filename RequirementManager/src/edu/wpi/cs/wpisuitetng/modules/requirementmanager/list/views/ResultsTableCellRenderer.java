@@ -39,7 +39,14 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 		if (needsSaving == null || isValid == null || isEditable == null) {
-			cell.setBackground(Color.white);
+			if (isSelected) {
+				Color defaultBlue = new Color(200,221,242);
+				setBackground(defaultBlue);                
+			}
+			else
+			{
+				setBackground(Color.white);
+			}
 			return cell;
 		}
 		
