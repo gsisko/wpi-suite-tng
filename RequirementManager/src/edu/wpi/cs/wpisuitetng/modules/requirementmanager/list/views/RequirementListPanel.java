@@ -34,7 +34,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.*;
 
 /** Panel to hold the results of a list of requirements
  */
@@ -422,7 +421,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return toUpdate.toJSON();
 
 	}
-
+	
+	/** Gets the requirement that would be made if the columns from the given row were read.
+	 * 
+	 *  Invalid estimates and actual efforts are set to -1
+	 * 
+	 * @param row The row to read
+	 * @return A requirement with the values from the fields read
+	 */
 	protected Requirement getCurrentRequirement(int row) {
 
 		Requirement currentRequirement = new Requirement();
@@ -581,10 +587,13 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 *  should resume.
 	 */
 	public void savesComplete() {
-		System.out.println("Save complete");
 	}
-
-
+	
+	/** Way to trigger a pop-up or enable/disable certain 
+	 *  buttons when a  save is not successful.
+	 */
+	public void failedToSave() {
+	}
 
 	/**
 	 * @return the listSaveModelController
@@ -613,12 +622,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		parent.getParent().refreshData();
 	}
 
-	/** Way to trigger a pop-up or enable/disable certain 
-	 *  buttons when a  save is not successful.
-	 */
-	public void failedToSave() {
-		System.out.println("sadface ): ");
-	}
 
 	/**
 	 * @return the isValid

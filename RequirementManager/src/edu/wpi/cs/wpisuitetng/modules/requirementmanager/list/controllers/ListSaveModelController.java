@@ -46,7 +46,6 @@ public class ListSaveModelController implements IController{
 	public void perform(){
 		// Get the unique identifiers of the models
 		Boolean[][] needsSaving = theList.getNeedsSaveFlags();
-		int numRequests = 0;
 		// Go through the list of flags and send save requests as necessary
 		for(int row = 0; row < needsSaving.length; row++){			
 			boolean currentRowNeedsSaving = false;
@@ -58,10 +57,8 @@ public class ListSaveModelController implements IController{
 			// If changes were found in the row, send the message
 			if (currentRowNeedsSaving){
 				perform(theList.getUniqueIdAtIndex(row) , row, theList.getModelAsJson(row));
-				numRequests++;
 			}
 		}
-		System.out.println("ListSaveModelController:    perform(): " + numRequests + " times");		
 	}
 
 	/** provide action listener or other ways to check whether a certain action is performed
@@ -75,8 +72,6 @@ public class ListSaveModelController implements IController{
 		request.setBody(modelJSON); // put the new message in the body of the request
 		request.addObserver(new ListSaveModelObserver(this, theList.getNeedsSaveFlags(), flagIndex)); // add an observer to process the response
 		request.send();
-		System.out.println("ListSaveModelController:    message sent ");
-
 	}
 
 
@@ -89,8 +84,6 @@ public class ListSaveModelController implements IController{
 		theList.savesComplete();
 		// Trigger a mass reset
 		theList.refreshAll();
-		System.out.println("ListSaveModelController:    message success! ");
-
 	}
 
 	/** Upon failure, prints to console
