@@ -51,8 +51,7 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		
 		if (!isEditable[row][column]) {
-			Color defaultGray = new Color(238,238,238);
-			cell.setBackground(defaultGray);
+			cell.setBackground(Color.lightGray);
 		}
 		else if (!isValid[row][column]) {
 			Color defaultRed = new Color(255,50,50);

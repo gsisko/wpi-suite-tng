@@ -100,6 +100,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
+		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
 
