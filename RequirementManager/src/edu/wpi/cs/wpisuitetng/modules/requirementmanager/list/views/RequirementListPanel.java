@@ -230,9 +230,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					needsSaving[row][column] = isChanged;
 					isValid[row][column] = !isInvalid;
 
+					updateSaveButton();
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));			
 				}
-				updateSaveButton();
 			}
 
 		});
