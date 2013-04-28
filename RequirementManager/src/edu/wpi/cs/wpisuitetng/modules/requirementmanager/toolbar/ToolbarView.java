@@ -157,12 +157,21 @@ public class ToolbarView extends DefaultToolbarView {
 	{
 		return createRequirement;
 	}
+	
 	/**Getter for the lookup by ID box
 	 * @return the lookup by ID box
 	 */
 	public JPlaceholderTextField getIDbox()
 	{
 		return listField;
+	}
+	
+	/**Getter for create requirement button
+	 * @return the create requirement button
+	 */
+	public JButton getDisplayChartsButton()
+	{
+		return btnDisplayPieChart;
 	}
 	
 

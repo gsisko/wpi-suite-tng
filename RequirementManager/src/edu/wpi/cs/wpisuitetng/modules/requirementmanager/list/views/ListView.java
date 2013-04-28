@@ -331,6 +331,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void setAllRequirements(Requirement[] allRequirements) {
 		this.allRequirements = allRequirements;
+		if (allRequirements.length > 0)
+			tabController.getView().getJanewayModule().getToolbarView().getDisplayChartsButton().setEnabled(true);
+		else
+			tabController.getView().getJanewayModule().getToolbarView().getDisplayChartsButton().setEnabled(false);
 	}
 
 	/**
@@ -345,6 +349,10 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
 		this.displayedRequirements = displayedRequirements;
+		if (displayedRequirements.length > 0 && tabController.getView().getNonRequirementTabCount() == 0)
+			btnEnableEdit.setEnabled(true);
+		else
+			btnEnableEdit.setEnabled(false);
 	}
 
 	/**

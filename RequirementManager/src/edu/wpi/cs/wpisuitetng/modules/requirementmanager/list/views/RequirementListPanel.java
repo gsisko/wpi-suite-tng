@@ -36,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatu
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveIterationObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.views.JNumberTextField;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -287,7 +288,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 
 	/** 
-	 * place combox for type
+	 * place comboBox for type
 	 */
 	public void setComboxforType()
 	{
@@ -306,7 +307,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** 
-	 * place combox for iteration
+	 * place comboBox for iteration
 	 */
 	public void setComboxforIteration()
 	{
@@ -328,7 +329,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 
 	/** 
-	 * place combox for type
+	 * place comboBox for type
 	 */
 	public void setComboxforStatus()
 	{
@@ -348,7 +349,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** 
-	 * place combox for type
+	 * place comboBox for type
 	 */
 	public void setComboxforPriority()
 	{
@@ -363,6 +364,38 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("High");
 
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+
+	}
+	
+	/** 
+	 * place numberBox for type
+	 */
+	public void setNumberBoxForEstimate()
+	{
+		int estimateColumn = this.getColumnIndex("Estimate", getTableName());
+
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(estimateColumn);
+
+		JNumberTextField estimateBox = new JNumberTextField();
+		estimateBox.setAllowNegative(false);
+
+		typeColumn.setCellEditor(new DefaultCellEditor(estimateBox));
+
+	}
+	
+	/** 
+	 * place numberBox for type
+	 */
+	public void setNumberBoxForActualEffort()
+	{
+		int actualEffortColumn = this.getColumnIndex("ActualEffort", getTableName());
+
+		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(actualEffortColumn);
+
+		JNumberTextField actualEffortBox = new JNumberTextField();
+		actualEffortBox.setAllowNegative(false);
+
+		typeColumn.setCellEditor(new DefaultCellEditor(actualEffortBox));
 
 	}
 
@@ -647,6 +680,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		setComboxforStatus();
 		setComboxforPriority();
 		setComboxforIteration();
+		setNumberBoxForEstimate();
+		setNumberBoxForActualEffort();
 		disableSorting();
 		parent.getParent().getBtnSave().setEnabled(false);
 	}
