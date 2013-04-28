@@ -110,7 +110,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					Requirement requirement = null;
 					for (Requirement r : reqs) {
-						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getColumnIndex("ID", getTableName()))))
+						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getColumnIndex("ID"))))
 							requirement = r;	
 					}
 
@@ -123,10 +123,11 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					Requirement currentRequirement = getCurrentRequirement(row);
 
 					if (columnName.equals("Name")) {
-						if (!requirement.getName().equals((String)data)) {
+						String name = (String) data;
+						if (!requirement.getName().equals(name)) {
 							isChanged = true;
 						}
-						if (((String)data).equals(""))
+						if ((name).equals("") || name.length() > 100 )
 							isInvalid = true;
 					}
 
@@ -147,20 +148,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							}
 						}
 						isEditable[row][estimateColumn] = iteration.equals("");
-
-						if (fireCount++ < 1) {
+						// This is for making sure the un-editable settings fire correctly
+						if (fireCount++ < 1) 
 							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, estimateColumn), row, estimateColumn);
-						}
-						else {
+						else 
 							fireCount = 0;
-						}
-
 					}
 
 					else if (columnName.equals("Type")) {
-						if (requirement.getType() != RequirementType.toType((String)data)) {
-							isChanged = true;
-						}
+						isChanged = requirement.getType() != RequirementType.toType((String)data);					
 					}
 
 					else if (columnName.equals("Status")) {
@@ -170,11 +166,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 							if (status.equals("New") && requirement.getStatus() != RequirementStatus.New) {
 								isInvalid = true;
-							}
-							else if (status.equals("InProgress") || status.equals("Complete")) {
-								//Check the iteration to see if this change is valid
-								if (currentRequirement.getIteration() == 0)
-									isInvalid = true;// Set the iteration to invalid because there is no iteration
+							} else if (status.equals("InProgress") || status.equals("Complete")) {
+								isInvalid = currentRequirement.getIteration() == 0;// Set the iteration to invalid because there is no iteration
 							}
 						}
 					}
@@ -194,43 +187,27 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					else if (columnName.equals("Estimate")) {
 						int iterationColumn = getColumnIndex("Iteration");
 						String estimate = (String) data;
-
-						try {
+						if (estimate.equals("")){
+							isInvalid = true;
+							isEditable[row][iterationColumn] = false;						
+						} else {
 							int estimateVal = Integer.parseInt(estimate);
 							isEditable[row][iterationColumn] = (estimateVal > 0);
-
-							if (estimate.equals("") || estimate.contains("-") || estimate.contains(".")){
-								isInvalid = true;
-								isEditable[row][iterationColumn] = false;
-							} else if (requirement.getEstimate() != estimateVal)
-								isChanged = true;
-
-						} catch (Exception ex) {
-							isInvalid = true;
-							isEditable[row][iterationColumn] = false;
-						}
-
-						if (fireCount++ < 1) {
+							isChanged = requirement.getEstimate() != estimateVal;
+						} 
+						// This is for making sure the un-editable settings fire correctly
+						if (fireCount++ < 1) 
 							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, iterationColumn), row, iterationColumn);
-						}
-						else {
-							fireCount = 0;
-						}
-
+						else 
+							fireCount = 0;			
 					}
 
 					else if (columnName.equals("ActualEffort")) {
 						String actualEffort = (String) data;
-						if (actualEffort.equals("") || actualEffort.contains("-") || actualEffort.contains("."))
+						if (actualEffort.equals("")){
 							isInvalid = true;
-						else {
-							try {
-								if (requirement.getActualEffort() != Integer.parseInt((String)data)) {
-									isChanged = true;
-								}
-							} catch (Exception ex) {
-								isInvalid = true;
-							}
+						} else {
+							isChanged = requirement.getActualEffort() != Integer.parseInt((String)data);
 						}
 					}
 
@@ -241,6 +218,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					needsSaving[row][column] = isChanged;
 					isValid[row][column] = !isInvalid;
+		//			printMessages(prepareErrorMessages());
 
 					updateSaveButton();
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
@@ -257,6 +235,106 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		// Setup controller
 		listSaveModelController = new ListSaveModelController(this, "requirement");
 	}
+
+	/** Prints the error messags to console for testing */
+	private void printMessages(String[] messages){
+		for (String toPrint: messages)
+			System.out.println(toPrint);		
+	}
+
+
+	/** Prepares an array of 5 strings that represent the following errors
+	 *  or invalid cell states. 
+	 * 
+	 * @return an array of strings representing error states
+	 */
+	private String[] prepareErrorMessages(){
+		// Initialize the string to be all null strings
+		String[] messages = {"","","","",""};
+
+		// These variables represent indices in the array of messages
+		final int newStatus     = 0;
+		final int statusInvalid = 3;
+		final int blankField    = 2;
+		final int bigName       = 1;		
+
+		// Save the column indices for later use
+		int iterationColumn     = this.getColumnIndex("Iteration");
+		int estimateColumn      = this.getColumnIndex("Estimate");
+		int actualEffortColumn  = this.getColumnIndex("ActualEffort");
+		int statusColumn        = this.getColumnIndex("Status");
+		int nameColumn          = this.getColumnIndex("Name");
+
+
+
+		// Check for validity and disables the save button if there is invalidity
+		for (int column =0; column < resultsTable.getColumnCount(); column++){
+			for (int row = 0;  row < resultsTable.getRowCount(); row ++  ){
+				if (!isValid[row][column].booleanValue()){
+					// Different errors depending on the column
+
+					if (column ==  estimateColumn){
+						// If the message isn't set at all, set it
+						if (messages[blankField].equals("") )
+							messages[blankField] = "The following fields cannot be blank: Estimate";
+						// If the message is partially set, but doesn't have name, add name
+						 else if (!messages[blankField].contains("Estimate") )
+							messages[blankField] += ", Estimate";	
+
+
+					} else if (column == actualEffortColumn){
+						// If the message isn't set at all, set it
+						if (messages[blankField].equals("") )
+							messages[blankField] = "The following fields cannot be blank: ActualEffort";
+							// If the message is partially set, but doesn't have name, add name
+						else if (!messages[blankField].contains("ActualEffort") )
+							messages[blankField] += ", ActualEffort";
+
+					} else if (column == nameColumn){
+						String name = (String) resultsTable.getValueAt(row,column);
+						if (name.equals("")){
+							// If the message isn't set at all, set it
+							if (messages[blankField].equals("") ){
+								messages[blankField] = "The following fields cannot be blank: Name";
+								// If the message is partially set, but doesn't have name, add name
+							} else if (!messages[blankField].contains("Name") ){
+								messages[blankField] += ", Name";
+							} 	
+						} else {
+							messages[bigName] = "The name cannot exceed 100 characters.";
+						}
+					} else if (column == statusColumn){
+						String theStatus = (String) resultsTable.getValueAt(row,column);
+						// If there is invalidity and the status is new, this is the error
+						if (theStatus.equals("New")){
+							messages[newStatus] = "The status cannot be changed to New from any other status.";
+							// If these statuses are present and the req is in the backlog, we have this error
+						} else if ( (theStatus.equals("InProgress") || theStatus.equals("Complete")) && ((String) resultsTable.getValueAt(row,iterationColumn)).equals("")){
+							messages[statusInvalid] = "The status cannot be InProgress or Complete when in the Backlog.";
+						} else {
+							System.err.println("Unknown invalid Status case.");
+						}	
+					} else { 
+						System.err.println("Unknown invalid case.");
+					}						
+				}
+			}			
+		}
+		int numMessags = 0, i =0 ;
+		int[] nums = {1,1,63,63,10000,100000};
+		for (String check: messages){
+			if (check.length() > nums[i]){
+				numMessags++;
+			}
+			i++; 
+		}
+		if (numMessags == 4){
+			messages[4] = "You made everything invalid. Go home, you're drunk.";
+		}
+
+		return messages;
+	}
+
 
 	/**
 	 * @return the main tab controller
@@ -366,7 +444,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 
 	}
-	
+
 	/** 
 	 * place numberBox for type
 	 */
@@ -382,7 +460,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(estimateBox));
 
 	}
-	
+
 	/** 
 	 * place numberBox for type
 	 */
@@ -618,7 +696,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			}
 		}
 		System.err.println("That column doesn't exist!");
-		return -1;
+		return 1;
 	}
 
 
