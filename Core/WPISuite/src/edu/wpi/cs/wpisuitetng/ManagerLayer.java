@@ -38,9 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.defecttracker.entitymanagers.DefectManager
 import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.FilterManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.IterationManager;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.RequirementManager;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.AttachmentPartManager;
 
 
 /**
@@ -84,8 +82,7 @@ public class ManagerLayer {
 		map.put("requirementmanagerrequirement", new RequirementManager(data));
 		map.put("requirementmanagerfilter", new FilterManager(data));
 		map.put("requirementmanageriteration", new IterationManager(data));
-		map.put("requirementmanagerattachmentpart", new AttachmentPartManager(data));
-
+		
 		//add just your module to this list
 		String[] fullModuleList = {"core","defecttracker","postboard", "requirementmanager"};
 		((ProjectManager)map.get("coreproject")).setAllModules(fullModuleList);
