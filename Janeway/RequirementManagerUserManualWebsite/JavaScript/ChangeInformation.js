@@ -124,6 +124,9 @@ function InlineUpdate(){
 		$(".instructionText").html(function (){
 			var str = '<img src="images/inlineEditButton.png" /><br />';
 			str += '<a>To edit inline, begin by clicking the inline edit button to have the defualt building screen change into an inline editing screen.</a><br /><br />';
+			str += '<img src="images/editPanel.png" /><br/>';
+			str += '<a>Once in the inline editing panel you can select the row you wish to edit, and edit it directly in the window. If you enter an impossible value the field will turn red. Allowed changes will turn yellow. This is a feature recommended for advanced users.</a>';
+			
 			return str;
 		});
 	});
