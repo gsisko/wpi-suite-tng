@@ -149,7 +149,8 @@ public class RequirementAttributePanel extends JPanel {
 	 *  8			*unused*
 	 *  9			Notes 
 	 *  10        	Save button is saving
-	 *  11        	Acceptance Tests
+	 *  11        	Acceptance Tests Title
+	 *  12        	Acceptance Tests Body
 	 */	
 	private boolean[] fieldsChanged;
 
@@ -616,7 +617,7 @@ public class RequirementAttributePanel extends JPanel {
 	 */
 	public boolean isNonMainRequirementFieldsChanged() {
 		for (int i = 0; i < fieldsChanged.length; i++){
-			if (fieldsChanged[i] && i != 9 && i != 11){
+			if (fieldsChanged[i] && i != 9 && i != 11 && i != 12){
 				return true;
 			}
 		}
