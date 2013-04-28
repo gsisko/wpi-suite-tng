@@ -23,14 +23,13 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.FilePartModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.SaveAttachmentPartsObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Attachment;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AttachmentPart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -378,7 +377,7 @@ public class SaveRequirementController {
 			for(ByteArrayOutputStream destination : destinations){
 //				AttachmentPart part = new AttachmentPart(destination.size(), destination.toByteArray(), n);
 				FilePartModel part = new FilePartModel("-1", new Integer(n).toString(), fc.getSelectedFile().getName(),
-						(int)fc.getSelectedFile().length(), Base64.encode(destination.toByteArray()));
+						(int)fc.getSelectedFile().length(), Base64.encodeBase64String(destination.toByteArray()));
 
 				parts.add(part);
 
