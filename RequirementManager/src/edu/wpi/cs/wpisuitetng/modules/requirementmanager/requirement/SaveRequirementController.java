@@ -383,7 +383,7 @@ public class SaveRequirementController {
 
 //				final Request request = Network.getInstance().makeRequest("requirementmanager/attachmentpart", HttpMethod.PUT); // PUT == create
 //				request.setBody(part.toJSON()); // put the new message in the body of the request
-				final Request request = Network.getInstance().makeRequest("core/filemanager", HttpMethod.PUT); // PUT == create
+				final Request request = Network.getInstance().makeRequest("core/file", HttpMethod.PUT); // PUT == create
 				request.setBody(part.toString());
 				request.addObserver(new SaveAttachmentPartsObserver(this)); // add an observer to process the response
 				request.send();
