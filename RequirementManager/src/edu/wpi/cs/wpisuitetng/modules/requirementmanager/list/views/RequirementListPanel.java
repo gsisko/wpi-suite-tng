@@ -134,17 +134,20 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 								isInvalid = true;
 
 							int statusColumn = getColumnIndex("Status");
+							int estimateColumn = getColumnIndex("Estimate");
 							if (iteration.equals("")) {
+								// Set the estimate box back to being editable
+								isEditable[row][estimateColumn] = true;
 								if (requirement.getStatus() == RequirementStatus.New)
 									resultsTable.setValueAt("New", row, statusColumn);
 								else
 									resultsTable.setValueAt("Open", row, statusColumn);
-							}
-							else
+							} else {
 								resultsTable.setValueAt("InProgress", row, statusColumn);
-
+								// Set the estimate box to be un-editable
+								isEditable[row][estimateColumn] = false;
+							}
 							if (currentRequirement.getEstimate() == 0) {
-								int estimateColumn = getColumnIndex("Estimate");
 								isValid[row][estimateColumn] = false;
 							}
 						}
@@ -160,8 +163,33 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					}
 
 					else if (columnName.equals("Status")) {
-						if (requirement.getStatus() != RequirementStatus.valueOf((String)data))
+						String newStatus = (String)data;
+						if (requirement.getStatus() != RequirementStatus.valueOf(newStatus)){
 							isChanged = true;
+							
+							int estimateColumn = getColumnIndex("Estimate");
+							int iterationColumn = getColumnIndex("Iteration");
+							
+							if (newStatus.equals("New") || newStatus.equals("Open") || newStatus.equals("Deleted") ){
+								// Estimate should now be editable
+								isEditable[row][estimateColumn] = true;
+								
+								// Force the iteration to backlog
+								resultsTable.setValueAt("", row, iterationColumn);
+					
+							} else {							
+								// If the estimate is invalid, make it so
+								if (currentRequirement.getEstimate() <= 0){
+									isValid[row][estimateColumn] = false;
+								}
+								// Disable the estimate
+								isEditable[row][estimateColumn] = false;
+								
+								//Check the iteration to see if this change is valid
+								if (currentRequirement.getIteration() == 0)
+									isInvalid = false;// Set the iteration to invalid because there is no iteration
+							}
+						}
 					}
 
 					else if (columnName.equals("Priority")) {
