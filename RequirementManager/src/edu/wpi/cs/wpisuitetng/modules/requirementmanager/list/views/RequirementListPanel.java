@@ -13,6 +13,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,6 +100,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable = new JTable(resultsTableModel);
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
+		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
 
@@ -138,15 +141,17 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						if (!getIterationName(requirement.getIteration()).equals(iteration)) {
 							isChanged = true;
 
-							if (iteration.equals("")) {
-								if (requirement.getStatus() == RequirementStatus.New)
-									resultsTable.setValueAt("New", row, statusColumn);
-								else
-									resultsTable.setValueAt("Open", row, statusColumn);
-							} else {
-								resultsTable.setValueAt("InProgress", row, statusColumn);
-							}
 						}
+
+						if (iteration.equals("")) {
+							if (requirement.getStatus() == RequirementStatus.New)
+								resultsTable.setValueAt("New", row, statusColumn);
+							else
+								resultsTable.setValueAt("Open", row, statusColumn);
+						} else {
+							resultsTable.setValueAt("InProgress", row, statusColumn);
+						}
+
 						isEditable[row][estimateColumn] = iteration.equals("");
 						// This is for making sure the un-editable settings fire correctly
 						if (fireCount++ < 1) 
@@ -381,6 +386,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("UserStory");
 		typebox.addItem("NonFunctional");
 		typebox.addItem("Scenario");
+		typebox.setBackground(Color.white);
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
 
@@ -401,7 +407,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				typebox.addItem(anIter.getName());
 			}
 		}
-
+		typebox.setBackground(Color.white);
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
 
@@ -417,11 +423,41 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 		JComboBox typebox = new JComboBox();
 		typebox.addItem("New");
-		typebox.addItem("InProgress");
 		typebox.addItem("Open");
+		typebox.addItem("InProgress");
 		typebox.addItem("Complete");
 		typebox.addItem("Deleted");
-		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
+		typebox.setBackground(Color.white);
+		typeColumn.setCellEditor(new DefaultCellEditor(typebox) {
+
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)  {
+				Requirement[] reqs = parent.getParent().getDisplayedRequirements();
+				Requirement requirement = null;
+				for (Requirement r : reqs) {
+					if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getColumnIndex("ID", getTableName()))))
+						requirement = r;	
+				}
+				Requirement currentRequirement = getCurrentRequirement(row);
+
+				if (currentRequirement.getIteration() == 0 && requirement.getStatus() == RequirementStatus.New)
+					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(requirement.getStatus()));
+				else if (currentRequirement.getIteration() == 0)
+					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(RequirementStatus.Open));
+				else {
+					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(RequirementStatus.InProgress));
+				}
+				this.
+				editorComponent.setBackground(Color.white);
+				return editorComponent;
+			}
+
+			@Override
+			public Object getCellEditorValue() {
+				return ((JComboBox)editorComponent).getSelectedItem();
+			}
+
+		});
 
 
 	}
@@ -440,7 +476,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("Low");
 		typebox.addItem("Medium");
 		typebox.addItem("High");
-
+		typebox.setBackground(Color.white);
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 
 	}

@@ -136,7 +136,7 @@ public class ChartOptionsPanel extends JPanel{
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
-		String[] dataStrings = { "Requirement Status", "Requirement Iteration", "Number of Users Assigned To Requirements", "Total Estimate for Each User"};
+		String[] dataStrings = { "Requirement Status", "Requirement Iteration", "Users per Requirement", "Estimate per User"};
 		String[] filtersStrings = { "Applied", "Not Applied"};
 
 		//Construct the boxes 
