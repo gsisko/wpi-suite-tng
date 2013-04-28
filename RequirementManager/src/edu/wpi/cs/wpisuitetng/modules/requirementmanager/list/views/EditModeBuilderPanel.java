@@ -12,50 +12,155 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
 @SuppressWarnings("serial")
 public class EditModeBuilderPanel extends JPanel {
-
-	/** The name warning label, used to warn the user of an invalid fields in the EditMode */
-	private JLabel invalidInput;
+	
+	/** The panel for the enter label */
+	private JPanel enterPanel;
+	
+	/** The panel for the legend */
+	private JPanel legendPanel;
+	
+	/** The panel for the warnings */
+	private JPanel warningPanel;
+	
+	/** The enter label */
+	private JLabel enterLabel;
+	
+	/** The white label */
+	private JLabel whiteLabel;
+	/** The gray label */
+	private JLabel grayLabel;
+	/** The yellow label */
+	private JLabel yellowLabel;
+	/** The red label */
+	private JLabel redLabel;
+	
+	/** The error 1 label */
+	private JLabel err1Label;
+	/** The error 2 label */
+	private JLabel err2Label;
+	/** The error 3 label */
+	private JLabel err3Label;
+	/** The error 4 label */
+	private JLabel err4Label;
+	/** The error 5 label */
+	private JLabel err5Label;
+	
+	/** The layout manager for this panel */
+	protected SpringLayout layout;
 
 	/** Construct the panel and all of its components
 	 * @param view The ListTab that this panel will live in
 	 */
 	public EditModeBuilderPanel(ListTab view) {
-
-		//construct the panels
-		invalidInput = new JLabel("Invalid changes in the fields.");
-
-		//Set the color for the warning label
-		invalidInput.setForeground(Color.red);
 		
-		//Set the text of the warning label
-		invalidInput.setText("");
+		//layout for this panel
+		layout  = new SpringLayout();
+		this.setLayout(layout);
+		
+		enterPanel = new JPanel();
+		enterPanel.setPreferredSize(new Dimension(100, 90));
+		legendPanel = new JPanel();
+		legendPanel.setPreferredSize(new Dimension(140, 90));
+		warningPanel = new JPanel();
+		
+		// Enter Panel
+		enterLabel = new JLabel();
+		enterLabel.setText("<html>Press enter to <br> finalize a save.</html>");
+		enterLabel.setFont(enterLabel.getFont().deriveFont(13));
+		enterPanel.add(enterLabel);
+		
+		// Legend Panel
+		whiteLabel = new JLabel();
+		whiteLabel.setOpaque(false);
+		whiteLabel.setText("White: Editable field");
+		grayLabel = new JLabel();
+		grayLabel.setForeground(new Color(139,125,107));
+		grayLabel.setText("Gray: Non-editable field");
+		yellowLabel = new JLabel();
+		yellowLabel.setForeground(new Color(204,204,0));
+		yellowLabel.setText("Yellow: Edited field");
+		redLabel = new JLabel();
+		redLabel.setForeground(Color.red);
+		redLabel.setText("Red: Invalid field");
+		legendPanel.add(grayLabel);
+		legendPanel.add(whiteLabel);
+		legendPanel.add(yellowLabel);
+		legendPanel.add(redLabel);
+		
+		// Warning panel
+		err1Label = new JLabel();
+		err1Label.setForeground(Color.red);
+		err1Label.setFont(err1Label.getFont().deriveFont(11));
+		err1Label.setText("");
+		err2Label = new JLabel();
+		err2Label.setForeground(Color.red);
+		err2Label.setText("");
+		err3Label = new JLabel();
+		err3Label.setForeground(Color.red);
+		err3Label.setText("");
+		err4Label = new JLabel();
+		err4Label.setForeground(Color.red);
+		err4Label.setText("");
+		err5Label = new JLabel();
+		err5Label.setForeground(Color.red);
+		err5Label.setText("");
+		warningPanel.add(err1Label);
+		warningPanel.add(err2Label);
+		warningPanel.add(err3Label);
+		warningPanel.add(err4Label);
+		warningPanel.add(err5Label);
 
-		//set the layout for this panel
-		setLayout(new GridBagLayout());
-		GridBagConstraints EditModeBuilderConstraints = new GridBagConstraints();
+		// Arrange all panels
+		layout.putConstraint(SpringLayout.NORTH, legendPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, legendPanel, 0, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, legendPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, enterPanel, 50, SpringLayout.EAST, legendPanel);
+		layout.putConstraint(SpringLayout.NORTH, enterPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, enterPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.NORTH, warningPanel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, warningPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, warningPanel, 50, SpringLayout.EAST, enterPanel);
+		layout.putConstraint(SpringLayout.EAST, warningPanel, 0, SpringLayout.EAST, this);
 
-		//invalidInput
-		//Set the constraints for the "invalidInput" and add it to the view
-		EditModeBuilderConstraints.fill = GridBagConstraints.HORIZONTAL; //Tell the field to stretch horizontally to fit it's cell(s)
-		EditModeBuilderConstraints.anchor = GridBagConstraints.CENTER; //This sets the anchor of the field, here we have told it to anchor the component to the center right of it's field
-		EditModeBuilderConstraints.insets = new Insets(0,10,5,0); //Set the top padding to 0 units of blank space, set left padding to 10 units,right padding to 0 units, bottom padding to 5 units
-		EditModeBuilderConstraints.gridx = 0;//Set the x coord of the cell of the layout we are describing
-		//EditModeBuilderConstraints.gridwidth = 2; //Tell this component to fill 2 columns
-		EditModeBuilderConstraints.gridy = 0;//Set the y coord of the cell of the layout we are describing
-		add(invalidInput, EditModeBuilderConstraints);//Actually add the "invalidInput" to the layout given the previous constraints
-
+		
+		this.add(legendPanel);
+		this.add(enterPanel);
+		this.add(warningPanel);
 	}
 	
-	public void setInvalidInputMessage() {
-		invalidInput.setText("There are invalid changes in the fields. Please address errors before saving.");
+	public void setInvalidInputMessages(String[] errorMessages) {
+		
+		int errorSize;
+		errorSize = errorMessages.length;
+		
+		String errorString = "";
+		
+		for(int i = 0; i < errorSize; i++) {
+			errorString = errorMessages[i];
+			if (i == 0) {
+				err1Label.setText(errorString);
+			}
+			if (i == 1) {
+				err2Label.setText(errorString);
+			}
+			if (i == 2) {
+				err3Label.setText(errorString);
+			}
+			if (i == 3) {
+				err4Label.setText(errorString);
+			}
+			if (i == 4) {
+				err5Label.setText(errorString);
+			}
+		}
+		
 	}
 }

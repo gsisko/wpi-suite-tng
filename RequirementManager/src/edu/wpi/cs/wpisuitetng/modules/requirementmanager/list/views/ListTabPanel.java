@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationList
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab.Mode;
 
 /** This tabbed pane will appear as the main content of the Requirements tab.
- * It starts out showing the single Dashboard tab.
+ * It starts out showing the single List Requirements tab.
  */
 @SuppressWarnings("serial")
 public class ListTabPanel extends JTabbedPane {
