@@ -729,6 +729,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	}
 	
 	public ListTab getMyParent() {
-		return this.parent;
+		return parent;
 	}
 }

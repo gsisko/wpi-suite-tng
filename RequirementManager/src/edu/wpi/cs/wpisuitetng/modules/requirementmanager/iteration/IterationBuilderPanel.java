@@ -605,6 +605,6 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 	
 	public ListTab getMyParent() {
-		return this.parent;
+		return parent;
 	}
 }

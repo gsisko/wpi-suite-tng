@@ -35,7 +35,7 @@ public class MainTabPanel extends JTabbedPane {
 	private MainTabController mainTabController;
 	
 	public MainTabPanel(JanewayModule _parent) {
-		this.parent = _parent;
+		parent = _parent;
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
