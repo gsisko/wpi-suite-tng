@@ -45,21 +45,24 @@ public class RetrieveRequirementController extends MouseAdapter {
 	public void mouseClicked(MouseEvent me) {
 		if (me.getClickCount() == 2) { /* respond to double clicks */
 
-			// Get a reference to the results JTable from the mouse event
-			JTable resultsTable = (JTable) me.getSource();
+			if (!view.isInEditMode()) {
 
-			// Determine the row the user clicked on
-			int row = resultsTable.rowAtPoint(me.getPoint());
+				// Get a reference to the results JTable from the mouse event
+				JTable resultsTable = (JTable) me.getSource();
 
-			// make sure the user actually clicked on a row
-			if (row > -1) {
-				String requirementId = (String) resultsTable.getValueAt(row, 0);
+				// Determine the row the user clicked on
+				int row = resultsTable.rowAtPoint(me.getPoint());
 
-				// Create and send a request for the requirement with the given ID
-				Request request;
-				request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
-				request.addObserver(new RetrieveRequirementRequestObserver(this));
-				request.send();
+				// make sure the user actually clicked on a row
+				if (row > -1) {
+					String requirementId = (String) resultsTable.getValueAt(row, 0);
+
+					// Create and send a request for the requirement with the given ID
+					Request request;
+					request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
+					request.addObserver(new RetrieveRequirementRequestObserver(this));
+					request.send();
+				}
 			}
 		}
 	}

@@ -191,6 +191,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 		//		mainPanel.getResultsPanel().disableSorting();
 				mainPanel.getResultsPanel().setUpForEditing();
+				mainPanel.getResultsPanel().setInEditMode(true);
 			}
 		});
 
@@ -202,6 +203,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
+				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 			}
@@ -217,7 +219,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
+				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
+				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 			}
 		});
 		

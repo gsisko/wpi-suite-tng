@@ -55,9 +55,12 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Array of Boolean flags for whether or not cells are valid */
 	private Boolean[][] isValid;
-	
+
 	/** Array of Boolean flags for whether or not the cells are editable */
 	private Boolean[][] isEditable;
+	
+	/** Boolean for whether or not the table is in edit mode */
+	private boolean inEditMode;
 
 	/** ArrayList of listeners on resultsTable column heads */
 	private ArrayList<MouseListener> columnHeadListeners;
@@ -538,6 +541,21 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		}
 		for (int i = 0; i < resultsTable.getRowCount(); i++) {
 			isEditable[i][getColumnIndex("ID")] = Boolean.valueOf(false);
+
+			RequirementStatus status = RequirementStatus.toStatus((String)resultsTable.getValueAt(i, getColumnIndex("Status")));
+			if (status == RequirementStatus.Complete || status == RequirementStatus.Deleted) {
+				for (int j = 0; j < resultsTable.getColumnCount(); j++) {
+					if (j != getColumnIndex("Status"))
+						isEditable[i][j] = Boolean.valueOf(false);
+				}
+			}
+			else if (status == RequirementStatus.InProgress) {
+				isEditable[i][getColumnIndex("Estimate")] = Boolean.valueOf(false);
+			}
+			else if (resultsTable.getValueAt(i, getColumnIndex("Estimate")).equals("0")) {
+				isEditable[i][getColumnIndex("Iteration")] = Boolean.valueOf(false);
+			}
+
 		}
 		getModel().setEditable(true);
 		getModel().setIsEditable(isEditable);
@@ -633,6 +651,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	public void setIsEditable(Boolean[][] isEditable) {
 		this.isEditable = isEditable;
 	}
+<<<<<<< Updated upstream
 	/** Turns on the save button when all cells are
 	 *  valid and at least one has been changed. 
 	 */
@@ -655,5 +674,20 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				}
 
 		// Double check that un-editable boxes are not changed
+=======
+
+	/**
+	 * @return the inEditMode
+	 */
+	public boolean isInEditMode() {
+		return inEditMode;
+	}
+
+	/**
+	 * @param inEditMode the inEditMode to set
+	 */
+	public void setInEditMode(boolean inEditMode) {
+		this.inEditMode = inEditMode;
+>>>>>>> Stashed changes
 	}
 }
