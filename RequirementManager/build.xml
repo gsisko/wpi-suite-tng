@@ -17,9 +17,6 @@
 		<fileset dir="../RequirementManager/lib">
 			<include name="**/**/*.jar"/>
 		</fileset>
-		<fileset dir="${core-lib}">
-			<include name="commons-codec-1.6.jar"/>
-		</fileset>
 	</path>
 
 	<path id="test-classpath">
