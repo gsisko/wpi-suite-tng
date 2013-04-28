@@ -40,7 +40,7 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 
 		if (needsSaving == null || isValid == null || isEditable == null) {
 			if (isSelected) {
-				Color defaultBlue = new Color(200,221,242);
+				Color defaultBlue = new Color(184,207,229);
 				setBackground(defaultBlue);                
 			}
 			else

@@ -34,7 +34,7 @@ public class ActiveFilterTableCellRenderer extends DefaultTableCellRenderer {
 		String status = (String)model.getValueAt(modelRow, 4);
 
 		if (isSelected) {
-			Color defaultBlue = new Color(200,221,242);
+			Color defaultBlue = new Color(184,207,229);
 			setBackground(defaultBlue);                
 		}        
 		else if(status.equals("yes")) {

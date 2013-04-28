@@ -51,7 +51,7 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 
 		//change color to blue if selected, grey if passed, otherwise white
 		if (isSelected) {
-			Color defaultBlue = new Color(200,221,242);
+			Color defaultBlue = new Color(184,207,229);
 			setBackground(defaultBlue);                
 		}        
 		else if((new Date(endDate)).before(currentDate)) {
