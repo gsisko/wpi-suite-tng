@@ -250,11 +250,11 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnlayout.putConstraint(SpringLayout.NORTH, checkBoxDefault, 0, SpringLayout.NORTH, btnRefresh); //check to top of panel
 		btnlayout.putConstraint(SpringLayout.SOUTH, checkBoxDefault, 0, SpringLayout.SOUTH, btnRefresh); //Align bot of refresh and check box
 		btnlayout.putConstraint(SpringLayout.NORTH, btnEnableEdit, 11, SpringLayout.SOUTH, btnRefresh); //Align enable edit to bot of refresh
-		btnlayout.putConstraint(SpringLayout.WEST, btnEnableEdit, 50, SpringLayout.WEST, btnRefresh); //Align enable edit to center
+		btnlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnEnableEdit, 0, SpringLayout.HORIZONTAL_CENTER, content); //Align enable edit to center
 		btnlayout.putConstraint(SpringLayout.NORTH, btnCancel, 11, SpringLayout.SOUTH, btnRefresh); //Align cancel to bot of refresh
 		btnlayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, btnRefresh); //Align cancel to left side of refresh
 		btnlayout.putConstraint(SpringLayout.NORTH, btnSave, 11, SpringLayout.SOUTH, btnRefresh); //Align save to bot of refresh
-		btnlayout.putConstraint(SpringLayout.EAST, btnSave, 0, SpringLayout.EAST, checkBoxDefault); //Align save to right side of check box
+		btnlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnSave, 0, SpringLayout.HORIZONTAL_CENTER, checkBoxDefault); //Align save to right side of check box
 	}
 
 	public boolean getCheckBoxStatus() {

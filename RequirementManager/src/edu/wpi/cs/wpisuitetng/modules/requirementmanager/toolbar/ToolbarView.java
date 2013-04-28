@@ -121,7 +121,7 @@ public class ToolbarView extends DefaultToolbarView {
 		layout.putConstraint(SpringLayout.NORTH, helpButton, 12, SpringLayout.SOUTH, createRequirement); //Align Help button to bottom of Create Requirements
 		layout.putConstraint(SpringLayout.EAST, helpButton, 0, SpringLayout.EAST, btnDisplayPieChart); //Align Help button to right of panel
 		layout.putConstraint(SpringLayout.NORTH, listField, 15, SpringLayout.SOUTH, createRequirement); //Align Lookup ID to bot of Create Requirements
-		layout.putConstraint(SpringLayout.WEST, listField, 0, SpringLayout.WEST, createRequirement); //Align Lookup ID to left side of Create Requirements
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, listField, 0, SpringLayout.HORIZONTAL_CENTER, createRequirement); //Align Lookup ID to left side of Create Requirements
 
 		// Construct a new toolbar group to be added to the end of the toolbar
 		toolbarGroup = new ToolbarGroupView("Home", content);
