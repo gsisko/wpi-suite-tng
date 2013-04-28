@@ -137,7 +137,7 @@ public class FilePartModel extends AbstractModel
 	 * @param u	The list of Projects to serialize
 	 * @return	a comma delimited list of Project JSON strings.
 	 */
-	public static String toJSON(FileModel[] u)
+	public static String toJSON(FilePartModel[] u)
 	{
 		/*
 		String json ="";
@@ -156,7 +156,7 @@ public class FilePartModel extends AbstractModel
 	 * Deserializes the given JSON String into a Project's member variables
 	 * @return	the Project from the given JSON string representation 
 	 */
-	public static FileModel fromJSON(String json)
+	public static FilePartModel fromJSON(String json)
 	{
 		/*
 		Gson gson;
@@ -234,9 +234,9 @@ public class FilePartModel extends AbstractModel
 	{
 		Boolean b  = false;
 
-		if(o instanceof FileModel)
+		if(o instanceof FilePartModel)
 		{
-			if(((FileModel) o).getIdNum().equalsIgnoreCase(this.idNum))
+			if(((FilePartModel) o).getIdNum().equalsIgnoreCase(this.idNum))
 			{
 				b = true;
 			}
