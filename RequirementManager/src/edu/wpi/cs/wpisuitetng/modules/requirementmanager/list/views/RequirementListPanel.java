@@ -682,8 +682,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return ""; // failure
 	}
 
-
-
 	/** Gets the column index of the column with the given name
 	 * 
 	 * @param name The name to check for
@@ -696,7 +694,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			}
 		}
 		System.err.println("That column doesn't exist!");
-		return 1;
+		return -2;
 	}
 
 

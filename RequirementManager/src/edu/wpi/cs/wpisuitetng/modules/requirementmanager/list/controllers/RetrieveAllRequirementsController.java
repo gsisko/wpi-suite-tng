@@ -61,7 +61,10 @@ public class RetrieveAllRequirementsController {
 
 	/** boolean to designate if there is existing data in the list */
 	protected boolean hasPreviousData;
-
+	
+	/** Count the number of refreshes happening */
+	private int refreshes = 0;
+	
 	/** Constructs a new RetrieveAllRequirementsController
 	 * @param view the search requirements view
 	 */
@@ -74,6 +77,10 @@ public class RetrieveAllRequirementsController {
 	/** Sends a request for all of the requirements
 	 */
 	public void refreshData() {		
+
+		// Set "isRefreshing" to ++ , subtract at the end of refreshes
+		refreshes++;
+		
 		final RequestObserver requestObserver = new RetrieveAllRequirementsRequestObserver(this);
 		Request request;
 		request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET);
@@ -152,11 +159,14 @@ public class RetrieveAllRequirementsController {
 				}
 			}
 		}	
-
+	
 		Requirement[] displayedRequirements = new Requirement[isFiltered.size()];
 		isFiltered.toArray(displayedRequirements);
 		view.setDisplayedRequirements(displayedRequirements);
 
+		// Set "isRefreshing" to ++ , subtract at the end of refreshes
+		refreshes--;
+		
 		// Transferring Phase
 		// Put the requirements that passed the filters
 		if (isFiltered.size() > 0) {
@@ -185,8 +195,8 @@ public class RetrieveAllRequirementsController {
 				setTableWidth(columnWidth);
 				setTableSort(columnSort);
 			}
-
 		}
+		
 	}
 
 	/** Set default widths of all columns
@@ -361,6 +371,20 @@ public class RetrieveAllRequirementsController {
 	 */
 	public FilterListTab getFilterPanel(){
 		return filterPanel;
+	}
+
+	/**
+	 * @return the refreshes
+	 */
+	public int getRefreshes() {
+		return refreshes;
+	}
+
+	/**
+	 * @param refreshes the refreshes to set
+	 */
+	public void setRefreshes(int refreshes) {
+		this.refreshes = refreshes;
 	}
 
 }

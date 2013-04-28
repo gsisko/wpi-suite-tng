@@ -89,6 +89,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** Size of divider before entering edit mode */
 	protected int oldDividerSize;
 
+	/** set true when waiting for a refresh */
+	private boolean waitingForRefresh = false;
+
 	/** The arrays of models stored in the database */
 	protected Filter[] allFilters;
 	protected Iteration[] allIterations;
@@ -169,22 +172,39 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnEnableEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Instantiate the controller if it hasn't been made yet. This is done here just in case
-				// of instantiation path errors.
-				if (listSaveRequirementController == null){
-					listSaveRequirementController = new ListSaveModelController(mainPanel.getResultsPanel(), "requirement");
-				}
+				if (!waitingForRefresh){
+					waitingForRefresh = true;
+					int count = 0;
+					// Wait until refreshes are done
+					while (controller.getRefreshes() > 0 && count < controller.getRefreshes() + 2){
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException ex) {
+							// TODO Auto-generated catch block
+							ex.printStackTrace();
+						}
+						count++;
+					}
+					controller.setRefreshes(0);
+					// Instantiate the controller if it hasn't been made yet. This is done here just in case
+					// of instantiation path errors.
+					if (listSaveRequirementController == null){
+						listSaveRequirementController = new ListSaveModelController(mainPanel.getResultsPanel(), "requirement");
+					}
 
-				btnEditNotVisible();
-				mainPanel.setMode(Mode.EDIT);
-				setListsAndBuildersVisible(false);
-				btnRefresh.setEnabled(false);
-	            //TODO make sure that enable editing allows selecting by individual cell
-				mainPanel.getResultsPanel().setUpForEditing();
-				mainPanel.getResultsPanel().setInEditMode(true);
-				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(false);//select by cells when in edit mode
-				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
-				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(false);//disables the lookup by ID box
+					btnEditNotVisible();
+					mainPanel.setMode(Mode.EDIT);
+					setListsAndBuildersVisible(false);
+					btnRefresh.setEnabled(false);
+
+					mainPanel.getResultsPanel().setUpForEditing();
+					mainPanel.getResultsPanel().setInEditMode(true);
+					mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(false);//select by cells when in edit mode
+					mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
+					mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(false);//disables the lookup by ID box
+					waitingForRefresh = false;
+
+				}
 			}
 		});
 
@@ -199,7 +219,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				refreshData();
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
-				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(true);//select by rows when not in edit mode
+				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box

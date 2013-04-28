@@ -57,11 +57,13 @@ public class RetrieveAllRequirementsRequestObserver implements RequestObserver {
 	public void responseError(IRequest iReq) {
 		// an error occurred
 		controller.errorReceivingData("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
+		controller.setRefreshes(controller.getRefreshes() -1);
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
 		// an error occurred
 		controller.errorReceivingData("Unable to complete request: " + exception.getMessage());
+		controller.setRefreshes(controller.getRefreshes() -1);
 	}
 }
