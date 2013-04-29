@@ -404,7 +404,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		catch(Error e){
 			this.optionsPanel.getChartDataBox().setSelectedIndex(0);
 		}
-		String fob = (String) this.optionsPanel.getFiltersOptionsBox().getSelectedItem();
 	}
 
 
