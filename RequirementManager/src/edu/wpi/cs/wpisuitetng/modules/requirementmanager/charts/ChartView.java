@@ -111,7 +111,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		btnRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				refreshData();
+				refreshDataFromButton();
 			}
 		});
 
@@ -158,6 +158,15 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Request data from parent
 		this.reloadData();
 		//update filter table
+		optionsPanel.buildTable();
+	}
+	
+	/** Refresh and reload data in the pie chart */
+	public void refreshDataFromButton() {
+		//Ask parent to refresh data
+		getView().getParent().refreshData();
+		//update filter table
+		updateCharts();
 		optionsPanel.buildTable();
 	}
 
@@ -372,6 +381,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			tmp1[i] = choices.get(i);
 		}
 		this.optionsPanel.setChartData(tmp1);
+		this.setDataTypeVisible("Requirement Status");
 	}
 
 
