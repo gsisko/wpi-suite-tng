@@ -118,6 +118,9 @@ public class FilterManager implements EntityManager<Filter> {
 		if (newFilter.getUser() == null) {
 			newFilter.setUser(s.getUser());
 		}
+		if (newFilter.getProject() == null) {
+			newFilter.setProject(s.getProject());
+		}
 
 		try {
 			// Check to see if the filter exists in the database already - check by ID only
@@ -244,7 +247,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @throws WPISuiteException    -- thrown if there are problems retrieving
 	 */
 	public Filter[] getAll(Session s) throws WPISuiteException {
-		List<Model> filterList = db.retrieve(Filter.class, "User",	s.getUser());
+		List<Model> filterList = db.retrieve(Filter.class, "User",	s.getUser(), s.getProject());
 		filterList.size();
 		return filterList.toArray(new Filter[filterList.size()]);
 	}
