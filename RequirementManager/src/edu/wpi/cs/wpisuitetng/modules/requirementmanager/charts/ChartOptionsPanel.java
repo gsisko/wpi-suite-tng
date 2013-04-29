@@ -134,7 +134,7 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeLabel = new JLabel("Type of chart:");
 		chartDataLabel = new JLabel("Data to display:");
 		filtersLabel = new JLabel("Active filters:");
-		filterlistlabel = new JLabel("Filters");
+		filterlistlabel = new JLabel("List of Active Filters");
 
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
