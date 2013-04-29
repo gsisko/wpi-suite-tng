@@ -91,6 +91,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 	/** set true when waiting for a refresh */
 	private boolean waitingForRefresh = false;
+	
+	/** store the previous mode */
+	private Mode previousMode;
 
 	/** The arrays of models stored in the database */
 	protected Filter[] allFilters;
@@ -193,6 +196,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 					}
 
 					btnEditNotVisible();
+					previousMode = mainPanel.getMode();
 					mainPanel.setMode(Mode.EDIT);
 					setListsAndBuildersVisible(false);
 					btnRefresh.setEnabled(false);
@@ -213,7 +217,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			public void actionPerformed(ActionEvent e) {
 				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
-				mainPanel.setMode(Mode.ITERATION);
+				mainPanel.setMode(previousMode);
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
@@ -237,7 +241,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 				btnCancelSaveNotVisible();
 				mainPanel.getResultsPanel().getModel().setEditable(false);
-				mainPanel.setMode(Mode.ITERATION);
+				mainPanel.setMode(previousMode);
 				setListsAndBuildersVisible(true);
 				btnRefresh.setEnabled(true);
 				refreshData();
