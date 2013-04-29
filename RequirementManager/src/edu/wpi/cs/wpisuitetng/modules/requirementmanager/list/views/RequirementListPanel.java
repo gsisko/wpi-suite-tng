@@ -227,6 +227,11 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					updateSaveButton();
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
+					Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
+					for (int i = 0; i < resultsTable.getRowCount(); i++)
+						for (int j = 0; j < resultsTable.getColumnCount(); j++)
+							originalIsEditable[i][j] = isEditable[i][getOriginalColumnIndex(resultsTable.getColumnName(j))];
+					getModel().setIsEditable(originalIsEditable);
 				}
 			}
 
