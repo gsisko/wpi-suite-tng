@@ -16,6 +16,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -27,19 +29,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActivateDeleteButton;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
-
 /**
  * Panel that contains options for the currently displayed chart.
 =======
@@ -83,9 +78,6 @@ public class ChartOptionsPanel extends JPanel{
 	
 	/** A boolean indicating if input is enabled on the form  */
 	protected boolean inputEnabled;
-	
-	private RetrieveModelController retrieveController;
-	private RetrieveAllModelsController retrieveAllController;
 
 
 	/** Construct the panel and initialize necessary internal variables
@@ -113,12 +105,20 @@ public class ChartOptionsPanel extends JPanel{
 		filtertable = new JTable(filterTableModel);
 		filtertable.setAutoCreateRowSorter(true); 
 		filtertable.setFillsViewportHeight(true);
-		filtertable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());/*{
-			 public void ActiveFilterTableCellRenderer(){
-				 super.getListCellRendererComponent(filtertable, value, index,
-			        false, false);
-	            }
-		});*/
+		filtertable.setDefaultRenderer(String.class, new DefaultTableCellRenderer());
+		filtertable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
+		for(MouseListener listener : filtertable.getMouseListeners()){
+			filtertable.removeMouseListener(listener);
+		}
+		for(MouseListener listener : filtertable.getTableHeader().getMouseListeners()){
+			filtertable.getTableHeader().removeMouseListener(listener);
+		}
+		for(MouseMotionListener listener : filtertable.getMouseMotionListeners()){
+			filtertable.removeMouseMotionListener(listener);
+		}
+		//filtertable.getTableHeader().setResizingAllowed(false);
+		
+		
 		buildTable();
 		
 		JScrollPane resultsScrollPane = new JScrollPane(filtertable);
@@ -375,8 +375,4 @@ public class ChartOptionsPanel extends JPanel{
 	public ResultsTableModel getModel() {
 		return filterTableModel;
 	}
-	
-	//public void setLocalFilters(Filter[] localFilters) {
-//		this.localFilters = localFilters;
-//	}
 }
