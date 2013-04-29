@@ -134,7 +134,7 @@ public class RequirementTab extends JPanel {
 		
 		//Instantiate and set the left and right panels with minimum sizes
 		leftPanel = new JScrollPane(attributePanel);
-		leftPanel.setMinimumSize(new Dimension (625, 500));
+		leftPanel.setMinimumSize(new Dimension (650, 500));
 		rightPanel = new JPanel();
 		rightPanel.setMinimumSize(new Dimension(370, 500));
 
