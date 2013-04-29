@@ -99,19 +99,18 @@ public abstract class RequirementEvent extends AbstractModel {
 	
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		
 	}
 	
 	// this model will only be created server side and then retrieved as part of a Requirement in the future
 	// so I'm not sure if this is necessary
 	@Override
 	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

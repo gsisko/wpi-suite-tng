@@ -205,14 +205,12 @@ public class Filter extends AbstractModel {
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	public void save() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	public void delete() {
-		// TODO Auto-generated method stub
 	}
 
 

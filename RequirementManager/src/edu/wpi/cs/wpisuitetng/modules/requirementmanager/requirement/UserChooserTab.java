@@ -137,17 +137,7 @@ public class UserChooserTab extends JPanel {
 		request.addObserver(new RetrieveAllUsersObserver(this));
 		request.send();
 	}
-	//		Hurts the tests!!
-
-	//		while (users.size() == 0) {
-	//			try {
-	//				Thread.sleep(500);
-	//			} catch (InterruptedException e) {
-	//				// TODO Auto-generated catch block
-	//				e.printStackTrace();
-	//			}
-	//		}
-
+	
 	/** the hackaround to avoid using a while loop */
 	public void resumeInitialization(){
 		//Add the users to the unassignedUserListModel

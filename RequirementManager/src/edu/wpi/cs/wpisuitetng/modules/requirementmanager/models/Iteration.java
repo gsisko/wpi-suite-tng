@@ -63,12 +63,12 @@ public class Iteration extends AbstractModel {
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -139,26 +139,7 @@ public class Iteration extends AbstractModel {
 	/** Gets estimates from each associated requirement and sums up the total. 
 	 * @return The sum of all the requirements estimates
 	 */
-	public int getTotalEstimate(){
-		/* TODO: ways of getting the total estimate
-		  
-		Option A
-		- Send message from here to get all Req's, sort here to pick out proper ID's
-		and sum up the estimates of the remaining
-		- Local RetrieveAllRequirementsController will be necessary
-		Option B
-		- Send individual messages to get only the Req's we want
-		- More messages
-		- Local RetrieveRequirementController is needed
-		Option C
-		- Ask the current list panel for the requirements that are in this iteration
-		Option D 
-		- Have requirements tell the iteration when they are added/remove or 
-		their estimates are updated
-		- Keep track of a single local variable that tracks the total estimate			
-		
-		*/
-				
+	public int getTotalEstimate(){				
 		return totalEstimate;
 	}
 	

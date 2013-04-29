@@ -99,7 +99,6 @@ public class ToolbarView extends DefaultToolbarView {
             		    URI userManualURI = file.toURI();
             		    Desktop.getDesktop().browse(userManualURI);
             		} catch (IOException e1){
-            		    // TODO Auto-generated catch block
             		    e1.printStackTrace();
             		}
     		}

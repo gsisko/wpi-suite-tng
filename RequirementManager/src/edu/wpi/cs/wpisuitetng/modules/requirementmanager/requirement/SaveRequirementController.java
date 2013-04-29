@@ -125,7 +125,7 @@ public class SaveRequirementController {
 				}
 				oldIteration.setRequirementsContained(requirementList);
 
-				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				//Save the oldIteration on the server. There is no observer because we don't care about the responses
 				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 				saveOldIterationRequest.setBody(oldIteration.toJSON());
 				saveOldIterationRequest.send();

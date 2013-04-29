@@ -67,7 +67,6 @@ public class LookupRequestObserver implements RequestObserver {
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		//TODO deal with exception
 		controller.requestFailed();
 	}
 }

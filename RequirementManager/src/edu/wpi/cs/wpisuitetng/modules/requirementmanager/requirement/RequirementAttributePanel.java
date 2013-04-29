@@ -768,7 +768,6 @@ public class RequirementAttributePanel extends JPanel {
 					changeField(statusBox, 6, false);
 				}
 				// Only valid in EDIT mode
-				//TODO: Is this necessary?
 				if (mode.equals(Mode.EDIT) ){
 
 				}
@@ -844,7 +843,6 @@ public class RequirementAttributePanel extends JPanel {
 	}	
 
 	/** Creates and returns a requirement from the current entries/selections in this RequirementAttribute panel.
-	 * TODO error check
 	 * @return Requirement made from the text fields
 	 */
 	public Requirement getRequirement()

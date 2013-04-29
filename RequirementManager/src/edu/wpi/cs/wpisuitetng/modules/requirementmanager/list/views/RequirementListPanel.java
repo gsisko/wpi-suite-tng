@@ -594,7 +594,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			}
 			oldIteration.setRequirementsContained(requirementList);
 
-			//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			//Save the oldIteration on the server. There is no observer because we don't care about the responses
 			Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 			saveOldIterationRequest.setBody(oldIteration.toJSON());
 			saveOldIterationRequest.send();
@@ -616,10 +616,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			//Update totalEstimate
 			updatedIteration.setTotalEstimate(updatedIteration.getTotalEstimate() + updatedEstimate);
 
-			//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+			//Save the updatedIteration on the server. There is no observer because we don't care about the responses
 			Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 			saveUpdatedIterationRequest.setBody(updatedIteration.toJSON());
-			saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+			saveUpdatedIterationRequest.addObserver(new SaveIterationObserver());
 			saveUpdatedIterationRequest.clearAsynchronous();
 			saveUpdatedIterationRequest.send();
 		}
