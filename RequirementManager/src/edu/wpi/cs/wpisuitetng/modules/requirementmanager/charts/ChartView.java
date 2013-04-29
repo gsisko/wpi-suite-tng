@@ -230,6 +230,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			isFiltered = true;
 		else if(filterStatus.equals("Not Applied"))
 			isFiltered = false;
+		this.setListOptionsOnAppliedChange();
 		this.refreshChartVisibility();
 	}
 
@@ -343,6 +344,34 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		}
 		this.optionsPanel.setChartData(tmp1);
 		this.optionsPanel.setFiltersOptions(tmp2);
+	}
+	
+	public void setListOptionsOnAppliedChange () {
+		ArrayList<String> choices = new ArrayList<String>();
+
+		choices.add("Requirement Status");
+		choices.add("Requirement Iteration");
+		if (this.isFiltered) {
+			if (requirementHasUsersWithFilters()) {
+				choices.add("Users per Requirement");
+			}
+			if (requirementHasUsersEstimateWithFilters()) {
+				choices.add("Estimate per User");
+			}
+		} else {
+			if (requirementHasUsers()) {
+				choices.add("Users per Requirement");
+			}
+			if (requirementUserHasEstimate()) {
+				choices.add("Estimate per User");
+			}
+		}
+
+		String[] tmp1 = new String[choices.size()];
+		for (int i = 0; i < choices.size(); i++) {
+			tmp1[i] = choices.get(i);
+		}
+		this.optionsPanel.setChartData(tmp1);
 	}
 
 
