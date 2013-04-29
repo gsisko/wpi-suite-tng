@@ -447,8 +447,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				else {
 					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(RequirementStatus.InProgress));
 				}
-				this.
-				editorComponent.setBackground(Color.white);
+editorComponent.setBackground(Color.white);
 				return editorComponent;
 			}
 
