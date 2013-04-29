@@ -217,7 +217,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		//Name:
 		//Set the constraints for "nameLabel" and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
-		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
 		nameAndDescriptionPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 		nameAndDescriptionPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		nameAndDescriptionPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
@@ -226,8 +226,8 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanelConstraints.weightx = 0.77;
 		nameAndDescriptionPanelConstraints.fill = GridBagConstraints.HORIZONTAL;//This tells the layout to stretch this field horizontally to fit it's cell
 		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
-		nameAndDescriptionPanelConstraints.gridx = 1;
-		nameAndDescriptionPanelConstraints.gridy = 0;
+		nameAndDescriptionPanelConstraints.gridx = 0;
+		nameAndDescriptionPanelConstraints.gridy = 1;
 		nameAndDescriptionPanel.add(txtName, nameAndDescriptionPanelConstraints);
 		//end Name
 
@@ -235,17 +235,17 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		//Set the constraints for "descriptionLabel" and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 		nameAndDescriptionPanelConstraints.fill = GridBagConstraints.NONE;//This tells the layout to not stretch this field horizontally or vertically to fit it's cell
-		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_END;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
+		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
 		nameAndDescriptionPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 		nameAndDescriptionPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
-		nameAndDescriptionPanelConstraints.gridy = 1;//set the y coord of the cell of the layout we are describing
+		nameAndDescriptionPanelConstraints.gridy = 2;//set the y coord of the cell of the layout we are describing
 		nameAndDescriptionPanel.add(descriptionLabel, nameAndDescriptionPanelConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
 		//Set the constraints for the "scrollDescription" JScrollPane containing the "txtDescription" JTextArea and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.77;
 		nameAndDescriptionPanelConstraints.fill = GridBagConstraints.HORIZONTAL;//This tells the layout to stretch this field horizontally to fit it's cell
 		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//Anchor the component to the top left center of it's field
-		nameAndDescriptionPanelConstraints.gridx = 1;
-		nameAndDescriptionPanelConstraints.gridy = 1;
+		nameAndDescriptionPanelConstraints.gridx = 0;
+		nameAndDescriptionPanelConstraints.gridy = 3;
 		nameAndDescriptionPanel.add(scrollDescription, nameAndDescriptionPanelConstraints);
 		//end Description
 
