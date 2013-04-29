@@ -110,11 +110,13 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					Requirement[] reqs = parent.getParent().getDisplayedRequirements();
 					int row = e.getFirstRow();
+					int modelRow = resultsTable.convertRowIndexToModel(row);
 
 					Requirement requirement = null;
-					for (Requirement r : reqs) {
-						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getOriginalColumnIndex("ID"))))
-							requirement = r;	
+					for (int i = 0; i < reqs.length; i++) {
+						if ((reqs[i].getId() + "").equals(resultsTableModel.getValueAt(row, getOriginalColumnIndex("ID")))) {
+							requirement = reqs[i];
+						}
 					}
 
 					int column = e.getColumn();
@@ -156,7 +158,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						isEditable[row][estimateColumn] = iteration.equals("");
 						// This is for making sure the un-editable settings fire correctly
 						if (fireCount++ < 1)
-							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, originalEstimateColumn), row, originalEstimateColumn);
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(modelRow, originalEstimateColumn), modelRow, originalEstimateColumn);
 						else 
 							fireCount = 0;
 					}
@@ -204,7 +206,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						} 
 						// This is for making sure the un-editable settings fire correctly
 						if (fireCount++ < 1)
-							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, originalIterationColumn), row, originalIterationColumn);
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(modelRow, originalIterationColumn), modelRow, originalIterationColumn);
 						else 
 							fireCount = 0;			
 					}
@@ -228,11 +230,22 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
 
 					updateSaveButton();
-					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
+					
+					Boolean[][] originalNeedsSaving = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
+					for (int i = 0; i < resultsTable.getRowCount(); i++)
+						for (int j = 0; j < resultsTable.getColumnCount(); j++)
+							originalNeedsSaving[i][j] = needsSaving[resultsTable.convertRowIndexToModel(i)][j];
+					
+					Boolean[][] originalIsValid = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
+					for (int i = 0; i < resultsTable.getRowCount(); i++)
+						for (int j = 0; j < resultsTable.getColumnCount(); j++)
+							originalIsValid[i][j] = isValid[resultsTable.convertRowIndexToModel(i)][j];
+					
+					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(originalNeedsSaving, originalIsValid, isEditable));
 					Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 					for (int i = 0; i < resultsTable.getRowCount(); i++)
 						for (int j = 0; j < resultsTable.getColumnCount(); j++)
-							originalIsEditable[i][j] = isEditable[i][getColumnIndex(resultsTableModel.getColumnName(j))];
+							originalIsEditable[resultsTable.convertRowIndexToModel(i)][j] = isEditable[i][getColumnIndex(resultsTableModel.getColumnName(j))];
 					getModel().setIsEditable(originalIsEditable);
 				}
 			}
@@ -273,6 +286,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		int estimateColumn      = this.getColumnIndex("Estimate");
 		int actualEffortColumn  = this.getColumnIndex("ActualEffort");
 		int nameColumn          = this.getColumnIndex("Name");
+		int originalNameColumn  = this.getOriginalColumnIndex("Name");
 
 
 
@@ -300,7 +314,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							messages[blankField] += ", ActualEffort";
 
 					} else if (column == nameColumn){
-						String name = (String) resultsTable.getValueAt(row,column);
+						String name = (String) resultsTableModel.getValueAt(row,originalNameColumn);
 						if (name.equals("")){
 							// If the message isn't set at all, set it
 							if (messages[blankField].equals("") ){
@@ -792,7 +806,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 		for (int i = 0; i < resultsTable.getRowCount(); i++)
 			for (int j = 0; j < resultsTable.getColumnCount(); j++)
-				originalIsEditable[i][j] = isEditable[i][getColumnIndex(resultsTableModel.getColumnName(j))];
+				originalIsEditable[resultsTable.convertRowIndexToModel(i)][j] = isEditable[i][getColumnIndex(resultsTableModel.getColumnName(j))];
 
 		getModel().setEditable(true);
 		getModel().setIsEditable(originalIsEditable);
