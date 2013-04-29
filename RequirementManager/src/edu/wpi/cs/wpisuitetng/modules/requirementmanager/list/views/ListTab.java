@@ -125,7 +125,7 @@ public class ListTab extends JPanel {
 		rightLayout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, rightPanel);
 		rightLayout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.WEST, rightPanel);
 		rightLayout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, rightPanel);
-		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 90, SpringLayout.NORTH, builderScrollPane);
+		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 95, SpringLayout.NORTH, builderScrollPane);
 
 		// Constrain the resultsPanel
 		rightLayout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);

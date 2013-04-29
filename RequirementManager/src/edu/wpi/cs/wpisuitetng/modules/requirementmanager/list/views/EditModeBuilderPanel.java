@@ -16,6 +16,7 @@ import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 @SuppressWarnings("serial")
@@ -34,13 +35,13 @@ public class EditModeBuilderPanel extends JPanel {
 	private JLabel enterLabel;
 	
 	/** The white label */
-	private JLabel whiteLabel;
+	private JTextField whiteLabel;
 	/** The gray label */
-	private JLabel grayLabel;
+	private JTextField grayLabel;
 	/** The yellow label */
-	private JLabel yellowLabel;
+	private JTextField yellowLabel;
 	/** The red label */
-	private JLabel redLabel;
+	private JTextField redLabel;
 	
 	/** The error 1 label */
 	private JLabel err1Label;
@@ -66,30 +67,34 @@ public class EditModeBuilderPanel extends JPanel {
 		this.setLayout(layout);
 		
 		enterPanel = new JPanel();
-		enterPanel.setPreferredSize(new Dimension(100, 90));
+		enterPanel.setPreferredSize(new Dimension(100, 95));
 		legendPanel = new JPanel();
-		legendPanel.setPreferredSize(new Dimension(150, 90));
+		legendPanel.setPreferredSize(new Dimension(110, 95));
 		warningPanel = new JPanel();
 		
 		// Enter Panel
 		enterLabel = new JLabel();
-		enterLabel.setText("<html>Press enter to <br> finalize a save.</html>");
+		enterLabel.setText("<html>Press enter to <br> finalize a change.</html>");
 		enterLabel.setFont(enterLabel.getFont().deriveFont(13));
 		enterPanel.add(enterLabel);
 		
 		// Legend Panel
-		whiteLabel = new JLabel();
-		whiteLabel.setOpaque(false);
-		whiteLabel.setText("Editable field");
-		grayLabel = new JLabel();
-		grayLabel.setForeground(Color.gray);
-		grayLabel.setText("Non-editable field");
-		yellowLabel = new JLabel();
-		yellowLabel.setForeground(new Color(204,204,0));
-		yellowLabel.setText("Edited field");
-		redLabel = new JLabel();
-		redLabel.setForeground(Color.red);
-		redLabel.setText("Invalid field");
+		whiteLabel = new JTextField("    Editable field");
+		whiteLabel.setEditable(false);
+		whiteLabel.setPreferredSize(new Dimension(105, 17));
+		whiteLabel.setBackground(Color.white);
+		grayLabel = new JTextField("Non-editable field");
+		grayLabel.setEditable(false);
+		grayLabel.setPreferredSize(new Dimension(105, 17));
+		grayLabel.setBackground(Color.lightGray);
+		yellowLabel = new JTextField("   Changed field");
+		yellowLabel.setEditable(false);
+		yellowLabel.setPreferredSize(new Dimension(105, 17));
+		yellowLabel.setBackground(new Color(248,253,188));
+		redLabel = new JTextField("      Invalid field");
+		redLabel.setEditable(false);
+		redLabel.setPreferredSize(new Dimension(105, 17));
+		redLabel.setBackground(new Color(255,50,50));
 		legendPanel.add(grayLabel);
 		legendPanel.add(whiteLabel);
 		legendPanel.add(yellowLabel);
@@ -122,7 +127,7 @@ public class EditModeBuilderPanel extends JPanel {
 		layout.putConstraint(SpringLayout.NORTH, legendPanel, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, legendPanel, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, legendPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, enterPanel, 50, SpringLayout.EAST, legendPanel);
+		layout.putConstraint(SpringLayout.WEST, enterPanel, 15, SpringLayout.EAST, legendPanel);
 		layout.putConstraint(SpringLayout.NORTH, enterPanel, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, enterPanel, 0, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, warningPanel, 0, SpringLayout.NORTH, this);
