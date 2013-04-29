@@ -303,7 +303,7 @@ public class RetrieveAllRequirementsController {
 		
 		// Save the width of each column
 		for (int i = 0; i < 9; i++){
-			columnWidth.add(resultsPanel.getResultsTable().getColumnModel().getColumn(0).getWidth());
+			columnWidth.add(resultsPanel.getResultsTable().getColumnModel().getColumn(i).getWidth());
 		}
 	
 		return columnWidth;

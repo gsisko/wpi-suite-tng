@@ -84,6 +84,7 @@ public class SaveRequirementController {
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
 			updatedRequirement.setAcceptanceTests(oldRequirement.getAcceptanceTests());
 			updatedRequirement.setNotes(oldRequirement.getNotes());
+			updatedRequirement.setUserNames(oldRequirement.getUserNames());
 			updatedRequirement.setEvents(oldRequirement.getEvents());
 
 			// Setting the Iteration			
