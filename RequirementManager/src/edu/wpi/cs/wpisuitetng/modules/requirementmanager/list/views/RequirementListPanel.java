@@ -223,7 +223,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					needsSaving[row][column] = isChanged;
 					isValid[row][column] = !isInvalid;
-		//			printMessages(prepareErrorMessages());
+					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
 
 					updateSaveButton();
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
@@ -242,6 +242,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** Prints the error messags to console for testing */
+	@SuppressWarnings("unused")
 	private void printMessages(String[] messages){
 		for (String toPrint: messages)
 			System.out.println(toPrint);		
@@ -255,19 +256,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	private String[] prepareErrorMessages(){
 		// Initialize the string to be all null strings
-		String[] messages = {"","","","",""};
+		String[] messages = {"","",""};
 
 		// These variables represent indices in the array of messages
-		final int newStatus     = 0;
-		final int statusInvalid = 3;
-		final int blankField    = 2;
+		final int blankField    = 0;
 		final int bigName       = 1;		
 
 		// Save the column indices for later use
-		int iterationColumn     = this.getColumnIndex("Iteration");
 		int estimateColumn      = this.getColumnIndex("Estimate");
 		int actualEffortColumn  = this.getColumnIndex("ActualEffort");
-		int statusColumn        = this.getColumnIndex("Status");
 		int nameColumn          = this.getColumnIndex("Name");
 
 
@@ -308,17 +305,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						} else {
 							messages[bigName] = "The name cannot exceed 100 characters.";
 						}
-					} else if (column == statusColumn){
-						String theStatus = (String) resultsTable.getValueAt(row,column);
-						// If there is invalidity and the status is new, this is the error
-						if (theStatus.equals("New")){
-							messages[newStatus] = "The status cannot be changed to New from any other status.";
-							// If these statuses are present and the req is in the backlog, we have this error
-						} else if ( (theStatus.equals("InProgress") || theStatus.equals("Complete")) && ((String) resultsTable.getValueAt(row,iterationColumn)).equals("")){
-							messages[statusInvalid] = "The status cannot be InProgress or Complete when in the Backlog.";
-						} else {
-							System.err.println("Unknown invalid Status case.");
-						}	
+
 					} else { 
 						System.err.println("Unknown invalid case.");
 					}						
@@ -326,15 +313,17 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			}			
 		}
 		int numMessags = 0, i =0 ;
-		int[] nums = {1,1,63,63,10000,100000};
+		int[] nums = {63,25,10000,100000,8,8};
 		for (String check: messages){
 			if (check.length() > nums[i]){
 				numMessags++;
 			}
 			i++; 
 		}
-		if (numMessags == 4){
-			messages[4] = "You made everything invalid. Go home, you're drunk.";
+		if (numMessags == 2){
+			messages[0] ="";
+			messages[1]= "";
+			messages[2] = "You took too many shots. Go home, you're drunk.";
 		}
 
 		return messages;
