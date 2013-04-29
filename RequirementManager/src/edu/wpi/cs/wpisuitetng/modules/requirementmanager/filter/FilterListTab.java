@@ -78,6 +78,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
 		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
+		resultsTable.getTableHeader().setReorderingAllowed(false);
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);

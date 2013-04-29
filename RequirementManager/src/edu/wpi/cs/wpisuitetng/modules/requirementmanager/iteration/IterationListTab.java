@@ -73,6 +73,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
 		resultsTable.setDefaultRenderer(String.class, new ActiveIterationTableCellRenderer());
+		resultsTable.getTableHeader().setReorderingAllowed(false);
+
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);

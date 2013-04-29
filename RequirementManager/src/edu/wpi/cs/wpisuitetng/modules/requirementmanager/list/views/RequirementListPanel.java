@@ -101,6 +101,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
+		resultsTable.getTableHeader().setReorderingAllowed(false);
 
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
 
@@ -389,7 +390,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void setComboxforIteration()
 	{
-		int typeColumnNum = this.getColumnIndex("Iteration", getTableName());
+		int typeColumnNum = this.getOriginalColumnIndex("Iteration");
 
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
 
