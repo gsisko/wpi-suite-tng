@@ -139,7 +139,7 @@ public class AcceptanceTest extends RequirementEvent {
 	 * @return the body of the acceptance test (the description of the acceptance test)
 	 */
 	public String getBodyString() {
-		return this.description;
+		return this.title;
 	}
 	
 	/** Gets the label of the acceptance test and returns it

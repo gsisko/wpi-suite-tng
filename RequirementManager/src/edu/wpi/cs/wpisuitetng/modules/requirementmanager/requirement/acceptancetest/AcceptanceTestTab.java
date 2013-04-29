@@ -231,7 +231,6 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanel.add(txtName, nameAndDescriptionPanelConstraints);
 		//end Name
 		
-		this.add(Box.createRigidArea(new Dimension(0,6)));
 		
 		//Description:
 		//Set the constraints for "descriptionLabel" and add it to the nameAndDescriptionPanel
@@ -256,7 +255,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 		// Add the components in their respective inner panels to this panel
 		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
-		//this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
+		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
 		this.add(nameAndDescriptionPanel); // add the nameAndDescriptionPanel to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // add the saveButton to the panel
