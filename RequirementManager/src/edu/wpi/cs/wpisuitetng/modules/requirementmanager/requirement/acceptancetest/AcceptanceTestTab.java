@@ -183,6 +183,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		// Set the dimensions of the panel elements
 		listScrollPane.setPreferredSize(new Dimension(580, 300));
 		scrollDescription.setPreferredSize(new Dimension(1, 100));
+		saveButton.setPreferredSize(new Dimension(120,40));
 
 		//Disable the txtMessage and saveButton if this is a new requirement
 		if ((parent.getMode()) == Mode.CREATE)
