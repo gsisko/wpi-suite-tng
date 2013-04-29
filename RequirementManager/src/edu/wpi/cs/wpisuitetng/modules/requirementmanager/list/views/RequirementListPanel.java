@@ -148,14 +148,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 						if (iteration.equals("")) {
 							if (requirement.getStatus() == RequirementStatus.New)
-								resultsTable.setValueAt("New", row, statusColumn);
+								resultsTable.setValueAt("New", modelRow, statusColumn);
 							else
-								resultsTable.setValueAt("Open", row, statusColumn);
+								resultsTable.setValueAt("Open", modelRow, statusColumn);
 						} else {
-							resultsTable.setValueAt("InProgress", row, statusColumn);
+							resultsTable.setValueAt("InProgress", modelRow, statusColumn);
 						}
 
-						isEditable[row][estimateColumn] = iteration.equals("");
+						isEditable[modelRow][estimateColumn] = iteration.equals("");
 						// This is for making sure the un-editable settings fire correctly
 						if (fireCount++ < 1)
 							resultsTableModel.setValueAt(resultsTableModel.getValueAt(modelRow, originalEstimateColumn), modelRow, originalEstimateColumn);
@@ -198,7 +198,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						String estimate = (String) data;
 						if (estimate.equals("")){
 							isInvalid = true;
-							isEditable[row][iterationColumn] = false;						
+							isEditable[modelRow][iterationColumn] = false;						
 						} else {
 							int estimateVal = Integer.parseInt(estimate);
 							isEditable[row][iterationColumn] = (estimateVal > 0);
@@ -206,7 +206,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						} 
 						// This is for making sure the un-editable settings fire correctly
 						if (fireCount++ < 1)
-							resultsTableModel.setValueAt(resultsTableModel.getValueAt(modelRow, originalIterationColumn), modelRow, originalIterationColumn);
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, originalIterationColumn), row, originalIterationColumn);
 						else 
 							fireCount = 0;			
 					}
@@ -672,23 +672,23 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 
 		// Start saving the rest of the fields
-		currentRequirement.setName((String) resultsTable.getValueAt(row, this.getColumnIndex("Name")));
-		currentRequirement.setType( RequirementType.toType((String) resultsTable.getValueAt(row, this.getColumnIndex("Type"))));
-		currentRequirement.setStatus( RequirementStatus.toStatus((String) resultsTable.getValueAt(row, this.getColumnIndex("Status"))));
-		currentRequirement.setPriority(RequirementPriority.toPriority((String) resultsTable.getValueAt(row, this.getColumnIndex("Priority"))));
-		currentRequirement.setReleaseNumber((String)resultsTable.getValueAt(row, this.getColumnIndex("ReleaseNumber")));
+		currentRequirement.setName((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Name")));
+		currentRequirement.setType( RequirementType.toType((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Type"))));
+		currentRequirement.setStatus( RequirementStatus.toStatus((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Status"))));
+		currentRequirement.setPriority(RequirementPriority.toPriority((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Priority"))));
+		currentRequirement.setReleaseNumber((String)resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("ReleaseNumber")));
 		try {
-			currentRequirement.setEstimate( Integer.parseInt( (String) resultsTable.getValueAt(row, this.getColumnIndex("Estimate"))));
+			currentRequirement.setEstimate( Integer.parseInt( (String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Estimate"))));
 		} catch (Exception e) {
 			currentRequirement.setEstimate(-1);
 		}
 		try {
-			currentRequirement.setActualEffort(Integer.parseInt((String) resultsTable.getValueAt(row, this.getColumnIndex("ActualEffort"))));
+			currentRequirement.setActualEffort(Integer.parseInt((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("ActualEffort"))));
 		} catch (Exception e) {
 			currentRequirement.setActualEffort(-1);
 		}
 
-		int iterationID = this.getIterationID((String) resultsTable.getValueAt(row, this.getColumnIndex("Iteration")));
+		int iterationID = this.getIterationID((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Iteration")));
 		currentRequirement.setIteration(iterationID);
 
 		return currentRequirement;
