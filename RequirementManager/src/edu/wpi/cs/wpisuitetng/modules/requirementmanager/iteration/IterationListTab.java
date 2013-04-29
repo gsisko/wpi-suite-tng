@@ -218,9 +218,9 @@ public class IterationListTab extends JPanel implements IListPanel {
 		recievedData = false;
 		retrieveAllController.refreshData();
 		int count = 0;
-		while(!recievedData && count<20){
+		while(!recievedData && count<250){
 			try {
-				Thread.sleep(500);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -293,9 +293,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		parent.getParent().setAllIterations(iterations);
 		
 		Iteration[] displayedIterations = new Iteration[iterations.length-1];
-//		for (int i = 0; i < displayedIterations.length; i++) {
-//			displayedIterations[i] = iterations[i+1];
-//		}
+		
 		System.arraycopy(iterations, 1, displayedIterations, 0, iterations.length - 1);
 		
 		if (displayedIterations.length > 0) {
