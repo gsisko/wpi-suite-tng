@@ -139,7 +139,7 @@ public class ChartOptionsPanel extends JPanel{
 		//Create the strings for the boxes
 		String[] typeStrings = { "Pie Chart", "Bar Chart"};
 		String[] dataStrings = { "Requirement Status", "Requirement Iteration", "Users per Requirement", "Estimate per User"};
-		String[] filtersStrings = { "Applied", "Not Applied"};
+		String[] filtersStrings = {"Not Applied", "Applied"};
 
 		//Construct the boxes 
 		chartTypeBox = new JComboBox(typeStrings);

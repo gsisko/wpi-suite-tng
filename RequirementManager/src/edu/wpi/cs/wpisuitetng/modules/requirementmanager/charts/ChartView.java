@@ -311,6 +311,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		ArrayList<String> choices = new ArrayList();
 		ArrayList<String> filterChoices = new ArrayList();
 
+		filterChoices.add("Not Applied");
 		choices.add("Requirement Status");
 		choices.add("Requirement Iteration");
 		if (this.isFiltered) {
@@ -328,7 +329,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		if (this.activeFilters()) {
 			filterChoices.add("Applied");
 		}
-		filterChoices.add("Not Applied");
 
 		String[] tmp1 = new String[choices.size()];
 		for (int i = 0; i < choices.size(); i++) {
