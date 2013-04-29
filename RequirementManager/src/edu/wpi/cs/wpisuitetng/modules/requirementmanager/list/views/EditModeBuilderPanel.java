@@ -15,10 +15,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
 public class EditModeBuilderPanel extends JPanel {
@@ -60,7 +63,6 @@ public class EditModeBuilderPanel extends JPanel {
 		this.setLayout(layout);
 
 		legendPanel = new JPanel();
-		legendPanel.setPreferredSize(new Dimension(220, 40));
 		warningPanel = new JPanel();
 
 		// Legend Panel
@@ -88,17 +90,17 @@ public class EditModeBuilderPanel extends JPanel {
 		// Set legend constraints
 		SpringLayout legendLayout = new SpringLayout();
 		legendPanel.setLayout(legendLayout);
-		
+
 		// Setup constraints
 		legendLayout.putConstraint(SpringLayout.NORTH, whiteLabel, 0, SpringLayout.NORTH, legendPanel);
 		legendLayout.putConstraint(SpringLayout.WEST, whiteLabel, 0, SpringLayout.WEST, legendPanel);
 
 		legendLayout.putConstraint(SpringLayout.NORTH, yellowLabel, 0, SpringLayout.NORTH, legendPanel);
 		legendLayout.putConstraint(SpringLayout.EAST, yellowLabel, 0, SpringLayout.EAST, legendPanel);
-		
+
 		legendLayout.putConstraint(SpringLayout.SOUTH, grayLabel, 0, SpringLayout.SOUTH, legendPanel);
 		legendLayout.putConstraint(SpringLayout.WEST, grayLabel, 0, SpringLayout.WEST, legendPanel);
-		
+
 		legendLayout.putConstraint(SpringLayout.SOUTH, redLabel, 0, SpringLayout.SOUTH, legendPanel);
 		legendLayout.putConstraint(SpringLayout.EAST, redLabel, 0, SpringLayout.EAST, legendPanel);
 
@@ -107,6 +109,19 @@ public class EditModeBuilderPanel extends JPanel {
 		legendPanel.add(grayLabel);
 		legendPanel.add(redLabel);
 
+		//Create and set the titled border of legendPanel
+		TitledBorder titleBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Cell color key"); //First create a titled and (lowered) etched border
+		titleBorder.setTitleJustification(TitledBorder.DEFAULT_JUSTIFICATION);//set the justification of the title to default (left justified)
+		titleBorder.setTitlePosition(TitledBorder.CENTER);//set the location of the title to the top center of the panel
+		titleBorder.setTitleFont(whiteLabel.getFont().deriveFont(Font.ITALIC));//set the font of the title to an italic version of the font of the content of this panel
+		titleBorder.setTitleColor(Color.gray);//set the color of the title to grey
+
+		//Add inner and outer padding to the "titleBorder" and set the border of legendPanel to the result
+		legendPanel.setBorder(  BorderFactory.createCompoundBorder(	(BorderFactory.createEmptyBorder(5, 5, 5, 5)),
+				BorderFactory.createCompoundBorder(titleBorder,
+						(BorderFactory.createEmptyBorder(5, 5, 5, 5)) )  ));
+
+		legendPanel.setPreferredSize(new Dimension(240, 80));
 
 		// Warning panel
 		err1Label = new JLabel();
@@ -122,36 +137,44 @@ public class EditModeBuilderPanel extends JPanel {
 		err3Label.setText("");
 		err3Label.setFont(err1Label.getFont().deriveFont(11));
 		enterLabel = new JLabel();
-		enterLabel.setText("Press enter to finalize a change.");
-		enterLabel.setFont(enterLabel.getFont().deriveFont(13));
+		enterLabel.setText("Press enter to finalize a change");
+		enterLabel.setFont(enterLabel.getFont().deriveFont(9));
+		enterLabel.setFont(enterLabel.getFont().deriveFont(Font.ITALIC));
+		enterLabel.setPreferredSize(enterLabel.getPreferredSize());
+		enterLabel.setForeground(Color.gray);
 
-		// "Edit Mode" panel
+		// "Edit Mode" label
 		JLabel editModeLabel = new JLabel();
 		editModeLabel.setText("Edit Mode");
 		editModeLabel.setFont(new Font("Arial Bold",1,40));
+		
+		editModeLabel.setPreferredSize(editModeLabel.getPreferredSize());
 
 		// Arrange all panels
-		layout.putConstraint(SpringLayout.NORTH, editModeLabel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, editModeLabel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.NORTH, editModeLabel, 5, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, editModeLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		layout.putConstraint(SpringLayout.NORTH, enterLabel, 5, SpringLayout.SOUTH, editModeLabel);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, enterLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, warningPanel, 10, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, warningPanel, 0, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.WEST, warningPanel, 70, SpringLayout.EAST, editModeLabel);
 		layout.putConstraint(SpringLayout.EAST, warningPanel, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, legendPanel, 0, SpringLayout.VERTICAL_CENTER, this);
-		layout.putConstraint(SpringLayout.EAST, legendPanel, -80, SpringLayout.WEST, editModeLabel);
+		layout.putConstraint(SpringLayout.WEST, legendPanel, 5, SpringLayout.WEST, this);
 
 
 		//Setting up layout of warning messages
 		SpringLayout warningLayout = new SpringLayout();
 		warningPanel.setLayout(warningLayout);
-		// Set up vertically
-		warningLayout.putConstraint(SpringLayout.NORTH, enterLabel, 0, SpringLayout.NORTH, warningPanel);
-		warningLayout.putConstraint(SpringLayout.NORTH, err1Label, 10, SpringLayout.SOUTH, enterLabel);
-		warningLayout.putConstraint(SpringLayout.NORTH, err2Label, 10, SpringLayout.SOUTH, err1Label);
-		warningLayout.putConstraint(SpringLayout.NORTH, err3Label, 10, SpringLayout.SOUTH, err2Label);
+		
+		warningLayout.putConstraint(SpringLayout.VERTICAL_CENTER, err2Label, 0, SpringLayout.VERTICAL_CENTER, warningPanel);
+		warningLayout.putConstraint(SpringLayout.SOUTH, err1Label, 2, SpringLayout.NORTH, err2Label);
+		warningLayout.putConstraint(SpringLayout.NORTH, err3Label, 2, SpringLayout.SOUTH, err2Label);
+		
+		warningLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, err1Label, 0, SpringLayout.HORIZONTAL_CENTER, warningPanel);
+		warningLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, err2Label, 0, SpringLayout.HORIZONTAL_CENTER, warningPanel);
+		warningLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, err3Label, 0, SpringLayout.HORIZONTAL_CENTER, warningPanel);
 
-		warningPanel.add(enterLabel);
 		warningPanel.add(err1Label);
 		warningPanel.add(err2Label);
 		warningPanel.add(err3Label);
@@ -159,6 +182,7 @@ public class EditModeBuilderPanel extends JPanel {
 
 		this.add(legendPanel);
 		this.add(editModeLabel);
+		this.add(enterLabel);
 		this.add(warningPanel);
 	}
 
