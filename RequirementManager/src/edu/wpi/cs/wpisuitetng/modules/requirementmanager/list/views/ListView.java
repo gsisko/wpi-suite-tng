@@ -218,6 +218,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				refreshData();
 				mainPanel.getResultsPanel().setInEditMode(false);
 				mainPanel.getResultsPanel().enableSorting();
+				mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(true);//select by rows when not in edit mode
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
 				mainPanel.getResultsPanel().getResultsTable().setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
