@@ -43,7 +43,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** The panel containing the actual iteration pie chart */
 	private PieChartPanel iterationPiePanel;
-	
+
 	/** The panel containing the actual status pie chart */
 	private PieChartPanel requirementCountPiePanel;
 
@@ -55,10 +55,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** The panel containing the actual iteration bar chart */
 	private BarChartPanel iterationBarPanel;
-	
+
 	/** The panel containing the actual requirement count bar chart */
 	private BarChartPanel requirementCountBarPanel;
-	
+
 	/** The panel containing the actual iteration bar chart */
 	private BarChartPanel requirementEstimateBarPanel;
 
@@ -67,10 +67,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 	/** Boolean indicated if the data to be displayed is to be taken from the dataset with the active filters applied or not */
 	private boolean isFiltered;
-	
+
 	/** The type of data displayed in the chart */
 	private String chartDataType;
-	
+
 	/** The type of chart to dispay (bar chart or pie chart)*/
 	private String chartType;
 
@@ -82,14 +82,14 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	 * @param view A ListTab that this view will be used in
 	 */
 	public ChartView(ListTab view) {
-		
+
 		//Initialize all the variables:
 		//Charts
 		statusPiePanel = new PieChartPanel();
 		iterationPiePanel = new PieChartPanel();
 		requirementCountPiePanel = new PieChartPanel();
 		requirementEstimatePiePanel = new PieChartPanel();
-		
+
 		statusBarPanel = new BarChartPanel();
 		iterationBarPanel = new BarChartPanel();
 		requirementCountBarPanel = new BarChartPanel();
@@ -121,17 +121,17 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
 
-		
+
 		//Initial set up:
-		
+
 		//Bar Charts
 		this.add(iterationBarPanel, BorderLayout.CENTER);
 		this.add(statusBarPanel, BorderLayout.CENTER);
-		
+
 		//Pie Charts
 		this.add(iterationPiePanel, BorderLayout.CENTER);
 		this.add(statusPiePanel, BorderLayout.CENTER);
-		
+
 		//Visibility for all charts
 		requirementCountBarPanel.setVisible(true);
 		requirementEstimateBarPanel.setVisible(true);
@@ -141,7 +141,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		requirementEstimatePiePanel.setVisible(true);
 		iterationPiePanel.setVisible(true);
 		statusPiePanel.setVisible(true);
-		
+
 		//Options
 		this.add(optionsPanel, BorderLayout.WEST);
 		optionsPanel.setVisible(true);
@@ -157,15 +157,21 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		getView().getParent().refreshData();
 		//Request data from parent
 		this.reloadData();
-		// Updates the dropdown lists
-		this.setListOptions();
 		//update filter table
 		optionsPanel.buildTable();
 	}
 
 	/** Function to reload data from "List Requirements" tab without refreshing **/
 	public void reloadData(){
+		// Updates charts
+		updateCharts();
+		optionsPanel.buildTable();
 		
+		// Updates the dropdown lists
+		this.setListOptions();
+	}
+
+	private void updateCharts() {		
 		//Grab requirements
 		Requirement[] requirements;
 		if(!isFiltered){
@@ -187,7 +193,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		statusBarPanel.enableFilter(isFiltered);
 		requirementCountBarPanel.enableFilter(isFiltered);
 		requirementEstimateBarPanel.enableFilter(isFiltered);
-		
+
 		//Refresh the chart data
 		statusPiePanel.refreshStatusChart(requirements);
 		statusBarPanel.refreshStatusChart(requirements);
@@ -197,10 +203,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		requirementEstimateBarPanel.refreshAssignedUsersEstimateChart(requirements);
 		iterationPiePanel.refreshIterationChart(requirements, iterations);
 		iterationBarPanel.refreshIterationChart(requirements, iterations);
-		
-		optionsPanel.buildTable();
 	}
-	
+
 	/** Sets the type of chart to use
 	 * @param chartType the type of chart to use
 	 */
@@ -227,6 +231,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			isFiltered = true;
 		else if(filterStatus.equals("Not Applied"))
 			isFiltered = false;
+		this.refreshChartVisibility();
 	}
 
 	/**
@@ -267,7 +272,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				requirementEstimatePiePanel.setVisible(true);
 			}
 
-		//BarChart	
+			//BarChart	
 		} else if (chartType.equals("Bar Chart")){
 			if(chartDataType.equals("Requirement Status")){
 				this.add(statusBarPanel, BorderLayout.CENTER);
@@ -286,6 +291,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			}
 
 		}
+		// Update the charts.
+		updateCharts();
 		
 		//Always repaint!
 		this.repaint();
@@ -298,12 +305,12 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	public void setView(ListTab view) {
 		this.view = view;
 	}
-	
-	
+
+
 	public void setListOptions () {
 		ArrayList<String> choices = new ArrayList();
 		ArrayList<String> filterChoices = new ArrayList();
-		
+
 		choices.add("Requirement Status");
 		choices.add("Requirement Iteration");
 		if (this.isFiltered) {
@@ -317,12 +324,12 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				choices.add("Estimate per User");
 			}
 		}
-		 
+
 		if (this.activeFilters()) {
 			filterChoices.add("Applied");
 		}
 		filterChoices.add("Not Applied");
-		
+
 		String[] tmp1 = new String[choices.size()];
 		for (int i = 0; i < choices.size(); i++) {
 			tmp1[i] = choices.get(i);
@@ -345,7 +352,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		}
 		return false;
 	}
-	
+
 
 	private boolean requirementHasUsersWithFilters() {
 		Requirement[] reqList = this.getView().getParent().getAllRequirements();
@@ -353,7 +360,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		for (int i = 0; i < reqList.length; i++) {
 			for (int j = 0; j < filters.length; j++) {
 				if (filters[j].passesFilter(reqList[i]) && reqList[i].getUserNames().size() > 0) {
-				return true;
+					return true;
 				}
 			}
 		}

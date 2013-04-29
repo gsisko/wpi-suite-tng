@@ -31,6 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
@@ -145,22 +147,61 @@ public class ChartOptionsPanel extends JPanel{
 		filtersOptionsBox = new JComboBox(filtersStrings);
 		
 		//Add action listeners to the boxes so data is refreshed when a change is made
-		chartTypeBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-            	parent.setChartType((String) ((JComboBox)e.getSource()).getSelectedItem());
+		chartTypeBox.addPopupMenuListener(new PopupMenuListener() {
+            public void update(){
+            	parent.setChartType((String)chartTypeBox.getSelectedItem());
             }
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				update();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				update();
+			}
         });  
 		
-		chartDataBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-            	parent.setDataTypeVisible((String) ((JComboBox)e.getSource()).getSelectedItem());
+		chartDataBox.addPopupMenuListener(new PopupMenuListener() {
+            public void update(){
+            	parent.setDataTypeVisible((String)chartDataBox.getSelectedItem());
             }
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				update();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				update();
+			}
         });  
 		
-		filtersOptionsBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-            	parent.setDataFiltered((String) ((JComboBox)e.getSource()).getSelectedItem());
+		filtersOptionsBox.addPopupMenuListener(new PopupMenuListener() {
+            public void update(){
+            	parent.setDataFiltered((String)filtersOptionsBox.getSelectedItem());
             }
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				update();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				update();
+			}
         });  
 		
 		
