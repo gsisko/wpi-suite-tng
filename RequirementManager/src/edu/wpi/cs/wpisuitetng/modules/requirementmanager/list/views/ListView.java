@@ -289,7 +289,16 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	 */
 	public void refreshData() {
 		iterationController.refreshData();
-		while (allIterations.length == 0);
+		int count = 0;
+		while (allIterations.length == 0) {
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (++count > 500) break;
+		}
 		filterController.refreshData();
 	}
 

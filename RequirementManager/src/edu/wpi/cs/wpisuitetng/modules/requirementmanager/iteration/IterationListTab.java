@@ -218,7 +218,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		recievedData = false;
 		retrieveAllController.refreshData();
 		int count = 0;
-		while(!recievedData && count<250){
+		while(!recievedData && count<500){
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
