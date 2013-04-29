@@ -38,7 +38,7 @@ public class AcceptanceTestTest {
 		assertEquals("Description 1", result.getDescription());
 		
 		assertEquals("Acceptance Test 1", result.getAcceptanceTestTitle());
-		assertEquals("Description 1", result.getBodyString());
+		assertEquals("Acceptance Test 1", result.getBodyString());
 		
 		assertEquals("", result.getUser());
 		assertEquals(null, result.getProject());
@@ -62,7 +62,7 @@ public class AcceptanceTestTest {
 		assertEquals("Description 2", result2.getDescription());
 		
 		assertEquals("Acceptance Test 2", result2.getAcceptanceTestTitle());
-		assertEquals("Description 2", result2.getBodyString());
+		assertEquals("Acceptance Test 2", result2.getBodyString());
 		
 		assertEquals("", result2.getUser());
 		assertEquals(null, result2.getProject());
