@@ -220,16 +220,10 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						System.err.println("Table change listener failed fatally");
 						return;
 					}
-
-<<<<<<< Updated upstream
-					needsSaving[row][column] = isChanged;
-					isValid[row][column] = !isInvalid;
-					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
-=======
+					
 					needsSaving[row][getOriginalColumnIndex(resultsTable.getColumnName(column))] = isChanged;
 					isValid[row][getOriginalColumnIndex(resultsTable.getColumnName(column))] = !isInvalid;
-					//			printMessages(prepareErrorMessages());
->>>>>>> Stashed changes
+					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
 
 					updateSaveButton();
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
