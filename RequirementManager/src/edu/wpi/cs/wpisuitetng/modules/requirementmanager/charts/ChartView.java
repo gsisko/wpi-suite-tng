@@ -320,6 +320,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		ArrayList<String> choices = new ArrayList<String>();
 		ArrayList<String> filterChoices = new ArrayList<String>();
 
+		String cdb = (String) this.optionsPanel.getChartDataBox().getSelectedItem();
+		
 		filterChoices.add("Not Applied");
 		choices.add("Requirement Status");
 		choices.add("Requirement Iteration");
@@ -339,7 +341,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			}
 		}
 
-		if (this.getView().getParent().getDisplayedRequirements().length > 0) {
+		if (this.getView().getParent().getDisplayedRequirements().length > 0 && this.activeFilters()) {
 			filterChoices.add("Applied");
 		}
 
@@ -351,7 +353,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		for (int i = 0; i < filterChoices.size(); i++) {
 			tmp2[i] = filterChoices.get(i);
 		}
-				String cdb = (String) this.optionsPanel.getChartDataBox().getSelectedItem();
 		this.optionsPanel.setChartData(tmp1);
 		try{
 			this.optionsPanel.getChartDataBox().setSelectedItem(cdb);
@@ -372,6 +373,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	public void setListOptionsOnAppliedChange () {
 		ArrayList<String> choices = new ArrayList<String>();
 
+		String cdb = (String) this.optionsPanel.getChartDataBox().getSelectedItem();
+
 		choices.add("Requirement Status");
 		choices.add("Requirement Iteration");
 		if (this.isFiltered) {
@@ -395,7 +398,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			tmp1[i] = choices.get(i);
 		}
 		this.optionsPanel.setChartData(tmp1);
-		this.setDataTypeVisible("Requirement Status");
+		try{
+			this.optionsPanel.getChartDataBox().setSelectedItem(cdb);
+		}
+		catch(Error e){
+			this.optionsPanel.getChartDataBox().setSelectedIndex(0);
+		}
+		String fob = (String) this.optionsPanel.getFiltersOptionsBox().getSelectedItem();
 	}
 
 
