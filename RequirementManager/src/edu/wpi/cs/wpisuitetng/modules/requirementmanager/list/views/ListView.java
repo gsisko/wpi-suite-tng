@@ -206,7 +206,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 					mainPanel.getResultsPanel().getResultsTable().setRowSelectionAllowed(false);//select by cells when in edit mode
 					mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(false);//disables the create requirements button
 					mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(false);//disables the lookup by ID box
-					mainPanel.getResultsPanel().getResultsTable().getTableHeader().setReorderingAllowed(false);
 					waitingForRefresh = false;
 				}
 			}
@@ -229,7 +228,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 				mainPanel.getEditModeBuilderPanel().setInvalidInputMessages(new String[3]);
-				mainPanel.getResultsPanel().getResultsTable().getTableHeader().setReorderingAllowed(false);
 			}
 		});
 		btnCancel.setPreferredSize(new Dimension(80, 25));
@@ -252,7 +250,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 				mainPanel.getEditModeBuilderPanel().setInvalidInputMessages(new String[3]);
-				mainPanel.getResultsPanel().getResultsTable().getTableHeader().setReorderingAllowed(false);
 			}
 		});
 		btnSave.setPreferredSize(new Dimension(130, 25));

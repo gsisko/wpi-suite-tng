@@ -101,7 +101,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
-		resultsTable.getTableHeader().setReorderingAllowed(false);
 
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
 
@@ -137,8 +136,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					else if (columnName.equals("Iteration")) {
 						String iteration = (String) data;
-						int statusColumn = getOriginalColumnIndex("Status");
-						int estimateColumn = getOriginalColumnIndex("Estimate");
+						int statusColumn = getColumnIndex("Status");
+						int estimateColumn = getColumnIndex("Estimate");
+						int originalEstimateColumn = getOriginalColumnIndex("Estimate");
 						if (!getIterationName(requirement.getIteration()).equals(iteration)) {
 							isChanged = true;
 
@@ -155,8 +155,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 						isEditable[row][estimateColumn] = iteration.equals("");
 						// This is for making sure the un-editable settings fire correctly
-						if (fireCount++ < 1) 
-							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, estimateColumn), row, estimateColumn);
+						if (fireCount++ < 1)
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, originalEstimateColumn), row, originalEstimateColumn);
 						else 
 							fireCount = 0;
 					}
@@ -191,7 +191,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					}
 
 					else if (columnName.equals("Estimate")) {
-						int iterationColumn = getOriginalColumnIndex("Iteration");
+						int iterationColumn = getColumnIndex("Iteration");
+						int originalIterationColumn = getOriginalColumnIndex("Iteration");
 						String estimate = (String) data;
 						if (estimate.equals("")){
 							isInvalid = true;
@@ -202,8 +203,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 							isChanged = requirement.getEstimate() != estimateVal;
 						} 
 						// This is for making sure the un-editable settings fire correctly
-						if (fireCount++ < 1) 
-							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, iterationColumn), row, iterationColumn);
+						if (fireCount++ < 1)
+							resultsTableModel.setValueAt(resultsTableModel.getValueAt(row, originalIterationColumn), row, originalIterationColumn);
 						else 
 							fireCount = 0;			
 					}
@@ -222,8 +223,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						return;
 					}
 					
-					needsSaving[row][getOriginalColumnIndex(resultsTable.getColumnName(column))] = isChanged;
-					isValid[row][getOriginalColumnIndex(resultsTable.getColumnName(column))] = !isInvalid;
+					needsSaving[row][getColumnIndex(resultsTableModel.getColumnName(column))] = isChanged;
+					isValid[row][getColumnIndex(resultsTableModel.getColumnName(column))] = !isInvalid;
 					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
 
 					updateSaveButton();
@@ -231,7 +232,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 					for (int i = 0; i < resultsTable.getRowCount(); i++)
 						for (int j = 0; j < resultsTable.getColumnCount(); j++)
-							originalIsEditable[i][j] = isEditable[i][getOriginalColumnIndex(resultsTable.getColumnName(j))];
+							originalIsEditable[i][j] = isEditable[i][getColumnIndex(resultsTableModel.getColumnName(j))];
 					getModel().setIsEditable(originalIsEditable);
 				}
 			}
@@ -390,7 +391,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 */
 	public void setComboxforIteration()
 	{
-		int typeColumnNum = this.getOriginalColumnIndex("Iteration");
+		int typeColumnNum = this.getColumnIndex("Iteration");
 
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
 
@@ -430,7 +431,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				Requirement[] reqs = parent.getParent().getDisplayedRequirements();
 				Requirement requirement = null;
 				for (Requirement r : reqs) {
-					if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getColumnIndex("ID", getTableName()))))
+					if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getOriginalColumnIndex("ID"))))
 						requirement = r;	
 				}
 				Requirement currentRequirement = getCurrentRequirement(row);
@@ -791,7 +792,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 		for (int i = 0; i < resultsTable.getRowCount(); i++)
 			for (int j = 0; j < resultsTable.getColumnCount(); j++)
-				originalIsEditable[i][j] = isEditable[i][getOriginalColumnIndex(resultsTable.getColumnName(j))];
+				originalIsEditable[i][j] = isEditable[i][getColumnIndex(resultsTableModel.getColumnName(j))];
 
 		getModel().setEditable(true);
 		getModel().setIsEditable(originalIsEditable);
