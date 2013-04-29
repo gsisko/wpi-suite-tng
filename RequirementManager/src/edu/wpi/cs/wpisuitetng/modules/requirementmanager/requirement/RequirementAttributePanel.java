@@ -633,19 +633,19 @@ public class RequirementAttributePanel extends JPanel {
 			this.fieldsChanged[i] = fieldsChanged;
 		}
 	}
-
+	
+	
 	/** This sets all the booleans in the fieldsChanged array to a boolean
-	 *  passed in as  "fieldsChanged", EXCEPT those booleans in the fieldsChanged
-	 *  array associated with the note fields
-	 * @param fieldsChanged The boolean to set all booleans in the fieldsChanged array to, EXCEPT those booleans in the fieldsChanged associated with the note fields
-	 */
-	public void setNonNoteFieldsChanged(boolean fieldsChanged) {
-		for (int i = 0; i < this.fieldsChanged.length; ++i) {
-			if (i != 9) {
-				this.fieldsChanged[i] = fieldsChanged;
-			}
+	*  passed in as  "fieldsChanged", EXCEPT it only applies to the basic set of fields
+	*  which are in the main part of the requirementAttributePanel
+	* @param fieldsChanged The boolean to set all booleans in the fieldsChanged array to, EXCEPT those booleans in the fieldsChanged associated with the note fields
+	*/
+	public void setBasicFieldsChanged(boolean fieldsChanged) {
+		for (int i = 0; i < 9; i++) {
+			this.fieldsChanged[i] = fieldsChanged;
 		}
 	}
+	
 
 	/** Setter for the saveButton 
 	 * @param saveButton The JButton that should be referenced as the save button. Located in tool bar.
@@ -983,7 +983,7 @@ public class RequirementAttributePanel extends JPanel {
 		}
 
 		// Set the status of the fields to unchanged because they just got populated
-		setNonNoteFieldsChanged(false);
+		setBasicFieldsChanged(false);
 	}
 
 	/** This method limits the changes available to the user by disabling various fields/components
