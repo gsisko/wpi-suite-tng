@@ -136,10 +136,10 @@ public class EditModeBuilderPanel extends JPanel {
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, editModeLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, warningPanel, 10, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, warningPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, warningPanel, 60, SpringLayout.EAST, editModeLabel);
+		layout.putConstraint(SpringLayout.WEST, warningPanel, 70, SpringLayout.EAST, editModeLabel);
 		layout.putConstraint(SpringLayout.EAST, warningPanel, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, legendPanel, 0, SpringLayout.VERTICAL_CENTER, this);
-		layout.putConstraint(SpringLayout.EAST, legendPanel, -60, SpringLayout.WEST, editModeLabel);
+		layout.putConstraint(SpringLayout.EAST, legendPanel, -80, SpringLayout.WEST, editModeLabel);
 
 
 		//Setting up layout of warning messages
