@@ -166,7 +166,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		// Updates charts
 		updateCharts();
 		optionsPanel.buildTable();
-		
+
 		// Updates the dropdown lists
 		this.setListOptions();
 	}
@@ -293,7 +293,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		}
 		// Update the charts.
 		updateCharts();
-		
+
 		//Always repaint!
 		this.repaint();
 	}
@@ -317,11 +317,15 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		if (this.isFiltered) {
 			if (requirementHasUsersWithFilters()) {
 				choices.add("Users per Requirement");
+			}
+			if (requirementHasUsersEstimateWithFilters()) {
 				choices.add("Estimate per User");
 			}
 		} else {
 			if (requirementHasUsers()) {
 				choices.add("Users per Requirement");
+			}
+			if (requirementUserHasEstimate()) {
 				choices.add("Estimate per User");
 			}
 		}
@@ -367,10 +371,34 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		return false;
 	}
 
+	private boolean requirementHasUsersEstimateWithFilters() {
+		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		Filter[] filters = this.getView().getParent().getAllFilters();
+		for (int i = 0; i < reqList.length; i++) {
+			for (int j = 0; j < filters.length; j++) {
+				if (filters[j].passesFilter(reqList[i]) && reqList[i].getUserNames().size() > 0 && reqList[i].getEstimate() > 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
 	private boolean requirementHasUsers() {
 		Requirement[] reqList = this.getView().getParent().getAllRequirements();
 		for (int i = 0; i < reqList.length; i++) {
 			if (reqList[i].getUserNames().size() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean requirementUserHasEstimate() {
+		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		for (int i = 0; i < reqList.length; i++) {
+			if (reqList[i].getUserNames().size() > 0 && reqList[i].getEstimate() > 0) {
 				return true;
 			}
 		}
