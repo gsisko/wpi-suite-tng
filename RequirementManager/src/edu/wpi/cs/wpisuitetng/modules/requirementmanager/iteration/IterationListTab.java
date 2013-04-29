@@ -222,7 +222,6 @@ public class IterationListTab extends JPanel implements IListPanel {
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			count++;

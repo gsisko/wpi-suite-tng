@@ -129,7 +129,7 @@ public class BarChartPanel extends JPanel implements IListPanel {
 
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 
-		//Customize this chart! TODO: Change this?
+		//Customize this chart!
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
@@ -317,61 +317,45 @@ public class BarChartPanel extends JPanel implements IListPanel {
 
 	@Override
 	public String[] getSelectedUniqueIdentifiers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setNewBtnToCancel() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setCancelBtnToNew() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean refreshAll() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void toggleNewCancelMode() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void showRecievedModels(String jsonString) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void refreshRequirements() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setDeleteEnabled(boolean setActive) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean areSelectedItemsDeletable() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
