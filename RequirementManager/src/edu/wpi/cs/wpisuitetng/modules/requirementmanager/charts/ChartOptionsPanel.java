@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,11 +37,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
-/**
- * Panel that contains options for the currently displayed chart.
-=======
+
 /** Panel that contains options for the currently displayed chart.
->>>>>>> 9bf76398ba53e1516548953b0de671e713e234bb
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
@@ -246,6 +244,10 @@ public class ChartOptionsPanel extends JPanel{
 	public void setChartDataBox(JComboBox chartDataBox) {
 		this.chartDataBox = chartDataBox;
 	}
+	
+	public void setChartData(String[] options) {
+		this.chartDataBox.setModel(new DefaultComboBoxModel(options));
+	}
 
 	/**
 	 * @return the filtersOptionsBox
@@ -259,6 +261,10 @@ public class ChartOptionsPanel extends JPanel{
 	 */
 	public void setFiltersOptionsBox(JComboBox filtersOptionsBox) {
 		this.filtersOptionsBox = filtersOptionsBox;
+	}
+	
+	public void setFiltersOptions(String[] options) {
+		this.filtersOptionsBox.setModel(new DefaultComboBoxModel(options));
 	}
 
 	/** Method to get the parent of this ChartOptionsPanel

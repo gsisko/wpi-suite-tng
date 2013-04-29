@@ -15,12 +15,14 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -155,6 +157,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		getView().getParent().refreshData();
 		//Request data from parent
 		this.reloadData();
+		// Updates the dropdown lists
+		this.setListOptions();
 		//update filter table
 		optionsPanel.buildTable();
 	}
@@ -255,10 +259,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				this.add(iterationPiePanel, BorderLayout.CENTER);
 				iterationPiePanel.setVisible(true);
 			}
-			else if(chartDataType.equals("Number of Users Assigned To Requirements")){
+			else if(chartDataType.equals("Users per Requirement")){
 				this.add(requirementCountPiePanel, BorderLayout.CENTER);
 				requirementCountPiePanel.setVisible(true);
-			} else if (chartDataType.equals("Total Estimate for Each User")){
+			} else if (chartDataType.equals("Estimate per User")){
 				this.add(requirementEstimatePiePanel, BorderLayout.CENTER);
 				requirementEstimatePiePanel.setVisible(true);
 			}
@@ -273,10 +277,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				this.add(iterationBarPanel, BorderLayout.CENTER);
 				iterationBarPanel.setVisible(true);
 			}
-			else if(chartDataType.equals("Number of Users Assigned To Requirements")){
+			else if(chartDataType.equals("Users per Requirement")){
 				this.add(requirementCountBarPanel, BorderLayout.CENTER);
 				requirementCountBarPanel.setVisible(true);
-			} else if (chartDataType.equals("Total Estimate for Each User")){
+			} else if (chartDataType.equals("Estimate per User")){
 				this.add(requirementEstimateBarPanel, BorderLayout.CENTER);
 				requirementEstimateBarPanel.setVisible(true);
 			}
@@ -294,5 +298,75 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	public void setView(ListTab view) {
 		this.view = view;
 	}
+	
+	
+	public void setListOptions () {
+		ArrayList<String> choices = new ArrayList();
+		ArrayList<String> filterChoices = new ArrayList();
+		
+		choices.add("Requirement Status");
+		choices.add("Requirement Iteration");
+		if (this.isFiltered) {
+			if (requirementHasUsersWithFilters()) {
+				choices.add("Users per Requirement");
+				choices.add("Estimate per User");
+			}
+		} else {
+			if (requirementHasUsers()) {
+				choices.add("Users per Requirement");
+				choices.add("Estimate per User");
+			}
+		}
+		 
+		if (this.activeFilters()) {
+			filterChoices.add("Applied");
+		}
+		filterChoices.add("Not Applied");
+		
+		String[] tmp1 = new String[choices.size()];
+		for (int i = 0; i < choices.size(); i++) {
+			tmp1[i] = choices.get(i);
+		}
+		String[] tmp2 = new String[filterChoices.size()];
+		for (int i = 0; i < filterChoices.size(); i++) {
+			tmp2[i] = filterChoices.get(i);
+		}
+		this.optionsPanel.setChartData(tmp1);
+		this.optionsPanel.setFiltersOptions(tmp2);
+	}
 
+
+	private boolean activeFilters() {
+		Filter[] filters = this.view.getParent().getAllFilters();
+		for (int i = 0; i < filters.length; i++) {
+			if (filters[i].isUseFilter()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+
+	private boolean requirementHasUsersWithFilters() {
+		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		Filter[] filters = this.getView().getParent().getAllFilters();
+		for (int i = 0; i < reqList.length; i++) {
+			for (int j = 0; j < filters.length; j++) {
+				if (filters[j].passesFilter(reqList[i]) && reqList[i].getUserNames().size() > 0) {
+				return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean requirementHasUsers() {
+		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		for (int i = 0; i < reqList.length; i++) {
+			if (reqList[i].getUserNames().size() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
