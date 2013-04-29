@@ -169,12 +169,10 @@ public class FilterManagerTest {
 	@Test
 	public void testGetAll() throws WPISuiteException {
 		Filter[] gotten = manager.getAll(defaultSession);
-		assertEquals(2, gotten.length);
+		assertEquals(1, gotten.length);
 		assertTrue(existingFilter.equals(gotten[0])
 				|| existingFilter.equals(gotten[1])); // The order is not
 														// guranteed
-		assertTrue(otherFilter.equals(gotten[1])
-				|| otherFilter.equals(gotten[0])); // The order is not guranteed
 	}
 
 	@Test
@@ -227,7 +225,7 @@ public class FilterManagerTest {
 		Filter anotherFilter = new Filter(FilterType.ActualEffort,
 				OperatorType.EqualTo, 2, true);
 		manager.makeEntity(defaultSession, anotherFilter.toJSON());
-		assertEquals(3, manager.getAll(defaultSession).length);
+		assertEquals(2, manager.getAll(defaultSession).length);
 		manager.deleteAll(defaultSession);
 		assertEquals(0, manager.getAll(defaultSession).length);
 	}
@@ -312,7 +310,7 @@ public class FilterManagerTest {
 
 	@Test
 	public void testFiltersAreUserDependent() throws WPISuiteException {
-		assertEquals(2, manager.getAll(defaultSession).length);
+		assertEquals(1, manager.getAll(defaultSession).length);
 		assertEquals(0, manager.getAll(otherSession).length);
 	}
 }
