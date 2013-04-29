@@ -363,7 +363,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 		listScrollPane = new JScrollPane(acceptanceTestList);
 
-		listScrollPane.setPreferredSize(new Dimension(580, 300));		
+		listScrollPane.setPreferredSize(new Dimension(560, 240));		
 
 		// Add components
 		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
