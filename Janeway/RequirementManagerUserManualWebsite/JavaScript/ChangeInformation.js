@@ -299,8 +299,8 @@ function FilterBuilderPanel(){
 function CreateDeleteFilter(){
 	$(document).ready(function () {
         //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Create and Delete Iterations</a>');
-		$(".instructionTitle").html('<a>The Iteration</a>');
+        $(".moveTabs").html('<a class="title">How to Create and Delete Filters</a>');
+		$(".instructionTitle").html('<a>The Filters</a>');
         $(".instructionText").html(function(){
 			var str = '<a>To create a filter, first click the "New Filter" button located at the bottom of the Filter List Panel. Once clicked, the elements in the Filter Builder Panel will become active. You can create a filter with the type, operator, and value. Then hit the "Create" button. The filter will then appear on the left Filter List Panel.</a>';
 			str += '<br /><br /><a>You can then edit the filter by double clicking on it. It opens in the Filter Builder Panel. You can edit the filter accordingly. If you did not mean to create or edit a requirement you can click the "Cancel" button on the bottom of the Filter List Panel. </a>';
