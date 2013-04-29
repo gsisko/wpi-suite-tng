@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -116,7 +117,8 @@ public class ChartOptionsPanel extends JPanel{
 		for(MouseMotionListener listener : filtertable.getMouseMotionListeners()){
 			filtertable.removeMouseMotionListener(listener);
 		}
-		//filtertable.getTableHeader().setResizingAllowed(false);
+		filtertable.getTableHeader().setResizingAllowed(false);
+		filtertable.getTableHeader().setReorderingAllowed(false);
 		
 		
 		buildTable();
@@ -305,47 +307,54 @@ public class ChartOptionsPanel extends JPanel{
 		this.getModel().fireTableStructureChanged();
 
 		Filter[] filters = parent.getView().getParent().getAllFilters();
+		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
+		for (int i = 0; i < filters.length; i++) {
+			if (filters[i].isUseFilter()) {
+				activeFilters.add(filters[i]);
+			}
+		}
 
 		// Add the list of filters to the FilterListPanel object
-		if (filters.length > 0) {
+		if (filters.length > 0 && activeFilters != null && activeFilters.size()>0) {
 			// set the column names
 			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
 
 			// put the data in the table
-			Object[][] entries = new Object[filters.length][columnNames.length];
-			for (int i = 0; i < filters.length; i++) {
-				entries[i][0] = String.valueOf(filters[i].getUniqueID());
-				entries[i][1] = filters[i].getType().toString();
+			Object[][] entries = new Object[activeFilters.size()][columnNames.length];
+			for (int i = 0; i < activeFilters.size(); i++) {
+				if (activeFilters.get(i).isUseFilter()) {
+					entries[i][0] = String.valueOf(activeFilters.get(i).getUniqueID());
+					entries[i][1] = activeFilters.get(i).getType().toString();
 
-				if (filters[i].getComparator().toString().equals("Contains")) {
-					entries[i][2] = "c";
-				} else if (filters[i].getComparator().toString().equals("DoesNotContain")) {
-					entries[i][2] = "!c";
-				} else {
-					entries[i][2] = filters[i].getComparator().toString();
-				}
+					if (activeFilters.get(i).getComparator().toString().equals("Contains")) {
+						entries[i][2] = "c";
+					} else if (activeFilters.get(i).getComparator().toString().equals("DoesNotContain")) {
+						entries[i][2] = "!c";
+					} else {
+						entries[i][2] = activeFilters.get(i).getComparator().toString();
+					}
 
-				String typeString = filters[i].getType().toString();
-				if (typeString.equals("Iteration")) {
-					String strId = filters[i].getValue();
-					while (parent.getView().getParent().getAllIterations().length == 0)
-					for (Iteration iter : parent.getView().getParent().getAllIterations()) {
-						if (strId.equals(iter.getID() + "")) {
-							entries[i][3] = iter.getName();
-						}
+					String typeString = activeFilters.get(i).getType().toString();
+					if (typeString.equals("Iteration")) {
+						String strId = activeFilters.get(i).getValue();
+						while (parent.getView().getParent().getAllIterations().length == 0)
+							for (Iteration iter : parent.getView().getParent().getAllIterations()) {
+								if (strId.equals(iter.getID() + "")) {
+									entries[i][3] = iter.getName();
+								}
+							}
+					}
+					else {
+						entries[i][3] = activeFilters.get(i).getValue();
+					}
+
+					if (activeFilters.get(i).isUseFilter()) {
+						entries[i][4] = "yes";
+					} else {
+						entries[i][4] = "no";
 					}
 				}
-				else {
-					entries[i][3] = filters[i].getValue();
-				}
-
-				if (filters[i].isUseFilter()) {
-					entries[i][4] = "yes";
-				} else {
-					entries[i][4] = "no";
-				}
 			}
-
 			// fill the table
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
