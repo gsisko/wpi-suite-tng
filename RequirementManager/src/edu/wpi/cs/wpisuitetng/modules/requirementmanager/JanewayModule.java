@@ -90,40 +90,6 @@ public class JanewayModule implements IJanewayModule {
 		
 		// retrieves the name of the operating system
 		String osName = System.getProperty("os.name").toLowerCase();
-		
-		// control + tab: switch to right tab
-		tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control TAB"), new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainTabController.switchToRightTab();
-			}
-		}));
-		
-		// control + shift + tab: switch to left tab
-		tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control shift TAB"), new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainTabController.switchToLeftTab();
-			}
-		}));
-		
-		// command + w for mac or control + w for windows: close the current tab
-		if (osName.contains("mac")) {
-			tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("meta W"), new AbstractAction() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					mainTabController.closeCurrentTab();
-				}
-			}));
-		}
-		else {
-			tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control W"), new AbstractAction() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					mainTabController.closeCurrentTab();
-				}
-			}));
-		}
 	}
 
 	/**
