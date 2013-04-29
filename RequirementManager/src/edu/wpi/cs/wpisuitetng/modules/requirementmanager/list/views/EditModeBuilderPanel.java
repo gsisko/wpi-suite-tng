@@ -87,7 +87,7 @@ public class EditModeBuilderPanel extends JPanel {
 		grayLabel.setEditable(false);
 		grayLabel.setPreferredSize(new Dimension(105, 17));
 		grayLabel.setBackground(Color.lightGray);
-		yellowLabel = new JTextField("   Changed field");
+		yellowLabel = new JTextField("    Modified field");
 		yellowLabel.setEditable(false);
 		yellowLabel.setPreferredSize(new Dimension(105, 17));
 		yellowLabel.setBackground(new Color(248,253,188));
