@@ -113,7 +113,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					Requirement requirement = null;
 					for (Requirement r : reqs) {
-						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getColumnIndex("ID"))))
+						if ((r.getId() + "").equals(resultsTableModel.getValueAt(row, getOriginalColumnIndex("ID"))))
 							requirement = r;	
 					}
 
@@ -136,8 +136,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 					else if (columnName.equals("Iteration")) {
 						String iteration = (String) data;
-						int statusColumn = getColumnIndex("Status");
-						int estimateColumn = getColumnIndex("Estimate");
+						int statusColumn = getOriginalColumnIndex("Status");
+						int estimateColumn = getOriginalColumnIndex("Estimate");
 						if (!getIterationName(requirement.getIteration()).equals(iteration)) {
 							isChanged = true;
 
@@ -190,7 +190,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					}
 
 					else if (columnName.equals("Estimate")) {
-						int iterationColumn = getColumnIndex("Iteration");
+						int iterationColumn = getOriginalColumnIndex("Iteration");
 						String estimate = (String) data;
 						if (estimate.equals("")){
 							isInvalid = true;
@@ -221,9 +221,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						return;
 					}
 
+<<<<<<< Updated upstream
 					needsSaving[row][column] = isChanged;
 					isValid[row][column] = !isInvalid;
 					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
+=======
+					needsSaving[row][getOriginalColumnIndex(resultsTable.getColumnName(column))] = isChanged;
+					isValid[row][getOriginalColumnIndex(resultsTable.getColumnName(column))] = !isInvalid;
+					//			printMessages(prepareErrorMessages());
+>>>>>>> Stashed changes
 
 					updateSaveButton();
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
@@ -280,7 +286,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						if (messages[blankField].equals("") )
 							messages[blankField] = "The following fields cannot be blank: Estimate";
 						// If the message is partially set, but doesn't have name, add name
-						 else if (!messages[blankField].contains("Estimate") )
+						else if (!messages[blankField].contains("Estimate") )
 							messages[blankField] += ", Estimate";	
 
 
@@ -288,7 +294,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						// If the message isn't set at all, set it
 						if (messages[blankField].equals("") )
 							messages[blankField] = "The following fields cannot be blank: ActualEffort";
-							// If the message is partially set, but doesn't have name, add name
+						// If the message is partially set, but doesn't have name, add name
 						else if (!messages[blankField].contains("ActualEffort") )
 							messages[blankField] += ", ActualEffort";
 
@@ -436,7 +442,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 				else {
 					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(RequirementStatus.InProgress));
 				}
-editorComponent.setBackground(Color.white);
+				editorComponent.setBackground(Color.white);
 				return editorComponent;
 			}
 
@@ -731,6 +737,15 @@ editorComponent.setBackground(Color.white);
 		return getColumnIndex(name, getTableName());
 	}
 
+	/** Gets the original column index of the column with the given name
+	 * 
+	 * @param name The name to check for
+	 * @return the original column index, returns -1 upon failure
+	 */
+	private int getOriginalColumnIndex(String name){
+		return getColumnIndex(name, getOriginalTableName());
+	}
+
 
 	/** Sets up any arrays of flags or other settings needed
 	 *  before editing can start 
@@ -773,8 +788,13 @@ editorComponent.setBackground(Color.white);
 			}
 
 		}
+		Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
+		for (int i = 0; i < resultsTable.getRowCount(); i++)
+			for (int j = 0; j < resultsTable.getColumnCount(); j++)
+				originalIsEditable[i][j] = isEditable[i][getOriginalColumnIndex(resultsTable.getColumnName(j))];
+
 		getModel().setEditable(true);
-		getModel().setIsEditable(isEditable);
+		getModel().setIsEditable(originalIsEditable);
 		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(needsSaving, isValid, isEditable));
 		setComboxforType();
 		setComboxforStatus();
@@ -822,11 +842,26 @@ editorComponent.setBackground(Color.white);
 	 * @return columnHeader the ArrayList of headers for the table
 	 */
 	public ArrayList<String> getTableName(){
-		ArrayList<String> columnHeader  = new ArrayList<String>();
+		ArrayList<String> columnHeader = new ArrayList<String>();
 
 		// Set each value of the column header
 		for (int i = 0; i < 9; i++){
-			columnHeader.add( resultsTable.getColumnModel().getColumn(i).getHeaderValue().toString());
+			columnHeader.add(resultsTable.getColumnName(i));
+		}
+
+		return columnHeader;
+	}
+
+	/** A getter to get the original column headers of the table 
+	 * @return columnHeader the ArrayList of original headers for the table
+	 */
+	public ArrayList<String> getOriginalTableName(){
+		ArrayList<String> columnHeader = new ArrayList<String>();
+		String[] columnNames = {"ID", "Name", "Iteration", "Type", "Status", "Priority", "ReleaseNumber", "Estimate", "ActualEffort"};
+
+		// Set each value of the column header
+		for (int i = 0; i < 9; i++){
+			columnHeader.add(columnNames[i]);
 		}
 
 		return columnHeader;
