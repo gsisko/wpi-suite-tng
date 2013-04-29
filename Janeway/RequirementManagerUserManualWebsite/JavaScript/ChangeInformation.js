@@ -148,7 +148,7 @@ function CheckHistory(){
 function AddingANote() {
     $(document).ready(function () {
         //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Update a Requirement</a>');
+        $(".moveTabs").html('<a class="title">How to Add a Note to A Requirement</a>');
 		$(".instructionTitle").html('<a>The Requirement Builder Panel With Notes</a>');
         $(".instructionText").html(function(){
         	var str = '<img width="750" src="images/requirementBuilderWithNotes.png"/><br />';
