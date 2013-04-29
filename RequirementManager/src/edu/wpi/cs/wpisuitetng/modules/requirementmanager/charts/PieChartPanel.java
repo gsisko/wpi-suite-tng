@@ -196,9 +196,9 @@ public class PieChartPanel extends JPanel {
 
 		dataset = data;
 		if (isFiltered){
-			chart = createChart(dataset, "Number of Users Assigned for Displayed Requirements");
+			chart = createChart(dataset, "Displayed Requirements per User");
 		} else {
-			chart = createChart(dataset, "Number of Users Assigned for All Requirements");
+			chart = createChart(dataset, "All Requirements per User");
 		}
 
 		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
@@ -238,9 +238,9 @@ public class PieChartPanel extends JPanel {
 
 		dataset = data;
 		if (isFiltered){	
-			chart = createChart(dataset, "Estimate for Users of Displayed Requirements");
+			chart = createChart(dataset, "Displayed Total Estimate per User");
 		} else {
-			chart = createChart(dataset, "Estimate for Users of All Requirements");
+			chart = createChart(dataset, "Total Estimate per User");
 		}
 
 		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
