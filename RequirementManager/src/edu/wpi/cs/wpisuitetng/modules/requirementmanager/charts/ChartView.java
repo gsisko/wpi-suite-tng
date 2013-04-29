@@ -339,7 +339,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			}
 		}
 
-		if (this.activeFilters()) {
+		if (this.getView().getParent().getDisplayedRequirements().length > 0) {
 			filterChoices.add("Applied");
 		}
 
@@ -351,8 +351,22 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		for (int i = 0; i < filterChoices.size(); i++) {
 			tmp2[i] = filterChoices.get(i);
 		}
+				String cdb = (String) this.optionsPanel.getChartDataBox().getSelectedItem();
 		this.optionsPanel.setChartData(tmp1);
+		try{
+			this.optionsPanel.getChartDataBox().setSelectedItem(cdb);
+		}
+		catch(Error e){
+			this.optionsPanel.getChartDataBox().setSelectedIndex(0);
+		}
+		String fob = (String) this.optionsPanel.getFiltersOptionsBox().getSelectedItem();
 		this.optionsPanel.setFiltersOptions(tmp2);
+		try{
+			this.optionsPanel.getFiltersOptionsBox().setSelectedItem(fob);
+		}
+		catch(Error e){
+			this.optionsPanel.getFiltersOptionsBox().setSelectedIndex(0);
+		}
 	}
 	
 	public void setListOptionsOnAppliedChange () {
