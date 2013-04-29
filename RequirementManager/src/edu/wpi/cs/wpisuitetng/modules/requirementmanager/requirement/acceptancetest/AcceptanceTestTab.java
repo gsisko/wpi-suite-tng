@@ -181,7 +181,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		});
 
 		// Set the dimensions of the panel elements
-		listScrollPane.setPreferredSize(new Dimension(580, 300));
+		listScrollPane.setPreferredSize(new Dimension(560, 240));
 		scrollDescription.setPreferredSize(new Dimension(1, 100));
 		saveButton.setPreferredSize(new Dimension(120,40));
 
@@ -230,7 +230,9 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanelConstraints.gridy = 1;
 		nameAndDescriptionPanel.add(txtName, nameAndDescriptionPanelConstraints);
 		//end Name
-
+		
+		this.add(Box.createRigidArea(new Dimension(0,6)));
+		
 		//Description:
 		//Set the constraints for "descriptionLabel" and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
@@ -248,8 +250,8 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanelConstraints.gridy = 3;
 		nameAndDescriptionPanel.add(scrollDescription, nameAndDescriptionPanelConstraints);
 		//end Description
-
-		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));//set the size of the nameAndDescriptionPanel to keep it from stretching vertically
+		
+		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));//set the max size of the nameAndDescriptionPanel to keep it from stretching vertically
 		//end nameAndDescriptionPanel
 
 		// Add the components in their respective inner panels to this panel
