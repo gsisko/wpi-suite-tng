@@ -218,7 +218,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		//Set the constraints for "nameLabel" and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		nameAndDescriptionPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+		nameAndDescriptionPanelConstraints.insets = new Insets(5,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 		nameAndDescriptionPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		nameAndDescriptionPanelConstraints.gridy = 0;//set the y coord of the cell of the layout we are describing
 		nameAndDescriptionPanel.add(nameLabel, nameAndDescriptionPanelConstraints);//Actually add the "nameLabel" to the layout given the previous constraints
@@ -236,7 +236,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
 		nameAndDescriptionPanelConstraints.fill = GridBagConstraints.NONE;//This tells the layout to not stretch this field horizontally or vertically to fit it's cell
 		nameAndDescriptionPanelConstraints.anchor = GridBagConstraints.FIRST_LINE_START;//This sets the anchor of the field, here we have told it to anchor the component to the top right of it's field
-		nameAndDescriptionPanelConstraints.insets = new Insets(15,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
+		nameAndDescriptionPanelConstraints.insets = new Insets(5,5,0,0);  //Set the top padding to 15 units of blank space, left padding to 5 units of space
 		nameAndDescriptionPanelConstraints.gridx = 0; //set the x coord of the cell of the layout we are describing
 		nameAndDescriptionPanelConstraints.gridy = 2;//set the y coord of the cell of the layout we are describing
 		nameAndDescriptionPanel.add(descriptionLabel, nameAndDescriptionPanelConstraints);//Actually add the "descriptionLabel" to the layout given the previous constraints
@@ -254,7 +254,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 		// Add the components in their respective inner panels to this panel
 		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
-		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
+		//this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
 		this.add(nameAndDescriptionPanel); // add the nameAndDescriptionPanel to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // add the saveButton to the panel
