@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,8 +32,7 @@ public class EditModeBuilderPanel extends JPanel {
 	/** The panel for the warnings */
 	private JPanel warningPanel;
 	
-	/** The enter label */
-	private JLabel enterLabel;
+
 	
 	/** The white label */
 	private JTextField whiteLabel;
@@ -49,10 +49,8 @@ public class EditModeBuilderPanel extends JPanel {
 	private JLabel err2Label;
 	/** The error 3 label */
 	private JLabel err3Label;
-	/** The error 4 label */
-	private JLabel err4Label;
-	/** The error 5 label */
-	private JLabel err5Label;
+	/** The enter label */
+	private JLabel enterLabel;
 	
 	/** The layout manager for this panel */
 	protected SpringLayout layout;
@@ -72,11 +70,7 @@ public class EditModeBuilderPanel extends JPanel {
 		legendPanel.setPreferredSize(new Dimension(110, 95));
 		warningPanel = new JPanel();
 		
-		// Enter Panel
-		enterLabel = new JLabel();
-		enterLabel.setText("<html>Press enter to <br> finalize a change.</html>");
-		enterLabel.setFont(enterLabel.getFont().deriveFont(13));
-		enterPanel.add(enterLabel);
+
 		
 		// Legend Panel
 		whiteLabel = new JTextField("    Editable field");
@@ -100,6 +94,25 @@ public class EditModeBuilderPanel extends JPanel {
 		legendPanel.add(yellowLabel);
 		legendPanel.add(redLabel);
 		
+		// Set legend constraints
+		SpringLayout legendLayout = new SpringLayout();
+		legendPanel.setLayout(legendLayout);
+		// Setup vertical constraints
+		legendLayout.putConstraint(SpringLayout.NORTH, whiteLabel, 0, SpringLayout.NORTH, legendPanel);
+		legendLayout.putConstraint(SpringLayout.NORTH, grayLabel, 15, SpringLayout.SOUTH, whiteLabel);
+		
+		legendLayout.putConstraint(SpringLayout.NORTH, yellowLabel, 0, SpringLayout.NORTH, legendPanel);
+		legendLayout.putConstraint(SpringLayout.NORTH, redLabel, 15, SpringLayout.SOUTH, yellowLabel);
+
+		
+		// Setup horizontal constraints
+		legendLayout.putConstraint(SpringLayout.WEST, whiteLabel, 0, SpringLayout.WEST, legendPanel);
+		legendLayout.putConstraint(SpringLayout.WEST, yellowLabel, 15, SpringLayout.EAST, whiteLabel);
+
+		legendLayout.putConstraint(SpringLayout.WEST, grayLabel, 0, SpringLayout.EAST, legendPanel);
+		legendLayout.putConstraint(SpringLayout.WEST, redLabel, 15, SpringLayout.EAST, grayLabel);
+
+		
 		// Warning panel
 		err1Label = new JLabel();
 		err1Label.setForeground(Color.red);
@@ -108,39 +121,55 @@ public class EditModeBuilderPanel extends JPanel {
 		err2Label = new JLabel();
 		err2Label.setForeground(Color.red);
 		err2Label.setText("");
+		err2Label.setFont(err1Label.getFont().deriveFont(11));
 		err3Label = new JLabel();
 		err3Label.setForeground(Color.red);
 		err3Label.setText("");
-		err4Label = new JLabel();
-		err4Label.setForeground(Color.red);
-		err4Label.setText("");
-		err5Label = new JLabel();
-		err5Label.setForeground(Color.red);
-		err5Label.setText("");
+		err3Label.setFont(err1Label.getFont().deriveFont(11));
+		enterLabel = new JLabel();
+		enterLabel.setText("Press enter to finalize a change.");
+		enterLabel.setFont(enterLabel.getFont().deriveFont(13));				
+		warningPanel.add(enterLabel);
 		warningPanel.add(err1Label);
 		warningPanel.add(err2Label);
 		warningPanel.add(err3Label);
-		warningPanel.add(err4Label);
-		warningPanel.add(err5Label);
 
+		// "Edit Mode" panel
+		JLabel editModeLabel = new JLabel();
+		editModeLabel.setText("Edit Mode");
+		editModeLabel.setFont(new Font("Arial Bold",3,40));
+
+		//Setting up layout of warning messages
+		SpringLayout warningLayout = new SpringLayout();
+		warningPanel.setLayout(warningLayout);
+		// Set up vertically
+		warningLayout.putConstraint(SpringLayout.NORTH, enterLabel, 0, SpringLayout.NORTH, warningPanel);
+		warningLayout.putConstraint(SpringLayout.NORTH, err1Label, 10, SpringLayout.SOUTH, enterLabel);
+		warningLayout.putConstraint(SpringLayout.NORTH, err2Label, 10, SpringLayout.SOUTH, err1Label);
+		warningLayout.putConstraint(SpringLayout.NORTH, err3Label, 10, SpringLayout.SOUTH, err2Label);
+
+		
 		// Arrange all panels
 		layout.putConstraint(SpringLayout.NORTH, legendPanel, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, legendPanel, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, legendPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, enterPanel, 15, SpringLayout.EAST, legendPanel);
-		layout.putConstraint(SpringLayout.NORTH, enterPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, enterPanel, 0, SpringLayout.SOUTH, this);
+		layout.putConstraint(SpringLayout.WEST, editModeLabel, 15, SpringLayout.EAST, legendPanel);
+		layout.putConstraint(SpringLayout.NORTH, editModeLabel, 0, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.SOUTH, editModeLabel, 0, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.NORTH, warningPanel, 0, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.SOUTH, warningPanel, 0, SpringLayout.SOUTH, this);
-		layout.putConstraint(SpringLayout.WEST, warningPanel, 50, SpringLayout.EAST, enterPanel);
+		layout.putConstraint(SpringLayout.WEST, warningPanel, 50, SpringLayout.EAST, editModeLabel);
 		layout.putConstraint(SpringLayout.EAST, warningPanel, 0, SpringLayout.EAST, this);
-
 		
 		this.add(legendPanel);
-		this.add(enterPanel);
+		this.add(editModeLabel);
 		this.add(warningPanel);
 	}
 	
+	/** Takes an array of strings and puts them into labels
+	 * 
+	 * @param errorMessages an array of messages to show
+	 */
 	public void setInvalidInputMessages(String[] errorMessages) {
 		
 		int errorSize;
@@ -158,12 +187,6 @@ public class EditModeBuilderPanel extends JPanel {
 			}
 			if (i == 2) {
 				err3Label.setText(errorString);
-			}
-			if (i == 3) {
-				err4Label.setText(errorString);
-			}
-			if (i == 4) {
-				err5Label.setText(errorString);
 			}
 		}
 		
