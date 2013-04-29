@@ -12,6 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -152,6 +153,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 
 		// Instantiate the defaultColumnWidths checkbox
 		checkBoxDefault = new JCheckBox("Reset Table Layout", true);
+		checkBoxDefault.setOpaque(false);
 		checkBoxStatus = true;
 		//Save the state of the checkbox every time it changes, workaround for reseting views when tabs are changed
 		checkBoxDefault.addItemListener(new ItemListener() {
