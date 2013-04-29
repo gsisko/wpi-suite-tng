@@ -281,7 +281,6 @@ public class FilterListTab extends JPanel implements IListPanel{
 		this.getModel().fireTableStructureChanged();
 
 		Filter[] filters = Filter.fromJSONArray(jsonString);
-		Iteration[] tmp = parent.getParent().getAllIterations();
 		
 		// Check for invalid filters- Cancel upload and refresh again if necessary
 		for (Filter filter: filters)

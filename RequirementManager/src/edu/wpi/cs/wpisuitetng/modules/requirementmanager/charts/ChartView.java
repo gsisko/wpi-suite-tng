@@ -104,8 +104,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Internal variables
 		this.setView(view);
 		isFiltered = false;
-		chartDataType = "Requirement Status"; //TODO: Make this an enum?
-		chartType = "Pie Chart"; //TODO: Make this an enum?
+		chartDataType = "Requirement Status";
+		chartType = "Pie Chart";
 
 		//Add an action listener to the refresh button so that it will refresh the data being displayed when it is pushed
 		btnRefresh.addActionListener(new ActionListener() {
@@ -175,7 +175,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//Grab requirements
 		Requirement[] requirements;
 		if(!isFiltered){
-			//TODO: make the bool in the PieChartPanel to be less redundant?
 			requirements = getView().getParent().getAllRequirements();
 		}else{
 			requirements = getView().getParent().getDisplayedRequirements();
@@ -308,8 +307,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 
 	public void setListOptions () {
-		ArrayList<String> choices = new ArrayList();
-		ArrayList<String> filterChoices = new ArrayList();
+		ArrayList<String> choices = new ArrayList<String>();
+		ArrayList<String> filterChoices = new ArrayList<String>();
 
 		filterChoices.add("Not Applied");
 		choices.add("Requirement Status");

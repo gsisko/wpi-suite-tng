@@ -14,8 +14,6 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;

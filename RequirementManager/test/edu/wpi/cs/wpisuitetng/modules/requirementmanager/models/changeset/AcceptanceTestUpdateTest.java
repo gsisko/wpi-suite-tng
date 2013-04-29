@@ -11,7 +11,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,6 @@ import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent.EventType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 
 /**
  * @author Team 5 D13

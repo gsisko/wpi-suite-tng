@@ -12,7 +12,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -182,7 +181,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 						try {
 							Thread.sleep(500);
 						} catch (InterruptedException ex) {
-							// TODO Auto-generated catch block
 							ex.printStackTrace();
 						}
 						count++;
@@ -296,7 +294,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (++count > 500) break;

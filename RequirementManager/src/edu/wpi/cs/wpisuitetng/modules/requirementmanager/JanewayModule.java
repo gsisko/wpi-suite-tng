@@ -12,22 +12,18 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
 
-import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 
 /** The Requirement Manager module added to the Janeway client.
  */
@@ -62,8 +58,6 @@ public class JanewayModule implements IJanewayModule {
 		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabPanel);
 		tabs.add(tab);
 		
-		// Add keyboard shortcuts to requirements tab
-	    registerKeyboardShortcuts(tab);
 	}
 
 	/**
@@ -80,16 +74,6 @@ public class JanewayModule implements IJanewayModule {
 	@Override
 	public List<JanewayTabModel> getTabs() {
 		return tabs;
-	}
-	
-	/** Register the keyboard shortcuts recognized by this tab
-	 * @param tab the tab to register keyboard shortcuts for
-	 */
-	@SuppressWarnings("serial")
-	private void registerKeyboardShortcuts(JanewayTabModel tab) {
-		
-		// retrieves the name of the operating system
-		String osName = System.getProperty("os.name").toLowerCase();
 	}
 
 	/**
