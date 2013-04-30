@@ -21,7 +21,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
-/**Custom cell renderer for JTables. Displays inactive as grey and active as white
+/** Custom cell renderer for JTables. Displays inactive as grey and active as white
  */
 @SuppressWarnings("serial")
 public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {

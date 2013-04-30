@@ -186,8 +186,7 @@ public class EditModeBuilderPanel extends JPanel {
 		this.add(warningPanel);
 	}
 
-	/** Takes an array of strings and puts them into labels
-	 * 
+	/** Takes an array of strings and puts them into labels 
 	 * @param errorMessages an array of messages to show
 	 */
 	public void setInvalidInputMessages(String[] errorMessages) {
@@ -209,6 +208,5 @@ public class EditModeBuilderPanel extends JPanel {
 				err3Label.setText(errorString);
 			}
 		}
-
 	}
 }

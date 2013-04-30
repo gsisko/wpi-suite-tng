@@ -19,15 +19,18 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /** This observer handles responses from the server after they are requested
  *  by the ListSaveModelController. The observer keeps track of successful 
  *  responses and triggers a mass refresh when all server requests have been
- *  completed successfully.           */
+ *  completed successfully.           
+ */
 public class ListSaveModelObserver implements RequestObserver,IObserver {
 	
 	/** The controller that initiated the request. Also the controller 
-	 * that needs to be notified upon successful request retrievals.   */
+	 * that needs to be notified upon successful request retrievals.   
+	 */
 	ListSaveModelController controller;
 	
 	/** Reference to a Boolean array that holds flags that represent the 
-	 *  statuses of requirements */
+	 *  statuses of requirements 
+	 */
 	Boolean[][] modelsThatNeedSaving;
 	
 	/** The index of the model in the Boolean array */

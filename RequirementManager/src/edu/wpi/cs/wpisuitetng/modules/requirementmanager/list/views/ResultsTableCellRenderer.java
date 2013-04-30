@@ -18,8 +18,7 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-/**
- * Custom cell renderer for JTables. Displays changed as yellow, unchanged as white, and invalid as red
+/** Custom cell renderer for JTables. Displays changed as yellow, unchanged as white, and invalid as red
  */
 @SuppressWarnings("serial")
 public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
@@ -66,7 +65,6 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		return cell;  
-
 	}
 }
 

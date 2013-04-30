@@ -109,7 +109,6 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** The controller that saves requirements that are edited in list view */
 	private ListSaveModelController listSaveRequirementController = null;	
 
-
 	/**Construct the view
 	 * @param tabController The main tab controller
 	 */
@@ -302,8 +301,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		this.checkBoxStatus = checkBoxStatus;
 	}
 
-	/**
-	 * refresh the Data
+	/** Refresh the Data
 	 */
 	public void refreshData() {
 		iterationController.refreshData();
@@ -404,16 +402,14 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			btnEnableEdit.setEnabled(false);
 	}
 
-	/**
-	 * get the Edit button
+	/** Get the Edit button
 	 * @return btnEnableEdit
 	 */
 	public JButton getBtnEdit(){
 		return btnEnableEdit;
 	}
 
-	/**
-	 * Set the Save and Cancel buttons to invisible
+	/** Set the Save and Cancel buttons to invisible
 	 * Set the EnableEdit button to visible
 	 */
 	public void btnCancelSaveNotVisible() {
@@ -422,8 +418,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnEnableEdit.setVisible(true);
 	}
 
-	/**
-	 * Set the Save and Cancel buttons to visible
+	/** Set the Save and Cancel buttons to visible
 	 * Set the EnableEdit button to invisible
 	 */
 	public void btnEditNotVisible() {
@@ -432,8 +427,7 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnCancel.setVisible(true);
 	}
 
-	/**
-	 * Set everything else enabled or disabled when changing edit modes
+	/** Set everything else enabled or disabled when changing edit modes
 	 */
 	public void setListsAndBuildersVisible(boolean enable) {
 		if (enable) {

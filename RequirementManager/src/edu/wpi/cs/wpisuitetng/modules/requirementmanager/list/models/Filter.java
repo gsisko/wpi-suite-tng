@@ -212,8 +212,7 @@ public class Filter extends AbstractModel {
 	 */
 	public void delete() {
 	}
-
-
+	
 	/**
 	 * @return the uniqueID
 	 */

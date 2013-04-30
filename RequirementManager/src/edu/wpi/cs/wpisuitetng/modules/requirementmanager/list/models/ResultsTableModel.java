@@ -31,7 +31,6 @@ public class ResultsTableModel extends AbstractTableModel {
 	/** Array of Boolean flags for whether or not the cells are editable */
 	private Boolean[][] isEditable = {};
 
-
 	/**Set the data to be displayed in the table 
 	 * @param data A two-dimensional array of objects containing the data
 	 */

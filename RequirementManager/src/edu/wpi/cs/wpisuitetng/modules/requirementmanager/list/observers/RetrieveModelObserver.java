@@ -19,11 +19,11 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve a requirement with the provided id
+/** An observer for a request to retrieve a requirement with the provided id
  */
 public class RetrieveModelObserver implements RequestObserver, IObserver{
-	/** Controller that started this observer   	 */
+	
+	/** Controller that started this observer */
 	private final RetrieveModelController controller;
 
 	/**Construct a new observer
@@ -49,7 +49,6 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 		}
 		
 		controller.showModel(response.getBody());
-	
 	}
 
 	/** Respond to an  unsuccessful message from the network

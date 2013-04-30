@@ -12,32 +12,22 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
-import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Robot;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
-import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
@@ -112,32 +102,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 
-
-		//		resultsTable.addKeyListener( new KeyAdapter(   ){
-		//
-		//			@SuppressWarnings("deprecation")
-		//			public void keyPressed(KeyEvent e){
-		//				// VK_ENTER
-		//				if (e.getKeyCode() == KeyEvent.VK_ENTER ){
-		//					System.err.println("SHIT HAPPENED");
-		//					e.setModifiers(KeyEvent.VK_SHIFT);
-		//				//	e.notifyAll();
-		//					super.keyPressed(e);
-		//					//	new KeyEvent(KeyEvent.VK_ENTER + KeyEvent.VK_SHIFT);
-		//
-		//				}				
-		//			}		
-		//		});
-
-
-		//	resultsTable.addKeyListener(new KeyboardShortcut(KeyStroke.getKeyStroke("return"), new AbstractAction))
-
-		//	resultsTable.putValue(MNEMONIC_KEY, KeyEvent.VK_ENTER); // probably wrong?
-
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
-			//	resultsTable.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control TAB"), new AbstractAction() {
-
-
+		
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				if (resultsTableModel.isEditable()) {
@@ -286,7 +252,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 		});
 
-
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
 
@@ -296,13 +261,12 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		listSaveModelController = new ListSaveModelController(this, "requirement");
 	}
 
-	/** Prints the error messags to console for testing */
+	/** Prints the error messages to console for testing */
 	@SuppressWarnings("unused")
 	private void printMessages(String[] messages){
 		for (String toPrint: messages)
 			System.out.println(toPrint);		
 	}
-
 
 	/** Prepares an array of 5 strings that represent the following errors
 	 *  or invalid cell states. 
@@ -323,14 +287,11 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		int nameColumn          = this.getColumnIndex("Name");
 		int originalNameColumn  = this.getOriginalColumnIndex("Name");
 
-
-
 		// Check for validity and disables the save button if there is invalidity
 		for (int column =0; column < resultsTable.getColumnCount(); column++){
 			for (int row = 0;  row < resultsTable.getRowCount(); row ++  ){
 				if (!isValid[row][column].booleanValue()){
 					// Different errors depending on the column
-
 					if (column ==  estimateColumn){
 						// If the message isn't set at all, set it
 						if (messages[blankField].equals("") )
@@ -381,10 +342,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			messages[1]= "";
 			messages[2] = "You took too many shots. Go home, you're drunk.";
 		}
-
 		return messages;
 	}
-
 
 	/**
 	 * @return the main tab controller
@@ -414,9 +373,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable = newTable;
 	}
 
-
-	/** 
-	 * place comboBox for type
+	/** Place comboBox for type
 	 */
 	public void setComboxforType()
 	{
@@ -435,8 +392,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
 
-	/** 
-	 * place comboBox for iteration
+	/** Place comboBox for iteration
 	 */
 	public void setComboxforIteration()
 	{
@@ -444,7 +400,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
 		JComboBox typebox = new JComboBox();
-
 
 		Iteration[] allIterations = parent.getParent().getAllIterations();
 		for (Iteration anIter: allIterations){
@@ -457,9 +412,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
 
-
-	/** 
-	 * place comboBox for type
+	/** Place comboBox for type
 	 */
 	public void setComboxforStatus()
 	{
@@ -495,25 +448,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(RequirementStatus.InProgress));
 				}
 				editorComponent.setBackground(Color.white);
-//				editorComponent.addKeyListener( new KeyAdapter(   ){
-//
-//					public void keyPressed(KeyEvent e){
-//
-//						if (e.getKeyCode() == KeyEvent.VK_ENTER ){
-//							SwingUtilities.invokeLater(new Runnable() {
-//								@Override
-//								public void run() {
-//									try {
-//										Robot robot = new Robot(); 
-//										robot.keyPress(KeyEvent.VK_ENTER | KeyEvent.VK_SHIFT);
-//									} catch (AWTException enter){
-//										System.err.println("My robot died");
-//									}
-//								}	
-//							});
-//						}
-//					}		
-//				});
 				return editorComponent;
 			}
 
@@ -521,14 +455,11 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			public Object getCellEditorValue() {
 				return ((JComboBox)editorComponent).getSelectedItem();
 			}
-
 		});
-
 
 	}
 
-	/** 
-	 * place comboBox for type
+	/** Place comboBox for type
 	 */
 	public void setComboxforPriority()
 	{
@@ -543,11 +474,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typebox.addItem("High");
 		typebox.setBackground(Color.white);
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
-
 	}
 
-	/** 
-	 * place numberBox for type
+	/** Place numberBox for type
 	 */
 	public void setNumberBoxForEstimate()
 	{
@@ -559,11 +488,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		estimateBox.setAllowNegative(false);
 
 		typeColumn.setCellEditor(new DefaultCellEditor(estimateBox));
-
 	}
 
-	/** 
-	 * place numberBox for type
+	/** Place numberBox for type
 	 */
 	public void setNumberBoxForActualEffort()
 	{
@@ -575,7 +502,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		actualEffortBox.setAllowNegative(false);
 
 		typeColumn.setCellEditor(new DefaultCellEditor(actualEffortBox));
-
 	}
 
 	/** Disables the sorting of the JTable */
@@ -716,17 +642,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** Gets the requirement that would be made if the columns from the given row were read.
-	 * 
 	 *  Invalid estimates and actual efforts are set to -1
 	 * 
 	 * @param row The row to read
 	 * @return A requirement with the values from the fields read
 	 */
 	protected Requirement getCurrentRequirement(int row) {
-
 		Requirement currentRequirement = new Requirement();
-
-
+		
 		// Start saving the rest of the fields
 		currentRequirement.setName((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Name")));
 		currentRequirement.setType( RequirementType.toType((String) resultsTableModel.getValueAt(row, this.getOriginalColumnIndex("Type"))));
@@ -766,7 +689,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return -1; // failure
 	}
 
-
 	/** Gets the name of the iteration with the given id
 	 * 
 	 * @param iterId the id of the iteration
@@ -797,7 +719,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		System.err.println("That column doesn't exist!");
 		return -2;
 	}
-
 
 	/** Gets the column index of the column with the given name
 	 * 
@@ -877,8 +798,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		parent.getParent().getBtnSave().setEnabled(false);
 	}
 
-
-
 	/** Gets the unique identifier of the model at 
 	 *  the given index
 	 * 
@@ -919,7 +838,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		for (int i = 0; i < 9; i++){
 			columnHeader.add(resultsTable.getColumnName(i));
 		}
-
 		return columnHeader;
 	}
 
@@ -934,16 +852,13 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		for (int i = 0; i < 9; i++){
 			columnHeader.add(columnNames[i]);
 		}
-
 		return columnHeader;
 	}
-
 
 	/** Trigger a reset of all lists	 */
 	public void refreshAll() {
 		parent.getParent().refreshData();
 	}
-
 
 	/**
 	 * @return the isValid
