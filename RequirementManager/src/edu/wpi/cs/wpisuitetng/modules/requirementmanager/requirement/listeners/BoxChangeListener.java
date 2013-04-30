@@ -24,17 +24,18 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 
 /** This listener is used on combo boxes and turns those
  *  boxes yellow when changes are detected.
- * 
  */
 @SuppressWarnings("rawtypes")
 public class BoxChangeListener implements PopupMenuListener{
 
 	/** The panel with the box being watched */
 	private RequirementAttributePanel thePanel;
+
 	/** The box to watch */
 	private JComboBox toWatch;
+
 	/** The box of the reference to watch */
-	private String fieldToCheck ;
+	private String fieldToCheck;
 
 	/** Index in the array of booleans*/
 	int indexOfBoolean;
@@ -55,7 +56,7 @@ public class BoxChangeListener implements PopupMenuListener{
 		this.toWatch = toWatch;
 		this.fieldToCheck = fieldToCheck;
 		this.indexOfBoolean =  indexOfBoolean;
-		
+
 		// Get the getter method for the requirement
 		Method[] allMethods = (Requirement.class).getMethods();
 		for(Method m: allMethods){//Cycles through all of the methods in the requirement Class

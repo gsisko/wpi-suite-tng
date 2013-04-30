@@ -18,15 +18,15 @@ import java.awt.event.ItemListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementAttributePanel;
 
 /** An action listener specifically made to watch an Iteration selection combo 
- *  box and on changes between any iteration and the backlog, change the status
- *  of the requirement appropriately.            */
+ *  box, and, on changes between any iteration and the backlog, change the status
+ *  of the requirement appropriately.            
+ */
 public class IterationChangeListener implements ItemListener {
 
 	/** The panel with the Iteration drop down box to be watched */
 	RequirementAttributePanel raPanel;
 
 	/** Basic constructor
-	 * 
 	 * @param raPanel The panel with the box to watch
 	 */
 	public IterationChangeListener(RequirementAttributePanel raPanel){
@@ -40,6 +40,5 @@ public class IterationChangeListener implements ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		raPanel.changeStatusWithIteration( e);
 		raPanel.checkIterationChange();
-		
 	}
 }

@@ -24,14 +24,15 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 
 /** This listener is used on text fields/areas and turns those
  *  boxes yellow when changes are detected.
- * 
  */
 public class FieldChangeListener implements KeyListener{
 
 	/** The panel with the field being watched */
 	private RequirementAttributePanel thePanel;
+	
 	/** The field to watch */
 	private JTextComponent toWatch;
+	
 	/** The field of the reference to watch */
 	private String fieldToCheck ;
 
@@ -90,7 +91,6 @@ public class FieldChangeListener implements KeyListener{
 		}
 	}
 
-
 	/** This is called when the user types then releases the key. If
 	 *  changes are made, the box is turned yellow. 
 	 */
@@ -98,11 +98,9 @@ public class FieldChangeListener implements KeyListener{
 		checkForChanges();		
 	}
 
-
 	/** This method is unused but required by the interface   */
 	public void keyTyped(KeyEvent e) {		
 	}
-
 
 	/** This method is unused but required by the interface    */
 	public void keyPressed(KeyEvent e) {

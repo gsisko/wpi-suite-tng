@@ -25,7 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 /** This is a change listener that watches a name text field and a
  *  description text area. It is specifically made to be used in the
  *  RequirementAttributePanel and to take the two fields mentioned 
- *  previously.     */
+ *  previously.     
+ */
 public class ValidNameDescriptionListener implements KeyListener{
 
 	/** The panel with the name and description fields being watched */
@@ -33,14 +34,19 @@ public class ValidNameDescriptionListener implements KeyListener{
 	
 	/** The name text box to watch 	 */
 	JTextField txtName;
+	
 	/** The description text box to watch 	 */
 	JTextArea txtDescription;
+	
 	/** The warning label to set when the name is not appropriately filled	 */
 	JLabel warningName;
+	
 	/** The warning label to set when the description is not appropriately filled	 */
 	JLabel warningDescription;
+	
 	/** The save button in the tool bar to set enabled/disabled */
 	JButton saveButton;
+	
 	/** The state that the save button should be kept in */
 	Boolean validNameAndDescription;
 
