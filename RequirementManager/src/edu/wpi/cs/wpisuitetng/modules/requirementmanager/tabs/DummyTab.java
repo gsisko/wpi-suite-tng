@@ -16,8 +16,7 @@ import java.awt.Component;
 
 import javax.swing.Icon;
 
-/**
- * Holds values given to it, but doesn't actually change the given MainTabView.
+/** Holds values given to it, but doesn't actually change the given MainTabView.
  */
 public class DummyTab extends Tab {
 
@@ -26,8 +25,7 @@ public class DummyTab extends Tab {
 	private String toolTipText;
 	private Component component;
 
-	/**
-	 * Construct a DummyTab - arguments ignored
+	/** Construct a DummyTab - arguments ignored
 	 * 
 	 * @param view ignored
 	 * @param tabComponent ignored
@@ -36,8 +34,7 @@ public class DummyTab extends Tab {
 		super(null, null);
 	}
 	
-	/**
-	 * Same as DummyTab(null, null)
+	/** Same as DummyTab(null, null)
 	 */
 	public DummyTab() {
 		this(null, null);

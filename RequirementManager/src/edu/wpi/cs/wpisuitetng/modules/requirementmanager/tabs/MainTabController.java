@@ -27,8 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.ChartView;
 
-/**
- * Controls the behavior of a given MainTabView.
+/** Controls the behavior of a given MainTabView.
  * Provides convenient public methods for controlling the MainTabView.
  * Keep in mind that this controller is visible as a public field in the module.
  */
@@ -37,8 +36,8 @@ public class MainTabController {
 	private final MainTabPanel view;
 	private boolean initialized = false;
 
-	/**
-	 * @param view Create a controller that controls this MainTabView
+	/** The constructor for MainTabController
+	 * @param view This method create a controller that controls this MainTabView "view"
 	 */
 	public MainTabController(final MainTabPanel view) {
 		this.view = view;
@@ -89,8 +88,7 @@ public class MainTabController {
 		});
 	}
 
-	/**
-	 * Adds a tab.
+	/** Adds a tab.
 	 * 
 	 * @param title			The tab's title.
 	 * @param icon			The icon for the tab.
@@ -117,8 +115,8 @@ public class MainTabController {
 		return addTab(null, null, null, null);
 	}
 
-	/**
-	 * Adds a tab that displays the given requirement in the given mode
+	/** Adds a tab that displays the given requirement in the given mode
+	 * 
 	 * @param requirement The requirement to display
 	 * @param mode The Mode to use
 	 */
@@ -135,8 +133,8 @@ public class MainTabController {
 		return tab;
 	}
 
-	/**
-	 * Adds a tab that displays the given requirement
+	/** Adds a tab that displays the given requirement
+	 * 
 	 * @param requirement the requirement to display
 	 * @return The created Tab 
 	 */
@@ -144,24 +142,21 @@ public class MainTabController {
 		return addRequirementTab(requirement, Mode.EDIT);
 	}
 
-	/**
-	 * Adds a tab that allows the user to create a new Requirement
+	/** Adds a tab that allows the user to create a new Requirement
 	 * @return The created Tab
 	 */
 	public Tab addCreateRequirementTab() {
 		return addRequirementTab(new Requirement(), Mode.CREATE);
 	}
 
-	/**
-	 * Add a change listener to the view this is controlling.
+	/** Add a change listener to the view this is controlling.
 	 * @param listener the ChangeListener that should receive ChangeEvents
 	 */
 	public void addChangeListener(ChangeListener listener) {
 		view.addChangeListener(listener);
 	}
 
-	/**
-	 * Changes the selected tab to the tab left of the current tab
+	/** Changes the selected tab to the tab left of the current tab
 	 */
 	public void switchToLeftTab() {
 		if (view.getSelectedIndex() > 0) {
@@ -169,15 +164,13 @@ public class MainTabController {
 		}
 	}
 
-	/**
-	 * Changes the selected tab to the tab right of the current tab
+	/** Changes the selected tab to the tab right of the current tab
 	 */
 	public void switchToRightTab() {
 		switchToTab(view.getSelectedIndex() + 1);
 	}
 
-	/**
-	 * Closes the currently active tab
+	/** Closes the currently active tab
 	 */
 	public void closeCurrentTab() {
 		try {
@@ -186,8 +179,7 @@ public class MainTabController {
 		catch (IndexOutOfBoundsException ignored) {}
 	}
 
-	/**
-	 * Changes the selected tab to the tab with the given index
+	/** Changes the selected tab to the tab with the given index
 	 * @param tabIndex the index of the tab to select
 	 */
 	public void switchToTab(int tabIndex) {
@@ -197,8 +189,7 @@ public class MainTabController {
 		catch (IndexOutOfBoundsException ignored) {}
 	}
 
-	/**
-	 * Close tabs upon middle clicks.
+	/** Close tabs upon middle clicks.
 	 * @param event MouseEvent that happened on this.view
 	 */
 	private void onMouseClick(MouseEvent event) {

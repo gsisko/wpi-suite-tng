@@ -28,17 +28,15 @@ import javax.swing.JTabbedPane;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
-/**
- * This provides a tab component with a close button to the left of the title.
+/** This provides a tab component with a close button to the left of the title.
  */
 @SuppressWarnings("serial")
 public class ClosableTabComponent extends JPanel implements ActionListener {
 	
-	// tabbed pane to be given a close button
+	/** Tabbed pane to be given a close button */
 	private final JTabbedPane tabbedPane;
 	
-	/**
-	 * Create a close-able tab component belonging to the given tabbedPane.
+	/** Create a close-able tab component belonging to the given tabbedPane.
 	 * The title is extracted with {@link JTabbedPane#getTitleAt(int)}.
 	 * @param tabbedPane  The JTabbedPane this tab component belongs to
 	 */

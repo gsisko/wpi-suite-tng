@@ -16,8 +16,7 @@ import java.awt.Component;
 
 import javax.swing.Icon;
 
-/**
- * A wrapper class for MainTabView that can be given to components within that view
+/** A wrapper class for MainTabView that can be given to components within that view
  * in order to allow them to easily change their titles and icons.
  */
 public class Tab {
@@ -25,8 +24,7 @@ public class Tab {
 	private final MainTabPanel view;
 	private final Component tabComponent;
 
-	/**
-	 * Create a Tab identified by the given MainTabView and tabComponent.
+	/** Create a Tab identified by the given MainTabView and tabComponent.
 	 * 
 	 * @param view The MainTabView this Tab belongs to
 	 * @param tabComponent The tabComponent for this Tab

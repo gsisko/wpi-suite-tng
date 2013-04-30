@@ -23,8 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.JanewayModule;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
-/**
- * This tabbed pane will appear as the main content of the Requirements tab.
+/** This tabbed pane will appear as the main content of the Requirements tab.
  * It starts out showing the single Dashboard tab.
  */
 @SuppressWarnings("serial")
@@ -70,6 +69,7 @@ public class MainTabPanel extends JTabbedPane {
 		super.setComponentAt(index, component);
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
 	}
+	
 	public JanewayModule getJanewayModule()
 	{
 		return parent;
@@ -82,5 +82,4 @@ public class MainTabPanel extends JTabbedPane {
 		}
 		return count;
 	}
-	
 }
