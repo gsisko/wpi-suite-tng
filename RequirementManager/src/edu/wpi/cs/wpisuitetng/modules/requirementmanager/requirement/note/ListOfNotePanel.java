@@ -21,18 +21,15 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-/**
- * This panel is used to create and store a list of NotePanels (one for each note in the NoteListModel).
+/** This panel is used to create and store a list of NotePanels (one for each note in the NoteListModel).
  */
 @SuppressWarnings("serial")
 public class ListOfNotePanel extends JPanel {
 	
-	//The list of stored notes to be displayed, passed in as a NoteListModel
+	/** The list of stored notes to be displayed, passed in as a NoteListModel */
 	private NoteListModel noteListModel;
 	
-
-	/**
-	 * The constructor for this panel.
+	/** The constructor for this panel.
 	 * This takes a NoteListModel ("newModel"),
 	 * constructs a NotePanel for each note within that model,
 	 * and adds each to this panel.
@@ -62,7 +59,6 @@ public class ListOfNotePanel extends JPanel {
 
 		this.setBackground(Color.WHITE); //set the background color of this panel to white
 		
-
 		this.setPreferredSize(new Dimension(325, (int)totalHeight)); //Set the preferred size of this panel 
 		
 		//Add resize functionality to keep the maximum height current
@@ -76,8 +72,7 @@ public class ListOfNotePanel extends JPanel {
 		//end resize functionality
 	}
 
-	/**
-	 * This function is called when the ListOfNotePanel is resized or when 
+	/** This function is called when the ListOfNotePanel is resized or when 
 	 * any of the NotePanels are resized
 	 */
 	public void resizeFunction(){
@@ -87,5 +82,4 @@ public class ListOfNotePanel extends JPanel {
 		}
 		this.setPreferredSize(new Dimension(325, (int)newTotalHeight)); //Set the preferred size of this panel appropriately so that the scroll pane that will contain this panel can scroll appropriately 
 	}
-	
 }

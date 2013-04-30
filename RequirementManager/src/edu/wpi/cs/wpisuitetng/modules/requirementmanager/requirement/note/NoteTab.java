@@ -33,49 +33,46 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.JTextFieldL
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
 
-/**
- * This panel is added to the RequirementTabPanel and 
- * contains all the gui components involving notes:
+/** This panel is added to the RequirementTabPanel and 
+ * contains all the GUI components involving notes:
  * -a panel to hold the list of notes
  * -a text area for a user to input a new note
  * -a save button to save the new note
  */
 @SuppressWarnings({"serial"})
 public class NoteTab extends JPanel implements ActionListener {
+
+	/** The message text field used to input a new Note message */
+	private  JTextArea txtMessage;
 	
-	//The fillable components
-	private  JTextArea txtMessage;//The message text field 
-	private JScrollPane scrollMessage; // ScrollPane that the message box will be held in 
+	/**  ScrollPane that the "txtMessage" JTextArea will be held in  */
+	private JScrollPane scrollMessage; 
 	
-	
-	
-	
-	//The save button
+	/** The save button for saving a new note */
 	private JButton saveButton;
 
-	//The variables to hold information about the current instance of the panel
-	private Note currentNote;//Stores the note currently open for editing or creation
+	/** Stores the note currently open in this panel for editing or creation */
+	private Note currentNote;
 
-	// The parent 
-	private RequirementTab parent; //Stores the RequirementPanel that contains the panel
+	/** Stores the RequirementPanel that contains the NoteTab panel within the RequirementTabPanel*/
+	private RequirementTab parent; 
 
-	//A boolean indicating if input is enabled on the form 
+	/** A boolean indicating if input is enabled on this form  */
 	protected boolean inputEnabled;
 
-	//The noteListModel. This holds the notes to be displayed in the "noteList" panel
+	/** The noteListModel. This holds the notes to be displayed in the "noteList" panel */
 	private NoteListModel noteListModel;
 
-	//The panel to hold all the NotePanels (containing all the notes) to display
+	/** The panel to hold all the NotePanels (containing all the notes) to display */
 	private ListOfNotePanel noteList;
 
-	//A scroll pane to hold the "noteList"
+	/** A scroll pane to hold the "noteList */
 	JScrollPane listScrollPane;
 
-	/**
-	 * The constructor for NotePanel;
+	/** The constructor for NotePanel;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.
-	 * @param reqPanelParent	The parent of this tab
+	 * @param reqPanelParent	The RequirementTab parent of this tab
 	 */
 	public NoteTab(RequirementTab reqPanelParent) {
 
@@ -155,7 +152,8 @@ public class NoteTab extends JPanel implements ActionListener {
 		saveButton.setAlignmentX(CENTER_ALIGNMENT); //Set the horizontal alignment of the save button to the center of this panel
 	}
 
-
+	/** Sets up the listener for the save button
+	 */
 	public void setUp() {
 		// Set controller for save button
 		Boolean restoreEnableStateBool = saveButton.isEnabled(); //store the enable state of the save button, since adding an action defaults the enable to true
@@ -164,8 +162,7 @@ public class NoteTab extends JPanel implements ActionListener {
 		saveButton.setEnabled(restoreEnableStateBool);//restore the previously stored enable state
 	}
 
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * 
 	 * @param enabled Whether or not input is enabled.
@@ -176,17 +173,15 @@ public class NoteTab extends JPanel implements ActionListener {
 		getNoteMessage().setEnabled(enabled);
 	}
 
-	/**
-	 * Returns a boolean representing whether or not input is enabled for the NotePanel.
+	/** Returns a boolean representing whether or not input is enabled for the NotePanel.
 	 * @return inputEnabled A boolean representing whether or not input is enabled for the NotePanel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
 	
-	/**
-	 *  Checks the txtMessage field for validity (non-emptiness) and sets the save button appropriately     
-	 *   @return True if the txtMessage field is valid (non-empty), false otherwise
+	/** Checks the txtMessage field for validity (non-emptiness) and sets the save button appropriately     
+	 *  @return True if the txtMessage field is valid (non-empty), false otherwise
 	 */
 	public boolean setSaveButtonWhenMessageIsValid(){
 		boolean messageGood = true;	// Initialize flag
@@ -198,9 +193,7 @@ public class NoteTab extends JPanel implements ActionListener {
 		return messageGood;
 	}
 	
-
-	/**
-	 * This returns the JTextArea "txtMessage"
+	/** This returns the JTextArea "txtMessage"
 	 * @return the txtMessage JTextArea
 	 */
 	public JTextArea getNoteMessage() {
@@ -208,40 +201,36 @@ public class NoteTab extends JPanel implements ActionListener {
 		return (JTextArea) viewport.getView();
 	}
 
-	/**
-	 * This returns the JButton saveButton
+	/** This returns the JButton saveButton
 	 * @return the saveButton JButton
 	 */
 	public JButton getSaveButton() {
 		return saveButton;
 	}
 
-	/**
-	 * This returns the Note "currentNote" 
+	/** This returns the Note "currentNote" 
 	 * @return the currentNote Note
 	 */
 	public Note getCurrentNote() {
 		return currentNote;
 	}
 
-	/**
-	 * This sets the current note
+	/** This sets the current note
 	 * @param currentNote What to set the current note to
 	 */
 	public void setCurrentNote(Note currentNote) {
 		this.currentNote = currentNote;
 	}
 
-	/**
-	 * This returns the ListOfNotePanel that displays the stored notes,
+	/** This returns the ListOfNotePanel that displays the stored notes,
 	 * each in their own notePanel.
 	 * @return the noteList ListOfNotePanel
 	 */
 	public ListOfNotePanel getNoteList() {
 		return noteList;
 	}
-	/**
-	 * This returns the NoteListModel "noteListModel",
+	
+	/** This returns the NoteListModel "noteListModel",
 	 * which stores the saved notes that are associated with the
 	 * current requirement being displayed
 	 * @return the noteListModel NoteListModel
@@ -250,10 +239,9 @@ public class NoteTab extends JPanel implements ActionListener {
 		return noteListModel;
 	}
 
-	/**
-	 * This adds a new note to the noteListModel,
+	/** This adds a new note to the noteListModel,
 	 * and then recreates and redisplays the noteList
-	 * panel.
+	 * panel to show the changes.
 	 * @param newNote the note to be added
 	 */
 	public void addNoteToList(Note newNote){
@@ -272,12 +260,9 @@ public class NoteTab extends JPanel implements ActionListener {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // adds the save button to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-
 	}
 
-	
-	/**
-	 * Tell field that it should not have changes
+	/** Tell the txtMessage field that it should not have changes
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

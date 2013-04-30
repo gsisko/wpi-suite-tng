@@ -26,30 +26,25 @@ public class NoteListModel extends AbstractListModel {
 	/** The list of messages on the board */
 	private List<Note> notes;
 	
-	/**
-	 * Constructs a new board with no messages.
+	/** Constructs a new model with no messages.
 	 */
 	public NoteListModel() {
 		notes = new ArrayList<Note>();
 	}
 
-	/**
-	 * Adds the given message to the board
-	 * 
-	 * @param newMessage the new message to add
+	/** Adds the given note to the board
+	 * @param newMessage the new note to add
 	 */
 	public void addMessage(Note newMessage) {
 		// Add the message
 		notes.add(newMessage);
 		
-		// Notify the model that it has changed so the GUI will be udpated
+		// Notify the model that it has changed so the GUI will be updated
 		this.fireIntervalAdded(this, 0, 0);
 	}
 	
-	/**
-	 * Adds the given array of messages to the board
-	 * 
-	 * @param notes the array of messages to add
+	/** Adds the given array of notes to the board
+	 * @param notes the array of notes to add
 	 */
 	public void addMessages(Note[] notes) {
 		for (int i = 0; i < notes.length; i++) {
@@ -58,13 +53,7 @@ public class NoteListModel extends AbstractListModel {
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	/**
-	 * Removes all messages from this model
-	 * 
-	 * NOTE: One cannot simply construct a new instance of
-	 * the model, because other classes in this module have
-	 * references to it. Hence, we manually remove each message
-	 * from the model.
+	/** Removes all notes from this model
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
@@ -76,11 +65,8 @@ public class NoteListModel extends AbstractListModel {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 	
-	/* 
-	 * Returns the message at the given index. This method is called
-	 * internally by the JList in BoardPanel. Note this method returns
-	 * elements in reverse order, so newest messages are returned first.
-	 * 
+	/** Returns the note at the given index. Note this method returns
+	 * elements in reverse order, so newest notes are returned first.
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
@@ -88,10 +74,7 @@ public class NoteListModel extends AbstractListModel {
 		return notes.get(notes.size() - 1 - index);
 	}
 
-	/*
-	 * Returns the number of messages in the model. Also used internally
-	 * by the JList in BoardPanel.
-	 * 
+	/** Returns the number of notes in the model. 
 	 * @see javax.swing.ListModel#getSize()
 	 */
 	@Override

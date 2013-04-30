@@ -19,16 +19,14 @@ import javax.swing.AbstractAction;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 
-/**
- * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
+/** Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
  */
 @SuppressWarnings("serial")
 public class SaveNoteAction extends AbstractAction {
 
 	private final SaveRequirementController controller;
 	
-	/**
-	 * Create a SaveChangesAction
+	/**Create a SaveChangesAction
 	 * @param controller When the action is performed, controller.save will be called
 	 */
 	public SaveNoteAction(SaveRequirementController controller) {
@@ -41,5 +39,4 @@ public class SaveNoteAction extends AbstractAction {
 	public void actionPerformed(ActionEvent arg0) {
 		controller.saveNote();
 	}
-
 }
