@@ -869,6 +869,10 @@ public class RequirementAttributePanel extends JPanel {
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
+		// Time to refresh this box if we are enabling all the boxes
+		fillIterationSelectionBox();
+		
+		
 		toggleComponentEnabled(txtName, enabled);
 		toggleComponentEnabled(txtDescription, enabled);
 		toggleComponentEnabled(typeBox, enabled);
@@ -884,10 +888,7 @@ public class RequirementAttributePanel extends JPanel {
 		toggleComponentEnabled(txtActualEffort, enabled);
 		toggleComponentEnabled(iterationBox, enabled);
 
-		// Time to refresh this box if we are enabling all the boxes
-		if (enabled){
-			fillIterationSelectionBox();
-		}
+
 	}
 
 	/** Sets the appropriate fields disabled upon creation
@@ -1021,7 +1022,7 @@ public class RequirementAttributePanel extends JPanel {
 	 */
 	public void fillIterationSelectionBox() {
 		// Iterations cannot be assigned when there is no estimate saved, so enable/disable the iteration box appropriately
-		if (currentRequirement.getEstimate() <= 0){
+		if (currentRequirement.getEstimate() <= 0 || currentRequirement.getStatus() == RequirementStatus.Complete ||  currentRequirement.getStatus() == RequirementStatus.Deleted){
 			toggleComponentEnabled(iterationBox, false);
 		} else {
 			toggleComponentEnabled(iterationBox, true);
