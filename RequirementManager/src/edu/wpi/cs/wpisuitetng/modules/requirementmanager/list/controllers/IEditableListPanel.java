@@ -13,7 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
 /** This interface should be implemented by list panels that 
  *  will contain editable list fields. The methods included
- *  are all used by the ListSaveModelController    */
+ *  are all used by the ListSaveModelController    
+ */
 public interface IEditableListPanel {
 
 	/** Gets the array of boolean flags of what models
@@ -28,7 +29,6 @@ public interface IEditableListPanel {
 	 */
 	void setUpForEditing();
 
-	
 	/** Gets the JSOn version of the model at 
 	 *  the given index
 	 *  
@@ -45,7 +45,6 @@ public interface IEditableListPanel {
 	 */
 	String getUniqueIdAtIndex(int i);
 
-	
 	/** Way to trigger a pop-up or enable/disable certain 
 	 *  buttons when a  save is not successful.
 	 */
@@ -57,7 +56,7 @@ public interface IEditableListPanel {
 	 */
 	void savesComplete();
 
-	/** Trigger a reset of all lists	 */
+	/** Trigger a reset of all lists */
 	void refreshAll();
 
 	/** Turns on the save button when all cells are

@@ -29,8 +29,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * Controller to handle retrieving all requirements from the server and
+/** Controller to handle retrieving all requirements from the server and
  * displaying them in the {@link SearchRequirementsView}
  */
 public class RetrieveAllRequirementsController {
@@ -55,16 +54,16 @@ public class RetrieveAllRequirementsController {
 
 	/** ArrayList of strings initialized to keep track of table column width */
 	protected ArrayList<String> columnHeader  = new ArrayList<String>();
-	
+
 	/**Used to keep track of table column sort */
 	protected java.util.List<? extends SortKey> columnSort;
 
 	/** boolean to designate if there is existing data in the list */
 	protected boolean hasPreviousData;
-	
+
 	/** Count the number of refreshes happening */
 	private int refreshes = 0;
-	
+
 	/** Constructs a new RetrieveAllRequirementsController
 	 * @param view the search requirements view
 	 */
@@ -80,7 +79,7 @@ public class RetrieveAllRequirementsController {
 
 		// Set "isRefreshing" to ++ , subtract at the end of refreshes
 		refreshes++;
-		
+
 		final RequestObserver requestObserver = new RetrieveAllRequirementsRequestObserver(this);
 		Request request;
 		request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET);
@@ -159,14 +158,14 @@ public class RetrieveAllRequirementsController {
 				}
 			}
 		}	
-	
+
 		Requirement[] displayedRequirements = new Requirement[isFiltered.size()];
 		isFiltered.toArray(displayedRequirements);
 		view.setDisplayedRequirements(displayedRequirements);
 
 		// Set "isRefreshing" to ++ , subtract at the end of refreshes
 		refreshes--;
-		
+
 		// Transferring Phase
 		// Put the requirements that passed the filters
 		if (isFiltered.size() > 0) {
@@ -196,7 +195,7 @@ public class RetrieveAllRequirementsController {
 				setTableSort(columnSort);
 			}
 		}
-		
+
 	}
 
 	/** Set default widths of all columns
@@ -223,6 +222,7 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/** Put the data in the table using default view
+	 * 
 	 * @param columnNames the name of each column name
 	 * @param enteries each cell of the table
 	 * @param isFiltered requirement that passed the filter
@@ -247,18 +247,18 @@ public class RetrieveAllRequirementsController {
 			} else {
 				entries[i][5] = isFiltered.get(i).getPriority().toString();
 				if (entries[i][5]=="High"){
-					
+
 				}
 				else if (entries[i][5]=="Medium"){
-					
+
 				}
 				else if (entries[i][5]=="LOW"){
-					
+
 				}
 				else{
-					
+
 				}
-							
+
 			}
 			entries[i][6] = isFiltered.get(i).getReleaseNumber();
 			entries[i][7] = String.valueOf(isFiltered.get(i).getEstimate());
@@ -276,6 +276,7 @@ public class RetrieveAllRequirementsController {
 	}
 
 	/** Put the data in the table using default view
+	 * 
 	 * @param columnNames the names of each column of the table
 	 * @param entries each cell of the table
 	 */
@@ -300,12 +301,12 @@ public class RetrieveAllRequirementsController {
 	 */
 	public ArrayList<Integer> getTableWidth(){
 		columnWidth  = new ArrayList<Integer>();
-		
+
 		// Save the width of each column
 		for (int i = 0; i < 9; i++){
 			columnWidth.add(resultsPanel.getResultsTable().getColumnModel().getColumn(i).getWidth());
 		}
-	
+
 		return columnWidth;
 	}
 
@@ -314,18 +315,18 @@ public class RetrieveAllRequirementsController {
 	 */
 	public void setTableWidth(ArrayList<Integer> columnWidth){
 		// Set the width of each column
-		 for (int i = 0; i < 9; i++){
+		for (int i = 0; i < 9; i++){
 			resultsPanel.getResultsTable().getColumnModel().getColumn(i).setPreferredWidth(columnWidth.get(i));
-		 }
+		}
 	}
-	
+
 	/**A getter to get the current sorts of the table 
 	 * @return columnSort return the ArrayList of column Sorts
 	 */
 	public java.util.List<? extends SortKey> getTableSort(){
 		//get Sorts
 		columnSort = resultsPanel.getResultsTable().getRowSorter().getSortKeys();
-		
+
 		return columnSort;
 	}
 
@@ -333,7 +334,7 @@ public class RetrieveAllRequirementsController {
 	 * @param columnSort the ArrayList of columnSorts
 	 */
 	public void setTableSort(java.util.List<? extends SortKey> columnSort){
-		
+
 		resultsPanel.getResultsTable().getRowSorter().setSortKeys(columnSort);
 	}
 

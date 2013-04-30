@@ -47,7 +47,7 @@ public class DeleteModelController implements ActionListener {
 		this.builderView = builderView;
 	}
 	
-	/** provide action listener or other ways to check whether a certain action is performed
+	/** Provide action listener or other ways to check whether a certain action is performed
 	 */
 	public void perform(){
 		String[] uniqueIdentifiers = listView.getSelectedUniqueIdentifiers();
@@ -65,7 +65,7 @@ public class DeleteModelController implements ActionListener {
 		listView.setCancelBtnToNew();
 	}
 	
-	/** provide action listener or other ways to check whether a certain action is performed
+	/** Provide action listener or other ways to check whether a certain action is performed
 	 * @param String
 	 */
 	public void perform(String uniqueIdentifier){
@@ -77,19 +77,19 @@ public class DeleteModelController implements ActionListener {
 		request.send();
 	}
 	
-	/** takes a string and checks whether the action is performed successfully
+	/** Takes a string and checks whether the action is performed successfully
 	 */
 	public void success(String JSONString)
 	{
 	}
 	
-	/** perform certain actions if the intended actions failed
+	/** Perform certain actions if the intended actions failed
 	 */
 	public void fail(){
 		System.err.println("Fail: Cannot delete the " + this.getModelName());
 	}
 	
-	/** gives an error 
+	/** Gives an error 
 	 */
 	public void error(String error){
 		System.err.println("Could not delete the " + this.getModelName());
@@ -107,7 +107,8 @@ public class DeleteModelController implements ActionListener {
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
-	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. */
+	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. 
+	 */
 	public void refreshListViews() {
 
 		// Try to refresh all from the list, if that doesn't work

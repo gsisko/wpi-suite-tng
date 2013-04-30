@@ -56,7 +56,6 @@ public class SaveModelController implements ActionListener
 		else 
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
 		
-		
 		// make a PUT http request and let the observer get the response
 		String body = builderView.convertCurrentModelToJSON();
 		

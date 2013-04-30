@@ -12,24 +12,23 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
-
 /** Provides methods for controllers for models 
  */
 public interface IController {
-	/** provide action listener or other ways to check whether a certain action is performed
-	 * @param ActionEvent 
+	
+	/** Provide action listener or other ways to check whether a certain action is performed
 	 */
 	void perform();
 	
-	/** takes a string and checks whether the action is performed successfully
+	/** Takes a string and checks whether the action is performed successfully
 	 */
 	void success(String JSONString);
 	
-	/** perform certain actions if the intended actions failed
+	/** Perform certain actions if the intended actions failed
 	 */
 	void fail();
 	
-	/** gives an error 
+	/** Gives an error 
 	 */
 	void error(String error);
 	

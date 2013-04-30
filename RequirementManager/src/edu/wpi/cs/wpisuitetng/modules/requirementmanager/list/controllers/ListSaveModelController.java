@@ -19,8 +19,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** This controller is designed to save a "model" that was edited in a list view 
  *  specifically. The extra functionality necessary includes handling saving multiple
- *  models at once and handling those extra server messages. See IEditableList for 
- *  descriptions of the methods called by this controller.  */
+ *  models at once and handling those extra server messages.
+ */
 public class ListSaveModelController implements IController{
 
 	/** The model name, in string form, which will be used for sending messages */
@@ -40,8 +40,7 @@ public class ListSaveModelController implements IController{
 		this.modelName = modelName;
 	}
 
-
-	/** provide action listener or other ways to check whether a certain action is performed
+	/** Provide action listener or other ways to check whether a certain action is performed
 	 */
 	public void perform(){
 		// Get the unique identifiers of the models
@@ -61,7 +60,7 @@ public class ListSaveModelController implements IController{
 		}
 	}
 
-	/** provide action listener or other ways to check whether a certain action is performed
+	/** Provide action listener or other ways to check whether a certain action is performed
 	 * @param String
 	 */
 	public void perform(String uniqueIdentifier, int flagIndex, String modelJSON){
@@ -77,7 +76,6 @@ public class ListSaveModelController implements IController{
 
 	/** Upon successful completion of all models being saved, this is triggered to set the 
 	 *  list view back to normal
-	 * 
 	 */
 	public void success(String JSONString) {
 		// Re-set the table to be in normal mode, and re allow sorting etc
@@ -87,7 +85,6 @@ public class ListSaveModelController implements IController{
 	}
 
 	/** Upon failure, prints to console
-	 * @param iReq The request response from the server 
 	 */
 	public void fail() {
 		System.err.println("Fail: Cannot save the " + modelName);		
