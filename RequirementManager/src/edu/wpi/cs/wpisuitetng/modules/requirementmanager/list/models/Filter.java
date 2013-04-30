@@ -228,63 +228,63 @@ public class Filter extends AbstractModel {
 		this.uniqueID = uniqueID;
 	}
 
-	/**
+	/** Get what field this filters by
 	 * @return The type
 	 */
 	public FilterType getType() {
 		return type;
 	}
 
-	/**
+	/** Set what field this filters by
 	 * @param type The type to set
 	 */
 	public void setType(FilterType type) {
 		this.type = type;
 	}
 
-	/**
+	/** Get how we compare when filtering
 	 * @return The comparator
 	 */
 	public OperatorType getComparator() {
 		return comparator;
 	}
 
-	/**
+	/** Set how we compare when filtering
 	 * @param comparator The comparator to set
 	 */
 	public void setComparator(OperatorType comparator) {
 		this.comparator = comparator;
 	}
 
-	/**
+	/** Whether we want to use this filter
 	 * @return The useFilter
 	 */
 	public boolean isUseFilter() {
 		return useFilter;
 	}
 
-	/**
+	/** Set if we want to use this filter
 	 * @param useFilter The useFilter to set
 	 */
 	public void setUseFilter(boolean useFilter) {
 		this.useFilter = useFilter;
 	}
 
-	/**
+	/** Get the user who created this filter
 	 * @return The user
 	 */
 	public User getUser() {
 		return user;
 	}
 
-	/**
+	/** Set the user who created this filter
 	 * @param user The user to set
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-	/**
+	/** Get the value we use for comparison
 	 * @return the value
 	 */
 	public String getValue() {
