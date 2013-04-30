@@ -364,86 +364,78 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.repaint();
 	}
 
-	/** Get the save button
-	 * 
-	 * @return the SaveButton
+	/** Get the btnSave JButton 
+	 * @return btnSave The "btnSave" JButton (the save button)
 	 */
 	public JButton getButton()
 	{
 		return btnSave;
 	}
 
-	/** Get the dropdown for the Type of the filter
-	 * 
-	 * @return the typeBox
+	/** Get the JComboBox for the Type of the filter ("typeBox")
+	 * @return typeBox The "typeBox" JComboBox
 	 */
 	public JComboBox getFilterType()
 	{
 		return typeBox;
 	}
 
-	/** Get the dropdown for the Operator for the filter
-	 * 
-	 * @return the operatorBox
+	/** Get the JComboBox for the Operator for the filter ("operatorBox")
+	 * @return operatorBox The "operatorBox" JComboBox
 	 */
 	public JComboBox getFilterOperator()
 	{
 		return operatorBox;
 	}
 
-	/** Get the field for entering a text Value for the filter
-	 * 
-	 * @return the txtValue
+	/** Get the field for entering a text Value for the filter ("txtValue")
+	 * @return txtValue The "txtValue" JTextField
 	 */
 	public JTextField getFilterValue()
 	{
 		return txtValue;
 	}
 
-	/** Get the field for entering a number Value for the filter
-	 * 
-	 * @return the numValue
+	/** Get the field for entering a number Value for the filter ("numValue")
+	 * @return numValue The "numValue" JNumberTextField
 	 */
 	public JNumberTextField getFilterNumValue()
 	{
 		return numValue;
 	}
 
-	/** Get the dropdown for choosing a Value for the filter
-	 * 
-	 * @return the valueBox
+	/** Get the JComboBox for choosing a Value for the filter ("valueBox")
+	 * @return valueBox the "ValueBox" JComboBox
 	 */
 	public JComboBox getFilterValueBox()
 	{
 		return valueBox;
 	}
 
-	/** Get the dropdown for setting the Status for the filter
-	 * 
-	 * @return the statusBos
+	/** Get the JComboBox for setting the Status for the filter ("statusBox")
+	 * @return statusBox The "statusBox" JComboBox
 	 */
 	public JComboBox getStatus()
 	{
 		return statusBox;
 	}
 
-	/**
-	 * @return the currentMode
+	/** Get the current mode of the FilterBuilderPanel (Mode.EDIT or Mode.CREATE)
+	 * @return currentMode The "currentMode" of the FilterBuilderPanel (Mode.EDIT or Mode.CREATE)
 	 */
 	public Mode getCurrentMode() {
 		return currentMode;
 	}
 
-	/**
-	 * @param currentMode the currentMode to set
+	/** Set the "currentMode" of the FilterBuilderPanel (Mode.EDIT or Mode.CREATE)
+	 * @param currentMode The "currentMode" to set (Mode.EDIT or Mode.CREATE)
 	 */
 	public void setCurrentMode(Mode currentMode) {
 		this.currentMode = currentMode;
 	}
 
-	/** Get the filter that is being edited
-	 * 
-	 * @return the current filter
+	/** Get the filter that is being edited/created
+	 * @return currentFilter The "currentFilter" Filter
 	 */
 	public Filter getCurrentFilter()
 	{
@@ -451,7 +443,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	}
 
 	/** Set the current filter we are editing
-	 * 
 	 * @param newFilter the filter we want to edit
 	 */
 	public void setCurrentFilter(Filter newFilter)
@@ -529,37 +520,37 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 	}
 
-	/** Set the given box to the given enable status as well 
-	 *  set the box to the correct color
+	/** Set the given JTextField to the given enable status as well 
+	 *  set the JTextField to the correct color
 	 * 
-	 * @param box   The box that needs enabling and colors
+	 * @param field   The JTextField that needs enabling and colors
 	 * @param enabled  True to enable and False to disable
 	 */
-	public void enable(JTextField box, boolean enabled) {
+	public void enable(JTextField field, boolean enabled) {
 		if (enabled) {
-			box.setEnabled(true);
-			box.setBackground(Color.WHITE);
+			field.setEnabled(true);
+			field.setBackground(Color.WHITE);
 		}
 		else {
-			box.setEnabled(false);
-			box.setBackground(new Color(238,238,238));
+			field.setEnabled(false);
+			field.setBackground(new Color(238,238,238));
 		}
 	}
 
-	/** Set the given box to the given enable status as well 
-	 *  set the box to the correct color
+	/** Set the given JNumberTextField to the given enable status as well 
+	 *  set the JNumberTextField to the correct color
 	 * 
-	 * @param box   The box that needs enabling and colors
+	 * @param numberField   The JNumberTextField that needs enabling and colors
 	 * @param enabled  True to enable and False to disable
 	 */
-	public void enable(JNumberTextField box, boolean enabled) {
+	public void enable(JNumberTextField numberField, boolean enabled) {
 		if (enabled) {
-			box.setEnabled(true);
-			box.setBackground(Color.WHITE);
+			numberField.setEnabled(true);
+			numberField.setBackground(Color.WHITE);
 		}
 		else {
-			box.setEnabled(false);
-			box.setBackground(new Color(238,238,238));
+			numberField.setEnabled(false);
+			numberField.setBackground(new Color(238,238,238));
 		}
 	}
 
@@ -590,7 +581,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	}
 
 	/** Enables or disables all fields in the builder panel. 
-	 * 
 	 * @param setTo True activates the fields and false deactivates them
 	 */
 	public void setInputEnabled(boolean setTo){
@@ -747,23 +737,22 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		return names;
 	}
 
-	/** Gets the type of the current filter
-	 * @return the curType
+	/** Gets the type ("curType") of the current filter
+	 * @return curType The "curType" String
 	 */
 	public String getCurType() {
 		return curType;
 	}
 
-	/** Sets the type of the current filter
-	 * @param curType the curType to set
+	/** Sets the type ("curType") of the current filter
+	 * @param curType The "curType" String to set
 	 */
 	public void setCurType(String curType) {
 		this.curType = curType;
 	}
 	
-	/** Get the parent of this tab
-	 * 
-	 * @return ListTab the parent of this panel
+	/** Get the ListTab parent of this tab
+	 * @return parent The ListTab "parent" of this panel
 	 */
 	public ListTab getMyParent() {
 		return parent;

@@ -95,7 +95,7 @@ public class ListSaveModelController implements IController{
 	}
 
 	/** Upon failure, prints to console
-	 * @param error The request response from the server 
+	 * @param error The request response from the server (a String)
 	 */
 	public void error(String error) {
 		System.err.println("Could not save the " + modelName);	

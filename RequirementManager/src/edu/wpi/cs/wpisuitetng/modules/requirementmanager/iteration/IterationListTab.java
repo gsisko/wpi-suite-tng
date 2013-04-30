@@ -137,65 +137,64 @@ public class IterationListTab extends JPanel implements IListPanel {
 		return allIterations;
 	}
 
-	/** get the results table model
-	 * @return the data model for the table
+	/** Get the results table model
+	 * @return resultsTableModel The ResultsTableModel data model for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
-	/** Get the results table
-	 * @return the results table
+	/** Get the "resultsTable" JTable
+	 * @return resultsTable The "resultsTable" JTable
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
 
-	/** Replace the results table with the given table
-	 * @param newTable the new results table
+	/** Replace the results table with the given JTable
+	 * @param newTable The new "resultsTable" JTable
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
 	}
 
-	/** Get the parent
-	 * @return the parent
+	/** Get the "parent" ListTab
+	 * @return parent The ListTab "parent" of this panel
 	 */
 	public ListTab getParent() {
 		return parent;
 	}
 
-	/** Get the local copy of the iterations
-	 * @return the localIterations
+	/** Get the local copy of the iterations (an array of Iterations)
+	 * @return localIterations The "localIterations" array of Iterations
 	 */
 	public Iteration[] getLocalIterations() {
 		return localIterations;
 	}
 
-	/** Set the local copy of the iterations
-	 * @param localIterations the localIterations to set
+	/** Set the local copy of the iterations ("localIterations", an array of Iterations)
+	 * @param localIterations The "localIterations" array of Iterations to set
 	 */
 	public void setLocalIterations(Iteration[] localIterations) {
 		this.localIterations = localIterations;
 	}
 
-	/** get the create button
-	 * 
-	 * @return the create button
+	/** Get the create button ("btnCreate", a JButton)
+	 * @return btnCreate The "btnCreate" JButton
 	 */
 	public JButton getBtnCreate(){
 		return btnCreate;
 	}
 
 	/** Get the status of the create button
-	 * @return the btnCreateIsCancel
+	 * @return btnCreateIsCancel The "btnCreateIsCancel" boolean representing the status of the create/cancel button ("btnCreate")
 	 */
 	public boolean isBtnCreateIsCancel() {
 		return btnCreateIsCancel;
 	}
 
-	/** Set btnCreateIsCancel
-	 * @param btnCreateIsCancel the btnCreateIsCancel to set
+	/** Set the "btnCreateIsCancel" boolean
+	 * @param btnCreateIsCancel The "btnCreateIsCancel" (a boolean representing the status of the create/cancel button "btnCreate") to set
 	 */
 	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
 		this.btnCreateIsCancel = btnCreateIsCancel;
@@ -246,8 +245,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 
 	/** Gets the unique identifier of the list entry that was double clicked
-	 * 
-	 * @return The unique identifier, either name or ID number
+	 * @return The unique identifier, either name or ID number (in String form)
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
@@ -350,29 +348,27 @@ public class IterationListTab extends JPanel implements IListPanel {
 		setDeleteEnabled(false);
 	}
 
-	/**
-	 * @return the retrieveAllController
+	/** Get the retrieveAllController RetrieveAllModelsController
+	 * @return retrieveAllController The "retrieveAllController" RetrieveAllModelsController
 	 */
 	public RetrieveAllModelsController getRetrieveAllController() {
 		return retrieveAllController;
 	}
 
-	/**
-	 * @param retrieveAllController the retrieveAllController to set
+	/** Set the retrieveAllController RetrieveAllModelsController
+	 * @param retrieveAllController The "retrieveAllController" (an instance of RetrieveAllModelsController) to set
 	 */
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
 	}
 	
 	/** Refreshes the requirements in the main list view
-	 * 
 	 */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
 
 	/** Sets the delete button to either activated or deactivated 
-	 * 
 	 * @param setActive True to activate and false to deactivate
 	 */
 	public void setDeleteEnabled(boolean setActive) {

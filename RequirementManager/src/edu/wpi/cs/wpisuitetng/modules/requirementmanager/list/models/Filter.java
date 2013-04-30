@@ -201,98 +201,98 @@ public class Filter extends AbstractModel {
 		}
 	}
 
-	/** For the interface
+	/** This method is unused, but is required by the AbstractModel interface
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	public void save() {
 	}
 
-	/** For the interface
+	/** This method is unused, but is required by the AbstractModel interface
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	public void delete() {
 	}
 	
-	/** Get the uniqueID for this requirement
-	 * @return the uniqueID
+	/** Get the uniqueID for this Filter
+	 * @return uniqueID The "uniqueID" int of this Filter
 	 */
 	public int getUniqueID() {
 		return uniqueID;
 	}
 
-	/** Set the uniqueID for this requirement
+	/** Set the uniqueID for this Filter
 	 * Be careful using this method
-	 * @param uniqueID The uniqueID to set
+	 * @param uniqueID The "uniqueID" (an int) to set
 	 */
 	public void setUniqueID(int uniqueID) {
 		this.uniqueID = uniqueID;
 	}
 
 	/** Get what field this filters by
-	 * @return The type
+	 * @return type The "type" FilterType of this Filter
 	 */
 	public FilterType getType() {
 		return type;
 	}
 
 	/** Set what field this filters by
-	 * @param type The type to set
+	 * @param type The "type" FilterType of this Filter to set
 	 */
 	public void setType(FilterType type) {
 		this.type = type;
 	}
 
 	/** Get how we compare when filtering
-	 * @return The comparator
+	 * @return comparator The "comparator" OperatorType
 	 */
 	public OperatorType getComparator() {
 		return comparator;
 	}
 
 	/** Set how we compare when filtering
-	 * @param comparator The comparator to set
+	 * @param comparator The "comparator" OperatorType to set
 	 */
 	public void setComparator(OperatorType comparator) {
 		this.comparator = comparator;
 	}
 
 	/** Whether we want to use this filter
-	 * @return The useFilter
+	 * @return useFilter The "useFilter" boolean
 	 */
 	public boolean isUseFilter() {
 		return useFilter;
 	}
 
 	/** Set if we want to use this filter
-	 * @param useFilter The useFilter to set
+	 * @param useFilter The "useFilter" boolean to set
 	 */
 	public void setUseFilter(boolean useFilter) {
 		this.useFilter = useFilter;
 	}
 
-	/** Get the user who created this filter
-	 * @return The user
+	/** Get the User who created this Filter
+	 * @return user The "user" (a User) that created this Filter
 	 */
 	public User getUser() {
 		return user;
 	}
 
-	/** Set the user who created this filter
-	 * @param user The user to set
+	/** Set the User who created this Filter
+	 * @param user The "user" (a User) that created this Filter to set
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-	/** Get the value we use for comparison
-	 * @return the value
+	/** Get the "value" String that we use for comparison in this Filter
+	 * @return value The "value" String
 	 */
 	public String getValue() {
 		return value;
 	}
 
-	/** Sets the value of the Filter when the input is Object
-	 * @param o The value to set
+	/** Sets the value of the Filter when the input is an Object
+	 * @param o The "value" to set (an Object)
 	 */
 	public void setValue(Object o){
 		value = o.toString();		

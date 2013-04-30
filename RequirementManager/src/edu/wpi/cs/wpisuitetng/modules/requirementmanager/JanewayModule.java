@@ -60,7 +60,6 @@ public class JanewayModule implements IJanewayModule {
 		tabs = new ArrayList<JanewayTabModel>();
 		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabPanel);
 		tabs.add(tab);
-		
 	}
 
 	/**

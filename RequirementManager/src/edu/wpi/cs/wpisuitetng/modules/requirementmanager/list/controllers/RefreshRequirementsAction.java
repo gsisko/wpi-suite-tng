@@ -35,12 +35,11 @@ public class RefreshRequirementsAction extends AbstractAction {
 		putValue(MNEMONIC_KEY, KeyEvent.VK_R);
 	}
 
-	/** when R is pressed, this activates
-	 * 
-	 * It is permanently deactivated to prevent multiple refreshes
+	/** When R is pressed, this activates
+	 * This method is permanently deactivated (no longer implemented)
+	 *  to prevent multiple refreshes
 	 * 
 	 * @param arg0 the action event that triggered this
-	 * 
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		//commented this line out to prevent multiple refreshes

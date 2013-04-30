@@ -604,7 +604,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 		return cal.getTime();
 	}
 	
-	/** gets the parent
+	/** Gets the ListTab "parent"  of this tab
 	 * @return the ListTab that this is in
 	 */
 	public ListTab getMyParent() {

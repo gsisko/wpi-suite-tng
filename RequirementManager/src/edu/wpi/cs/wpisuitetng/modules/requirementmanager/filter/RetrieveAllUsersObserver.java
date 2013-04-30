@@ -72,9 +72,11 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 		}
 	}
 
-	/** unused */
+	/** This method is unused, but is required by the RequestObserver interface
+	 */
 	public void responseError(IRequest iReq) {	}
 
-	/** unused */
+	/** This method is unused, but is required by the RequestObserver interface
+	 */
 	public void fail(IRequest iReq, Exception exception) {	}
 }

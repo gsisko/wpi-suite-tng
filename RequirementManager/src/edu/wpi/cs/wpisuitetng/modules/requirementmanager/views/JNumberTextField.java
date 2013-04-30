@@ -16,8 +16,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 /** A text field that takes only numbers. Nothing else may
- * be entered into suchfields
- * 
+ * be entered.
  */
 @SuppressWarnings("serial")
 public class JNumberTextField extends JTextField
@@ -57,14 +56,13 @@ public class JNumberTextField extends JTextField
 	/** the filter over things typed into the text field */
 	protected PlainDocument numberFieldFilter;
 
-	/** standard constructor */
+	/** Standard constructor */
 	public JNumberTextField()
 	{
 		this( 9, NUMERIC );
 	}
 
 	/** Constructor that is sized accordingly
-	 * 
 	 * @param maxLen the number of characters allowed in the text box
 	 */
 	public JNumberTextField( int maxLen )
@@ -72,7 +70,7 @@ public class JNumberTextField extends JTextField
 		this( maxLen, NUMERIC );
 	}
 
-	/** constructor that is sized and formatted accordingly
+	/** Constructor that is sized and formatted accordingly
 	 * 
 	 * @param maxLen the number of characters allowed in the text box
 	 * @param format the format of the text field
@@ -87,8 +85,7 @@ public class JNumberTextField extends JTextField
 		super.setDocument( numberFieldFilter );
 	}
 
-	/** Sets the max length. Does not allow negative lengths 
-	 * 
+	/** Sets the max length. Does not allow negative lengths  
 	 * @param maxLen the length to be set to
 	 */ 
 	public void setMaxLength( int maxLen )
@@ -100,7 +97,6 @@ public class JNumberTextField extends JTextField
 	}
 
 	/** Gets the max length
-	 * 
 	 * @return the maximum length
 	 */
 	public int getMaxLength()
@@ -125,7 +121,6 @@ public class JNumberTextField extends JTextField
 	}
 
 	/** Gets the precision
-	 * 
 	 * @return the current precision
 	 */
 	public int getPrecision()
@@ -133,8 +128,7 @@ public class JNumberTextField extends JTextField
 		return precision;
 	}
 
-	/** Gets the number currently in the text field
-	 * 
+	/** Gets the number currently in the text field 
 	 * @return the number currently in the text field
 	 */
 	public Number getNumber()
@@ -150,7 +144,6 @@ public class JNumberTextField extends JTextField
 	}
 
 	/** Puts the given value into the text field
-	 * 
 	 * @param value the number to put into the text field
 	 */
 	public void setNumber( Number value )
@@ -159,7 +152,6 @@ public class JNumberTextField extends JTextField
 	}
 
 	/** Gets the value in the text field as an int
-	 * 
 	 * @return
 	 */
 	public int getInt()
@@ -167,8 +159,7 @@ public class JNumberTextField extends JTextField
 		return Integer.parseInt( getText() );
 	}
 
-	/** sets the value in the text field to a given int
-	 * 
+	/** Sets the value in the text field to a given int
 	 * @param value the value to set
 	 */ 
 	public void setInt( int value )
@@ -275,7 +266,8 @@ public class JNumberTextField extends JTextField
 	}
 
 	/** A filter that works with JNumberFields. Does not allow non-numeric
-	 *  characters to be put in the text field	 */
+	 *  characters to be put in the text field	 
+	 */
 	class JNumberFieldFilter extends PlainDocument
 	{
 		/** basic constructor */

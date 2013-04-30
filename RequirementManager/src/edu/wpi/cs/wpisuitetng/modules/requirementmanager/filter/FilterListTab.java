@@ -65,9 +65,8 @@ public class FilterListTab extends JPanel implements IListPanel{
 	/** Parent of this tab */
 	private final ListTab parent;
 	
-	/** 
-	 * Construct the panel and all of its components
-	 * @param view Parent of this tab
+	/** Construct the panel and all of its components
+	 * @param view  The ListTab "parent" of this tab
 	 */
 	public FilterListTab(ListTab view) {
 		parent = view;
@@ -126,7 +125,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 	/** This method returns an ArrayList of active filters
-	 * @return activeFilters An ArrayList of the active filters
+	 * @return activeFilters An ArrayList of the active Filters
 	 */
 	public ArrayList<Filter> getActiveFilters() {
 		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
@@ -137,52 +136,51 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 		return activeFilters;
 	}
-
-	/** Get the model for the table that holds the list of filters
-	 * @return the data model for the table
+ 
+	/** Get the model ("resultsTableModel") for the table that holds the list of filters
+	 * @return resultsTableModel The ResultsTableModel for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
-	/** Get the table that holds the list of filters
-	 * @return the results table
+	/** Get the "resultsTable" JTable  that holds the list of filters
+	 * @return resultsTable The "resultsTable" JTable
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
 
-	/** Replace the results table with the given table
-	 * @param newTable the new results table
+	/** Replace the "resultsTable" JTable with the given table
+	 * @param newTable The new "resultsTable" JTable
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
 	}
 
-	/** Get the parent of this panel
-	 * @return the parent
+	/** Get the ListTab parent of this panel
+	 * @return parent The "parent" ListTab
 	 */
 	public ListTab getParent() {
 		return parent;
 	}
 
-	/** Get the locally stored list of filters
-	 * @return the localFilters
+	/** Get the locally stored array of Filters
+	 * @return localFilters The "localFilters" array of Filters
 	 */
 	public Filter[] getLocalFilters() {
 		return localFilters;
 	}
 
-	/** Set the locally stored list of filters
-	 * @param localFilters the localFilters to set
+	/** Set the locally stored array of Filters ("localFilters")
+	 * @param localFilters The "localFilters" array of Filters to set
 	 */
 	public void setLocalFilters(Filter[] localFilters) {
 		this.localFilters = localFilters;
 	}
 
-	/** Get the create button
-	 * 
-	 * @return the create button
+	/** Get the "btnCreate" JButton 
+	 * @return btnCreate The "btnCreate" JButton
 	 */
 	public JButton getBtnCreate(){
 		return btnCreate;
@@ -190,14 +188,14 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	/** Check if we are currently creating/editing a filter
 	 * If so, then true.  Otherwise, false
-	 * @return the btnCreateIsCancel
+	 * @return btnCreateIsCancel The "btnCreateIsCancel" boolean
 	 */
 	public boolean isBtnCreateIsCancel() {
 		return btnCreateIsCancel;
 	}
 
 	/** Set if we are creating/editing a filter or are able to
-	 * @param btnCreateIsCancel the btnCreateIsCancel to set
+	 * @param btnCreateIsCancel The "btnCreateIsCancel" boolean to set
 	 */
 	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
 		this.btnCreateIsCancel = btnCreateIsCancel;
@@ -221,14 +219,14 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	/** Sets the New button to cancel	 */
+	/** Sets the New button to cancel */
 	public void setNewBtnToCancel() {
 		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	/** Sets the "Cancel" button back to "New Filter" 	 */
+	/** Sets the "Cancel" button back to "New Filter"  */
 	public void setCancelBtnToNew() {
 		// Set the cancel button back to New Filter if it was in cancel mode 
 		this.getBtnCreate().setText("New Filter"); 
@@ -377,27 +375,27 @@ public class FilterListTab extends JPanel implements IListPanel{
 		setDeleteEnabled(false);
 	}
 
-	/** Get the controller for retrieving all models
-	 * @return the retrieveAllController
+	/** Get the controller for retrieving all models (an instance of RetrieveAllModelsController)
+	 * @return retrieveAllController The "retrieveAllController" (an instance of RetrieveAllModelsController)
 	 */
 	public RetrieveAllModelsController getRetrieveAllController() {
 		return retrieveAllController;
 	}
 
-	/** Set the controller for retrieving all models
-	 * @param retrieveAllController the RetrieveAllController to set
+	/** Set the controller for retrieving all models ("retrieveAllController")
+	 * @param retrieveAllController The "retrieveAllController" RetrieveAllModelsController to set
 	 */
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
 	}
 
-	/** Refresh all the requirements    */
+	/** Refresh all the requirements */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
 
 	/** Sets the delete button to either activated or deactivated  
-	 * @param setActive True to activate and false to deactivate
+	 * @param setActive A boolean - true to activate "btnDelete" JButton and false to deactivate
 	 */
 	public void setDeleteEnabled(boolean setActive) {
 		btnDelete.setEnabled(setActive);		
