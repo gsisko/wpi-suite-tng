@@ -57,7 +57,7 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 		String[] userList = new String[users.length + 1];
 		userList[0] = "";
 		for (int i = 0; i < users.length; i++) {
-			userList[i+1] = users[i].getUsername();
+			userList[i+1] = users[i].getName();
 		}
 
 		// Set the user names to be the options in the combo box

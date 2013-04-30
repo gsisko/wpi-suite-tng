@@ -17,10 +17,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider;
@@ -94,6 +96,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	
 	/** store the previous mode */
 	private Mode previousMode;
+	
+	/** Store the sort keys */
+	List<? extends SortKey> sortKeys;
 
 	/** The arrays of models stored in the database */
 	protected Filter[] allFilters;
@@ -189,6 +194,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 						count++;
 					}
 					controller.setRefreshes(0);
+					sortKeys = controller.getTableSort();
+					mainPanel.getResultsPanel().getResultsTable().getRowSorter().setSortKeys(null);
 					// Instantiate the controller if it hasn't been made yet. This is done here just in case
 					// of instantiation path errors.
 					if (listSaveRequirementController == null){
@@ -228,6 +235,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 				mainPanel.getEditModeBuilderPanel().setInvalidInputMessages(new String[3]);
+				
+				controller.setTableSort(sortKeys);
 			}
 		});
 		btnCancel.setPreferredSize(new Dimension(80, 25));
@@ -250,6 +259,8 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getCreateRequirementButton().setEnabled(true);//enables the create requirements button
 				mainPanel.getTabController().getView().getJanewayModule().getToolbarView().getIDbox().setEnabled(true);//enables the lookup by ID box
 				mainPanel.getEditModeBuilderPanel().setInvalidInputMessages(new String[3]);
+				
+				controller.setTableSort(sortKeys);
 			}
 		});
 		btnSave.setPreferredSize(new Dimension(130, 25));
