@@ -33,7 +33,7 @@ public class Filter extends AbstractModel {
 	private OperatorType comparator;
 	/**	String, integer, or RequirementStatus, RequirementPriority */
 	private String value;
-	/**	Use filter? */
+	/**	Whether we want this filter to be applied */
 	private boolean useFilter;
 	/** The owner of the filter */
 	private User user;
@@ -201,26 +201,27 @@ public class Filter extends AbstractModel {
 		}
 	}
 
-	/**
+	/** For the interface
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	public void save() {
 	}
 
-	/**
+	/** For the interface
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	public void delete() {
 	}
 	
-	/**
+	/** Get the uniqueID for this requirement
 	 * @return the uniqueID
 	 */
 	public int getUniqueID() {
 		return uniqueID;
 	}
 
-	/**
+	/** Set the uniqueID for this requirement
+	 * Be careful using this method
 	 * @param uniqueID The uniqueID to set
 	 */
 	public void setUniqueID(int uniqueID) {
