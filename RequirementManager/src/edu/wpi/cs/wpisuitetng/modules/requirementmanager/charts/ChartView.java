@@ -160,7 +160,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		//update filter table
 		optionsPanel.buildTable();
 	}
-	
+
 	/** Refresh and reload data in the pie chart */
 	public void refreshDataFromButton() {
 		//Ask parent to refresh data
@@ -321,7 +321,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		ArrayList<String> filterChoices = new ArrayList<String>();
 
 		String cdb = (String) this.optionsPanel.getChartDataBox().getSelectedItem();
-		
+
 		filterChoices.add("Not Applied");
 		choices.add("Requirement Status");
 		choices.add("Requirement Iteration");
@@ -368,8 +368,21 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		catch(Error e){
 			this.optionsPanel.getFiltersOptionsBox().setSelectedIndex(0);
 		}
+		
+		try {
+			this.setDataFiltered(this.optionsPanel.getFiltersOptionsBox().getSelectedItem().toString());
+		} catch(Error e) {
+			this.setDataFiltered(filterChoices.get(0));
+		}
+		
+		try {
+			this.setDataTypeVisible(this.optionsPanel.getChartDataBox().getSelectedItem().toString());
+		} catch(Error e) {
+			this.setDataTypeVisible(choices.get(0));
+		}
+		this.refreshChartVisibility();
 	}
-	
+
 	public void setListOptionsOnAppliedChange () {
 		ArrayList<String> choices = new ArrayList<String>();
 
