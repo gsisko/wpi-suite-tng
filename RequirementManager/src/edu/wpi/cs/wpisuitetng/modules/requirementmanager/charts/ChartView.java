@@ -399,7 +399,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 			}
 		} else {
 			if (requirementHasUsers()) {
-				choices.add("Requirements per User");
+				choices.add("Users per Requirement");
 			}
 			if (requirementUserHasEstimate()) {
 				choices.add("Estimate per User");
