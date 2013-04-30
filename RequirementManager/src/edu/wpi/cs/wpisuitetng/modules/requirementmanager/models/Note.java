@@ -24,11 +24,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.Requir
  *  within the RequirementManager.   
  */
 public class Note extends RequirementEvent {
+	
 	/** The note itself */
 	private String message;	
 	
 	/**Create a Note with given properties
-	 * @param message The message the user wishes to post
+	 * @param message The message String the user wishes to post in a new note
 	 */
 	public Note(String message)
 	{
@@ -48,14 +49,14 @@ public class Note extends RequirementEvent {
 	}
 	
 	/**
-	 * @return the message
+	 * @return message The "message" String of this note
 	 */
 	public String getMessage() {
 		return message;
 	}
 
 	/**
-	 * @param message the message to set
+	 * @param message The "message" String of this note to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;
@@ -81,7 +82,7 @@ public class Note extends RequirementEvent {
 	}
 	
 	/** Gets the body of the note and returns it
-	 * @return the body of the note
+	 * @return the body of the note 
 	 */
 	public String getBodyString() {
 		return this.getMessage();

@@ -63,6 +63,7 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/** Full Constructor for Requirement.
+	 * 
 	 * @param name Name of the requirement 
 	 * @param description Description of the requirement
 	 * @param releaseNumber Release number of the requirement
@@ -106,6 +107,7 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**Converts this requirement to a JSON string for sending across the network
+	 * 
 	 * @return a string in JSON representing this requirement 
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() 
 	 */
@@ -116,7 +118,8 @@ public class Requirement extends AbstractModel {
 		return json;
 	}
 
-	/** Method identify.
+	/** Method identify
+	 * 
 	 * @param o Object
 	 * @return Boolean 
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(Object) 
@@ -135,6 +138,7 @@ public class Requirement extends AbstractModel {
 	// End of Model interface functions
 	
 	/** Converts the given list of Requirements to a JSON string
+	 * 
 	 * @param rlist a list of Requirements
 	 * @return a string in JSON representing the list of Requirements 
 	 */
@@ -146,6 +150,7 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/** Method toString.  Outputs a JSON string.
+	 * 
 	 * @return String 
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() 
 	 */
@@ -182,6 +187,7 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**Method setProject.
+	 * 
 	 * @param project Project
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setProject(Project) 
 	 */
@@ -190,112 +196,112 @@ public class Requirement extends AbstractModel {
 	}
 	
 	/**
-	 * @return the id 
+	 * @return id The "id" of the Requirement 
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id The "id" (an int) of this Requirement to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}	
 	
 	/**
-	 * @return the actualEffort 
+	 * @return actualEffort The "actualEffort" of the Requirement 
 	 */
 	public int getActualEffort() {
 		return actualEffort;
 	}
 
 	/**
-	 * @param actualEffort int
+	 * @param actualEffort The "actualEffort" (an int) of this Requirement to set
 	 */
 	public void setActualEffort(int actualEffort) {
 		this.actualEffort = actualEffort;
 	}
 
 	/**
-	 * @return the estimate 
+	 * @return estimate The "estimate" of the Requirement 
 	 */
 	public int getEstimate() {
 		return estimate;
 	}
 
 	/**
-	 * @param estimate the estimate to set
+	 * @param setEstimate The "setEstimate" (an int) of this Requirement to set
 	 */
 	public void setEstimate(int estimate) {
 		this.estimate = estimate;
 	}
 
 	/**
-	 * @return the description 
+	 * @return description The "description" of the Requirement 
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param description The "description" (a String) of this Requirement to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
 	/**
-	 * @return the name 
+	 * @return name The "name" of the Requirement 
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name The "name" (a String) of this Requirement to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return the releaseNumber 
+	 * @return releaseNumber The "releaseNumber" of the Requirement 
 	 */
 	public String getReleaseNumber() {
 		return releaseNumber;
 	}
 
 	/**
-	 * @param releaseNumber the releaseNumber to set
+	 * @param releaseNumber The "releaseNumber" (a String) of this Requirement to set
 	 */
 	public void setReleaseNumber(String releaseNumber) {
 		this.releaseNumber = releaseNumber;
 	}
 
 	/**
-	 * @return the status 
+	 * @return status The "status" RequirementStatus of the Requirement 
 	 */
 	public RequirementStatus getStatus() {
 		return status;
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param status The "status" (an instance of RequirementStatus) to set for this Requirement
 	 */
 	public void setStatus(RequirementStatus status) {
 		this.status = status;
 	}
 
 	/**
-	 * @return the priority 
+	 * @return priority The "priority" RequirementPriority of the Requirement
 	 */
 	public RequirementPriority getPriority() {
 		return priority;
 	}
 
 	/**
-	 * @param priority the priority to set
+	 * @param priority The "priority" (an instance of RequirementPriority) to set for this Requirement
 	 */
 	public void setPriority(RequirementPriority priority) {
 		this.priority = priority;
@@ -321,98 +327,98 @@ public class Requirement extends AbstractModel {
 	}
 
 	/**
-	 * @return the type
+	 * @return type The "type" RequirementType of the Requirement
 	 */
 	public RequirementType getType() {
 		return type;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type The "type" (an instance of RequirementType) to set for this Requirement
 	 */
 	public void setType(RequirementType type) {
 		this.type = type;
 	}
 
 	/**
-	 * @return the notes
+	 * @return notes The "notes" ArrayList of Notes of the Requirement
 	 */
 	public ArrayList<Note> getNotes() {
 		return notes;
 	}
 
 	/**
-	 * @param notes the notes to set
+	 * @param notes The "notes" ArrayList of Notes of the Requirement to set
 	 */
 	public void setNotes(ArrayList<Note> notes) {
 		this.notes = notes;
 	}
 	
 	/**
-	 * @return the acceptance tests
+	 * @return acceptanceTests The "acceptanceTests" ArrayList of AcceptanceTests of the Requirement
 	 */
 	public ArrayList<AcceptanceTest> getAcceptanceTests() {
 		return acceptanceTests;
 	}
 
 	/**
-	 * @param notes the notes to set
+	 * @param acceptanceTests The "acceptanceTests" ArrayList of AcceptanceTests of the Requirement to set
 	 */
 	public void setAcceptanceTests(ArrayList<AcceptanceTest> acceptanceTests) {
 		this.acceptanceTests = acceptanceTests;
 	}
 
 	/**
-	 * @return users assigned to this requirement
+	 * @return userNames The "userNames" ArrayList of user names (strings) assigned to this Requirement
 	 */
 	public ArrayList<String> getUserNames() {
 		return userNames;
 	}
 
 	/**
-	 * @param users ArrayList of users to assign to this requirement
+	 * @param users ArrayList of user names (strings) to assign to this requirement
 	 */
 	public void setUserNames(ArrayList<String> users) {
 		userNames = users;
 	}
 
 	/**
-	 * @return the assignedIteration
+	 * @return iteration The "iteration" of the Requirement 
 	 */
 	public int getIteration() {
 		return iteration;
 	}
 
 	/**
-	 * @param assignedIteration the assignedIteration to set
+	 * @param iteration The "iteration" (an int representing the Iteration id number) of this Requirement to set
 	 */
 	public void setIteration(int assignedIteration) {
 		iteration = assignedIteration;
 	}
 
 	/**
-	 * @return the events
+	 * @return events The "events" ArrayList of RequirementEvents associated with this Requirement
 	 */
 	public ArrayList<RequirementEvent> getEvents() {
 		return events;
 	}
 
 	/**
-	 * @param events the events to set
+	 * @param events ArrayList of RequirementEvents to associate with this requirement
 	 */
 	public void setEvents(ArrayList<RequirementEvent> events) {
 		this.events = events;
 	}
 	
 	/**
-	 * @return the subrequirements
+	 * @return subrequirements The "subrequirements" ArrayList of Integers (representing Requirement id numbers) of the Requirement
 	 */
 	public ArrayList<Integer> getSubrequirements() {
 		return subrequirements;
 	}
 
 	/**
-	 * @param subrequirements the subrequirements to set
+	 * @param subrequirements The "subrequirements" ArrayList of Integers (representing Requirement id numbers) of the Requirement to set
 	 */
 	public void setSubrequirements(ArrayList<Integer> subrequirements) {
 		this.subrequirements = subrequirements;

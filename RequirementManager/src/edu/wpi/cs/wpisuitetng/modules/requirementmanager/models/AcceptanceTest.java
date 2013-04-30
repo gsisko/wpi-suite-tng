@@ -46,7 +46,8 @@ public class AcceptanceTest extends RequirementEvent {
 		this.result = result;
 	}
 	
-	/**Create a AcceptanceTest with given properties
+	/** Create a AcceptanceTest with given properties.
+	 * "result" is set to AcceptanceTestResult.None.
 	 * 
 	 * @param title The title of the acceptance test
 	 * @param description The description the user wishes to post with the acceptance test
@@ -67,49 +68,49 @@ public class AcceptanceTest extends RequirementEvent {
 	}
 	
 	/**
-	 * @return the description
+	 * @return description The description of the acceptance test
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param description The description of the acceptance test to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	
 	/** 
-	 * @param result the result to set this acceptance test to
+	 * @param result The AcceptanceTestResult "result" to set this acceptance test to
 	 */
 	public void setAcceptanceTestResult(AcceptanceTestResult result){
 		this.result = result;
 	}
 	
 	/**
-	 * @return the result this acceptance test is set to
+	 * @return result The "result" AcceptanceTestResult this acceptance test is set to
 	 */
 	public AcceptanceTestResult getAcceptanceTestResult(){
 		return result;
 	}
 	
 	/** 
-	 * @param title the title to set this acceptance test to
+	 * @param title The "title" to set this acceptance test to
 	 */
 	public void setAcceptanceTestTitle(String title){
 		this.title = title;
 	}
 	
 	/**
-	 * @return the title of this acceptance test
+	 * @return title The "title" String of this acceptance test
 	 */
 	public String getAcceptanceTestTitle(){
 		return title;
 	}
 	
 	/**
-	 * @return the description of this acceptance test
+	 * @return description The "description" String of this acceptance test
 	 */
 	public String getAcceptanceDescription(){
 		return description;
@@ -150,8 +151,8 @@ public class AcceptanceTest extends RequirementEvent {
 		return "Acceptance Test added by " + userName + " on " + dateFormat.format(this.getDate());
 	}
 	
-	/**
-	 * Compares variables in AcceptanceTest to determine if the test is equal
+	/** Compares variables in AcceptanceTest to determine if the test is equal
+	 * 
 	 * @param otherTest test to compare
 	 * @return true if test is equal, false if not equal
 	 */
@@ -165,7 +166,6 @@ public class AcceptanceTest extends RequirementEvent {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 }
