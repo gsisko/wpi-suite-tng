@@ -12,7 +12,6 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -73,7 +72,7 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 		controller.success("");
 	}
 
-	/** Upon failure, prints to console
+	/** Upon error, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void responseError(IRequest iReq) {
@@ -82,6 +81,7 @@ public class ListSaveModelObserver implements RequestObserver,IObserver {
 
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
+	 * @param exception unused
 	 */
 	public void fail(IRequest iReq, Exception exception) {
 		controller.fail();
