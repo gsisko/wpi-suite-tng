@@ -29,10 +29,15 @@ import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-/**This is the entity manager for the Iteration in the IterationManager module
- * 
- * @version $Revision: 1.0 $
- */
+/** This is the entity manager for iterations in the RequirementManager module. The provided
+ *  methods include functionality for creating, updating, getting specific iterations, getting
+ *  all iterations and deleting iterations. Current, iterations are project specific, so
+ *  iterations pulled from the DB will only be for the current current project. 
+ *  "Deleting" simply sets the project field of iterations to null so that the filter cannot be
+ *  pulled from the DB, but it will still exist to preserve unique IDs. 
+ *  
+ *   Also, the first time iterations are asked for in a new project, a single "Backlog" iteration
+ *   will be created, stored and included with the other iterations requested.   */
 public class IterationManager implements EntityManager<Iteration> {
 	/** The database */
 	private Data db;
