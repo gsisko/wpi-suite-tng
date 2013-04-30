@@ -432,7 +432,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 
 	private boolean requirementHasUsersWithFilters() {
-		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
 		Filter[] filters = this.getView().getParent().getAllFilters();
 		for (int i = 0; i < reqList.length; i++) {
 			for (int j = 0; j < filters.length; j++) {
@@ -445,7 +445,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 	private boolean requirementHasUsersEstimateWithFilters() {
-		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
 		Filter[] filters = this.getView().getParent().getAllFilters();
 		for (int i = 0; i < reqList.length; i++) {
 			for (int j = 0; j < filters.length; j++) {
@@ -459,7 +459,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 
 	private boolean requirementHasUsers() {
-		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
 		for (int i = 0; i < reqList.length; i++) {
 			if (reqList[i].getUserNames().size() > 0) {
 				return true;
@@ -469,7 +469,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 	private boolean requirementUserHasEstimate() {
-		Requirement[] reqList = this.getView().getParent().getAllRequirements();
+		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
 		for (int i = 0; i < reqList.length; i++) {
 			if (reqList[i].getUserNames().size() > 0 && reqList[i].getEstimate() > 0) {
 				return true;
