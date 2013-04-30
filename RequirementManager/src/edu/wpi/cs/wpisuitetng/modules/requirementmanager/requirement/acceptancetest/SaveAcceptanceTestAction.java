@@ -26,8 +26,7 @@ public class SaveAcceptanceTestAction extends AbstractAction {
 
 	private final SaveRequirementController controller;
 	
-	/**
-	 * Create a SaveChangesAction
+	/** Create a SaveChangesAction
 	 * @param controller When the action is performed, controller.save will be called
 	 */
 	public SaveAcceptanceTestAction(SaveRequirementController controller) {

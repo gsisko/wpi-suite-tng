@@ -17,8 +17,7 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to save an iteration with the provided id
+/** An observer for a request to save an iteration with the provided id
  */
 public class SaveIterationObserver implements RequestObserver {
 	

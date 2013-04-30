@@ -78,8 +78,7 @@ public abstract class RequirementEvent extends AbstractModel {
 		userName = user.getName();
 	}	
 	
-	/**
-	 * Given a builder, add anything to it that's necessary for Gson to interact with this class.
+	/** Given a builder, add anything to it that's necessary for Gson to interact with this class.
 	 * @param builder The builder to modify
 	 */
 	public static void addGsonDependencies(GsonBuilder builder) {
@@ -107,8 +106,9 @@ public abstract class RequirementEvent extends AbstractModel {
 		
 	}
 	
-	// this model will only be created server side and then retrieved as part of a Requirement in the future
-	// so I'm not sure if this is necessary
+	/** This model will only be created server side and then retrieved as part of a Requirement in the future
+	 * so I'm not sure if this is necessary
+	 */
 	@Override
 	public Boolean identify(Object o) {
 		return null;

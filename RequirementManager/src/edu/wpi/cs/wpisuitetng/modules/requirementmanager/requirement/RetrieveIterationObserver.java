@@ -26,7 +26,6 @@ public class RetrieveIterationObserver implements RequestObserver {
 	private Iteration iteration;
 	
 	/** Construct a new observer
-	 * @param retrieveModelController the controller managing the request
 	 */
 	public RetrieveIterationObserver() {
 		iteration = null;

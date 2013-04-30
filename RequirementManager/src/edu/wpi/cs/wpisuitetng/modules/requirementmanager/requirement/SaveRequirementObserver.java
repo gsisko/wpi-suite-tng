@@ -84,7 +84,7 @@ public class SaveRequirementObserver implements RequestObserver {
 		view.getRequirementPanel().getAttributePanel().setSaving(false);
 	}
 	
-	/* This method responds when there is a save response error
+	/** This method responds when there is a save response error
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
@@ -92,7 +92,7 @@ public class SaveRequirementObserver implements RequestObserver {
 		System.err.println("Cannot save a requirement.");
 	}
 	
-	/*This method responds when the save action failed 
+	/** This method responds when the save action failed 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
 	 */
 	@Override

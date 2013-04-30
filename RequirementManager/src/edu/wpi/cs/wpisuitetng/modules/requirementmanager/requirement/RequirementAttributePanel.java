@@ -391,7 +391,6 @@ public class RequirementAttributePanel extends JPanel {
 		add(txtReleaseNumber, attributePanelConstraints);
 		//end Release number
 
-
 		//Status:		
 		//Set the constraints for the "statusLabel" and add it to the innerPanel
 		attributePanelConstraints.weightx = 0.07;
@@ -494,7 +493,7 @@ public class RequirementAttributePanel extends JPanel {
 		return inputEnabled;
 	}
 
-	/**nThis returns the JTextField "txtName"
+	/**This returns the JTextField "txtName"
 	 * @return the txtName JTextField
 	 */
 	public JTextField getRequirementName() {
@@ -507,7 +506,6 @@ public class RequirementAttributePanel extends JPanel {
 	public JTextArea getRequirementDescription() {
 		return txtDescription;
 	}
-
 
 	/** This returns the JComboBox "typeBox"
 	 * @return the typeBox JComboBox
@@ -634,7 +632,6 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 	
-	
 	/** This sets all the booleans in the fieldsChanged array to a boolean
 	*  passed in as  "fieldsChanged", EXCEPT it only applies to the basic set of fields
 	*  which are in the main part of the requirementAttributePanel
@@ -646,7 +643,6 @@ public class RequirementAttributePanel extends JPanel {
 		}
 	}
 	
-
 	/** Setter for the saveButton 
 	 * @param saveButton The JButton that should be referenced as the save button. Located in tool bar.
 	 */
@@ -859,7 +855,6 @@ public class RequirementAttributePanel extends JPanel {
 		return toReturn;
 	}
 
-
 	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * Also disables the txtEstimate field when the status of this requirement is "InProgress",
@@ -872,23 +867,22 @@ public class RequirementAttributePanel extends JPanel {
 		// Time to refresh this box if we are enabling all the boxes
 		fillIterationSelectionBox();
 		
-		
 		toggleComponentEnabled(txtName, enabled);
 		toggleComponentEnabled(txtDescription, enabled);
 		toggleComponentEnabled(typeBox, enabled);
 		toggleComponentEnabled(statusBox, enabled);
 		toggleComponentEnabled(priorityBox, enabled);
 		toggleComponentEnabled(txtReleaseNumber, enabled);
+		
 		//Disables the txtEstimate field if appropriate
 		if (currentRequirement.getStatus() == RequirementStatus.InProgress){
 			toggleComponentEnabled(txtEstimate, false);
 		}
 		else
 			toggleComponentEnabled(txtEstimate, enabled);
+		
 		toggleComponentEnabled(txtActualEffort, enabled);
 		toggleComponentEnabled(iterationBox, enabled);
-
-
 	}
 
 	/** Sets the appropriate fields disabled upon creation

@@ -92,7 +92,6 @@ public class UserChooserTab extends JPanel {
 	/** Used to store the ListSelectionModel of the assignedList JList. This is used to respond to changes in the selection of users within the assignedList */
 	private ListSelectionModel assignedListSelectionModel;
 
-
 	/** The constructor for UserChooserTab;
 	 * Construct the panel, the components, and add the
 	 * components to the panel.

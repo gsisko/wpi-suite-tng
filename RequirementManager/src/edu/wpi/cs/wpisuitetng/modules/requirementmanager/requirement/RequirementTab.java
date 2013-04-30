@@ -364,9 +364,7 @@ public class RequirementTab extends JPanel {
 		return tabPanel;
 	}
 	
-	/** Creates and returns a requirement from the information entered into the input components/fields at the time this method is invoked.
-	 * TODO error check
-	 * 
+	/** Creates and returns a requirement from the information entered into the input components/fields at the time this method is invoked. 
 	 * @return Requirement made from the information entered into the input components/fields at the time this method is invoked.
 	 */
 	public Requirement getRequirement()
