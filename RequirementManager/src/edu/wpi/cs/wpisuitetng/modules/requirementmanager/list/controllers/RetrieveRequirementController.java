@@ -55,7 +55,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 
 				// make sure the user actually clicked on a row
 				if (row > -1) {
-					String requirementId = (String) resultsTable.getValueAt(row, 0);
+					String requirementId = (String) resultsTable.getValueAt(row, view.getColumnIndex("ID"));
 
 					// Create and send a request for the requirement with the given ID
 					Request request;

@@ -804,7 +804,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 * @param name The name to check for
 	 * @return the column index, returns -1 upon failure
 	 */
-	private int getColumnIndex(String name){
+	public int getColumnIndex(String name){
 		return getColumnIndex(name, getTableName());
 	}
 
