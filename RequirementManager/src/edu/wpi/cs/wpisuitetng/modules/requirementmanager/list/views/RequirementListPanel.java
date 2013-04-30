@@ -12,22 +12,32 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.ListSaveModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
@@ -102,7 +112,31 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(null, null, null));
 
+
+		//		resultsTable.addKeyListener( new KeyAdapter(   ){
+		//
+		//			@SuppressWarnings("deprecation")
+		//			public void keyPressed(KeyEvent e){
+		//				// VK_ENTER
+		//				if (e.getKeyCode() == KeyEvent.VK_ENTER ){
+		//					System.err.println("SHIT HAPPENED");
+		//					e.setModifiers(KeyEvent.VK_SHIFT);
+		//				//	e.notifyAll();
+		//					super.keyPressed(e);
+		//					//	new KeyEvent(KeyEvent.VK_ENTER + KeyEvent.VK_SHIFT);
+		//
+		//				}				
+		//			}		
+		//		});
+
+
+		//	resultsTable.addKeyListener(new KeyboardShortcut(KeyStroke.getKeyStroke("return"), new AbstractAction))
+
+		//	resultsTable.putValue(MNEMONIC_KEY, KeyEvent.VK_ENTER); // probably wrong?
+
 		resultsTable.getModel().addTableModelListener(new TableModelListener() {
+			//	resultsTable.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control TAB"), new AbstractAction() {
+
 
 			@Override
 			public void tableChanged(TableModelEvent e) {
@@ -224,23 +258,23 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 						System.err.println("Table change listener failed fatally");
 						return;
 					}
-					
+
 					needsSaving[row][getColumnIndex(resultsTableModel.getColumnName(column))] = isChanged;
 					isValid[row][getColumnIndex(resultsTableModel.getColumnName(column))] = !isInvalid;
 					parent.getEditModeBuilderPanel().setInvalidInputMessages(prepareErrorMessages());
 
 					updateSaveButton();
-					
+
 					Boolean[][] originalNeedsSaving = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 					for (int i = 0; i < resultsTable.getRowCount(); i++)
 						for (int j = 0; j < resultsTable.getColumnCount(); j++)
 							originalNeedsSaving[i][j] = needsSaving[resultsTable.convertRowIndexToModel(i)][j];
-					
+
 					Boolean[][] originalIsValid = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 					for (int i = 0; i < resultsTable.getRowCount(); i++)
 						for (int j = 0; j < resultsTable.getColumnCount(); j++)
 							originalIsValid[i][j] = isValid[resultsTable.convertRowIndexToModel(i)][j];
-					
+
 					resultsTable.setDefaultRenderer(String.class, new ResultsTableCellRenderer(originalNeedsSaving, originalIsValid, isEditable));
 					Boolean[][] originalIsEditable = new Boolean[resultsTable.getRowCount()][resultsTable.getColumnCount()];
 					for (int i = 0; i < resultsTable.getRowCount(); i++)
@@ -251,6 +285,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 			}
 
 		});
+
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -408,8 +443,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		int typeColumnNum = this.getColumnIndex("Iteration");
 
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(typeColumnNum);
-
 		JComboBox typebox = new JComboBox();
+
+
 		Iteration[] allIterations = parent.getParent().getAllIterations();
 		for (Iteration anIter: allIterations){
 			// Add the iteration to the list if backlog or not closed
@@ -432,6 +468,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		TableColumn typeColumn = resultsTable.getColumnModel().getColumn(statusColumn);
 
 		JComboBox typebox = new JComboBox();
+
 		typebox.addItem("New");
 		typebox.addItem("Open");
 		typebox.addItem("InProgress");
@@ -458,6 +495,25 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 					editorComponent = new JComboBox(RequirementStatus.getAvailableStatuses(RequirementStatus.InProgress));
 				}
 				editorComponent.setBackground(Color.white);
+//				editorComponent.addKeyListener( new KeyAdapter(   ){
+//
+//					public void keyPressed(KeyEvent e){
+//
+//						if (e.getKeyCode() == KeyEvent.VK_ENTER ){
+//							SwingUtilities.invokeLater(new Runnable() {
+//								@Override
+//								public void run() {
+//									try {
+//										Robot robot = new Robot(); 
+//										robot.keyPress(KeyEvent.VK_ENTER | KeyEvent.VK_SHIFT);
+//									} catch (AWTException enter){
+//										System.err.println("My robot died");
+//									}
+//								}	
+//							});
+//						}
+//					}		
+//				});
 				return editorComponent;
 			}
 
