@@ -33,6 +33,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode;
@@ -50,17 +51,17 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 	//The labels
 	/** The label for the name text field ("txtName") */
 	private JLabel nameLabel;
-	
+
 	/** The label for the description text area ("txtDescription") */
 	private JLabel descriptionLabel;
 
 	//The fillable components
 	/** The name text field  */
 	private JTextField txtName;
-	
+
 	/** The description text area  */
 	private JTextArea txtDescription;
-	
+
 	/** ScrollPane that the txtDescription box will be held in  */
 	private JScrollPane scrollDescription;
 
@@ -118,8 +119,11 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 			acceptanceTestListModel.addAcceptanceTest(acceptanceTests.get(i));
 		}
 
-		//Construct the acceptanceTestList, using the previously defined empty model
-		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);		
+		//Construct the acceptanceTestList, using the previously filled model, setting the statusBoxes in the AcceptanceTestPanels enabled/disabled appropriately
+		if (parent.getCurrentRequirement().getStatus() == RequirementStatus.Deleted)
+			acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel, false);	
+		else
+			acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel, true);
 
 		// Put the acceptanceTestList in a scroll pane
 		listScrollPane = new JScrollPane(acceptanceTestList);
@@ -230,8 +234,8 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanelConstraints.gridy = 1;
 		nameAndDescriptionPanel.add(txtName, nameAndDescriptionPanelConstraints);
 		//end Name
-		
-		
+
+
 		//Description:
 		//Set the constraints for "descriptionLabel" and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line
@@ -249,7 +253,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanelConstraints.gridy = 3;
 		nameAndDescriptionPanel.add(scrollDescription, nameAndDescriptionPanelConstraints);
 		//end Description
-		
+
 		nameAndDescriptionPanel.setMaximumSize(new Dimension(1000, 135));//set the max size of the nameAndDescriptionPanel to keep it from stretching vertically
 		//end nameAndDescriptionPanel
 
@@ -260,7 +264,7 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		this.add(Box.createRigidArea(new Dimension(0,6)));
 		this.add(saveButton); // add the saveButton to the panel
 		this.add(Box.createRigidArea(new Dimension(0,6)));
-		
+
 		saveButton.setAlignmentX(CENTER_ALIGNMENT);
 	}
 
@@ -284,6 +288,41 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		saveButton.setEnabled(enabled);
 		txtName.setEnabled(enabled);
 		txtDescription.setEnabled(enabled);
+		setAcceptanceTestPanelsEnabled(enabled);
+	}
+	
+	/** Enable or disable (according to the parameter "enabled") 
+	 * all the AcceptanceTestPanels in the "acceptanceTestList by recreating 
+	 * the "acceptanceTestList" ListOfAcceptanceTestPanel to set all the 
+	 * statusBoxes in the AcceptanceTestPanels enabled/disabled appropriately
+	 * 
+	 * @param enabled A Boolean representing whether or not the statusBoxes in the all the AcceptanceTestPanel in the "acceptanceTestList" ListOfAcceptanceTestPanel should be enabled
+	 */
+	public void setAcceptanceTestPanelsEnabled(boolean enabled){
+		this.removeAll();
+		
+		//Re-construct the acceptanceTestListModel
+		acceptanceTestListModel = new AcceptanceTestListModel();
+
+		//Re-add the tests from the parent requirement to the acceptanceTestListModel
+		ArrayList<AcceptanceTest> acceptanceTests = parent.getCurrentRequirement().getAcceptanceTests();
+		for (int i = 0; i < acceptanceTests.size(); i++) {
+			acceptanceTestListModel.addAcceptanceTest(acceptanceTests.get(i));
+		}
+		
+		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel, enabled);	
+
+		listScrollPane = new JScrollPane(acceptanceTestList);
+
+		listScrollPane.setPreferredSize(new Dimension(560, 240));		
+
+		//Re-add components
+		this.add(listScrollPane); //add the acceptanceTestList, in the listScrollPane, to the panel
+		this.add(Box.createRigidArea(new Dimension(0,6))); //Put some vertical space between these components
+		this.add(nameAndDescriptionPanel); // add the nameAndDescriptionPanel to the panel
+		this.add(Box.createRigidArea(new Dimension(0,6)));
+		this.add(saveButton); // add the saveButton to the panel
+		this.add(Box.createRigidArea(new Dimension(0,6)));
 	}
 
 	/** Returns a boolean representing whether or not input is enabled for the AcceptanceTestPanel.
@@ -301,11 +340,11 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 
 		if ((txtName.getText().length()==0) || (txtDescription.getText().length()==0) )// Check if the txtDescription and txtName are empty
 			messageGood = false;
-				
+
 		saveButton.setEnabled( messageGood);//Set the save button enabled/disabled appropriately
 		return messageGood;
 	}
-	
+
 	/** This returns the JTextArea "txtDescription"
 	 * @return the txtDescription JTextArea
 	 */
@@ -359,7 +398,12 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 	public void addAcceptanceTestToList(AcceptanceTest newAcceptanceTest){
 		this.removeAll();
 		acceptanceTestListModel.addAcceptanceTest(newAcceptanceTest);
-		acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel);
+		
+		//Re-construct the acceptanceTestList, using the updated model, setting the statusBoxes in the AcceptanceTestPanels enabled/disabled appropriately
+		if (parent.getCurrentRequirement().getStatus() == RequirementStatus.Deleted)
+			acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel, false);	
+		else
+			acceptanceTestList  = new ListOfAcceptanceTestPanel(acceptanceTestListModel, true);
 
 		listScrollPane = new JScrollPane(acceptanceTestList);
 

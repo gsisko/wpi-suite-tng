@@ -34,8 +34,9 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 	 * constructs an AcceptanceTestPanel for each acceptanceTest within that model,
 	 * and adds each to this panel.
 	 * @param newModel The AcceptanceListModel containing the stored acceptance tests to be displayed
+	 * @param enabled A boolean representing whether or not the AcceptanceTestPanels should have their combo boxes displayed or not.
 	 */
-	public ListOfAcceptanceTestPanel(AcceptanceTestListModel newModel) {	
+	public ListOfAcceptanceTestPanel(AcceptanceTestListModel newModel, Boolean enabled) {	
 		// Create and set the layout manager for this panel
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
@@ -54,6 +55,7 @@ public class ListOfAcceptanceTestPanel extends JPanel {
 			String title = acceptanceTestListModel.getElementAt(i).getAcceptanceTestTitle();  //grab the title
 			AcceptanceTestResult result = acceptanceTestListModel.getElementAt(i).getAcceptanceTestResult(); // Grab the result
 			AcceptanceTestPanel panel = new AcceptanceTestPanel(title,description, result); //create a new AcceptanceTestPanel to hold this acceptance test
+			panel.getStatusBox().setEnabled(enabled);
 			panel.settxtDescription(description);
 			totalHeight += panel.getSize().getHeight();//add this panel's height to the running total
 			panel.setup();

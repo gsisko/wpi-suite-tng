@@ -200,7 +200,7 @@ public class SaveRequirementController {
 				saveUpdatedIterationRequest.send();
 			}
 
-			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {// Disable the note panel and userChooserTab if the requirement has been deleted
+			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {// Disable the note panel,  userChooserTab, and acceptance test tab if the requirement has been deleted
 
 				//Disable notes
 				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
@@ -214,10 +214,12 @@ public class SaveRequirementController {
 				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
 
 				//Disable Acceptance Tests
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), false);
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
 				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+				view.getTabPanel().getAcceptanceTestPanel().setAcceptanceTestPanelsEnabled(false);
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(false);
-
+				
 				//Clear out the text if disabled
 				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
@@ -242,9 +244,10 @@ public class SaveRequirementController {
 				//Enable Acceptance Tests
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
 				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), true);
+				view.getTabPanel().getAcceptanceTestPanel().setAcceptanceTestPanelsEnabled(true);
 				view.getTabPanel().getAcceptanceTestPanel().setSaveButtonWhenMessageIsValid();
 				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
-
+				
 				//Set background to yellow if changed
 				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
 					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setBackground(new Color(248,253,188));
