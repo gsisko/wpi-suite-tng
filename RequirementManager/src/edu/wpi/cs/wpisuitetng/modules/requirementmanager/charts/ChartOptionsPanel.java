@@ -118,11 +118,9 @@ public class ChartOptionsPanel extends JPanel{
 		filtertable.getTableHeader().setResizingAllowed(false);
 		filtertable.getTableHeader().setReorderingAllowed(false);
 		
-		
 		buildTable();
 		
 		JScrollPane resultsScrollPane = new JScrollPane(filtertable);
-		
 		
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
 

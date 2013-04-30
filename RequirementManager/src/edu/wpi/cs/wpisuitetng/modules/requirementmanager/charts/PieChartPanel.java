@@ -196,9 +196,9 @@ public class PieChartPanel extends JPanel {
 
 		dataset = data;
 		if (isFiltered){
-			chart = createChart(dataset, "Displayed Requirements per User");
-		} else {
-			chart = createChart(dataset, "All Requirements per User");
+			chart = createChart(dataset, "Number of Requirements per User for Displayed Requirements");
+		} else { 
+			chart = createChart(dataset, "Number of Requirements per User for All Requirements");
 		}
 
 		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
