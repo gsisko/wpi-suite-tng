@@ -60,8 +60,10 @@ public class ListSaveModelController implements IController{
 		}
 	}
 
-	/** Provide action listener or other ways to check whether a certain action is performed
-	 * @param String
+	/** Takes a model as a JSOn and sends it off
+	 * @param uniqueIdentifier the unique identifier of the model
+	 * @param flagIndex    The index of the model in its list
+	 * @param modelJSON the model as a JSON
 	 */
 	public void perform(String uniqueIdentifier, int flagIndex, String modelJSON){
 		// Create and send a request for the Model with the given ID
@@ -76,6 +78,7 @@ public class ListSaveModelController implements IController{
 
 	/** Upon successful completion of all models being saved, this is triggered to set the 
 	 *  list view back to normal
+	 *  @param JSONString the message response as a JSON string
 	 */
 	public void success(String JSONString) {
 		// Re-set the table to be in normal mode, and re allow sorting etc
@@ -92,7 +95,7 @@ public class ListSaveModelController implements IController{
 	}
 
 	/** Upon failure, prints to console
-	 * @param iReq The request response from the server 
+	 * @param error The request response from the server 
 	 */
 	public void error(String error) {
 		System.err.println("Could not save the " + modelName);	
