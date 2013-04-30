@@ -235,7 +235,6 @@ public class AcceptanceTestTab extends JPanel implements ActionListener {
 		nameAndDescriptionPanel.add(txtName, nameAndDescriptionPanelConstraints);
 		//end Name
 
-
 		//Description:
 		//Set the constraints for "descriptionLabel" and add it to the nameAndDescriptionPanel
 		nameAndDescriptionPanelConstraints.weightx = 0.07;//This sets the horizontal (x axis) "weight" of the component, which tells the layout how big to make this component in respect to the other components on it's line

@@ -31,13 +31,14 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /** This is the entity manager for iterations in the RequirementManager module. The provided
  *  methods include functionality for creating, updating, getting specific iterations, getting
- *  all iterations and deleting iterations. Current, iterations are project specific, so
+ *  all iterations and deleting iterations. Currently, iterations are project specific, so
  *  iterations pulled from the DB will only be for the current current project. 
- *  "Deleting" simply sets the project field of iterations to null so that the filter cannot be
+ *  "Deleting" simply sets the project field of iterations to null so that the iteration cannot be
  *  pulled from the DB, but it will still exist to preserve unique IDs. 
  *  
  *   Also, the first time iterations are asked for in a new project, a single "Backlog" iteration
- *   will be created, stored and included with the other iterations requested.   */
+ *   will be created, stored and included with the other iterations requested.   
+ */
 public class IterationManager implements EntityManager<Iteration> {
 	/** The database */
 	private Data db;
@@ -62,9 +63,10 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *  the current project. Makes one if necessary.
 	 *  Backlog has start and end date of 1ms after the epoch.
 	 *  
-	 *  This is designed to be called by getall
+	 *  This is designed to be called by getall 
 	 *  
-	 *  @param s The current session which contains the current project    
+	 *  @param s The current session which contains the current project  
+	 *  @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.IterationManager#getAll(Session s)
 	 */
 	public void instantiateBacklog(Session s){		
 		// Get the current project
@@ -147,7 +149,6 @@ public class IterationManager implements EntityManager<Iteration> {
 		logger.log(Level.FINE, "Iteration Saved :" + model);
 	}
 
-
 	/** Takes an Iteration and assigns a unique id if necessary
 	 * 
 	 * @param iter The iteration that possibly needs a unique id
@@ -158,7 +159,6 @@ public class IterationManager implements EntityManager<Iteration> {
 			iter.setID(Count() + 1); // Makes first Iteration for a have id = 1
 		}        
 	}
-
 
 	/** Returns the number of Iterations currently in the database. Disregards
 	 *  the current user session
@@ -171,8 +171,6 @@ public class IterationManager implements EntityManager<Iteration> {
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
 		return db.retrieveAll(new Iteration()).size();
 	}
-
-
 
 	/** Takes a session and returns an array of all the Iterations contained
 	 * 
@@ -293,7 +291,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		db.deleteAll(new Iteration(), s.getProject());
 	}
 
-	//The following methods are not implemented:
+	//The following methods are not implemented but required by the "EntityManager" interface:
 	
 	/** Method advancedPut.
 	 * @param s Session

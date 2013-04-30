@@ -31,10 +31,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
 
 /** This is the entity manager for filters in the RequirementManager module. The provided
  *  methods include functionality for creating, updating, getting specific filters, getting
- *  all filters and deleting filters. Current, Filters are user and project specific, so
+ *  all filters and deleting filters. Currently, Filters are user and project specific, so
  *  filters pulled from the DB will only be for the current user and current project. 
  *  "Deleting" simply sets the user field of Filters to null so that the filter cannot be
- *  pulled from the DB, but it will still exist to preserve unique IDs.   */
+ *  pulled from the DB, but it will still exist to preserve unique IDs.   
+ */
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */
 	private Data db;
@@ -269,7 +270,7 @@ public class FilterManager implements EntityManager<Filter> {
 		}
 	}
 
-	//The following methods are not implemented:
+	//The following methods are not implemented but required by the "EntityManager" interface:
 
 	/** Method advancedPut. This method is not implemented.
 	 * @param s Session

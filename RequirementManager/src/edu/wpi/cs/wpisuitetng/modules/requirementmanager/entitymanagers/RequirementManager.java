@@ -39,7 +39,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.UserCh
 /** This is the entity manager for requirements in the RequirementManager module. The provided
  *  methods include functionality for creating, updating, getting specific requirements, and 
  *  getting all requirements. Current, requirements are project specific, so
- *  requirements pulled from the DB will only be for the current current project.   */
+ *  requirements pulled from the DB will only be for the current current project.   
+ */
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
@@ -319,8 +320,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 		db.deleteAll(new Requirement(), s.getProject());
 	}
 
-	// The following methods are not implemented:
-
+	//The following methods are not implemented but required by the "EntityManager" interface:
+	
 	/** Method advancedGet.
 	 * @param s Session
 	 * @param args String[]
