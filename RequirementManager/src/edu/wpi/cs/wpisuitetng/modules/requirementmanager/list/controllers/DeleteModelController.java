@@ -77,7 +77,9 @@ public class DeleteModelController implements ActionListener {
 		request.send();
 	}
 	
-	/** Takes a string and checks whether the action is performed successfully
+	/** Takes a string and checks whether the action is performed successfully. 
+	 *  
+	 *  Not implemented
 	 */
 	public void success(String JSONString)
 	{

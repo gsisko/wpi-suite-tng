@@ -39,24 +39,35 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 	/** The table of results */
 	protected JTable resultsTable;
+	/** The "Create Iteration" button */
 	protected JButton btnCreate;
+	/** The "Delete" button */
 	protected JButton btnDelete;
+	/** The status of the create button */
 	private boolean btnCreateIsCancel;
 
+	/** Local storage of the iterations */
 	private Iteration[] localIterations = {};
 	
+	/** The controller for retrieving all the iterations */
 	private RetrieveAllModelsController retrieveAllController;
+	/** The controller for deleting iterations */
 	private DeleteModelController deleteController;
+	/** The controler for retrieving a specific controller */
 	private RetrieveModelController retrieveController;
 
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
+	/** The parent that this panel lives in */
 	private final ListTab parent;
 	
+	/** Whether or not this has recieved data */
 	private boolean recievedData = false;
 	
 	/** Construct the panel
+	 * 
+	 * @param view the parent of this panel
 	 */
 	public IterationListTab(ListTab view) {
 		parent = view;
@@ -126,14 +137,14 @@ public class IterationListTab extends JPanel implements IListPanel {
 		return allIterations;
 	}
 
-	/**
+	/** get the results table model
 	 * @return the data model for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
-	/**
+	/** Get the results table
 	 * @return the results table
 	 */
 	public JTable getResultsTable() {
@@ -147,39 +158,43 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable = newTable;
 	}
 
-	/**
+	/** Get the parent
 	 * @return the parent
 	 */
 	public ListTab getParent() {
 		return parent;
 	}
 
-	/**
+	/** Get the local copy of the iterations
 	 * @return the localIterations
 	 */
 	public Iteration[] getLocalIterations() {
 		return localIterations;
 	}
 
-	/**
+	/** Set the local copy of the iterations
 	 * @param localIterations the localIterations to set
 	 */
 	public void setLocalIterations(Iteration[] localIterations) {
 		this.localIterations = localIterations;
 	}
 
+	/** get the create button
+	 * 
+	 * @return the create button
+	 */
 	public JButton getBtnCreate(){
 		return btnCreate;
 	}
 
-	/**
+	/** Get the status of the create button
 	 * @return the btnCreateIsCancel
 	 */
 	public boolean isBtnCreateIsCancel() {
 		return btnCreateIsCancel;
 	}
 
-	/**
+	/** Set btnCreateIsCancel
 	 * @param btnCreateIsCancel the btnCreateIsCancel to set
 	 */
 	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
@@ -349,7 +364,9 @@ public class IterationListTab extends JPanel implements IListPanel {
 		this.retrieveAllController = retrieveAllController;
 	}
 	
-	@Override
+	/** Refreshes the requirements in the main list view
+	 * 
+	 */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}

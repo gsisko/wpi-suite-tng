@@ -17,8 +17,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
@@ -48,7 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  *  tab is selected.  
  */
 @SuppressWarnings("serial")
-public class IterationBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
+public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 
 	/** The "Name" label, located before the Iteration name box*/
 	private final JLabel nameLabel;
@@ -298,19 +296,22 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		this.currentMode = currentMode;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Iteration getCurrentIteration()
 	{
 		return currentIteration;
 	}
 
+	/**
+	 * 
+	 * @param newIteration
+	 */
 	public void setCurrentIteration(Iteration newIteration)
 	{
 		currentIteration = newIteration;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
 	}
 
 	/** Enables or disables all fields in the builder panel.
@@ -603,6 +604,9 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		return cal.getTime();
 	}
 	
+	/** gets the parent
+	 * @return the ListTab that this is in
+	 */
 	public ListTab getMyParent() {
 		return parent;
 	}

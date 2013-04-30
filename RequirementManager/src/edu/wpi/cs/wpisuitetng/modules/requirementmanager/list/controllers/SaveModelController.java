@@ -23,6 +23,10 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/** This controller manages the saving of one model at a time, as well as 
+ *  acting on server responses caught by the observer
+ * 
+ */
 public class SaveModelController implements ActionListener 
 {
 	/**  The list view that this controller is watching */
@@ -48,6 +52,10 @@ public class SaveModelController implements ActionListener
 		this.builderView = builderView;
 	}
 
+	/** This controller is currently on a button, so when that button is pressed this activates and 
+	 *  sends off the model
+	 * @param event the event that triggered the action
+	 */
 	public void actionPerformed(ActionEvent event) 
 	{
 		final Request request;
