@@ -29,6 +29,7 @@ public interface IObserver {
 	
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
+	 * @param exception unused
 	 */
 	void fail(IRequest iReq, Exception exception);
 }

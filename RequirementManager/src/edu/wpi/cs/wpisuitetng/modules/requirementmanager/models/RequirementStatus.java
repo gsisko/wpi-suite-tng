@@ -23,7 +23,7 @@ public enum RequirementStatus {
 	Open, 
 	/** A complete Requirement */
 	Complete, 
-	/** Any of these status's may lead to DELETED, but DELETED may move to any but NEW */
+	/** Any of these status's may lead to DELETED, but DELETED may move only to New */
 	Deleted;
 
 	/** Converts a string to the proper RequirementStatus 

@@ -13,10 +13,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 
-/** Interface to go over builder panels that work together
- * and have buttons/controllers that include the following.
- * Save
- * (upload functionality from a list view)
+/** Interface to go over builder panels that work together with IListPanel's
+ *  The methods are designed to be used by *ModelControllers
  */
 public interface IBuilderPanel {
 	/** Enum to say whether or not you are creating */
@@ -73,7 +71,11 @@ public interface IBuilderPanel {
 	 *  constructor for this class is called.
      */
 	void setupControllersAndListeners();
-
+	
+	/** Gets the ListTab holding the current panel
+	 * 
+	 * @return the ListTab holding the current panel
+	 */
 	ListTab getMyParent();
 
 }

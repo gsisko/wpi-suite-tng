@@ -23,7 +23,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent;
 
 /** Requirement: Holds data that makes up a Requirement
- * @version $Revision: 1.0 $
  */
 public class Requirement extends AbstractModel {
 	/** Unique ID of the record- assigned by entity manager */
@@ -54,8 +53,6 @@ public class Requirement extends AbstractModel {
 	private ArrayList<String> userNames;
 	/** This is the history log for the Requirement */
 	private ArrayList<RequirementEvent> events;
-	/** This is the list of subrequirements associated with this Requirement */
-	private ArrayList<Integer> subrequirements;
 	
 	/** Basic constructor for a requirement */
 	public Requirement(){
@@ -85,23 +82,20 @@ public class Requirement extends AbstractModel {
 		acceptanceTests = new ArrayList<AcceptanceTest>();
 		userNames = new ArrayList<String>();
 		events = new ArrayList<RequirementEvent>();
-		this.setSubrequirements(new ArrayList<Integer>());
 	}
 	
 	// The following functions come from the Model interface:
 	
-	/** Method save.
+	/** Unused
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
-	@Override
 	public void save() {
 		
 	}
 
-	/** Method delete.
+	/** Unused
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
-	@Override
 	public void delete() {
 		
 	}
@@ -154,7 +148,6 @@ public class Requirement extends AbstractModel {
 	 * @return String 
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() 
 	 */
-	@Override
 	public String toString() {
 		return this.toJSON();
 	}
@@ -408,19 +401,5 @@ public class Requirement extends AbstractModel {
 	 */
 	public void setEvents(ArrayList<RequirementEvent> events) {
 		this.events = events;
-	}
-	
-	/**
-	 * @return subrequirements The "subrequirements" ArrayList of Integers (representing Requirement id numbers) of the Requirement
-	 */
-	public ArrayList<Integer> getSubrequirements() {
-		return subrequirements;
-	}
-
-	/**
-	 * @param subrequirements The "subrequirements" ArrayList of Integers (representing Requirement id numbers) of the Requirement to set
-	 */
-	public void setSubrequirements(ArrayList<Integer> subrequirements) {
-		this.subrequirements = subrequirements;
 	}
 }
