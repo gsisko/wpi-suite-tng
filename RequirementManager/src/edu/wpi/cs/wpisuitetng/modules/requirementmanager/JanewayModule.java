@@ -34,9 +34,12 @@ public class JanewayModule implements IJanewayModule {
 	
 	/** The controllers used by this module */
 	public final MainTabController mainTabController;
+	/** The controller that controls the toolbar */
 	public final ToolbarController toolbarController;
 	
+	/** The main panel that holds everything */
 	public final MainTabPanel mainTabPanel;
+	/** The toolbar itself */
 	public final ToolbarView toolbarView;
 	
 	/** Construct a new RequirementManager module
@@ -63,7 +66,6 @@ public class JanewayModule implements IJanewayModule {
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
 	 */
-	@Override
 	public String getName() {
 		return "Requirement Manager";
 	}
@@ -71,7 +73,6 @@ public class JanewayModule implements IJanewayModule {
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
 	 */
-	@Override
 	public List<JanewayTabModel> getTabs() {
 		return tabs;
 	}
@@ -79,7 +80,6 @@ public class JanewayModule implements IJanewayModule {
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#invokeWhenSelected()
 	 */
-	@Override
 	public void invokeWhenSelected() {
 		ListView tmpListView = (ListView)mainTabPanel.getComponentAt(0);
 		if (!tmpListView.getListTab().getResultsPanel().isInEditMode())

@@ -40,7 +40,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
  * A mock data implementation for server-side testing. 
  */
 public class MockData implements Data {
-
+	/** The set of objects stored in the database. Objects may
+	 *  be of any type. 	 */
 	private final Set<Object> objects;
 	/** Holds the projects stored in the DB */
 	private Set<Project> projects;
@@ -64,7 +65,11 @@ public class MockData implements Data {
 	}
 
 	
-	@Override
+	/** Deletes the given item from the database
+	 * 
+	 * @param arg0 item to remove
+	 * @return the argument deleted or null if not found
+	 */
 	public <T> T delete(T arg0) {
 		if(objects.contains(arg0)) {
 			objects.remove(arg0);
@@ -73,8 +78,12 @@ public class MockData implements Data {
 		return null;
 	}
 
+	/** Deletes all items from the database of type T
+	 * 
+	 * @param arg0 the type of the object to delete
+	 * @param the deleted objects
+	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> List<T> deleteAll(T arg0) {
 		List<T> deleted = new ArrayList<T>();
 		for(Object obj : objects) {
@@ -87,8 +96,16 @@ public class MockData implements Data {
 		return deleted;
 	}
 
+	
+	/** Retrieves the object that matches the properties specified
+	 *  inthe arguments
+	 *  
+	 *  @param type the type of the object
+	 *  @param fieldName the name of the field to search by
+	 *  @param value the value to check against
+	 *  @return the item found 
+	 */
 	@SuppressWarnings("rawtypes")
-	@Override
 	public List<Model> retrieve(Class type, String fieldName, Object value) {
 		List<Model> rv = new ArrayList<Model>();
 		for(Object obj : objects) {
@@ -122,9 +139,13 @@ public class MockData implements Data {
 		}
 		return rv;
 	}
-
+	
+	/** Retrieves all items that match the type given
+	 * 
+	 * @param arg0 the type of object to retrieve
+	 * @return the objects found
+	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> List<T> retrieveAll(T arg0) {
 		List<T> all = new ArrayList<T>();
 
@@ -146,22 +167,32 @@ public class MockData implements Data {
 		return all;
 	}
 
-	@Override
+	/** saves the object to the database
+	 * 
+	 * @param arg0 to save
+	 * @return true
+	 */
 	public <T> boolean save(T arg0) {
 		objects.add(arg0);
 		return true;
 	}
 
+	/** Updates a single field of an object in the database (UNUSED)
+	 * 
+	 * @param arg0 the class
+	 * @param arg1 the field name
+	 * @param arg2 the value
+	 * @param arg3 specifier
+	 */
 	@SuppressWarnings("rawtypes")
-	@Override
 	public void update(Class arg0, String arg1, Object arg2, String arg3,
 			Object arg4) {
-		// TODO Auto-generated method stub
-
 	}
 
+	/** unused but required by Data interface
+	 * 
+	 */
 	@SuppressWarnings("rawtypes")
-	@Override
 	public List<Model> andRetrieve(Class arg0, String[] arg1, List<Object> arg2)
 			throws WPISuiteException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
@@ -169,8 +200,10 @@ public class MockData implements Data {
 		return null;
 	}
 
+	/** unused but required by Data interface
+	 * 
+	 */
 	@SuppressWarnings("rawtypes")
-	@Override
 	public List<Model> complexRetrieve(Class arg0, String[] arg1,
 			List<Object> arg2, Class arg3, String[] arg4, List<Object> arg5)
 					throws WPISuiteException, IllegalArgumentException,
@@ -179,22 +212,35 @@ public class MockData implements Data {
 		return null;
 	}
 
-	@Override
+	/** Deletes all models of the given project from the database
+	 * 
+	 * @param arg0 the type of object to delete
+	 * @param the project to delete from
+	 * @return the deleted items
+	 */
 	public <T> List<Model> deleteAll(T arg0, Project arg1) {
 		List<Model> toDelete = retrieveAll(arg0, arg1);
 		objects.removeAll(toDelete);
 		return toDelete;
 	}
-
+	
+	/** unused but required by Data interface
+	 * 
+	 */
 	@SuppressWarnings("rawtypes")
-	@Override
 	public List<Model> orRetrieve(Class arg0, String[] arg1, List<Object> arg2)
 			throws WPISuiteException, IllegalAccessException,
 			InvocationTargetException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/** Takes a list of models and filters out the ones not in the current project
+	 * 
+	 * @param models list to sort
+	 * @param project project to check for
+	 * @return the resulting list
+	 */
 	private List<Model> filterByProject(List<Model> models, Project project) {
 		List<Model> filteredModels = new ArrayList<Model>();
 		for(Model m : models) {
@@ -205,20 +251,37 @@ public class MockData implements Data {
 		return filteredModels;
 	}
 
+	/** Retrieves the object that matches the properties specified
+	 *  inthe arguments
+	 *  
+	 *  @param type the type of the object
+	 *  @param fieldName the name of the field to search by
+	 *  @param value the value to check against
+	 *  @return the item found 
+	 */
 	@SuppressWarnings("rawtypes")
-	@Override
 	public List<Model> retrieve(Class arg0, String arg1, Object arg2,
 			Project arg3) throws WPISuiteException {
 		return filterByProject(retrieve(arg0, arg1, arg2), arg3);
 	}
 
+	/** Gets all items in the databse associated with the given project
+	 * 
+	 * @param arg0 object type
+	 * @param arg1 the project
+	 * @return a list of the objects retrieved
+	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> List<Model> retrieveAll(T arg0, Project arg1) {
 		return filterByProject((List<Model>) retrieveAll(arg0), arg1);
 	}
 
-	@Override
+	/** Saves a project to a special place in the database
+	 * 
+	 * @param arg0 the class
+	 * @param arg1 the project to save
+	 * @return true
+	 */
 	public <T> boolean save(T arg0, Project arg1) {
 		((Model)arg0).setProject(arg1);
 		save(arg0);
