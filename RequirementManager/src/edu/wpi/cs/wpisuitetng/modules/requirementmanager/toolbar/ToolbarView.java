@@ -33,8 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-/**
- * This is the view that contains buttons to create requirements and display pei charts.
+/** This is the view that contains buttons to create requirements and display pie charts.
  * Always has a group of global commands (Create Requirement, List).
  */
 @SuppressWarnings("serial")
@@ -50,8 +49,7 @@ public class ToolbarView extends DefaultToolbarView {
 	/** Panel containing the list interface */
 	protected ListTab mainPanel;
 	
-	/**
-	 * Create a ToolbarView.
+	/** Create a ToolbarView.
 	 * @param tabController The MainTabController this view should open tabs with
 	 */
 	public ToolbarView(final MainTabController tabController) {
@@ -149,7 +147,7 @@ public class ToolbarView extends DefaultToolbarView {
 		this.tabController = tabController;
 	}
 	
-	/**Getter for create requirement button
+	/** Getter for create requirement button
 	 * @return the create requirement button
 	 */
 	public JButton getCreateRequirementButton()
@@ -165,13 +163,11 @@ public class ToolbarView extends DefaultToolbarView {
 		return listField;
 	}
 	
-	/**Getter for create requirement button
+	/** Getter for create requirement button
 	 * @return the create requirement button
 	 */
 	public JButton getDisplayChartsButton()
 	{
 		return btnDisplayPieChart;
 	}
-	
-
 }

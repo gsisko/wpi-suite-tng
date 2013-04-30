@@ -142,5 +142,4 @@ public class ModelMapper {
 	public void map(final Model source, final Model destination) throws RuntimeException {
 		this.map(source, destination, defaultMapCallback );
 	}
-	
 }

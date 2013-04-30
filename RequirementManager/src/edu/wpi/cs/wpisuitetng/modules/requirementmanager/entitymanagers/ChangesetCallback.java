@@ -65,5 +65,4 @@ class ChangesetCallback implements MapCallback {
 		}
 		return a.equals(b);
 	}
-
 }

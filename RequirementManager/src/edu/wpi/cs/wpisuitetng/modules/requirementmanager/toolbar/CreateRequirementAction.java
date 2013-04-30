@@ -28,8 +28,7 @@ public class CreateRequirementAction extends AbstractAction {
 
 	private final MainTabController controller;
 	
-	/**
-	 * Create a CreateRequirementAction
+	/** Create a CreateRequirementAction
 	 * @param controller When the action is performed, controller.addCreateRequirementTab() is called
 	 */
 	public CreateRequirementAction(MainTabController controller) {

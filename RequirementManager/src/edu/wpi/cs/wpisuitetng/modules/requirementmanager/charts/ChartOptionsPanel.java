@@ -42,18 +42,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
-	
-	//The labels
 
+	//The labels
 	/** The label for the chartTypeBox */
 	private  JLabel chartTypeLabel;
 	/** The label for the chartDataBox */
 	private  JLabel chartDataLabel;
 	/** The label for the filtersOptionsBox */
 	private  JLabel filtersLabel;
-	
+
 	private JLabel filterlistlabel;
-	
 
 	//The fillable components
 	/** The combo box used to select which chart type to display */
@@ -62,28 +60,24 @@ public class ChartOptionsPanel extends JPanel{
 	private  JComboBox chartDataBox;
 	/** The combo box used to select the filters options (IE whether to apply the active filters to the data) */
 	private  JComboBox filtersOptionsBox;
-	
+
 	private  ResultsTableModel filterTableModel;
-	
+
 	private  JTable filtertable;
-	//The layout manager
+
 	/** The layout manager for this panel */
 	protected BoxLayout layout; 
 
-	//private Filter[] localFilters = {};
-
 	/** Stores the PieChartView that contains the ChartOptionsPanel */
 	private ChartView parent;
-	
+
 	/** A boolean indicating if input is enabled on the form  */
 	protected boolean inputEnabled;
-
 
 	/** Construct the panel and initialize necessary internal variables
 	 * @param parentView The ChartView that contains this panel
 	 */
 	public ChartOptionsPanel(ChartView parentView){
-				
 		parent = parentView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
@@ -99,8 +93,7 @@ public class ChartOptionsPanel extends JPanel{
 		// Construct the table model
 		filterTableModel = new ResultsTableModel();
 
-				// Construct the table and configure it
-		
+		// Construct the table and configure it
 		filtertable = new JTable(filterTableModel);
 		filtertable.setAutoCreateRowSorter(true); 
 		filtertable.setFillsViewportHeight(true);
@@ -117,15 +110,15 @@ public class ChartOptionsPanel extends JPanel{
 		}
 		filtertable.getTableHeader().setResizingAllowed(false);
 		filtertable.getTableHeader().setReorderingAllowed(false);
-		
+
 		buildTable();
-		
+
 		JScrollPane resultsScrollPane = new JScrollPane(filtertable);
-		
+
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
 
 		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		//Construct the labels
 		chartTypeLabel = new JLabel("Type of chart:");
 		chartDataLabel = new JLabel("Data to display:");
@@ -141,12 +134,12 @@ public class ChartOptionsPanel extends JPanel{
 		chartTypeBox = new JComboBox(typeStrings);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
-		
+
 		//Add action listeners to the boxes so data is refreshed when a change is made
 		chartTypeBox.addPopupMenuListener(new PopupMenuListener() {
-            public void update(){
-            	parent.setChartType((String)chartTypeBox.getSelectedItem());
-            }
+			public void update(){
+				parent.setChartType((String)chartTypeBox.getSelectedItem());
+			}
 
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
@@ -160,12 +153,12 @@ public class ChartOptionsPanel extends JPanel{
 			public void popupMenuCanceled(PopupMenuEvent e) {
 				update();
 			}
-        });  
-		
+		});  
+
 		chartDataBox.addPopupMenuListener(new PopupMenuListener() {
-            public void update(){
-            	parent.setDataTypeVisible((String)chartDataBox.getSelectedItem());
-            }
+			public void update(){
+				parent.setDataTypeVisible((String)chartDataBox.getSelectedItem());
+			}
 
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
@@ -179,12 +172,12 @@ public class ChartOptionsPanel extends JPanel{
 			public void popupMenuCanceled(PopupMenuEvent e) {
 				update();
 			}
-        });  
-		
+		});  
+
 		filtersOptionsBox.addPopupMenuListener(new PopupMenuListener() {
-            public void update(){
-            	parent.setDataFiltered((String)filtersOptionsBox.getSelectedItem());
-            }
+			public void update(){
+				parent.setDataFiltered((String)filtersOptionsBox.getSelectedItem());
+			}
 
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
@@ -198,29 +191,29 @@ public class ChartOptionsPanel extends JPanel{
 			public void popupMenuCanceled(PopupMenuEvent e) {
 				update();
 			}
-        });  
-		
-		
+		});  
+
+
 		//Set the initial selections for the boxes
 		chartTypeBox.setSelectedIndex(0);
 		chartDataBox.setSelectedIndex(0);
 		filtersOptionsBox.setSelectedIndex(0);
-		
+
 		//Set the alignments of the components
 		chartTypeLabel.setAlignmentX(LEFT_ALIGNMENT);		
 		chartDataLabel.setAlignmentX(LEFT_ALIGNMENT);
 		filtersLabel.setAlignmentX(LEFT_ALIGNMENT);
 		filterlistlabel.setAlignmentX(LEFT_ALIGNMENT);
-		
+
 		chartTypeBox.setAlignmentX(LEFT_ALIGNMENT);		
 		chartDataBox.setAlignmentX(LEFT_ALIGNMENT);
 		filtersOptionsBox.setAlignmentX(LEFT_ALIGNMENT);
-		
+
 		//Set the sizing of the boxes
 		chartTypeBox.setMaximumSize(new Dimension(120, 25));
 		chartDataBox.setMaximumSize(chartDataBox.getPreferredSize());
 		filtersOptionsBox.setMaximumSize(new Dimension(120, 25));
-		
+
 		//Add the components with spacing in between them
 		this.add(chartTypeLabel);
 		this.add(Box.createRigidArea(new Dimension(0,3)));
@@ -281,7 +274,7 @@ public class ChartOptionsPanel extends JPanel{
 	public void setChartDataBox(JComboBox chartDataBox) {
 		this.chartDataBox = chartDataBox;
 	}
-	
+
 	public void setChartData(String[] options) {
 		this.chartDataBox.setModel(new DefaultComboBoxModel(options));
 	}
@@ -299,7 +292,7 @@ public class ChartOptionsPanel extends JPanel{
 	public void setFiltersOptionsBox(JComboBox filtersOptionsBox) {
 		this.filtersOptionsBox = filtersOptionsBox;
 	}
-	
+
 	public void setFiltersOptions(String[] options) {
 		this.filtersOptionsBox.setModel(new DefaultComboBoxModel(options));
 	}
@@ -310,15 +303,15 @@ public class ChartOptionsPanel extends JPanel{
 	public ChartView getParent() {
 		return parent;
 	}
-	
-	
+
+
 	/** Method to get whether input is enabled for this panel
 	 * @return A boolean representing whether or not input is enabled for this panel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
-	
+
 	/** Set the given box to enabled and to the correct color
 	 * 
 	 * @param box Which box to enable
@@ -334,7 +327,7 @@ public class ChartOptionsPanel extends JPanel{
 			box.setBackground(new Color(238,238,238));
 		}
 	}
-	
+
 	/** Show the filters in the list view
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
@@ -402,7 +395,7 @@ public class ChartOptionsPanel extends JPanel{
 			this.getModel().setColumnNames(columnNames);
 			this.getModel().setData(entries);
 			this.getModel().fireTableStructureChanged();
-			
+
 
 			//Hide the Id column
 			filtertable.getColumn("Id").setMinWidth(0);

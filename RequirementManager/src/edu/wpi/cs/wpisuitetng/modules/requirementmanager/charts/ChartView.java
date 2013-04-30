@@ -121,7 +121,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		// Construct the layout 
 		this.setLayout(new BorderLayout());
 
-
 		//Initial set up:
 
 		//Bar Charts
@@ -368,13 +367,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		catch(Error e){
 			this.optionsPanel.getFiltersOptionsBox().setSelectedIndex(0);
 		}
-		
+
 		try {
 			this.setDataFiltered(this.optionsPanel.getFiltersOptionsBox().getSelectedItem().toString());
 		} catch(Error e) {
 			this.setDataFiltered(filterChoices.get(0));
 		}
-		
+
 		try {
 			this.setDataTypeVisible(this.optionsPanel.getChartDataBox().getSelectedItem().toString());
 		} catch(Error e) {
@@ -417,13 +416,13 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		catch(Error e){
 			this.optionsPanel.getChartDataBox().setSelectedIndex(0);
 		}
-		
+
 		try {
 			this.setDataTypeVisible(this.optionsPanel.getChartDataBox().getSelectedItem().toString());
 		} catch(Error e) {
 			this.setDataTypeVisible(choices.get(0));
 		}
-		
+
 		this.refreshChartVisibility();
 	}
 

@@ -45,7 +45,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /** This is the builder panel for Filters. It is located in the list view on the 
  *  RequirementManager module above the list of requirements and right of the list 
  *  of filters. This builder will be switched to when the Filter list view
- *  tab is selected.  */
+ *  tab is selected.  
+ */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
 
@@ -94,7 +95,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	private SaveModelController saveController;
 
 	/** Construct the panel and all of its components
-	 *
 	 * @param view The ListTab that this panel will live in
 	 */
 	public FilterBuilderPanel(ListTab view) {
@@ -272,7 +272,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 *  to be a number box when numbers are expected, a drop down when the 
 	 *  options are finite (enumerators), and a string for the rest of the time.
 	 *  Also sets up the operator boxes in a similar fashion This reduces the
-	 *  possibility of user error.	 */
+	 *  possibility of user error.	 
+	 */
 	public void actionPerformed(ActionEvent e) {
 
 		JComboBox comboBox = (JComboBox) e.getSource();
@@ -337,8 +338,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		isValueValid();//Trigger the warning appropriately
 	}
 	
-	/**
-	 * A validate function that checks to make sure that value is valid (non-empty) when appropriate,
+	/** A validate function that checks to make sure that value is valid (non-empty) when appropriate,
 	 * and sets the warning label ("valueWarning) appropriately.
 	 * Also sets the "btnSave" button disabled if the value is invalid, enabled if it is valid.
 	 */
@@ -393,7 +393,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	{
 		return valueBox;
 	}
-
 
 	public JComboBox getStatus()
 	{
@@ -554,7 +553,6 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			btnSave.setText("Save");
 	}
 
-
 	/** Enables or disables all fields in the builder panel. 
 	 * 
 	 * @param setTo True activates the fields and false deactivates them
@@ -609,7 +607,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	/** Gets the model from the panel in the form of a JSON string
 	 *  that is ready to be sent as a message over the network
 	 * 
-	 * *NOTE: can be used for passing messages between views!
+	 * NOTE: can be used for passing messages between views!
 	 * 
 	 * @return JSON string of the model to be sent, null if a message cannot be made
 	 */
@@ -700,8 +698,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.repaint();
 	}
 
-	/*** Get a list of string iteration names
-	 * 
+	/** Get a list of string iteration names
 	 * @return an array of strings that represent the names of the iterations
 	 */
 	public String[] getIterationNames(){

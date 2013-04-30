@@ -85,6 +85,7 @@ public class JanewayModule implements IJanewayModule {
 		if (!tmpListView.getListTab().getResultsPanel().isInEditMode())
 			tmpListView.refreshData();
 	}
+	
 	/**Getter for the Toolbar View
 	 * @return the toolbar view
 	 */

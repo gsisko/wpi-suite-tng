@@ -25,8 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 
 
-/**
- * Controller for the requirement manager toolbar.
+/** Controller for the requirement manager toolbar.
  * Keeps track of the displayed tab in a MainTabController and displays the
  * group of controls provided by the displayed components' getGroup method, if it
  * is an instance of IToolbarGroupProvider.
@@ -36,8 +35,7 @@ public class ToolbarController extends DefaultToolbarController implements Chang
 
 	private ToolbarGroupView relevantTabGroup;
 	
-	/**
-	 * Control the given DefaultToolbarView based on the state of the tabs in tabController.
+	/** Control the given DefaultToolbarView based on the state of the tabs in tabController.
 	 * @param toolbarView The toolbar to add/remove groups from
 	 * @param tabController The MainTabController to listen to for changes
 	 */

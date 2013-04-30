@@ -18,16 +18,14 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * Observer to respond when a lookup requirement response is received
+/** Observer to respond when a lookup requirement response is received
  */
 public class LookupRequestObserver implements RequestObserver {
 
 	/** The lookup requirement controller */
 	protected LookupRequirementController controller;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer for the given LookupRequirementController
 	 * @param controller the lookup requirement controller
 	 */
 	public LookupRequestObserver(LookupRequirementController controller) {
