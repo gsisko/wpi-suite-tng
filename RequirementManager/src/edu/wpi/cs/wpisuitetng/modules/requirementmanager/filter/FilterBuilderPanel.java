@@ -364,36 +364,64 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.repaint();
 	}
 
+	/** Get the save button
+	 * 
+	 * @return the SaveButton
+	 */
 	public JButton getButton()
 	{
 		return btnSave;
 	}
 
+	/** Get the dropdown for the Type of the filter
+	 * 
+	 * @return the typeBox
+	 */
 	public JComboBox getFilterType()
 	{
 		return typeBox;
 	}
 
+	/** Get the dropdown for the Operator for the filter
+	 * 
+	 * @return the operatorBox
+	 */
 	public JComboBox getFilterOperator()
 	{
 		return operatorBox;
 	}
 
+	/** Get the field for entering a text Value for the filter
+	 * 
+	 * @return the txtValue
+	 */
 	public JTextField getFilterValue()
 	{
 		return txtValue;
 	}
 
+	/** Get the field for entering a number Value for the filter
+	 * 
+	 * @return the numValue
+	 */
 	public JNumberTextField getFilterNumValue()
 	{
 		return numValue;
 	}
 
+	/** Get the dropdown for choosing a Value for the filter
+	 * 
+	 * @return the valueBox
+	 */
 	public JComboBox getFilterValueBox()
 	{
 		return valueBox;
 	}
 
+	/** Get the dropdown for setting the Status for the filter
+	 * 
+	 * @return the statusBos
+	 */
 	public JComboBox getStatus()
 	{
 		return statusBox;
@@ -413,11 +441,19 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.currentMode = currentMode;
 	}
 
+	/** Get the filter that is being edited
+	 * 
+	 * @return the current filter
+	 */
 	public Filter getCurrentFilter()
 	{
 		return currentFilter;
 	}
 
+	/** Set the current filter we are editing
+	 * 
+	 * @param newFilter the filter we want to edit
+	 */
 	public void setCurrentFilter(Filter newFilter)
 	{
 		currentFilter = newFilter;
@@ -725,6 +761,10 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		this.curType = curType;
 	}
 	
+	/** Get the parent of this tab
+	 * 
+	 * @return ListTab the parent of this panel
+	 */
 	public ListTab getMyParent() {
 		return parent;
 	}
