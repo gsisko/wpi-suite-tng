@@ -282,7 +282,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		return true; // The deletion was successful
 	}
 
-	/** Deletes ALL Iterations from the database (not advised)
+	/** Deletes ALL Iterations from the database permanently
 	 * 
 	 *  @param s The current user session
 	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
