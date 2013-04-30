@@ -15,7 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
 import javax.swing.DefaultComboBoxModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers.IObserver;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;

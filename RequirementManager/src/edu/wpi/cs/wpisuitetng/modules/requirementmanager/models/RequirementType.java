@@ -38,7 +38,10 @@ public enum RequirementType {
     		return valueOf(toConvert);
 	}
 	
-	/** Same as toString, but returns blank for NoType */
+	/** Same as toString, but returns blank for NoType 
+	 * @param toConvert The type of requirement to convert to a requirement
+	 * @return  the type as a string, and NoType specifically to ""
+	 */
     public static String toBlankString(RequirementType toConvert){
     	return toConvert.toString();
     }
@@ -47,7 +50,6 @@ public enum RequirementType {
      * Overrides the default toString method
      * @return String representing this enum.  NoType will be displayed as an empty string
      */
-    @Override
     public String toString() {
     	if (this.equals(NoType))
     		return "";

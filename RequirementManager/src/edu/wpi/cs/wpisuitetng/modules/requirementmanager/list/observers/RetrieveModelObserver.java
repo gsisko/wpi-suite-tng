@@ -13,14 +13,13 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IObserver;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/** An observer for a request to retrieve a requirement with the provided id
- */
+/** An observer for a request to retrieve a requirement with the provided id. When the response
+ * is gotten from the server, the body is passed to the controller for processing. */
 public class RetrieveModelObserver implements RequestObserver, IObserver{
 	
 	/** Controller that started this observer */
@@ -33,7 +32,9 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 		controller = retrieveModelController;
 	}
 
-	/** Respond to a successful message from the network
+	/** Parse the message that was received from the server and tells the controller
+	 * @param iReq the request sent from the server
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	public void responseSuccess(IRequest iReq) {
 		// cast observable to a Request
@@ -51,13 +52,18 @@ public class RetrieveModelObserver implements RequestObserver, IObserver{
 		controller.showModel(response.getBody());
 	}
 
-	/** Respond to an  unsuccessful message from the network
+	/** This method responses when there is a save response error
+	 * @param iReq the request sent from the server
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	public void responseError(IRequest iReq) {
 		controller.errorRetrievingModel("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
-	/** Respond to a failure message from the network
+	/** This method responses when the save action failed 
+	 * 
+	 * @param iReq the request sent from the server
+	 * @param exception unused
 	 */
 	public void fail(IRequest iReq, Exception exception) {
 		controller.errorRetrievingModel("Unable to complete request: " + exception.getMessage());

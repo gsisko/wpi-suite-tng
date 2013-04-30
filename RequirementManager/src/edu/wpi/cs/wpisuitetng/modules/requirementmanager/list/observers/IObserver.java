@@ -10,7 +10,7 @@
  * 
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
+package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
 
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -29,6 +29,7 @@ public interface IObserver {
 	
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
+	 * @param exception unused
 	 */
 	void fail(IRequest iReq, Exception exception);
 }
