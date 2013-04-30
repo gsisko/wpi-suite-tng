@@ -273,7 +273,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				this.add(iterationPiePanel, BorderLayout.CENTER);
 				iterationPiePanel.setVisible(true);
 			}
-			else if(chartDataType.equals("Users per Requirement")){
+			else if(chartDataType.equals("Requirements per User")){
 				this.add(requirementCountPiePanel, BorderLayout.CENTER);
 				requirementCountPiePanel.setVisible(true);
 			} else if (chartDataType.equals("Estimate per User")){
@@ -291,7 +291,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 				this.add(iterationBarPanel, BorderLayout.CENTER);
 				iterationBarPanel.setVisible(true);
 			}
-			else if(chartDataType.equals("Users per Requirement")){
+			else if(chartDataType.equals("Requirements per User")){
 				this.add(requirementCountBarPanel, BorderLayout.CENTER);
 				requirementCountBarPanel.setVisible(true);
 			} else if (chartDataType.equals("Estimate per User")){
@@ -327,14 +327,14 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		choices.add("Requirement Iteration");
 		if (this.isFiltered) {
 			if (requirementHasUsersWithFilters()) {
-				choices.add("Users per Requirement");
+				choices.add("Requirements per User");
 			}
 			if (requirementHasUsersEstimateWithFilters()) {
 				choices.add("Estimate per User");
 			}
 		} else {
 			if (requirementHasUsers()) {
-				choices.add("Users per Requirement");
+				choices.add("Requirements per User");
 			}
 			if (requirementUserHasEstimate()) {
 				choices.add("Estimate per User");
@@ -392,14 +392,14 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		choices.add("Requirement Iteration");
 		if (this.isFiltered) {
 			if (requirementHasUsersWithFilters()) {
-				choices.add("Users per Requirement");
+				choices.add("Requirements per User");
 			}
 			if (requirementHasUsersEstimateWithFilters()) {
 				choices.add("Estimate per User");
 			}
 		} else {
 			if (requirementHasUsers()) {
-				choices.add("Users per Requirement");
+				choices.add("Requirements per User");
 			}
 			if (requirementUserHasEstimate()) {
 				choices.add("Estimate per User");
@@ -417,6 +417,14 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		catch(Error e){
 			this.optionsPanel.getChartDataBox().setSelectedIndex(0);
 		}
+		
+		try {
+			this.setDataTypeVisible(this.optionsPanel.getChartDataBox().getSelectedItem().toString());
+		} catch(Error e) {
+			this.setDataTypeVisible(choices.get(0));
+		}
+		
+		this.refreshChartVisibility();
 	}
 
 
@@ -459,7 +467,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 
 
 	private boolean requirementHasUsers() {
-		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
+		Requirement[] reqList = this.getView().getParent().getAllRequirements();
 		for (int i = 0; i < reqList.length; i++) {
 			if (reqList[i].getUserNames().size() > 0) {
 				return true;
@@ -469,7 +477,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 	private boolean requirementUserHasEstimate() {
-		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
+		Requirement[] reqList = this.getView().getParent().getAllRequirements();
 		for (int i = 0; i < reqList.length; i++) {
 			if (reqList[i].getUserNames().size() > 0 && reqList[i].getEstimate() > 0) {
 				return true;
