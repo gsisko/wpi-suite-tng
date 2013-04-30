@@ -43,9 +43,11 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	/** The table of results */
 	protected JTable resultsTable;
-
+	/** Button to create a new filter */
 	protected JButton btnCreate;
+	/** Button to delete selected filters */
 	protected JButton btnDelete;
+	/** Is the text on btnCreate "Cancel" or "Create" */
 	private boolean btnCreateIsCancel;
 
 	private Filter[] localFilters = {};
@@ -53,13 +55,19 @@ public class FilterListTab extends JPanel implements IListPanel{
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
+	/** Controller for deleting filters */
 	private DeleteModelController deleteController;
+	/** Controller for retrieving a specific filter */
 	private RetrieveModelController retrieveController;
+	/** Controller for retrieving all filters */
 	private RetrieveAllModelsController retrieveAllController;
 
+	/** Parent of this tab */
 	private final ListTab parent;
 	
-	/** Construct the panel
+	/** 
+	 * Construct the panel and all of its components
+	 * @param view Parent of this tab
 	 */
 	public FilterListTab(ListTab view) {
 		parent = view;
@@ -130,14 +138,14 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return activeFilters;
 	}
 
-	/**
+	/** Get the model for the table that holds the list of filters
 	 * @return the data model for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
-	/**
+	/** Get the table that holds the list of filters
 	 * @return the results table
 	 */
 	public JTable getResultsTable() {
@@ -151,39 +159,44 @@ public class FilterListTab extends JPanel implements IListPanel{
 		resultsTable = newTable;
 	}
 
-	/**
+	/** Get the parent of this panel
 	 * @return the parent
 	 */
 	public ListTab getParent() {
 		return parent;
 	}
 
-	/**
+	/** Get the locally stored list of filters
 	 * @return the localFilters
 	 */
 	public Filter[] getLocalFilters() {
 		return localFilters;
 	}
 
-	/**
+	/** Set the locally stored list of filters
 	 * @param localFilters the localFilters to set
 	 */
 	public void setLocalFilters(Filter[] localFilters) {
 		this.localFilters = localFilters;
 	}
 
+	/** Get the create button
+	 * 
+	 * @return the create button
+	 */
 	public JButton getBtnCreate(){
 		return btnCreate;
 	}
 
-	/**
+	/** Check if we are currently creating/editing a filter
+	 * If so, then true.  Otherwise, false
 	 * @return the btnCreateIsCancel
 	 */
 	public boolean isBtnCreateIsCancel() {
 		return btnCreateIsCancel;
 	}
 
-	/**
+	/** Set if we are creating/editing a filter or are able to
 	 * @param btnCreateIsCancel the btnCreateIsCancel to set
 	 */
 	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
@@ -208,7 +221,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	/** Sets the New button to clear/cancel	 */
+	/** Sets the New button to cancel	 */
 	public void setNewBtnToCancel() {
 		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
@@ -233,7 +246,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 	/** Begins refresh process, starting with Filters 
-	 * @return true on success, false on failure
+	 * @return Always true
 	 */
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
@@ -364,15 +377,15 @@ public class FilterListTab extends JPanel implements IListPanel{
 		setDeleteEnabled(false);
 	}
 
-	/**
+	/** Get the controller for retrieving all models
 	 * @return the retrieveAllController
 	 */
 	public RetrieveAllModelsController getRetrieveAllController() {
 		return retrieveAllController;
 	}
 
-	/**
-	 * @param retrieveAllController the retrieveAllController to set
+	/** Set the controller for retrieving all models
+	 * @param retrieveAllController the RetrieveAllController to set
 	 */
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
