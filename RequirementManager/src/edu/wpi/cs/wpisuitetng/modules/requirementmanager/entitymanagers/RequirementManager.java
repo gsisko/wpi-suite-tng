@@ -36,10 +36,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.Requir
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementCreation;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.UserChange;
 
-/**This is the entity manager for the Requirement in the RequirementManager module
- *
- * @version $Revision: 1.0 $
- */
+/** This is the entity manager for requirements in the RequirementManager module. The provided
+ *  methods include functionality for creating, updating, getting specific requirements, and 
+ *  getting all requirements. Current, requirements are project specific, so
+ *  requirements pulled from the DB will only be for the current current project.   */
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
 	private Data db;
@@ -281,7 +281,12 @@ public class RequirementManager implements EntityManager<Requirement> {
 		return oldReq;
 	}
 
-	/** Deletes a Requirement from the database (not advised)
+	/** Deletes a Requirement from the database permanently. It is not advised that this
+	 *  implementation be used because the current unique ID system depends on all requirements
+	 *  existing in the DB forever. In the future, a stronger unique ID system could be implemented
+	 *  and this method would be valuable at that time. In the current GUI implementation, there is 
+	 *  no way to delete a requirement other than setting its status, in which case it still 
+	 *  exists, but has a deleted status. 
 	 *  
 	 *  @param s The current user session
 	 *  @param id The unique of the requirement to delete
@@ -300,7 +305,12 @@ public class RequirementManager implements EntityManager<Requirement> {
 		return false; // The deletion was unsuccessful
 	}
 
-	/** Deletes ALL Requirement from the database (not advised)
+	/** Deletes ALL Requirement from the database permanently. It is not advised that this
+	 *  implementation be used because the current unique ID system depends on all requirements
+	 *  existing in the DB forever. In the future, a stronger unique ID system could be implemented
+	 *  and this method would be valuable at that time. In the current GUI implementation, there is 
+	 *  no way to delete a requirement other than setting its status, in which case it still 
+	 *  exists, but has a deleted status. 
 	 * 
 	 *  @param s The current user session
 	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
@@ -311,6 +321,14 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 	// The following methods are not implemented:
 
+	/** Method advancedGet.
+	 * @param s Session
+	 * @param args String[]
+	 * @param content String
+	 * @return String
+	 * @throws WPISuiteException, NotImplementedException
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
+	 */
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
 		throw new NotImplementedException();
@@ -321,7 +339,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param args String[]
 	 * @param content String
 	 * @return String
-	 * @throws WPISuiteException
+	 * @throws WPISuiteException, NotImplementedException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPut(Session, String[], String)
 	 */
 	public String advancedPut(Session s, String[] args, String content)
@@ -334,7 +352,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 	 * @param string String
 	 * @param content String
 	 * @return String
-	 * @throws WPISuiteException
+	 * @throws WPISuiteException, NotImplementedException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
 	 */
 	public String advancedPost(Session s, String string, String content)
@@ -344,8 +362,8 @@ public class RequirementManager implements EntityManager<Requirement> {
 	
 	/** Checks if the two requirements have identical acceptance tests
 	 * 
-	 * @param oldReq
-	 * @param reqUpdate
+	 * @param oldReq The old requirement to check against
+	 * @param reqUpdate a requirement holding the updates
 	 * @return true if the tests haven't changed, false if they have
 	 */
 	public boolean hasSameTestResults(Requirement oldReq, Requirement reqUpdate) {
