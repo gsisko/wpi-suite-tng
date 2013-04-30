@@ -113,7 +113,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		
 	}
 
-	/**This method returns an ArrayList of active Iterations
+	/** This method returns an ArrayList of active Iterations
 	 * @return activeIterations An ArrayList of the active Iterations
 	 */
 	public ArrayList<Iteration> getIterations() {
@@ -140,8 +140,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		return resultsTable;
 	}
 
-	/**
-	 * Replace the results table with the given table
+	/** Replace the results table with the given table
 	 * @param newTable the new results table
 	 */
 	public void setResultsTable(JTable newTable) {

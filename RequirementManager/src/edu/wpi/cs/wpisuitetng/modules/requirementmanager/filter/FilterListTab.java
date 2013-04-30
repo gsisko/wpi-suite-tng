@@ -36,8 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-/**
- * Panel to contain the list of filters that have been saved by the user
+/** Panel to contain the list of filters that have been saved by the user
  */
 @SuppressWarnings("serial")
 public class FilterListTab extends JPanel implements IListPanel{
@@ -59,10 +58,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 	private RetrieveAllModelsController retrieveAllController;
 
 	private final ListTab parent;
-	/**
-	 * Construct the panel
+	
+	/** Construct the panel
 	 */
-
 	public FilterListTab(ListTab view) {
 		parent = view;
 		this.setBtnCreateIsCancel(false);
@@ -119,8 +117,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	}
 
-	/**This method returns an ArrayList of active filters
-	 * 
+	/** This method returns an ArrayList of active filters
 	 * @return activeFilters An ArrayList of the active filters
 	 */
 	public ArrayList<Filter> getActiveFilters() {
@@ -147,8 +144,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return resultsTable;
 	}
 
-	/**
-	 * Replace the results table with the given table
+	/** Replace the results table with the given table
 	 * @param newTable the new results table
 	 */
 	public void setResultsTable(JTable newTable) {
@@ -236,16 +232,13 @@ public class FilterListTab extends JPanel implements IListPanel{
 			this.getBtnCreate().setText("New Filter");
 	}
 
-
-	/** Begins refresh process, starting with Filters
-	 * 
+	/** Begins refresh process, starting with Filters 
 	 * @return true on success, false on failure
 	 */
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
 		return true;
 	}
-
 
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
@@ -268,7 +261,6 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 	/** Show the filters in the list view
-	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 */
 	public void showRecievedModels(String jsonString) {
@@ -391,8 +383,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		parent.getParent().getController().refreshData();
 	}
 
-	/** Sets the delete button to either activated or deactivated 
-	 * 
+	/** Sets the delete button to either activated or deactivated  
 	 * @param setActive True to activate and false to deactivate
 	 */
 	public void setDeleteEnabled(boolean setActive) {

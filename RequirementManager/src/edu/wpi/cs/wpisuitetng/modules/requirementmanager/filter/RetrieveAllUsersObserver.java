@@ -21,8 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve all users specific to the Filter builder panel. Upon
+/** An observer for a request to retrieve all users specific to the Filter builder panel. Upon
  * a successful retrieval of data, the value combo box is filled with the names of the users
  * retrieved from the database.
  */
@@ -31,16 +30,14 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	/** The filterBuilderPanel managing the request */
 	protected FilterBuilderPanel filterBuilderPanel;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer
 	 * @param controller
 	 */
 	public RetrieveAllUsersObserver(FilterBuilderPanel filterBuilderPanel) {
 		this.filterBuilderPanel = filterBuilderPanel;
 	}
 
-	/**
-	 *  Upon a successful retrieval of data, the value combo box is filled with the names of the users
+	/** Upon a successful retrieval of data, the value combo box is filled with the names of the users
 	 *  retrieved from the database.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })

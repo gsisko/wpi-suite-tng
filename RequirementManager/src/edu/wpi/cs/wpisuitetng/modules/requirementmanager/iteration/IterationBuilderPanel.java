@@ -240,58 +240,59 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 		add(dateWarning, IterationBuilderConstraints);//Actually add the "dateWarning" to the layout given the previous constraints
 
 	}
-	/** the create button
-	 * @return btnCreate
+	/** Get the create button
+	 * @return btnCreate The "btnCreate" JButton
 	 */
 	public JButton getButton()
 	{
 		return btnCreate;
 	}
-	/** get the name of the iteration
-	 * @return nameValue
+	
+	/** Get the "nameValue" JTextField
+	 * @return nameValue The "nameValue" JTextField
 	 */
 	public JTextField getIterationValue()
 	{
 		return nameValue;
 	}
 
-	/** get the start Date Chooser
-	 * @return startDateChooser 
+	/** Get the "startDateChooser" JDateChooser
+	 * @return startDateChooser The "startDateChooser" JDateChooser
 	 */
 	public JDateChooser getStartDateChooser() {
 		return startDateChooser;
 	}
 
-	/** 
-	 * @param startDateChooser the startDateChooser to set
+	/** Set the "startDateChooser" JDateChooser
+	 * @param startDateChooser The "startDateChooser" (an instance of JDateChooser) to set
 	 */
 	public void setStartDateChooser(JDateChooser startDateChooser) {
 		this.startDateChooser = startDateChooser;
 	}
 
-	/**
-	 * @return the endDateChooser
+	/** Get the "endDateChooser" JDateChooser
+	 * @return endDateChooser The "endDateChooser" JDateChooser
 	 */
 	public JDateChooser getEndDateChooser() {
 		return endDateChooser;
 	}
 
-	/**
-	 * @param endDateChooser the endDateChooser to set
+	/** Set the "endDateChooser" JDateChooser
+	 * @param endDateChooser The "endDateChooser" (an instance of JDateChooser) to set
 	 */
 	public void setEndDateChooser(JDateChooser endDateChooser) {
 		this.endDateChooser = endDateChooser;
 	}
 
-	/**
-	 * @return the currentMode
+	/** Get the "currentMode" of this panel (Mode.EDIT or Mode.CREATE)
+	 * @return currentMode The currentMode Mode of this panel
 	 */
 	public Mode getCurrentMode() {
 		return currentMode;
 	}
 
-	/**
-	 * @param currentMode the currentMode to set
+	/** Set the "currentMode" of this panel (Mode.EDIT or Mode.CREATE)
+	 * @param currentMode The "currentMode" (an instance of Mode) to set
 	 */
 	public void setCurrentMode(Mode currentMode) {
 		this.currentMode = currentMode;
@@ -313,7 +314,7 @@ public class IterationBuilderPanel extends JPanel implements ActionListener, IBu
 	}
 
 	/** Enables or disables all fields in the builder panel.
-	 * @param setTo True activates the fields and false deactivates them
+	 * @param setTo Boolean to activate/disable the fields in the builder panel
 	 */
 	public void setInputEnabled(boolean setTo) {
 		isBuilderActive = setTo;
