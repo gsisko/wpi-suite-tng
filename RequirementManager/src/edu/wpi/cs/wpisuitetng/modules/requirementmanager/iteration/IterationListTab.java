@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveIterationTableCellRenderer;
 
 /** Panel to contain the list of Iterations that have been saved by the user
+ * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class IterationListTab extends JPanel implements IListPanel {
@@ -124,7 +125,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 		
 	}
 
-	/** This method returns an ArrayList of active Iterations
+	/** This method returns an ArrayList of active Iterations	
 	 * @return activeIterations An ArrayList of the active Iterations
 	 */
 	public ArrayList<Iteration> getIterations() {
@@ -201,6 +202,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 
 	/** Set the cancel button back to New Iteration if it was in cancel mode
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setCancelBtnToNew()
 	 */
 	public void setCancelBtnToNew() {
 		this.getBtnCreate().setText("New Iteration"); 
@@ -208,6 +210,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 	
 	/** Set the new iteration button to cancel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
 	 */
 	public void setNewBtnToCancel(){
 		getBtnCreate().setText("Cancel"); 
@@ -215,6 +218,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 
 	/** Toggles between "New Model" and "Cancel" mode 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#toggleNewCancelMode()
 	 */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
@@ -226,8 +230,9 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 	/** Begins refresh process, allows the panels to start triggering
 	 *  their own controllers and chains of controllers
-	 * 
+	 *
 	 * @return true on success, false on failure
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
 	 */
 	public boolean refreshAll() {
 		recievedData = false;
@@ -245,7 +250,9 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 
 	/** Gets the unique identifier of the list entry that was double clicked
+	 * @param me MouseEvent
 	 * @return The unique identifier, either name or ID number (in String form)
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
@@ -267,6 +274,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 *  pulls the highlighted identifiers from a table view.
 	 * 
 	 * @return An array of unique identifiers in the form of strings
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
 	 */
 	public String[] getSelectedUniqueIdentifiers() {
 		// get highlighted rows 
@@ -287,6 +295,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 *  Do nothing in builder
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
 	 */
 	public void showRecievedModels(String jsonString) {
 		// empty the table
@@ -363,6 +372,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 	
 	/** Refreshes the requirements in the main list view
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshRequirements()
 	 */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
@@ -370,6 +380,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 	/** Sets the delete button to either activated or deactivated 
 	 * @param setActive True to activate and false to deactivate
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */
 	public void setDeleteEnabled(boolean setActive) {
 		btnDelete.setEnabled(setActive);		
@@ -380,6 +391,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 *  checked for here
 	 *  
 	 * @return false if any item selected cannot be deleted.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#areSelectedItemsDeletable()
 	 */
 	public boolean areSelectedItemsDeletable(){
 		// Gets the ID's of the selected Iterations

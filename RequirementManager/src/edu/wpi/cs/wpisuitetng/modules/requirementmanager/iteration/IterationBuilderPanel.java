@@ -44,6 +44,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  *  RequirementManager module above the list of requirements and right of the list 
  *  of iterations. This builder will be switched to when the Iteration list view
  *  tab is selected.  
+ * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
@@ -285,6 +286,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 
 	/** Get the "currentMode" of this panel (Mode.EDIT or Mode.CREATE)
 	 * @return currentMode The currentMode Mode of this panel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#getCurrentMode()
 	 */
 	public Mode getCurrentMode() {
 		return currentMode;
@@ -298,7 +300,6 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 
 	/** Gets the current iteration
-	 * 
 	 * @return the current iteration
 	 */
 	public Iteration getCurrentIteration()
@@ -316,6 +317,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 
 	/** Enables or disables all fields in the builder panel.
 	 * @param setTo Boolean to activate/disable the fields in the builder panel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setInputEnabled(boolean)
 	 */
 	public void setInputEnabled(boolean setTo) {
 		isBuilderActive = setTo;
@@ -337,6 +339,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 
 	/** Toggles between active and inactive modes mode 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#toggleNewCancelMode()
 	 */
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function
@@ -345,6 +348,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 
 	/** Restore all fields to their initial values 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#resetFields()
 	 */
 	public void resetFields() {
 		nameValue.setText("");
@@ -359,6 +363,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	 * ALSO changes the text in the button 
 	 * 
 	 * @param mode The mode that the builder panel should be in
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setModeAndBtn(Mode)
 	 */
 	public void setModeAndBtn(Mode mode) {
 		currentMode = mode;
@@ -377,6 +382,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	 * NOTE: This method can be used for passing messages between views!
 	 * 
 	 * @return JSON string of the model to be sent, Returns null on failure
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#convertCurrentModelToJSON()
 	 */
 	public String convertCurrentModelToJSON(){
 		Iteration toSend = new Iteration();
@@ -509,6 +515,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	 *  to the builder panel.
 	 *  
 	 * @param jsonArray An array of models in JSON string form
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#displayModelFromJSONArray(String)
 	 */
 	public void displayModelFromJSONArray(String jsonArray) {
 		Iteration toDisplay = Iteration.fromJSONArray(jsonArray)[0];
@@ -527,6 +534,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	 *  controllers and action listeners are initialized because the controllers
 	 *  require references that are not not fully initialized when the 
 	 *  constructor for this class is called.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setupControllersAndListeners()
 	 */
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getIterationList(),this,"iteration");
@@ -605,7 +613,8 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 	
 	/** Gets the ListTab "parent"  of this tab
-	 * @return the ListTab that this is in
+	 * @return the ListTab that this IterationBuilderPanel is in 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#getMyParent()
 	 */
 	public ListTab getMyParent() {
 		return parent;
