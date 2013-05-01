@@ -37,12 +37,10 @@ public class RefreshRequirementsAction extends AbstractAction {
 
 	/** When R is pressed, this activates
 	 * This method is permanently deactivated (no longer implemented)
-	 *  to prevent multiple refreshes
+	 * to prevent multiple refreshes.
 	 * 
 	 * @param arg0 the action event that triggered this
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		//commented this line out to prevent multiple refreshes
-		//controller.refreshData();
 	}
 }

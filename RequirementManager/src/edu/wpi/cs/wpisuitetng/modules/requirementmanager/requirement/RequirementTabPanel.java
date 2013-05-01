@@ -1,4 +1,3 @@
-// $codepro.audit.disable unnecessaryOverride
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
  *

@@ -40,8 +40,7 @@ class ChangesetCallback implements MapCallback {
 		this.changeset = changeset;
 	}
 
-	/**
-	 * Method call that checks and records a change for a field in an object
+	/** Method call that checks and records a change for a field in an object
 	 * @param source The updated model initiating the call
 	 * @param destination The old model that is being targeted by the call
 	 * @param fieldName The field that is being changed
@@ -66,8 +65,7 @@ class ChangesetCallback implements MapCallback {
 		return sourceValue;
 	}
 
-	/**
-	 * Method to compare two objects
+	/** Method to compare two objects
 	 * @param a Object
 	 * @param b Object
 	 * @return boolean

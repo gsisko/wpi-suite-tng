@@ -22,7 +22,6 @@ import java.util.Set;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /** Responsible for copying properties from one Model to another.
- * @author Team 5 D13
  */
 public class ModelMapper {
 	private final Set<String> blacklist = new HashSet<String>();
@@ -56,8 +55,8 @@ public class ModelMapper {
 	 * @author Team 5 D13
 	 */
 	public interface MapCallback {
-		/**
-		 * Called for every get/set method pair.
+		
+		/**Called for every get/set method pair.
 		 * 
 		 * @param source The source Model
 		 * @param destination The destination Model
