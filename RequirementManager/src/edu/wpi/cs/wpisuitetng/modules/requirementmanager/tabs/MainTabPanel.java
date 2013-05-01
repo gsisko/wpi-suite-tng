@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
@@ -31,18 +19,32 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.JanewayModule;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
-/**
- * This tabbed pane will appear as the main content of the Requirements tab.
+/** This tabbed pane will appear as the main content of the Requirements tab.
  * It starts out showing the single Dashboard tab.
  */
 @SuppressWarnings("serial")
 public class MainTabPanel extends JTabbedPane {
 	
+	/**
+	 * Field parent.
+	 */
+	private JanewayModule parent;
+	
+	/**
+	 * Field mainTabController.
+	 */
 	private MainTabController mainTabController;
 	
-	public MainTabPanel() {
+	/**
+	 * Constructor for MainTabPanel.
+	 * @param _parent JanewayModule
+	 */
+	public MainTabPanel(JanewayModule _parent) {
+		parent = _parent;
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
@@ -78,4 +80,16 @@ public class MainTabPanel extends JTabbedPane {
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
 	}
 	
+	public JanewayModule getJanewayModule()
+	{
+		return parent;
+	}
+	
+	public int getNonRequirementTabCount() {
+		int count = 0;
+		for (int i = 0; i < getTabCount(); i++) {
+			if (getComponentAt(i) instanceof RequirementView) count++;
+		}
+		return count;
+	}
 }

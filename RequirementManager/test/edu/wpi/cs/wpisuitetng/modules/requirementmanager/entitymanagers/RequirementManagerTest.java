@@ -170,8 +170,6 @@ public class RequirementManagerTest {
 	public void testDeleteFromOtherProject() throws WPISuiteException {
 		manager.deleteEntity(adminSession, Integer.toString(otherRequirement.getId()));
 	}
-	
-	
 	@Test
 	public void testDeleteAll() throws WPISuiteException {
 		Requirement anotherRequirement = new Requirement("Name", "Description", RequirementType.NoType, RequirementPriority.NoPriority, "0",0);
@@ -182,7 +180,6 @@ public class RequirementManagerTest {
 		// otherRequirement should still be around
 		assertEquals(1, db.retrieveAll(new Requirement(), otherProject).size());
 	}
-	
 	
 	@Test
 	public void testDeleteAllWhenEmpty() throws WPISuiteException {

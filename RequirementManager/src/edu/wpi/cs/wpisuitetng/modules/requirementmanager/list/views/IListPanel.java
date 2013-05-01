@@ -6,28 +6,16 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.event.MouseEvent;
 
-
 /** Interface to go over list panels that work together
- * and have buttons/controllers that include the following.
+ * and have buttons/controllers that include the following:
  * Delete
  * New Model/Cancel
  */
@@ -38,54 +26,46 @@ public interface IListPanel {
 	 * 
 	 * @return An array of unique identifiers in the form of strings
 	 */
-	public String[] getSelectedUniqueIdentifiers();
+	String[] getSelectedUniqueIdentifiers();
 
+	/** Sets the New the button to clear/cancel */
+	void setNewBtnToCancel();
 
-	/** Sets the New the button to clear/cancel	 */
-	public void setNewBtnToCancel();
-
-
-	/** Sets the "Cancel" button back to "New <Model>" 	 */
-	public void setCancelBtnToNew();
-
+	/** Sets the "Cancel" button back to "New <Model>" */
+	void setCancelBtnToNew();
 
 	/** Begins refresh process, allows the panels to start triggering
 	 *  their own controllers and chains of controllers
 	 * 
 	 * @return true on success, false on failure
 	 */
-	public boolean refreshAll();
+	boolean refreshAll();
 
-	
 	/** Toggles between "New Model" and "Cancel" mode */
-	public void toggleNewCancelMode();
+	void toggleNewCancelMode();
 
-	
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
 	 * @param me The mouse event that was triggered by a double click
 	 * @return The unique identifier, either name or ID number
 	 */
-	public String getSelectedUniqueIdentifier(MouseEvent me);
+	String getSelectedUniqueIdentifier(MouseEvent me);
 
-	
 	/** Show the models in the list view
-	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 */
-	public void showRecievedModels(String jsonString);
+	void showRecievedModels(String jsonString);
 
-	/** Refresh all the requirements    */
-	public void refreshRequirements();
+	/** Refresh all the requirements */
+	void refreshRequirements();
 	
 	/** Sets the delete button to either activated or deactivated 
-	 * 
 	 * @param setActive True to activate and false to deactivate
 	 */
-	public void setDeleteEnabled(boolean setActive);
+	void setDeleteEnabled(boolean setActive);
 	
 	/** Checks if the selected items can ALL be deleted or not
 	 * @return false if any item selected cannot be deleted.
 	 */
-	public boolean areSelectedItemsDeletable();
+	boolean areSelectedItemsDeletable();
 }

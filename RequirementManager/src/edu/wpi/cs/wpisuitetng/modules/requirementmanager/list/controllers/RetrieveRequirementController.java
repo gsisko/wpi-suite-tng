@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
@@ -37,51 +25,49 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * Controller to handle retrieving one requirement from the server
+/** Controller to handle retrieving one requirement from the server
  */
 public class RetrieveRequirementController extends MouseAdapter {
 
 	/** The results panel */
 	protected RequirementListPanel view;
 
-	/**
-	 * Construct the controller
-	 * 
+	/** Construct the controller
 	 * @param view the parent view 
 	 */
 	public RetrieveRequirementController(RequirementListPanel view) {
 		this.view = view;
 	}
 
-	/**
-	 * @see java.awt.event.MouseAdapter#mouseClicked(MouseEvent)
+	/**@see java.awt.event.MouseAdapter#mouseClicked(MouseEvent)
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
 		if (me.getClickCount() == 2) { /* respond to double clicks */
 
-			// Get a reference to the results JTable from the mouse event
-			JTable resultsTable = (JTable) me.getSource();
+			if (!view.isInEditMode()) {
 
-			// Determine the row the user clicked on
-			int row = resultsTable.rowAtPoint(me.getPoint());
+				// Get a reference to the results JTable from the mouse event
+				JTable resultsTable = (JTable) me.getSource();
 
-			// make sure the user actually clicked on a row
-			if (row > -1) {
-				String requirementId = (String) resultsTable.getValueAt(row, 0);
+				// Determine the row the user clicked on
+				int row = resultsTable.rowAtPoint(me.getPoint());
 
-				// Create and send a request for the requirement with the given ID
-				Request request;
-				request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
-				request.addObserver(new RetrieveRequirementRequestObserver(this));
-				request.send();
+				// make sure the user actually clicked on a row
+				if (row > -1) {
+					String requirementId = (String) resultsTable.getValueAt(row, view.getColumnIndex("ID"));
+
+					// Create and send a request for the requirement with the given ID
+					Request request;
+					request = Network.getInstance().makeRequest("requirementmanager/requirement/" + requirementId, HttpMethod.GET);
+					request.addObserver(new RetrieveRequirementRequestObserver(this));
+					request.send();
+				}
 			}
 		}
 	}
 
-	/**
-	 * Called by {@link RetrieveRequirementRequestObserver} when the response
+	/** Called by {@link RetrieveRequirementRequestObserver} when the response
 	 * is received from the server.
 	 * @param requirement the requirement that was retrieved
 	 */
@@ -90,8 +76,7 @@ public class RetrieveRequirementController extends MouseAdapter {
 		view.getTabController().addEditRequirementTab(requirement);
 	}
 
-	/**
-	 * Called by {@link RetrieveRequirementRequestObserver} when an error
+	/** Called by {@link RetrieveRequirementRequestObserver} when an error
 	 * occurred retrieving the requirement from the server.
 	 */
 	public void errorRetrievingRequirement(String error) {

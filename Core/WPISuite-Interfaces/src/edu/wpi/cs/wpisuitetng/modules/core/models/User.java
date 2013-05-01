@@ -174,12 +174,11 @@ public class User extends AbstractModel
 	/* Built-in overrides/overloads */
 	
 	/**
-	 * Override of toString() to return a JSON string for now.
-	 * 	May override in the future.
+	 * Override of toString() to return the user's Name.
 	 */
 	public String toString()
 	{
-		return this.toJSON();
+		return this.getName();
 	}
 
 	@Override
@@ -244,6 +243,11 @@ public class User extends AbstractModel
 		gson = builder.create();
 		
 		return gson.fromJson(json, User.class);
+	}
+	
+	public static User[] fromJSONArray(String json) {
+		GsonBuilder builder = new GsonBuilder();
+		return builder.create().fromJson(json, User[].class);
 	}
 
 	@Override

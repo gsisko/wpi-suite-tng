@@ -6,21 +6,10 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
 
 import java.awt.event.MouseAdapter;
@@ -28,11 +17,11 @@ import java.awt.event.MouseEvent;
 
 /** An action listener to watch a JTable for highlighted entries. When none are
  *  highlighted, the Delete button in the associated IListPanel is deactivated.
- *  If one or more entries are highlighted, the Delete button is activated. */
+ *  If one or more entries are highlighted, the Delete button is activated. 
+ */
 public class ActivateDeleteButton extends MouseAdapter{
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
-	
 	
 	/** Constructor that takes the list panel that holds the Delete
 	 *  button that is to be activated

@@ -6,39 +6,21 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.DeleteModelController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllModelsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveModelController;
@@ -48,32 +30,43 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveIterationTableCellRenderer;
 
-/**
- * Panel to contain the list of Iterations that have been saved by the user
+/** Panel to contain the list of Iterations that have been saved by the user
  */
 @SuppressWarnings("serial")
 public class IterationListTab extends JPanel implements IListPanel {
 
 	/** The table of results */
 	protected JTable resultsTable;
+	/** The "Create Iteration" button */
 	protected JButton btnCreate;
+	/** The "Delete" button */
 	protected JButton btnDelete;
+	/** The status of the create button */
 	private boolean btnCreateIsCancel;
 
+	/** Local storage of the iterations */
 	private Iteration[] localIterations = {};
 	
+	/** The controller for retrieving all the iterations */
 	private RetrieveAllModelsController retrieveAllController;
+	/** The controller for deleting iterations */
 	private DeleteModelController deleteController;
+	/** The controler for retrieving a specific controller */
 	private RetrieveModelController retrieveController;
 
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
+	/** The parent that this panel lives in */
 	private final ListTab parent;
 	
-	/**
-	 * Construct the panel
+	/** Whether or not this has recieved data */
+	private boolean recievedData = false;
+	
+	/** Construct the panel 
+	 * @param view the parent of this panel
 	 */
 	public IterationListTab(ListTab view) {
 		parent = view;
@@ -89,20 +82,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
-		resultsTable.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
-
-		    SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
-
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		        if( value instanceof Date) {
-		            value = f.format(value);
-		        }
-		        return super.getTableCellRendererComponent(table, value, isSelected,
-		                hasFocus, row, column);
-		    }
-		}
-		);
-		
+		resultsTable.setDefaultRenderer(String.class, new ActiveIterationTableCellRenderer());
+		resultsTable.getTableHeader().setReorderingAllowed(false);
 
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -135,16 +116,12 @@ public class IterationListTab extends JPanel implements IListPanel {
 		// Add a listener for row clicks
 		resultsTable.addMouseListener(retrieveController);
 
-		
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
-		
-		
 	}
 
-	/**This method returns an ArrayList of active Iterations
-	 * 
+	/** This method returns an ArrayList of active Iterations	
 	 * @return activeIterations An ArrayList of the active Iterations
 	 */
 	public ArrayList<Iteration> getIterations() {
@@ -157,85 +134,87 @@ public class IterationListTab extends JPanel implements IListPanel {
 		return allIterations;
 	}
 
-	/**
-	 * @return the data model for the table
+	/** Get the results table model
+	 * @return resultsTableModel The ResultsTableModel data model for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
-	/**
-	 * @return the results table
+	/** Get the "resultsTable" JTable
+	 * @return resultsTable The "resultsTable" JTable
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
 
-	/**
-	 * Replace the results table with the given table
-	 * @param newTable the new results table
+	/** Replace the results table with the given JTable
+	 * @param newTable The new "resultsTable" JTable
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
 	}
 
-	/**
-	 * @return the parent
+	/** Get the "parent" ListTab
+	 * @return parent The ListTab "parent" of this panel
 	 */
 	public ListTab getParent() {
 		return parent;
 	}
 
-	/**
-	 * @return the localIterations
+	/** Get the local copy of the iterations (an array of Iterations)
+	 * @return localIterations The "localIterations" array of Iterations
 	 */
 	public Iteration[] getLocalIterations() {
 		return localIterations;
 	}
 
-	/**
-	 * @param localIterations the localIterations to set
+	/** Set the local copy of the iterations ("localIterations", an array of Iterations)
+	 * @param localIterations The "localIterations" array of Iterations to set
 	 */
 	public void setLocalIterations(Iteration[] localIterations) {
 		this.localIterations = localIterations;
 	}
 
+	/** Get the create button ("btnCreate", a JButton)
+	 * @return btnCreate The "btnCreate" JButton
+	 */
 	public JButton getBtnCreate(){
 		return btnCreate;
 	}
 
-	/**
-	 * @return the btnCreateIsCancel
+	/** Get the status of the create button
+	 * @return btnCreateIsCancel The "btnCreateIsCancel" boolean representing the status of the create/cancel button ("btnCreate")
 	 */
 	public boolean isBtnCreateIsCancel() {
 		return btnCreateIsCancel;
 	}
 
-	/**
-	 * @param btnCreateIsCancel the btnCreateIsCancel to set
+	/** Set the "btnCreateIsCancel" boolean
+	 * @param btnCreateIsCancel The "btnCreateIsCancel" (a boolean representing the status of the create/cancel button "btnCreate") to set
 	 */
 	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
 		this.btnCreateIsCancel = btnCreateIsCancel;
 	}
 
-	/**
-	 * Set the cancel button back to New Iteration if it was in cancel mode
+	/** Set the cancel button back to New Iteration if it was in cancel mode
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setCancelBtnToNew()
 	 */
 	public void setCancelBtnToNew() {
 		this.getBtnCreate().setText("New Iteration"); 
 		this.setBtnCreateIsCancel(false);
 	}
 	
-	/**
-	 * Set the new iteration button to cancel
+	/** Set the new iteration button to cancel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
 	 */
 	public void setNewBtnToCancel(){
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	/** 
-	 * Toggles between "New Model" and "Cancel" mode 
+	/** Toggles between "New Model" and "Cancel" mode 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#toggleNewCancelMode()
 	 */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
@@ -247,17 +226,30 @@ public class IterationListTab extends JPanel implements IListPanel {
 
 	/** Begins refresh process, allows the panels to start triggering
 	 *  their own controllers and chains of controllers
-	 * 
+	 *
 	 * @return true on success, false on failure
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
 	 */
 	public boolean refreshAll() {
+		recievedData = false;
 		retrieveAllController.refreshData();
+		int count = 0;
+		while(!recievedData && count<500){
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			count++;
+		}
 		return true;
 	}
 
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
-	 * @return The unique identifier, either name or ID number
+	 * @param me MouseEvent
+	 * @return The unique identifier, either name or ID number (in String form)
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
@@ -279,9 +271,9 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 *  pulls the highlighted identifiers from a table view.
 	 * 
 	 * @return An array of unique identifiers in the form of strings
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
 	 */
 	public String[] getSelectedUniqueIdentifiers() {
-		
 		// get highlighted rows 
 		int[] rowNumbers = resultsTable.getSelectedRows();
 
@@ -296,11 +288,11 @@ public class IterationListTab extends JPanel implements IListPanel {
 		return ids;
 	}
 
-	/** 
-	 * Show the models in the list view
+	/** Show the models in the list view
 	 *  Do nothing in builder
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
 	 */
 	public void showRecievedModels(String jsonString) {
 		// empty the table
@@ -320,9 +312,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 		parent.getParent().setAllIterations(iterations);
 		
 		Iteration[] displayedIterations = new Iteration[iterations.length-1];
-		for (int i = 0; i < displayedIterations.length; i++) {
-			displayedIterations[i] = iterations[i+1];
-		}
+		
+		System.arraycopy(iterations, 1, displayedIterations, 0, iterations.length - 1);
 		
 		if (displayedIterations.length > 0) {
 			// set the column names
@@ -333,8 +324,8 @@ public class IterationListTab extends JPanel implements IListPanel {
 			for (int i = 0; i < displayedIterations.length; i++) {
 				entries[i][0] = displayedIterations[i].getID();
 				entries[i][1] = displayedIterations[i].getName();
-				entries[i][2] = displayedIterations[i].getStartDate();
-				entries[i][3] = displayedIterations[i].getEndDate();
+				entries[i][2] = displayedIterations[i].getStartDate().toString();
+				entries[i][3] = displayedIterations[i].getEndDate().toString();
 
 			}
 
@@ -356,26 +347,30 @@ public class IterationListTab extends JPanel implements IListPanel {
 			//EndDate
 			resultsTable.getColumnModel().getColumn(3).setPreferredWidth(75);
 			
-			
+			recievedData = true;
 			return; // end now
 		}
+		recievedData = true;
+		setDeleteEnabled(false);
 	}
 
-	/**
-	 * @return the retrieveAllController
+	/** Get the retrieveAllController RetrieveAllModelsController
+	 * @return retrieveAllController The "retrieveAllController" RetrieveAllModelsController
 	 */
 	public RetrieveAllModelsController getRetrieveAllController() {
 		return retrieveAllController;
 	}
 
-	/**
-	 * @param retrieveAllController the retrieveAllController to set
+	/** Set the retrieveAllController RetrieveAllModelsController
+	 * @param retrieveAllController The "retrieveAllController" (an instance of RetrieveAllModelsController) to set
 	 */
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
 	}
 	
-	@Override
+	/** Refreshes the requirements in the main list view
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshRequirements()
+	 */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
@@ -383,6 +378,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	/** Sets the delete button to either activated or deactivated 
 	 * 
 	 * @param setActive True to activate and false to deactivate
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */
 	public void setDeleteEnabled(boolean setActive) {
 		btnDelete.setEnabled(setActive);		
@@ -393,6 +389,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	 *  checked for here
 	 *  
 	 * @return false if any item selected cannot be deleted.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#areSelectedItemsDeletable()
 	 */
 	public boolean areSelectedItemsDeletable(){
 		// Gets the ID's of the selected Iterations

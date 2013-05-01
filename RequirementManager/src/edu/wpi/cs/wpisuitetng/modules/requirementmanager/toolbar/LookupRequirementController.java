@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
@@ -37,8 +25,7 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/**
- * Controller to handle retrieving a requirement from the core
+/** Controller to handle retrieving a requirement from the core
  */
 public class LookupRequirementController implements ActionListener {
 
@@ -54,10 +41,10 @@ public class LookupRequirementController implements ActionListener {
 	/** A flag to prevent multiple lookups from occurring at the same time */
 	protected boolean waitingForResponse = false;
 
-	/**
-	 * Constructs the controller
+	/** Constructs the LookupRequirementController
 	 * @param tabController the tab controller, to be used to add a view requirement tab to the window
 	 * @param listField the list field in the main toolbar
+	 * @param parentView ToolbarView 
 	 */
 	public LookupRequirementController(MainTabController tabController, JPlaceholderTextField listField, ToolbarView parentView) {
 		this.tabController = tabController;
@@ -65,14 +52,13 @@ public class LookupRequirementController implements ActionListener {
 		this.parentView = parentView;
 	}
 
-	/**
-	 * Send a request when the user hits the enter key while typing in the
+	/** Send a request when the user hits the enter key while typing in the
 	 * list requirement field
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JTextField source = (JTextField) e.getSource();
-		if (!waitingForResponse) { /* proceed if there is not already a request in progress */
+		if (!waitingForResponse) { // proceed if there is not already a request in progress
 			waitingForResponse = true; // we are now in the process of making a request
 
 			// Validate the requirement ID that was entered into the list field
@@ -95,8 +81,7 @@ public class LookupRequirementController implements ActionListener {
 		}
 	}
 
-	/**
-	 * Method called by the observer when the response is received
+	/** Method called by the observer when the response is received
 	 * @param requirement the requirement that was received
 	 */
 	public void receivedResponse(Requirement requirement) {
@@ -110,8 +95,7 @@ public class LookupRequirementController implements ActionListener {
 		waitingForResponse = false;
 	}
 
-	/**
-	 * Method called by the observer if no requirement was received
+	/** Method called by the observer if no requirement was received
 	 */
 	public void requestFailed() {
 		listField.clearText();
@@ -119,8 +103,7 @@ public class LookupRequirementController implements ActionListener {
 		JOptionPane.showMessageDialog(parentView, "A requirement with the ID you provided was not found.", "Requirement Not Found", JOptionPane.WARNING_MESSAGE);
 	}
 
-	/**
-	 * Returns the waiting flag
+	/** Returns the waiting flag
 	 * @return the waiting flag
 	 */
 	public boolean getWaitingFlag() {

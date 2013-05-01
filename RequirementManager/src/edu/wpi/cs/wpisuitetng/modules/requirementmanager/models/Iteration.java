@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
@@ -46,15 +34,16 @@ public class Iteration extends AbstractModel {
 	/** The current running total estimate */
 	private int totalEstimate;
 	
-	/** Basic constructor for an Iteration */
+	/** Basic constructor for an Iteration.
+	 * Constructs an iteration with a blank name, and today's date as it's start and end date
+	 */
 	public Iteration()
 	{
 		//Call the other constructor so we reuse code
 		this("", new Date(), new Date());
 	}
 	
-	/**
-	 * Create an Iteration with given properties
+	/** Create an Iteration with given properties
 	 * 
 	 * @param name the Name of the Iteration
 	 * @param startDate the starting date of the Iteration
@@ -69,23 +58,18 @@ public class Iteration extends AbstractModel {
 		
 		//Initialize our other private variables
 		this.setID(-1);
-		this.totalEstimate = 0;
-		this.requirementsAssigned = new ArrayList<Integer>();
-
+		
+		totalEstimate = 0;
+		requirementsAssigned = new ArrayList<Integer>();
 	}
-
-
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -95,7 +79,6 @@ public class Iteration extends AbstractModel {
 		json = gson.toJson(this, Iteration.class);
 		return json;
 	}
-	
 	
 	/** Converts the given list of Iterations to a JSON string
 	 * 
@@ -108,8 +91,6 @@ public class Iteration extends AbstractModel {
 		json = gson.toJson(dlist, Iteration.class);
 		return json;
 	}
-	
-	
 	
 	/** Converts a given json string to an Iteration
 	 * 
@@ -132,11 +113,10 @@ public class Iteration extends AbstractModel {
 		return builder.create().fromJson(json, Iteration[].class);
 	}
 	
-
 	@Override
 	public Boolean identify(Object o) {
 		Boolean returnValue = false;
-		if(o instanceof Iteration && name == ((Iteration) o).getName()) {
+		if(o instanceof Iteration && name.equals(((Iteration) o).getName())) {
 			returnValue = true;
 		}	
 		if(o instanceof String && name.equals(o)) {
@@ -145,9 +125,7 @@ public class Iteration extends AbstractModel {
 		return returnValue;
 	}
 	
-	
 	/** Changes all fields in the current Iteration to equal the fields of the iterationUpdate
-	 * 
 	 * @param iterationUpdate Iteration holding the updates
 	 */
 	public void updateIteration(Iteration iterationUpdate){	
@@ -159,110 +137,84 @@ public class Iteration extends AbstractModel {
 		// id does not need to be set, as it cannot be changed anyways
 	}
 	
-	
 	/** Gets estimates from each associated requirement and sums up the total. 
-	 * 
 	 * @return The sum of all the requirements estimates
 	 */
-	public int getTotalEstimate(){
-		/* TODO: ways of getting the total estimate
-		  
-		Option A
-		- Send message from here to get all Req's, sort here to pick out proper ID's
-		and sum up the estimates of the remaining
-		- Local RetrieveAllRequirementsController will be necessary
-		Option B
-		- Send individual messages to get only the Req's we want
-		- More messages
-		- Local RetrieveRequirementController is needed
-		Option C
-		- Ask the current list panel for the requirements that are in this iteration
-		Option D 
-		- Have requirements tell the iteration when they are added/remove or 
-		their estimates are updated
-		- Keep track of a single local variable that tracks the total estimate			
-		
-		*/
-				
-		return this.totalEstimate;
+	public int getTotalEstimate(){				
+		return totalEstimate;
 	}
 	
-	/**
-	 * Ask the controller to retrieve the total estimate and give it to us.
+	/** Ask the controller to retrieve the total estimate and give it to us.
 	 */
 	public void setTotalEstimate(int newTotalEstimate){
-		this.totalEstimate = newTotalEstimate;
+		totalEstimate = newTotalEstimate;
 	}	
 	
-	
-// The following are Getters and Setters
 	/**
-	 * @return the name
+	 * @return name The "name" String of this Iteration
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * @return the name
+	 * @return id The "id" (an int) of this Iteration
 	 */
 	public int getID() {
 		return id;
 	}
 	
 	/**
-	 * @param name the name to set
+	 * @param name the name to set of this iteration
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	/**
-	 * @param ID the id to set
+	 * @param ID The "id" (an int) of this Iteration
 	 */
 	public void setID(int ID) {
-		this.id = ID;
+		id = ID;
 	}
 	/**
-	 * @return the startDate
+	 * @return startDate The "startDate" Date
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
 
 	/**
-	 * @param startDate the startDate to set
+	 * @param startDate The "startDate" Date to set
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
 	/**
-	 * @return the endDate
+	 * @return endDate The "endDate" Date
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
 
 	/**
-	 * @param endDate the endDate to set
+	 * @param endDate The "endDate" Date to set
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	
 	/**
-	 * @return the requirementsAssigned
+	 * @return requirementsAssigned The "requirementsAssigned" ArrayList of the int IDs of the requirements assigned to this iteration
 	 */
 	public ArrayList<Integer> getRequirementsContained() {
 		return requirementsAssigned;
 	}
 
 	/**
-	 * @param requirementsContained the requirementsAssigned to set
+	 * @param requirementsContained The "requirementsAssigned" ArrayList of the int IDs of the requirements assigned to this iteration to set
 	 */
 	public void setRequirementsContained(ArrayList<Integer> requirementsContained) {
-		this.requirementsAssigned = requirementsContained;
+		requirementsAssigned = requirementsContained;
 	}
-	
-
 }

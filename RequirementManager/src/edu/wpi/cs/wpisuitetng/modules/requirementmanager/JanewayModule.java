@@ -6,45 +6,26 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
 
-import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.KeyboardShortcut;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar.ToolbarView;
 
-
-/**
- * The Requirement Manager module added to the Janeway client.
- *
+/** The Requirement Manager module added to the Janeway client.
  */
 public class JanewayModule implements IJanewayModule {
 	
@@ -53,18 +34,19 @@ public class JanewayModule implements IJanewayModule {
 	
 	/** The controllers used by this module */
 	public final MainTabController mainTabController;
+	/** The controller that controls the toolbar */
 	public final ToolbarController toolbarController;
 	
+	/** The main panel that holds everything */
 	public final MainTabPanel mainTabPanel;
+	/** The toolbar itself */
 	public final ToolbarView toolbarView;
 	
-	/**
-	 * Construct a new DummyModule for demonstration purposes
+	/** Construct a new RequirementManager module
 	 */
 	public JanewayModule() {
-		
 		// Setup main tab view and controller
-		mainTabPanel = new MainTabPanel();
+		mainTabPanel = new MainTabPanel(this);
 		mainTabController = mainTabPanel.getMainTabController();
 		
 		// Setup tool bar view and controller
@@ -78,15 +60,11 @@ public class JanewayModule implements IJanewayModule {
 		tabs = new ArrayList<JanewayTabModel>();
 		JanewayTabModel tab = new JanewayTabModel("Requirement Manager", new ImageIcon(), toolbarView, mainTabPanel);
 		tabs.add(tab);
-		
-		// add keyboard shortcuts to requirements tab
-	    registerKeyboardShortcuts(tab);
 	}
 
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
 	 */
-	@Override
 	public String getName() {
 		return "Requirement Manager";
 	}
@@ -94,54 +72,24 @@ public class JanewayModule implements IJanewayModule {
 	/**
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
 	 */
-	@Override
 	public List<JanewayTabModel> getTabs() {
 		return tabs;
 	}
-	
-	@SuppressWarnings("serial")
-	private void registerKeyboardShortcuts(JanewayTabModel tab) {
-		
-		// retrieves the name of the operating system
-		String osName = System.getProperty("os.name").toLowerCase();
-		
-		// control + tab: switch to right tab
-		tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control TAB"), new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainTabController.switchToRightTab();
-			}
-		}));
-		
-		// control + shift + tab: switch to left tab
-		tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control shift TAB"), new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainTabController.switchToLeftTab();
-			}
-		}));
-		
-		// command + w for mac or control + w for windows: close the current tab
-		if (osName.contains("mac")) {
-			tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("meta W"), new AbstractAction() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					mainTabController.closeCurrentTab();
-				}
-			}));
-		}
-		else {
-			tab.addKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control W"), new AbstractAction() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					mainTabController.closeCurrentTab();
-				}
-			}));
-		}
-	}
 
-	@Override
+	/**
+	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#invokeWhenSelected()
+	 */
 	public void invokeWhenSelected() {
-		((ListView)mainTabPanel.getComponentAt(0)).refreshData();
+		ListView tmpListView = (ListView)mainTabPanel.getComponentAt(0);
+		if (!tmpListView.getListTab().getResultsPanel().isInEditMode())
+			tmpListView.refreshData();
+	}
+	
+	/**Getter for the Toolbar View
+	 * @return the toolbar view
+	 */
+	public ToolbarView getToolbarView()
+	{
+		return toolbarView;
 	}
 }

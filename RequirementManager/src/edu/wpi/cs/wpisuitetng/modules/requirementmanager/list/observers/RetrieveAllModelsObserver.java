@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
@@ -30,23 +18,24 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve all requirements
+/** An observer waiting for a request to retrieve all models. That message is read and 
+ * passed on to the controller. 
  */
-public class RetrieveAllModelsObserver implements RequestObserver {
+public class RetrieveAllModelsObserver implements RequestObserver,IObserver{
 
 	/** The controller managing the request */
 	protected RetrieveAllModelsController controller;
 
-	/**
-	 * Construct the observer
-	 * @param controller
+	/** Construct the observer
+	 * @param controller The controller managing the request
 	 */
 	public RetrieveAllModelsObserver(RetrieveAllModelsController controller) {
 		this.controller = controller;
 	}
 
-	@Override
+	/** Upon success, tell the controller to trigger a refresh 
+	 * @param iReq The request response from the server 
+	 */
 	public void responseSuccess(IRequest iReq) {
 		// cast observable to request
 		Request request = (Request) iReq;
@@ -63,13 +52,18 @@ public class RetrieveAllModelsObserver implements RequestObserver {
 		}
 	}
 
-	@Override
+	/**  Upon error, prints to console
+	 * @param iReq The request response from the server 
+	 */
 	public void responseError(IRequest iReq) {
 		// an error occurred
 		controller.errorReceivingData("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
-	@Override
+	/** Upon failure, prints to console
+	 * @param iReq The request response from the server 
+ 	 * @param exception unused
+	 */
 	public void fail(IRequest iReq, Exception exception) {
 		// an error occurred
 		controller.errorReceivingData("Unable to complete request: " + exception.getMessage());

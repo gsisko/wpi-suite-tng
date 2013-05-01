@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
@@ -28,17 +16,21 @@ import java.awt.Component;
 
 import javax.swing.Icon;
 
-/**
- * A wrapper class for MainTabView that can be given to components within that view
+/** A wrapper class for MainTabView that can be given to components within that view
  * in order to allow them to easily change their titles and icons.
  */
 public class Tab {
 
+	/**
+	 * Field view.
+	 */
 	private final MainTabPanel view;
+	/**
+	 * The tabComponent that this Tab contains
+	 */
 	private final Component tabComponent;
 
-	/**
-	 * Create a Tab identified by the given MainTabView and tabComponent.
+	/** Create a Tab identified by the given MainTabView and tabComponent.
 	 * 
 	 * @param view The MainTabView this Tab belongs to
 	 * @param tabComponent The tabComponent for this Tab

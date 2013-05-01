@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
@@ -31,23 +19,25 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to retrieve a requirement with the provided id
+/** An observer for a request to retrieve a requirement with the provided id. When the response
+ * is gotten from the server, the body is passed to the controller for processing. 
  */
 public class RetrieveRequirementRequestObserver implements RequestObserver {
 
 	/** The retrieve requirement controller using this observer */
 	protected RetrieveRequirementController controller;
 
-	/**
-	 * Construct a new observer
+	/** Construct a new observer
 	 * @param controller the controller managing the request
 	 */
 	public RetrieveRequirementRequestObserver(RetrieveRequirementController controller) {
 		this.controller = controller;
 	}
 
-	@Override
+	/** Parse the message that was received from the server and tells the controller
+	 * @param iReq the request sent from the server
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 */
 	public void responseSuccess(IRequest iReq) {
 		// cast observable to a Request
 		Request request = (Request) iReq;
@@ -71,14 +61,20 @@ public class RetrieveRequirementRequestObserver implements RequestObserver {
 		}
 	}
 
-	@Override
+	/** This method responses when there is a save response error
+	 * @param iReq the request sent from the server
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 */
 	public void responseError(IRequest iReq) {
 		controller.errorRetrievingRequirement("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
-	@Override
+	/** This method responses when the save action failed 
+	 * 
+	 * @param iReq the request sent from the server
+	 * @param exception unused
+	 */
 	public void fail(IRequest iReq, Exception exception) {
-		// TODO deal with exception
 		controller.errorRetrievingRequirement("Unable to complete request: " + exception.getMessage());
 	}
 }

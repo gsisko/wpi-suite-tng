@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
@@ -30,10 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
 /** Possible operations that a filter can perform
  * 
- * NOTE: If filtering by a field that is an "enum", only use EqualTo or NotEqualTo
- * 
- * @author Team 5
- *
+ * NOTE: If filtering by a field that is an "enum", only use EqualTo or NotEqualTo 
  */
 public enum OperatorType {
 	GreaterThan,
@@ -45,7 +30,6 @@ public enum OperatorType {
 	Contains,
 	DoesNotContain,
 	Other;
-
 
 	/** Converts a string to the proper OperatorType
 	 * 
@@ -75,10 +59,8 @@ public enum OperatorType {
 	}
 
 	/** Takes an OperatorType and converts it into a string
-	 * 
 	 * @return the string value of the OperatorType
 	 */
-	
 	public String toString () {
 		switch (OperatorType.this) {
 		case Contains:
@@ -103,13 +85,11 @@ public enum OperatorType {
 		}
 	}
 
-
 	/** Performs the operation described for integers. Returns false for 
 	 *  any non-integer operations, like Contains etc.
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
-	 * 
 	 * @return the result
 	 */
 	public static boolean perform(OperatorType op,  Integer sample, Integer fromReq){
@@ -131,13 +111,11 @@ public enum OperatorType {
 		}
 	}
 
-
 	/** Performs the operation described for Strings. Returns false 
 	 *  for requested operations other than Contains/DoesNotContain/EqualTo/NotEqualTo
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
-	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, String sample, String fromReq, boolean isEnum){
@@ -148,10 +126,7 @@ public enum OperatorType {
 				reqField = "";
 			}			
 		}
-		
-		
-		
-		
+
 		switch(op){
 		case Contains:
 			if (isEnum) return false;// False because enums can't be compared by contain
@@ -165,20 +140,14 @@ public enum OperatorType {
 			return !sample.equals(reqField); // if not equal, return true
 		default:
 			return false; // any other operator should be false
-
-
 		}	
 	}
-
-
-
 
 	/** Performs the operation described for RequirementType. Returns false 
 	 *  for requested operations other than EqualTo/NotEqualTo
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
-	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, RequirementType sample, RequirementType fromReq){
@@ -197,7 +166,6 @@ public enum OperatorType {
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
-	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, RequirementStatus sample, RequirementStatus fromReq){
@@ -216,7 +184,6 @@ public enum OperatorType {
 	 * 
 	 * @param sample The first argument- sample in filter
 	 * @param fromReq The second argument- from the Requirement
-	 * 
 	 * @return the result of the operation
 	 */
 	public static boolean perform(OperatorType op, RequirementPriority sample,RequirementPriority fromReq){

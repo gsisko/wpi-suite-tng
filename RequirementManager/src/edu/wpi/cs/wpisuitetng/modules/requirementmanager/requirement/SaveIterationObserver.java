@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
@@ -29,18 +17,13 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * An observer for a request to save an iteration with the provided id
+/** An observer for a request to save an iteration with the provided id
  */
 public class SaveIterationObserver implements RequestObserver {
-	/**
-	 * Construct a new observer
-	 * @param retrieveModelController the controller managing the request
-	 */
-	public SaveIterationObserver() {	}
-
+	
 	/** Respond to a successful message from the network
-	 * 
+	 * @param iReq IRequest
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(IRequest)
 	 */
 	public void responseSuccess(IRequest iReq) {
 		Request request = (Request) iReq;
@@ -56,14 +39,17 @@ public class SaveIterationObserver implements RequestObserver {
 	}
 
 	/** Respond to an  unsuccessful message from the network
-	 * 
+	 * @param iReq IRequest
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(IRequest)
 	 */
 	public void responseError(IRequest iReq) {
 		System.err.println("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
 	/** Respond to a failure message from the network
-	 * 
+	 * @param iReq IRequest
+	 * @param exception Exception
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(IRequest, Exception)
 	 */
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("Unable to complete request: " + exception.getMessage());

@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
@@ -27,231 +15,330 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.views;
 import javax.swing.*;
 import javax.swing.text.*;
 
+/** A text field that takes only numbers. Nothing else may
+ * be entered.
+ */
 @SuppressWarnings("serial")
 public class JNumberTextField extends JTextField
 {
-    private static final char DOT = '.';
-    private static final char NEGATIVE = '-';
-    private static final String BLANK = "";
-    private static final int DEF_PRECISION = 2;
+	/** string representation of a dot */
+	private static final char DOT = '.';
+	/** string representation of a dash or negative sign*/
+	private static final char NEGATIVE = '-';
+	/** string representation of blank */
+	private static final String BLANK = "";
+	/** the precision of the numbers */
+	private static final int DEF_PRECISION = 2;
 
-    public static final int NUMERIC = 2;
-    public static final int DECIMAL = 3;
+	/** Bit code to use when selecting NUMERIC */
+	public static final int NUMERIC = 2;
+	/** Bit code to use when selecting DECIMAL */
+	public static final int DECIMAL = 3;
 
-    public static final String FM_NUMERIC = "0123456789";
-    public static final String FM_DECIMAL = FM_NUMERIC + DOT;
+	/** Accepted characters allowed in numeric mode, in string form */
+	public static final String FM_NUMERIC = "0123456789";
+	/** Accepted characters allowed in decimal mode, in string form */
+	public static final String FM_DECIMAL = FM_NUMERIC + DOT;
 
-    private int maxLength = 0;
-    private int format = NUMERIC;
-    private String negativeChars = BLANK;
-    private String allowedChars = null;
-    private boolean allowNegative = false;
-    private int precision = 0;
+	/** the max length allowed */
+	private int maxLength = 0;
+	/** the format of the text field */
+	private int format = NUMERIC;
+	/** what a negative character is */
+	private String negativeChars = BLANK;
+	/** the allow characters */
+	private String allowedChars = null;
+	/** whether or not negative numbers are allowed  */
+	private boolean allowNegative = false;
+	/** the precision of the text field */
+	private int precision = 0;
 
-    protected PlainDocument numberFieldFilter;
+	/** the filter over things typed into the text field */
+	protected PlainDocument numberFieldFilter;
 
-    public JNumberTextField()
-    {
-        this( 9, NUMERIC );
-    }
+	/** Standard constructor */
+	public JNumberTextField()
+	{
+		this( 9, NUMERIC );
+	}
 
-    public JNumberTextField( int maxLen )
-    {
-        this( maxLen, NUMERIC );
-    }
+	/** Constructor that is sized accordingly
+	 * @param maxLen the number of characters allowed in the text box
+	 */
+	public JNumberTextField( int maxLen )
+	{
+		this( maxLen, NUMERIC );
+	}
 
-    public JNumberTextField( int maxLen, int format )
-    {
-        setAllowNegative( true );
-        setMaxLength( maxLen );
-        setFormat( format );
+	/** Constructor that is sized and formatted accordingly
+	 * 
+	 * @param maxLen the number of characters allowed in the text box
+	 * @param format the format of the text field
+	 */
+	public JNumberTextField( int maxLen, int format )
+	{
+		setAllowNegative( true );
+		setMaxLength( maxLen );
+		setFormat( format );
 
-        numberFieldFilter = new JNumberFieldFilter();
-        super.setDocument( numberFieldFilter );
-    }
+		numberFieldFilter = new JNumberFieldFilter();
+		super.setDocument( numberFieldFilter );
+	}
 
-    public void setMaxLength( int maxLen )
-    {
-        if (maxLen > 0)
-            maxLength = maxLen;
-        else
-            maxLength = 0;
-    }
+	/** Sets the max length. Does not allow negative lengths  
+	 * @param maxLen the length to be set to
+	 */ 
+	public void setMaxLength( int maxLen )
+	{
+		if (maxLen > 0)
+			maxLength = maxLen;
+		else
+			maxLength = 0;
+	}
 
-    public int getMaxLength()
-    {
-        return maxLength;
-    }
+	/** Gets the max length
+	 * @return the maximum length
+	 */
+	public int getMaxLength()
+	{
+		return maxLength;
+	}
 
-    public void setPrecision( int precision )
-    {
-        if ( format == NUMERIC )
-            return;
+	/** Sets the precision accordingly. If a negative number was input,
+	 *  the precision is set to the default
+	 *  
+	 * @param precision the precision to set to
+	 */
+	public void setPrecision( int precision )
+	{
+		if ( format == NUMERIC )
+			return;
 
-        if ( precision >= 0 )
-            this.precision = precision;
-        else
-            this.precision = DEF_PRECISION;
-    }
+		if ( precision >= 0 )
+			this.precision = precision;
+		else
+			this.precision = DEF_PRECISION;
+	}
 
-    public int getPrecision()
-    {
-        return precision;
-    }
+	/** Gets the precision
+	 * @return the current precision
+	 */
+	public int getPrecision()
+	{
+		return precision;
+	}
 
-    public Number getNumber()
-    {
-        Number number = null;
+	/** Gets the number currently in the text field 
+	 * @return the number currently in the text field
+	 */
+	public Number getNumber()
+	{
+		Number number = null;
 
-        if ( format == NUMERIC )
-            number = new Integer(getText());
-        else
-            number = new Double(getText());
+		if ( format == NUMERIC )
+			number = new Integer(getText());
+		else
+			number = new Double(getText());
 
-        return number;
-    }
+		return number;
+	}
 
-    public void setNumber( Number value )
-    {
-        setText(String.valueOf(value));
-    }
+	/** Puts the given value into the text field
+	 * @param value the number to put into the text field
+	 */
+	public void setNumber( Number value )
+	{
+		setText(String.valueOf(value));
+	}
 
-    public int getInt()
-    {
-        return Integer.parseInt( getText() );
-    }
+	/** Gets the value in the text field as an int
+	 * @return
+	 */
+	public int getInt()
+	{
+		return Integer.parseInt( getText() );
+	}
 
-    public void setInt( int value )
-    {
-        setText( String.valueOf( value ) );
-    }
+	/** Sets the value in the text field to a given int
+	 * @param value the value to set
+	 */ 
+	public void setInt( int value )
+	{
+		setText( String.valueOf( value ) );
+	}
 
-    public float getFloat()
-    {
-        return ( new Float( getText() ) ).floatValue();
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public float getFloat()
+	{
+		return Float.parseFloat(getText());
+	}
 
-    public void setFloat(float value)
-    {
-        setText( String.valueOf( value ) );
-    }
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setFloat(float value)
+	{
+		setText( String.valueOf( value ) );
+	}
 
-    public double getDouble()
-    {
-        return ( new Double( getText() ) ).doubleValue();
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public double getDouble()
+	{
+		return Double.parseDouble(getText());
+	}
 
-    public void setDouble(double value)
-    {
-        setText( String.valueOf(value) );
-    }
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setDouble(double value)
+	{
+		setText( String.valueOf(value) );
+	}
 
-    public int getFormat()
-    {
-        return format;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public int getFormat()
+	{
+		return format;
+	}
 
-    public void setFormat(int format)
-    {
-        switch ( format )
-        {
-        case NUMERIC:
-        default:
-            this.format = NUMERIC;
-            this.precision = 0;
-            this.allowedChars = FM_NUMERIC;
-            break;
+	/** Sets the format to the given format. If that format is
+	 *  not recognized, the default will be used.
+	 * 
+	 * @param format the format to set to
+	 */
+	public void setFormat(int format)
+	{
+		switch ( format )
+		{
+		case DECIMAL:
+			this.format = DECIMAL;
+			precision = DEF_PRECISION;
+			allowedChars = FM_DECIMAL;
+			break;
+		case NUMERIC:
+		default:
+			this.format = NUMERIC;
+			precision = 0;
+			allowedChars = FM_NUMERIC;
+			break;
+		}
+	}
 
-        case DECIMAL:
-            this.format = DECIMAL;
-            this.precision = DEF_PRECISION;
-            this.allowedChars = FM_DECIMAL;
-            break;
-        }
-    }
+	/**
+	 * 
+	 * @param value
+	 */
+	public void setAllowNegative( boolean value )
+	{
+		allowNegative = value;
 
-    public void setAllowNegative( boolean value )
-    {
-        allowNegative = value;
+		if ( value )
+			negativeChars = "" + NEGATIVE;
+		else
+			negativeChars = BLANK;
+	}
 
-        if ( value )
-            negativeChars = "" + NEGATIVE;
-        else
-            negativeChars = BLANK;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isAllowNegative()
+	{
+		return allowNegative;
+	}
 
-    public boolean isAllowNegative()
-    {
-        return allowNegative;
-    }
+	/**
+	 * 
+	 */
+	public void setDocument( Document document )
+	{
+	}
 
-    public void setDocument( Document document )
-    {
-    }
-
+	/** A filter that works with JNumberFields. Does not allow non-numeric
+	 *  characters to be put in the text field	 
+	 */
 	class JNumberFieldFilter extends PlainDocument
-    {
-        public JNumberFieldFilter()
-        {
-            super();
-        }
+	{
+		/** basic constructor */
+		private JNumberFieldFilter()
+		{
 
-        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException
-        {
-            String text = getText(0,offset) + str + getText(offset,(getLength() - offset));
+		}
 
-            if ( str == null || text == null )
-                return;
+		/** Inserts the string with the given offset and applicable attributes
+		 * 
+		 * @param offset to offset by
+		 * @param str the string to set
+		 * @param attr the attribute to apply
+		 * 
+		 */
+		public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException
+		{
+			String text = getText(0,offset) + str + getText(offset,(getLength() - offset));
 
-            for ( int i=0; i<str.length(); i++ )
-            {
-                if ( ( allowedChars + negativeChars ).indexOf( str.charAt(i) ) == -1)
-                    return;
-            }
+			if ( str == null || text == null )
+				return;
 
-            int precisionLength = 0, dotLength = 0, minusLength = 0;
-            int textLength = text.length();
+			for ( int i=0; i<str.length(); i++ )
+			{
+				if ( ( allowedChars + negativeChars ).indexOf( str.charAt(i) ) == -1)
+					return;
+			}
 
-            try
-            {
-                if ( format == NUMERIC )
-                {
-                    if ( ! ( ( text.equals( negativeChars ) ) && ( text.length() == 1) ) )
-                        new Long(text);
-                }
-                else if ( format == DECIMAL )
-                {
-                    if ( ! ( ( text.equals( negativeChars ) ) && ( text.length() == 1) ) )
-                        new Double(text);
+			int precisionLength = 0, dotLength = 0, minusLength = 0;
+			int textLength = text.length();
 
-                    int dotIndex = text.indexOf(DOT);
-                    if( dotIndex != -1 )
-                    {
-                        dotLength = 1;
-                        precisionLength = textLength - dotIndex - dotLength;
+			try
+			{
+				if ( format == NUMERIC )
+				{
+					if ( ! ( ( text.equals( negativeChars ) ) && ( text.length() == 1) ) )
+						new Long(text);
+				}
+				else if ( format == DECIMAL )
+				{
+					if ( ! ( ( text.equals( negativeChars ) ) && ( text.length() == 1) ) )
+						new Double(text);
 
-                        if( precisionLength > precision )
-                            return;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                return;
-            }
+					int dotIndex = text.indexOf(DOT);
+					if( dotIndex != -1 )
+					{
+						dotLength = 1;
+						precisionLength = textLength - dotIndex - dotLength;
 
-            if ( text.startsWith( "" + NEGATIVE ) )
-            {
-                if ( !allowNegative )
-                    return;
-                else
-                    minusLength = 1;
-            }
+						if( precisionLength > precision )
+							return;
+					}
+				}
+			}
+			catch(Exception ex)
+			{
+				return;
+			}
 
-            if ( maxLength < ( textLength - dotLength - precisionLength - minusLength ) )
-                return;
+			if ( text.startsWith( "" + NEGATIVE ) )
+			{
+				if ( !allowNegative )
+					return;
+				else
+					minusLength = 1;
+			}
 
-            super.insertString( offset, str, attr );
-        }
-    }
+			if ( maxLength < ( textLength - dotLength - precisionLength - minusLength ) )
+				return;
+
+			super.insertString( offset, str, attr );
+		}
+	}
 }

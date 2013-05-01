@@ -59,10 +59,11 @@ public class DataStore implements Data {
 			// accessLocalServer
 			// Please see Wiki for more information on the ServerConfiguration.
 			ServerConfiguration config = Db4oClientServer.newServerConfiguration();
+			config.file().blockSize(8); // Change block size to allow for bigger database
 			config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 			config.common().objectClass(User.class).storeTransientFields(true); // Enables data persistence for passwords
 
-			//Connect to the Database
+			// Connect to the Database
 			server = Db4oClientServer.openServer(config, WPI_TNG_DB, PORT);
 			server.grantAccess(DB4oUser,DB4oPass);
 
@@ -258,7 +259,7 @@ public class DataStore implements Data {
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
 		List<T> result = theDB.queryByExample(aSample.getClass());
-		System.out.println("retrievedAll: "+result);
+		//System.out.println("retrievedAll: "+result);
 		theDB.commit();
 
 		logger.log(Level.FINE, "Database RetrieveAll Performed");
@@ -284,7 +285,7 @@ public class DataStore implements Data {
 				result.add(theModel);
 			}
 		}
-		System.out.println("retrievedAll: "+result);
+		//System.out.println("retrievedAll: "+result);
 		theDB.commit();
 		logger.log(Level.FINE, "Database RetrieveAll Performed");
 		return result;

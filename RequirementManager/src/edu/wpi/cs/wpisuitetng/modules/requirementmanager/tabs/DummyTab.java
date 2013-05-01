@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
@@ -28,18 +16,28 @@ import java.awt.Component;
 
 import javax.swing.Icon;
 
-/**
- * Holds values given to it, but doesn't actually change the given MainTabView.
+/** Holds values given to it, but doesn't actually change the given MainTabView.
  */
 public class DummyTab extends Tab {
 
+	/**
+	 * Field title.
+	 */
 	private String title;
+	/**
+	 * Field icon.
+	 */
 	private Icon icon;
+	/**
+	 * Field toolTipText.
+	 */
 	private String toolTipText;
+	/**
+	 * Field component.
+	 */
 	private Component component;
 
-	/**
-	 * Construct a DummyTab - arguments ignored
+	/** Construct a DummyTab - arguments ignored
 	 * 
 	 * @param view ignored
 	 * @param tabComponent ignored
@@ -48,8 +46,7 @@ public class DummyTab extends Tab {
 		super(null, null);
 	}
 	
-	/**
-	 * Same as DummyTab(null, null)
+	/** Same as DummyTab(null, null)
 	 */
 	public DummyTab() {
 		this(null, null);

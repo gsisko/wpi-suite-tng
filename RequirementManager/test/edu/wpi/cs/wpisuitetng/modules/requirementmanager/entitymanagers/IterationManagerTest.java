@@ -208,7 +208,6 @@ public class IterationManagerTest {
 		manager.deleteEntity(adminSession, ((Integer)otherIteration.getID()).toString());
 	}
 	
-	
 	@Test
 	public void testDeleteAll() throws WPISuiteException {
 		Iteration anotherIteration = new Iteration("Name", new Date(600), new Date(9000));
@@ -219,7 +218,6 @@ public class IterationManagerTest {
 		// otherIteration should still be around
 		assertEquals(1, db.retrieveAll(new Iteration(), otherProject).size());
 	}
-	
 	
 	@Test
 	public void testDeleteAllWhenEmpty() throws WPISuiteException {

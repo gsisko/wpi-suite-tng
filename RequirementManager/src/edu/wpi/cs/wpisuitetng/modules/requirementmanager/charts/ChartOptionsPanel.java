@@ -6,70 +6,81 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
-/**
- * Panel that contains options for the currently displayed chart.
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTableModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
+
+/** Panel that contains options for the currently displayed chart.
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
-	
-	/** Chart panel that will have it's options set by this panel */
-	private PieChartPanel chart;
 
 	//The labels
-	private  JLabel chartTypeLabel; //The label for the chartTypeBox
-	private  JLabel chartDataLabel;//The label for the chartDataBox
-	private  JLabel filtersLabel; //The label for the filtersOptionsBox
+	/** The label for the chartTypeBox */
+	private  JLabel chartTypeLabel;
+	/** The label for the chartDataBox */
+	private  JLabel chartDataLabel;
+	/** The label for the filtersOptionsBox */
+	private  JLabel filtersLabel;
+
+	/** The label for the table of active filters ("filtertable") */
+	private JLabel filterlistlabel;
 
 	//The fillable components
-	private  JComboBox chartTypeBox;//The combo box used to select which chart type to display
-	private  JComboBox chartDataBox;//The combo box used to select which data to graph
-	private  JComboBox filtersOptionsBox;//The combo box used to select the filters options (IE whether to apply the active filters to the data)
+	/** The combo box used to select which chart type to display */
+	private  JComboBox chartTypeBox;
+	/** The combo box used to select which data to graph */
+	private  JComboBox chartDataBox;
+	/** The combo box used to select the filters options (IE whether to apply the active filters to the data) */
+	private  JComboBox filtersOptionsBox;
 
-	//The layout manager
-	protected BoxLayout layout; //The layout for this panel
+	/** ResultsTableModel for filtertable */
+	private  ResultsTableModel filterTableModel;
 
-	private PieChartView parent; //Stores the PieChartView that contains the panel
-	protected boolean inputEnabled;//A boolean indicating if input is enabled on the form 
+	/** JTable to display the currently active filters */
+	private  JTable filtertable;
 
-	/**
-	 * Construct the panel and initialize necessary internal variables
-	 * @param chart A PieChartPanel that will have it's options set by this Panel
-	 * @param parentView The PieChartView that contains this panel
+	/** The layout manager for this panel */
+	protected BoxLayout layout; 
+
+	/** Stores the PieChartView that contains the ChartOptionsPanel */
+	private ChartView parent;
+
+	/** A boolean indicating if input is enabled on the form  */
+	protected boolean inputEnabled;
+
+	/** Construct the panel and initialize necessary internal variables
+	 * @param parentView The ChartView that contains this panel
 	 */
-	public ChartOptionsPanel(PieChartPanel chart, PieChartView parentView){
-		
-		this.chart = chart;//Set the chart
-		
+	public ChartOptionsPanel(ChartView parentView){
 		parent = parentView; //Set the parent
 
 		inputEnabled = true;// Indicate that input is enabled
@@ -82,54 +93,130 @@ public class ChartOptionsPanel extends JPanel{
 		Border compound = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED), BorderFactory.createEmptyBorder(15, 10, 15, 10));
 		setBorder(compound);
 
+		// Construct the table model
+		filterTableModel = new ResultsTableModel();
+
+		// Construct the table and configure it
+		filtertable = new JTable(filterTableModel);
+		filtertable.setAutoCreateRowSorter(true); 
+		filtertable.setFillsViewportHeight(true);
+		filtertable.setDefaultRenderer(String.class, new DefaultTableCellRenderer());
+		filtertable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
+		for(MouseListener listener : filtertable.getMouseListeners()){
+			filtertable.removeMouseListener(listener);
+		}
+		for(MouseListener listener : filtertable.getTableHeader().getMouseListeners()){
+			filtertable.getTableHeader().removeMouseListener(listener);
+		}
+		for(MouseMotionListener listener : filtertable.getMouseMotionListeners()){
+			filtertable.removeMouseMotionListener(listener);
+		}
+		filtertable.getTableHeader().setResizingAllowed(false);
+		filtertable.getTableHeader().setReorderingAllowed(false);
+
+		buildTable();
+
+		JScrollPane resultsScrollPane = new JScrollPane(filtertable);
+
+		resultsScrollPane.setPreferredSize(new Dimension(175,250));
+
+		resultsScrollPane.setAlignmentX(CENTER_ALIGNMENT);
+
 		//Construct the labels
 		chartTypeLabel = new JLabel("Type of chart:");
 		chartDataLabel = new JLabel("Data to display:");
 		filtersLabel = new JLabel("Active filters:");
+		filterlistlabel = new JLabel("List of Active Filters");
 
 		//Create the strings for the boxes
-		String[] typeStrings = { "Pie Chart"};
-		String[] dataStrings = { "Requirement Status", "Requirement Iteration"};
-		String[] filtersStrings = { "Applied", "Not Applied"};
+		String[] typeStrings = { "Pie Chart", "Bar Chart"};
+		String[] dataStrings = { "Requirement Status", "Requirement Iteration", "Requirements per User", "Estimate per User"};
+		String[] filtersStrings = {"Not Applied", "Applied"};
 
 		//Construct the boxes 
 		chartTypeBox = new JComboBox(typeStrings);
 		chartDataBox = new JComboBox(dataStrings);
 		filtersOptionsBox = new JComboBox(filtersStrings);
-		
-		chartDataBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-            	parent.setDataTypeVisible((String) ((JComboBox)e.getSource()).getSelectedItem());
-            	parent.refreshData();
-            }
-        });  
-		
-		filtersOptionsBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-            	parent.setDataFiltered((String) ((JComboBox)e.getSource()).getSelectedItem());
-            	parent.refreshData();
-            }
-        });  
-		
+
+		//Add action listeners to the boxes so data is refreshed when a change is made
+		chartTypeBox.addPopupMenuListener(new PopupMenuListener() {
+			public void update(){
+				parent.setChartType((String)chartTypeBox.getSelectedItem());
+			}
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				update();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				update();
+			}
+		});  
+
+		chartDataBox.addPopupMenuListener(new PopupMenuListener() {
+			public void update(){
+				parent.setDataTypeVisible((String)chartDataBox.getSelectedItem());
+			}
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				update();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				update();
+			}
+		});  
+
+		filtersOptionsBox.addPopupMenuListener(new PopupMenuListener() {
+			public void update(){
+				parent.setDataFiltered((String)filtersOptionsBox.getSelectedItem());
+			}
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				update();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				update();
+			}
+		});  
+
+
 		//Set the initial selections for the boxes
 		chartTypeBox.setSelectedIndex(0);
 		chartDataBox.setSelectedIndex(0);
 		filtersOptionsBox.setSelectedIndex(0);
-		
+
 		//Set the alignments of the components
 		chartTypeLabel.setAlignmentX(LEFT_ALIGNMENT);		
 		chartDataLabel.setAlignmentX(LEFT_ALIGNMENT);
 		filtersLabel.setAlignmentX(LEFT_ALIGNMENT);
-		
+		filterlistlabel.setAlignmentX(LEFT_ALIGNMENT);
+
 		chartTypeBox.setAlignmentX(LEFT_ALIGNMENT);		
 		chartDataBox.setAlignmentX(LEFT_ALIGNMENT);
 		filtersOptionsBox.setAlignmentX(LEFT_ALIGNMENT);
-		
+
 		//Set the sizing of the boxes
 		chartTypeBox.setMaximumSize(new Dimension(120, 25));
-		chartDataBox.setMaximumSize(new Dimension(175, 25));
+		chartDataBox.setMaximumSize(chartDataBox.getPreferredSize());
 		filtersOptionsBox.setMaximumSize(new Dimension(120, 25));
-		
+
 		//Add the components with spacing in between them
 		this.add(chartTypeLabel);
 		this.add(Box.createRigidArea(new Dimension(0,3)));
@@ -143,14 +230,14 @@ public class ChartOptionsPanel extends JPanel{
 		this.add(Box.createRigidArea(new Dimension(0,3)));
 		this.add(filtersOptionsBox);
 		this.add(Box.createRigidArea(new Dimension(0,25)));
-
+		this.add(filterlistlabel);
+		this.add(Box.createRigidArea(new Dimension(0,3)));
+		this.add(resultsScrollPane);
 
 		setInputEnabled(inputEnabled);
-
 	}
 
-	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
+	/** Sets whether input is enabled for this panel and its children. This should be used instead of 
 	 * JComponent#setEnabled because setEnabled does not affect its children.
 	 * 
 	 * @param enabled Whether or not input is enabled.
@@ -158,90 +245,85 @@ public class ChartOptionsPanel extends JPanel{
 	protected void setInputEnabled(boolean enabled){
 		inputEnabled = enabled;
 
-		enable(chartTypeBox, false);
+		enable(chartTypeBox, enabled);
 		enable(chartDataBox, enabled);
 		enable(filtersOptionsBox, enabled);
-
 	}
 
-
 	/**
-	 * @return the chartTypeBox
+	 * @return chartTypeBox The "chartTypeBox" JComboBox
 	 */
 	public JComboBox getChartTypeBox() {
 		return chartTypeBox;
 	}
 
 	/**
-	 * @param chartTypeBox the chartTypeBox to set
+	 * @param chartTypeBox The "chartTypeBox" JComboBox to set
 	 */
 	public void setChartTypeBox(JComboBox chartTypeBox) {
 		this.chartTypeBox = chartTypeBox;
 	}
 
 	/**
-	 * @return the chartDataBox
+	 * @return chartDataBox The "chartDataBox" JComboBox
 	 */
 	public JComboBox getChartDataBox() {
 		return chartDataBox;
 	}
 
 	/**
-	 * @param chartDataBox the chartDataBox to set
+	 * @param chartDataBox The "chartDataBox" JComboBox to set
 	 */
 	public void setChartDataBox(JComboBox chartDataBox) {
 		this.chartDataBox = chartDataBox;
 	}
 
+	/** Fills the combo box for chart data to the array of String passed in
+	 * @param options String[]
+	 */
+	public void setChartData(String[] options) {
+		this.chartDataBox.setModel(new DefaultComboBoxModel(options));
+	}
+
 	/**
-	 * @return the filtersOptionsBox
+	 * @return filtersOptionsBox The "filtersOptionsBox" JComboBox
 	 */
 	public JComboBox getFiltersOptionsBox() {
 		return filtersOptionsBox;
 	}
 
 	/**
-	 * @param filtersOptionsBox the filtersOptionsBox to set
+	 * @param filtersOptionsBox The "filtersOptionsBox" JComboBox to set
 	 */
 	public void setFiltersOptionsBox(JComboBox filtersOptionsBox) {
 		this.filtersOptionsBox = filtersOptionsBox;
 	}
 
-	/**
+	/** Method setFiltersOptions.
+	 * @param options String[]
+	 */
+	public void setFiltersOptions(String[] options) {
+		this.filtersOptionsBox.setModel(new DefaultComboBoxModel(options));
+	}
+
+	/** Method to get the parent of this ChartOptionsPanel
 	 * @return the parent
 	 */
-	public PieChartView getParent() {
+	public ChartView getParent() {
 		return parent;
 	}
-	
-	
-	/**
-	 * Returns a boolean representing whether or not input is enabled for this panel.
-	 * @return the inputEnabled boolean 	A boolean representing whether or not input is enabled for this panel.
+
+	/** Method to get whether input is enabled for this panel
+	 * @return A boolean representing whether or not input is enabled for this panel.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
 	}
 
-	/**
-	 * @return the chart
-	 */
-	public PieChartPanel getChart() {
-		return chart;
-	}
-
-	/**
-	 * @param chart the chart to set
-	 */
-	public void setChart(PieChartPanel chart) {
-		this.chart = chart;
-	}
-	
-	/** Set the given box to enabled as well 
-	 *  set the box to the correct color
+	/** Set the given box to enabled and to the correct color
 	 * 
-	 * @param box   The box that needs enabling and colors
-	 * @param enabled  True to enable and False to disable
+	 * @param box Which box to enable
+	 * @param enabled True to enable and False to disable
 	 */
 	public void enable(JComboBox box, boolean enabled) {
 		if (enabled) {
@@ -252,5 +334,97 @@ public class ChartOptionsPanel extends JPanel{
 			box.setEnabled(false);
 			box.setBackground(new Color(238,238,238));
 		}
+	}
+
+	/** Build the table on the bottom of the panel with the
+	 * list of current filters active
+	 */
+	public void buildTable() {
+		// Setup data structures
+		String[] emptyColumns = {};
+		Object[][] emptyData = {};
+
+		// Fire blanks so that the old contents are removed
+		this.getModel().setColumnNames(emptyColumns);
+		this.getModel().setData(emptyData);
+		this.getModel().fireTableStructureChanged();
+
+		Filter[] filters = parent.getView().getParent().getAllFilters();
+		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
+		for (int i = 0; i < filters.length; i++) {
+			if (filters[i].isUseFilter()) {
+				activeFilters.add(filters[i]);
+			}
+		}
+
+		// Add the list of filters to the FilterListPanel object
+		if (filters.length > 0 && activeFilters != null && activeFilters.size()>0) {
+			// set the column names
+			String[] columnNames = {"Id", "Type", "Op", "Value", "Active"};
+
+			// put the data in the table
+			Object[][] entries = new Object[activeFilters.size()][columnNames.length];
+			for (int i = 0; i < activeFilters.size(); i++) {
+				if (activeFilters.get(i).isUseFilter()) {
+					entries[i][0] = String.valueOf(activeFilters.get(i).getUniqueID());
+					entries[i][1] = activeFilters.get(i).getType().toString();
+
+					if (activeFilters.get(i).getComparator().toString().equals("Contains")) {
+						entries[i][2] = "c";
+					} else if (activeFilters.get(i).getComparator().toString().equals("DoesNotContain")) {
+						entries[i][2] = "!c";
+					} else {
+						entries[i][2] = activeFilters.get(i).getComparator().toString();
+					}
+
+					String typeString = activeFilters.get(i).getType().toString();
+					if (typeString.equals("Iteration")) {
+						String strId = activeFilters.get(i).getValue();
+						while (parent.getView().getParent().getAllIterations().length == 0)
+							for (Iteration iter : parent.getView().getParent().getAllIterations()) {
+								if (strId.equals(iter.getID() + "")) {
+									entries[i][3] = iter.getName();
+								}
+							}
+					}
+					else {
+						entries[i][3] = activeFilters.get(i).getValue();
+					}
+
+					if (activeFilters.get(i).isUseFilter()) {
+						entries[i][4] = "yes";
+					} else {
+						entries[i][4] = "no";
+					}
+				}
+			}
+			// fill the table
+			this.getModel().setColumnNames(columnNames);
+			this.getModel().setData(entries);
+			this.getModel().fireTableStructureChanged();
+
+
+			//Hide the Id column
+			filtertable.getColumn("Id").setMinWidth(0);
+			filtertable.getColumn("Id").setMaxWidth(0);
+			filtertable.getColumn("Id").setWidth(0);
+
+			//Set preferred column widths
+			//Type
+			filtertable.getColumnModel().getColumn(1).setPreferredWidth(150);
+			//Op
+			filtertable.getColumnModel().getColumn(2).setPreferredWidth(50);
+			//Value
+			filtertable.getColumnModel().getColumn(3).setPreferredWidth(75);
+			//Active
+			filtertable.getColumnModel().getColumn(4).setPreferredWidth(75);
+		}
+	}
+
+	/**
+	 * @return filterTableModel The ResultsTableModel for the table
+	 */
+	public ResultsTableModel getModel() {
+		return filterTableModel;
 	}
 }

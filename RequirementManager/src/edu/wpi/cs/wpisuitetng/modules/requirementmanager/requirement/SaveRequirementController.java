@@ -6,31 +6,19 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
 
 import static edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab.Mode.CREATE;
 
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Date;
 
-import javax.swing.JOptionPane;
-
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -41,41 +29,38 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class SaveRequirementController
-{
+/** The controller responsible for managing requests to save requirements to the database
+ */
+public class SaveRequirementController {
+	/** The tab that this controlling is performing save requests for */
 	private final RequirementTab view;
 
+	/** Constructor for SaveRequirementController
+	 * @param view The tab that this controlling is performing save requests for
+	 */
 	public SaveRequirementController(RequirementView view) 
 	{
 		this.view = view.getRequirementPanel();
 	}
 
+	/** Save the requirement currently in the view 
+	 */
 	public void save() 
 	{
-		// check if any inputs are invalid, print an error message if one is
-		String error = "";
-		if (view.getRequirementName().getText().length() == 0) {
-			error += "Name must be non-blank.\n";
-		}
-		if (view.getRequirementName().getText().length() > 100) {
-			error += "Name cannot be greater than 100 characters.\n";
-		}
-		if (view.getRequirementDescription().getText().length() == 0) {
-			error += "Description must be non-blank.\n";
-		}
+		//If the requirement estimate is blank...
 		if (view.getRequirementEstimate().getText().length() == 0) {
-			error += "Estimate must be non-blank.\n";
-		}
+			view.getRequirementEstimate().setText("0");//...set it to 0
+		} 
+		//If the requirement actual effort is blank...
 		if (view.getRequirementActualEffort().getText().length() == 0) {
-			error += "ActualEffort must be non-blank.\n";
-		}
-		//TODO this should change to eliminate popups, maybe put error checking in the panel itself?
-		if (!error.equals("")) {
-			JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-			return;
+			view.getRequirementActualEffort().setText("0");//...set it to 0
 		}
 
+		// Warn when the user tries to exit the tab
+		view.getAttributePanel().setSaving(true);
+
 		view.getParent().setSaveButtonEnable(false);
+
 		if (view.getMode() == CREATE) { // if we are creating a new requirement
 
 			// make a PUT http request and let the observer get the response
@@ -84,28 +69,15 @@ public class SaveRequirementController
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
 		}
-
 		else { // we are updating an existing requirement
+
 			// make a new requirement to story the updated data
 			Requirement updatedRequirement = new Requirement();
-			
+
 			//grab the old requirement
 			Requirement oldRequirement = view.getCurrentRequirement();
 
-			//Check to see if the status update is invalid because the user had tried to change the status from "InProgress" to "Deleted")
-			RequirementStatus oldStatus = oldRequirement.getStatus(); //grab the old status
-			RequirementStatus newStatus = RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()); //get the new status
-			if ((oldStatus == RequirementStatus.InProgress) && (newStatus == RequirementStatus.Deleted)) {//if user had tried to change the status from "InProgress" to "Deleted"...
-				JOptionPane.showMessageDialog(null, "Cannot change status from InProgress to Deleted.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
-				return;//cancel the update
-			} else if ((oldStatus == RequirementStatus.New) && (newStatus == RequirementStatus.Open)){
-				System.out.println("Got here.");
-				updatedRequirement.setStatus(RequirementStatus.New);
-			} else {
-				updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
-			}
-				
- 
+			updatedRequirement.setStatus(RequirementStatus.toStatus(view.getRequirementStatus().getSelectedItem().toString()));
 
 			// give the new requirement the correct ID number
 			updatedRequirement.setId(oldRequirement.getId());
@@ -118,51 +90,39 @@ public class SaveRequirementController
 			updatedRequirement.setPriority(RequirementPriority.toPriority(view.getRequirementPriority().getSelectedItem().toString()));
 			updatedRequirement.setEstimate(Integer.parseInt(view.getRequirementEstimate().getText()));
 			updatedRequirement.setActualEffort(Integer.parseInt(view.getRequirementActualEffort().getText()));
+			updatedRequirement.setAcceptanceTests(oldRequirement.getAcceptanceTests());
 			updatedRequirement.setNotes(oldRequirement.getNotes());
+			updatedRequirement.setUserNames(oldRequirement.getUserNames());
+			updatedRequirement.setEvents(oldRequirement.getEvents());
 
-			Iteration newIter = null;
 			// Setting the Iteration			
 			String selectedIteration = view.getIterationBox().getSelectedItem().toString();
 			for (Iteration iter: view.getAllIterations()){
 				// If it is the right Iteration, save it into the updated requirement
 				if (selectedIteration.equals(iter.getName())){
-					updatedRequirement.setAssignedIteration(iter.getID());
-					newIter = iter;
+					updatedRequirement.setIteration(iter.getID());
 				}
-			}
-
-
-			
-			int oldIterID = oldRequirement.getAssignedIteration(); //grab the old status
-			int newIterID = updatedRequirement.getAssignedIteration();
-			if (newIterID != oldIterID) {
-				if (newIter.getEndDate().before(new Date()) && newIterID != 0) {
-					JOptionPane.showMessageDialog(null, "Cannot assign a requirement to an iteration that has already ended.", "Error", JOptionPane.ERROR_MESSAGE); //popup an error message
-					return;//cancel the update
-				}
-					
 			}
 
 			//if user had tried to change the status to "Deleted", set the Iteration to "Backlog"
-			if (newStatus == RequirementStatus.Deleted) {
-				updatedRequirement.setAssignedIteration(0);
+			if (updatedRequirement.getStatus() == RequirementStatus.Deleted || updatedRequirement.getStatus() == RequirementStatus.Open) {
+				updatedRequirement.setIteration(0);
 			}
 
 			//If we changed the assigned iteration or estimate... no reason to spam the server otherwise
 			//This should reduce the number of requests the server gets sent
-			if (updatedRequirement.getAssignedIteration() != oldRequirement.getAssignedIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
+			if (updatedRequirement.getIteration() != oldRequirement.getIteration() || updatedRequirement.getEstimate() != oldRequirement.getEstimate()){
 				//!!! Assuming Iteration will be set above !!!
 
 				/** Update oldIteration */
 				Iteration oldIteration = null;
 
 				for (Iteration i : view.getAllIterations()) {
-					if (oldRequirement.getAssignedIteration() == i.getID()) {
+					if (oldRequirement.getIteration() == i.getID()) {
 						oldIteration = i;
 					}
 				}
-				
-				System.out.println(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
+
 				//Update totalEstimate
 				oldIteration.setTotalEstimate(oldIteration.getTotalEstimate() - oldRequirement.getEstimate());
 
@@ -173,9 +133,7 @@ public class SaveRequirementController
 				}
 				oldIteration.setRequirementsContained(requirementList);
 
-				
-
-				//Save the oldIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				//Save the oldIteration on the server. There is no observer because we don't care about the responses
 				Request saveOldIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 				saveOldIterationRequest.setBody(oldIteration.toJSON());
 				saveOldIterationRequest.send();
@@ -184,7 +142,7 @@ public class SaveRequirementController
 				Iteration updatedIteration = null;
 
 				for (Iteration i : view.getAllIterations()) {
-					if (updatedRequirement.getAssignedIteration() == i.getID()) {
+					if (updatedRequirement.getIteration() == i.getID()) {
 						updatedIteration = i;
 					}
 				}
@@ -210,27 +168,22 @@ public class SaveRequirementController
 			request.setBody(updatedRequirement.toJSON()); // put the new message in the body of the request
 			request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 			request.send();
-
 		}
-
 	}
 
 
-	/**
-	 * Simple success message for saving a new requirement.  If we want the boxes to clear automatically,
+	/** Simple success message for saving a new requirement.  If we want the boxes to clear automatically,
 	 * this is probably where we would want to implement it.
 	 * @param newReq Requirement that was saved.
 	 */
 	public void saveSuccess(Requirement newReq) {
 		// if success, set all of the UI fields appropriately for post-save actions
 		if (newReq != null) {
-			System.out.print("Requirement " + newReq.getId() + " saved successfully\n");
-
 			/** Update updatedIteration*/
 			Iteration currentIteration = null;
 
 			for (Iteration i : view.getAllIterations()) {
-				if (i.getID() == newReq.getAssignedIteration()) {
+				if (i.getID() == newReq.getIteration()) {
 					currentIteration = i;
 				}
 			}
@@ -243,39 +196,93 @@ public class SaveRequirementController
 			}
 
 			if (!alreadyContained) {
-
 				//Add id to the list
 				ArrayList<Integer> updatedRequirementList = currentIteration.getRequirementsContained();
 				updatedRequirementList.add(newReq.getId());
 				currentIteration.setRequirementsContained(updatedRequirementList);
 
-				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				//Save the updatedIteration on the server. There is no observer because we don't care about the responses 
 				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 				saveUpdatedIterationRequest.setBody(currentIteration.toJSON());
-				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); 
 				saveUpdatedIterationRequest.send();
-
 			}
 
-		}
-		else {
-			System.err.print("Undected error saving requirement\n");
-		}
-	}
+			if (view.getCurrentRequirement().getStatus() == RequirementStatus.Deleted) {// Disable the note panel,  userChooserTab, and acceptance test tab if the requirement has been deleted
 
+				//Disable notes
+				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), false);
+				view.getTabPanel().getNotePanel().getSaveButton().setEnabled(false);
+				view.getTabPanel().getNotePanel().setEnabled(false);
+				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
+					view.getTabPanel().getNotePanel().getNoteMessage().setText("");
+				}
+
+				//Disable UserChooseTab
+				view.getTabPanel().getUserChooserPanel().setInputEnabled(false);
+
+				//Disable Acceptance Tests
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), false);
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), false);
+				view.getTabPanel().getAcceptanceTestPanel().getSaveButton().setEnabled(false);
+				view.getTabPanel().getAcceptanceTestPanel().setAcceptanceTestPanelsEnabled(false);
+				view.getTabPanel().getAcceptanceTestPanel().setEnabled(false);
+				
+				//Clear out the text if disabled
+				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
+				}
+				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
+				}
+			}
+			else 
+			{
+				//Enable Notes
+				view.toggleEnabled(view.getTabPanel().getNotePanel().getNoteMessage(), true);
+				view.getTabPanel().getNotePanel().setSaveButtonWhenMessageIsValid();
+				view.getTabPanel().getNotePanel().setEnabled(true);
+				if (!view.getTabPanel().getNotePanel().getNoteMessage().getText().equals("")) {
+					view.getTabPanel().getNotePanel().getNoteMessage().setBackground(new Color(248,253,188));
+				}
+
+				//Enable UserChooserTab
+				view.getTabPanel().getUserChooserPanel().setInputEnabled(true);
+
+				//Enable Acceptance Tests
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription(), true);
+				view.toggleEnabled(view.getTabPanel().getAcceptanceTestPanel().getTxtName(), true);
+				view.getTabPanel().getAcceptanceTestPanel().setAcceptanceTestPanelsEnabled(true);
+				view.getTabPanel().getAcceptanceTestPanel().setSaveButtonWhenMessageIsValid();
+				view.getTabPanel().getAcceptanceTestPanel().setEnabled(true);
+				
+				//Set background to yellow if changed
+				if (!view.getTabPanel().getAcceptanceTestPanel().getTxtName().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getTxtName().setBackground(new Color(248,253,188));
+				}
+				if (!view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().getText().equals("")) {
+					view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setBackground(new Color(248,253,188));
+				}
+			}
+			// refreshes the list view, should be made much cleaner in the future
+			((ListView)view.getParent().getTabController().getView().getComponentAt(0)).refreshData();
+		} 
+		else 
+			System.err.print("Undetected error saving requirement\n");
+
+		view.getAttributePanel().getSaveButton().setEnabled(false);
+	}
+	
+	/** Gets the view that this controller is in
+	 * @return view The view RequirementTab
+	 */
 	public RequirementTab getView() {
 		return view;
 	}
-	/**
-	 * Saves a new note to the Requirement
+
+	/** Saves a new note to the Requirement
 	 */
 	public void saveNote() {
-		// check if any inputs are invalid, print an error message if one is
-		if (view.getTabPanel().getNotePanel().getNoteMessage().getText().length() == 0) {
-			JOptionPane.showMessageDialog(null, "Note must be non-blank.", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
 		Requirement currentRequirement = view.getCurrentRequirement();
 
 		String NoteContent = view.getRequirementNote().getText();
@@ -289,5 +296,63 @@ public class SaveRequirementController
 		request.send();
 	}
 
-}
+	/** Saves an acceptance test to the Requirement
+	 */
+	public void saveAcceptanceTest() {
+		Requirement currentRequirement = view.getCurrentRequirement();
 
+		AcceptanceTest newTest = view.getRequirementAcceptanceTest();
+		view.getTabPanel().getAcceptanceTestPanel().getAcceptanceTestDescription().setText("");
+		view.getTabPanel().getAcceptanceTestPanel().getTxtName().setText("");
+
+		currentRequirement.getAcceptanceTests().add(newTest);
+
+		// make a POST http request and let the observer get the response
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
+	}
+
+	/** Updates an old AcceptanceTest
+	 * 
+	 * @param oldTest The old version of the test
+	 * @param newTest Contains the changes we want to save
+	 */
+	public void updateAcceptanceTest (AcceptanceTest oldTest, AcceptanceTest newTest) {
+		Requirement currentRequirement = view.getCurrentRequirement();
+		ArrayList<AcceptanceTest> myList = currentRequirement.getAcceptanceTests();
+		for (int i = 0; i < myList.size(); i++) { 	// Look through the list of tests
+			// For the matching old test
+			if (myList.get(i).getAcceptanceTestTitle().equals(oldTest.getAcceptanceTestTitle()) && myList.get(i).getDescription().equals(oldTest.getDescription())) {
+				myList.get(i).setAcceptanceTestResult(newTest.getAcceptanceTestResult());	// And update it
+			}
+		}
+		
+		currentRequirement.setAcceptanceTests(myList);
+		
+		// make a POST http request and let the observer get the response
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
+	}
+	
+	/** Save user assignment changes */
+	public void saveUsers() {
+		Requirement currentRequirement = view.getCurrentRequirement();
+		ArrayList<String> assignedUsers = new ArrayList<String>();
+		UserListModel assignedUserListModel = view.getTabPanel().getUserChooserPanel().getAssignedUserListModel();
+
+		for (int i = 0; i < assignedUserListModel.getSize(); i++) {
+			assignedUsers.add(assignedUserListModel.getUserAt(i));
+		}
+		currentRequirement.setUserNames(assignedUsers);
+
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); // POST == update
+		request.setBody(currentRequirement.toJSON()); // put the new message in the body of the request
+		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
+		request.send();
+	}
+
+}

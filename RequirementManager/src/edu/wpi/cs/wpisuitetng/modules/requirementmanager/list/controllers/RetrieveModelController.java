@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
@@ -36,7 +24,8 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** Controller to handle retrieving one requirement from the server triggered
- *  by double clicking on a model in the list of a list panel   */
+ *  by double clicking on a model in the list of a list panel  
+ */
 public class RetrieveModelController extends MouseAdapter {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
@@ -44,7 +33,6 @@ public class RetrieveModelController extends MouseAdapter {
 	private final IBuilderPanel builderView;	
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-	
 	
 	/** Constructs a controller with an action listener that can load up a 
 	 *  model when an item is double clicked in the list.
@@ -91,7 +79,6 @@ public class RetrieveModelController extends MouseAdapter {
 		builderView.setInputEnabled(true);
 		
 		listView.setNewBtnToCancel();
-		System.out.println(modelName  + " retrieved and displayed successfully");
 	}
 
 	/** Called by {@link RetrieveModelObserver} when an error

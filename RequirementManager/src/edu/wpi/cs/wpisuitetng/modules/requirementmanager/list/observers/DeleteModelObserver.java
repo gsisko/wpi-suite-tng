@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.observers;
@@ -29,16 +17,17 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /** Observer that waits for a single delete Model request to return
- *  from the server. It refreshes all list views applicable. */
-public class DeleteModelObserver implements RequestObserver {
-	/** Controller that started this observer   	 */
+ *  from the server. It refreshes all list views applicable. 
+ */
+public class DeleteModelObserver implements RequestObserver,IObserver {
+	/** Controller that started this observer */
 	private final DeleteModelController controller;
 	
 	/** Default constructor with a reference back to the controller
 	 * @param deleteFilterController
 	 */
 	public DeleteModelObserver(DeleteModelController deleteFilterController) {
-		this.controller = deleteFilterController;
+		controller = deleteFilterController;
 	}
 
 	/** Upon success, tell the controller to trigger a refresh 
@@ -50,7 +39,7 @@ public class DeleteModelObserver implements RequestObserver {
 		controller.refreshListViews();
 	}
 
-	/**  Upon failure, prints to console
+	/** Upon error, prints to console
 	 * @param iReq The request response from the server 
 	 */
 	public void responseError(IRequest iReq) {
@@ -59,6 +48,7 @@ public class DeleteModelObserver implements RequestObserver {
 
 	/** Upon failure, prints to console
 	 * @param iReq The request response from the server 
+	 * @param exception unused
 	 */
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("Fail: Cannot delete the " + controller.getModelName());

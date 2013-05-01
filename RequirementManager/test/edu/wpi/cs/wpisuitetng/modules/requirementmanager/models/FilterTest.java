@@ -7,19 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ *		Team 5 D13
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
@@ -55,7 +43,6 @@ public class FilterTest {
     
     // Requirements
     Requirement testRequirement;
-    
     
     @Before
     public void setUp(){
@@ -182,7 +169,6 @@ public class FilterTest {
 	
 	assertTrue(OperatorType.perform(doesNotContain, "fgd", "Hello World", false));
 	assertFalse(OperatorType.perform(doesNotContain, "ello World", "Hello World", false));
-	
     }
     
     @Test
@@ -192,24 +178,6 @@ public class FilterTest {
 	assertEquals("Hello World", testFilter.getValue());
 	assertTrue(testFilter.equals(Filter.fromJSON(json)));
     }
-    
-//    @Test
-//    public void testToJSONArray () {
-//    	testFilter  = new Filter(FilterType.Id, OperatorType.EqualTo, "1", false);
-//    	testFilter.setUniqueID(1);
-//    	testFilter2 = new Filter(FilterType.Iteration, OperatorType.EqualTo, "5", true);
-//    	testFilter.setUniqueID(2);
-//    	Filter[] filterList = new Filter[2];
-//    	filterList[0] = testFilter;
-//    	filterList[1] = testFilter2;
-//    	
-//    	// Put filters into a json and parse them out again
-//    	String json = Filter.toJSON(filterList);
-//    	Filter[] parsedList = Filter.fromJSONArray(json);
-//    	
-//    	assertTrue(parsedList[0].equals(filterList[0]));
-//    	assertTrue(parsedList[1].equals(filterList[1]));
-//    }
     
     @Test
     public void testUpdateArray () {
@@ -239,10 +207,7 @@ public class FilterTest {
     	assertTrue(testFilter.equals(toCompare));
     }
     
-    
-    /**
-     * This assumes that the
-     * perform method works
+    /** This test assumes that the perform method works
      */
     @Test
     public void testPassesFilter() {
@@ -270,9 +235,9 @@ public class FilterTest {
     	tmpFilter.setUniqueID(nameEquals.getUniqueID());
     	assertTrue(nameEquals.identify(nameEquals));
     	assertTrue(nameEquals.identify(tmpFilter));
-    	assertTrue(nameEquals.identify(new Integer(nameEquals.getUniqueID()).toString()));
+    	assertTrue(nameEquals.identify(Integer.toString(nameEquals.getUniqueID())));
     	
     	assertFalse(priorityEquals.identify(nameEquals));
-    	assertFalse(priorityEquals.identify(new Integer(nameEquals.getUniqueID()).toString()));
+    	assertFalse(priorityEquals.identify(Integer.toString(nameEquals.getUniqueID())));
     }
 }

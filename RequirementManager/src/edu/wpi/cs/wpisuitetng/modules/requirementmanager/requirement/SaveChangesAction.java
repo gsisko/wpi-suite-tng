@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement;
@@ -29,18 +17,15 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
-
-/**
- * Action that calls {@link SaveRequirementController#save}, default mnemonic key is S.
+/** Action that calls for a requirement save, default mnemonic key is S.
  */
 @SuppressWarnings("serial")
 public class SaveChangesAction extends AbstractAction {
 
+	/** The controller managing save requests */
 	private final SaveRequirementController controller;
 	
-	/**
-	 * Create a SaveChangesAction
+	/** Create a SaveChangesAction
 	 * @param controller When the action is performed, controller.save will be called
 	 */
 	public SaveChangesAction(SaveRequirementController controller) {
@@ -49,11 +34,10 @@ public class SaveChangesAction extends AbstractAction {
 		putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 	}
 	
-	@Override
+	/** When the button is pressed, the controller is told to save 
+	 * @param arg0 the event 
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		controller.save();
-		// refreshes the list view, should be made much cleaner in the future
-		((ListView)controller.getView().getParent().getTabController().getView().getComponentAt(0)).refreshData();
 	}
-
 }

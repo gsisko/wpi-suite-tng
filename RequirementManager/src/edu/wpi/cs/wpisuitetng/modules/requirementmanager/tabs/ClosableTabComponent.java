@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs;
@@ -37,19 +25,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
 
-/**
- * This provides a tab component with a close button to the left of the title.
+/** This provides a tab component with a close button to the left of the title.
  */
 @SuppressWarnings("serial")
 public class ClosableTabComponent extends JPanel implements ActionListener {
 	
-	// tabbed pane to be given a close button
+	/** Tabbed pane to be given a close button */
 	private final JTabbedPane tabbedPane;
 	
-	/**
-	 * Create a close-able tab component belonging to the given tabbedPane.
+	/** Create a close-able tab component belonging to the given tabbedPane.
 	 * The title is extracted with {@link JTabbedPane#getTitleAt(int)}.
 	 * @param tabbedPane  The JTabbedPane this tab component belongs to
 	 */
@@ -79,22 +66,37 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (tabbedPane instanceof MainTabPanel) {
-			System.err.println("it's a MainTabPanel");
-		}
 		// close this tab when close button is clicked
 		final int index = tabbedPane.indexOfTabComponent(this);
 		
-		Component comp = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+		Component comp = tabbedPane.getComponentAt(index);
+		int prevIndex = tabbedPane.getSelectedIndex();
 		
-		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
-			if (JOptionPane.showOptionDialog(this, "You have unsaved changes to this requirement, are you sure you want to exit?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
+		if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isSaving()) {
+			if (JOptionPane.showOptionDialog(this, "The requirement is still saving.  Are you sure you want to exit?", "Warning",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
 				if (index> -1) {
 					tabbedPane.remove(index);
 				}
 			}
+		} else if(comp instanceof RequirementView && ((RequirementView) comp).getRequirementPanel().getAttributePanel().isFieldsChanged()) {
+			tabbedPane.setSelectedIndex(index);
+			if (JOptionPane.showOptionDialog(this, "You have unsaved changes to this requirement.  Are you sure you want to exit?", "Warning",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
+				if (index> -1) {
+					tabbedPane.remove(index);
+					if (prevIndex < index)
+						tabbedPane.setSelectedIndex(prevIndex);
+					else
+						tabbedPane.setSelectedIndex(prevIndex-1);
+				}
+			}
 		} else if (index > -1) {
 			tabbedPane.remove(index);
+			if (((MainTabPanel)tabbedPane).getNonRequirementTabCount() == 0)
+				((ListView)tabbedPane.getComponentAt(0)).getBtnEdit().setEnabled(true);
+			else
+				((ListView)tabbedPane.getComponentAt(0)).getBtnEdit().setEnabled(false);
 		}
 	}
 	

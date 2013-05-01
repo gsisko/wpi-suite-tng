@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
@@ -36,9 +24,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 
-
-/**
- * Controller for the requirement manager toolbar.
+/** Controller for the requirement manager toolbar.
  * Keeps track of the displayed tab in a MainTabController and displays the
  * group of controls provided by the displayed components' getGroup method, if it
  * is an instance of IToolbarGroupProvider.
@@ -46,10 +32,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
  */
 public class ToolbarController extends DefaultToolbarController implements ChangeListener {
 
+	/**
+	 * Field relevantTabGroup.
+	 */
 	private ToolbarGroupView relevantTabGroup;
 	
-	/**
-	 * Control the given DefaultToolbarView based on the state of the tabs in tabController.
+	/** Control the given DefaultToolbarView based on the state of the tabs in tabController.
 	 * @param toolbarView The toolbar to add/remove groups from
 	 * @param tabController The MainTabController to listen to for changes
 	 */
@@ -71,7 +59,6 @@ public class ToolbarController extends DefaultToolbarController implements Chang
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO: there has to be a cleaner way to do this
 		if(e.getSource() instanceof MainTabPanel) {
 			MainTabPanel view = (MainTabPanel) e.getSource();
 			Component selectedComponent = view.getSelectedComponent();

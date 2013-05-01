@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter;
@@ -48,33 +36,39 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelAction;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-/**
- * Panel to contain the list of filters that have been saved by the user
+/** Panel to contain the list of filters that have been saved by the user
  */
 @SuppressWarnings("serial")
 public class FilterListTab extends JPanel implements IListPanel{
 
 	/** The table of results */
 	protected JTable resultsTable;
-
+	/** Button to create a new filter */
 	protected JButton btnCreate;
+	/** Button to delete selected filters */
 	protected JButton btnDelete;
+	/** Is the text on btnCreate "Cancel" or "Create" */
 	private boolean btnCreateIsCancel;
 
+	/** A copy of the filters for local storage */
 	private Filter[] localFilters = {};
 
 	/** The model containing the data to be displayed in the results table */
 	protected ResultsTableModel resultsTableModel;
 
+	/** Controller for deleting filters */
 	private DeleteModelController deleteController;
+	/** Controller for retrieving a specific filter */
 	private RetrieveModelController retrieveController;
+	/** Controller for retrieving all filters */
 	private RetrieveAllModelsController retrieveAllController;
 
+	/** Parent of this tab */
 	private final ListTab parent;
-	/**
-	 * Construct the panel
+	
+	/** Construct the panel and all of its components
+	 * @param view  The ListTab "parent" of this tab
 	 */
-
 	public FilterListTab(ListTab view) {
 		parent = view;
 		this.setBtnCreateIsCancel(false);
@@ -90,6 +84,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		resultsTable.setFillsViewportHeight(true);
 		resultsTable.setDefaultRenderer(String.class, new ActiveFilterTableCellRenderer());
 		resultsTable.addMouseListener(new ActivateDeleteButton(this)); // Watches for highlighting
+		resultsTable.getTableHeader().setReorderingAllowed(false);
 		
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
@@ -101,6 +96,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 		btnCreate = new JButton ("New Filter");
 		btnDelete = new JButton ("Delete");
+		setDeleteEnabled(false); // Initialize
 
 		btnCreate.setMaximumSize(new Dimension(120, 40));
 		btnCreate.setMinimumSize(new Dimension(120, 40));
@@ -129,9 +125,8 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	}
 
-	/**This method returns an ArrayList of active filters
-	 * 
-	 * @return activeFilters An ArrayList of the active filters
+	/** This method returns an ArrayList of active filters
+	 * @return activeFilters An ArrayList of the active Filters
 	 */
 	public ArrayList<Filter> getActiveFilters() {
 		ArrayList<Filter> activeFilters = new ArrayList<Filter>();
@@ -142,63 +137,66 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 		return activeFilters;
 	}
-
-	/**
-	 * @return the data model for the table
+ 
+	/** Get the model ("resultsTableModel") for the table that holds the list of filters
+	 * @return resultsTableModel The ResultsTableModel for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
-	/**
-	 * @return the results table
+	/** Get the "resultsTable" JTable  that holds the list of filters
+	 * @return resultsTable The "resultsTable" JTable
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
 
-	/**
-	 * Replace the results table with the given table
-	 * @param newTable the new results table
+	/** Replace the "resultsTable" JTable with the given table
+	 * @param newTable The new "resultsTable" JTable
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
 	}
 
-	/**
-	 * @return the parent
+	/** Get the ListTab parent of this panel
+	 * @return parent The "parent" ListTab
 	 */
 	public ListTab getParent() {
 		return parent;
 	}
 
-	/**
-	 * @return the localFilters
+	/** Get the locally stored array of Filters
+	 * @return localFilters The "localFilters" array of Filters
 	 */
 	public Filter[] getLocalFilters() {
 		return localFilters;
 	}
 
-	/**
-	 * @param localFilters the localFilters to set
+	/** Set the locally stored array of Filters ("localFilters")
+	 * @param localFilters The "localFilters" array of Filters to set
 	 */
 	public void setLocalFilters(Filter[] localFilters) {
 		this.localFilters = localFilters;
 	}
 
+	/** Get the "btnCreate" JButton 
+	 * @return btnCreate The "btnCreate" JButton
+	 */
 	public JButton getBtnCreate(){
 		return btnCreate;
 	}
 
-	/**
-	 * @return the btnCreateIsCancel
+	/** Check if we are currently creating/editing a filter
+	 * If so, then true.  Otherwise, false
+	 * @return btnCreateIsCancel The "btnCreateIsCancel" boolean
 	 */
 	public boolean isBtnCreateIsCancel() {
 		return btnCreateIsCancel;
 	}
 
-	/**
-	 * @param btnCreateIsCancel the btnCreateIsCancel to set
+	/** Set if we are creating/editing a filter or are able to
+	 * @param btnCreateIsCancel The "btnCreateIsCancel" boolean to set
 	 */
 	public void setBtnCreateIsCancel(boolean btnCreateIsCancel) {
 		this.btnCreateIsCancel = btnCreateIsCancel;
@@ -209,6 +207,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	 *  pulls the highlighted identifiers from a table view.
 	 * 
 	 * @return An array of unique identifiers in the form of strings
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
 	 */
 	public String[] getSelectedUniqueIdentifiers() {
 		// get highlighted rows 
@@ -222,14 +221,18 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	/** Sets the New button to clear/cancel	 */
+	/** Sets the New button ("btnCreate") to cancel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
+	 */
 	public void setNewBtnToCancel() {
 		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	/** Sets the "Cancel" button back to "New Filter" 	 */
+	/** Sets the "Cancel" button back to "New Filter" 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setCancelBtnToNew()
+	 */
 	public void setCancelBtnToNew() {
 		// Set the cancel button back to New Filter if it was in cancel mode 
 		this.getBtnCreate().setText("New Filter"); 
@@ -237,7 +240,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	}
 
-	/** Toggles between "New Model" and "Cancel" mode */
+	/** Toggles between "New Model" and "Cancel" mode
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#toggleNewCancelMode()
+	 */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
 		if(btnCreateIsCancel)
@@ -246,21 +251,21 @@ public class FilterListTab extends JPanel implements IListPanel{
 			this.getBtnCreate().setText("New Filter");
 	}
 
-
-	/** Begins refresh process, starting with Filters
+	/** Begins refresh process, starting with Filters 
 	 * 
-	 * @return true on success, false on failure
+	 * @return Always true
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
 	 */
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
 		return true;
 	}
 
-
 	/** Gets the unique identifier of the list entry that was double clicked
 	 * 
 	 * @param me The mouse event that was triggered by a double click
 	 * @return The unique identifier, either name or ID number
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
@@ -280,6 +285,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	/** Show the filters in the list view
 	 * 
 	 * @param jsonString An array of models in the form of a JSON string
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
 	 */
 	public void showRecievedModels(String jsonString) {
 		// Setup data structures
@@ -307,10 +313,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 					}
 				}
 				// Indicates an invalid filter if the iteration referenced was not found
-				if (!foundTheIter){  
+				if (!foundTheIter){
 					// Delete the filter. A retrieve all command will be sent after the deletion occurs
-					deleteController.performDeletion(Integer.toString(filter.getUniqueID()));
-					return; // end early
+					deleteController.perform(Integer.toString(filter.getUniqueID()));
 				}	
 			}
 		}
@@ -339,9 +344,8 @@ public class FilterListTab extends JPanel implements IListPanel{
 				}
 
 				String typeString = filters[i].getType().toString();
-				if (typeString == "Iteration") {
+				if (typeString.equals("Iteration")) {
 					String strId = filters[i].getValue();
-					while (parent.getParent().getAllIterations().length == 0);
 					for (Iteration iter : parent.getParent().getAllIterations()) {
 						if (strId.equals(iter.getID() + "")) {
 							entries[i][3] = iter.getName();
@@ -381,31 +385,34 @@ public class FilterListTab extends JPanel implements IListPanel{
 		}
 
 		refreshRequirements();
-
+		setDeleteEnabled(false);
 	}
 
-	/**
-	 * @return the retrieveAllController
+	/** Get the controller for retrieving all models (an instance of RetrieveAllModelsController)
+	 * @return retrieveAllController The "retrieveAllController" (an instance of RetrieveAllModelsController)
 	 */
 	public RetrieveAllModelsController getRetrieveAllController() {
 		return retrieveAllController;
 	}
 
-	/**
-	 * @param retrieveAllController the retrieveAllController to set
+	/** Set the controller for retrieving all models ("retrieveAllController")
+	 * @param retrieveAllController The "retrieveAllController" RetrieveAllModelsController to set
 	 */
 	public void setRetrieveAllController(RetrieveAllModelsController retrieveAllController) {
 		this.retrieveAllController = retrieveAllController;
 	}
 
-	/** Refresh all the requirements    */
+	/** Refresh all the requirements
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshRequirements()
+	 */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
 
 	/** Sets the delete button to either activated or deactivated 
-	 * 
-	 * @param setActive True to activate and false to deactivate
+	 *  
+	 * @param setActive A boolean - true to activate "btnDelete" JButton and false to deactivate
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */
 	public void setDeleteEnabled(boolean setActive) {
 		btnDelete.setEnabled(setActive);		
@@ -415,6 +422,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	 *  filters may be deleted, so only true is returned
 	 *  
 	 * @return false if any item selected cannot be deleted.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#areSelectedItemsDeletable()
 	 */
 	public boolean areSelectedItemsDeletable(){
 		return true;

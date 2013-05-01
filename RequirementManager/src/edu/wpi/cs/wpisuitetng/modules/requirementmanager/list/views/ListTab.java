@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
@@ -36,8 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-/**
- * Panel to hold the three portions of the requirement list interface. The
+/** Panel to hold the three portions of the requirement list interface. The
  * list of saved filters is displayed in {@link FilterListTab}, the filter
  * builder is displayed in {@link FilterBuilderPanel}, and the results of
  * the list are displayed in {@link RequirementListPanel}.
@@ -45,9 +32,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 @SuppressWarnings("serial")
 public class ListTab extends JPanel {
 
+	/** Enumerator representing the different states the ListTab can be in
+	 */
 	public enum Mode {
 		FILTER,
-		ITERATION
+		ITERATION,
+		EDIT
 	};
 
 	/** Panel containing filter/iteration builders and requirements list */
@@ -59,8 +49,11 @@ public class ListTab extends JPanel {
 	/** Panel containing the filter building interface */
 	protected FilterBuilderPanel filterBuilderPanel;
 
-	/** Panel containing the filter building interface */
+	/** Panel containing the iteration building interface */
 	protected IterationBuilderPanel iterationBuilderPanel;
+	
+	/** Panel containing the Editing Mode interface */
+	protected EditModeBuilderPanel editModeBuilderPanel;
 
 	/** Panel containing the results of the requirement list */
 	protected RequirementListPanel resultsPanel;
@@ -83,26 +76,27 @@ public class ListTab extends JPanel {
 	/** The main tab controller */
 	protected MainTabController tabController;
 
+	/** The ListView that contains this ListTab */
 	private ListView parent; 
 
+	/** The scroll pane to hold the current builder panel*/
 	private JScrollPane builderScrollPane;
 
+	/** The current Mode of this panel*/
 	private Mode currentMode;
 
-
-	/**
-	 * Constructs the list panel and sets up the layout for the sub-panels
+	/** Constructs the list panel and sets up the layout for the sub-panels
 	 * @param tabController The main tab controller
+	 * @param view ListView The ListView that this ListTab will contain
 	 */
 	public ListTab(MainTabController tabController, ListView view) {
 		this.tabController = tabController;
-		this.parent = view;
-		this.currentMode = Mode.FILTER;
+		parent = view;
+		currentMode = Mode.ITERATION;
 
 		// Set the layout manager of this panel
-		this.layout = new SpringLayout();
+		layout = new SpringLayout();
 		this.setLayout(layout);
-
 
 		splitPane = new JSplitPane();
 		leftPanel = new JPanel();
@@ -110,35 +104,34 @@ public class ListTab extends JPanel {
 		rightPanel = new JPanel();
 		rightPanel.setMinimumSize(new Dimension(500, 500));
 
-		this.splitPane.setOneTouchExpandable(false);
-		this.splitPane.setDividerLocation(260);
-		this.splitPane.setContinuousLayout(true);
+		splitPane.setOneTouchExpandable(false);
+		splitPane.setDividerLocation(260);
+		splitPane.setContinuousLayout(true);
 
 		// Construct the panels that compose the list view
-		this.filterBuilderPanel = new FilterBuilderPanel(this);
-		this.iterationBuilderPanel = new IterationBuilderPanel(this);
-		this.tabPanel = new ListTabPanel(this);
-		this.filterBuilderPanel.setupControllersAndListeners();
-		this.iterationBuilderPanel.setupControllersAndListeners();
-		
+		filterBuilderPanel = new FilterBuilderPanel(this);
+		iterationBuilderPanel = new IterationBuilderPanel(this);
+		editModeBuilderPanel = new EditModeBuilderPanel(this);
+		tabPanel = new ListTabPanel(this);
+		filterBuilderPanel.setupControllersAndListeners();
+		iterationBuilderPanel.setupControllersAndListeners();
 		
 		JScrollPane listScrollPane = new JScrollPane(tabPanel);
-		this.builderScrollPane = new JScrollPane(filterBuilderPanel);
-		this.resultsPanel = new RequirementListPanel(tabController);
-
+		builderScrollPane = new JScrollPane(iterationBuilderPanel);
+		resultsPanel = new RequirementListPanel(tabController, this);
 
 
 		// Construct the layout manager and add constraints
-		this.rightLayout = new SpringLayout();
+		rightLayout = new SpringLayout();
 		rightPanel.setLayout(rightLayout);
-		this.leftLayout = new SpringLayout();
+		leftLayout = new SpringLayout();
 		leftPanel.setLayout(leftLayout);
 
 		// Constrain the FilterBuilderPanel and IteationBuilderPanel
 		rightLayout.putConstraint(SpringLayout.NORTH, builderScrollPane, 0, SpringLayout.NORTH, rightPanel);
 		rightLayout.putConstraint(SpringLayout.WEST, builderScrollPane, 0, SpringLayout.WEST, rightPanel);
 		rightLayout.putConstraint(SpringLayout.EAST, builderScrollPane, 0, SpringLayout.EAST, rightPanel);
-		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 85, SpringLayout.NORTH, builderScrollPane);
+		rightLayout.putConstraint(SpringLayout.SOUTH, builderScrollPane, 95, SpringLayout.NORTH, builderScrollPane);
 
 		// Constrain the resultsPanel
 		rightLayout.putConstraint(SpringLayout.NORTH, resultsPanel, 0, SpringLayout.SOUTH, builderScrollPane);
@@ -165,31 +158,51 @@ public class ListTab extends JPanel {
 		splitPane.setLeftComponent(leftPanel);
 		splitPane.setRightComponent(rightPanel);
 		this.add(splitPane);
-		
 	}
 
+	/** Getter for the results panel that is in this ListTab
+	 * @return RequirementListPanel
+	 */
 	public RequirementListPanel getResultsPanel(){
 		return resultsPanel;
 	}
 
-
+	/** Getter for the MainTabController that this tab is in
+	 * @return MainTabController
+	 */
 	public MainTabController getTabController() {
 		return tabController;
 	}
 
+	/** Getter for the FilterBuilderPanel that is in this ListTab
+	 * @return FilterBuilderPanel
+	 */
 	public FilterBuilderPanel getFilterBuilderPanel(){
 		return filterBuilderPanel;
 	}
 
+	/** Getter for the IterationBuilderPanel that is in this ListTab
+	 * @return IterationBuilderPanel
+	 */
 	public IterationBuilderPanel getIterationBuilderPanel(){
 		return iterationBuilderPanel;
 	}
 
+	/** Getter for the EditModeBuilderPanel that is in this ListTab
+	 * @return EditModeBuilderPanel
+	 */
+	public EditModeBuilderPanel getEditModeBuilderPanel() {
+		return editModeBuilderPanel;
+	}
+
+	/** Getter for the ListTabPanel that is in this ListView
+	 * @return ListTabPanel
+	 */
 	public ListTabPanel getTabPanel(){
 		return tabPanel;
 	}
 
-	/**
+	/** Getter to return the parent of this ListTab, which is a ListView
 	 * @return the listView
 	 */
 	public ListView getParent() {
@@ -197,20 +210,61 @@ public class ListTab extends JPanel {
 	}
 
 	/**
-	 * @param listView the listView to set
+	 * @param listView the "parent" ListView to set
 	 */
 	public void setParent(ListView listView) {
-		this.parent = listView;
+		parent = listView;
 	}
 
+	/** Setter to set the mode of the ListTab
+	 * @param newMode The new "currentMode" Mode to set
+	 */
 	public void setMode(Mode newMode) {
-		if (this.currentMode != newMode) {
+		if (currentMode != newMode) {
 			if (newMode == Mode.FILTER) {
-				this.builderScrollPane.setViewportView(filterBuilderPanel);
+				builderScrollPane.setViewportView(filterBuilderPanel);
+			} else if (newMode == Mode.ITERATION) {
+				builderScrollPane.setViewportView(iterationBuilderPanel);
 			} else {
-				this.builderScrollPane.setViewportView(iterationBuilderPanel);
+				builderScrollPane.setViewportView(editModeBuilderPanel);
 			}
-			this.currentMode = newMode;
+			currentMode = newMode;
 		}
 	}
+	
+	/** Getter that returns the current mode that this ListTab is in
+	 * @return currentMode The "currentMode" Mode of this panel
+	 */
+	public Mode getMode() {
+		return currentMode;
+	}
+
+	/**
+	 * @return splitPane The "splitPane" JSplitPane
+	 */
+	public JSplitPane getSplitPane() {
+		return splitPane;
+	}
+
+	/**
+	 * @param splitPane the "splitPane" JSplitPane to set
+	 */
+	public void setSplitPane(JSplitPane splitPane) {
+		this.splitPane = splitPane;
+	}
+
+	/**
+	 * @return leftPanel The "leftPanel" JPanel
+	 */
+	public JPanel getLeftPanel() {
+		return leftPanel;
+	}
+
+	/**
+	 * @param leftPanel The "leftPanel" JPanel to set
+	 */
+	public void setLeftPanel(JPanel leftPanel) {
+		this.leftPanel = leftPanel;
+	}
+
 }

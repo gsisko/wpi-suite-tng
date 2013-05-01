@@ -7,19 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ *		Team 5 D13
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
@@ -38,7 +26,7 @@ public class NotesTest {
 	
 	@Before
 	public void setUp() throws Exception{
-		//seting up new requirement
+		//setting up new requirement
 		r1 = new Requirement("Tester Requirement", "Testing Description", RequirementType.Theme, RequirementPriority.NoPriority, "0",0);
 		r1.setPriority(RequirementPriority.Medium);
 		r1.setReleaseNumber("8000");
@@ -57,7 +45,6 @@ public class NotesTest {
 	}
 	
 	@Test
-
 	public void testGetMessage(){
 		// does getMessage work?
 		assertEquals(n1.getMessage(), "I am testing notes.");
@@ -100,5 +87,4 @@ public class NotesTest {
 			assertEquals(newNotes.get(i).getMessage(), r1Notes.get(i).getMessage());
 		}
 	}
-
 }

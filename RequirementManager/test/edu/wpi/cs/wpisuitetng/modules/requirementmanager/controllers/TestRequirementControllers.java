@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 -- WPI Suite
+/** Copyright (c) 2013 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.JanewayModule;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterBuilderPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.RetrieveAllRequirementsController;
@@ -31,21 +32,23 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPrior
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.RequirementView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 import java.util.Date;
 
+@SuppressWarnings("unchecked")
 public class TestRequirementControllers {
 
 	RetrieveAllRequirementsController controller;
+	SaveRequirementController saveController;
 
 	Requirement requirementTester,reqTest;
 	
 	Filter testFilter, testOtherFilter;
 	Iteration testIteration, testOtherIteration;
-	
 	
 	MainTabPanel mainTabPanel;
 	ListView listView;
@@ -62,7 +65,7 @@ public class TestRequirementControllers {
 		Network.initNetwork(new MockNetwork());
 		Network.getInstance().setDefaultNetworkConfiguration(new NetworkConfiguration("http://wpisuitetng"));
 
-		mainTabPanel = new MainTabPanel();
+		mainTabPanel = new MainTabPanel(new JanewayModule());
 		tabController = new MainTabController(mainTabPanel);
 		listView = new ListView(tabController);
 		
@@ -103,6 +106,8 @@ public class TestRequirementControllers {
 		
 		listTab = new ListTab(tabController, listView);
 		filterBuilderTest = new FilterBuilderPanel(listTab);
+		
+		saveController = new SaveRequirementController(rView);
 	}
 
 	@Test
@@ -141,21 +146,31 @@ public class TestRequirementControllers {
 	    assertEquals(IBuilderPanel.Mode.CREATE, filterBuilderTest.getCurrentMode());
 	    filterBuilderTest.setCurrentFilter(testFilter);
 	    assertTrue(testFilter.identify(filterBuilderTest.getCurrentFilter()));
-	    
-	    
+	    	    
 	    assertEquals(2, filterBuilderTest.getIterationNames().length);
-	    
-	    
-	    //String json = filterBuilderTest.convertCurrentModelToJSON();
-	    //filterBuilderTest.translateAndDisplayModel(json);
 
 	    filterBuilderTest.setModeAndBtn(IBuilderPanel.Mode.CREATE);
 	    filterBuilderTest.setModeAndBtn(IBuilderPanel.Mode.EDIT);
 	    
 	    filterBuilderTest.setInputEnabled(true);
-	    filterBuilderTest.toggleNewCancelMode();
-
-	    
+	    filterBuilderTest.toggleNewCancelMode();   
 	}
 	
+	@Test
+	public void testSaveController(){
+	    saveController.getView().getAttributePanel().setCurrentRequirement(reqTest);
+	    saveController.getView().getAttributePanel().setMode(RequirementTab.Mode.EDIT);
+	    saveController.getView().setMode(RequirementTab.Mode.EDIT);
+	    
+	    saveController.getView().getIterationBox().addItem(testIteration);
+	    saveController.getView().getAttributePanel().getRequirementName().setText("This is a Test!!");
+	    saveController.getView().getAttributePanel().getRequirementDescription().setText("This is a Test!!");
+	    saveController.save();
+	    
+	    saveController.getView().getTabPanel().getNotePanel().getNoteMessage().setText("This is a Test Note");
+	    
+	    saveController.saveNote();
+	    
+	    assertEquals(true, true);
+	}
 }

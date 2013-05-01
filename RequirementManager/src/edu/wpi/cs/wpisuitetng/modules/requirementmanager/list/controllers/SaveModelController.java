@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
@@ -35,16 +23,19 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/** This controller manages the saving of one model at a time, as well as 
+ *  acting on server responses caught by the observer
+ */
 public class SaveModelController implements ActionListener 
 {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
+	
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
 		
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-	
 	
 	/** Constructs a controller with an action listener that can, on a button
 	 *  press, save the model currently loaded into the builder view
@@ -60,7 +51,10 @@ public class SaveModelController implements ActionListener
 		this.builderView = builderView;
 	}
 
-
+	/** This controller is currently on a button, so when that button is pressed this activates and 
+	 *  sends off the model
+	 * @param event the event that triggered the action
+	 */
 	public void actionPerformed(ActionEvent event) 
 	{
 		final Request request;
@@ -68,7 +62,6 @@ public class SaveModelController implements ActionListener
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.POST); // post == update
 		else 
 			request = Network.getInstance().makeRequest("requirementmanager/" + modelName, HttpMethod.PUT); // PUT == create
-		
 		
 		// make a PUT http request and let the observer get the response
 		String body = builderView.convertCurrentModelToJSON();
@@ -82,8 +75,7 @@ public class SaveModelController implements ActionListener
 		request.addObserver(new SaveModelObserver(this)); // add an observer to process the response
 		request.send();		
 	}
-
-
+	
 	/** Simple success message for saving a model.  
 	 */
 	public void saveSuccess() {
@@ -93,16 +85,13 @@ public class SaveModelController implements ActionListener
 		builderView.resetFields();
 		builderView.setInputEnabled(false);
 		
-		
 		listView.setCancelBtnToNew();
 		listView.refreshAll();
-		
-		System.out.println(modelName  + " saved successfully");
+		builderView.getMyParent().getParent().getController().refreshData();
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
 	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed.
-	 * 
 	 */
 	public void refreshListViews() {
 		// Try to refresh all from the list, if that doesn't work

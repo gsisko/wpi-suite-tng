@@ -50,11 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorTyp
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
-
-/**
- * The class <code>FilterManagerTest</code> contains tests for the class {@link <code>FilterManager</code>}
- * 
- * @author Team 5
+/** This class contains tests for the class {@link <code>FilterManager</code>}
  */
 public class FilterManagerTest {
 
@@ -100,8 +96,7 @@ public class FilterManagerTest {
 		newFilter = new Filter(FilterType.Status, OperatorType.NotEqualTo,
 				RequirementStatus.New, false); // no user
 		goodUpdatedFilter = new Filter(FilterType.Name, OperatorType.EqualTo,
-				"Random Name", true); // has user - not special until history
-										// logs
+				"Random Name", true); // has user - not special until history logs
 
 		// Set ID's before saving into db directly (since manager would normally
 		// handle that
@@ -125,11 +120,8 @@ public class FilterManagerTest {
 	@Test
 	public void testMakeEntity() throws WPISuiteException {
 		Filter created = manager.makeEntity(defaultSession, newFilter.toJSON());
-		assertEquals(3, created.getUniqueID()); // IDs are unique across all
-												// Filters currently, and not
-												// checked by .equals()
-		assertTrue(created.equals(newFilter)); // Tests to see if the filter put
-												// in is the one that comes out
+		assertEquals(3, created.getUniqueID()); // IDs are unique across all Filters currently, and not checked by .equals()
+		assertTrue(created.equals(newFilter)); // Tests to see if the filter put in is the one that comes out
 		assertTrue(db.retrieve(Filter.class, "UniqueID", 3).get(0)
 				.equals(created));
 	}
@@ -147,7 +139,7 @@ public class FilterManagerTest {
 
 	@Test(expected = NotFoundException.class)
 	public void testGetBadId() throws NotFoundException, WPISuiteException {
-		// A bad ID should yield a NotFoundException because it is unfindable
+		// A bad ID should yield a NotFoundException because it is un-findable
 		@SuppressWarnings("unused")
 		Filter badIDEntity = manager.getEntity(defaultSession, "-1")[0];
 	}
@@ -155,26 +147,17 @@ public class FilterManagerTest {
 	@Test(expected = NotFoundException.class)
 	public void testGetMissingEntity() throws NotFoundException,
 			WPISuiteException {
-		// A bad ID should yield a NotFoundException because it is unfindable
+		// A bad ID should yield a NotFoundException because it is un-findable
 		@SuppressWarnings("unused")
-		Filter missingEntity = manager.getEntity(defaultSession, "7")[0]; // this
-																			// ID
-																			// shouldn't
-																			// yield
-																			// a
-																			// filter
-
+		Filter missingEntity = manager.getEntity(defaultSession, "7")[0]; // this ID shouldn't yield a filter
 	}
 
 	@Test
 	public void testGetAll() throws WPISuiteException {
 		Filter[] gotten = manager.getAll(defaultSession);
-		assertEquals(2, gotten.length);
+		assertEquals(1, gotten.length);
 		assertTrue(existingFilter.equals(gotten[0])
-				|| existingFilter.equals(gotten[1])); // The order is not
-														// guranteed
-		assertTrue(otherFilter.equals(gotten[1])
-				|| otherFilter.equals(gotten[0])); // The order is not guranteed
+				|| existingFilter.equals(gotten[1])); // The order is not guaranteed
 	}
 
 	@Test
@@ -186,8 +169,7 @@ public class FilterManagerTest {
 		assertTrue(missingEntity.equals(newFilter2));
 	}
 
-	/**
-	 * Delete is special in this implementation of Filter models. Here the
+	/** Delete is special in this implementation of Filter models. Here the
 	 * filter is "deleted" by having its "user" field changed to null, so that
 	 * no user can actually access it. Thus, it is deleted to all users, even if
 	 * it persists in the database.
@@ -201,20 +183,14 @@ public class FilterManagerTest {
 		assertSame(existingUser,
 				((Filter) db.retrieve(Filter.class, "UniqueID", 1).get(0))
 						.getUser());
-		int numFilters = manager.getAll(defaultSession).length; // getAll pulls
-																// by username-
-																// critical to
-																// deletion
-																// method
+		int numFilters = manager.getAll(defaultSession).length; // getAll pulls by username- critical to deletion method
 
 		assertTrue(manager.deleteEntity(defaultSession, "1"));
 		assertNotSame(existingUser,
 				((Filter) db.retrieve(Filter.class, "UniqueID", 1).get(0))
 						.getUser());
 
-		assertTrue(numFilters != manager.getAll(defaultSession).length); // show
-																			// proper
-																			// deletion
+		assertTrue(numFilters != manager.getAll(defaultSession).length); // show proper deletion
 	}
 
 	@Test(expected = NotFoundException.class)
@@ -227,7 +203,7 @@ public class FilterManagerTest {
 		Filter anotherFilter = new Filter(FilterType.ActualEffort,
 				OperatorType.EqualTo, 2, true);
 		manager.makeEntity(defaultSession, anotherFilter.toJSON());
-		assertEquals(3, manager.getAll(defaultSession).length);
+		assertEquals(2, manager.getAll(defaultSession).length);
 		manager.deleteAll(defaultSession);
 		assertEquals(0, manager.getAll(defaultSession).length);
 	}
@@ -254,37 +230,17 @@ public class FilterManagerTest {
 
 	@Test
 	public void testUpdate() throws WPISuiteException {
-		Filter toUpdate = manager.getEntity(defaultSession, "1")[0]; // Get
-																		// something
-																		// to
-																		// update
-
-		assertNotSame(toUpdate.getType(), "Random Value"); // Make sure it isn't
-															// the value we want
-															// to update to
+		Filter toUpdate = manager.getEntity(defaultSession, "1")[0]; // Get something to update
+		assertNotSame(toUpdate.getType(), "Random Value"); // Make sure it isn't the value we want to update to
 		toUpdate.setValue("Random Value"); // Change the value
-
-		Filter updated = manager.update(defaultSession, toUpdate.toJSON()); // Perform
-																			// the
-																			// update
-
+		Filter updated = manager.update(defaultSession, toUpdate.toJSON()); // Perform the update
 		assertTrue(toUpdate.equals(updated)); // update returned the right thing
-		assertEquals(manager.getEntity(defaultSession, "1")[0], toUpdate); // The
-																			// right
-																			// thing
-																			// was
-																			// changed
-																			// in
-																			// the
-																			// DB
+		assertEquals(manager.getEntity(defaultSession, "1")[0], toUpdate); // The right thing was changed in the database
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testBadUpdate() throws WPISuiteException {
-		manager.update(defaultSession, (new Filter()).toJSON() + "asdf"); // 'asdf'
-																			// corrupts
-																			// the
-																			// string
+		manager.update(defaultSession, (new Filter()).toJSON() + "asdf"); // 'asdf' corrupts the string
 	}
 
 	@Test
@@ -312,7 +268,7 @@ public class FilterManagerTest {
 
 	@Test
 	public void testFiltersAreUserDependent() throws WPISuiteException {
-		assertEquals(2, manager.getAll(defaultSession).length);
+		assertEquals(1, manager.getAll(defaultSession).length);
 		assertEquals(0, manager.getAll(otherSession).length);
 	}
 }

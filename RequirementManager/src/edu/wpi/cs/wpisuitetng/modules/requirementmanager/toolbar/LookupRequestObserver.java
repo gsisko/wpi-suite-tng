@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
@@ -30,16 +18,14 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-/**
- * Observer to respond when a lookup requirement response is received
+/** Observer to respond when a lookup requirement response is received
  */
 public class LookupRequestObserver implements RequestObserver {
 
 	/** The lookup requirement controller */
 	protected LookupRequirementController controller;
 
-	/**
-	 * Construct the observer
+	/** Construct the observer for the given LookupRequirementController
 	 * @param controller the lookup requirement controller
 	 */
 	public LookupRequestObserver(LookupRequirementController controller) {
@@ -79,7 +65,6 @@ public class LookupRequestObserver implements RequestObserver {
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		//TODO deal with exception
 		controller.requestFailed();
 	}
 }

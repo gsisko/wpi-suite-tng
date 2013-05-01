@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
@@ -35,9 +23,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.filter.FilterListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iteration.IterationListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab.Mode;
 
-/**
- * This tabbed pane will appear as the main content of the Requirements tab.
- * It starts out showing the single Dashboard tab.
+/** A tabbed pane that contains the other content of the RequirementManager module
+ * as tabs. It initializes a single ListTab, "List Requirements".
  */
 @SuppressWarnings("serial")
 public class ListTabPanel extends JTabbedPane {
@@ -47,28 +34,38 @@ public class ListTabPanel extends JTabbedPane {
 	private IterationListTab iterationList;
 	private boolean firstTime;
 
+	/** Constructor for ListTabPanel that takes in a ListTab that will be it's parent
+	 * @param view ListTab
+	 */
 	public ListTabPanel(ListTab view) {
 
-		this.parent = view;
-		this.firstTime = true;
+		parent = view;
+		firstTime = true;
 
 		setTabPlacement(TOP);
 		setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 		setBorder(BorderFactory.createEmptyBorder(5, 3, 3, 3));
 		filterList = new FilterListTab(parent);
-		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
 		iterationList = new IterationListTab(parent);
 		addTab("Iterations", new ImageIcon(), iterationList, "List of Iterations");
+		addTab("Filters", new ImageIcon(), filterList, "List of Filters");
 
 		this.setPreferredSize(new Dimension(190, 500));
 	}
 
+	/** Method setComponentAt.
+	 * @param index int index of the component to set
+	 * @param component Component the component to set to
+	 */
 	@Override
 	public void setComponentAt(int index, Component component) {
 		super.setComponentAt(index, component);
-		fireStateChanged(); // hack to make sure toolbar knows if component changes
+		fireStateChanged(); //make sure toolbar knows if component changes
 	}
 
+	/** Sets the current tab index of the tab panel to the specified tab index
+	 * @param index int the new index to set to
+	 */
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
@@ -77,6 +74,7 @@ public class ListTabPanel extends JTabbedPane {
 				parent.setMode(Mode.FILTER);
 				filterList.refreshAll();
 				filterList.setCancelBtnToNew();
+				filterList.setDeleteEnabled(false);
 				parent.getFilterBuilderPanel().resetFields();
 				parent.getFilterBuilderPanel().setInputEnabled(false);
 			}
@@ -84,6 +82,7 @@ public class ListTabPanel extends JTabbedPane {
 				parent.setMode(Mode.ITERATION);
 				iterationList.refreshAll();
 				iterationList.setCancelBtnToNew();
+				iterationList.setDeleteEnabled(false);
 				parent.getIterationBuilderPanel().resetFields();
 				parent.getIterationBuilderPanel().setInputEnabled(false);
 			}
@@ -92,28 +91,28 @@ public class ListTabPanel extends JTabbedPane {
 	}
 
 	/**
-	 * @return the listPanel
+	 * @return filterList The "filterList" FilterListTab
 	 */
 	public FilterListTab getFilterList() {
 		return filterList;
 	}
 
 	/**
-	 * @param filterList the FilterListTab to set
+	 * @param filterList The "filterList" FilterListTab to set
 	 */
 	public void setFilterList(FilterListTab filterList) {
 		this.filterList = filterList;
 	}
 
 	/**
-	 * @return the listPanel
+	 * @return iterationList The "iterationList" IterationListTab
 	 */
 	public IterationListTab getIterationList() {
 		return iterationList;
 	}
 
 	/**
-	 * @param iterationList the IterationListTab to set
+	 * @param iterationList The "iterationList" IterationListTab to set
 	 */
 	public void setIterationList(IterationListTab iterationList) {
 		this.iterationList = iterationList;

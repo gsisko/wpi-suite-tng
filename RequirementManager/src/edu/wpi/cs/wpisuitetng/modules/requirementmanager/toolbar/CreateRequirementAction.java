@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.toolbar;
@@ -32,16 +20,17 @@ import javax.swing.AbstractAction;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-/**
- * Action that calls {@link MainTabController#addCreateRequirementTab()}, default mnemonic key is C. 
+/** Action that calls {@link MainTabController#addCreateRequirementTab()}, default mnemonic key is C. 
  */
 @SuppressWarnings("serial")
 public class CreateRequirementAction extends AbstractAction {
 
+	/**
+	 * Field controller.
+	 */
 	private final MainTabController controller;
 	
-	/**
-	 * Create a CreateRequirementAction
+	/** Create a CreateRequirementAction
 	 * @param controller When the action is performed, controller.addCreateRequirementTab() is called
 	 */
 	public CreateRequirementAction(MainTabController controller) {

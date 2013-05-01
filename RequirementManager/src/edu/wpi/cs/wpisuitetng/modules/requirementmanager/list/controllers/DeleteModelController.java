@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
@@ -34,17 +22,17 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/** Full process of deleting filters from Press of the delete button
- *  to sending the delete message
+/** This controller handles the full process of deleting filters from 
+ *  the press of the delete button to sending the delete message
  */
 public class DeleteModelController implements ActionListener {
+	
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
 	/** The model name, in string form, which will be used for sending messages */
 	private final String modelName;
-
 
 	/** Constructs a controller with an action listener that can, on a button
 	 *  press, delete the highlighted items in a list view.
@@ -58,21 +46,14 @@ public class DeleteModelController implements ActionListener {
 		this.modelName = modelName;
 		this.builderView = builderView;
 	}
-
-	/** Action listener for when the "Delete" button is pressed
-	 *  AND more than one Filter in the list is highlighted.
-	 * 
-	 * NOTE: Doubles as a "Cancel" button
-	 * 
-	 * @param buttonPress The input that triggers the controller 
+	
+	/** Provide action listener or other ways to check whether a certain action is performed
 	 */
-	public void actionPerformed(ActionEvent buttonPress) {		
-
+	public void perform(){
 		String[] uniqueIdentifiers = listView.getSelectedUniqueIdentifiers();
-
 		// get array of row numbers, if there are any highlighted rows
 		for(int i = 0; i < uniqueIdentifiers.length; i++){			
-			performDeletion(uniqueIdentifiers[i]);
+			perform(uniqueIdentifiers[i]);
 		}
 
 		// Remove anything in the builder panel whenever the delete button is pressed and also
@@ -83,21 +64,57 @@ public class DeleteModelController implements ActionListener {
 		listView.setDeleteEnabled(false);
 		listView.setCancelBtnToNew();
 	}
-
-	public void performDeletion(String uniqueIdentifier){
+	
+	/** Provide action listener or other ways to check whether a certain action is performed
+	 * @param String
+	 */
+	public void perform(String uniqueIdentifier){
 		// Create and send a request for the Model with the given ID
 		// Send message for each Model ID for deletion
 		Request request;
 		request = Network.getInstance().makeRequest("requirementmanager/" + modelName + "/" + uniqueIdentifier, HttpMethod.DELETE);
 		request.addObserver(new DeleteModelObserver(this));
 		request.send();
+	}
+	
+	/** Takes a string and checks whether the action is performed successfully. 
+	 *  Not implemented
+	 *  @param JSONString a json string to parse a message from
+	 */
+	public void success(String JSONString)
+	{
+	}
+	
+	/** Perform certain actions if the intended actions failed
+	 */
+	public void fail(){
+		System.err.println("Fail: Cannot delete the " + this.getModelName());
+	}
+	
+	/** Prints an error message
+	 * 
+	 * @param error unused
+	 */
+	public void error(String error){
+		System.err.println("Could not delete the " + this.getModelName());
+	}
 
+	/** Action listener for when the "Delete" button is pressed
+	 *  AND more than one Filter in the list is highlighted.
+	 * 
+	 * NOTE: Doubles as a "Cancel" button
+	 * 
+	 * @param buttonPress The input that triggers the controller 
+	 */
+	public void actionPerformed(ActionEvent buttonPress) {		
+		perform();
 	}
 
 	/** Triggers a refresh of all list views, starting with the view that holds this controller.
-	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. */
+	 *  If that doesn't work, the builder panel is tried, if both fail, an error message is printed. 
+	 */
 	public void refreshListViews() {
-		System.out.println(modelName  + " deleted successfully");
+
 		// Try to refresh all from the list, if that doesn't work
 		if (!listView.refreshAll())	{	
 			System.err.println("Fail: cannot refresh views after deleting a" + modelName);

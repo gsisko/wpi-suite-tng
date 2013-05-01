@@ -6,27 +6,13 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
-/**
- * Possible values for the priority of a requirement. 
- * @author Team 5
+/** Possible values for the priority of a requirement. 
  * @version $Revision: 1.0 $
  */
 public enum RequirementPriority {
@@ -35,10 +21,9 @@ public enum RequirementPriority {
 	Low,
 	NoPriority;
 
-
 	/** Converts a string to the proper RequirementPriority
 	 * 
-	 * !NOTE: This method is designed to only take strings retrieved from a UI.dropdownlist that containts
+	 * NOTE: This method is designed to only take strings retrieved from a UI.dropdownlist that containts
 	 * only the enums listed as RequirementPriority's
 	 * 
 	 * @param toConvert The string you want to convert	
@@ -50,6 +35,23 @@ public enum RequirementPriority {
     		return valueOf("NoPriority");
     	else
     		return valueOf(toConvert);
-    	}
+    }
+    
+    /** Same as toString, but returns blank for NoPriority */
+    public static String toBlankString(RequirementPriority toConvert){
+    	return toConvert.toString();
+    }
+    
+    /**
+     * Overrides the default toString method
+     * @return String representing this enum.  NoPriority will be displayed as an empty string
+     */
+    @Override
+    public String toString() {
+    	if (this.equals(NoPriority))
+    		return "";
+    	else
+    		return super.toString();
+    }
 
 }

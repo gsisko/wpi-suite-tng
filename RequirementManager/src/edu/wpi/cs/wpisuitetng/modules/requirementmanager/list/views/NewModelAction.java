@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views;
@@ -29,15 +17,14 @@ import java.awt.event.ActionListener;
 
 /** Watches the "New <Model>" button and toggles its settings as well
  *  as the associated Builder's settings when the button is pressed.
- *  
  *  When pressed, the information in the filter builder panel
- *  is reset and the fields are grayed out.          */
+ *  is reset and the fields are grayed out.          
+ */
 public class NewModelAction implements ActionListener {
 	/**  The list view that this controller is watching */
 	private final IListPanel listView;
 	/**  The builder view that this controller must interact with */
 	private final IBuilderPanel builderView;
-	
 	
 	/** Constructor that takes the two panels to watch
 	 * 
@@ -47,7 +34,6 @@ public class NewModelAction implements ActionListener {
 	public NewModelAction(IListPanel listView, IBuilderPanel builderView){
 		this.listView = listView;
 		this.builderView = builderView;
-
 	}
 
 	/** This is called whenever the "Cancel"/"New Filter" button is 
@@ -63,6 +49,5 @@ public class NewModelAction implements ActionListener {
 		builderView.toggleNewCancelMode();
 		builderView.resetFields();
 		listView.toggleNewCancelMode();
-		System.out.println("Toggling list and builder modes.");
 	}
 }

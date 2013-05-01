@@ -6,20 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *		Robert Dabrowski
- *		Danielle LaRose
- *		Edison Jimenez
- *		Christian Gonzalez
- *		Mike Calder
- *		John Bosworth
- *		Paula Rudy
- *		Gabe Isko
- *		Bangyan Zhang
- *		Cassie Hudson
- *		Robert Smieja
- *		Alex Solomon
- *		Brian Hetherman
+ * Contributors: Team 5 D13
+ * 
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models;
@@ -30,26 +18,22 @@ import com.google.gson.GsonBuilder;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.FilterType;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.OperatorType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
 
-/** A filter is one set of constraints that a user can use to filter a list of requirements.
- * @author Team 5
- *
+/** A filter is a single set of constraints that a user can use to filter a list of requirements.
  */
 public class Filter extends AbstractModel {
-	/** Unique identifier for database extraction    */
+	/** Unique identifier for database extraction */
 	private int uniqueID;
-	/**	What to filter by	*/
+	/**	What to filter by */
 	private FilterType type;
-	/**	Operator to use for comparison	*/
+	/**	Operator to use for comparison */
 	private OperatorType comparator;
-	/**	String, integer, or RequirementStatus, RequirementPriority	*/
+	/**	String, integer, or RequirementStatus, RequirementPriority */
 	private String value;
-	/**	Use filter? */
+	/**	Whether we want this filter to be applied */
 	private boolean useFilter;
 	/** The owner of the filter */
 	private User user;
@@ -59,7 +43,6 @@ public class Filter extends AbstractModel {
 	public Filter () {
 		this.setUniqueID(-1); 		// default as a flag to entity manager
 	}
-
 
 	/**	Full constructor for Filter. 
 	 * 
@@ -77,9 +60,7 @@ public class Filter extends AbstractModel {
 
 	}
 
-
 	/** Converts this Filter to a JSON string
-	 * 
 	 * @return a string in JSON representing this Filter
 	 */
 	public String toJSON() {
@@ -103,17 +84,16 @@ public class Filter extends AbstractModel {
 
 	@Override
 	/** Alternate call to convert class to a JSON
-	 * 
 	 * @return Same as {@link toJON()}
 	 */
 	public String toString() {
 		return toJSON();
 	}
 
-	/** Converts a given json string to a Filter
+	/** Converts a given JSON string to a Filter
 	 * 
-	 * @param json Json string to parse containing Filter
-	 * @return The Filter given by Json
+	 * @param json JSON string to parse containing Filter
+	 * @return The Filter given by JSON
 	 */
 	public static Filter fromJSON(String json) {
 		GsonBuilder builder = new GsonBuilder();
@@ -145,8 +125,9 @@ public class Filter extends AbstractModel {
 		return returnValue;
 	}
 
-	/** Changes all fields in the current Filter to equal the fields of the filterUpdate
-	 * User and UniqueID are ignored as they should never be updated
+	/** Changes all fields in the current Filter to equal the fields of the
+	 * filter passed in as "filterUpdate".
+	 * User and UniqueID are ignored as they should never be updated.
 	 * 
 	 * @param filterUpdate Filter holding the updates
 	 */
@@ -159,13 +140,12 @@ public class Filter extends AbstractModel {
 		// Unique ID does not need to be set, as it cannot be changed anyways
 	}
 
-	/** Compares two filters. Intended use in the makeEntity method
+	/** Compares two filters. Intended for use in the makeEntity method.
 	 * 
 	 * @param toCompareTo The Filter to compare to
-	 * 
 	 * @return Whether the two Filters are equal or not
 	 */
-	public boolean equals(Filter toCompareTo){
+	public boolean equals(Filter toCompareTo){ // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
 		if (this.getType() != toCompareTo.getType()) return false;
 		if (this.getComparator() != toCompareTo.getComparator()) return false;	
 		if (!this.getValue().equals(toCompareTo.getValue())  ) return false;		
@@ -175,39 +155,42 @@ public class Filter extends AbstractModel {
 	/** Determines whether a Requirement passes this filter
 	 *
 	 *	@param req The Requirement in question
-	 *
 	 *	@return True if the Requirement passes, false if it does not
 	 */
 	public boolean passesFilter(Requirement req){
 		if (!this.isUseFilter()) return true; // If filter is turned off, the Requirement passes
-
 		try{
-			switch (this.type){	
-			// The following two are strings
+			switch (type){	
+			// The following are strings
 			case Name:
-				return OperatorType.perform(this.comparator,this.value.toLowerCase(), req.getName().toLowerCase(), false);
+				return OperatorType.perform(comparator,value.toLowerCase(), req.getName().toLowerCase(), false);
 			case Description:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getDescription().toLowerCase(), false);		
+				return OperatorType.perform(comparator, value.toLowerCase(), req.getDescription().toLowerCase(), false);		
 			case ReleaseNumber:
-				return OperatorType.perform(this.comparator, this.value.toLowerCase(), req.getReleaseNumber().toLowerCase(), false);
-				
+				return OperatorType.perform(comparator, value.toLowerCase(), req.getReleaseNumber().toLowerCase(), false);
+			case AssignedUsers:
+				if (comparator == OperatorType.Contains ){
+					return req.getUserNames().contains(value) || (req.getUserNames().size() == 0 && value.equals(""));			
+				} else { // The operator will be DoesNotContain
+					return (!req.getUserNames().contains(value)  && !value.equals("") )|| (req.getUserNames().size() > 0 && value.equals(""));
+				}
 				// The following five are Integers
 			case Id: 
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getId());
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getId());
 			case Iteration:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getAssignedIteration());
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getIteration());
 			case ActualEffort:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getActualEffort());		
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getActualEffort());		
 			case Estimate:
-				return OperatorType.perform(this.comparator, Integer.parseInt(this.value), req.getEstimate());	
+				return OperatorType.perform(comparator, Integer.parseInt(value), req.getEstimate());	
 
 				// The following three are different enums
 			case Status:
-				return OperatorType.perform(this.comparator, RequirementStatus.toStatus(this.value), req.getStatus());
+				return OperatorType.perform(comparator, RequirementStatus.toStatus(value), req.getStatus());
 			case Type:
-				return OperatorType.perform(this.comparator, RequirementType.toType(this.value), req.getType());
+				return OperatorType.perform(comparator, RequirementType.toType(value), req.getType());
 			case Priority:
-				return OperatorType.perform(this.comparator, RequirementPriority.toPriority(this.value), req.getPriority());
+				return OperatorType.perform(comparator, RequirementPriority.toPriority(value), req.getPriority());
 
 				// Default
 			default:
@@ -218,110 +201,100 @@ public class Filter extends AbstractModel {
 		}
 	}
 
-
-	/**
+	/** This method is unused, but is required by the AbstractModel interface
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	public void save() {
-		// TODO Auto-generated method stub
-
 	}
 
-	/**
+	/** This method is unused, but is required by the AbstractModel interface
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	public void delete() {
-		// TODO Auto-generated method stub
-
 	}
-
-
-	/**
-	 * @return the uniqueID
+	
+	/** Get the uniqueID for this Filter
+	 * @return uniqueID The "uniqueID" int of this Filter
 	 */
 	public int getUniqueID() {
 		return uniqueID;
 	}
 
-	/**
-	 * @param uniqueID The uniqueID to set
+	/** Set the uniqueID for this Filter
+	 * Be careful using this method
+	 * @param uniqueID The "uniqueID" (an int) to set
 	 */
 	public void setUniqueID(int uniqueID) {
 		this.uniqueID = uniqueID;
 	}
 
-	/**
-	 * @return The type
+	/** Get what field this filters by
+	 * @return type The "type" FilterType of this Filter
 	 */
 	public FilterType getType() {
 		return type;
 	}
 
-	/**
-	 * @param type The type to set
+	/** Set what field this filters by
+	 * @param type The "type" FilterType of this Filter to set
 	 */
 	public void setType(FilterType type) {
 		this.type = type;
 	}
 
-	/**
-	 * @return The comparator
+	/** Get how we compare when filtering
+	 * @return comparator The "comparator" OperatorType
 	 */
 	public OperatorType getComparator() {
 		return comparator;
 	}
 
-	/**
-	 * @param comparator The comparator to set
+	/** Set how we compare when filtering
+	 * @param comparator The "comparator" OperatorType to set
 	 */
 	public void setComparator(OperatorType comparator) {
 		this.comparator = comparator;
 	}
 
-
-	/**
-	 * @return The useFilter
+	/** Whether we want to use this filter
+	 * @return useFilter The "useFilter" boolean
 	 */
 	public boolean isUseFilter() {
 		return useFilter;
 	}
 
-	/**
-	 * @param useFilter The useFilter to set
+	/** Set if we want to use this filter
+	 * @param useFilter The "useFilter" boolean to set
 	 */
 	public void setUseFilter(boolean useFilter) {
 		this.useFilter = useFilter;
 	}
 
-
-	/**
-	 * @return The user
+	/** Get the User who created this Filter
+	 * @return user The "user" (a User) that created this Filter
 	 */
 	public User getUser() {
 		return user;
 	}
 
-
-	/**
-	 * @param user The user to set
+	/** Set the User who created this Filter
+	 * @param user The "user" (a User) that created this Filter to set
 	 */
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-	/**
-	 * @return the value
+	/** Get the "value" String that we use for comparison in this Filter
+	 * @return value The "value" String
 	 */
 	public String getValue() {
 		return value;
 	}
 
-
-	/** Sets the value of the Filter when the input is Object
-	 * 
-	 * @param o The value to set
+	/** Sets the value of the Filter when the input is an Object
+	 * @param o The "value" to set (an Object)
 	 */
 	public void setValue(Object o){
-		this.value = o.toString();		
+		value = o.toString();		
 	}
 }
