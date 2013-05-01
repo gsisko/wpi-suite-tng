@@ -20,6 +20,9 @@ import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.AcceptanceTest;
 
+/**
+ * A model that contains a list of AcceptanceTest models
+ */
 @SuppressWarnings({"serial","rawtypes"})
 public class AcceptanceTestListModel extends AbstractListModel {
 	
@@ -79,6 +82,8 @@ public class AcceptanceTestListModel extends AbstractListModel {
 
 	/** Sets the test at the given index. Note this method accesses
 	 * elements in reverse order, so newest messages are returned first.
+	 * @param index int
+	 * @param newAcceptanceTest AcceptanceTest
 	 */
 	public void setElementAt(int index, AcceptanceTest newAcceptanceTest) {
 		acceptanceTests.set(acceptanceTests.size() - 1 - index, newAcceptanceTest);

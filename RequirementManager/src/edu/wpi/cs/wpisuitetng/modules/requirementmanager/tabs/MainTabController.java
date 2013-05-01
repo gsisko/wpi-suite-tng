@@ -33,7 +33,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.charts.ChartView;
  */
 public class MainTabController {
 
+	/**
+	 * Field view.
+	 */
 	private final MainTabPanel view;
+	/**
+	 * Boolean that is true if the MainTabController has finished initializing
+	 */
 	private boolean initialized = false;
 
 	/** The constructor for MainTabController
@@ -108,7 +114,7 @@ public class MainTabController {
 		return new Tab(view, view.getTabComponentAt(index));
 	}
 
-	/**
+	/**	
 	 * @return Same as addTab(null, null, null, null)
 	 */
 	public Tab addTab() {
@@ -119,6 +125,7 @@ public class MainTabController {
 	 * 
 	 * @param requirement The requirement to display
 	 * @param mode The Mode to use
+	 * @return Tab
 	 */
 	private Tab addRequirementTab(Requirement requirement, Mode mode) {
 		if(view.indexOfTab("Requirement #"+requirement.getId()) != -1){
@@ -136,7 +143,7 @@ public class MainTabController {
 	/** Adds a tab that displays the given requirement
 	 * 
 	 * @param requirement the requirement to display
-	 * @return The created Tab 
+	 * @return The created Tab
 	 */
 	public Tab addEditRequirementTab(Requirement requirement) {
 		return addRequirementTab(requirement, Mode.EDIT);
