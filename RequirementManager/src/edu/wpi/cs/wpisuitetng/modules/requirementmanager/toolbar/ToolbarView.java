@@ -39,11 +39,29 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 @SuppressWarnings("serial")
 public class ToolbarView extends DefaultToolbarView {
 
+	/**
+	 * Field createRequirement.
+	 */
 	private JButton createRequirement;
+	/**
+	 * Field btnDisplayPieChart.
+	 */
 	private JButton btnDisplayPieChart;
+	/**
+	 * Field listField.
+	 */
 	private JPlaceholderTextField listField;
+	/**
+	 * Field toolbarGroup.
+	 */
 	private ToolbarGroupView toolbarGroup;
+	/**
+	 * Field tabController.
+	 */
 	private MainTabController tabController;
+	/**
+	 * Field helpButton.
+	 */
 	private JButton helpButton;
 	
 	/** Panel containing the list interface */

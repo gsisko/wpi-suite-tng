@@ -25,6 +25,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 @SuppressWarnings("serial")
 public class CreateRequirementAction extends AbstractAction {
 
+	/**
+	 * Field controller.
+	 */
 	private final MainTabController controller;
 	
 	/** Create a CreateRequirementAction

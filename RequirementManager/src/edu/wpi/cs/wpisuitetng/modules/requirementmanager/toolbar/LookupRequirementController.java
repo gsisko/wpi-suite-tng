@@ -44,6 +44,7 @@ public class LookupRequirementController implements ActionListener {
 	/** Constructs the LookupRequirementController
 	 * @param tabController the tab controller, to be used to add a view requirement tab to the window
 	 * @param listField the list field in the main toolbar
+	 * @param parentView ToolbarView 
 	 */
 	public LookupRequirementController(MainTabController tabController, JPlaceholderTextField listField, ToolbarView parentView) {
 		this.tabController = tabController;

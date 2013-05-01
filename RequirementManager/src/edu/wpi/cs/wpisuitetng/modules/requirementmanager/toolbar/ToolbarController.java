@@ -32,6 +32,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
  */
 public class ToolbarController extends DefaultToolbarController implements ChangeListener {
 
+	/**
+	 * Field relevantTabGroup.
+	 */
 	private ToolbarGroupView relevantTabGroup;
 	
 	/** Control the given DefaultToolbarView based on the state of the tabs in tabController.
