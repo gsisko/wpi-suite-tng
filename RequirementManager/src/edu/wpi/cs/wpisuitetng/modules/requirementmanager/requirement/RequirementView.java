@@ -29,7 +29,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.DummyTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.Tab;
 
-/** This view is responsible for showing the form for creating or viewing a new requirement.
+/**
+ * A view that contains the form that displays and allows for editing or the creation of a requirement
  */
 @SuppressWarnings("serial")
 public class RequirementView extends JPanel implements IToolbarGroupProvider {

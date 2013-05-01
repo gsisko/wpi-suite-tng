@@ -137,7 +137,11 @@ public class UserChooserTab extends JPanel {
 		request.send();
 	}
 	
-	/** the hackaround to avoid using a while loop */
+	/** 
+	 * This method is a hack-around to prevent potential errors, 
+	 * so instead of using a while loop to check if we have received a response
+	 * It resumes initialization after receiving a success response in the RetrieveAllUsersObserver
+	 */
 	public void resumeInitialization(){
 		//Add the users to the unassignedUserListModel
 		for (int i = 0; i < users.size(); i++) {
@@ -358,7 +362,7 @@ public class UserChooserTab extends JPanel {
 		this.add(Box.createHorizontalGlue());//Add a horizontal glue component to keep the lists in the center of the panel
 	}
 
-	/**
+	/**	
 	 * @return unassignedList The "unassignedList" JList
 	 */
 	public JList getUnassignedList() {
