@@ -34,6 +34,10 @@ public class ListTabPanel extends JTabbedPane {
 	private IterationListTab iterationList;
 	private boolean firstTime;
 
+	/**
+	 * Constructor for ListTabPanel that takes in a ListTab that will be it's parent
+	 * @param view ListTab
+	 */
 	public ListTabPanel(ListTab view) {
 
 		parent = view;
@@ -50,12 +54,21 @@ public class ListTabPanel extends JTabbedPane {
 		this.setPreferredSize(new Dimension(190, 500));
 	}
 
+	/**
+	 * Method setComponentAt.
+	 * @param index int
+	 * @param component Component
+	 */
 	@Override
 	public void setComponentAt(int index, Component component) {
 		super.setComponentAt(index, component);
 		fireStateChanged(); // hack to make sure toolbar knows if component changes
 	}
 
+	/**
+	 * Sets the current tab index of the tab panel to the specified tab index
+	 * @param index int
+	 */
 	@Override
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
