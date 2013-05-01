@@ -76,10 +76,13 @@ public class ListTab extends JPanel {
 	/** The main tab controller */
 	protected MainTabController tabController;
 
+	/** The ListView that contains this ListTab */
 	private ListView parent; 
 
+	/** The scroll pane to hold the current builder panel*/
 	private JScrollPane builderScrollPane;
 
+	/** The current Mode of this panel*/
 	private Mode currentMode;
 
 	/** Constructs the list panel and sets up the layout for the sub-panels
@@ -207,14 +210,14 @@ public class ListTab extends JPanel {
 	}
 
 	/**
-	 * @param listView the listView to set
+	 * @param listView the "parent" ListView to set
 	 */
 	public void setParent(ListView listView) {
 		parent = listView;
 	}
 
 	/** Setter to set the mode of the ListTab
-	 * @param newMode Mode
+	 * @param newMode The new "currentMode" Mode to set
 	 */
 	public void setMode(Mode newMode) {
 		if (currentMode != newMode) {
@@ -230,35 +233,35 @@ public class ListTab extends JPanel {
 	}
 	
 	/** Getter that returns the current mode that this ListTab is in
-	 * @return Mode
+	 * @return currentMode The "currentMode" Mode of this panel
 	 */
 	public Mode getMode() {
 		return currentMode;
 	}
 
 	/**
-	 * @return the splitPane
+	 * @return splitPane The "splitPane" JSplitPane
 	 */
 	public JSplitPane getSplitPane() {
 		return splitPane;
 	}
 
 	/**
-	 * @param splitPane the splitPane to set
+	 * @param splitPane the "splitPane" JSplitPane to set
 	 */
 	public void setSplitPane(JSplitPane splitPane) {
 		this.splitPane = splitPane;
 	}
 
 	/**
-	 * @return the leftPanel
+	 * @return leftPanel The "leftPanel" JPanel
 	 */
 	public JPanel getLeftPanel() {
 		return leftPanel;
 	}
 
 	/**
-	 * @param leftPanel the leftPanel to set
+	 * @param leftPanel The "leftPanel" JPanel to set
 	 */
 	public void setLeftPanel(JPanel leftPanel) {
 		this.leftPanel = leftPanel;
