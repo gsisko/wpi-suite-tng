@@ -125,8 +125,7 @@ public abstract class RequirementEvent extends AbstractModel {
 		
 	}
 	
-	/** This model will only be created server side and then retrieved as part of a Requirement in the future
-	 * so I'm not sure if this is necessary
+	/** Unused method that is required by the AbstractModel interface
 	 */
 	@Override
 	public Boolean identify(Object o) {

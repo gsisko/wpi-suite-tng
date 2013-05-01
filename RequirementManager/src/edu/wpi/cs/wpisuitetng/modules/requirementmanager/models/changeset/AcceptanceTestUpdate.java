@@ -38,7 +38,7 @@ public class AcceptanceTestUpdate extends RequirementEvent {
 	 */
 	private AcceptanceTestResult newResult;
 	
-	/** Constructor for a RequirementCreation
+	/** Constructor for an AcceptanceTestUpdate event
 	 * @param oldReq Requirement
 	 * @param newReq Requirement
 	 * @param testNumber int
