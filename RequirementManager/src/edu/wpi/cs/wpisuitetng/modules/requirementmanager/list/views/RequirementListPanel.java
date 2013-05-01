@@ -83,6 +83,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/**Construct the panel
 	 * @param tabController The main tab controller
+	 * @param parent ListTab The ListTab that is hte parent of this panel
 	 */
 	public RequirementListPanel(MainTabController tabController, final ListTab parent) {
 		this.tabController = tabController;
@@ -261,7 +262,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		listSaveModelController = new ListSaveModelController(this, "requirement");
 	}
 
-	/** Prints the error messages to console for testing */
+	/** Prints the error messages to console for testing 
+	 * @param messages String[] The error messages
+	 */
 	@SuppressWarnings("unused")
 	private void printMessages(String[] messages){
 		for (String toPrint: messages)
@@ -345,7 +348,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return messages;
 	}
 
-	/**
+	/**	
 	 * @return the main tab controller
 	 */
 	public MainTabController getTabController() {
@@ -528,8 +531,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Gets the array of boolean flags of what models
 	 *  need saving
-	 * 
+	 * 	
 	 * @return a Boolean array of what models need saving
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#getNeedsSaveFlags()
 	 */
 	public Boolean[][] getNeedsSaveFlags() {
 		return needsSaving;
@@ -540,6 +544,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 *  
 	 * @param rowNumber The index of the model
 	 * @return  The JSON version of the model
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#getModelAsJson(int)
 	 */
 	public String getModelAsJson(int rowNumber) {
 		// Get the names of the columns
@@ -675,7 +680,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Gets the id of the iteration with the given name
 	 * 
-	 * @param iterName the name of the iteration
+	 * @param iterName the name of the iteration	
 	 * @return the id of the iteration
 	 */
 	private int getIterationID(String iterName){
@@ -708,6 +713,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	/** Gets the column index of the column with the given name
 	 * 
 	 * @param name The name to check for
+	 * @param columnNames ArrayList<String>
 	 * @return the column index, returns -1 upon failure
 	 */
 	private int getColumnIndex(String name, ArrayList<String> columnNames){
@@ -741,6 +747,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Sets up any arrays of flags or other settings needed
 	 *  before editing can start 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#setUpForEditing()
 	 */
 	public void setUpForEditing(){
 		// Clear the boolean arrays
@@ -802,7 +809,8 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	 *  the given index
 	 * 
 	 * @param i The index of the model
-	 * @return  The unique identifier of the model
+	 * @return  The unique identifier of the model 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#getUniqueIdAtIndex(int)
 	 */
 	public String getUniqueIdAtIndex(int i) {
 		return (String) resultsTable.getValueAt(i, this.getColumnIndex("ID"));
@@ -811,12 +819,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	/** Change settings of table to indicate that the 
 	 *  save was completed and normal operations 
 	 *  should resume.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#savesComplete()
 	 */
 	public void savesComplete() {
 	}
 
 	/** Way to trigger a pop-up or enable/disable certain 
 	 *  buttons when a  save is not successful.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#failedToSave()
 	 */
 	public void failedToSave() {
 	}
@@ -855,7 +865,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return columnHeader;
 	}
 
-	/** Trigger a reset of all lists	 */
+	/** Trigger a reset of all lists
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#refreshAll()
+	 */
 	public void refreshAll() {
 		parent.getParent().refreshData();
 	}
@@ -890,6 +902,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Turns on the save button when all cells are
 	 *  valid and at least one has been changed. 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#updateSaveButton()
 	 */
 	public void updateSaveButton() {
 		// Check for validity and disables the save button if there is invalidity
@@ -912,6 +925,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/**
+	 * Returns true if the RequirementListPanel is edit mode, otherwise false
 	 * @return the inEditMode
 	 */
 	public boolean isInEditMode() {

@@ -27,12 +27,29 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 	Boolean[][] isValid;
 	Boolean[][] isEditable;
 	
+	/**
+	 * Constructor for ResultsTableCellRenderer.
+	 * @param needsSaving Boolean[][]
+	 * @param isValid Boolean[][]
+	 * @param isEditable Boolean[][]
+	 */
 	public ResultsTableCellRenderer(Boolean[][] needsSaving, Boolean[][] isValid, Boolean[][] isEditable) {
 		this.needsSaving = needsSaving;
 		this.isValid = isValid;
 		this.isEditable = isEditable;
 	}
 	
+	/**
+	 * Method getTableCellRendererComponent.
+	 * @param table JTable
+	 * @param value Object
+	 * @param isSelected boolean
+	 * @param hasFocus boolean
+	 * @param row int
+	 * @param column int
+	 * @return Component
+	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(JTable, Object, boolean, boolean, int, int)
+	 */
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
