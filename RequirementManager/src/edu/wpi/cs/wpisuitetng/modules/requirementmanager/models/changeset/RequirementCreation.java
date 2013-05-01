@@ -26,13 +26,31 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementType;
  */
 public class RequirementCreation extends RequirementEvent {
 
+	/**
+	 * Field reqName.
+	 */
 	private String reqName;
+	/**
+	 * Field reqDescription.
+	 */
 	private String reqDescription;
+	/**
+	 * Field reqType.
+	 */
 	private String reqType;
+	/**
+	 * Field reqPriority.
+	 */
 	private String reqPriority;
+	/**
+	 * Field reqReleaseNumber.
+	 */
 	private String reqReleaseNumber;
 	
-	/** Constructor for a RequirementCreation */
+	/** Constructor for a RequirementCreation
+	 * @param requirement Requirement
+	 * @param theCreator String
+	 */
 	public RequirementCreation(Requirement requirement, String theCreator) {
 		type = EventType.CREATION;
 		reqName = requirement.getName();

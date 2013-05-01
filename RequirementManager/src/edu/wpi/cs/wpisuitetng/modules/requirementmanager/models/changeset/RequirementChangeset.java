@@ -25,6 +25,9 @@ import com.google.gson.Gson;
  */
 public class RequirementChangeset extends RequirementEvent {
 
+	/**
+	 * Field changes.
+	 */
 	private Map<String, FieldChange<?>> changes;
 
 	/**Construct a RequirementChangeset with default properties.

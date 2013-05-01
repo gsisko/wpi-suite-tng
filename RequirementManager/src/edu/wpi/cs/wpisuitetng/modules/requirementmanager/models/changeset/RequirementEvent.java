@@ -24,13 +24,32 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  */
 public abstract class RequirementEvent extends AbstractModel {
 	
-	/** The types of possible events */
+	/** The types of possible events 
+	 */
 	public enum EventType {
+		/**
+		 * Something was created.
+		 */
 		CREATION,
+		/**
+		 * A change was made.
+		 */
 		CHANGESET,
+		/**
+		 * A note was added.
+		 */
 		NOTE,
+		/**
+		 * User assignment changed.
+		 */
 		USER,
+		/**
+		 * An acceptance test was added.
+		 */
 		ACCEPTANCETEST,
+		/**
+		 * An acceptance test was updated.
+		 */
 		ACCEPTANCETESTUPDATE
 	};
 	

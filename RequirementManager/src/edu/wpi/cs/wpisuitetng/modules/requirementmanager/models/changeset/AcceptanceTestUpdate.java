@@ -25,11 +25,25 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancet
  */
 public class AcceptanceTestUpdate extends RequirementEvent {
 
+	/**
+	 * Field testName.
+	 */
 	private String testName;
+	/**
+	 * Field oldResult.
+	 */
 	private AcceptanceTestResult oldResult;
+	/**
+	 * Field newResult.
+	 */
 	private AcceptanceTestResult newResult;
 	
-	/** Constructor for a RequirementCreation */
+	/** Constructor for a RequirementCreation
+	 * @param oldReq Requirement
+	 * @param newReq Requirement
+	 * @param testNumber int
+	 * @param userName String
+	 */
 	public AcceptanceTestUpdate(Requirement oldReq, Requirement newReq, int testNumber, String userName) {
 		type = EventType.ACCEPTANCETESTUPDATE;
 		testName = oldReq.getAcceptanceTests().get(testNumber).getAcceptanceTestTitle();

@@ -25,10 +25,20 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class UserChange extends RequirementEvent {
 	
+	/**
+	 * The list of old users
+	 */
 	ArrayList<String> oldUsers;
+	/**
+	 * The list of new users
+	 */
 	ArrayList<String> newUsers;
 	
-	/** Constructor for a UserChange */
+	/** Constructor for a UserChange
+	 * @param oldReq Requirement
+	 * @param newReq Requirement
+	 * @param userName String
+	 */
 	public UserChange(Requirement oldReq, Requirement newReq, String userName) {
 		type = EventType.USER;
 		oldUsers = oldReq.getUserNames();

@@ -18,7 +18,13 @@ package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
  * @param <T> the type of the field that was changed
  */
 public class FieldChange<T> {
+	/**
+	 * Field oldValue.
+	 */
 	private final T oldValue;
+	/**
+	 * Field newValue.
+	 */
 	private final T newValue;
 	
 	/**
