@@ -153,7 +153,7 @@ function AddingANote() {
         $(".instructionText").html(function(){
         	var str = '<img width="750" src="images/requirementBuilderWithNotes.png"/><br />';
         	str += '<a>The panel for adding notes is displayed directly next to where requirements are edited. <span style="color:#22B14C">Click on the Notes tab to open the notes view</span>. Requirements yet to be created cannot have notes, therefore the notes panel is disabled before creation of requirements.</a><br />';
-        	str += '<br /><a>To add a new note to the Notes panel, <span style="color:#ED1C24">type the desired note into the text field</span> marked with the arrow. When the note is comprised as desired, <span style="color:#ED1C24">click the "Add Note" button</span> to add the note to the Panel.</a>';
+        	str += '<br /><a>To add a new note to the Notes panel, <span style="color:#ED1C24">type the desired note into the text field</span> marked with the arrow. When the note is composed as desired, <span style="color:#ED1C24">click the "Add Note" button</span> to add the note to the Panel.</a>';
         	str += '<br /><img width="750" src="images/addedNote.png"/><br />';
         	str += '<a>Upon clicking the "Add Note" button, your note will appear in the Notes panel with your <span style="color:#22B14C">name and the time</span> at which the note was added.</a>';
         	return str;
@@ -168,9 +168,10 @@ function AddingATest(){
 		$(".instructionTitle").html('<a>The Acceptance Test Panel</a>');
         $(".instructionText").html(function(){
 			var str = '<img src="images/requirementBuilderWithTests.png" height="400"/><br/>';
-			str += '<a>To add an acceptance test, you must first <span style="color:#22B14C">select the acceptance test tab</span> from the right side of the requirement builder panel.  Then you must enter a <span style="color:#ED1C24">required name and description</span> into the provided boxes. After a name and descrption have been entered, you can <span style="color:#00A2E8">click the "Add Acceptance Test" button to add the test</span> to the requirement</a><br/><br/>';
+			str += '<a>To add an acceptance test, you must first <span style="color:#22B14C">select the acceptance test tab</span> from the right side of the requirement builder panel.  Then you must enter a <span style="color:#ED1C24">required name and body</span> into the provided boxes. The name must be less then 100 characters, and both the name and body must be non-blank. After a name and descrption have been entered, you can <span style="color:#00A2E8">click the "Add Acceptance Test" button to add the test</span> to the requirement</a><br/><br/>';
 			str += '<img src="images/enteredTest.png" height="100" /><br/>';
-			str += '<a>The test will appear in the Panel above where you entered information, with a drop down menu to <span style="color:#ED1C24">select if the requirement passed of failed</span> the test.</a>';
+			str += '<a>The test will appear in the Panel above where you entered information, with a drop down menu to <span style="color:#ED1C24">select if the requirement passed or failed</span> the test.</a><br /><br />';
+			str += '<a>Adding a test is deisabled for requirements that have not been created or are deleted. Also, the status of acceptance test is disabled if the requirement is deleted.</a>';
 			return str;
         });
     });
