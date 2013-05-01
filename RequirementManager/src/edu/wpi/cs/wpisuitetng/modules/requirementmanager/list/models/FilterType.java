@@ -40,6 +40,10 @@ public enum FilterType {
 		return valueOf(toConvert);
 	}
 	
+	/**Overrides the default toString method so that we can have "Other" be the empty string
+	 * 
+	 * @return A String representation of the enum
+	 */
 	public String toString () {
 		switch (FilterType.this) {
 		case ActualEffort:
