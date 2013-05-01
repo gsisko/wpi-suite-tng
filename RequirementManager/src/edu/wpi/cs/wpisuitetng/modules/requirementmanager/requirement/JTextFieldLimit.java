@@ -18,17 +18,37 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+/**
+ * A JTextField that is designed to only accept characters up to a certain limit
+ */
 @SuppressWarnings("serial")
 public class JTextFieldLimit extends PlainDocument {
 	private int limit;
+	/**
+	 * Constructor for JTextFieldLimit.
+	 * @param limit int The ammount of characters to limit the text too
+	 */
 	public JTextFieldLimit(int limit) {		
 		this.limit = limit;
 	}
 
-	JTextFieldLimit(int limit, boolean upper) {
+	/**
+	 * Constructor for JTextFieldLimit.
+	 * @param limit int The ammount of characters to limit the text too
+	 * @param upper boolean
+	 */
+	JTextFieldLimit(int limit, boolean upper) { 
 		this.limit = limit;
 	}
 
+	/**
+	 * Inserts a string into this JTextField
+	 * @param offset int What offset to insert the string into
+	 * @param str String The string to insert
+	 * @param attr AttributeSet
+	 * @throws BadLocationException 
+	 * @see javax.swing.text.Document#insertString(int, String, AttributeSet)
+	 */
 	public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
 		if (str == null)
 			return;

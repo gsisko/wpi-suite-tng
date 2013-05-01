@@ -46,6 +46,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	protected Requirement[] displayedRequirements;
 
 	/** Constructs a new CreateRequirementView where the user can enter the data for a new requirement.
+	 * @param tabController MainTabController
 	 */
 	public RequirementView(MainTabController tabController) {
 		this(new Requirement(), Mode.CREATE, null, tabController);
@@ -57,6 +58,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	 * @param requirement	The requirement to show.
 	 * @param editMode	The editMode for editing the Requirement
 	 * @param tab		The Tab holding this RequirementView (can be null)
+	 * @param tabController MainTabController
 	 */
 	public RequirementView(Requirement requirement, Mode editMode, Tab tab, MainTabController tabController) {
 		this.tabController = tabController;
@@ -132,7 +134,7 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	/** Returns the "inputEnabled" boolean;
 	 * A boolean representing whether or not input is enabled
 	 * for this panel and it's children.
-	 * 
+	 * 	
 	 * @return inputEnabled A boolean representing whether or not input is enabled for this RequirementView panel and it's children
 	 */
 	public boolean getInputEnabled() {
@@ -153,6 +155,11 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		return mainPanel.getTabPanel();
 	}
 	
+	/**
+	 * Method getGroup.
+	 * @return ToolbarGroupView
+	 * @see edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider#getGroup()
+	 */
 	@Override
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
@@ -181,6 +188,10 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 		mainPanelScrollPane.repaint();
 	}
 	
+	/**
+	 * Method getController.
+	 * @return SaveRequirementController
+	 */
 	public SaveRequirementController getController() {
 		return controller;
 	}
@@ -193,16 +204,24 @@ public class RequirementView extends JPanel implements IToolbarGroupProvider {
 	}
 	
 	/**
-	 * @return the tabController
+	 * @param isEnabled boolean
 	 */
 	public void setSaveButtonEnable(boolean isEnabled) {
 		saveButton.setEnabled(isEnabled);
 	}
 
+	/**
+	 * Getter to get the requiremenets that are displayed in the RequirementView
+	 * @param requirements Requirement[]
+	 */
 	public void setSubRequirements(Requirement[] requirements) {	
 		subRequirements = requirements;	
 	}
 	
+	/**
+	 * Setter to set the requirements that are displayed in the RequirementView
+	 * @param displayedRequirements Requirement[]
+	 */
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
 		this.displayedRequirements = displayedRequirements;
 	}

@@ -29,7 +29,7 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	protected UserChooserTab userChooser;
 
 	/** Construct the observer
-	 * @param controller
+	 * @param userChooser UserChooserTab The UserChooserTab that the response is for
 	 */
 	public RetrieveAllUsersObserver(UserChooserTab userChooser) {
 		this.userChooser = userChooser;
@@ -37,6 +37,8 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
 	/** Upon a successful retrieval of data, the value combo box is filled with the names of the users
 	 *  retrieved from the database.
+	 * @param iReq IRequest
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(IRequest)
 	 */
 	public void responseSuccess(IRequest iReq) {
 		Request request = (Request) iReq;
@@ -56,11 +58,16 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	}
 
 	/** This method is unused, but is required by the RequestObserver interface
+	 * @param iReq IRequest
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(IRequest)
 	 */
 	public void responseError(IRequest iReq) {
 	}
 
 	/** This method is unused, but is required by the RequestObserver interface
+	 * @param iReq IRequest
+	 * @param exception Exception
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(IRequest, Exception)
 	 */
 	public void fail(IRequest iReq, Exception exception) {
 	}
