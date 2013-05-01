@@ -38,8 +38,8 @@ public class Note extends RequirementEvent {
 		date = new Date();
 	}
 
-	/** Converts the entirety of the message to a formatted string and returns it
-	 * @return a string version of the whole note
+	/** Gets the label of the note (who added it and when) and returns it
+	 * @return the label of the note
 	 */
 	public String toString() {
 		// Format the date-time stamp
@@ -73,6 +73,7 @@ public class Note extends RequirementEvent {
 	}
 	
 	/** Converts the given JSON string into a Note
+	 * 
 	 * @param json JSON string containing a serialized Note
 	 * @return a Note deserialized from the given JSON string
 	 */
@@ -88,7 +89,7 @@ public class Note extends RequirementEvent {
 		return this.getMessage();
 	}
 	
-	/** Gets the label of the note and returns it
+	/** Gets the label of the note (who added it and when) and returns it
 	 * @return the label of the note
 	 */
 	public String getLabelString() {

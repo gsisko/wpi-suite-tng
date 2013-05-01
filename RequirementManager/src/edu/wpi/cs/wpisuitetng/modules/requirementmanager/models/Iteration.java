@@ -34,7 +34,9 @@ public class Iteration extends AbstractModel {
 	/** The current running total estimate */
 	private int totalEstimate;
 	
-	/** Basic constructor for an Iteration */
+	/** Basic constructor for an Iteration.
+	 * Constructs an iteration with a blank name, and today's date as it's start and end date
+	 */
 	public Iteration()
 	{
 		//Call the other constructor so we reuse code
@@ -68,7 +70,6 @@ public class Iteration extends AbstractModel {
 
 	@Override
 	public void delete() {
-		
 	}
 
 	@Override
@@ -150,72 +151,70 @@ public class Iteration extends AbstractModel {
 	}	
 	
 	/**
-	 * @return the name
+	 * @return name The "name" String of this Iteration
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * @return the name
+	 * @return id The "id" (an int) of this Iteration
 	 */
 	public int getID() {
 		return id;
 	}
 	
 	/**
-	 * @param name the name to set
+	 * @param name the name to set of this iteration
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	/**
-	 * @param ID the id to set
+	 * @param ID The "id" (an int) of this Iteration
 	 */
 	public void setID(int ID) {
 		id = ID;
 	}
 	/**
-	 * @return the startDate
+	 * @return startDate The "startDate" Date
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
 
 	/**
-	 * @param startDate the startDate to set
+	 * @param startDate The "startDate" Date to set
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
 	/**
-	 * @return the endDate
+	 * @return endDate The "endDate" Date
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
 
 	/**
-	 * @param endDate the endDate to set
+	 * @param endDate The "endDate" Date to set
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	
 	/**
-	 * @return the requirementsAssigned
+	 * @return requirementsAssigned The "requirementsAssigned" ArrayList of the int IDs of the requirements assigned to this iteration
 	 */
 	public ArrayList<Integer> getRequirementsContained() {
 		return requirementsAssigned;
 	}
 
 	/**
-	 * @param requirementsContained the requirementsAssigned to set
+	 * @param requirementsContained The "requirementsAssigned" ArrayList of the int IDs of the requirements assigned to this iteration to set
 	 */
 	public void setRequirementsContained(ArrayList<Integer> requirementsContained) {
 		requirementsAssigned = requirementsContained;
 	}
-	
-
 }
