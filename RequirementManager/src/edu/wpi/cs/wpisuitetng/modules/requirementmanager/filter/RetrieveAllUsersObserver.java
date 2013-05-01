@@ -39,6 +39,7 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
 	/** Upon a successful retrieval of data, the value combo box is filled with the names of the users
 	 *  retrieved from the database.
+	 *  
 	 * @param iReq IRequest
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(IRequest)
 	 */
@@ -74,12 +75,14 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	}
 
 	/** This method is unused, but is required by the RequestObserver interface
+	 * 
 	 * @param iReq the reponse from the server
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(IRequest)
 	 */
 	public void responseError(IRequest iReq) {	}
 
 	/** This method is unused, but is required by the RequestObserver interface
+	 * 
 	 * @param iReq the response from the server
 	 * @param exception unused
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(IRequest, Exception)

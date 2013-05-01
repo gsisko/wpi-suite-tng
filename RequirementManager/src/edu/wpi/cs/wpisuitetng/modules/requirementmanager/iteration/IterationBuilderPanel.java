@@ -284,6 +284,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 
 	/** Get the "currentMode" of this panel (Mode.EDIT or Mode.CREATE)
+	 * 
 	 * @return currentMode The currentMode Mode of this panel
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#getCurrentMode()
 	 */
@@ -299,15 +300,15 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 
 	/** Gets the current iteration
-	 * @return the current iteration
+	 * @return currentIteration The "currentIteration" Iteration
 	 */
 	public Iteration getCurrentIteration()
 	{
 		return currentIteration;
 	}
 
-	/** Sets the iteration  
-	 * @param newIteration the iteration to set currentIteration to
+	/** Sets the currentIteration  
+	 * @param newIteration the Iteration to set currentIteration to
 	 */
 	public void setCurrentIteration(Iteration newIteration)
 	{
@@ -315,6 +316,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 
 	/** Enables or disables all fields in the builder panel.
+	 * 
 	 * @param setTo Boolean to activate/disable the fields in the builder panel
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setInputEnabled(boolean)
 	 */
@@ -533,6 +535,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	 *  controllers and action listeners are initialized because the controllers
 	 *  require references that are not not fully initialized when the 
 	 *  constructor for this class is called.
+	 *  
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setupControllersAndListeners()
 	 */
 	public void setupControllersAndListeners() {
@@ -612,6 +615,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 	}
 	
 	/** Gets the ListTab "parent"  of this tab
+	 * 
 	 * @return the ListTab that this IterationBuilderPanel is in 
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#getMyParent()
 	 */

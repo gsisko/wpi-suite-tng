@@ -85,7 +85,6 @@ public class IterationListTab extends JPanel implements IListPanel {
 		resultsTable.setDefaultRenderer(String.class, new ActiveIterationTableCellRenderer());
 		resultsTable.getTableHeader().setReorderingAllowed(false);
 
-
 		// Put the table in a scroll pane
 		JScrollPane resultsScrollPane = new JScrollPane(resultsTable);
 		resultsScrollPane.setPreferredSize(new Dimension(175,250));
@@ -120,7 +119,6 @@ public class IterationListTab extends JPanel implements IListPanel {
 		// Sets up listener system. Once pressed, changes to CancelIterationAction listener, then back to this.
 		btnCreate.addActionListener(new NewModelAction(this, parent.getIterationBuilderPanel()));
 		btnDelete.addActionListener(deleteController);
-		
 	}
 
 	/** This method returns an ArrayList of active Iterations	
@@ -248,6 +246,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 
 	/** Gets the unique identifier of the list entry that was double clicked
+	 * 
 	 * @param me MouseEvent
 	 * @return The unique identifier, either name or ID number (in String form)
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
@@ -377,6 +376,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	}
 
 	/** Sets the delete button to either activated or deactivated 
+	 * 
 	 * @param setActive True to activate and false to deactivate
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */

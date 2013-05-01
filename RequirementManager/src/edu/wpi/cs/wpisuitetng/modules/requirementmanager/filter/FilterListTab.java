@@ -221,7 +221,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	/** Sets the New button to cancel
+	/** Sets the New button ("btnCreate") to cancel
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
 	 */
 	public void setNewBtnToCancel() {
@@ -252,6 +252,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 	/** Begins refresh process, starting with Filters 
+	 * 
 	 * @return Always true
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
 	 */
@@ -282,6 +283,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	}
 
 	/** Show the filters in the list view
+	 * 
 	 * @param jsonString An array of models in the form of a JSON string
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
 	 */
@@ -407,7 +409,8 @@ public class FilterListTab extends JPanel implements IListPanel{
 		parent.getParent().getController().refreshData();
 	}
 
-	/** Sets the delete button to either activated or deactivated  
+	/** Sets the delete button to either activated or deactivated 
+	 *  
 	 * @param setActive A boolean - true to activate "btnDelete" JButton and false to deactivate
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */

@@ -272,7 +272,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 *  to be a number box when numbers are expected, a drop down when the 
 	 *  options are finite (enumerators), and a string for the rest of the time.
 	 *  Also sets up the operator boxes in a similar fashion This reduces the
-	 *  possibility of user error.	 
+	 *  possibility of user error.
+	 *  	 
 	 * @param e ActionEvent
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */
@@ -557,11 +558,11 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		}
 	}
 
-
 	/** Sets up the controllers and action listeners. This should be where all
 	 *  controllers and action listeners are initialized because the controllers
 	 *  require references that are not not fully initialized when the 
 	 *  constructor for this class is called.
+	 *  
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setupControllersAndListeners()
 	 */
 	public void setupControllersAndListeners() {
@@ -586,6 +587,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	}
 
 	/** Enables or disables all fields in the builder panel. 
+	 * 
 	 * @param setTo True activates the fields and false deactivates them
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setInputEnabled(boolean)
 	 */
