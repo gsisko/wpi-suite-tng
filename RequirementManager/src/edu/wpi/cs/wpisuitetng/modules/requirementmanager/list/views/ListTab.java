@@ -32,6 +32,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 @SuppressWarnings("serial")
 public class ListTab extends JPanel {
 
+	/**
+	 * Enumerator representing the different states the ListTab can be in
+	 */
 	public enum Mode {
 		FILTER,
 		ITERATION,
@@ -82,6 +85,7 @@ public class ListTab extends JPanel {
 
 	/** Constructs the list panel and sets up the layout for the sub-panels
 	 * @param tabController The main tab controller
+	 * @param view ListView The ListView that this ListTab will contain
 	 */
 	public ListTab(MainTabController tabController, ListView view) {
 		this.tabController = tabController;
@@ -154,31 +158,56 @@ public class ListTab extends JPanel {
 		this.add(splitPane);
 	}
 
+	/**
+	 * Getter for the results panel that is in this ListTab
+	 * @return RequirementListPanel
+	 */
 	public RequirementListPanel getResultsPanel(){
 		return resultsPanel;
 	}
 
+	/**
+	 * Getter for the MainTabController that this tab is in
+	 * @return MainTabController
+	 */
 	public MainTabController getTabController() {
 		return tabController;
 	}
 
+	/**
+	 * Getter for the FilterBuilderPanel that is in this ListTab
+	 * @return FilterBuilderPanel
+	 */
 	public FilterBuilderPanel getFilterBuilderPanel(){
 		return filterBuilderPanel;
 	}
 
+	/**
+	 * Getter for the IterationBuilderPanel that is in this ListTab
+	 * @return IterationBuilderPanel
+	 */
 	public IterationBuilderPanel getIterationBuilderPanel(){
 		return iterationBuilderPanel;
 	}
 
+	/**
+	 * Getter for the EditModeBuilderPanel that is in this ListTab
+	 * @return EditModeBuilderPanel
+	 */
 	public EditModeBuilderPanel getEditModeBuilderPanel() {
 		return editModeBuilderPanel;
 	}
 
+	/**
+	 * Getter for the ListTabPanel that is in this ListView
+	 * @return ListTabPanel
+	 */
 	public ListTabPanel getTabPanel(){
 		return tabPanel;
 	}
 
 	/**
+	 * Getter to return the parent of this ListTab, which is a ListView
 	 * @return the listView
 	 */
 	public ListView getParent() {
@@ -192,6 +221,10 @@ public class ListTab extends JPanel {
 		parent = listView;
 	}
 
+	/**
+	 * Setter to set the mode of the ListTab
+	 * @param newMode Mode
+	 */
 	public void setMode(Mode newMode) {
 		if (currentMode != newMode) {
 			if (newMode == Mode.FILTER) {
@@ -205,6 +238,10 @@ public class ListTab extends JPanel {
 		}
 	}
 	
+	/**
+	 * Getter that returns the current mode that this ListTab is in
+	 * @return Mode
+	 */
 	public Mode getMode() {
 		return currentMode;
 	}
