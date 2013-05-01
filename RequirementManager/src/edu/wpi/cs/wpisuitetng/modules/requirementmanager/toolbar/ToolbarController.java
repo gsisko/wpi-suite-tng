@@ -24,7 +24,6 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabPanel;
 
-
 /** Controller for the requirement manager toolbar.
  * Keeps track of the displayed tab in a MainTabController and displays the
  * group of controls provided by the displayed components' getGroup method, if it

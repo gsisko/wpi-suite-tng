@@ -17,7 +17,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 
-
 /** Action that calls {@link RetrieveAllRequirementsController#refreshData()}, default mnemonic key is R
  */
 @SuppressWarnings("serial")

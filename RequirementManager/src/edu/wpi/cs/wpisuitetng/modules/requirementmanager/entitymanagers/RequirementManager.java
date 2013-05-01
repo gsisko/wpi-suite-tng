@@ -40,7 +40,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.UserCh
  *  methods include functionality for creating, updating, getting specific requirements, and 
  *  getting all requirements. Current, requirements are project specific, so
  *  requirements pulled from the DB will only be for the current current project.   
- * @author Team 5 D13
  */
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */

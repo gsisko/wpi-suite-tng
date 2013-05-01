@@ -27,9 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-/**
- * View that contains all the charts
- * @author Team 5 D13
+/** View that contains all the charts
  */
 @SuppressWarnings("serial")
 public class ChartView extends JPanel implements IToolbarGroupProvider{

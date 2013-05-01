@@ -12,7 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
-/**Possible values for the priority of a requirement. 
+/** Possible values for the priority of a requirement. 
  * @version $Revision: 1.0 $
  */
 public enum RequirementPriority {

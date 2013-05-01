@@ -35,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
  *  filters pulled from the DB will only be for the current user and current project. 
  *  "Deleting" simply sets the user field of Filters to null so that the filter cannot be
  *  pulled from the DB, but it will still exist to preserve unique IDs.   
- * @author Team 5 D13
  */
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */

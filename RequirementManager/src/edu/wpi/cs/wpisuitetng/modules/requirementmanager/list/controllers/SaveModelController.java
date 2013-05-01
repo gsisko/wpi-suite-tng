@@ -25,7 +25,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /** This controller manages the saving of one model at a time, as well as 
  *  acting on server responses caught by the observer
- * 
  */
 public class SaveModelController implements ActionListener 
 {

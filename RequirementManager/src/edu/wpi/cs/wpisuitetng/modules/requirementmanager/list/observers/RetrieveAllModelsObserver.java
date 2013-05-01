@@ -19,7 +19,8 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /** An observer waiting for a request to retrieve all models. That message is read and 
- * passed on to the controller.  */
+ * passed on to the controller. 
+ */
 public class RetrieveAllModelsObserver implements RequestObserver,IObserver{
 
 	/** The controller managing the request */

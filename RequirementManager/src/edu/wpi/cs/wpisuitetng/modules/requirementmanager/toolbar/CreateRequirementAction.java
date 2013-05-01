@@ -20,8 +20,7 @@ import javax.swing.AbstractAction;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.tabs.MainTabController;
 
-/**
- * Action that calls {@link MainTabController#addCreateRequirementTab()}, default mnemonic key is C. 
+/** Action that calls {@link MainTabController#addCreateRequirementTab()}, default mnemonic key is C. 
  */
 @SuppressWarnings("serial")
 public class CreateRequirementAction extends AbstractAction {

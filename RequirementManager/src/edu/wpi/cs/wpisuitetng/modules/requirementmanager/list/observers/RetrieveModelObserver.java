@@ -19,7 +19,8 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /** An observer for a request to retrieve a requirement with the provided id. When the response
- * is gotten from the server, the body is passed to the controller for processing. */
+ * is gotten from the server, the body is passed to the controller for processing.
+ */
 public class RetrieveModelObserver implements RequestObserver, IObserver{
 	
 	/** Controller that started this observer */

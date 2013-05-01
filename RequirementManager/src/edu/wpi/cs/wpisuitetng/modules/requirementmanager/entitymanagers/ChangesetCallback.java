@@ -23,7 +23,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.Requir
 
 /** Responsible for filling in a changeset after being passed to
  * {@link ModelMapper#map(Model, Model, MapCallback)} 
- * @author Team 5 D13
  */
 class ChangesetCallback implements MapCallback {
 

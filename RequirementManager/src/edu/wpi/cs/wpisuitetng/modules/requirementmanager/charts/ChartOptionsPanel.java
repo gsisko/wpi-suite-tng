@@ -38,9 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTabl
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-/** 
- * Panel that contains options for the currently displayed chart.
- * @author Team 5 D13
+/** Panel that contains options for the currently displayed chart.
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{

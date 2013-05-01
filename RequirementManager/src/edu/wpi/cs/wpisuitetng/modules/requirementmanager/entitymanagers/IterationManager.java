@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  *  
  *   Also, the first time iterations are asked for in a new project, a single "Backlog" iteration
  *   will be created, stored and included with the other iterations requested.   
- * @author Team 5 D13
  */
 public class IterationManager implements EntityManager<Iteration> {
 	/** The database */
