@@ -24,7 +24,6 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /** An observer for a request to retrieve all users specific to the Filter builder panel. Upon
  * a successful retrieval of data, the value combo box is filled with the names of the users
  * retrieved from the database.
- * @author Team 5 D13
  */
 public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 

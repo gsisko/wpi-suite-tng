@@ -37,7 +37,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelActi
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /** Panel to contain the list of filters that have been saved by the user
- * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class FilterListTab extends JPanel implements IListPanel{

@@ -46,7 +46,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *  RequirementManager module above the list of requirements and right of the list 
  *  of filters. This builder will be switched to when the Filter list view
  *  tab is selected.  
- * @author Team 5 D13
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
