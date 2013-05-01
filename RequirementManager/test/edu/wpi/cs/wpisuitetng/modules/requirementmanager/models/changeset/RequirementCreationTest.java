@@ -21,8 +21,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import static org.junit.Assert.*;
 
-/**This class contains tests for the class {@link RequirementCreation}.
- * @author Team 5 D13
+/** This class contains tests for the class {@link RequirementCreation}.
  */
 public class RequirementCreationTest {
 

@@ -275,7 +275,7 @@ public class MockData implements Data {
 	}
 
 	/** Adds a project to the database
-	 * This method was added for use when the projects included in the DB are significant.
+	 * This method was added for use when the projects included in the database are significant.
 	 *  @param toAdd The Project to add to the database
 	 */
 	public void addProject(Project toAdd){

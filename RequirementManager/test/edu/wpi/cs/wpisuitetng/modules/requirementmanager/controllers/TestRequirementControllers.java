@@ -50,7 +50,6 @@ public class TestRequirementControllers {
 	Filter testFilter, testOtherFilter;
 	Iteration testIteration, testOtherIteration;
 	
-	
 	MainTabPanel mainTabPanel;
 	ListView listView;
 	ListTab listTab;
@@ -147,21 +146,14 @@ public class TestRequirementControllers {
 	    assertEquals(IBuilderPanel.Mode.CREATE, filterBuilderTest.getCurrentMode());
 	    filterBuilderTest.setCurrentFilter(testFilter);
 	    assertTrue(testFilter.identify(filterBuilderTest.getCurrentFilter()));
-	    
-	    
+	    	    
 	    assertEquals(2, filterBuilderTest.getIterationNames().length);
-	    
-	    
-	    //String json = filterBuilderTest.convertCurrentModelToJSON();
-	    //filterBuilderTest.translateAndDisplayModel(json);
 
 	    filterBuilderTest.setModeAndBtn(IBuilderPanel.Mode.CREATE);
 	    filterBuilderTest.setModeAndBtn(IBuilderPanel.Mode.EDIT);
 	    
 	    filterBuilderTest.setInputEnabled(true);
-	    filterBuilderTest.toggleNewCancelMode();
-
-	    
+	    filterBuilderTest.toggleNewCancelMode();   
 	}
 	
 	@Test

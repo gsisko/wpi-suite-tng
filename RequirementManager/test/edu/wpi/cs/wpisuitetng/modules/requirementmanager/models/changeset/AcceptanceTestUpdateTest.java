@@ -9,6 +9,7 @@
  * Contributors: Team 5 D13
  * 
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset;
 
 import static org.junit.Assert.assertEquals;

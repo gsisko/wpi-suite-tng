@@ -169,7 +169,6 @@ public class FilterTest {
 	
 	assertTrue(OperatorType.perform(doesNotContain, "fgd", "Hello World", false));
 	assertFalse(OperatorType.perform(doesNotContain, "ello World", "Hello World", false));
-	
     }
     
     @Test
@@ -207,7 +206,6 @@ public class FilterTest {
     	toCompare.setValue("something");
     	assertTrue(testFilter.equals(toCompare));
     }
-    
     
     /** This test assumes that the perform method works
      */

@@ -59,7 +59,6 @@ public class UserChangeTest {
 		fixture.newUsers = new ArrayList();
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
 		assertEquals("", result);
@@ -186,7 +185,6 @@ public class UserChangeTest {
 		fixture.newUsers = arrayList1;
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
 		assertEquals("", result);
