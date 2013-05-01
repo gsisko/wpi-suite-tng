@@ -238,6 +238,7 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 		add(dateWarning, IterationBuilderConstraints);//Actually add the "dateWarning" to the layout given the previous constraints
 
 	}
+	
 	/** Get the create button
 	 * @return btnCreate The "btnCreate" JButton
 	 */
@@ -305,9 +306,8 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 		return currentIteration;
 	}
 
-	/** Sets the iteration 
-	 * 
-	 * @param newIteration the iteration to set to
+	/** Sets the iteration  
+	 * @param newIteration the iteration to set currentIteration to
 	 */
 	public void setCurrentIteration(Iteration newIteration)
 	{

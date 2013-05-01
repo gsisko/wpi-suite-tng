@@ -29,14 +29,13 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-/** The controller responsible for managing requests to save requirements to the databsae
+/** The controller responsible for managing requests to save requirements to the database
  */
 public class SaveRequirementController {
 	/** The tab that this controlling is performing save requests for */
 	private final RequirementTab view;
 
-	/** Constructor
-	 * 
+	/** Constructor for SaveRequirementController
 	 * @param view The tab that this controlling is performing save requests for
 	 */
 	public SaveRequirementController(RequirementView view) 
@@ -45,7 +44,6 @@ public class SaveRequirementController {
 	}
 
 	/** Save the requirement currently in the view 
-	 * 
 	 */
 	public void save() 
 	{
@@ -274,9 +272,9 @@ public class SaveRequirementController {
 
 		view.getAttributePanel().getSaveButton().setEnabled(false);
 	}
+	
 	/** Gets the view that this controller is in
-	 * 
-	 * @return view
+	 * @return view The view RequirementTab
 	 */
 	public RequirementTab getView() {
 		return view;
@@ -340,7 +338,7 @@ public class SaveRequirementController {
 		request.send();
 	}
 	
-	/** save user assignment changes */
+	/** Save user assignment changes */
 	public void saveUsers() {
 		Requirement currentRequirement = view.getCurrentRequirement();
 		ArrayList<String> assignedUsers = new ArrayList<String>();

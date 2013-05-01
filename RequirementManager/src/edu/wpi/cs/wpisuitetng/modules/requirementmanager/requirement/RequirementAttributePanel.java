@@ -168,7 +168,8 @@ public class RequirementAttributePanel extends JPanel {
 
 	/** An array of iteration names */
 	String[] iterationArr = { "Backlog"};
-	/** A similar array of iteration names */
+	
+	/** An array of iteration names */
 	String[] iterationStrings = iterationArr;
 
 	/** The constraints variable used to layout this panel */
