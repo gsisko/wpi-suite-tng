@@ -78,7 +78,7 @@ function RequirementOverview(){
 		$(".instructionTitle").html('<a>The Requirement Manager Tab</a>');
 		$(".instructionText").html(function (){
 			var str = '<img width="750" src="images/mainPanel.png"/><br />';
-			str += 'The above image shows the requirement manager in full. This section of the user manual will focus on the creation and management of requirements. Further sections will focus on the rest of our requirement manager, including Filters and Iterations'
+			str += 'The above image shows the requirement manager in full. This section of the user manual will focus on the creation and management of requirements. Further sections will focus on the rest of our requirement manager, including Filters and Iterations.'
 			return str;
 		});
 	});
@@ -93,7 +93,7 @@ function MakeReqPage() {
         	var str = '<img width="500" src="images/topPanel.png"/><br />';
         	str += '<a>To begin the process of making a requirement simply <span style="color:#ED1C24">click the "Create Requirement" button</span> in the top left of the full display. The button is highlighted above</a><br />';
         	str += '<img width = "500" src="images/requirementBuilder.png" alt="The Requirement Builder Panel" /><br />';
-        	str += '<a>The above image displays the requirement builder panel. The fields <span style="color:#ED1C24">name and description are required</span> and provide textual warnings when not properly entered. The <span style="color:#FF7F27">optional requirements are type, prority and relase number</span>. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement unless an invalid value is input, such as null . The fields: <b>status, estimate, actual effort, and iteration, are disabled</b> at the creation of the requirement.</a>';
+        	str += '<a>The above image displays the requirement builder panel. The fields <span style="color:#ED1C24">name and description are required</span> and provide textual warnings when not properly entered. The <span style="color:#FF7F27">optional requirements are type, prority and relase number</span>. You can set the optional values either before or after creation of the requirement. Optional requirements will not prevent the creation of a requirement unless an invalid value is input, such as null. The fields: <b>status, estimate, actual effort, and iteration, are disabled</b> at the creation of the requirement.</a>';
         	str += '<br /><br /><a> The minimum that is required to successfully create a requirement is to give the requirement a name and description then click the "Save Changes" button at the top of the window.</a>';
             return str;
         });
@@ -125,7 +125,7 @@ function InlineUpdate(){
 			var str = '<img src="images/inlineEditButton.png" /><br />';
 			str += '<a>To edit inline, begin by clicking the Enable Edit Mode button to have the default building screen change into an inline editing screen.</a><br /><br />';
 			str += '<img src="images/editPanel.png" /><br/>';
-			str += '<a>Once in the inline editing panel you can select the row you wish to edit, and edit it directly in the window. If you enter an impossible value the field will turn red. Allowed changes will turn yellow. This is a feature recommended for advanced users.</a>';
+			str += '<a>Once in the inline editing panel you can select the row you wish to edit, and edit it directly in the window. If you enter an impossible value the field will turn red. Allowed changes will turn yellow.</a>';
 			
 			return str;
 		});
@@ -171,7 +171,7 @@ function AddingATest(){
 			str += '<a>To add an acceptance test, you must first <span style="color:#22B14C">select the acceptance test tab</span> from the right side of the requirement builder panel.  Then you must enter a <span style="color:#ED1C24">required name and body</span> into the provided boxes. The name must be less then 100 characters, and both the name and body must be non-blank. After a name and descrption have been entered, you can <span style="color:#00A2E8">click the "Add Acceptance Test" button to add the test</span> to the requirement</a><br/><br/>';
 			str += '<img src="images/enteredTest.png" height="100" /><br/>';
 			str += '<a>The test will appear in the Panel above where you entered information, with a drop down menu to <span style="color:#ED1C24">select if the requirement passed or failed</span> the test.</a><br /><br />';
-			str += '<a>Adding a test is deisabled for requirements that have not been created or are deleted. Also, the status of acceptance test is disabled if the requirement is deleted.</a>';
+			str += '<a>Adding a test is disabled for requirements that have not been created or are deleted. Also, the status of acceptance test is disabled if the requirement is deleted.</a>';
 			return str;
         });
     });
@@ -198,7 +198,7 @@ function AddingUsers(){
         $(".instructionText").html(function(){
 			var str = '<img src="images/Users.gif" height="400"/><br />';
 			str += '<a>To add a user to a requirement you must start with an existing requirement. In the right hand panel, where you find history, notes and acceptance Tests, <span style="color:#ED1C24">select the tab that says user</span>. Within that tab you will find a list of users currently in the database. <span style="color:#ED1C24">Select the user or users you wish</span> to assign to the requirement then <span style="color:#ED1C24">click the "Add Users ->" button</span> to assign the user or users to the current requirement. The "Add Users ->" button will grey out as needed.<a/><br/><br/>';
-			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign, click the "<- Remove Users" button, And the user will have been unassigned.</a>'
+			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign, click the "<- Remove Users" button, and the user will have been unassigned.</a>'
 			return str;
         });
     });
@@ -207,7 +207,7 @@ function AddingUsers(){
 function DeleteReqPage() {
 	$(document).ready(function () {
         //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">How to Update a Requirement</a>');
+        $(".moveTabs").html('<a class="title">How to Delete a Requirement</a>');
 		$(".instructionTitle").html('<a>The Requirement Builder Panel With Notes</a>');
         $(".instructionText").html(function(){
         	var str = '<a>To delete a requirement begin by opening up the requirement you wish to delete as if you were going to edit it.</a><br />';
@@ -222,7 +222,7 @@ function DeleteReqPage() {
 function IterationListPanel() {
     $(document).ready(function () {
         //change where next and previous values point, do in a function
-        $(".moveTabs").html('<a class="title">OverView of the Iteration List Panel</a>');
+        $(".moveTabs").html('<a class="title">Overview of the Iteration List Panel</a>');
 		$(".instructionTitle").html('<a>The Iteration List Panel</a>');
         $(".instructionText").html(function(){
             var str = '<img height="400" src="images/iterationListPanel.png"/>';
@@ -240,9 +240,10 @@ function IterationBuilderPanel(){
         $(".instructionText").html(function(){
 			var str = '<img width="750" src="images/iterationBuilderPanel.png"/>';
 			str += '<br /><a>The Iteration Builder Panel allows you to create and update iterations. Iterations have the following attributes:</a>';
-			str += '<ul><li>Name - The name of an iteration</li>';
+			str += '<ul><li>Name - The name of an iteration (cannot be blank or "backlog", cannot be more than 100 characters)</li>';
 			str +='<li>Start Date - Date selected from the calender as the beginning of an iteration (cannot be after the end date)</li>';
-			str +='<li>End Date - Date selected from the calendar as the end of an iteration (cannot be before the start date)</li></ul>'
+			str +='<li>End Date - Date selected from the calendar as the end of an iteration (cannot be before the start date)</li></ul>';
+			str +='<li>Dates cannot overlap other existing iteration dates</li></ul>'
 			return str;
 		});
     });
@@ -322,41 +323,8 @@ function MakeChart(){
 			str += '<a>To being viewing charts of your data, begin by click the <span style="color:#ED1C24">"Display Charts"</span> button from the top left of the main view.</a><br /><br />';
 			str += '<img src="images/displayedChart.png" height="400" /><br />';
 			str += '<a>From the chart view you may select either a <span style="color:#22B14C;">pie chart or bar chart</span> to display your data. ';
-			str += 'You can also select the <span style="color:#00A2E8">Data you wish to disply</span>, such as requirement statuses, requirement iterations, number of requirements assigned to each user, and total estimate for each user. Lastly there is a menu for if you wish to <span style="color:#3F48CC">show applied filters or not.</span> Applying filters is disabled aytomatically if it filters out all requirements</a>'
+			str += 'You can also select the <span style="color:#00A2E8">Data you wish to disply</span>, such as requirement statuses, requirement iterations, number of requirements assigned to each user, and total estimate for each user. Lastly there is a menu for if you wish to <span style="color:#3F48CC">show applied filters or not.</span> Applying filters is disabled automatically if it filters out all requirements</a>'
 			return str;
         });
     });
 }
-
-/*
-    add your new page to the list below
-    using the same helpArray.length position
-    this isn't actually used right now,
-    but may be implemented later so keep it up to date please.
-
-var helpArray = new Array();
-helpArray[helpArray.length] = "makeReqPage";
-
-var prevString = helpArray[helpArray.length - 1];
-var nextString = helpArray[0];
-
-function UpdateNextPrev(current){
-
-    var pageID = helpArray.indexOf(current);
-    var prevNum = -1;
-    var nextNum = -1;
-
-    if (pageID == -1)
-        alert("This page doesnt actually seem to exist.");
-
-    if (pageID == 0)
-        prevNum = helpArray.length - 1;
-    else
-        prevNum = pageID--;
-
-    if (pageID == helpArray.length - 1)
-        nextNum = 0;
-
-    prevString = helpArray[prevNum];
-    nextString = helpArray[nextNum];
-}*/
