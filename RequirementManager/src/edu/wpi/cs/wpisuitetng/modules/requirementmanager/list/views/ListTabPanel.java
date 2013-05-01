@@ -54,8 +54,8 @@ public class ListTabPanel extends JTabbedPane {
 	}
 
 	/** Method setComponentAt.
-	 * @param index int
-	 * @param component Component
+	 * @param index int index of the component to set
+	 * @param component Component the component to set to
 	 */
 	@Override
 	public void setComponentAt(int index, Component component) {
@@ -64,7 +64,7 @@ public class ListTabPanel extends JTabbedPane {
 	}
 
 	/** Sets the current tab index of the tab panel to the specified tab index
-	 * @param index int
+	 * @param index int the new index to set to
 	 */
 	@Override
 	public void setSelectedIndex(int index) {
@@ -91,28 +91,28 @@ public class ListTabPanel extends JTabbedPane {
 	}
 
 	/**
-	 * @return the listPanel
+	 * @return filterList The "filterList" FilterListTab
 	 */
 	public FilterListTab getFilterList() {
 		return filterList;
 	}
 
 	/**
-	 * @param filterList the FilterListTab to set
+	 * @param filterList The "filterList" FilterListTab to set
 	 */
 	public void setFilterList(FilterListTab filterList) {
 		this.filterList = filterList;
 	}
 
 	/**
-	 * @return the listPanel
+	 * @return iterationList The "iterationList" IterationListTab
 	 */
 	public IterationListTab getIterationList() {
 		return iterationList;
 	}
 
 	/**
-	 * @param iterationList the IterationListTab to set
+	 * @param iterationList The "iterationList" IterationListTab to set
 	 */
 	public void setIterationList(IterationListTab iterationList) {
 		this.iterationList = iterationList;
