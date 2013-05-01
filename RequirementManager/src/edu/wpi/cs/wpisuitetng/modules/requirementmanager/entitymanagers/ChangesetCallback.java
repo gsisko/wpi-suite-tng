@@ -26,9 +26,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.Requir
  */
 class ChangesetCallback implements MapCallback {
 
+	/** The RequirementChangeset to store changes in */
 	private final RequirementChangeset changeset;
 
-	//don't add these fields as changes
+	/** Set of field Strings not to add as changes */
 	private static final Set<String> dontRecord =
 			new HashSet<String>(Arrays.asList("events", "lastModifiedDate"));
 

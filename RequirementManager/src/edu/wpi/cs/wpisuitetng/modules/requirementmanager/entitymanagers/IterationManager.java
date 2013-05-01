@@ -292,7 +292,7 @@ public class IterationManager implements EntityManager<Iteration> {
 
 	//The following methods are not implemented but required by the "EntityManager" interface:
 	
-	/** Method advancedPut.
+	/** Method advancedPut. (Not implemented but required by the "EntityManager" interface)
 	 * @param s Session
 	 * @param args String[]
 	 * @return String
@@ -304,7 +304,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		throw new NotImplementedException();
 	}
 
-	/**Method advancedPut.
+	/**Method advancedPut. (Not implemented but required by the "EntityManager" interface)
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
@@ -317,7 +317,7 @@ public class IterationManager implements EntityManager<Iteration> {
 		throw new NotImplementedException();
 	}
 
-	/**Method advancedPost.
+	/**Method advancedPost. (Not implemented but required by the "EntityManager" interface)
 	 * @param s Session
 	 * @param string String
 	 * @param content String

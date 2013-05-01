@@ -39,7 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.UserCh
 /** This is the entity manager for requirements in the RequirementManager module. The provided
  *  methods include functionality for creating, updating, getting specific requirements, and 
  *  getting all requirements. Current, requirements are project specific, so
- *  requirements pulled from the DB will only be for the current current project.   
+ *  requirements pulled from the database will only be for the current current project.   
  */
 public class RequirementManager implements EntityManager<Requirement> {
 	/** The database */
@@ -323,7 +323,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 
 	//The following methods are not implemented but required by the "EntityManager" interface:
 	
-	/** Method advancedGet.
+	/** Method advancedGet. (Not implemented but required by the "EntityManager" interface)
 	 * @param s Session
 	 * @param args String[]
 	 * @return String
@@ -336,7 +336,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		throw new NotImplementedException();
 	}
 
-	/** Method advancedPut.
+	/** Method advancedPut. (Not implemented but required by the "EntityManager" interface)
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
@@ -350,7 +350,7 @@ public class RequirementManager implements EntityManager<Requirement> {
 		throw new NotImplementedException();
 	}
 
-	/** Method advancedPost.
+	/** Method advancedPost. (Not implemented but required by the "EntityManager" interface)
 	 * @param s Session
 	 * @param string String
 	 * @param content String

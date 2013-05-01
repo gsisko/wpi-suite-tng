@@ -34,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
  *  all filters and deleting filters. Currently, Filters are user and project specific, so
  *  filters pulled from the DB will only be for the current user and current project. 
  *  "Deleting" simply sets the user field of Filters to null so that the filter cannot be
- *  pulled from the DB, but it will still exist to preserve unique IDs.   
+ *  pulled from the database, but it will still exist to preserve unique IDs.   
  */
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */
@@ -276,7 +276,7 @@ public class FilterManager implements EntityManager<Filter> {
 
 	//The following methods are not implemented but required by the "EntityManager" interface:
 
-	/** Method advancedPut. This method is not implemented.
+	/** Method advancedPut. This method is not implemented but required by the "EntityManager" interface.
 	 * @param s Session
 	 * @param args String[]
 	 * @param content String
@@ -289,7 +289,7 @@ public class FilterManager implements EntityManager<Filter> {
 		throw new NotImplementedException();
 	}
 
-	/** Method advancedPost. This method is not implemented.
+	/** Method advancedPost. This method is not implemented but required by the "EntityManager" interface.
 	 * @param s Session
 	 * @param string String
 	 * @param content String
@@ -302,7 +302,7 @@ public class FilterManager implements EntityManager<Filter> {
 		throw new NotImplementedException();
 	}
 
-	/** Method advancedGet. This method is not implemented.
+	/** Method advancedGet. This method is not implemented but required by the "EntityManager" interface.
 	 * @param s The current user session
 	 * @param args 
 	 * @return String
