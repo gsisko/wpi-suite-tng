@@ -26,9 +26,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancet
  */
 public class AcceptanceTest extends RequirementEvent {
 	
-	/** Internal private variables */
+	/** The title of the AcceptanceTest */
 	private String title;
+	
+	/** The description of the Acceptance test */
 	private String description;	
+	
+	/** The result of the AcceptanceTest (AcceptanceTestResult.NONE, AcceptanceTestResult.PASSED, or AcceptanceTestResult.FAILED) */
 	private AcceptanceTestResult result;
 
 	/** Create a AcceptanceTest with given properties
@@ -68,14 +72,14 @@ public class AcceptanceTest extends RequirementEvent {
 	}
 	
 	/**
-	 * @return description The description of the acceptance test
+	 * @return description The description String of the acceptance test
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * @param description The description of the acceptance test to set
+	 * @param description The description String of the acceptance test to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -96,7 +100,7 @@ public class AcceptanceTest extends RequirementEvent {
 	}
 	
 	/** 
-	 * @param title The "title" to set this acceptance test to
+	 * @param title The "title" String to set this acceptance test to
 	 */
 	public void setAcceptanceTestTitle(String title){
 		this.title = title;
