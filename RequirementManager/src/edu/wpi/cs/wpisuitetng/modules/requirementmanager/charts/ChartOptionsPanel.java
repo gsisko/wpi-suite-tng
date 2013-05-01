@@ -38,7 +38,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.ResultsTabl
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveFilterTableCellRenderer;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
-/** Panel that contains options for the currently displayed chart.
+/** 
+ * Panel that contains options for the currently displayed chart.
+ * @author Team 5 D13
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ChartOptionsPanel extends JPanel{
@@ -275,6 +277,10 @@ public class ChartOptionsPanel extends JPanel{
 		this.chartDataBox = chartDataBox;
 	}
 
+	/**
+	 * Fills the combo box for chart data to the array of String passed in
+	 * @param options String[]
+	 */
 	public void setChartData(String[] options) {
 		this.chartDataBox.setModel(new DefaultComboBoxModel(options));
 	}
@@ -293,6 +299,10 @@ public class ChartOptionsPanel extends JPanel{
 		this.filtersOptionsBox = filtersOptionsBox;
 	}
 
+	/**
+	 * Method setFiltersOptions.
+	 * @param options String[]
+	 */
 	public void setFiltersOptions(String[] options) {
 		this.filtersOptionsBox.setModel(new DefaultComboBoxModel(options));
 	}
@@ -328,9 +338,9 @@ public class ChartOptionsPanel extends JPanel{
 		}
 	}
 
-	/** Show the filters in the list view
-	 * 
-	 * @param jsonString An array of models in the form of a JSON string
+	/**
+	 * Build the table on the bottom of the panel with the
+	 * list of current filters active
 	 */
 	public void buildTable() {
 		// Setup data structures

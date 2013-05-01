@@ -27,7 +27,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ListTab;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-/** View that contains all the charts
+/**
+ * View that contains all the charts
+ * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class ChartView extends JPanel implements IToolbarGroupProvider{
@@ -242,8 +244,9 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.refreshChartVisibility();
 	}
 
-	/**
-	 * @return the button group to place on the top of the toolbar 
+	/**	
+	 * @return the button group to place on the top of the toolbar
+	 * @see edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.IToolbarGroupProvider#getGroup()
 	 */
 	@Override
 	public ToolbarGroupView getGroup() {
@@ -306,10 +309,18 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.repaint();
 	}
 
+	/**
+	 * Returns the parent ListTab that contains this view
+	 * @return ListTab
+	 */
 	public ListTab getView() {
 		return view;
 	}
 
+	/**
+	 * Sets the parent ListTab that contains this view
+	 * @param view ListTab
+	 */
 	public void setView(ListTab view) {
 		this.view = view;
 	}
@@ -427,6 +438,10 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 
+	/**
+	 * Help that returns true if there are active filters, false otherwise
+	 * @return boolean
+	 */
 	private boolean activeFilters() {
 		Filter[] filters = this.view.getParent().getAllFilters();
 		for (int i = 0; i < filters.length; i++) {
@@ -438,6 +453,11 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 
+	/**
+	 * Helper that returns true if there are users that are assigned to 
+	 * the filtered list of requirements, false otherwise
+	 * @return boolean
+	 */
 	private boolean requirementHasUsersWithFilters() {
 		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
 		Filter[] filters = this.getView().getParent().getAllFilters();
@@ -451,6 +471,11 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		return false;
 	}
 
+	/**
+	 * Helper that returns true if there are estimates for users
+	 * that are assigned to the filtered list of requirements, false otherwise
+	 * @return boolean
+	 */
 	private boolean requirementHasUsersEstimateWithFilters() {
 		Requirement[] reqList = this.getView().getParent().getDisplayedRequirements();
 		Filter[] filters = this.getView().getParent().getAllFilters();
@@ -465,6 +490,11 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 
+	/**
+	 * Helper that returns true if there are requirements that has users assigned,
+	 * false otherwise
+	 * @return boolean
+	 */
 	private boolean requirementHasUsers() {
 		Requirement[] reqList = this.getView().getParent().getAllRequirements();
 		for (int i = 0; i < reqList.length; i++) {
@@ -475,6 +505,11 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		return false;
 	}
 
+	/**
+	 * Helper that returns true if there are estimates for users
+	 * that are assigned to the list of requirements, false otherwise
+	 * @return boolean
+	 */
 	private boolean requirementUserHasEstimate() {
 		Requirement[] reqList = this.getView().getParent().getAllRequirements();
 		for (int i = 0; i < reqList.length; i++) {

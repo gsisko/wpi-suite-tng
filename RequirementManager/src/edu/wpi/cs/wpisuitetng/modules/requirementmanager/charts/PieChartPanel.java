@@ -35,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementStatus;
 
 /** Panel that contains the pie chart specified by the user in the ChartOptionsPanel.
+ * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class PieChartPanel extends JPanel {
@@ -248,6 +249,10 @@ public class PieChartPanel extends JPanel {
 		chartPanel.setChart(chart);
 	}
 
+	/**
+	 * Pass in true to enable filters on this PieChart, false to disable
+	 * @param isFiltered boolean
+	 */
 	public void enableFilter(boolean isFiltered){
 		this.isFiltered = isFiltered;
 	}

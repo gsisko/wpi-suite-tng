@@ -315,45 +315,92 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		this.isFiltered = isFiltered;
 	}
 
+	/**
+	 * Method getSelectedUniqueIdentifiers.
+	 * @return String[]
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
+	 */
 	@Override
 	public String[] getSelectedUniqueIdentifiers() {
 		return null;
 	}
 
+	/**
+	 * Method setNewBtnToCancel.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
+	 */
 	@Override
 	public void setNewBtnToCancel() {
 	}
 
+	/**
+	 * Method setCancelBtnToNew.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setCancelBtnToNew()
+	 */
 	@Override
 	public void setCancelBtnToNew() {
 	}
 
+	/**
+	 * Method refreshAll.
+	 * @return boolean
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
+	 */
 	@Override
 	public boolean refreshAll() {
 		return false;
 	}
 
+	/**
+	 * Method toggleNewCancelMode.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#toggleNewCancelMode()
+	 */
 	@Override
 	public void toggleNewCancelMode() {
 	}
 
+	/**
+	 * Method getSelectedUniqueIdentifier.
+	 * @param me MouseEvent
+	 * @return String
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
+	 */
 	@Override
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 		return null;
 	}
 
+	/**
+	 * Method showRecievedModels.
+	 * @param jsonString String
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
+	 */
 	@Override
 	public void showRecievedModels(String jsonString) {
 	}
 
+	/**
+	 * Method refreshRequirements.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshRequirements()
+	 */
 	@Override
 	public void refreshRequirements() {
 	}
 
+	/**
+	 * Method setDeleteEnabled.
+	 * @param setActive boolean
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
+	 */
 	@Override
 	public void setDeleteEnabled(boolean setActive) {
 	}
 
+	/**
+	 * Method areSelectedItemsDeletable.
+	 * @return boolean
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#areSelectedItemsDeletable()
+	 */
 	@Override
 	public boolean areSelectedItemsDeletable() {
 		return false;
