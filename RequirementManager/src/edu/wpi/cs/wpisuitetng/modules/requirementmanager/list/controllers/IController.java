@@ -12,7 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers;
 
-/** Provides methods for controllers for models to standardize the *ModelController set. These
+/** Provides methods for controllers for models to standardize the ModelController set. These
  *  methods may then be used by actions, buttons, panels etc.
  */
 public interface IController {

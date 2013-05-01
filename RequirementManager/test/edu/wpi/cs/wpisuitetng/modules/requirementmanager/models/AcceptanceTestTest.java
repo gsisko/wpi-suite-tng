@@ -15,14 +15,12 @@ import org.junit.*;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.acceptancetest.AcceptanceTestResult;
 import static org.junit.Assert.*;
 
-/**
- * The class <code>AcceptanceTestTest</code> contains tests for the class <code>{@link AcceptanceTest}</code>.
- *
+/** This class contains tests for the class {@link AcceptanceTest}.
  * @generatedBy CodePro at 4/23/13 10:12 PM
  */
 public class AcceptanceTestTest {
-	/**
-	 * Run the AcceptanceTest(String,String) constructor test.
+	
+	/** Run the AcceptanceTest(String,String) constructor test.
 	 */
 	@Test
 	public void testAcceptanceTest_1()
@@ -32,7 +30,6 @@ public class AcceptanceTestTest {
 
 		AcceptanceTest result = new AcceptanceTest(title, description);
 
-		// add additional test code here
 		assertNotNull(result);
 		
 		assertEquals("Description 1", result.getDescription());
@@ -44,8 +41,7 @@ public class AcceptanceTestTest {
 		assertEquals(null, result.getProject());
 	}
 
-	/**
-	 * Run the AcceptanceTest(String,String,AcceptanceTestResult) constructor test.
+	/** Run the AcceptanceTest(String,String,AcceptanceTestResult) constructor test.
 	 */
 	@Test
 	public void testAcceptanceTest_2()
@@ -68,8 +64,7 @@ public class AcceptanceTestTest {
 		assertEquals(null, result2.getProject());
 	}
 
-	/**
-	 * Run the AcceptanceTest fromJson(String) method test.
+	/** Run the AcceptanceTest fromJson(String) method test.
 	 */
 	@Test
 	public void testFromJson_1()
@@ -82,8 +77,7 @@ public class AcceptanceTestTest {
 		assertEquals(null, result);
 	}
 
-	/**
-	 * Run the AcceptanceTest fromJson(String) method test.
+	/** Run the AcceptanceTest fromJson(String) method test.
 	 */
 	@Test
 	public void testFromJson_2()
@@ -92,12 +86,10 @@ public class AcceptanceTestTest {
 
 		AcceptanceTest result = AcceptanceTest.fromJson(json);
 
-		// add additional test code here
 		assertEquals(null, result);
 	}
 
-	/**
-	 * Run the AcceptanceTestResult getAcceptanceTestResult() method test.
+	/** Run the AcceptanceTestResult getAcceptanceTestResult() method test.
 	 */
 	@Test
 	public void testGetAcceptanceTestResult_1()
@@ -108,15 +100,13 @@ public class AcceptanceTestTest {
 
 		AcceptanceTestResult result = fixture.getAcceptanceTestResult();
 
-		// add additional test code here
 		assertNotNull(result);
 		assertEquals("Failed", result.toString());
 		assertEquals("Failed", result.name());
 		assertEquals(2, result.ordinal());
 	}
 
-	/**
-	 * Run the String getAcceptanceTestTitle() method test.
+	/** Run the String getAcceptanceTestTitle() method test.
 	 */
 	@Test
 	public void testGetAcceptanceTestTitle_1()
@@ -127,12 +117,10 @@ public class AcceptanceTestTest {
 
 		String result = fixture.getAcceptanceTestTitle();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_1()
@@ -143,12 +131,10 @@ public class AcceptanceTestTest {
 
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getDescription() method test.
+	/** Run the String getDescription() method test.
 	 */
 	@Test
 	public void testGetDescription_1()
@@ -159,12 +145,10 @@ public class AcceptanceTestTest {
 
 		String result = fixture.getDescription();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getLabelString() method test.
+	/** Run the String getLabelString() method test.
 	 */
 	@Test
 	public void testGetLabelString_1()
@@ -174,12 +158,9 @@ public class AcceptanceTestTest {
 		fixture.setDescription("");
 
 		String result = fixture.getLabelString();
-
-		// add additional test code here
 	}
 
-	/**
-	 * Run the void setAcceptanceTestResult(AcceptanceTestResult) method test.
+	/** Run the void setAcceptanceTestResult(AcceptanceTestResult) method test.
 	 */
 	@Test
 	public void testSetAcceptanceTestResult_1()
@@ -190,12 +171,9 @@ public class AcceptanceTestTest {
 		AcceptanceTestResult result = AcceptanceTestResult.Failed;
 
 		fixture.setAcceptanceTestResult(result);
-
-		// add additional test code here
 	}
 
-	/**
-	 * Run the void setAcceptanceTestTitle(String) method test.
+	/** Run the void setAcceptanceTestTitle(String) method test.
 	 */
 	@Test
 	public void testSetAcceptanceTestTitle_1()
@@ -206,12 +184,9 @@ public class AcceptanceTestTest {
 		String title = "";
 
 		fixture.setAcceptanceTestTitle(title);
-
-		// add additional test code here
 	}
 
-	/**
-	 * Run the void setDescription(String) method test.
+	/** Run the void setDescription(String) method test.
 	 */
 	@Test
 	public void testSetDescription_1()
@@ -222,12 +197,9 @@ public class AcceptanceTestTest {
 		String description = "";
 
 		fixture.setDescription(description);
-
-		// add additional test code here
 	}
 
-	/**
-	 * Run the String toJSON() method test.
+	/** Run the String toJSON() method test.
 	 */
 	@Test
 	public void testToJSON_1()
@@ -237,13 +209,9 @@ public class AcceptanceTestTest {
 		fixture.setDescription("");
 
 		String result = fixture.toJSON();
-
-		// add additional test code here
 	}
 
-	/**
-	 * Run the String toString() method test.
-	 *
+	/** Run the String toString() method test.
 	 */
 	@Test
 	public void testToString_1()
@@ -253,26 +221,20 @@ public class AcceptanceTestTest {
 		fixture.setDescription("");
 
 		String result = fixture.toString();
-
-		// add additional test code here
-
 	}
 
-	/**
-	 * Perform pre-test initialization.
+	/** Perform pre-test initialization.
 	 */
 	@Before
 	public void setUp()
 		throws Exception {
-		// add additional set up code here
+		
 	}
 
-	/**
-	 * Perform post-test clean-up.
+	/** Perform post-test clean-up.
 	 */
 	@After
 	public void tearDown()
 		throws Exception {
-		// Add additional tear down code here
 	}
 }

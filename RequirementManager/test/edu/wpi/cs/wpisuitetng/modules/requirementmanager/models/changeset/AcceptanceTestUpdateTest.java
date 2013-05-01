@@ -24,10 +24,6 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.changeset.RequirementEvent.EventType;
 
-/**
- * @author Team 5 D13
- *
- */
 public class AcceptanceTestUpdateTest {
 
 	private String testName;
@@ -45,22 +41,18 @@ public class AcceptanceTestUpdateTest {
 		content = "";
 		test_date = new Date();
 		dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		
 		test_req = new Requirement();
 		userName = "ejimenez";
 		
 		assertNotNull(test_req);
 		assertEquals("ejimenez", userName);
-		
 		assertEquals("" + dateFormat.format(test_date), dateFormat.format(test_date));
 	}
 	
-
 	@Test
 	public void testGetLabelString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 	}
-	
 	
 	public void testAcceptanceTestUpdate(){
 		EventType type = EventType.ACCEPTANCETESTUPDATE;
@@ -82,10 +74,5 @@ public class AcceptanceTestUpdateTest {
 		
 		assertNotNull(content);
 		assertEquals("Result of acceptance test \"null\" changed from \"null\" to \"null\"", content);
-
 	}
-	
-	
-	
-
 }

@@ -44,7 +44,6 @@ public class FilterTest {
     // Requirements
     Requirement testRequirement;
     
-    
     @Before
     public void setUp(){
 	testFilter = new Filter(FilterType.Description, OperatorType.Contains, "something", false);
@@ -181,24 +180,6 @@ public class FilterTest {
 	assertTrue(testFilter.equals(Filter.fromJSON(json)));
     }
     
-//    @Test
-//    public void testToJSONArray () {
-//    	testFilter  = new Filter(FilterType.Id, OperatorType.EqualTo, "1", false);
-//    	testFilter.setUniqueID(1);
-//    	testFilter2 = new Filter(FilterType.Iteration, OperatorType.EqualTo, "5", true);
-//    	testFilter.setUniqueID(2);
-//    	Filter[] filterList = new Filter[2];
-//    	filterList[0] = testFilter;
-//    	filterList[1] = testFilter2;
-//    	
-//    	// Put filters into a json and parse them out again
-//    	String json = Filter.toJSON(filterList);
-//    	Filter[] parsedList = Filter.fromJSONArray(json);
-//    	
-//    	assertTrue(parsedList[0].equals(filterList[0]));
-//    	assertTrue(parsedList[1].equals(filterList[1]));
-//    }
-    
     @Test
     public void testUpdateArray () {
     	Filter newFilter = new Filter(FilterType.ActualEffort, OperatorType.EqualTo, "5", true);
@@ -228,9 +209,7 @@ public class FilterTest {
     }
     
     
-    /**
-     * This assumes that the
-     * perform method works
+    /** This test assumes that the perform method works
      */
     @Test
     public void testPassesFilter() {

@@ -36,19 +36,16 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 
-/**
- * A mock data implementation for server-side testing. 
+/**A mock data implementation for server-side testing. 
  */
 public class MockData implements Data {
-	/** The set of objects stored in the database. Objects may
-	 *  be of any type. 	 */
+	/** The set of objects stored in the database. Objects may be of any type. 	 */
 	private final Set<Object> objects;
+	
 	/** Holds the projects stored in the DB */
 	private Set<Project> projects;
 
-
-	/**
-	 * Create a MockData instance initially containing the given set of objects
+	/**Create a MockData instance initially containing the given set of objects
 	 * @param objects The set of objects this "database" starts with
 	 */
 	public MockData(Set<Object> objects) {
@@ -64,7 +61,6 @@ public class MockData implements Data {
 		this.projects = projects;
 	}
 
-	
 	/** Deletes the given item from the database
 	 * 
 	 * @param arg0 item to remove
@@ -96,14 +92,13 @@ public class MockData implements Data {
 		return deleted;
 	}
 
-	
 	/** Retrieves the object that matches the properties specified
-	 *  inthe arguments
+	 *  in the arguments
 	 *  
 	 *  @param type the type of the object
 	 *  @param fieldName the name of the field to search by
-	 *  @param value the value to check against
-	 *  @return the item found 
+	 *  @param value The value Object to check against
+	 *  @return the List<Model> item found 
 	 */
 	@SuppressWarnings("rawtypes")
 	public List<Model> retrieve(Class type, String fieldName, Object value) {
@@ -120,13 +115,10 @@ public class MockData implements Data {
 							rv.add((Model) obj);
 						}
 					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (NullPointerException e){ 
 						/* This exception is used to catch instances where getAll
@@ -143,7 +135,7 @@ public class MockData implements Data {
 	/** Retrieves all items that match the type given
 	 * 
 	 * @param arg0 the type of object to retrieve
-	 * @return the objects found
+	 * @return the objects found in a List
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> List<T> retrieveAll(T arg0) {
@@ -167,9 +159,9 @@ public class MockData implements Data {
 		return all;
 	}
 
-	/** saves the object to the database
+	/** Saves the object to the database
 	 * 
-	 * @param arg0 to save
+	 * @param arg0 The object to save
 	 * @return true
 	 */
 	public <T> boolean save(T arg0) {
@@ -189,26 +181,22 @@ public class MockData implements Data {
 			Object arg4) {
 	}
 
-	/** unused but required by Data interface
-	 * 
+	/** This method is unused but required by the Data interface
 	 */
 	@SuppressWarnings("rawtypes")
 	public List<Model> andRetrieve(Class arg0, String[] arg1, List<Object> arg2)
 			throws WPISuiteException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/** unused but required by Data interface
-	 * 
+	/** This method is unused but required by the Data interface
 	 */
 	@SuppressWarnings("rawtypes")
 	public List<Model> complexRetrieve(Class arg0, String[] arg1,
 			List<Object> arg2, Class arg3, String[] arg4, List<Object> arg5)
 					throws WPISuiteException, IllegalArgumentException,
 					IllegalAccessException, InvocationTargetException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -224,14 +212,12 @@ public class MockData implements Data {
 		return toDelete;
 	}
 	
-	/** unused but required by Data interface
-	 * 
+	/** This method is unused but required by the Data interface
 	 */
 	@SuppressWarnings("rawtypes")
 	public List<Model> orRetrieve(Class arg0, String[] arg1, List<Object> arg2)
 			throws WPISuiteException, IllegalAccessException,
 			InvocationTargetException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -252,7 +238,7 @@ public class MockData implements Data {
 	}
 
 	/** Retrieves the object that matches the properties specified
-	 *  inthe arguments
+	 *  in the arguments
 	 *  
 	 *  @param type the type of the object
 	 *  @param fieldName the name of the field to search by
@@ -265,7 +251,7 @@ public class MockData implements Data {
 		return filterByProject(retrieve(arg0, arg1, arg2), arg3);
 	}
 
-	/** Gets all items in the databse associated with the given project
+	/** Gets all items in the database associated with the given project
 	 * 
 	 * @param arg0 object type
 	 * @param arg1 the project
@@ -288,13 +274,12 @@ public class MockData implements Data {
 		return true;
 	}
 
-	// The following were added for use when the projects included in the DB are significant
-	/** Adds a project to the DB
-	 *  @param toAdd
+	/** Adds a project to the database
+	 * This method was added for use when the projects included in the DB are significant.
+	 *  @param toAdd The Project to add to the database
 	 */
 	public void addProject(Project toAdd){
 		projects.add(toAdd);
 	}
-
 
 }

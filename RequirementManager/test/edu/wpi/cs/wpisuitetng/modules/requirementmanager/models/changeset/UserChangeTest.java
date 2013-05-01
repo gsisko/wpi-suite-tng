@@ -19,14 +19,14 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-/**
- * The class <code>UserChangeTest</code> contains tests for the class <code>{@link UserChange}</code>.
+/** This class contains tests for the class {@link UserChange}.
  */
 public class UserChangeTest {
+	
 	private Date test_date;
 	private DateFormat dateFormat;
-	/**
-	 * Run the UserChange(Requirement,Requirement,String) constructor test.
+	
+	/** Run the UserChange(Requirement,Requirement,String) constructor test.
 	 */
 	@Test
 	public void testUserChange_1()
@@ -36,10 +36,8 @@ public class UserChangeTest {
 		Requirement newReq = new Requirement();
 		newReq.setUserNames(new ArrayList());
 		String userName = "ejimenez";
-
 		UserChange result = new UserChange(oldReq, newReq, userName);
 
-		// add additional test code here
 		assertNotNull(result);
 		assertEquals("", result.getBodyString());
 		assertEquals("User changes made by " +userName + " on " + dateFormat.format(test_date), result.getLabelString());
@@ -47,8 +45,7 @@ public class UserChangeTest {
 		assertEquals(null, result.getProject());
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_1()
@@ -65,13 +62,10 @@ public class UserChangeTest {
 
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
-	 *
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_2()
@@ -85,15 +79,12 @@ public class UserChangeTest {
 		fixture.newUsers = new ArrayList();
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_3()
@@ -107,15 +98,12 @@ public class UserChangeTest {
 		fixture.newUsers = new ArrayList();
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_4()
@@ -129,15 +117,12 @@ public class UserChangeTest {
 		fixture.newUsers = new ArrayList();
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_5()
@@ -155,15 +140,12 @@ public class UserChangeTest {
 		fixture.newUsers = arrayList1;
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_6()
@@ -181,15 +163,12 @@ public class UserChangeTest {
 		fixture.newUsers = arrayList1;
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_7()
@@ -210,12 +189,10 @@ public class UserChangeTest {
 
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_8()
@@ -233,15 +210,12 @@ public class UserChangeTest {
 		fixture.newUsers = arrayList1;
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("", result);
 	}
 
-	/**
-	 * Run the String getLabelString() method test.
+	/** Run the String getLabelString() method test.
 	 */
 	@Test
 	public void testGetLabelString_1()
@@ -255,15 +229,12 @@ public class UserChangeTest {
 		fixture.newUsers = new ArrayList();
 		fixture.date = new Date();
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
-
 		String result = fixture.getLabelString();
-
-		// add additional test code here
+		
 		assertEquals("User changes made by  on " + dateFormat.format(test_date), result);
 	}
 
-	/**
-	 * Perform pre-test initialization.
+	/** Perform pre-test initialization.
 	 */
 	@Before
 	public void setUp() {
@@ -271,12 +242,10 @@ public class UserChangeTest {
 		dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 	}
 
-	/**
-	 * Perform post-test clean-up.
+	/** Perform post-test clean-up.
 	 */
 	@After
 	public void tearDown()
 		throws Exception {
-		// Add additional tear down code here
 	}
 }

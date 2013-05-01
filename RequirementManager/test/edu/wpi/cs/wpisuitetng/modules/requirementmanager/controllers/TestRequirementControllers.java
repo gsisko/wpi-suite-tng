@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 -- WPI Suite
+/** Copyright (c) 2013 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -39,6 +39,7 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 import java.util.Date;
 
+@SuppressWarnings("unchecked")
 public class TestRequirementControllers {
 
 	RetrieveAllRequirementsController controller;
@@ -162,9 +163,9 @@ public class TestRequirementControllers {
 
 	    
 	}
+	
 	@Test
 	public void testSaveController(){
-	    
 	    saveController.getView().getAttributePanel().setCurrentRequirement(reqTest);
 	    saveController.getView().getAttributePanel().setMode(RequirementTab.Mode.EDIT);
 	    saveController.getView().setMode(RequirementTab.Mode.EDIT);
@@ -180,5 +181,4 @@ public class TestRequirementControllers {
 	    
 	    assertEquals(true, true);
 	}
-	
 }

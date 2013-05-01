@@ -21,15 +21,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementPriority;
 import static org.junit.Assert.*;
 
-/**
- * The class <code>RequirementCreationTest</code> contains tests for the class <code>{@link RequirementCreation}</code>.
+/**This class contains tests for the class {@link RequirementCreation}.
  * @author Team 5 D13
  */
 public class RequirementCreationTest {
-	/**
-	 * Run the RequirementCreation(Requirement,String) constructor test.
-	 */
-	
+
 	private Date test_date;
 	private DateFormat dateFormat;
 	
@@ -43,10 +39,8 @@ public class RequirementCreationTest {
 		requirement.setName("Req 2");
 		requirement.setPriority(RequirementPriority.High);
 		String theCreator = "ejimenez";
-
 		RequirementCreation result = new RequirementCreation(requirement, theCreator);
 
-		// add additional test code here
 		assertNotNull(result);
 		assertEquals("Requirement created by " +theCreator + " on " +dateFormat.format(test_date), result.getLabelString());
 		assertEquals("Name initialized to \"Req 2\"\nDescription initialized to \"Desc 2\"\nType initialized to \"Epic\"\nPriority initialized to \"High\"\nReleaseNumber initialized to \"2\"", result.getBodyString());
@@ -54,8 +48,7 @@ public class RequirementCreationTest {
 		assertEquals(null, result.getProject());
 	}
 
-	/**
-	 * Run the String getBodyString() method test.
+	/** Run the String getBodyString() method test.
 	 */
 	@Test
 	public void testGetBodyString_1()
@@ -69,15 +62,12 @@ public class RequirementCreationTest {
 		RequirementCreation fixture = new RequirementCreation(requirement, "");
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
 		fixture.date = new Date();
-
 		String result = fixture.getBodyString();
 
-		// add additional test code here
 		assertEquals("Name initialized to \"Name 1\"\nDescription initialized to \"Description 1\"\nType initialized to \"Epic\"\nPriority initialized to \"High\"\nReleaseNumber initialized to \"1\"", result);
 	}
 
-	/**
-	 * Run the String getLabelString() method test.
+	/** Run the String getLabelString() method test.
 	 */
 	@Test
 	public void testGetLabelString_1()
@@ -91,30 +81,23 @@ public class RequirementCreationTest {
 		RequirementCreation fixture = new RequirementCreation(requirement, "");
 		fixture.type = RequirementEvent.EventType.ACCEPTANCETEST;
 		fixture.date = new Date();
-
 		String result = fixture.getLabelString();
 
 		assertEquals("Requirement created by  on " + dateFormat.format(test_date),result);
-		// add additional test code here
 	}
 
-	/**
-	 * Perform pre-test initialization.
+	/** Perform pre-test initialization.
 	 */
 	@Before
 	public void setUp(){
 		 test_date = new Date();
 		 dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-//	public void setUp() throws Exception {
-		// add additional set up code here
 	}
 
-	/**
-	 * Perform post-test clean-up.
+	/** Perform post-test clean-up.
 	 */
 	@After
 	public void tearDown()
 		throws Exception {
-		// Add additional tear down code here
 	}
 }
