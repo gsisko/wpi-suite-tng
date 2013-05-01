@@ -64,11 +64,15 @@ public class ValidNameDescriptionListener implements KeyListener{
 		thePanel.setSaveButtonWhenFieldsAreValid();
 	}
 
-	/** This method is unused but required by the interface   */
+	/** This method is unused but required by the interface 
+	  *  @param e unused
+	 */
 	public void keyTyped(KeyEvent e) {
 	}
 
-	/** This method is unused but required by the interface   */
+	/** This method is unused but required by the interface
+ 	  *  @param e unused
+      */
 	public void keyPressed(KeyEvent e) {
 	}
 }

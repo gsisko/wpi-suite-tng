@@ -97,12 +97,15 @@ public class BoxChangeListener implements PopupMenuListener{
 		}
 	}
 
-	/** This method is unused but required by the interface   */
+	/** This method is unused but required by the interface   
+	 *  @param e unused
+	 */
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 	}
 
 	/** This is called when the user types then releases the key. If
 	 *  changes are made, the box is turned yellow. 
+	 *  @param e unused
 	 */
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 		checkForChanges();			
@@ -110,6 +113,7 @@ public class BoxChangeListener implements PopupMenuListener{
 
 	/** This is called when the user types then releases the key. If
 	 *  changes are made, the box is turned yellow. 
+	 *  @param e unused
 	 */
 	public void popupMenuCanceled(PopupMenuEvent e) {
 		checkForChanges();			

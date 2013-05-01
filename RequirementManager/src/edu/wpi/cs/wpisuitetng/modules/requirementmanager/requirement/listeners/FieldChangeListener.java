@@ -93,16 +93,21 @@ public class FieldChangeListener implements KeyListener{
 
 	/** This is called when the user types then releases the key. If
 	 *  changes are made, the box is turned yellow. 
+	 *  @param e unused
 	 */
 	public void keyReleased(KeyEvent e) {
 		checkForChanges();		
 	}
 
-	/** This method is unused but required by the interface   */
+	/** This method is unused but required by the interface 
+	  *  @param e unused
+      */
 	public void keyTyped(KeyEvent e) {		
 	}
 
-	/** This method is unused but required by the interface    */
+	/** This method is unused but required by the interface 
+	 *  @param e unused
+     */
 	public void keyPressed(KeyEvent e) {
 	}
 }

@@ -29,14 +29,24 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/** The controller responsible for managing requests to save requirements to the databsae
+ */
 public class SaveRequirementController {
+	/** The tab that this controlling is performing save requests for */
 	private final RequirementTab view;
 
+	/** Constructor
+	 * 
+	 * @param view The tab that this controlling is performing save requests for
+	 */
 	public SaveRequirementController(RequirementView view) 
 	{
 		this.view = view.getRequirementPanel();
 	}
 
+	/** Save the requirement currently in the view 
+	 * 
+	 */
 	public void save() 
 	{
 		//If the requirement estimate is blank...
@@ -193,10 +203,10 @@ public class SaveRequirementController {
 				updatedRequirementList.add(newReq.getId());
 				currentIteration.setRequirementsContained(updatedRequirementList);
 
-				//Save the updatedIteration on the server. There is no observer because we don't care about the responses //TODO: Make an observer to receive error messages?
+				//Save the updatedIteration on the server. There is no observer because we don't care about the responses 
 				Request saveUpdatedIterationRequest = Network.getInstance().makeRequest("requirementmanager/iteration", HttpMethod.POST);
 				saveUpdatedIterationRequest.setBody(currentIteration.toJSON());
-				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); //TODO: Fix? Maybe? Does it matter? This is here to just avoid a nullPointerException...
+				saveUpdatedIterationRequest.addObserver(new SaveIterationObserver()); 
 				saveUpdatedIterationRequest.send();
 			}
 
@@ -264,7 +274,10 @@ public class SaveRequirementController {
 
 		view.getAttributePanel().getSaveButton().setEnabled(false);
 	}
-
+	/** Gets the view that this controller is in
+	 * 
+	 * @return view
+	 */
 	public RequirementTab getView() {
 		return view;
 	}
@@ -326,7 +339,8 @@ public class SaveRequirementController {
 		request.addObserver(new SaveRequirementObserver(view.getParent())); // add an observer to process the response
 		request.send();
 	}
-
+	
+	/** save user assignment changes */
 	public void saveUsers() {
 		Requirement currentRequirement = view.getCurrentRequirement();
 		ArrayList<String> assignedUsers = new ArrayList<String>();
