@@ -249,8 +249,7 @@ public class PieChartPanel extends JPanel {
 		chartPanel.setChart(chart);
 	}
 
-	/**
-	 * Pass in true to enable filters on this PieChart, false to disable
+	/** Pass in true to enable filters on this PieChart, false to disable
 	 * @param isFiltered boolean
 	 */
 	public void enableFilter(boolean isFiltered){

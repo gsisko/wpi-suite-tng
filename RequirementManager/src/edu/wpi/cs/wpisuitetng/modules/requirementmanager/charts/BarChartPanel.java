@@ -314,9 +314,10 @@ public class BarChartPanel extends JPanel implements IListPanel {
 	public void enableFilter(boolean isFiltered){
 		this.isFiltered = isFiltered;
 	}
+	
+	//The following methods are not implemented but required by the IListPanel interface:
 
-	/**
-	 * Method getSelectedUniqueIdentifiers.
+	/** Method getSelectedUniqueIdentifiers.
 	 * @return String[]
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
 	 */
@@ -325,24 +326,21 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		return null;
 	}
 
-	/**
-	 * Method setNewBtnToCancel.
+	/** Method setNewBtnToCancel.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
 	 */
 	@Override
 	public void setNewBtnToCancel() {
 	}
 
-	/**
-	 * Method setCancelBtnToNew.
+	/** Method setCancelBtnToNew.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setCancelBtnToNew()
 	 */
 	@Override
 	public void setCancelBtnToNew() {
 	}
 
-	/**
-	 * Method refreshAll.
+	/** Method refreshAll.
 	 * @return boolean
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
 	 */
@@ -351,16 +349,15 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		return false;
 	}
 
-	/**
-	 * Method toggleNewCancelMode.
+	/** Method toggleNewCancelMode.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#toggleNewCancelMode()
 	 */
 	@Override
 	public void toggleNewCancelMode() {
 	}
 
-	/**
-	 * Method getSelectedUniqueIdentifier.
+	/** Method getSelectedUniqueIdentifier.
+	 * 
 	 * @param me MouseEvent
 	 * @return String
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
@@ -370,8 +367,7 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		return null;
 	}
 
-	/**
-	 * Method showRecievedModels.
+	/** Method showRecievedModels.
 	 * @param jsonString String
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
 	 */
@@ -379,16 +375,14 @@ public class BarChartPanel extends JPanel implements IListPanel {
 	public void showRecievedModels(String jsonString) {
 	}
 
-	/**
-	 * Method refreshRequirements.
+	/** Method refreshRequirements.
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshRequirements()
 	 */
 	@Override
 	public void refreshRequirements() {
 	}
 
-	/**
-	 * Method setDeleteEnabled.
+	/** Method setDeleteEnabled.
 	 * @param setActive boolean
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */
@@ -396,8 +390,7 @@ public class BarChartPanel extends JPanel implements IListPanel {
 	public void setDeleteEnabled(boolean setActive) {
 	}
 
-	/**
-	 * Method areSelectedItemsDeletable.
+	/** Method areSelectedItemsDeletable.
 	 * @return boolean
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#areSelectedItemsDeletable()
 	 */

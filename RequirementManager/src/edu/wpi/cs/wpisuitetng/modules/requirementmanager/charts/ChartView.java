@@ -309,22 +309,19 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.repaint();
 	}
 
-	/**
-	 * Returns the parent ListTab that contains this view
+	/** Returns the parent ListTab that contains this view
 	 * @return ListTab
 	 */
 	public ListTab getView() {
 		return view;
 	}
 
-	/**
-	 * Sets the parent ListTab that contains this view
+	/** Sets the parent ListTab that contains this view
 	 * @param view ListTab
 	 */
 	public void setView(ListTab view) {
 		this.view = view;
 	}
-
 
 	public void setListOptions () {
 		ArrayList<String> choices = new ArrayList<String>();
@@ -437,9 +434,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.refreshChartVisibility();
 	}
 
-
-	/**
-	 * Help that returns true if there are active filters, false otherwise
+	/** Helper that returns true if there are active filters, false otherwise
 	 * @return boolean
 	 */
 	private boolean activeFilters() {
@@ -452,9 +447,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		return false;
 	}
 
-
-	/**
-	 * Helper that returns true if there are users that are assigned to 
+	/** Helper that returns true if there are users that are assigned to 
 	 * the filtered list of requirements, false otherwise
 	 * @return boolean
 	 */
@@ -471,8 +464,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		return false;
 	}
 
-	/**
-	 * Helper that returns true if there are estimates for users
+	/**  Helper that returns true if there are estimates for users
 	 * that are assigned to the filtered list of requirements, false otherwise
 	 * @return boolean
 	 */
@@ -490,8 +482,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 
-	/**
-	 * Helper that returns true if there are requirements that has users assigned,
+	/** Helper that returns true if there are requirements that has users assigned,
 	 * false otherwise
 	 * @return boolean
 	 */
@@ -505,8 +496,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		return false;
 	}
 
-	/**
-	 * Helper that returns true if there are estimates for users
+	/** Helper that returns true if there are estimates for users
 	 * that are assigned to the list of requirements, false otherwise
 	 * @return boolean
 	 */

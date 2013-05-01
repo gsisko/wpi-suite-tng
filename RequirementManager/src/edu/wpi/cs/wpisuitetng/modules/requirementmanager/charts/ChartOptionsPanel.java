@@ -277,8 +277,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.chartDataBox = chartDataBox;
 	}
 
-	/**
-	 * Fills the combo box for chart data to the array of String passed in
+	/** Fills the combo box for chart data to the array of String passed in
 	 * @param options String[]
 	 */
 	public void setChartData(String[] options) {
@@ -299,8 +298,7 @@ public class ChartOptionsPanel extends JPanel{
 		this.filtersOptionsBox = filtersOptionsBox;
 	}
 
-	/**
-	 * Method setFiltersOptions.
+	/** Method setFiltersOptions.
 	 * @param options String[]
 	 */
 	public void setFiltersOptions(String[] options) {
@@ -338,8 +336,7 @@ public class ChartOptionsPanel extends JPanel{
 		}
 	}
 
-	/**
-	 * Build the table on the bottom of the panel with the
+	/** Build the table on the bottom of the panel with the
 	 * list of current filters active
 	 */
 	public void buildTable() {
