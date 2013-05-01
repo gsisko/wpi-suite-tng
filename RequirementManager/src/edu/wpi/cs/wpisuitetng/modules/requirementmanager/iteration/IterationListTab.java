@@ -33,7 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.ActiveIterationTableCellRenderer;
 
 /** Panel to contain the list of Iterations that have been saved by the user
- * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class IterationListTab extends JPanel implements IListPanel {
@@ -66,8 +65,7 @@ public class IterationListTab extends JPanel implements IListPanel {
 	/** Whether or not this has recieved data */
 	private boolean recievedData = false;
 	
-	/** Construct the panel
-	 * 
+	/** Construct the panel 
 	 * @param view the parent of this panel
 	 */
 	public IterationListTab(ListTab view) {

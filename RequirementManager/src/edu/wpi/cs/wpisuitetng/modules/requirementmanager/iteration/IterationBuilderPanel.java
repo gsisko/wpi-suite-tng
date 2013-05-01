@@ -44,7 +44,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  *  RequirementManager module above the list of requirements and right of the list 
  *  of iterations. This builder will be switched to when the Iteration list view
  *  tab is selected.  
- * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
