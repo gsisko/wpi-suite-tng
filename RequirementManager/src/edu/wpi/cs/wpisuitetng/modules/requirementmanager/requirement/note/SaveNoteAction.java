@@ -24,6 +24,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.SaveRequire
 @SuppressWarnings("serial")
 public class SaveNoteAction extends AbstractAction {
 
+	/**
+	 * Field controller.
+	 */
 	private final SaveRequirementController controller;
 	
 	/**Create a SaveChangesAction

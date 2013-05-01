@@ -29,10 +29,20 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.requirement.Requirement
 @SuppressWarnings("serial")
 public class MainTabPanel extends JTabbedPane {
 	
+	/**
+	 * Field parent.
+	 */
 	private JanewayModule parent;
 	
+	/**
+	 * Field mainTabController.
+	 */
 	private MainTabController mainTabController;
 	
+	/**
+	 * Constructor for MainTabPanel.
+	 * @param _parent JanewayModule
+	 */
 	public MainTabPanel(JanewayModule _parent) {
 		parent = _parent;
 		setTabPlacement(TOP);

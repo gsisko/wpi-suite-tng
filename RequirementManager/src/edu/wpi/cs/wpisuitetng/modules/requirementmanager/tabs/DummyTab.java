@@ -20,9 +20,21 @@ import javax.swing.Icon;
  */
 public class DummyTab extends Tab {
 
+	/**
+	 * Field title.
+	 */
 	private String title;
+	/**
+	 * Field icon.
+	 */
 	private Icon icon;
+	/**
+	 * Field toolTipText.
+	 */
 	private String toolTipText;
+	/**
+	 * Field component.
+	 */
 	private Component component;
 
 	/** Construct a DummyTab - arguments ignored

@@ -21,7 +21,13 @@ import javax.swing.Icon;
  */
 public class Tab {
 
+	/**
+	 * Field view.
+	 */
 	private final MainTabPanel view;
+	/**
+	 * The tabComponent that this Tab contains
+	 */
 	private final Component tabComponent;
 
 	/** Create a Tab identified by the given MainTabView and tabComponent.

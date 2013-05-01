@@ -20,6 +20,9 @@ import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Note;
 
+/**
+ * A model that contains and manages a list of Notes
+ */
 @SuppressWarnings({"serial","rawtypes"})
 public class NoteListModel extends AbstractListModel {
 	
