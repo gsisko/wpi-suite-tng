@@ -82,8 +82,9 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	ListTab parent;
 
 	/**Construct the panel
+	 * 
 	 * @param tabController The main tab controller
-	 * @param parent ListTab The ListTab that is hte parent of this panel
+	 * @param parent ListTab The ListTab that is the parent of this panel
 	 */
 	public RequirementListPanel(MainTabController tabController, final ListTab parent) {
 		this.tabController = tabController;
@@ -349,28 +350,28 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/**	
-	 * @return the main tab controller
+	 * @return tabController The "tabController" MainTabController
 	 */
 	public MainTabController getTabController() {
 		return tabController;
 	}
 
 	/**
-	 * @return the data model for the table
+	 * @return resultsTableModel The ResultsTableModel for the table
 	 */
 	public ResultsTableModel getModel() {
 		return resultsTableModel;
 	}
 
 	/**
-	 * @return the results table
+	 * @return resultsTable The "resultsTable" JTable
 	 */
 	public JTable getResultsTable() {
 		return resultsTable;
 	}
 
 	/** Replace the results table with the given table
-	 * @param newTable the new results table
+	 * @param newTable the new resultsTable
 	 */
 	public void setResultsTable(JTable newTable) {
 		resultsTable = newTable;
@@ -415,7 +416,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
 
-	/** Place comboBox for type
+	/** Place comboBox for status
 	 */
 	public void setComboxforStatus()
 	{
@@ -462,7 +463,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	}
 
-	/** Place comboBox for type
+	/** Place comboBox for priority
 	 */
 	public void setComboxforPriority()
 	{
@@ -479,7 +480,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(typebox));
 	}
 
-	/** Place numberBox for type
+	/** Place numberBox for Estimate
 	 */
 	public void setNumberBoxForEstimate()
 	{
@@ -493,7 +494,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		typeColumn.setCellEditor(new DefaultCellEditor(estimateBox));
 	}
 
-	/** Place numberBox for type
+	/** Place numberBox for ActualEffort
 	 */
 	public void setNumberBoxForActualEffort()
 	{
@@ -744,7 +745,6 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		return getColumnIndex(name, getOriginalTableName());
 	}
 
-
 	/** Sets up any arrays of flags or other settings needed
 	 *  before editing can start 
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#setUpForEditing()
@@ -832,14 +832,14 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/**
-	 * @return the listSaveModelController
+	 * @return listSaveModelController The ListSaveModelController
 	 */
 	public ListSaveModelController getListSaveModelController() {
 		return listSaveModelController;
 	}
 
 	/** A getter to get the current column headers of the table 
-	 * @return columnHeader the ArrayList of headers for the table
+	 * @return columnHeader An ArrayList of column names of the resultsTable
 	 */
 	public ArrayList<String> getTableName(){
 		ArrayList<String> columnHeader = new ArrayList<String>();
@@ -852,7 +852,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/** A getter to get the original column headers of the table 
-	 * @return columnHeader the ArrayList of original headers for the table
+	 * @return columnHeader An ArrayList of the original column names of the resultsTable
 	 */
 	public ArrayList<String> getOriginalTableName(){
 		ArrayList<String> columnHeader = new ArrayList<String>();
@@ -873,28 +873,28 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 	}
 
 	/**
-	 * @return the isValid
+	 * @return isValid The isValid array of Booleans
 	 */
 	public Boolean[][] getIsValid() {
 		return isValid;
 	}
 
 	/**
-	 * @param isValid the isValid to set
+	 * @param isValid The isValid array of Booleans to set
 	 */
 	public void setIsValid(Boolean[][] isValid) {
 		this.isValid = isValid;
 	}
 
 	/**
-	 * @return the isEditable
+	 * @return isEditable The isEditable array of Booleans
 	 */
 	public Boolean[][] getIsEditable() {
 		return isEditable;
 	}
 
 	/**
-	 * @param isEditable the isEditable to set
+	 * @param isEditable the isEditable array of Booleans to set
 	 */
 	public void setIsEditable(Boolean[][] isEditable) {
 		this.isEditable = isEditable;
@@ -902,6 +902,7 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 
 	/** Turns on the save button when all cells are
 	 *  valid and at least one has been changed. 
+	 *  
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.controllers.IEditableListPanel#updateSaveButton()
 	 */
 	public void updateSaveButton() {
@@ -924,16 +925,15 @@ public class RequirementListPanel extends JPanel implements IEditableListPanel {
 		parent.getParent().getBtnSave().setEnabled(false);
 	}
 
-	/**
-	 * Returns true if the RequirementListPanel is edit mode, otherwise false
-	 * @return the inEditMode
+	/** Returns true if the RequirementListPanel is edit mode, otherwise false
+	 * @return inEditMode The "inEditMode" boolean
 	 */
 	public boolean isInEditMode() {
 		return inEditMode;
 	}
 
 	/**
-	 * @param inEditMode the inEditMode to set
+	 * @param inEditMode The "inEditMode" boolean to set
 	 */
 	public void setInEditMode(boolean inEditMode) {
 		this.inEditMode = inEditMode;
