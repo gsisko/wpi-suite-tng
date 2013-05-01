@@ -179,6 +179,8 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.setListOptions();
 	}
 
+	/** Update the charts to display new data 
+	 */
 	private void updateCharts() {		
 		//Grab requirements
 		Requirement[] requirements;
@@ -321,6 +323,7 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		this.view = view;
 	}
 
+	
 	public void setListOptions () {
 		ArrayList<String> choices = new ArrayList<String>();
 		ArrayList<String> filterChoices = new ArrayList<String>();
@@ -478,7 +481,6 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 		}
 		return false;
 	}
-
 
 	/** Helper that returns true if there are requirements that has users assigned,
 	 * false otherwise
