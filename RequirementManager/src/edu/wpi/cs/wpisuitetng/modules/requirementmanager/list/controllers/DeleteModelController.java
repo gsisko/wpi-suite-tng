@@ -79,6 +79,7 @@ public class DeleteModelController implements ActionListener {
 	
 	/** Takes a string and checks whether the action is performed successfully. 
 	 *  Not implemented
+	 *  @param JSONString a json string to parse a message from
 	 */
 	public void success(String JSONString)
 	{
@@ -90,7 +91,9 @@ public class DeleteModelController implements ActionListener {
 		System.err.println("Fail: Cannot delete the " + this.getModelName());
 	}
 	
-	/** Prints an error 
+	/** Prints an error message
+	 * 
+	 * @param error unused
 	 */
 	public void error(String error){
 		System.err.println("Could not delete the " + this.getModelName());

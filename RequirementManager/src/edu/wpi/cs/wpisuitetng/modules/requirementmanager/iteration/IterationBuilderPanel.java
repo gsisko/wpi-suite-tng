@@ -296,18 +296,18 @@ public class IterationBuilderPanel extends JPanel implements  IBuilderPanel {
 		this.currentMode = currentMode;
 	}
 
-	/**
+	/** Gets the current iteration
 	 * 
-	 * @return
+	 * @return the current iteration
 	 */
 	public Iteration getCurrentIteration()
 	{
 		return currentIteration;
 	}
 
-	/**
+	/** Sets the iteration 
 	 * 
-	 * @param newIteration
+	 * @param newIteration the iteration to set to
 	 */
 	public void setCurrentIteration(Iteration newIteration)
 	{

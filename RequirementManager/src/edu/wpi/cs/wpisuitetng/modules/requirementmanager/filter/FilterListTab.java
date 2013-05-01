@@ -50,6 +50,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	/** Is the text on btnCreate "Cancel" or "Create" */
 	private boolean btnCreateIsCancel;
 
+	/** A copy of the filters for local storage */
 	private Filter[] localFilters = {};
 
 	/** The model containing the data to be displayed in the results table */
