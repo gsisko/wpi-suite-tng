@@ -197,8 +197,8 @@ function AddingUsers(){
 		$(".instructionTitle").html('<a>The User Assignment Panel</a>');
         $(".instructionText").html(function(){
 			var str = '<img src="images/Users.gif" height="400"/><br />';
-			str += '<a>To add a user to a requirement you must start with an existing requirement. In the right hand panel, where you find history, notes and acceptance Tests, <span style="color:#ED1C24">select the tab that says user</span>. Within that tab you will find a list of users currently in the database. <span style="color:#ED1C24">Select the user you wish</span> to assign to the requirement then <span style="color:#ED1C24">click the "Add Users ->" button</span> to assign the user to the current requirement.<a/><br/><br/>';
-			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign; click the "<- Remove Users" button; And the user will have been unassigned.</a>'
+			str += '<a>To add a user to a requirement you must start with an existing requirement. In the right hand panel, where you find history, notes and acceptance Tests, <span style="color:#ED1C24">select the tab that says user</span>. Within that tab you will find a list of users currently in the database. <span style="color:#ED1C24">Select the user or users you wish</span> to assign to the requirement then <span style="color:#ED1C24">click the "Add Users ->" button</span> to assign the user or users to the current requirement. The "Add Users ->" button will grey out as needed.<a/><br/><br/>';
+			str += '<a>To remove a user from a requirement, follow the same instructions as for adding a user, but starting from the left of the user panel. That is: Select an assigned user you wish to unassign, click the "<- Remove Users" button, And the user will have been unassigned.</a>'
 			return str;
         });
     });
@@ -212,8 +212,8 @@ function DeleteReqPage() {
         $(".instructionText").html(function(){
         	var str = '<a>To delete a requirement begin by opening up the requirement you wish to delete as if you were going to edit it.</a><br />';
         	str += '<img height = "500" src = "images/deleteRequirementPanel.png" /><br />';
-        	str += '<a>To change a requirement to deleted <span style="color:#ED1C24">select "Deleted"</span> from the <span style="color:#22B14C">Status drop down menu</span> and save changes. You cannot set the status to "Deleted" if the requirement is currently set to status "inProgress", and must first save the status to "Open" or "Completed" before being able to set the status to "Deleted". </a> <br />';
-        	str += '<br /><a>The deleted requirement will still be viewable from the List Requirements tab, but can be made invisible by activating a Filter where status != "Deleted". Move to the next section on Filters for more information.</a>';
+        	str += '<a>To change a requirement to deleted <span style="color:#ED1C24">select "Deleted"</span> from the <span style="color:#22B14C">Status drop down menu</span> and save changes. </a> <br />'; //You cannot set the status to "Deleted" if the requirement is currently set to status "inProgress", and must first save the status to "Open" or "Completed" before being able to set the status to "Deleted".
+        	str += '<br /><a>The deleted requirement will still be viewable from the List Requirements tab, but can be made invisible by activating a Filter where status != "Deleted". See the section on Filters for more information.</a>';
         	return str;
         });
     });
@@ -254,10 +254,10 @@ function CreateDeleteIteration(){
         $(".moveTabs").html('<a class="title">How to Create and Delete Iterations</a>');
 		$(".instructionTitle").html('<a>The Iteration</a>');
         $(".instructionText").html(function(){
-			var str = '<a>To create a new iteration, click the "New Iteration" button in the Iteration List Panel. The Iteration Builder Panel then becomes active. Type in the desired name of the iteration you would like to create in the name box.</a>';
-            str += '<br /><br /><a>To set the start date, click on the small box to the right of the displayed start date. A calendar will appear where you can select the month with arrows next to the displayed month, and the day by clicking on any date. To set the end date, do the same for the displayed end date box. When selecting a date, some day boxed may be greyed out and inactive. This is because start dates need to occur before end dates, and iterations cannot have overlapping dates.</a>';
-			str += '<br /><br /><a>To delete an iteration, select it from the Iteration List Panel, and click the "Delete" button at the bottom of the panel.</a>';
-			return str;
+	var str = '<a>To create a new iteration, click the "New Iteration" button in the Iteration List Panel. The Iteration Builder Panel then becomes active. Type in the desired non-blank, non-duplicated name of the iteration you would like to create in the name box.</a>';
+	str += '<br /><br /><a>To set the start date, click on the small box to the right of the displayed start date. A calendar will appear where you can select the month with arrows next to the displayed month, and the day by clicking on any date. To set the end date, do the same for the displayed end date box. When selecting a date, some day boxed may be greyed out and inactive. This is because start dates need to occur before end dates, and iterations cannot have overlapping dates with other iterations</a>';
+	str += '<br /><br /><a>To delete an iteration, select it from the Iteration List Panel, and click the "Delete" button at the bottom of the panel.</a>';
+	return str;
         });
     });
 }
@@ -285,13 +285,14 @@ function FilterBuilderPanel(){
 			str += '<br /><a>The Filter Builder Panel is used to create filters for the list of requirements. You are able to filter requirements by:</a>';
 			str += '<ul><li>ID - Unique identification number for the requirement</li>';
 			str += '<li>Name - Name of requirement</li>';
+			str += '<li>User - Users assigned to the requirement</li>';
 			str += '<li>Iteration - Iteration name of the requirement</li>';
 			str += '<li>Status - Status of the requirement (New, In Progress, Open, Complete, Deleted)</li>';
 			str += '<li>Priority - Priority of the requirement (No Priority, High, Medium, Low)</li>';
 			str += '<li>Release Number - Release string or number of the requirement</li>';
 			str += '<li>Estimate - Amount of work required for the requirement</li>';
 			str += '<li>Actual Effort - Total effort that the requirement took</li></ul>';
-			str += '<br /><a>The Operator dropdown box displays different operands to display by. The Value box is where you enter the information you want to filter by. The Active dropdown box determines whether the filter is active or not. The "Save" button saves the filter and adds it to the Filter List.</a>';
+			str += '<br /><a>The Operator dropdown box displays different operands to display by. The Value box is where you enter the information you want to filter by, if the value can be entered it must be non-blank. The Active dropdown box determines whether the filter is active or not. The "Save" button saves the filter and adds it to the Filter List.</a>';
 			return str;
         });
     });
@@ -321,7 +322,7 @@ function MakeChart(){
 			str += '<a>To being viewing charts of your data, begin by click the <span style="color:#ED1C24">"Display Charts"</span> button from the top left of the main view.</a><br /><br />';
 			str += '<img src="images/displayedChart.png" height="400" /><br />';
 			str += '<a>From the chart view you may select either a <span style="color:#22B14C;">pie chart or bar chart</span> to display your data. ';
-			str += 'You can also select the <span style="color:#00A2E8">Data you wish to disply</span>, such as requirement statuses, requirement iterations, number of users assigned to requirements, and total estimate for each user. Lastly there is a menu for if you wish to <span style="color:#3F48CC">show applied filters or not.</span></a>'
+			str += 'You can also select the <span style="color:#00A2E8">Data you wish to disply</span>, such as requirement statuses, requirement iterations, number of requirements assigned to each user, and total estimate for each user. Lastly there is a menu for if you wish to <span style="color:#3F48CC">show applied filters or not.</span> Applying filters is disabled aytomatically if it filters out all requirements</a>'
 			return str;
         });
     });
