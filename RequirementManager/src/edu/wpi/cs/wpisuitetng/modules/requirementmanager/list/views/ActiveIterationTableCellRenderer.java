@@ -21,14 +21,22 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
-/** Custom cell renderer for JTables. Displays inactive as grey and active as white
+/** Custom cell renderer for the Iteation List View Jtable
+ * This makes the selected iteration blue, past iterations grey, and all others white
  */
 @SuppressWarnings("serial")
 public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
+	/*
+	 * instantiate a new date as a current date to compare the iteration dates to
+	 */
 	Date currentDate = new Date();
 
 	@SuppressWarnings("deprecation")
 	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.table.DefaultTableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
+	 */
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 		//Instantiate the cell and model
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
@@ -49,7 +57,11 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 			setValue(f.format(new Date(endDate)));
 		}
 
-		//change color to blue if selected, grey if passed, otherwise white
+		/*
+		 * If the row is selected, chang ethe color to the default blue
+		 * If the end date of the iteration is before the current date, make the row grey
+		 * else make the row white
+		 */
 		if (isSelected) {
 			Color defaultBlue = new Color(184,207,229);
 			setBackground(defaultBlue);                
