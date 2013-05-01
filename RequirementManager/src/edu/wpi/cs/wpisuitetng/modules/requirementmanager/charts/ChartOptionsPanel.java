@@ -251,28 +251,28 @@ public class ChartOptionsPanel extends JPanel{
 	}
 
 	/**
-	 * @return the chartTypeBox
+	 * @return chartTypeBox The "chartTypeBox" JComboBox
 	 */
 	public JComboBox getChartTypeBox() {
 		return chartTypeBox;
 	}
 
 	/**
-	 * @param chartTypeBox the chartTypeBox to set
+	 * @param chartTypeBox The "chartTypeBox" JComboBox to set
 	 */
 	public void setChartTypeBox(JComboBox chartTypeBox) {
 		this.chartTypeBox = chartTypeBox;
 	}
 
 	/**
-	 * @return the chartDataBox
+	 * @return chartDataBox The "chartDataBox" JComboBox
 	 */
 	public JComboBox getChartDataBox() {
 		return chartDataBox;
 	}
 
 	/**
-	 * @param chartDataBox the chartDataBox to set
+	 * @param chartDataBox The "chartDataBox" JComboBox to set
 	 */
 	public void setChartDataBox(JComboBox chartDataBox) {
 		this.chartDataBox = chartDataBox;
@@ -286,14 +286,14 @@ public class ChartOptionsPanel extends JPanel{
 	}
 
 	/**
-	 * @return the filtersOptionsBox
+	 * @return filtersOptionsBox The "filtersOptionsBox" JComboBox
 	 */
 	public JComboBox getFiltersOptionsBox() {
 		return filtersOptionsBox;
 	}
 
 	/**
-	 * @param filtersOptionsBox the filtersOptionsBox to set
+	 * @param filtersOptionsBox The "filtersOptionsBox" JComboBox to set
 	 */
 	public void setFiltersOptionsBox(JComboBox filtersOptionsBox) {
 		this.filtersOptionsBox = filtersOptionsBox;
@@ -312,7 +312,6 @@ public class ChartOptionsPanel extends JPanel{
 	public ChartView getParent() {
 		return parent;
 	}
-
 
 	/** Method to get whether input is enabled for this panel
 	 * @return A boolean representing whether or not input is enabled for this panel.
@@ -423,7 +422,7 @@ public class ChartOptionsPanel extends JPanel{
 	}
 
 	/**
-	 * @return the data model for the table
+	 * @return filterTableModel The ResultsTableModel for the table
 	 */
 	public ResultsTableModel getModel() {
 		return filterTableModel;

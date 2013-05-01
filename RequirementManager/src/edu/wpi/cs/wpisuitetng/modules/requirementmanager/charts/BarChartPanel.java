@@ -220,7 +220,6 @@ public class BarChartPanel extends JPanel implements IListPanel {
 		chart.getPlot().setBackgroundPaint(new Color(255,255,255));
 		chart.getPlot().setOutlineVisible(false);
 		chartPanel.setChart(chart);
-		
 	}
 
 	/** Function to refresh and redraw bar chart with Assigned Users 
@@ -317,6 +316,7 @@ public class BarChartPanel extends JPanel implements IListPanel {
 	//The following methods are not implemented but required by the IListPanel interface:
 
 	/** Method getSelectedUniqueIdentifiers.
+	 * (not implemented but required by the IListPanel interface)
 	 * @return String[]
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
 	 */
@@ -326,6 +326,7 @@ public class BarChartPanel extends JPanel implements IListPanel {
 	}
 
 	/** Method setNewBtnToCancel.
+	 * (not implemented but required by the IListPanel interface)
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
 	 */
 	@Override

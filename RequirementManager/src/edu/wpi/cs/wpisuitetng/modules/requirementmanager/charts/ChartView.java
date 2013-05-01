@@ -310,20 +310,19 @@ public class ChartView extends JPanel implements IToolbarGroupProvider{
 	}
 
 	/** Returns the parent ListTab that contains this view
-	 * @return ListTab
+	 * @return view The parent ListTab that contains this view
 	 */
 	public ListTab getView() {
 		return view;
 	}
 
 	/** Sets the parent ListTab that contains this view
-	 * @param view ListTab
+	 * @param view The parent ListTab that contains this view to set
 	 */
 	public void setView(ListTab view) {
 		this.view = view;
 	}
 
-	
 	public void setListOptions () {
 		ArrayList<String> choices = new ArrayList<String>();
 		ArrayList<String> filterChoices = new ArrayList<String>();
