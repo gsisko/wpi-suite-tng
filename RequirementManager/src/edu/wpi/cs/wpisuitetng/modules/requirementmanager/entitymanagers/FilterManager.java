@@ -35,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.models.Filter;
  *  filters pulled from the DB will only be for the current user and current project. 
  *  "Deleting" simply sets the user field of Filters to null so that the filter cannot be
  *  pulled from the DB, but it will still exist to preserve unique IDs.   
+ * @author Team 5 D13
  */
 public class FilterManager implements EntityManager<Filter> {
 	/** The database */
@@ -71,6 +72,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * those filters specific to the current user
 	 * 
 	 * @return The number of Requirements currently in the database
+	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	public int Count() throws WPISuiteException {
@@ -154,7 +156,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * 
 	 * @param s   The current user session
 	 * @param id  Points to a specific Filter
-	 * @return An array of Requirements
+	 * @return An array of Requirements 
 	 * @throws NotFoundException  "The Filter with the specified id was not found:" + intId
 	 * @throws WPISuiteException  "There was a problem retrieving from the database."
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session,  String)
@@ -188,8 +190,9 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @param s The current user session
 	 * @param content  The filter to be updated and the updates
 	 * @return the changed Filter
-	 * @throws NotFoundException  "The Filter with the specified id was not found:" + intId
 	 * @throws WPISuiteException "There was a problem retrieving from the database." or  "Null session."
+ 	 * @throws BadRequestException
+	 * @throws NotFoundException  "The Filter with the specified id was not found:" + intId
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Filter update(Session s, String content) throws WPISuiteException,
@@ -228,8 +231,8 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @param s  The current user session
 	 * @param id The unique of the filter to delete
 	 * @return TRUE if successful or FALSE if it fails
-	 * @throws NotFoundException    "The Filter with the specified id was not found:" + intId
 	 * @throws WPISuiteException    "There was a problem retrieving from the database." or "Null session."
+	 * @throws NotFoundException    "The Filter with the specified id was not found:" + intId
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
@@ -251,6 +254,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @param s  The current session. The current user is extracted from this.
 	 * @return All of the Filters made by the current user.
 	 * @throws WPISuiteException    -- thrown if there are problems retrieving
+ 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(Session)
 	 */
 	public Filter[] getAll(Session s) throws WPISuiteException {
 		List<Model> filterList = db.retrieve(Filter.class, "User",	s.getUser(), s.getProject());
@@ -262,6 +266,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * 
 	 * @param s  The current session. The current user is extracted from this.
 	 * @throws WPISuiteException -- thrown when there are problems deleting
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
 	 */
 	public void deleteAll(Session s) throws WPISuiteException {
 		Filter[] filtersToDelete = this.getAll(s);
@@ -292,7 +297,7 @@ public class FilterManager implements EntityManager<Filter> {
 	 * @return String
 	 * @throws WPISuiteException
 	 * @throws NotImplementedException - Thrown because its not implemented!
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(Session, String, String) 
 	 */
 	public String advancedPost(Session s, String string, String content)throws WPISuiteException,NotImplementedException {
 		throw new NotImplementedException();

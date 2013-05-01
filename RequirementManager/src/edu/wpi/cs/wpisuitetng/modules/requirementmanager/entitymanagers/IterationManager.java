@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
  *  
  *   Also, the first time iterations are asked for in a new project, a single "Backlog" iteration
  *   will be created, stored and included with the other iterations requested.   
+ * @author Team 5 D13
  */
 public class IterationManager implements EntityManager<Iteration> {
 	/** The database */
@@ -66,7 +67,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *  This is designed to be called by getall 
 	 *  
 	 *  @param s The current session which contains the current project  
-	 *  @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.IterationManager#getAll(Session s)
+	 *	@see edu.wpi.cs.wpisuitetng.modules.requirementmanager.entitymanagers.IterationManager#getAll(Session s)
 	 */
 	public void instantiateBacklog(Session s){		
 		// Get the current project
@@ -101,7 +102,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 * @return the Iteration that originally came as a string
 	 * @throws BadRequestException "The Iteration creation string had invalid formatting. Entity String: " + content
 	 * @throws ConflictException "A Iteration with the given ID already exists. Entity String: " + content
-	 * @throws WPISuiteException "Unable to save Iteration."
+	 * @throws WPISuiteException "Unable to save Iteration." 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(Session, String)
 	 */
 	public Iteration makeEntity(Session s, String content)
@@ -137,7 +138,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	 * 
 	 *  @param s The current user session
 	 *  @param model The Iteration to be saved to the database
-	 *  @throws WPISuiteException  "Unable to save Iteration."
+	 * @throws WPISuiteException  "Unable to save Iteration."
 	 */
 	public void save(Session s, Iteration model) throws WPISuiteException {
 		// Save the iteration in the database if possible, otherwise throw an exception
@@ -152,7 +153,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	/** Takes an Iteration and assigns a unique id if necessary
 	 * 
 	 * @param iter The iteration that possibly needs a unique id
-	 * @throws WPISuiteException "Count failed"
+	 * @throws WPISuiteException "Count failed" 
 	 */
 	public void assignUniqueID(Iteration iter) throws WPISuiteException{
 		if (iter.getID() == -1){// -1 is a flag that says a unique id is needed            
@@ -162,10 +163,8 @@ public class IterationManager implements EntityManager<Iteration> {
 
 	/** Returns the number of Iterations currently in the database. Disregards
 	 *  the current user session
-	 * 
-	 *  @return The number of Iterations currently in the database 
-	 *  @throws WPISuiteException "Retrieve all failed"
-	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
+	 * @return The number of Iterations currently in the database
+	 * @throws WPISuiteException "Retrieve all failed"@see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	public int Count() throws WPISuiteException {
 		// Passing a dummy Iteration lets the db know what type of object to retrieve
@@ -175,7 +174,8 @@ public class IterationManager implements EntityManager<Iteration> {
 	/** Takes a session and returns an array of all the Iterations contained
 	 * 
 	 * @param s The current user session
-	 * @return An array of all iterations in the Database	 
+	 * @return An array of all iterations in the Database
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(Session)
 	 */
 	public Iteration[] getAll(Session s)  {
 		// Assure that the current project has a back log before retrieving all. 
@@ -193,10 +193,10 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *  
 	 *  @param s  The current user session
 	 *  @param sid String representation of id of desired iteration
-	 *  @return An array of Iterations  
-	 *  @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
-	 *  @throws WPISuiteException  "There was a problem retrieving from the database." 
-	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
+	 *  @return An array of Iterations 
+	 * 	@throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 * 	@throws WPISuiteException  "There was a problem retrieving from the database."
+	 * 	@see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(Session, String)
 	 */
 	public Iteration[] getEntity(Session s, String sid) throws NotFoundException, WPISuiteException {
 
@@ -222,10 +222,10 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *   
 	 *  @param s The current user session
 	 *  @param content The iteration to be update + the updates
-	 * 	@return the changed iteration 
-	 *  @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
-	 *  @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
-	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
+	 *  @return the changed iteration 
+	 * 	@throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."
+	 *	@throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 * 	@see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	public Iteration update(Session s, String content) throws WPISuiteException {
 		// If there is no session
@@ -261,9 +261,9 @@ public class IterationManager implements EntityManager<Iteration> {
 	 *  @param s The current user session
 	 *  @param id The unique of the iteration to delete
 	 *  @return TRUE if successful or FALSE if it fails
-	 *  @throws NotFoundException  "The Iteration with the specified id was not found:" + intId
-	 *  @throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."	  
-	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
+	 *	@throws WPISuiteException  "There was a problem retrieving from the database."   or "Null session."
+	 *	@throws NotFoundException  "The Iteration with the specified id was not found:" + intId
+	 *	@see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(Session, String)
 	 */
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 		// Attempt to get the entity, NotFoundException or WPISuiteException may be thrown	    	
@@ -285,7 +285,7 @@ public class IterationManager implements EntityManager<Iteration> {
 	/** Deletes ALL Iterations from the database permanently
 	 * 
 	 *  @param s The current user session
-	 *  @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session)
+	 * 	@see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(Session) 
 	 */
 	public void deleteAll(Session s)  {
 		db.deleteAll(new Iteration(), s.getProject());

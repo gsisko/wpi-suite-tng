@@ -22,6 +22,7 @@ import java.util.Set;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /** Responsible for copying properties from one Model to another.
+ * @author Team 5 D13
  */
 public class ModelMapper {
 	private final Set<String> blacklist = new HashSet<String>();
@@ -44,7 +45,7 @@ public class ModelMapper {
 	
 	/** Blacklist should contain field names.
 	 * e.g. getSomeField() -> getBlacklist().add("someField")
-	 * 
+	 * 	
 	 * @return A set of field names to ignore, which can be modified
 	 */
 	public Set<String> getBlacklist() {
@@ -52,6 +53,7 @@ public class ModelMapper {
 	}
 	
 	/** Callback to pass to {@link ModelMapper#map(Model, Model, MapCallback)}
+	 * @author Team 5 D13
 	 */
 	public interface MapCallback {
 		/**
@@ -70,6 +72,7 @@ public class ModelMapper {
 	}
 	
 	/**
+	 * @param methodName String
 	 * @return field name from given accessor name ("getBlahField" -> "blahField")
 	 */
 	private static String accessorNameToFieldName(String methodName) {
@@ -83,7 +86,7 @@ public class ModelMapper {
 	 * @param source The Model to copy from
 	 * @param destination The Model to copy to
 	 * @param callback The callback whose return value is set on the destination
-	 * @throws RuntimeException If something goes wrong during copying
+	 * @throws RuntimeException If something goes wrong during copying 
 	 */
 	public void map(final Model source, final Model destination, MapCallback callback)
 			throws RuntimeException {
