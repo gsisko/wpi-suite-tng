@@ -27,8 +27,8 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 	Boolean[][] isValid;
 	Boolean[][] isEditable;
 	
-	/**
-	 * Constructor for ResultsTableCellRenderer.
+	/** Constructor for ResultsTableCellRenderer.
+	 * 
 	 * @param needsSaving Boolean[][]
 	 * @param isValid Boolean[][]
 	 * @param isEditable Boolean[][]
@@ -39,8 +39,8 @@ public class ResultsTableCellRenderer extends DefaultTableCellRenderer {
 		this.isEditable = isEditable;
 	}
 	
-	/**
-	 * Method getTableCellRendererComponent.
+	/** Method getTableCellRendererComponent.
+	 * 
 	 * @param table JTable
 	 * @param value Object
 	 * @param isSelected boolean
