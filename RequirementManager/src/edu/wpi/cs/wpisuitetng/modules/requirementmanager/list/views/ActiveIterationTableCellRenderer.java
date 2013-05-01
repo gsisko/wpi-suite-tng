@@ -26,17 +26,15 @@ import javax.swing.table.TableModel;
  */
 @SuppressWarnings("serial")
 public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
-	/*
-	 * instantiate a new date as a current date to compare the iteration dates to
-	 */
+	
+	/** instantiate a new date as a current date to compare the iteration dates to */
 	Date currentDate = new Date();
 
-	@SuppressWarnings("deprecation")
-	@Override
-	/*
-	 * (non-Javadoc)
+	/**
 	 * @see javax.swing.table.DefaultTableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
+	@SuppressWarnings("deprecation")
+	@Override
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 		//Instantiate the cell and model
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
@@ -58,7 +56,7 @@ public class ActiveIterationTableCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		/*
-		 * If the row is selected, chang ethe color to the default blue
+		 * If the row is selected, change the color to the default blue
 		 * If the end date of the iteration is before the current date, make the row grey
 		 * else make the row white
 		 */

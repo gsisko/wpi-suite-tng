@@ -25,28 +25,20 @@ import javax.swing.table.TableModel;
 @SuppressWarnings("serial")
 public class ActiveFilterTableCellRenderer extends DefaultTableCellRenderer {
 	
-	/*
-	 * (non-Javadoc)
+	/**
 	 * @see javax.swing.table.DefaultTableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
 	public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected, boolean hasFocus, int row, int column) {  
 
-		/*
-		 * instantiates the cell
-		 */
+		//Instantiate the cell
 		Component cell= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
 
-		/*
-		 * from the model, this gets the value of the 4th column (status)
-		 * because the colors depend on status
-		 */
+		//this gets the value of the 4th column (status) from the model,  because the colors depend on status
 		TableModel model = table.getModel();
 		int modelRow = table.getRowSorter().convertRowIndexToModel(row);
 		String status = (String)model.getValueAt(modelRow, 4);
 
-		
-		/*
-		 * if the row for the status is selected, make it the default blue color
+		/* if the row for the status is selected, make it the default blue color
 		 * if that status of the filter is active, indicated by "yes", make the row white
 		 * otherwise, make the row grey
 		 */
@@ -65,7 +57,6 @@ public class ActiveFilterTableCellRenderer extends DefaultTableCellRenderer {
 		}     
 
 		return cell;  
-
 	}
 }
 
