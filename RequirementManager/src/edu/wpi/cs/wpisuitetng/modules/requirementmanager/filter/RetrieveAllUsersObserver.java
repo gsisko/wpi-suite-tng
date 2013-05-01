@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /** An observer for a request to retrieve all users specific to the Filter builder panel. Upon
  * a successful retrieval of data, the value combo box is filled with the names of the users
  * retrieved from the database.
+ * @author Team 5 D13
  */
 public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
@@ -31,7 +32,7 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	protected FilterBuilderPanel filterBuilderPanel;
 
 	/** Construct the observer
-	 * @param controller
+	 * @param filterBuilderPanel The filter builder that the responses are for
 	 */
 	public RetrieveAllUsersObserver(FilterBuilderPanel filterBuilderPanel) {
 		this.filterBuilderPanel = filterBuilderPanel;
@@ -39,6 +40,8 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
 	/** Upon a successful retrieval of data, the value combo box is filled with the names of the users
 	 *  retrieved from the database.
+	 * @param iReq IRequest
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(IRequest)
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void responseSuccess(IRequest iReq) {
@@ -73,12 +76,14 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 
 	/** This method is unused, but is required by the RequestObserver interface
 	 * @param iReq the reponse from the server
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(IRequest)
 	 */
 	public void responseError(IRequest iReq) {	}
 
 	/** This method is unused, but is required by the RequestObserver interface
 	 * @param iReq the response from the server
 	 * @param exception unused
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(IRequest, Exception)
 	 */
 	public void fail(IRequest iReq, Exception exception) {	}
 }

@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.NewModelActi
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Iteration;
 
 /** Panel to contain the list of filters that have been saved by the user
+ * @author Team 5 D13
  */
 @SuppressWarnings("serial")
 public class FilterListTab extends JPanel implements IListPanel{
@@ -207,6 +208,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	 *  pulls the highlighted identifiers from a table view.
 	 * 
 	 * @return An array of unique identifiers in the form of strings
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifiers()
 	 */
 	public String[] getSelectedUniqueIdentifiers() {
 		// get highlighted rows 
@@ -220,14 +222,18 @@ public class FilterListTab extends JPanel implements IListPanel{
 		return ids;
 	}
 
-	/** Sets the New button to cancel */
+	/** Sets the New button to cancel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setNewBtnToCancel()
+	 */
 	public void setNewBtnToCancel() {
 		// set the New/Cancel button to cancel
 		getBtnCreate().setText("Cancel"); 
 		setBtnCreateIsCancel(true);
 	}
 
-	/** Sets the "Cancel" button back to "New Filter"  */
+	/** Sets the "Cancel" button back to "New Filter" 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setCancelBtnToNew()
+	 */
 	public void setCancelBtnToNew() {
 		// Set the cancel button back to New Filter if it was in cancel mode 
 		this.getBtnCreate().setText("New Filter"); 
@@ -235,7 +241,9 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	}
 
-	/** Toggles between "New Model" and "Cancel" mode */
+	/** Toggles between "New Model" and "Cancel" mode
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#toggleNewCancelMode()
+	 */
 	public void toggleNewCancelMode() {
 		btnCreateIsCancel = !btnCreateIsCancel;
 		if(btnCreateIsCancel)
@@ -246,6 +254,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	/** Begins refresh process, starting with Filters 
 	 * @return Always true
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshAll()
 	 */
 	public boolean refreshAll() {
 		retrieveAllController.refreshData();
@@ -256,6 +265,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	 * 
 	 * @param me The mouse event that was triggered by a double click
 	 * @return The unique identifier, either name or ID number
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#getSelectedUniqueIdentifier(MouseEvent)
 	 */
 	public String getSelectedUniqueIdentifier(MouseEvent me) {
 
@@ -274,6 +284,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 
 	/** Show the filters in the list view
 	 * @param jsonString An array of models in the form of a JSON string
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#showRecievedModels(String)
 	 */
 	public void showRecievedModels(String jsonString) {
 		// Setup data structures
@@ -390,13 +401,16 @@ public class FilterListTab extends JPanel implements IListPanel{
 		this.retrieveAllController = retrieveAllController;
 	}
 
-	/** Refresh all the requirements */
+	/** Refresh all the requirements
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#refreshRequirements()
+	 */
 	public void refreshRequirements() {
 		parent.getParent().getController().refreshData();
 	}
 
 	/** Sets the delete button to either activated or deactivated  
 	 * @param setActive A boolean - true to activate "btnDelete" JButton and false to deactivate
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#setDeleteEnabled(boolean)
 	 */
 	public void setDeleteEnabled(boolean setActive) {
 		btnDelete.setEnabled(setActive);		
@@ -406,6 +420,7 @@ public class FilterListTab extends JPanel implements IListPanel{
 	 *  filters may be deleted, so only true is returned
 	 *  
 	 * @return false if any item selected cannot be deleted.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IListPanel#areSelectedItemsDeletable()
 	 */
 	public boolean areSelectedItemsDeletable(){
 		return true;

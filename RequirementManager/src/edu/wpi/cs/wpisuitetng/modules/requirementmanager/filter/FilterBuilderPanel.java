@@ -46,6 +46,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *  RequirementManager module above the list of requirements and right of the list 
  *  of filters. This builder will be switched to when the Filter list view
  *  tab is selected.  
+ * @author Team 5 D13
  */
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class FilterBuilderPanel extends JPanel implements ActionListener, IBuilderPanel {
@@ -273,6 +274,8 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 *  options are finite (enumerators), and a string for the rest of the time.
 	 *  Also sets up the operator boxes in a similar fashion This reduces the
 	 *  possibility of user error.	 
+	 * @param e ActionEvent
+	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 
@@ -422,6 +425,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 	/** Get the current mode of the FilterBuilderPanel (Mode.EDIT or Mode.CREATE)
 	 * @return currentMode The "currentMode" of the FilterBuilderPanel (Mode.EDIT or Mode.CREATE)
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#getCurrentMode()
 	 */
 	public Mode getCurrentMode() {
 		return currentMode;
@@ -559,6 +563,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 *  controllers and action listeners are initialized because the controllers
 	 *  require references that are not not fully initialized when the 
 	 *  constructor for this class is called.
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setupControllersAndListeners()
 	 */
 	public void setupControllersAndListeners() {
 		saveController = new SaveModelController(parent.getTabPanel().getFilterList(),this,"filter");
@@ -570,6 +575,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 *  Mode.CREATE or Mode.EDIT
 	 * 
 	 * @param mode The mode that the builder panel should be in
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setModeAndBtn(Mode)
 	 */
 	public void setModeAndBtn(Mode mode) {
 		currentMode = mode;
@@ -582,6 +588,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 
 	/** Enables or disables all fields in the builder panel. 
 	 * @param setTo True activates the fields and false deactivates them
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#setInputEnabled(boolean)
 	 */
 	public void setInputEnabled(boolean setTo){
 		// Record whether enabled/disabled
@@ -602,7 +609,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 			valueWarning.setText("");
 	}
 
-	/** Toggles between active and inactive modes mode */
+	/** Toggles between active and inactive modes mode 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#toggleNewCancelMode()
+	 */
 	public void toggleNewCancelMode() {
 		currentMode = Mode.CREATE; // default for this function
 		isBuilderActive = !isBuilderActive;
@@ -610,7 +619,9 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 		enable(this.getStatus(),false);
 	}
 
-	/** Resets the values of the fields/drop downs in the builder panel  */
+	/** Resets the values of the fields/drop downs in the builder panel  
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#resetFields()
+	 */
 	public void resetFields() {
 		// Reset Type field
 		typeBox.setSelectedIndex(0);
@@ -636,6 +647,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 * NOTE: can be used for passing messages between views!
 	 * 
 	 * @return JSON string of the model to be sent, null if a message cannot be made
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#convertCurrentModelToJSON()
 	 */
 	public String convertCurrentModelToJSON() {
 		setCurType(this.getFilterType().getSelectedItem().toString());
@@ -681,6 +693,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	 *  to the builder panel. 
 	 *  
 	 * @param jsonString An array of models in JSON string form
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#displayModelFromJSONArray(String)
 	 */
 	public void displayModelFromJSONArray(String jsonString) {
 		// Translate the filter from a JSONArray	
@@ -753,6 +766,7 @@ public class FilterBuilderPanel extends JPanel implements ActionListener, IBuild
 	
 	/** Get the ListTab parent of this tab
 	 * @return parent The ListTab "parent" of this panel
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.list.views.IBuilderPanel#getMyParent()
 	 */
 	public ListTab getMyParent() {
 		return parent;
