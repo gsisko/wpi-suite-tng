@@ -79,7 +79,9 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** Controller to handle list and filter requests from the user */
 	protected RetrieveAllRequirementsController controller;
 
+	/** The controller for retrieving filters */
 	protected RetrieveAllModelsController filterController;
+	/** The controller for retrieving iterations */
 	protected RetrieveAllModelsController iterationController;
 
 	/** The main tab controller */
@@ -100,10 +102,13 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 	/** Store the sort keys */
 	List<? extends SortKey> sortKeys;
 
-	/** The arrays of models stored in the database */
+	/** Local copy of filters stored in the database */
 	protected Filter[] allFilters;
+	/** Local copy of iterations stored in the database */
 	protected Iteration[] allIterations;
+	/** Local copy of requirements stored in the database */
 	protected Requirement[] allRequirements;
+	/** Local copy of displayed requirements stored in the database */
 	protected Requirement[] displayedRequirements;
 
 	/** The controller that saves requirements that are edited in list view */
@@ -293,10 +298,18 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		btnlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnSave, 0, SpringLayout.HORIZONTAL_CENTER, checkBoxDefault); //Align save to right side of check box
 	}
 
+	/** gets the check box status
+	 * 
+	 * @return the status of the check box
+	 */
 	public boolean getCheckBoxStatus() {
 		return checkBoxStatus;
 	}
 
+	/** Sets the status of the checkbox
+	 * 
+	 * @param checkBoxStatus the status to set the checkbox to
+	 */
 	protected void setCheckBoxStatus(boolean checkBoxStatus) {
 		this.checkBoxStatus = checkBoxStatus;
 	}
@@ -316,64 +329,83 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		}
 		filterController.refreshData();
 	}
-
+	
+	/** gets the controller for getting requirements
+	 * 
+	 * @return the controller for retrieving requirements
+	 */
 	public RetrieveAllRequirementsController getController() {
 		return controller;
 	}
 
+	/** Gets the controller for retrieving filters
+	 * 
+	 * @return the controller for retrieving filters
+	 */
 	public RetrieveAllModelsController getFilterController() {
 		return filterController;
 	}
-
+	
+	/** Gets the controller for retrieving iterations
+	 * 
+	 * @return the controller for retrieving iterations
+	 */
 	public RetrieveAllModelsController getIterationController() {
 		return iterationController;
 	}
-
+	
+	/** Gets the main panel which is a list tab
+	 * 
+	 * @return the main panel
+ 	 */
 	public ListTab getListTab() {
 		return mainPanel;
 	}
 
-	@Override
+	/** gets the tool bar
+	 * 
+	 * @return the toolbar group view that has buttons
+	 */
 	public ToolbarGroupView getGroup() {
 		return buttonGroup;
 	}
 
-	/**
+	/** gets all the local filters
 	 * @return the allFilters
 	 */
 	public Filter[] getAllFilters() {
 		return allFilters;
 	}
 
-	/**
+	/**  sets the local filters
 	 * @param allFilters the allFilters to set
 	 */
 	public void setAllFilters(Filter[] allFilters) {
 		this.allFilters = allFilters;
 	}
 
-	/**
+	/** gets the local iterations
 	 * @return the allIterations
 	 */
 	public Iteration[] getAllIterations() {
 		return allIterations;
 	}
 
-	/**
+	/** sets the local iterations
 	 * @param allIterations the allIterations to set
 	 */
 	public void setAllIterations(Iteration[] allIterations) {
 		this.allIterations = allIterations;
 	}
 
-	/**
+	/** gets all the requirements
 	 * @return the allRequirements
 	 */
 	public Requirement[] getAllRequirements() {
 		return allRequirements;
 	}
 
-	/**
+	/** sets all the requirements
 	 * @param allRequirements the allRequirements to set
 	 */
 	public void setAllRequirements(Requirement[] allRequirements) {
@@ -384,14 +416,14 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 			tabController.getView().getJanewayModule().getToolbarView().getDisplayChartsButton().setEnabled(false);
 	}
 
-	/**
+	/** gets the displayed requirements
 	 * @return the displayedRequirements
 	 */
 	public Requirement[] getDisplayedRequirements() {
 		return displayedRequirements;
 	}
 
-	/**
+	/** sets the displayed requirements
 	 * @param displayedRequirements the displayedRequirements to set
 	 */
 	public void setDisplayedRequirements(Requirement[] displayedRequirements) {
@@ -456,14 +488,14 @@ public class ListView extends JPanel implements IToolbarGroupProvider {
 		}
 	}
 
-	/**
+	/** gets teh save button
 	 * @return the btnSave
 	 */
 	public JButton getBtnSave() {
 		return btnSave;
 	}
 
-	/**
+	/** sets the save button
 	 * @param btnSave the btnSave to set
 	 */
 	public void setBtnSave(JButton btnSave) {

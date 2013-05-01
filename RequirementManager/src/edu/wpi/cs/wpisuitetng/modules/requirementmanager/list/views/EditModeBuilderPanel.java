@@ -23,6 +23,8 @@ import javax.swing.SpringLayout;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+/** This panel is displayed in the place of the builder panel when edit 
+ *  list mode is activated.          */
 @SuppressWarnings("serial")
 public class EditModeBuilderPanel extends JPanel {
 

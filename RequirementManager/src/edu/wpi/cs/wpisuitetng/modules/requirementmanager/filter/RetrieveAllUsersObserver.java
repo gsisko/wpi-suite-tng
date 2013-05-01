@@ -41,7 +41,6 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	 *  retrieved from the database.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
 	public void responseSuccess(IRequest iReq) {
 		Request request = (Request) iReq;
 
@@ -73,10 +72,13 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 	}
 
 	/** This method is unused, but is required by the RequestObserver interface
+	 * @param iReq the reponse from the server
 	 */
 	public void responseError(IRequest iReq) {	}
 
 	/** This method is unused, but is required by the RequestObserver interface
+	 * @param iReq the response from the server
+	 * @param exception unused
 	 */
 	public void fail(IRequest iReq, Exception exception) {	}
 }

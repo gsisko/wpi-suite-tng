@@ -31,7 +31,9 @@ public class RetrieveIterationObserver implements RequestObserver {
 		iteration = null;
 	}
 
-	/** Respond to a successful message from the network */
+	/** Respond to a successful message from the network
+	 * @param iReq the response from the server
+	 */
 	public void responseSuccess(IRequest iReq) {
 		Request request = (Request) iReq;
 		
@@ -48,16 +50,26 @@ public class RetrieveIterationObserver implements RequestObserver {
 		iteration = iterationArray[0];
 	}
 
-	/** Respond to an  unsuccessful message from the network */
+	/** Respond to an  unsuccessful message from the network 
+	 * @param iReq the response from the server
+	 */
 	public void responseError(IRequest iReq) {
 		System.err.println("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
-	/** Respond to a failure message from the network */
+	/** Respond to a failure message from the network 
+	 * 
+	 * @param iReq the response from the server
+	 * @param exception unused
+	 */
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("Unable to complete request: " + exception.getMessage());
 	}
 	
+	/** Get the iteration stored
+	 * 
+	 * @return the Iteration
+	 */
 	public Iteration getIteration(){
 		return iteration;
 	}

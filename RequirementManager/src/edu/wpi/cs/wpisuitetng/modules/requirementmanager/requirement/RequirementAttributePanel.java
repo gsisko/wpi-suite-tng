@@ -166,12 +166,20 @@ public class RequirementAttributePanel extends JPanel {
 	/** The layout manager for this panel */
 	protected GridBagLayout layout;
 
+	/** An array of iteration names */
 	String[] iterationArr = { "Backlog"};
+	/** A similar array of iteration names */
 	String[] iterationStrings = iterationArr;
 
 	/** The constraints variable used to layout this panel */
 	private GridBagConstraints attributePanelConstraints;
 
+	/** Constructor for the panel
+	 * 
+	 * @param parentTab  The parent panel holding this panel
+	 * @param requirement A requirement to display
+	 * @param editMode   The mode that this panel should be in
+	 */
 	public RequirementAttributePanel(RequirementTab parentTab, Requirement requirement, Mode editMode){
 		parent = parentTab;//Set the RequirementView that contains this instance of this panel
 		currentRequirement = requirement; //Set the requirement that is currently open for editing or creation

@@ -35,7 +35,9 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 		this.userChooser = userChooser;
 	}
 
-	@Override
+	/** Upon a successful retrieval of data, the value combo box is filled with the names of the users
+	 *  retrieved from the database.
+	 */
 	public void responseSuccess(IRequest iReq) {
 		Request request = (Request) iReq;
 
@@ -53,15 +55,13 @@ public class RetrieveAllUsersObserver implements RequestObserver,IObserver{
 		userChooser.resumeInitialization();
 	}
 
-	@Override
+	/** This method is unused, but is required by the RequestObserver interface
+	 */
 	public void responseError(IRequest iReq) {
-		// an error occurred
-		//controller.errorReceivingData("Received " + iReq.getResponse().getStatusCode() + " error from server: " + iReq.getResponse().getStatusMessage());
 	}
 
-	@Override
+	/** This method is unused, but is required by the RequestObserver interface
+	 */
 	public void fail(IRequest iReq, Exception exception) {
-		// an error occurred
-		//controller.errorReceivingData("Unable to complete request: " + exception.getMessage());
 	}
 }
