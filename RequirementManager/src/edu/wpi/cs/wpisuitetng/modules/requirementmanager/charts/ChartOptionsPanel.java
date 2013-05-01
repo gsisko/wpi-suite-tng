@@ -51,6 +51,7 @@ public class ChartOptionsPanel extends JPanel{
 	/** The label for the filtersOptionsBox */
 	private  JLabel filtersLabel;
 
+	/** The label for the table of active filters ("filtertable") */
 	private JLabel filterlistlabel;
 
 	//The fillable components
@@ -61,8 +62,10 @@ public class ChartOptionsPanel extends JPanel{
 	/** The combo box used to select the filters options (IE whether to apply the active filters to the data) */
 	private  JComboBox filtersOptionsBox;
 
+	/** ResultsTableModel for filtertable */
 	private  ResultsTableModel filterTableModel;
 
+	/** JTable to display the currently active filters */
 	private  JTable filtertable;
 
 	/** The layout manager for this panel */
